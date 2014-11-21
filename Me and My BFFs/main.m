@@ -12,6 +12,7 @@
 
 int main(int argc, char * argv[])
 {
+    NSLog(@"in main()");
     @autoreleasepool {
         return UIApplicationMain(argc, argv, nil, NSStringFromClass([MAMB09AppDelegate class]));
     }
