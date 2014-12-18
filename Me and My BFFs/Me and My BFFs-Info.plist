@@ -6,6 +6,27 @@
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
 	<string>Me&amp;myBFFs</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeIconFiles</key>
+			<array>
+				<string>icon_MAMB09_0064.png</string>
+				<string>icon_MAMB09_0320.png</string>
+			</array>
+			<key>CFBundleTypeName</key>
+			<string>Me and my BFFs group data</string>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.funnestastrology.meandmyBFFs.mamb</string>
+				<string>com.funnestastrology.meandmyBFFs.MAMB</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIdentifier</key>
@@ -35,6 +56,35 @@
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UTExportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.data</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>Me and my BFFS group data</string>
+			<key>UTTypeIdentifier</key>
+			<string>com.funnestastrology.meandmyBFFs.mamb</string>
+			<key>UTTypeSize320IconFile</key>
+			<string>icon_MAMB09_0320</string>
+			<key>UTTypeSize64IconFile</key>
+			<string>icon_MAMB09_0064</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<string>mamb</string>
+                <key>public.mime-type</key>
+                <string>Application/Me&amp;myBFFs</string>
+			</dict>
+			<key>public.filename-extension</key>
+			<array>
+				<string>mamb</string>
+				<string>MAMB</string>
+			</array>
+		</dict>
 	</array>
 </dict>
 </plist>

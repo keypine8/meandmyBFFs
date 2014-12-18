@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="i8R-GB-Xla">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="i8R-GB-Xla">
     <dependencies>
-        <deployment defaultVersion="1792" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--home Table View Controller-->
@@ -12,7 +13,6 @@
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" restorationIdentifier="MyCell1" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="32" sectionHeaderHeight="22" sectionFooterHeight="22" id="3XP-nJ-qJg">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MyCell1" id="Loe-rs-xmp">
                                 <rect key="frame" x="0.0" y="86" width="320" height="44"/>
@@ -22,7 +22,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="c6B-B7-05J" kind="push" identifier="segueHomeToReportList" id="KP6-Vo-54x"/>
+                                    <segue destination="c6B-B7-05J" kind="push" identifier="segueHomeToReportList" id="eA4-qf-CuI"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -33,11 +33,11 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="DQv-UV-LF6">
                         <nil key="title"/>
-                        <barButtonItem key="leftBarButtonItem" image="rounded_rectB_144" id="d9Q-aF-H9x">
+                        <barButtonItem key="leftBarButtonItem" image="rounded_MAMB09_144" id="d9Q-aF-H9x">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" id="CBz-6B-dZ2">
                                 <rect key="frame" x="16" y="7" width="30" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="myicon" image="rounded_rect_144">
+                                <state key="normal" title="myicon" image="rounded_MAMB09_029">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                             </button>
@@ -62,16 +62,17 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BbN-gl-Rsk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-565" y="-190"/>
+            <point key="canvasLocation" x="-1463" y="-414"/>
         </scene>
         <!--select Reports Table View Controller-->
         <scene sceneID="hSq-N8-rBp">
             <objects>
                 <tableViewController useStoryboardIdentifierAsRestorationIdentifier="YES" id="c6B-B7-05J" customClass="MAMB09_selectReportsTableViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="HhR-Y2-1XS">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="32" sectionHeaderHeight="22" sectionFooterHeight="22" id="HhR-Y2-1XS">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="sectionIndexBackgroundColor" red="0.96862745100000003" green="0.92156862750000001" blue="0.81960784310000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SelReportsCellIDentifier" id="plf-5S-aI3">
                                 <rect key="frame" x="0.0" y="86" width="320" height="44"/>
@@ -80,9 +81,6 @@
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
-                                <connections>
-                                    <segue destination="9OC-3u-Jhm" kind="push" identifier="segueRptSelToViewHTML" id="Yl4-6a-AfW"/>
-                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <sections/>
@@ -95,11 +93,17 @@
                     <navigationItem key="navigationItem" id="maQ-pc-pUV">
                         <nil key="title"/>
                         <barButtonItem key="rightBarButtonItem" id="ZwY-hE-pNO">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="S1M-2W-wCy">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" id="S1M-2W-wCy">
                                 <rect key="frame" x="274" y="-50" width="30" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button" image="rounded_rect_144">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                <state key="normal" image="rounded_MAMB09_029">
+                                    <attributedString key="attributedTitle">
+                                        <fragment content="Button">
+                                            <attributes>
+                                                <font key="NSFont" size="15" name="HelveticaNeue-Bold"/>
+                                            </attributes>
+                                        </fragment>
+                                    </attributedString>
                                 </state>
                             </button>
                         </barButtonItem>
@@ -107,11 +111,14 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="outletForSelectReportsTableViewController" destination="HhR-Y2-1XS" id="n6w-NT-TNN"/>
+                        <segue destination="9OC-3u-Jhm" kind="push" identifier="segueRptSelToViewHTML" id="IKV-EL-CP6"/>
+                        <segue destination="TFL-tU-gN8" kind="push" identifier="segueRptSelToSelYear" id="Dpz-mb-fdI"/>
+                        <segue destination="QgP-dY-i4R" kind="push" identifier="segueRptSelToSelPerson" id="o8Y-Wb-KUG"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="laJ-CM-NOE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-178" y="-190"/>
+            <point key="canvasLocation" x="-1080" y="-414"/>
         </scene>
         <!--view HTML file View Controller-->
         <scene sceneID="lzI-SK-WcE">
@@ -125,28 +132,28 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <webView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="V68-Cu-vhc">
+                            <webView contentMode="scaleToFill" scalesPageToFit="YES" allowsInlineMediaPlayback="NO" mediaPlaybackRequiresUserAction="NO" mediaPlaybackAllowsAirPlay="NO" keyboardDisplayRequiresUserAction="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V68-Cu-vhc">
                                 <rect key="frame" x="6" y="13" width="320" height="568"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <dataDetectorType key="dataDetectorTypes"/>
                             </webView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="V68-Cu-vhc" firstAttribute="leading" secondItem="i4S-L4-eKP" secondAttribute="leadingMargin" constant="-10" id="MAj-kT-gWD"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="V68-Cu-vhc" secondAttribute="bottom" constant="-13" id="Yl1-Ty-9dJ"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="V68-Cu-vhc" secondAttribute="trailing" constant="-22" id="vyt-fk-xnH"/>
+                            <constraint firstItem="V68-Cu-vhc" firstAttribute="top" secondItem="i4S-L4-eKP" secondAttribute="topMargin" constant="13" id="z7p-DN-6Az"/>
+                        </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="ow0-4f-nTr">
-                        <barButtonItem key="rightBarButtonItem" id="9Ab-OD-pI2">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="pFN-ez-cIM">
-                                <rect key="frame" x="274" y="-50" width="30" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button" image="rounded_rect_144">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                            </button>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="ow0-4f-nTr"/>
+                    <connections>
+                        <outlet property="outletWebView" destination="V68-Cu-vhc" id="dS2-6W-QO2"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fif-Uv-eXj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="225" y="-190"/>
+            <point key="canvasLocation" x="-167" y="-414"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="K1K-qc-EtB">
@@ -164,16 +171,133 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="93J-88-KE9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-953" y="-190"/>
+            <point key="canvasLocation" x="-1851" y="-414"/>
+        </scene>
+        <!--Select Year-->
+        <scene sceneID="6mS-NX-yA1">
+            <objects>
+                <viewController id="TFL-tU-gN8" customClass="MAMB09_selYearViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="7q8-DK-K8k"/>
+                        <viewControllerLayoutGuide type="bottom" id="K2n-D5-ogJ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="4F6-lK-C1a">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Calendar Year" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fTG-hv-qv3">
+                                <rect key="frame" x="51" y="356" width="108" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JIh-Y7-k8C">
+                                <rect key="frame" x="144" y="119" width="160" height="320"/>
+                                <accessibility key="accessibilityConfiguration">
+                                    <accessibilityTraits key="traits" none="YES" playsSound="YES" updatesFrequently="YES"/>
+                                </accessibility>
+                                <connections>
+                                    <outlet property="dataSource" destination="4F6-lK-C1a" id="4nb-QI-Qtc"/>
+                                    <outlet property="delegate" destination="4F6-lK-C1a" id="cuR-rR-iBv"/>
+                                </connections>
+                            </pickerView>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="2014" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7pW-Nb-v5Z">
+                                <rect key="frame" x="201" y="89" width="55" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="none" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ekx-2y-UvW">
+                                <rect key="frame" x="16" y="93" width="165" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                    </view>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="Select Year" id="pN1-tL-K5G">
+                        <barButtonItem key="rightBarButtonItem" title="button for  Do Report" id="gg7-E3-S5G">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="eyb-lk-iiV">
+                                <rect key="frame" x="219" y="7" width="90" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <inset key="titleEdgeInsets" minX="11" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <inset key="imageEdgeInsets" minX="80" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <state key="normal" title="Report" image="blueRightArrow">
+                                    <color key="titleColor" red="0.0" green="0.41960784313725491" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" red="0.0" green="0.23137254901960785" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="actionDoReport:" destination="TFL-tU-gN8" eventType="touchUpInside" id="Nhf-eD-2ST"/>
+                                </connections>
+                            </button>
+                            <color key="tintColor" red="1" green="0.98078642502344671" blue="0.4771928160340293" alpha="1" colorSpace="calibratedRGB"/>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="outletPersonName" destination="Ekx-2y-UvW" id="r2Z-mK-Xvq"/>
+                        <outlet property="outletPickedYear" destination="7pW-Nb-v5Z" id="NsO-hd-Kl0"/>
+                        <outlet property="outletYearPicker" destination="JIh-Y7-k8C" id="Wfy-vo-y1d"/>
+                        <segue destination="9OC-3u-Jhm" kind="push" identifier="segueSelYearToViewHTML" id="gk2-9i-3fK"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6D9-SA-xx0" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-636" y="-48"/>
+        </scene>
+        <!--Select Person-->
+        <scene sceneID="6Xh-Ei-Ee2">
+            <objects>
+                <tableViewController id="QgP-dY-i4R" customClass="MAMB09_selPersonViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="32" sectionHeaderHeight="22" sectionFooterHeight="22" id="kXh-JU-EjB">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="SelPersonCellIdentifier" id="la9-Lb-Lyi">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="la9-Lb-Lyi" id="m6o-Du-6yU">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="QgP-dY-i4R" id="5Rv-8Z-Au2"/>
+                            <outlet property="delegate" destination="QgP-dY-i4R" id="S0p-0L-6zA"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Select Person" id="ZDW-TT-GiB">
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="LeM-ar-hbw">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="EV2-xv-Nv4">
+                                <rect key="frame" x="272" y="7" width="32" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button" image="rounded_MAMB09_029">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <segue destination="9OC-3u-Jhm" kind="push" identifier="seguePerSelToViewHTML" id="EzM-79-T0o"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Prm-D8-yjx" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-631" y="-760"/>
         </scene>
     </scenes>
     <resources>
-        <image name="rounded_rectB_144" width="144" height="144"/>
-        <image name="rounded_rect_144" width="144" height="144"/>
+        <image name="blueRightArrow" width="13" height="20"/>
+        <image name="rounded_MAMB09_029" width="29" height="29"/>
+        <image name="rounded_MAMB09_144" width="144" height="144"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
+    <inferredMetricsTieBreakers>
+        <segue reference="EzM-79-T0o"/>
+    </inferredMetricsTieBreakers>
 </document>

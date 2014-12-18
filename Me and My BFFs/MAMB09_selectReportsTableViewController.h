@@ -12,8 +12,12 @@
 
 @property (strong, nonatomic) IBOutlet UITableView *outletForSelectReportsTableViewController;
 
-@property (strong, nonatomic) NSString *fromHomeCurrentSelection;     // CSV  for per or grp or pair of people
-@property (strong, nonatomic) NSString *fromHomeCurrentSelectionType; // like "group" or "person" or "pair"
-@property (strong, nonatomic) NSString *fromHomeCurrentEntity;        // like "group" or "person"
+//@property (strong, nonatomic) NSString *fromHomeCurrentSelectionPSV;  // PSV  for per or grp or pair of people
+//@property (strong, nonatomic) NSString *fromHomeCurrentSelectionType; // like "group" or "person" or "pair"
+//@property (strong, nonatomic) NSString *fromHomeCurrentEntity;        // like "group" or "person" or "groupmember"
+
+
+
+
 
 @end

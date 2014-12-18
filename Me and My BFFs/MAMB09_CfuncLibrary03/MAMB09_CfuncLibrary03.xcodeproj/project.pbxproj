@@ -7,9 +7,30 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		50FEBC041A1FD6F1001FAD94 /* MAMB09_CfuncLibrary03.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 50FEBC031A1FD6F1001FAD94 /* MAMB09_CfuncLibrary03.h */; };
-		50FEBC061A1FD6F1001FAD94 /* MAMB09_CfuncLibrary03.m in Sources */ = {isa = PBXBuildFile; fileRef = 50FEBC051A1FD6F1001FAD94 /* MAMB09_CfuncLibrary03.m */; };
+		50FEBC2C1A1FD725001FAD94 /* futasp.c in Sources */ = {isa = PBXBuildFile; fileRef = 50FEBC171A1FD725001FAD94 /* futasp.c */; };
+		50FEBC2D1A1FD725001FAD94 /* futdoc.c in Sources */ = {isa = PBXBuildFile; fileRef = 50FEBC191A1FD725001FAD94 /* futdoc.c */; };
+		50FEBC2E1A1FD725001FAD94 /* futhtm.c in Sources */ = {isa = PBXBuildFile; fileRef = 50FEBC1B1A1FD725001FAD94 /* futhtm.c */; };
+		50FEBC2F1A1FD725001FAD94 /* grpdoc.c in Sources */ = {isa = PBXBuildFile; fileRef = 50FEBC1D1A1FD725001FAD94 /* grpdoc.c */; };
+		50FEBC301A1FD725001FAD94 /* grphtm.c in Sources */ = {isa = PBXBuildFile; fileRef = 50FEBC1F1A1FD725001FAD94 /* grphtm.c */; };
+		50FEBC311A1FD725001FAD94 /* incocoa.c in Sources */ = {isa = PBXBuildFile; fileRef = 50FEBC201A1FD725001FAD94 /* incocoa.c */; };
+		50FEBC331A1FD725001FAD94 /* mambutil.c in Sources */ = {isa = PBXBuildFile; fileRef = 50FEBC241A1FD725001FAD94 /* mambutil.c */; };
+		50FEBC341A1FD725001FAD94 /* perdoc.c in Sources */ = {isa = PBXBuildFile; fileRef = 50FEBC251A1FD725001FAD94 /* perdoc.c */; };
+		50FEBC351A1FD725001FAD94 /* perhtm.c in Sources */ = {isa = PBXBuildFile; fileRef = 50FEBC271A1FD725001FAD94 /* perhtm.c */; };
+		50FEBC361A1FD725001FAD94 /* rkdebug.c in Sources */ = {isa = PBXBuildFile; fileRef = 50FEBC2A1A1FD725001FAD94 /* rkdebug.c */; };
+		50FEBC391A1FDB29001FAD94 /* mamblib.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 50FEBC231A1FD725001FAD94 /* mamblib.h */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXBuildRule section */
+		506B79671A20FCFC007D5208 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			fileType = pattern.proxy;
+			isEditable = 1;
+			outputFiles = (
+			);
+			script = "#make code for xcode\nCFLAGS=-I. -Winvalid-pch -Wall\nCC=/usr/bin/clang\n$(CC) $^  $(CFLAGS)  -c\ngrpdoc.o:     grpdoc.c rk.h grpdoc.h\n$(CC) $^  $(CFLAGS)  -c\ngrphtm.o:     grphtm.c rk.h\n$(CC) $^  $(CFLAGS)  -c\nperdoc.o:    perdoc.c rk.h perdoc.h\n$(CC) $^  $(CFLAGS)  -c\nperhtm.o:    perhtm.c rk.h perhtm.h\n$(CC) $^  $(CFLAGS)  -c\nmambutil.o:  mambutil.c\n$(CC) $^  $(CFLAGS)  -c\nfutasp.o:    futasp.c futdefs.h\n$(CC) $^  $(CFLAGS)  -c\nfutdoc.o:    futdoc.c rk.h futdoc.h futdefs.h\n$(CC) $^  $(CFLAGS)  -c\nfuthtm.o:    futhtm.c futdefs.h futhtm.h\n$(CC) $^  $(CFLAGS)  -c\nincocoa.o:   incocoa.c rk.h incocoa.h\n$(CC) $^  $(CFLAGS)  -c\n";
+		};
+/* End PBXBuildRule section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		50FEBBFE1A1FD6F1001FAD94 /* CopyFiles */ = {
@@ -18,7 +39,7 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				50FEBC041A1FD6F1001FAD94 /* MAMB09_CfuncLibrary03.h in CopyFiles */,
+				50FEBC391A1FDB29001FAD94 /* mamblib.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -26,10 +47,28 @@
 
 /* Begin PBXFileReference section */
 		50FEBC001A1FD6F1001FAD94 /* libMAMB09_CfuncLibrary03.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMAMB09_CfuncLibrary03.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		50FEBC031A1FD6F1001FAD94 /* MAMB09_CfuncLibrary03.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MAMB09_CfuncLibrary03.h; sourceTree = "<group>"; };
-		50FEBC051A1FD6F1001FAD94 /* MAMB09_CfuncLibrary03.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MAMB09_CfuncLibrary03.m; sourceTree = "<group>"; };
 		50FEBC0B1A1FD6F1001FAD94 /* MAMB09_CfuncLibrary03Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MAMB09_CfuncLibrary03Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		50FEBC0E1A1FD6F1001FAD94 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		50FEBC171A1FD725001FAD94 /* futasp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = futasp.c; sourceTree = "<group>"; };
+		50FEBC181A1FD725001FAD94 /* futdefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = futdefs.h; sourceTree = "<group>"; };
+		50FEBC191A1FD725001FAD94 /* futdoc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = futdoc.c; sourceTree = "<group>"; };
+		50FEBC1A1A1FD725001FAD94 /* futdoc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = futdoc.h; sourceTree = "<group>"; };
+		50FEBC1B1A1FD725001FAD94 /* futhtm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = futhtm.c; sourceTree = "<group>"; };
+		50FEBC1C1A1FD725001FAD94 /* futhtm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = futhtm.h; sourceTree = "<group>"; };
+		50FEBC1D1A1FD725001FAD94 /* grpdoc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = grpdoc.c; sourceTree = "<group>"; };
+		50FEBC1E1A1FD725001FAD94 /* grpdoc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = grpdoc.h; sourceTree = "<group>"; };
+		50FEBC1F1A1FD725001FAD94 /* grphtm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = grphtm.c; sourceTree = "<group>"; };
+		50FEBC201A1FD725001FAD94 /* incocoa.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = incocoa.c; sourceTree = "<group>"; };
+		50FEBC211A1FD725001FAD94 /* incocoa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = incocoa.h; sourceTree = "<group>"; };
+		50FEBC231A1FD725001FAD94 /* mamblib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mamblib.h; sourceTree = "<group>"; };
+		50FEBC241A1FD725001FAD94 /* mambutil.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mambutil.c; sourceTree = "<group>"; };
+		50FEBC251A1FD725001FAD94 /* perdoc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = perdoc.c; sourceTree = "<group>"; };
+		50FEBC261A1FD725001FAD94 /* perdoc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = perdoc.h; sourceTree = "<group>"; };
+		50FEBC271A1FD725001FAD94 /* perhtm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = perhtm.c; sourceTree = "<group>"; };
+		50FEBC281A1FD725001FAD94 /* perhtm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = perhtm.h; sourceTree = "<group>"; };
+		50FEBC291A1FD725001FAD94 /* rk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rk.h; sourceTree = "<group>"; };
+		50FEBC2A1A1FD725001FAD94 /* rkdebug.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rkdebug.c; sourceTree = "<group>"; };
+		50FEBC381A1FD95B001FAD94 /* rkdebug_externs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rkdebug_externs.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,8 +110,26 @@
 		50FEBC021A1FD6F1001FAD94 /* MAMB09_CfuncLibrary03 */ = {
 			isa = PBXGroup;
 			children = (
-				50FEBC031A1FD6F1001FAD94 /* MAMB09_CfuncLibrary03.h */,
-				50FEBC051A1FD6F1001FAD94 /* MAMB09_CfuncLibrary03.m */,
+				50FEBC171A1FD725001FAD94 /* futasp.c */,
+				50FEBC181A1FD725001FAD94 /* futdefs.h */,
+				50FEBC191A1FD725001FAD94 /* futdoc.c */,
+				50FEBC1A1A1FD725001FAD94 /* futdoc.h */,
+				50FEBC1B1A1FD725001FAD94 /* futhtm.c */,
+				50FEBC1C1A1FD725001FAD94 /* futhtm.h */,
+				50FEBC1D1A1FD725001FAD94 /* grpdoc.c */,
+				50FEBC1E1A1FD725001FAD94 /* grpdoc.h */,
+				50FEBC1F1A1FD725001FAD94 /* grphtm.c */,
+				50FEBC201A1FD725001FAD94 /* incocoa.c */,
+				50FEBC211A1FD725001FAD94 /* incocoa.h */,
+				50FEBC231A1FD725001FAD94 /* mamblib.h */,
+				50FEBC241A1FD725001FAD94 /* mambutil.c */,
+				50FEBC251A1FD725001FAD94 /* perdoc.c */,
+				50FEBC261A1FD725001FAD94 /* perdoc.h */,
+				50FEBC271A1FD725001FAD94 /* perhtm.c */,
+				50FEBC381A1FD95B001FAD94 /* rkdebug_externs.h */,
+				50FEBC281A1FD725001FAD94 /* perhtm.h */,
+				50FEBC291A1FD725001FAD94 /* rk.h */,
+				50FEBC2A1A1FD725001FAD94 /* rkdebug.c */,
 			);
 			path = MAMB09_CfuncLibrary03;
 			sourceTree = "<group>";
@@ -105,6 +162,7 @@
 				50FEBBFE1A1FD6F1001FAD94 /* CopyFiles */,
 			);
 			buildRules = (
+				506B79671A20FCFC007D5208 /* PBXBuildRule */,
 			);
 			dependencies = (
 			);
@@ -180,7 +238,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				50FEBC061A1FD6F1001FAD94 /* MAMB09_CfuncLibrary03.m in Sources */,
+				50FEBC2C1A1FD725001FAD94 /* futasp.c in Sources */,
+				50FEBC331A1FD725001FAD94 /* mambutil.c in Sources */,
+				50FEBC2E1A1FD725001FAD94 /* futhtm.c in Sources */,
+				50FEBC311A1FD725001FAD94 /* incocoa.c in Sources */,
+				50FEBC301A1FD725001FAD94 /* grphtm.c in Sources */,
+				50FEBC361A1FD725001FAD94 /* rkdebug.c in Sources */,
+				50FEBC2F1A1FD725001FAD94 /* grpdoc.c in Sources */,
+				50FEBC341A1FD725001FAD94 /* perdoc.c in Sources */,
+				50FEBC2D1A1FD725001FAD94 /* futdoc.c in Sources */,
+				50FEBC351A1FD725001FAD94 /* perhtm.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -227,9 +294,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -261,8 +329,9 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -272,7 +341,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				OTHER_LDFLAGS = "-ObjC";
+				"OTHER_LDFLAGS[arch=*]" = "$(OTHER_LDFLAGS)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -281,7 +352,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				OTHER_LDFLAGS = "-ObjC";
+				"OTHER_LDFLAGS[arch=*]" = "$(OTHER_LDFLAGS)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
@@ -335,6 +408,7 @@
 				50FEBC131A1FD6F1001FAD94 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		50FEBC141A1FD6F1001FAD94 /* Build configuration list for PBXNativeTarget "MAMB09_CfuncLibrary03Tests" */ = {
 			isa = XCConfigurationList;
@@ -343,6 +417,7 @@
 				50FEBC161A1FD6F1001FAD94 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

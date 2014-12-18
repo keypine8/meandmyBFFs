@@ -9,10 +9,11 @@
 #import <UIKit/UIKit.h>
 
 #import "MAMB09AppDelegate.h"
+#import "mamblib.h"
 
 int main(int argc, char * argv[])
 {
-    NSLog(@"in main()");
+    //NSLog(@"in main()");
     @autoreleasepool {
         return UIApplicationMain(argc, argv, nil, NSStringFromClass([MAMB09AppDelegate class]));
     }
