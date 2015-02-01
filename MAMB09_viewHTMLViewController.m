@@ -18,13 +18,6 @@
 
 @implementation MAMB09_viewHTMLViewController
 
-// UIWebView loads really slow (2 sec) the first time it loads after starting the App
-// Therefore move the tableview highlight here
-//
-// -(void)webViewDidStartLoad:(UIWebView *)webView{
-// }
-
-// extern int gbl_num_elements_array_coun = sizeof(array_coun) / sizeof(array_coun[0]);
 
 - (void)viewDidLoad {
     
@@ -53,7 +46,8 @@
     NSString *OpathToHTML_browser,     *OpathToHTML_webview;
     char     *pathToHTML_browser,      *pathToHTML_webview;
     
-    NSURL *URLtoHTML;
+    NSURL *URLtoHTML_forWebview;
+    NSURL *URLtoHTML_forEmailing;
     NSURLRequest *HTML_URLrequest;
     NSArray* tmpDirFiles;
     
@@ -86,7 +80,7 @@
 
         // NSString object to C
         //const char *my_psvc = [self.fromHomeCurrentSelectionPSV cStringUsingEncoding:NSUTF8StringEncoding];  // psv=pipe-separated values
-        my_psvc = [gbl_fromHomeCurrentSelectionPSV cStringUsingEncoding:NSUTF8StringEncoding];  // psv=pipe-separated values
+        my_psvc = [gbl_fromHomeCurrentSelectionPSV cStringUsingEncoding:NSUTF8StringEncoding];  // psv=pipe-separated values 
         strcpy(my_psv, my_psvc);
         ksn(my_psv);
         
@@ -111,7 +105,10 @@
         strcpy(psvHoursDiff,  csv_get_field(returnPSV, "|", 1));
         strcpy(psvLongitude,  csv_get_field(returnPSV, "|", 2));
         
-        
+        // set gbl for email
+        ksn(psvName);
+        gbl_person_name =  [NSString stringWithUTF8String:psvName ];
+
         // build csv arg for report function call
         //
         sprintf(csv_person_string, "%s,%s,%s,%s,%s,%s,%s,%s,%s",
@@ -139,7 +136,7 @@
         OpathToHTML_webview     = [NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_webview];
         pathToHTML_webview      = (char *) [OpathToHTML_webview cStringUsingEncoding:NSUTF8StringEncoding];
         
-        URLtoHTML = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_webview]];
+        URLtoHTML_forWebview = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_webview]];
         
         gbl_pathToFileToBeEmailed = OpathToHTML_browser;
         
@@ -185,8 +182,13 @@
              
              self.outletWebView.scalesPageToFit = YES;
              
+             // I was having the same problem. I found a property on the UIWebView
+             // that allows you to turn off the data detectors.
+             //
+             self.outletWebView.dataDetectorTypes = UIDataDetectorTypeNone;
+            
              // place our URL in a URL Request
-             HTML_URLrequest = [[NSURLRequest alloc] initWithURL: URLtoHTML];
+             HTML_URLrequest = [[NSURLRequest alloc] initWithURL: URLtoHTML_forWebview];
              
              // UIWebView is part of UIKit, so you should operate on the main thread.
              //
@@ -204,17 +206,14 @@
     if ([gbl_fromSelRptRowString hasPrefix: @"Calendar Year"]) {  // call Calendar Year HTML report
         tn();trn("in calendar year!");
         
+
         dispatch_async(dispatch_get_main_queue(), ^{                                // <===  <.>
-        [[self navigationItem] setTitle: [NSString stringWithFormat: @"Calendar Year  %@  ", gbl_selectedYear]];
-        // [[self navigationItem] setTitle: [NSString stringWithFormat: @"%@", gbl_selectedYear]];
+        [[self navigationItem] setTitle:  @"Calendar Year    "];
         });
 
         sfill(stringBuffForStressScore, 60, ' ');
         
-        // yyyy from the year picker
-        // NSLog(@"gbl_selectedYear 3=%@",gbl_selectedYear);
-
-        yyyy_todoC = [gbl_selectedYear cStringUsingEncoding:NSUTF8StringEncoding];
+        yyyy_todoC = [gbl_lastSelectedYear cStringUsingEncoding:NSUTF8StringEncoding];
         strcpy(yyyy_todo, yyyy_todoC);
         // ksn(yyyy_todo);
         
@@ -252,6 +251,9 @@
         strcpy(psvHoursDiff,  csv_get_field(returnPSV, "|", 1));
         strcpy(psvLongitude,  csv_get_field(returnPSV, "|", 2));
         
+        // set gbl for email
+        gbl_person_name =  [NSString stringWithUTF8String:psvName ];
+
         // build csv arg for report function call
         //
         sprintf(csv_person_string, "%s,%s,%s,%s,%s,%s,%s,%s,%s",
@@ -268,7 +270,7 @@
 //        OpathToHTML = [NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name];
 //        pathToHTML = (char *) [OpathToHTML cStringUsingEncoding:NSUTF8StringEncoding];
 //        /* for use in WebView */
-//        URLtoHTML = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name]];
+//        URLtoHTML_forWebview = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name]];
     
         
         gbl_html_file_name_browser = [NSString stringWithUTF8String:html_file_name_browser ];   // for later sending as email attachment
@@ -281,16 +283,29 @@
         OpathToHTML_webview     = [NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_webview];
         pathToHTML_webview      = (char *) [OpathToHTML_webview cStringUsingEncoding:NSUTF8StringEncoding];
         
-        URLtoHTML = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_webview]];
-        
-        gbl_pathToFileToBeEmailed = OpathToHTML_browser;
+
+        //URLtoHTML_forWebview = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_browser]];
+        URLtoHTML_forWebview = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_webview]];
+        URLtoHTML_forEmailing = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_browser]];
+
+
+
+
+// test sending webview by email
+        //gbl_pathToFileToBeEmailed = OpathToHTML_browser;
+        //gbl_pathToFileToBeEmailed = OpathToHTML_webview;
+        gbl_pathToFileToBeEmailed = OpathToHTML_browser; // NSString email file named *.html  with no "webview" in it
+        //NSLog(@"gbl_pathToFileToBeEmailed=%@",gbl_pathToFileToBeEmailed);
+        //NSLog(@"OpathToHTML_browser=%@",OpathToHTML_browser);
+
+
+
 
         
         // remove all "*.html" files from TMP directory before creating new one
         //
         tmpDirFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:NSTemporaryDirectory() error:NULL];
         NSLog(@"tmpDirFiles.count=%lu",(unsigned long)tmpDirFiles.count);
-        
         for (NSString *fil in tmpDirFiles) {
             NSLog(@"file to DELETE=%@",fil);
             if ([fil hasSuffix: @"html"]) {
@@ -308,18 +323,43 @@
                                                "",          /* char *instructions,    like  "return only year stress score" */
                                                stringBuffForStressScore   /* char *stringBuffForStressScore */
                                                );
-        retval2 = mamb_BIGreport_year_in_the_life (    // big html for non webview
-                                               pathToHTML_browser,
-                                               csv_person_string,
-                                               yyyy_todo,
-                                               "",          /* char *instructions,    like  "return only year stress score" */
-                                               stringBuffForStressScore   /* char *stringBuffForStressScore */
-                                               );
+
+
+        retval2 = 0;
+//         retval2 = mamb_BIGreport_year_in_the_life (    // big html for non webview
+//                                                pathToHTML_browser,
+//                                                csv_person_string,
+//                                                yyyy_todo,
+//                                                "",          /* char *instructions,    like  "return only year stress score" */
+//                                                stringBuffForStressScore   /* char *stringBuffForStressScore */
+//                                                );
+        
+        //   copy  *webview.html to  *html  until bug is fixed 
+        //
+        NSFileManager* sharedFM2 = [NSFileManager defaultManager];
+        NSError *err03;
+        //[sharedFM2 copyItemAtURL:URLToGroupLastGood toURL:URLToGroup error:&err01];
+        [sharedFM2 copyItemAtURL:URLtoHTML_forWebview
+                           toURL:URLtoHTML_forEmailing
+                           error:&err03];
+        if (err03) { NSLog(@"cp *webview.html to *.html %@", err03); }
+
+
+
+        // show all files in temp dir
+        NSFileManager *manager = [NSFileManager defaultManager];
+        NSArray *fileList = [manager contentsOfDirectoryAtPath:NSTemporaryDirectory() error:nil];
+        for (NSString *s in fileList){
+            NSLog(@"TEMP DIR %@", s);
+        }
+        
+
+        
         if (retval == 0 && retval2 == 0) {
 
             /* here, go and look at html report */
             // [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"about:blank"]]];  // ?clean for re-use
-            //        NSURLRequest *HTML_URLrequest = [[NSURLRequest alloc] initWithURL: URLtoHTML];
+            //        NSURLRequest *HTML_URLrequest = [[NSURLRequest alloc] initWithURL: URLtoHTML_forWebview];
             //        self.outletWebView.scalesPageToFit = YES;
             //        [self.outletWebView loadRequest: HTML_URLrequest];
             
@@ -328,12 +368,17 @@
             
             self.outletWebView.scalesPageToFit = YES;
             
+            // I was having the same problem. I found a property on the UIWebView
+            // that allows you to turn off the data detectors.
+            //
+            self.outletWebView.dataDetectorTypes = UIDataDetectorTypeNone;
+            
             // place our URL in a URL Request
-            HTML_URLrequest = [[NSURLRequest alloc] initWithURL: URLtoHTML];
+            HTML_URLrequest = [[NSURLRequest alloc] initWithURL: URLtoHTML_forWebview];
             
             // UIWebView is part of UIKit, so you should operate on the main thread.
             //
-            // old= [self.outletWebView loadRequest: HTML_URLrequest];
+            // old= [self.outletWebView ldoadRequest: HTML_URLrequest];
             //
             dispatch_async(dispatch_get_main_queue(), ^(void){
                 [self.outletWebView loadRequest:HTML_URLrequest];
@@ -379,6 +424,9 @@
             strcpy(psvHoursDiff,  csv_get_field(returnPSV, "|", 1));
             strcpy(psvLongitude,  csv_get_field(returnPSV, "|", 2));
             
+            // set gbl for email
+            gbl_person_name =  [NSString stringWithUTF8String:psvName ];
+
             // build csv arg for report function call
             //
             sprintf(csv_person1_string, "%s,%s,%s,%s,%s,%s,%s,%s,%s",
@@ -405,6 +453,7 @@
             strcpy(person2_name_for_filename, psvName);
             scharswitch(person2_name_for_filename, ' ', '_');
             
+     
             //  ksn(psvMth);ks(psvDay);ks(psvYear);ks(psvHour);ks(psvMin);ks(psvAmPm);tn();
             //ksn(psvCity);ks(psvProv);ks(psvCountry);tn();
             
@@ -416,6 +465,9 @@
             strcpy(psvHoursDiff,  csv_get_field(returnPSV, "|", 1));
             strcpy(psvLongitude,  csv_get_field(returnPSV, "|", 2));
             
+            // set gbl for email
+            gbl_person_name2 =  [NSString stringWithUTF8String:psvName ];
+
             // build csv arg for report function call
             //
             sprintf(csv_person2_string, "%s,%s,%s,%s,%s,%s,%s,%s,%s",
@@ -435,7 +487,7 @@
 //        OpathToHTML = [NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name];
 //        pathToHTML = (char *) [OpathToHTML cStringUsingEncoding:NSUTF8StringEncoding];
 //        /* for use in WebView */
-//        URLtoHTML = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name]];
+//        URLtoHTML_forWebview = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name]];
         
     
         
@@ -449,9 +501,9 @@
         OpathToHTML_webview     = [NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_webview];
         pathToHTML_webview      = (char *) [OpathToHTML_webview cStringUsingEncoding:NSUTF8StringEncoding];
     
-        URLtoHTML = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_webview]];
+        URLtoHTML_forWebview = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_webview]];
         
-        //URLtoHTML = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_browser]];  // for test
+        //URLtoHTML_forWebview = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_browser]];  // for test
         //ksn(pathToHTML_browser);
         
         gbl_pathToFileToBeEmailed = OpathToHTML_browser;
@@ -494,7 +546,7 @@
 
             /* here, go and look at html report */
             // [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"about:blank"]]];  // ?clean for re-use
-            //        NSURLRequest *HTML_URLrequest = [[NSURLRequest alloc] initWithURL: URLtoHTML];
+            //        NSURLRequest *HTML_URLrequest = [[NSURLRequest alloc] initWithURL: URLtoHTML_forWebview];
             //        self.outletWebView.scalesPageToFit = YES;
             //        [self.outletWebView loadRequest: HTML_URLrequest];
             
@@ -502,22 +554,31 @@
             // [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"about:blank"]]];  // ?clean for re-use
             
             self.outletWebView.scalesPageToFit = YES;
+
+            // I was having the same problem. I found a property on the UIWebView
+            // that allows you to turn off the data detectors.
+            //
+            self.outletWebView.dataDetectorTypes = UIDataDetectorTypeNone;
             
             // place our URL in a URL Request
-            HTML_URLrequest = [[NSURLRequest alloc] initWithURL: URLtoHTML];
+            HTML_URLrequest = [[NSURLRequest alloc] initWithURL: URLtoHTML_forWebview];
             
             // UIWebView is part of UIKit, so you should operate on the main thread.
             //
             // old= [self.outletWebView loadRequest: HTML_URLrequest];
             //
             dispatch_async(dispatch_get_main_queue(), ^(void){
-                [self.outletWebView loadRequest:HTML_URLrequest];
-            }
-                           );
+                    [self.outletWebView loadRequest:HTML_URLrequest];
+                }
+            );
         }
     } // Compatibility Potential
     
-    
+//    nb(100);
+//    [self dismissViewControllerAnimated:YES   // this is share button view
+//                             completion:NULL];
+//    bn(101);
+
 } // viewDidLoad
 
 // -(void)webViewDidStartLoad:(UIWebView *)webView{
@@ -535,6 +596,8 @@
 
 -(void)shareButtonAction:(id)sender
 {
+    MFMailComposeViewController *myMailComposeViewController;
+
     NSLog(@"shareButtonAction!");
     
     // Determine the file name and extension
@@ -550,12 +613,56 @@
     NSData *HTMLfileData = [NSData dataWithContentsOfFile:gbl_pathToFileToBeEmailed ];
     
     NSString *emailTitle = [NSString stringWithFormat: @"%@  from \"Me and my BFFs\"", filenameForAttachment];
+
+    NSString *myEmailMessage;
     
+    myEmailMessage = @"tester";
+    NSLog(@"myEmailMessage=%@",myEmailMessage);
+    NSLog(@"extension=%@",extension);
+
+    NSLog(@"gbl_person_name=%@",gbl_person_name);
+
     // NSString *myEmailMessage = @"Please see attached HTML file from Me and my BFFs,\nan iPhone App by Funnest Astrology Inc.\n\n\n\n\n--------------";
     // NSString *myEmailMessage = @"Please see attached report created with \n iPhone App \"Me and my BFFs\".\n\n\n\n\n--------------";
     // NSString *myEmailMessage = @"iPhone App \"Me and my BFFs\" created the attached report.\n\n\n\n\n--------------";
     // NSString *myEmailMessage = [NSString stringWithFormat: @"iPhone App \"Me and my BFFs\" created %@.%@", baseFilename, extension];
-    NSString *myEmailMessage = [NSString stringWithFormat: @"\n\n\n\n\n----- iPhone App \"Me and my BFFs\" created %@.%@ -----", baseFilename, extension];
+    // NSString *myEmailMessage = [NSString stringWithFormat: @"\n\n\n\n\n----- iPhone App \"Me and my BFFs\" created %@.%@ -----", baseFilename, extension];
+
+    if ([gbl_fromSelRptRowString hasPrefix: @"Personality"]) {  // call Personality HTML report
+ntrn("in prefix Personality");
+        NSLog(@"gbl_person_name=%@",gbl_person_name);
+        NSLog(@"myEmailMessage=%@",myEmailMessage);
+
+        //myEmailMessage = [NSString stringWithFormat: @"\n  \"Personality of %@\"\n\n  attached HTML report was created\n  by iPhone App \"Me and my BFFs\"\n",
+        //myEmailMessage = [NSString stringWithFormat: @"\"Personality of %@\"\n\nThe attached HTML report is designed for BIG SCREENs  like Mac, iPad, PC or tablet.\n\nBy iPhone App  \"Me and my BFFs\"\n",
+        //myEmailMessage = [NSString stringWithFormat: @"\n\"Personality of %@\"\n\nThe attached HTML report is optimized for WIDE screens  like Mac, PC, iPad, tablet or landscape mode on the iPhone or other smart phone.\n\nBy iPhone App  \"Me and my BFFs\"\n",
+        //myEmailMessage = [NSString stringWithFormat: @"\n\"Personality of %@\"\n\n     (by iPhone App  \"Me and my BFFs\")\n\n",
+        myEmailMessage = [NSString stringWithFormat: @"\n\"Personality of %@\"\nis the attached report, which was done with iPhone App  \"Me and my BFFs\".",
+            gbl_person_name
+        ];
+        NSLog(@"myEmailMessage=%@",myEmailMessage);
+    }
+    if ([gbl_fromSelRptRowString hasPrefix: @"Compatibility Paired with"]) {  // call just 2  HTML report
+ntrn("in prefix compatibility");
+        //myEmailMessage = [NSString stringWithFormat: @"\"Compatibility Potential of %@ and %@\"\n\nThe attached HTML report is optimized for WIDE screens  like Mac, PC, iPad, tablet or landscape mode on the iPhone or other smart phone.\n\nBy iPhone App  \"Me and my BFFs\"\n",
+        myEmailMessage = [NSString stringWithFormat: @"\"Compatibility Potential of %@ and %@\"\nis the attached report, which was done with iPhone App  \"Me and my BFFs\".",
+            gbl_person_name,
+            gbl_person_name2
+        ];
+    }
+    if ([gbl_fromSelRptRowString hasPrefix: @"Calendar Year"]) {  // call Calendar Year HTML report
+ntrn("in prefix calendar year");
+        //myEmailMessage = [NSString stringWithFormat: @"\n  \"Calendar Year %@ for %@\"\n\n  attached HTML report was created\n  by iPhone App \"Me and my BFFs\"\n",
+        //myEmailMessage = [NSString stringWithFormat: @"\n  \"Calendar Year %@ for %@\"\n\n  attached HTML report is design for BIG SCREENS\n  like Mac, iPad, PC or tablet.\n  Created by iPhone App  \"Me and my BFFs\"\n",
+        //myEmailMessage = [NSString stringWithFormat: @"       \"Calendar Year %@\n       for %@\"\n\n  The attached HTML report is designed for BIG SCREENs  like Mac, iPad, PC or tablet.\n\n  By iPhone App  \"Me and my BFFs\"\n",
+        //myEmailMessage = [NSString stringWithFormat: @"\"Calendar Year %@ for %@\"\n\nThe attached HTML report is optimized for WIDE screens  like Mac, PC, iPad, tablet or landscape mode on the iPhone or other smart phone.\n\nBy iPhone App  \"Me and my BFFs\"\n",
+        myEmailMessage = [NSString stringWithFormat: @"\"Calendar Year %@ for %@\"\nis the attached report, which was done with iPhone App  \"Me and my BFFs\".",
+            gbl_lastSelectedYear,
+            gbl_person_name
+        ];
+    }
+
+
     
     //   NSArray *toRecipents = [NSArray arrayWithObject:@"ijfo@jldks.com"];
     NSArray *toRecipients = [NSArray arrayWithObjects:@"", nil];  //  user types it in
@@ -579,7 +686,8 @@
     
     if ([MFMailComposeViewController canSendMail])
     {
-        MFMailComposeViewController *myMailComposeViewController = [[MFMailComposeViewController alloc] init];
+        myMailComposeViewController = [[MFMailComposeViewController alloc] init];
+
         NSLog(@"This device CAN send email");
 
          myMailComposeViewController.mailComposeDelegate = self;
@@ -593,7 +701,14 @@
                                               fileName: filenameForAttachment];
         
         // Present mail view controller on screen
-        [self presentViewController:myMailComposeViewController animated:YES completion:NULL];
+        //
+        //[self presentModalViewController:myMailComposeViewController animated:YES completion:NULL];
+
+
+        dispatch_async(dispatch_get_main_queue(), ^(void){
+                [self presentViewController:myMailComposeViewController animated:YES completion:NULL];
+            }
+        );
     }
     else
     {
@@ -621,8 +736,12 @@
         [myalert show];
 
         // [self dismissViewControllerAnimated:yes completion:<#^(void)completion#>];
-        [self dismissViewControllerAnimated: YES
-                                 completion:NULL];
+
+        dispatch_async(dispatch_get_main_queue(), ^(void){
+            [self dismissViewControllerAnimated: YES
+                                     completion:NULL];
+            }
+        );
     }
     switch (result)
     {
@@ -670,9 +789,18 @@
     }
     
     // Close the Mail Interface
-    [self dismissViewControllerAnimated:YES
-                             completion:NULL];
-}
+//    [self becomeFirstResponder];  // from http://stackoverflow.com/questions/14263690/need-help-dismissing-email-composer-screen-in-ios
+
+    //[self dismissModalViewControllerAnimated:YES
+
+    dispatch_async(dispatch_get_main_queue(), ^(void){
+            [self dismissViewControllerAnimated:YES
+                                     completion:NULL];
+        }
+    );
+
+} //  didFinishWithResult:(MFMailComposeResult)result
+
 // ==============   END of email stuff  ====================
 
 

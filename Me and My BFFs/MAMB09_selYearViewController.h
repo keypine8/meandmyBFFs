@@ -17,11 +17,9 @@ NSMutableArray *yearsToPickFrom;  /* for pickerYearInLife */
 //@property (strong, nonatomic) NSString *fromHomeCurrentSelectionPSV;     // CSV  for per or grp or pair of people
 
 //@property (strong, nonatomic) NSString *fromHomeCurrentSelectionType; // like "group" or "person" or "pair"
-//@property (strong, nonatomic) NSString *fromHomeCurrentEntity;        // like "group" or "person" or "groupmember"
+//@property (strong, nonatomic) NSString *fromHomeCurrentEntity;        // like "group" or "person" or "member"
 //// @property (strong, nonatomic) NSString *fromUserSecondPerson;         // CSV  for per or grp or pair of people
 //
-//@property (nonatomic)         NSInteger fromSelRptRowNumber;  // row in tableView
-//@property (strong, nonatomic) NSString *fromSelRptRowString;  // like "Personality"
 //
 //@property (strong, nonatomic) NSString *selectedYear;           // from selYearViewController  yyyy
 //@property (strong, nonatomic) NSString *selectedPersonFromAll;  // from selPersonFromAllViewController
@@ -41,5 +39,6 @@ NSMutableArray *yearsToPickFrom;  /* for pickerYearInLife */
 @property (weak, nonatomic) IBOutlet UITextField *outletPickedYear;
 @property (weak, nonatomic) IBOutlet UILabel     *outletPersonName;
 
+@property (weak, nonatomic) IBOutlet UILabel *outletYearSelected;
 
 @end

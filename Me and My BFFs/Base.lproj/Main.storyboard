@@ -92,21 +92,6 @@
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="maQ-pc-pUV">
                         <nil key="title"/>
-                        <barButtonItem key="rightBarButtonItem" id="ZwY-hE-pNO">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" id="S1M-2W-wCy">
-                                <rect key="frame" x="274" y="-50" width="30" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="rounded_MAMB09_029">
-                                    <attributedString key="attributedTitle">
-                                        <fragment content="Button">
-                                            <attributes>
-                                                <font key="NSFont" size="15" name="HelveticaNeue-Bold"/>
-                                            </attributes>
-                                        </fragment>
-                                    </attributedString>
-                                </state>
-                            </button>
-                        </barButtonItem>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
@@ -191,8 +176,14 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="name label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="none" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ekx-2y-UvW">
+                                <rect key="frame" x="16" y="93" width="165" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JIh-Y7-k8C">
-                                <rect key="frame" x="144" y="119" width="160" height="320"/>
+                                <rect key="frame" x="80" y="127" width="160" height="320"/>
                                 <accessibility key="accessibilityConfiguration">
                                     <accessibilityTraits key="traits" none="YES" playsSound="YES" updatesFrequently="YES"/>
                                 </accessibility>
@@ -201,14 +192,9 @@
                                     <outlet property="delegate" destination="4F6-lK-C1a" id="cuR-rR-iBv"/>
                                 </connections>
                             </pickerView>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="2014" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7pW-Nb-v5Z">
-                                <rect key="frame" x="201" y="89" width="55" height="30"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="none" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ekx-2y-UvW">
-                                <rect key="frame" x="16" y="93" width="165" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="year label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0yE-gv-atJ">
+                                <rect key="frame" x="208" y="87" width="56" height="33"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="23"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -237,8 +223,8 @@
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="outletPersonName" destination="Ekx-2y-UvW" id="r2Z-mK-Xvq"/>
-                        <outlet property="outletPickedYear" destination="7pW-Nb-v5Z" id="NsO-hd-Kl0"/>
                         <outlet property="outletYearPicker" destination="JIh-Y7-k8C" id="Wfy-vo-y1d"/>
+                        <outlet property="outletYearSelected" destination="0yE-gv-atJ" id="Ql1-xQ-HYv"/>
                         <segue destination="9OC-3u-Jhm" kind="push" identifier="segueSelYearToViewHTML" id="gk2-9i-3fK"/>
                     </connections>
                 </viewController>
@@ -267,17 +253,7 @@
                             <outlet property="delegate" destination="QgP-dY-i4R" id="S0p-0L-6zA"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Select Person" id="ZDW-TT-GiB">
-                        <barButtonItem key="rightBarButtonItem" style="plain" id="LeM-ar-hbw">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="EV2-xv-Nv4">
-                                <rect key="frame" x="272" y="7" width="32" height="32"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button" image="rounded_MAMB09_029">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                            </button>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Select Person" id="ZDW-TT-GiB"/>
                     <connections>
                         <segue destination="9OC-3u-Jhm" kind="push" identifier="seguePerSelToViewHTML" id="EzM-79-T0o"/>
                     </connections>
@@ -298,6 +274,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="EzM-79-T0o"/>
+        <segue reference="gk2-9i-3fK"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -24,6 +24,7 @@ extern void fclose_fpdb_for_debug(void);
 extern void mk_new_date(double *pm, double *pd, double *py, double dstep);   /* in futasp.o */
 
 /* in mambutil.o */
+extern void domap(char *str_to_map, int whichnum, char *map_or_unmap);
 extern void scharswitch(char *s, char ch_old, char ch_new);
 extern void scharout(char *s,int c); 
 extern char *csv_get_field(char *csv_string, char *delim, int want_fieldnum);

@@ -79,6 +79,7 @@ void bracket_string_of(
   char *left_bracket,
   char *right_bracket  );
 void seq_find_exact_citPrvCountry(char *retDiffLong, char *psvCity, char *psvProv, char *psvCountry);
+void domap(char *str_to_map, int whichnum, char *map_or_unmap);
 
 
 
@@ -1015,6 +1016,7 @@ void scharout(char *s, int inchar)
 } /* end of scharout() */
 
 
+
 /* Take long string and wrap lines with "<br>" to a given max line length
 *
 *  Put "<br>"s in arg1 string so lines are not longer than arg2.
@@ -1023,10 +1025,11 @@ void put_br_every_n(char *instr,  int line_not_longer_than_this)
 {
   char *pNewWord;
   int len_new_word, lenbuf, num_br_added;
-  char mybuf[2048], finalbuf[2048];
+  char mybuf[8192], finalbuf[8192];
 
-/* tn(); trn(" in put_br_every_n() ------------------------------"); */
+/* tn();tn(); trn(" in put_br_every_n() -----------------------------------------------------------------"); */
 /* ksn(instr); */
+/* kin(line_not_longer_than_this); */
   strcpy(mybuf, "");
   strcpy(finalbuf, "");
   num_br_added = 0;
@@ -1045,17 +1048,17 @@ void put_br_every_n(char *instr,  int line_not_longer_than_this)
 
     if (lenbuf + len_new_word >= line_not_longer_than_this) {
 
-      if (num_br_added == 0) {
+/*       if (num_br_added == 0) { */
         fn_right_pad_with_hidden(mybuf, line_not_longer_than_this - lenbuf);
-/* trn("len after pad="); ki(strlen(mybuf)); */
-      }
+/* trn("len after pad="); ki(strlen(mybuf));ks(mybuf); */
+/*       } */
 
       sprintf(mybuf, "%s<br>", mybuf);   /* add break */
       num_br_added = num_br_added + 1;
 
       /* add mybuf to final result in finalbuf */
       sprintf(finalbuf, "%s%s", finalbuf, mybuf);
-
+/* ksn(finalbuf); */
       strcpy(mybuf, "");                    /* init  mybuf */
     } /* write out since line too long */
 
@@ -1067,28 +1070,35 @@ void put_br_every_n(char *instr,  int line_not_longer_than_this)
 
 
   /* here no more words in aspect desc (mybuf has last line to add) */
-
+/* trn("no more words in aspect text"); */
   if (strlen(mybuf) != 0) {
 
     /* add mybuf to final result in instr but remove sp at end */
     mybuf[ strlen(mybuf) - 1] = '\0';
-
-    if (num_br_added == 0) {
+/* tn();tn();trn("last line!!!!!!!!!!!!"); */
+/* ksn(mybuf); */
+/*     if (num_br_added == 0) { */
       lenbuf = (int)strlen(mybuf);
+/* ki(lenbuf); */
       fn_right_pad_with_hidden(mybuf, line_not_longer_than_this - lenbuf);
-    }
-
+/* trn("after pad last line !!!!"); */
+/* ksn(mybuf); */
+/*     } */
     sprintf(instr, "%s%s", finalbuf, mybuf);  /* adding mybuf */
+/* trn("return string1=");ks(instr); */
   } else {
     /* here mybuf is "" */
     /* remove "<br>"  (+ sp) from the end*/
     finalbuf[ strlen(finalbuf) - 5] = '\0';
 
     sprintf(instr, "%s", finalbuf);
+/* trn("return string2=");ks(instr); */
   }
 
 
 }/* end of put_br_every_n() */
+
+
 
 
 void fn_right_pad_with_hidden(char *s_to_pad, int num_to_pad)
@@ -2373,5 +2383,90 @@ void seq_find_exact_citPrvCountry(char *retDiffLong, char *psvCity, char *psvPro
     
 } // seq_find_exact_citPrvCountry
     
+
+void domap(char *str_to_map, int whichnum, char *map_or_unmap) {
+  int oij;
+ char map1beg[129] = "GPl^Couzd95m\"}KI\\BqnDa@=y/';~_F%:bv[N2VO`1iH#34SWgM0,r?]w<8cf)j&U6>k*.e-X(+JA$YsEQhxLt7ZTp!| R{";
+ char mystr35[67]  = "Lorem ipsum calor sit amet, consecr adipi elit. Nam cursus. Morbi";
+ char map1end[118] = ":\\ZvygiqnW$G#VY?7Kh`Hj.&BF[~b4Dw O^2ETcX/*re+o5fAzNauJ'p@9_>]xL|{I0C!m83PM)kl%(<U6}\"tQd=;sS,1-R";
+ char mystr36[137] = "Lorem ipsum calor sit amet, consecr adipi elit. Nam cursus. Morbi ut mi. Nullam enim leo, egestas id, condimentum at";
+ char map2beg[101] = "?*2KY(v{06l<'d8=E!:i\\nw-#B,JCecsS@>Fk\"I|Z7PyXDT_)G.o1}5~+tR%L[^Wh;pH`U9Ou4Vmx/bA 3MNq]&$gQzfjar";
+ char mystr37[17]  = "Lorem ipsum c";
+ char map2end[177] = "o!{XK}0.5ZFqfQ-_~G`AT#d;\"U4nz%+\\mP,(tk8'lwx/aHN^2C*h9?pRJv3=D@IM6 1uYEW)|biy&Vg>$eSLrj:<sc[OB7]";
+
+//     char map1beg[129] = "GPlCouzd95mKIBqnDay/_FbvN2VO1iH#34SWgM0,rw8cfj&U6k.e-X+JAYsEQhxLt7ZTp! R";
+//     char mystr35[67]  = "Lorem ipsum calor sit amet, consecr adipi elit. Nam cursus. Morbi";
+//     char map1end[118] = "ZvygiqnWG#VY7KhHj.&BFb4Dw O2ETcX/re+o5fAzNauJp9_xLI0C!m83PMklU6tQdsS,1-R";
+//     char mystr36[137] = "Lorem ipsum calor sit amet, consecr adipi elit. Nam cursus. Morbi ut mi. Nullam enim leo, egestas id, condimentum at";
+//     char map2beg[101] = "2KYv06ld8E!inw-#B,JCecsSFkIZ7PyXDT_G.o15+tRLWhpHU9Ou4Vmx/bA 3MNq&gQzfjar";
+//     char mystr37[17]  = "Lorem ipsum c";
+//     char map2end[177] = "o!XK0.5ZFqfQ-_GAT#dU4nz+mP,tk8lwx/aHN2Ch9pRJv3DIM6 1uYEWbiy&VgeSLrjscOB7";
+
+    
+  char workstr[252];
+
+/* ksn(str_to_map); */
+/* kin(whichnum); */
+/* ksn(map_or_unmap); */
+
+  sfill(workstr, 250, '\0');
+  oij = (int)strlen(mystr35);
+  oij = (int)strlen(mystr36);
+  oij = (int)strlen(mystr37);
+  if (whichnum == 1) {
+    if (strcmp(map_or_unmap, "map") == 0) {
+      for (int i = 0; i < strlen(str_to_map); i++) {
+        for (int j = 0; j < strlen(map1beg); j ++) {   // find char in map1beg
+          if (str_to_map[i] == map1beg[j] ) {
+            memcpy(workstr + i, map1end + j, 1);   // write corresponding char into result
+            break; // write and get next letter 
+          }
+        }
+      }
+      strcpy(str_to_map, workstr);
+      return;
+    }
+    if (strcmp(map_or_unmap, "unmap") == 0) {
+      for (int i = 0; i < strlen(str_to_map); i++) {
+        for (int j = 0; j < strlen(map1end); j ++) {   // find char in map1end
+          if (str_to_map[i] == map1end[j] ) {
+            memcpy(workstr + i, map1beg + j, 1);   // write corresponding char into result
+            break; // write and get next letter 
+          }
+        }
+      }
+      strcpy(str_to_map, workstr);
+      return;
+    }
+  }
+  if (whichnum == 2) {
+    if (strcmp(map_or_unmap, "map") == 0) {
+      for (int i = 0; i < strlen(str_to_map); i++) {
+        for (int j = 0; j < strlen(map2beg); j ++) {   // find char in map2beg
+          if (str_to_map[i] == map2beg[j] ) {
+            memcpy(workstr + i, map2end + j, 1);   // write corresponding char into result
+            break; // write and get next letter 
+          }
+        }
+      }
+      strcpy(str_to_map, workstr);
+      return;
+    }
+    if (strcmp(map_or_unmap, "unmap") == 0) {
+      for (int i = 0; i < strlen(str_to_map); i++) {
+        for (int j = 0; j < strlen(map2end); j ++) {   // find char in map2end
+          if (str_to_map[i] == map2end[j] ) {
+            memcpy(workstr + i, map2beg + j, 1);   // write corresponding char into result
+            break; // write and get next letter 
+          }
+        }
+      }
+      strcpy(str_to_map, workstr);
+      return;
+    }
+  }
+
+} // end of  domap(int whichnum, char *str_to_map) {
+
 
 /* end of mambutil.c */

@@ -11,13 +11,18 @@ void f_fnBIG_aspect_text(char *);
 void fn_BIGaspect_from_to(char *);
 void f_fnBIG_prtlin(char *lin);
 
+
 int logprtallprtlin = 0;
 
 /* 1=yes,0=no */
 #define GBL_HTML_HAS_NEWLINES 1
 /* #define GBL_HTML_HAS_NEWLINES 0 */
 
+
 char gbl_prtlin_lastline[8192];
+
+int gbl_have_hit_OMG;    // for putting blank line right color when last star exactly on stress line or OMG line
+int gbl_have_hit_stress; // for putting blank line right color when last star exactly on stress line or OMG line
 
 int gblWeAreInPREblockContent; /* 1 = yes, 0 = no */
 int gblCalDayScoreIsWritten;
@@ -33,6 +38,15 @@ char gbl_ffnameHTML[256];
 int  gbl_is_first_year_in_life;
 int  gbl_do_readahead;
 int  gbl_just_started_readahead;
+
+int  gbl_do_second_line;        // for benchmark label insert
+char gbl_benchmark_label[32];   // GREAT, OMG, etc.
+int  insert_label_benchmark(char *line_curr, char * line_next);
+void insert_minus_benchmark(char *line_to_change);
+int  gbl_we_are_printing_graph;
+void change_last_7_chars(char *line_to_print);
+void  remove_spans(char *linethird);
+
 /* int rkdb = 0; */ /* 0=no, 1=yes */
 char have_we_hit_beg_graph[5] = "NO"; /* signal to output grh and asp */
 
@@ -179,7 +193,9 @@ int make_fut_htm_file(
   int   is_first_year_in_life)
 {
   int i;
-/* tn();trn("inmake_fut_htm()"); */
+/* tn();trn("in make_fut_htm()"); */
+/* trn("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH"); */
+/* ksn(in_html_filename); */
 
 /*
 * ksn(in_html_filename);
@@ -315,7 +331,7 @@ char myss[64];
 #endif /* ifdef PUT_BACK_COMMENTED_OUT_STUFF ********************************/
 
 
-void f_fnOutPutTopOfHtmlFile(void) {
+void f_fnOutPutTopOfHtmlFile(void) {  // webview version
   int i;
 
 /* trn("in f_fnOutPutTopOfHtmlFile()");  */
@@ -420,6 +436,7 @@ void f_fnOutPutTopOfHtmlFile(void) {
 /*   f_fn_prtlin("  <meta name=\"viewport\" content=\"initial-scale=0.27\">"); */
 /*   f_fn_prtlin(" <meta name=\"viewport\" content=\"initial-scale=0.28, user-scalable=no\">"); */
 
+  f_fn_prtlin("   <meta name = \"format-detection\" content = \"telephone=no\">");
 
 
 
@@ -452,12 +469,33 @@ void f_fnOutPutTopOfHtmlFile(void) {
 /*   f_fn_prtlin( "    H4 { font-size:  75%; font-weight: bold;   line-height: 30%; text-align: center;}"); */
 /*   f_fn_prtlin( "    H5 { font-size:  70%; font-weight: normal; line-height: 30%; text-align: center;}"); */
 
+
+
+
+
+  f_fn_prtlin( "@media screen and (max-device-width: 500px) {");   // CSS for SMALL screen device
+
   f_fn_prtlin( "    PRE {");
-  f_fn_prtlin( "      margin-top: 0.5em;");
-  f_fn_prtlin( "      font-size:   90%;");
+//  f_fn_prtlin( "      margin-top: 0.5em;");
+/*   f_fn_prtlin( "      border: 0;"); */
+/*   f_fn_prtlin( "      padding: 0;"); */
+//  f_fn_prtlin( "      margin-top: 0.1em;");
+/*   f_fn_prtlin( "      margin-bottom: 0.1em;"); */
+/*   f_fn_prtlin( "      margin-left: 0.1em;"); */
+/*   f_fn_prtlin( "      margin-right: 0.1em;"); */
+//  f_fn_prtlin( "      font-size:   90%;");
+  //f_fn_prtlin( "      font-size:   96.5%;");
+
+  //f_fn_prtlin( "      font-size:   109%;");
+  f_fn_prtlin( "      font-size:   95%;");
+
   f_fn_prtlin( "      font-family: Menlo, Andale Mono, Monospace, Courier New;");
   f_fn_prtlin( "      font-weight: normal;");
+
   f_fn_prtlin( "      line-height: 70%;");
+//  f_fn_prtlin( "      letter-spacing: -1px;");
+
+//  f_fn_prtlin( "      line-height: 90%;");
 /*   f_fn_prtlin( "      line-height: 30%;"); */
   f_fn_prtlin( "    }");
 /*   f_fn_prtlin( "div.spacer {"); */
@@ -475,13 +513,16 @@ void f_fnOutPutTopOfHtmlFile(void) {
 /*   f_fn_prtlin( "      margin-left: 0;"); */
 /*   f_fn_prtlin( "      margin-right: 0;"); */
 
-  f_fn_prtlin( "    .myTitle {");
+  f_fn_prtlin( "    .myTitle {");              // webview version
   f_fn_prtlin( "      margin-top: 0.5em;");
   f_fn_prtlin( "      margin-bottom: 0.5em;");
+  f_fn_prtlin( "      margin-left: 50%;");
+
 //  f_fn_prtlin( "      text-align: center;");      // GOLD order #1
-  f_fn_prtlin( "      text-align: left;");      // GOLD order #1
+//  f_fn_prtlin( "      text-align: left;");      // GOLD order #1
      // are putting spaces in code to center
-  f_fn_prtlin( "      width: 300%;");             // GOLD order #2
+  //f_fn_prtlin( "      width: 300%;");             // GOLD order #2
+  f_fn_prtlin( "      width: 100%;");             // GOLD order
   f_fn_prtlin( "      font-size: 300%;");         // GOLD order #3
   f_fn_prtlin( "      font-weight: bold;"); 
   f_fn_prtlin( "      background-color: #F7ebd1;");
@@ -499,13 +540,15 @@ void f_fnOutPutTopOfHtmlFile(void) {
   f_fn_prtlin( "    .explain {");
   f_fn_prtlin( "      margin-top: 1.4em;");
   f_fn_prtlin( "      margin-bottom: 0.0em;");
-  f_fn_prtlin( "      width: 300%;");
+  //f_fn_prtlin( "      width: 300%;");
+  f_fn_prtlin( "      width: 100%;");
 /*   f_fn_prtlin( "      text-align: center;");  */
      // are putting spaces in code to center
   f_fn_prtlin( "      line-height: 140%;");
   f_fn_prtlin( "      text-align: left;"); 
 
-  f_fn_prtlin( "      font-size: 120%;"); 
+  //f_fn_prtlin( "      font-size: 120%;"); 
+  f_fn_prtlin( "      font-size: 180%;"); 
   f_fn_prtlin( "      background-color: #F7ebd1;");
   f_fn_prtlin( "      white-space: pre ; display: block; unicode-bidi: embed");
   f_fn_prtlin( "    }");
@@ -513,17 +556,18 @@ void f_fnOutPutTopOfHtmlFile(void) {
   f_fn_prtlin( "    .fromtodates {");
   f_fn_prtlin( "      margin-top: 0.5em;");
   f_fn_prtlin( "      margin-bottom: 0.1em;");
-  f_fn_prtlin( "      width: 250%;");
+  //f_fn_prtlin( "      width: 250%;");
+  f_fn_prtlin( "      width: 100%;");
   f_fn_prtlin( "      text-align: center;"); 
 /*   f_fn_prtlin( "      text-align: left;");  */
   f_fn_prtlin( "      line-height: 145%;");
-  f_fn_prtlin( "      font-size: 95%;"); 
+  //f_fn_prtlin( "      font-size: 95%;"); 
+  f_fn_prtlin( "      font-size: 150%;"); 
   f_fn_prtlin( "      font-weight: bold;"); 
   f_fn_prtlin( "      background-color: #F7ebd1;");
   f_fn_prtlin( "      white-space: pre ; display: block; unicode-bidi: embed");
   f_fn_prtlin( "    }");
 
-/* <.> */
   f_fn_prtlin( "    .aspecttext {");
   f_fn_prtlin("   white-space: pre ; display: block; unicode-bidi: embed");
   f_fn_prtlin( "      margin-top: 0.5em;");
@@ -556,8 +600,17 @@ void f_fnOutPutTopOfHtmlFile(void) {
 /*   f_fn_prtlin( "      border-width: 5px;"); */
   f_fn_prtlin( "    .checkoutbox {");
 /*   f_fn_prtlin( "      text-align: left;"); */
-  f_fn_prtlin( "      margin-left: 30%;");
-  f_fn_prtlin( "      font-size: 140%;");  /* <.> */
+
+  //f_fn_prtlin( "      margin-left: 30%;");
+  //f_fn_prtlin( "      font-size: 140%;");  
+
+  //f_fn_prtlin( "      width: 100%;");
+
+  f_fn_prtlin( "      margin-top: 0.1em;");
+  
+  //f_fn_prtlin( "      margin-left: 10%;");
+  f_fn_prtlin( "      margin-left: 5%;");
+  f_fn_prtlin( "      font-size: 1.7em;");  
 
   f_fn_prtlin( "      display: inline-block;");
   f_fn_prtlin( "      background-color: #fcfce0;");
@@ -569,9 +622,13 @@ void f_fnOutPutTopOfHtmlFile(void) {
   f_fn_prtlin( "    }");
 
   f_fn_prtlin( "    .willpower {");
-  f_fn_prtlin( "      margin-left: 15%;");
-  f_fn_prtlin( "      font-size: 125%;");  /* <.> */
+  //f_fn_prtlin( "      margin-left: 15%;");
+  //f_fn_prtlin( "      font-size: 125%;"); 
 
+  //f_fn_prtlin( "      margin-top: 0.7em;");
+  f_fn_prtlin( "      margin-top: 0.2em;");
+  f_fn_prtlin( "      margin-left: 35%;");
+  f_fn_prtlin( "      font-size: 1.7em;"); 
 
   f_fn_prtlin( "      display: inline-block;");
   f_fn_prtlin( "      background-color: #fcfce0;");
@@ -586,16 +643,19 @@ void f_fnOutPutTopOfHtmlFile(void) {
   // from perhtm.c
   f_fn_prtlin( "    PRE.appBy {");
   f_fn_prtlin( "      text-align: left;");
-  f_fn_prtlin( "      margin-left: 50%;");
+  f_fn_prtlin( "      margin-left: 45%;");
   f_fn_prtlin( "      background-color: #F7ebd1;");
-  f_fn_prtlin( "      font-size: 130%;");
+  //f_fn_prtlin( "      font-size: 130%;");
+  f_fn_prtlin( "      font-size: 1.5em;");
   f_fn_prtlin( "    }");
   f_fn_prtlin( "    PRE.entertainment {");
   f_fn_prtlin( "      text-align: left;");
-  f_fn_prtlin( "      margin-left: 30%;");
+  f_fn_prtlin( "      margin-left: 25%;");
   f_fn_prtlin( "      background-color: #F7ebd1;");
   f_fn_prtlin( "      color:#FF0000;");
-  f_fn_prtlin( "      font-size: 130%;"); 
+  //f_fn_prtlin( "      font-size: 130%;"); 
+  f_fn_prtlin( "      font-size: 1.5em;"); 
+  f_fn_prtlin( "      font-weight: bold;"); 
   f_fn_prtlin( "    }");
 
 
@@ -603,7 +663,7 @@ void f_fnOutPutTopOfHtmlFile(void) {
 /*   f_fn_prtlin( "    .bgy {background-color:#ffff00;}"); */
 /*   f_fn_prtlin( "    .bgy {background-color:#fcfc70;}"); */
 /*   f_fn_prtlin( "      background-color: #f7ebd1;}"); */
-  f_fn_prtlin( "    .bgy {background-color:#f7ebd1;}");
+  f_fn_prtlin( "    .bgy { background-color:#f7ebd1;");
 
 /*   f_fn_prtlin("   white-space: pre ; displayX: block; unicodeX-bidi: Xembed"); */
   f_fn_prtlin("   white-space: pre  ; ");
@@ -672,34 +732,34 @@ void f_fnOutPutTopOfHtmlFile(void) {
 /*   f_fn_prtlin( "    .cRe2        { background-color:#ff3366; }"); */
 
 
-  f_fn_prtlin( "    .cGr2        { background-color:#66ff33; ");
-  f_fn_prtlin("   white-space: pre  ; ");
+  f_fn_prtlin( "    .cGr2        { background-color:#66ff33; font-weight: bold; ");
+  f_fn_prtlin("   white-space: pre  ; font-weight: bold; ");
   f_fn_prtlin("    }");
 /*   f_fn_prtlin( "    .cGre        { background-color:#84ff98; }"); */
-  f_fn_prtlin( "    .cGre        { background-color:#a8ff98; ");
-  f_fn_prtlin("   white-space: pre  ; ");
+  f_fn_prtlin( "    .cGre        { background-color:#a8ff98; font-weight: bold; ");
+  f_fn_prtlin("   white-space: pre  ;font-weight: bold; ");
 /*   f_fn_prtlin( "      font-family: Menlo, Andale Mono, Monospace, Courier New;"); */
 /*   f_fn_prtlin( "      font-weight: normal;"); */
 /*   f_fn_prtlin( "      font-size:   75%;"); */
 /*   f_fn_prtlin( "      line-height: 70%;"); */
 /*   f_fn_prtlin( "      margin:0 auto;"); */
   f_fn_prtlin("    }");
-  f_fn_prtlin( "    .cRed        { background-color:#ff98a8; ");
-  f_fn_prtlin("   white-space: pre  ; ");
+  f_fn_prtlin( "    .cRed        { background-color:#ff98a8; font-weight: bold; ");
+  f_fn_prtlin("   white-space: pre  ; font-weight: bold; ");
   f_fn_prtlin("    }");
-  f_fn_prtlin( "    .cRe2        { background-color:#ff4477; ");
-  f_fn_prtlin("   white-space: pre  ; ");
+  f_fn_prtlin( "    .cRe2        { background-color:#ff4477; font-weight: bold; ");
+  f_fn_prtlin("   white-space: pre  ; font-weight: bold; ");
   f_fn_prtlin("    }");
 
 
   f_fn_prtlin("    .row4        { background-color:#f8f0c0; }");
 
 /*   f_fn_prtlin("    .cNeu        { background-color:#e1ddc3; }"); */
-  f_fn_prtlin("    .cNeu        { background-color:#e5e2c7; ");
+  f_fn_prtlin("    .cNeu        { background-color:#e5e2c7; font-weight: bold; ");
   f_fn_prtlin("   white-space: pre  ; ");
   f_fn_prtlin("    }");
 
-  f_fn_prtlin("    .cSky        { background-color:#3f3ffa; ");
+  f_fn_prtlin("    .cSky        { background-color:#3f3ffa; font-weight: bold; ");
   f_fn_prtlin("   white-space: pre  ; ");
 /*   f_fn_prtlin( "      font-family: Menlo, Andale Mono, Monospace, Courier New;"); */
 /*   f_fn_prtlin( "      font-weight: normal;"); */
@@ -710,7 +770,7 @@ void f_fnOutPutTopOfHtmlFile(void) {
 
 
 
-  f_fn_prtlin( "   .star        { color:#f7ebd1; }");
+  f_fn_prtlin( "   .star        { color:#f7ebd1; font-weight: bold; }");
 /*   f_fn_prtlin( "   .star      {  "); */
 /*   f_fn_prtlin("   white-space: pre ; "); */
 /*   f_fn_prtlin("    }"); */
@@ -722,16 +782,34 @@ void f_fnOutPutTopOfHtmlFile(void) {
 
 
 
-  f_fn_prtlin("    .cNam        { color:#3f3ffa;");
+  //f_fn_prtlin("    .cNam        { color:#3f3ffa;");
+  f_fn_prtlin("    .cNam        {               ");   // no blue name
   f_fn_prtlin("                   background-color: #F7ebd1;");
   f_fn_prtlin("                   font-size: 133%;");
   f_fn_prtlin("    }");
 
 
   f_fn_prtlin( "    table.trait {");
-  f_fn_prtlin( "      margin-left: 70%;");
-  f_fn_prtlin( "      margin-right:30%;");
-  f_fn_prtlin( "      font-size: 185%;");  /* <.> */
+
+/*   f_fn_prtlin( "      margin-left:auto;"); */
+/*   f_fn_prtlin( "      margin-right:auto;"); */
+/*   f_fn_prtlin( "      margin-left: 7em;"); */
+/*   f_fn_prtlin( "      text-align: left;"); */
+
+/*   f_fn_prtlin( "      margin-left: 70%;"); */
+  f_fn_prtlin( "      margin-left: 60%;");
+
+  f_fn_prtlin( "      margin-top: 0.1em;");
+
+  //f_fn_prtlin( "      margin-left: 50%;");
+  //f_fn_prtlin( "      margin-right:50%;");
+/*   f_fn_prtlin( "      margin-left: 6em;"); */
+
+/*   f_fn_prtlin( "      margin-left: 6em;"); */
+
+
+  //f_fn_prtlin( "      font-size: 185%;"); 
+  f_fn_prtlin( "      font-size: 200%;");  
 /*   f_fn_prtlin( "      font-size: 100%;"); */
 
   f_fn_prtlin( "      white-space: pre;");
@@ -739,7 +817,7 @@ void f_fnOutPutTopOfHtmlFile(void) {
 /*   f_fn_prtlin( "      margin-right:auto;"); */
 /*   f_fn_prtlin( "      font-family: Andale Mono, Monospace, Courier New;"); */
   f_fn_prtlin( "      font-family: Menlo, Andale Mono, Monospace, Courier New;");
-  f_fn_prtlin( "      text-align: left;");
+
 
 /*   f_fn_prtlin( "      border: 1px solid black;"); */
   f_fn_prtlin( "      border: none;");
@@ -784,6 +862,185 @@ void f_fnOutPutTopOfHtmlFile(void) {
   f_fn_prtlin( "    table.trait    td+td { text-align: right; }");
   f_fn_prtlin( "    table.trait td+td+td { text-align: left; }");
 
+  f_fn_prtlin( "}"); // end of  @media screen and (max-device-width: 500px)  // CSS for SMALL screen device
+
+
+
+
+  f_fn_prtlin( "@media screen and (min-device-width: 501px) {  "); // CSS for BIG SREEN  tablet, iPad, PC, Mac
+  f_fn_prtlin( "    PRE {");
+  f_fn_prtlin( "      font-size:   80%;");
+  f_fn_prtlin( "      font-family: Menlo, Andale Mono, Monospace, Courier New;");
+  f_fn_prtlin( "      font-weight: normal;");
+  f_fn_prtlin( "      line-height: 70%;");
+  f_fn_prtlin( "    }");
+  f_fn_prtlin( "    .myTitle {");
+  f_fn_prtlin( "      margin-top: 0.5em;");
+  f_fn_prtlin( "      margin-bottom: 0.5em;");
+  f_fn_prtlin( "      width: 100%;");
+  f_fn_prtlin( "      font-size: 300%;");
+  f_fn_prtlin( "      font-weight: bold;");
+  f_fn_prtlin( "      background-color: #F7ebd1;");
+  f_fn_prtlin( "      white-space: pre ; display: block; unicode-bidi: embed");
+  f_fn_prtlin( "    }");
+  f_fn_prtlin( "    .explain {");
+  f_fn_prtlin( "      margin-top: 1.4em;");
+  f_fn_prtlin( "      margin-bottom: 0.0em;");
+  f_fn_prtlin( "      width: 100%;");
+  f_fn_prtlin( "      line-height: 140%;");
+/*   f_fn_prtlin( "      font-size: 1.25em;"); */
+  f_fn_prtlin( "      font-size: 1.0em;");
+  f_fn_prtlin( "      background-color: #F7ebd1;");
+  f_fn_prtlin( "      white-space: pre ; display: block; unicode-bidi: embed");
+  f_fn_prtlin( "    }");
+  f_fn_prtlin( "    .fromtodates {");
+  f_fn_prtlin( "      margin-top: 0.5em;");
+  f_fn_prtlin( "      margin-bottom: 0.1em;");
+  f_fn_prtlin( "      width: 100%;");
+  f_fn_prtlin( "      text-align: center;");
+  f_fn_prtlin( "      line-height: 145%;");
+  f_fn_prtlin( "      font-size: 1.0em;");
+  f_fn_prtlin( "      font-weight: bold;");
+  f_fn_prtlin( "      background-color: #F7ebd1;");
+  f_fn_prtlin( "      white-space: pre ; display: block; unicode-bidi: embed");
+  f_fn_prtlin( "    }");
+  f_fn_prtlin( "    .aspecttext {");
+  f_fn_prtlin( "   white-space: pre ; display: block; unicode-bidi: embed");
+  f_fn_prtlin( "      margin-top: 0.5em;");
+  f_fn_prtlin( "      margin-bottom: 2.0em;");
+  f_fn_prtlin( "      width: 100%;");
+
+/*   f_fn_prtlin( "      font-size: 1.2em;"); */
+  f_fn_prtlin( "      font-size: 1.0em;");
+/*   f_fn_prtlin( "      line-height: 120%;"); */
+  f_fn_prtlin( "      line-height: 150%;");
+
+  f_fn_prtlin( "      background-color: #F7ebd1;");
+  f_fn_prtlin( "      margin-left: 0.2em;");
+  f_fn_prtlin( "      margin-right: 0.5em;");
+  f_fn_prtlin( "    }");
+  f_fn_prtlin( "    .checkoutbox {");
+  f_fn_prtlin( "      margin-top: 0.1em;");
+/*   f_fn_prtlin( "      font-size: 1.0em;"); */
+  f_fn_prtlin( "      font-size: 0.9em;");
+  f_fn_prtlin( "      display: inline-block;");
+  f_fn_prtlin( "      background-color: #fcfce0;");
+  f_fn_prtlin( "      border: none;");
+  f_fn_prtlin( "      border-collapse: collapse;");
+  f_fn_prtlin( "      border-spacing: 0;");
+  f_fn_prtlin( "      line-height: 130%;");
+  f_fn_prtlin( "    }");
+  f_fn_prtlin( "    .willpower {");
+  f_fn_prtlin( "      margin-top: 0.2em;");
+/*   f_fn_prtlin( "      font-size: 1.0em;"); */
+  f_fn_prtlin( "      font-size: 0.9em;");
+  f_fn_prtlin( "      display: inline-block;");
+  f_fn_prtlin( "      background-color: #fcfce0;");
+  f_fn_prtlin( "      border: none;");
+  f_fn_prtlin( "      border-collapse: collapse;");
+  f_fn_prtlin( "      border-spacing: 0;");
+  f_fn_prtlin( "      line-height: 120%;");
+  f_fn_prtlin( "    }");
+  f_fn_prtlin( "    PRE.appBy {");
+  f_fn_prtlin( "      background-color: #F7ebd1;");
+  f_fn_prtlin( "      font-size: 0.9em;");
+  f_fn_prtlin( "    }");
+  f_fn_prtlin( "    PRE.entertainment {");
+  f_fn_prtlin( "      background-color: #F7ebd1;");
+  f_fn_prtlin( "      color:#FF0000;");
+  f_fn_prtlin( "      font-size: 0.9em;");
+  f_fn_prtlin( "      font-weight: bold;");
+  f_fn_prtlin( "    }");
+  f_fn_prtlin( "    .bgy { background-color:#f7ebd1;");
+  f_fn_prtlin( "   white-space: pre  ; ");
+  f_fn_prtlin( "    }");
+  f_fn_prtlin( "    P { ");
+  f_fn_prtlin( "      font-family: Menlo, Andale Mono, Monospace, Courier New;");
+  f_fn_prtlin( "      width: auto;");
+  f_fn_prtlin( "      font-size:   80%;");
+  f_fn_prtlin( "      margin-top: 0;");
+  f_fn_prtlin( "      margin-bottom: 0;");
+  f_fn_prtlin( "      margin-left: auto;");
+  f_fn_prtlin( "      margin-right:auto;");
+  f_fn_prtlin( "      text-align: left;");
+  f_fn_prtlin( "    }");
+  f_fn_prtlin( "    table {");
+  f_fn_prtlin( "      border-collapse: collapse;");
+  f_fn_prtlin( "      border-spacing: 0;");
+  f_fn_prtlin( "      font-size: 120%;");
+  f_fn_prtlin( "    }");
+  f_fn_prtlin( "    table.center {");
+  f_fn_prtlin( "      margin-left:auto;");
+  f_fn_prtlin( "      margin-right:auto;");
+  f_fn_prtlin( "      font-size: 1.1em;");
+  f_fn_prtlin( "      line-height: 1.4em");
+  f_fn_prtlin( "    }");
+  f_fn_prtlin( "    TD {");
+  f_fn_prtlin( "      white-space: nowrap;");
+  f_fn_prtlin( "      padding: 0;");
+  f_fn_prtlin( "    }");
+  f_fn_prtlin( "    .cGr2        { background-color:#66ff33; font-weight: bold; ");
+  f_fn_prtlin( "   white-space: pre  ; font-weight: bold; ");
+  f_fn_prtlin( "    }");
+  f_fn_prtlin( "    .cGre        { background-color:#a8ff98; font-weight: bold; ");
+  f_fn_prtlin( "   white-space: pre  ;font-weight: bold; ");
+  f_fn_prtlin( "    }");
+  f_fn_prtlin( "    .cRed        { background-color:#ff98a8; font-weight: bold; ");
+  f_fn_prtlin( "   white-space: pre  ; font-weight: bold; ");
+  f_fn_prtlin( "    }");
+  f_fn_prtlin( "    .cRe2        { background-color:#ff4477; font-weight: bold; ");
+  f_fn_prtlin( "   white-space: pre  ; font-weight: bold; ");
+  f_fn_prtlin( "    }");
+  f_fn_prtlin( "    .row4        { background-color:#f8f0c0; }");
+  f_fn_prtlin( "    .cNeu        { background-color:#e5e2c7; font-weight: bold; ");
+  f_fn_prtlin( "   white-space: pre  ; ");
+  f_fn_prtlin( "    }");
+  f_fn_prtlin( "    .cSky        { background-color:#3f3ffa; font-weight: bold; ");
+  f_fn_prtlin( "   white-space: pre  ; ");
+  f_fn_prtlin( "    }");
+  f_fn_prtlin( "   .star        { color:#f7ebd1; font-weight: bold; }");
+  f_fn_prtlin( "    .cNam        {               ");
+  f_fn_prtlin( "                   background-color: #F7ebd1;");
+  f_fn_prtlin( "                   font-size: 133%;");
+  f_fn_prtlin( "    }");
+  f_fn_prtlin( "    table.trait {");
+  f_fn_prtlin( "      margin-left:auto;");
+  f_fn_prtlin( "      margin-right:auto;");
+  f_fn_prtlin( "      margin-top: 0.1em;");
+/*   f_fn_prtlin( "      font-size: 1.4em;"); */
+  f_fn_prtlin( "      font-size: 1.2em;");
+  f_fn_prtlin( "      white-space: pre;");
+  f_fn_prtlin( "      font-family: Menlo, Andale Mono, Monospace, Courier New;");
+  f_fn_prtlin( "      border: none;");
+  f_fn_prtlin( "      border-collapse: collapse;");
+  f_fn_prtlin( "      border-spacing: 0;");
+  f_fn_prtlin( "    }");
+  f_fn_prtlin( "    table.trait td {");
+  f_fn_prtlin( "      font-family: Menlo, Andale Mono, Monospace, Courier New;");
+  f_fn_prtlin( "      white-space: pre;");
+  f_fn_prtlin( "      font-size: 90%;");
+  f_fn_prtlin( "      text-align: left;");
+  f_fn_prtlin( "      border: none;");
+  f_fn_prtlin( "      border-collapse: collapse;");
+  f_fn_prtlin( "      border-spacing: 0;");
+  f_fn_prtlin( "      padding-left: 10px; ");
+  f_fn_prtlin( "      padding-right: 10px; ");
+  f_fn_prtlin( "      padding-top: 2px; ");
+  f_fn_prtlin( "      padding-bottom: 2px; ");
+  f_fn_prtlin( "    }");
+  f_fn_prtlin( "    table.trait th{");
+  f_fn_prtlin( "      font-family: Menlo, Andale Mono, Monospace, Courier New;");
+  f_fn_prtlin( "      font-size: 90%;");
+  f_fn_prtlin( "      padding: 10px; ");
+  f_fn_prtlin( "      background-color: #fcfce0;");
+  f_fn_prtlin( "      border: none;");
+  f_fn_prtlin( "      text-align: center;");
+  f_fn_prtlin( "    }");
+  f_fn_prtlin( "}    "); // END of   @media screen and (min-device-width: 501px)CSS for BIG SREEN  tablet,iPad,PC,Mac
+
+
+
+
   f_fn_prtlin( "  </style>");
 
 /* from p */
@@ -796,14 +1053,8 @@ void f_fnOutPutTopOfHtmlFile(void) {
 /*   f_fn_prtlin( "    P {margin-left:10%; margin-right:10%}"); */
 /*   f_fn_prtlin( "    --> "); */
 
-    
-    /* put in favicon */
-    f_fn_prtlin("<link href=\"data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAAB0AAAAdCAYAAABWk2cPAAAD8GlDQ1BJQ0MgUHJvZmlsZQAAOI2NVd1v21QUP4lvXKQWP6Cxjg4Vi69VU1u5GxqtxgZJk6XpQhq5zdgqpMl1bhpT1za2021Vn/YCbwz4A4CyBx6QeEIaDMT2su0BtElTQRXVJKQ9dNpAaJP2gqpwrq9Tu13GuJGvfznndz7v0TVAx1ea45hJGWDe8l01n5GPn5iWO1YhCc9BJ/RAp6Z7TrpcLgIuxoVH1sNfIcHeNwfa6/9zdVappwMknkJsVz19HvFpgJSpO64PIN5G+fAp30Hc8TziHS4miFhheJbjLMMzHB8POFPqKGKWi6TXtSriJcT9MzH5bAzzHIK1I08t6hq6zHpRdu2aYdJYuk9Q/881bzZa8Xrx6fLmJo/iu4/VXnfH1BB/rmu5ScQvI77m+BkmfxXxvcZcJY14L0DymZp7pML5yTcW61PvIN6JuGr4halQvmjNlCa4bXJ5zj6qhpxrujeKPYMXEd+q00KR5yNAlWZzrF+Ie+uNsdC/MO4tTOZafhbroyXuR3Df08bLiHsQf+ja6gTPWVimZl7l/oUrjl8OcxDWLbNU5D6JRL2gxkDu16fGuC054OMhclsyXTOOFEL+kmMGs4i5kfNuQ62EnBuam8tzP+Q+tSqhz9SuqpZlvR1EfBiOJTSgYMMM7jpYsAEyqJCHDL4dcFFTAwNMlFDUUpQYiadhDmXteeWAw3HEmA2s15k1RmnP4RHuhBybdBOF7MfnICmSQ2SYjIBM3iRvkcMki9IRcnDTthyLz2Ld2fTzPjTQK+Mdg8y5nkZfFO+se9LQr3/09xZr+5GcaSufeAfAww60mAPx+q8u/bAr8rFCLrx7s+vqEkw8qb+p26n11Aruq6m1iJH6PbWGv1VIY25mkNE8PkaQhxfLIF7DZXx80HD/A3l2jLclYs061xNpWCfoB6WHJTjbH0mV35Q/lRXlC+W8cndbl9t2SfhU+Fb4UfhO+F74GWThknBZ+Em4InwjXIyd1ePnY/Psg3pb1TJNu15TMKWMtFt6ScpKL0ivSMXIn9QtDUlj0h7U7N48t3i8eC0GnMC91dX2sTivgloDTgUVeEGHLTizbf5Da9JLhkhh29QOs1luMcScmBXTIIt7xRFxSBxnuJWfuAd1I7jntkyd/pgKaIwVr3MgmDo2q8x6IdB5QH162mcX7ajtnHGN2bov71OU1+U0fqqoXLD0wX5ZM005UHmySz3qLtDqILDvIL+iH6jB9y2x83ok898GOPQX3lk3Itl0A+BrD6D7tUjWh3fis58BXDigN9yF8M5PJH4B8Gr79/F/XRm8m241mw/wvur4BGDj42bzn+Vmc+NL9L8GcMn8F1kAcXgSteGGAAAACXBIWXMAAAsTAAALEwEAmpwYAAABWWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS40LjAiPgogICA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPgogICAgICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIgogICAgICAgICAgICB4bWxuczp0aWZmPSJodHRwOi8vbnMuYWRvYmUuY29tL3RpZmYvMS4wLyI+CiAgICAgICAgIDx0aWZmOk9yaWVudGF0aW9uPjE8L3RpZmY6T3JpZW50YXRpb24+CiAgICAgIDwvcmRmOkRlc2NyaXB0aW9uPgogICA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgpMwidZAAAICElEQVRIDY1XXWxUxxX+5t679+5617v4Z+3FmJ+UopJQeADLqtOIpo5KayFVbSoa0RaqpsipVKEiWomSl6ipVEyjqkril4inIkWgpKhSQ2IoP6IK5YG0FiSAq+IqpsYUY8cYsNm/uzP9zlzfxVXVqiPNztyZM+eb75wzZ2bV2bNnNVh838f09DQuXryIc+fO4cKFCwiCANVqFVpbERH7r0WpaMoYcF0S5XIJ69evR2/vF9HT04POzuVWl6GAEtBEIqGuXr1qBgcHceXKFbs6mUyqUqkkfaqBqKy3C/plzhblQHFfdj4IlEmnDdLpFMbHi3a+oyOn9uzZb7q7P6cIavCn8+f1oUOHhIqthUJBZ7NZ21dKaanxnEMZqfE3t1LvJ5PQ+bzSLS0iH69pYL9Qlzl4cEC///55jePHj2vStxPLli2rCziOU+8LyGIwn0ozjtJptgnO5duVbiVgvJmeHle/8kqgT59O6UuXEnpoqEN3d8sGG/TRo0c0BgYGrHA+n7etgC0GXAzWRNYFAuUWsW1KPWK7ZYur3347pSfvZLQxjQs1yzalT57ssPp37/6h9mIfiqnjEgcOAa3GJKNkCfu3YxmJGpcDpHm3aNC1xcWPvpvA1i97aGqJPC6iUms1g0TCQ2vrnFU/NHQG3ujoqHyocrlsUWNwAlp7NSpluFrdpo4VrquedRyzhs5sDIDKnMEkF2/+dkI99S1P1hMx2pnsS3qeJ+qhRkZEf1LNzPzVeLOzs3Y0DEPbyk/MkIB4ICsdhR8nEtjGdqkYiUPVikEpoVBKsn0pxNW/aNzb5OB3oyFWtit8j8zTmYj17KzBm2/WuDBEMpmCR/8JjmGUSmuL6G0gwzDaNF73ffMdzvs1Y+QQlFlDoyBGUEWF6pgx/3wtRABlHnJuN6r42le9Oug774RmaChEoeCYW7eKiMiT/oJZqcoSQZomnWL/Z4Fvvl9SyudwlTBpth4/HAKKNTXbhlal5h2YoAHq+TFlvrAnQK5NWCjz4Yc17NxZsmpLJau+DioabBGWLZSf4i66Axc7yw5STQT8vEKCijFM0ZtkmmQcUZgWhjfNjTDSHj6AyVDkK9tc+twx01Ma+18Uu8AUCgq3GYliWGtbDspOokKdQfSlnmPgdHC0miPF1Vz5GOWWKLvIpQxdDIfykpHcLAOraFT2gIvskw7mGTcvv1zGe++G6OhQioCCIpnrP5mmeBSmGObIOWYdGYuT1H36/BJBXdJgUHA2ilEqoM3hroKpjBks+aZjVu3hOWK5cLCK1werSBWAeVpCxsjQiCVjn0ZUuXOPQVZsAtJ3WSlQzhi4MwrBH+06SAxW6FPeAwgpb1ZRhoCpHgfrB334NPv0L0M4L2msbHNx434NyQoXxYjs1kEtKvVmW3lMpg3WfEohKX4aJhMeixoFJDFaUB6XKs1Z43yRgN6TCp855iOVVxgd4G7215BqceDJfUFLOZJIuJB7tJRjn9qdt7QCE9NiAODV3wRY+qyDu8xJJQLMM0rnCDZP05dosnKC3//Q8Lc7+Oy7BGSgjOyvYoaAyTb6lCB/v08WRKjJTlkiWy1imqYtS9FNhN++lcLmpzzc+aQGGVIMCo97cWgFQ/NVbxKYKnI/d/HYiwkJIFzqr6DIyypLcJfsbgigq9FCwHtyvGJE6qubN51WmJgADhwI8I1tMmwwytAUC3kSmfSzGTPMKdzApxU6Xkugrc/FvY8Nrv2ggtofNDKdDhoYC8V54JTPXdKXCQajJBkxaWRD6pOkQ5ZqYsKYrVtdvPBCFH1krV49VsVKxunXx6HIzPBKU22/cM2KXR6CvIOJUyFG+6pw6fD0csck7kBlQ2XeCwzeqoT2kpiJKMZcrVs9l06en49m9u3z0dQk4zQlE0GegXKUU5ufc83azQ5av+SYJWscVHnerx2sYPKnzKUMj1SnMqlxoNlXZphG+klIm5KMpNZKxNIeFaqNjNzV9YSw1rt2pXW5HN2DtVp0F96bzeiPx9L6/gMZl3sxq+f/nNbX+nz9AfPRlUZfX2/39Q34eiwI9BHWTpeOpD5mRtuSk21lLK6e3Hcs6plnHMO3WT3SQibabE4hyyQh87dua/P7w6FS+2r2ast1OKjQd/d5t90k3VM1bQ6FPLlMn5JGpxf8uBC4iheL4T2t+PYyXnMzzwlpJ5MSPCHE3LZI9mG5c0fjzOnQ/PpXFXwwrDmm8ETBwdIpuoFHcpzX6N/KHCcIA9ukCPgJ+/GZFB0LgEilUqZY5Hno73/e0t6+Pa9HR1M0caOemcnojz5K6zfeSOqnn47MxbV6eafS2cZHZpIxqfJ8aac5kwsPNUZq3ZTxwy6TydixTZs2ae/xxzdwHdSRIzUzPFxBV1cFMzMOhoaqUURx9228pkjAjN80KsHrqonWkBtGilz9fIioe0JVQodyMiWL5UMKLa4Iaubm5lRvb6/ByZMndV9fn92F7y+3LeVsm8+TQTv4Lo6+XecRg1gmbqn+39bG49LGr8zVq1frY8eOaS/NQ7pjxw7IW+n69etYsaKFcg5KPKhzc1U8ZHbhQ5/PDNlxlE1iE1DQFuv8+GOhdRkc9CFjxGXSYdZh2bt3L9rJQp05c0bzL4UaHx83hw8fxokTJxaWWQtJX3QKzuJWxheX/zm/ceNG1d/fb9atW6f4N8XYvxXyVJH/LfPMEvx7gcuXL2NkZASTk5MSeVa5yPw/RfwoT9hcLoe1a9diw4YNtjY3N6NSkTsO+BcbeuPABIyNOwAAAABJRU5ErkJggg==\" rel=\"icon\" type=\"image/x-icon\" />");
-
-    
-    
 /* put in favicon */
-    // old favicon  f_fn_prtlin("<link href=\"data:image/x-icon;base64,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\" rel=\"icon\" type=\"image/x-icon\" />");
+f_fn_prtlin("<link href=\"data:image/x-icon;base64,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\" rel=\"icon\" type=\"image/x-icon\" />");
 
   f_fn_prtlin( "</head>");
   f_fn_prtlin( " ");
@@ -884,7 +1135,7 @@ void f_fnOutPutTopOfHtmlFile(void) {
   char mynam[32];
   strcpy(mynam, gbl_name_for_fut);
   char char15toprint[32];
-      if (namelen1 ==  1) sprintf(char15toprint, "       %s       ", mynam); 
+       if (namelen1 ==  1) sprintf(char15toprint, "       %s       ", mynam); 
   else if (namelen1 ==  2) sprintf(char15toprint, "       %s      ", mynam); 
   else if (namelen1 ==  3) sprintf(char15toprint, "      %s      ", mynam);
   else if (namelen1 ==  4) sprintf(char15toprint, "      %s     ", mynam); 
@@ -900,8 +1151,10 @@ void f_fnOutPutTopOfHtmlFile(void) {
   else if (namelen1 == 14) sprintf(char15toprint, " %s", mynam); 
   else if (namelen1 == 15) sprintf(char15toprint, "%s", mynam); 
   else                    sprintf(char15toprint,"%s", mynam);
+
   //  sprintf(writebuf, "     %s", arr(1) );     // just name
-  sprintf(writebuf, "     %s", char15toprint );  // just name
+  //sprintf(writebuf, "     %s", char15toprint );  // just name
+  sprintf(writebuf, "%s %s", gbl_year_for_fut, char15toprint );  // year todo  AND  name
 
   f_fn_prtlin(writebuf);
   gblWeAreInPREblockContent = 0; 
@@ -945,7 +1198,11 @@ void fn_outputGrhAndAspects(void) {
     f_fn_prtlin("<br><br><br><br><br><br><br>"); 
   }
 
+  // init gbl 
+  gbl_we_are_printing_graph = 1;
   gblWeAreInPREblockContent = 1;  /* true */
+  gbl_do_second_line = 0;        // for benchmark label insert
+  strcpy(gbl_benchmark_label, "no label yet");   // GREAT, OMG, etc.
 
 
   /* experiment bg color on left-side column containing label names
@@ -966,11 +1223,16 @@ void fn_outputGrhAndAspects(void) {
   have_printed_OMG_line_already    = 0;
   num_OMG_printed = 0;
 
+  gbl_do_readahead           = 1; /* do readahead until "OMG" label is printed */
+  gbl_just_started_readahead = 1;
+  gbl_have_hit_OMG = 0;
+  gbl_have_hit_stress = 0;
+
 
   for (i=0; ; i++) {
 
-    f_docin_get(doclin);
-
+    f_docin_get(doclin);  // read doclin read doclin read doclin read doclin read doclin read doclin 
+/* ksn(doclin); */
     if (strstr(doclin, "[end_graph]") != NULL) break;
 
 
@@ -994,34 +1256,14 @@ void fn_outputGrhAndAspects(void) {
     */
 
     if (strstr(doclin, "GREAT") != NULL) {
-
       /* EXPERIMENT   left side to right */
       /* replace " GREAT|" with "-GREAT " and put on right side */
       strcpy(s1, " GREAT ");
-      /* sfromto(s1, doclin,  1,  7);*/  /* " GREAT-" from " GREAT-|" */
-
-/* tn();b(331);ks(s1); */
-
-
-/*       sfromto(s2, doclin,  9, 98); */
-/*       sfromto(s2, doclin,  8, 99);  BUG to use sfromto- cause contains "class=star" inserted (not to 99)*/
-/*       sfromto(s2, doclin,  8, 99); */
-
       strcpy(s2, &doclin[8 - 1]); /* into s2, get rest of string from 8th char */
-/* tn();b(332);ks(s2); */
 
-
-/*       sprintf(writebuf, */
-/*         "<span class=\"cGr2\">%s</span>|<span class=\"cGr2\">%s</span>|", s1, s2);  */
-/*         "<span class=\"cGr2\">%s</span>|<span class=\"cGr2\">%s</span>|", s1, s2);  */
-
-/*       sprintf(writebuf, "<span class=\"cGr2\">%s</span>|%s|", s1, s2);  */
 
       /* replace " GREAT|" with "-GREAT " and put on right side */
       sprintf(writebuf, " %s<span class=\"cGr2\">%s</span>", s2, s1); 
-
-/*       sprintf(writebuf, "<span class=\"cGr2\">%s</span>%s", s1, s2);  */
-
 
 /* tn();b(333);ks(writebuf); */
       bracket_string_of("X", writebuf, "<span class=\"cGr2\">", "</span>");
@@ -1032,7 +1274,6 @@ void fn_outputGrhAndAspects(void) {
       scharswitch(writebuf, '#', ' ');
       scharswitch(writebuf, '|', ' ');  /* sideline out */
 /* tn();b(336);ks(writebuf); */
-
 
       f_fn_prtlin(writebuf);
       /* lines below are all light green */
@@ -1082,8 +1323,6 @@ void fn_outputGrhAndAspects(void) {
 /*       sprintf(current_leftside, "<span class=\"cNeu\"> </span>      "); */
 /*       just_printed_stress_label = 1; */
 
-/*      gbl_do_readahead = 0; */ /* needed only for printing "-GREAT " and "-GOOD " labels */
-
       continue;
     }
     /* for STRESS line, make background colour deeppink
@@ -1092,6 +1331,7 @@ STRESS-|<span style="background-color:#FFBAC7; font-family: Andale Mono, Courier
     if (strstr(doclin, "STRESS") != NULL 
     && have_printed_STRESS_line_already == 0) {
       ;
+      gbl_have_hit_stress = 1;
 
       /* replace "STRESS|" with "-STRESS" and put on right side */
       strcpy(s1, " STRESS");
@@ -1134,9 +1374,9 @@ STRESS-|<span style="background-color:#FFBAC7; font-family: Andale Mono, Courier
 
     /* intercept 2nd OMG line  (happens when last * is right on line)
     */
-/*     if (num_OMG_printed > 0) { */
+/*     if (num_OMG_printed > 0) x */
 /*  */
-/*       if (num_OMG_printed == 1) { */
+/*       if (num_OMG_printed == 1) x */
         /* print blank line with color cRe2 under the 1st OMG */
 /*    */
           /* #define NUM_PTS_FOR_FUT 92 */
@@ -1146,14 +1386,16 @@ STRESS-|<span style="background-color:#FFBAC7; font-family: Andale Mono, Courier
 /*         sprintf(p,"       %s\n", myLastLine );  */
 /* left margin = 7 spaces */
 /*         f_fn_prtlin(myLastLine); */
-/*       } */
+/*       x */
 /*       continue; */
-/*     } */
+/*     x */
 
     /* color OMG line, but
     */
     if (strstr(doclin, "OMG") != NULL
     && have_printed_OMG_line_already == 0) {
+
+      gbl_have_hit_OMG = 1;
 
 /* tn();b(221);ki(have_printed_OMG_line_already); */
 
@@ -1304,30 +1546,6 @@ STRESS-|<span style="background-color:#FFBAC7; font-family: Andale Mono, Courier
       continue;
     }
 
-#ifdef PUT_BACK_COMMENTED_OUT_STUFF /****************************************/
-*     /* Here, before printing, we want to replace the first 7 chars (always blanks with bg color)
-*     *  with current_leftside which is like
-*     *       sprintf(current_leftside, "<span class=\"cRe2\">%.7s</span>", "              ");
-*     */
-*     /* grab line after 1st 7 chars */
-* 
-* trn("line1=");ks(doclin);
-* 
-* /* for TEST, grab 1st 7 ch */
-* /* mkstr(my_right_padding_chars, lotsachars, lotsachars + num_to_pad - 1); */
-* mkstr(s3, doclin, doclin + 7 - 1);
-* /*     if (strcmp("[beg_graph]", s1) == 0) break; */
-* if (strcmp(s3, "       ") != 0) {trn("HEY!leftpad=");ks(s3);}
-* 
-*    /* grab print line after 1st 7 chars */
-*    sprintf(s3, "%s", doclin + 7);
-* trn("HEY!restofline=");ks(s3);
-* 
-*    /* build new line with new left column bg colors */
-*    sprintf(s5, "%s%s", current_leftside, s3) ;
-* trn("HEY!newline=");ks(s5);
-* 
-#endif /* ifdef PUT_BACK_COMMENTED_OUT_STUFF ********************************/
 
 
   /* EXPERIMENT stress level labels on right */
@@ -1350,6 +1568,10 @@ STRESS-|<span style="background-color:#FFBAC7; font-family: Andale Mono, Courier
 
   
   gblWeAreInPREblockContent = 0;  /* false */
+
+  gbl_we_are_printing_graph = 0;
+  gbl_do_readahead          = 0; // do readahead until bottom of graph is printed
+
   f_fn_prtlin("  </pre>\n\n");   /* end of graph */
 
   /* 2. read until [beg_aspects]  , which look like this:
@@ -1372,7 +1594,8 @@ STRESS-|<span style="background-color:#FFBAC7; font-family: Andale Mono, Courier
   //f_fn_prtlin("<div class=\"explain\">");
   f_fn_prtlin("<pre class=\"explain\">");
   gblWeAreInPREblockContent = 1;  
-  f_fn_prtlin("           Important Periods");
+/*   f_fn_prtlin("           Important Periods"); */
+  f_fn_prtlin("           Important Periods          ");
   f_fn_prtlin("    (they influence the graph above)\n");
   gblWeAreInPREblockContent = 0;  /* false */
   f_fn_prtlin("</pre>");
@@ -1459,103 +1682,116 @@ STRESS-|<span style="background-color:#FFBAC7; font-family: Andale Mono, Courier
   */
   if (gbl_is_first_year_in_life == 0) {
 
-/*   f_fn_prtlin("  <table class=\"trait\"> <tr> <th colspan=\"3\"> Single Stress Score For the Whole Year </th> </tr>"); */
-
-  f_fn_prtlin("  <div><br><br><br></div>");
-/*     "  <table class=\"trait\"> <tr> <th colspan=\"3\"> Single Score For %s </tr>", */
-  sprintf(writebuf,
-    "  <table class=\"trait\"> <tr> <th colspan=\"3\"> Score For %s </tr>",
-    gbl_year_for_fut
-  );
-  f_fn_prtlin(writebuf);
-
-/*   f_fn_prtlin("</table>"); */
-/*   f_fn_prtlin("<table class=\"trait\">" ); */
-
-  f_fn_prtlin("  <tr > <th>Person</th> <th>Score</th> <th></th></tr>");
-
-
-  /* calibrate stress score for table */
-/*   int worknum; 
-*     worknum = targetDayScore;
-*     worknum = worknum * -1; 
-*     worknum = worknum + 900;
-*     if (worknum <= 0) worknum = 1;
-*     worknum = mapNumStarsToBenchmarkNum(IDX_FOR_SCORE_B, worknum);
-*     targetDayScore = worknum;
-* 
-*     PERCENTILE_RANK_SCORE =
-*       mapBenchmarkNumToPctlRank(targetDayScore);
-*/
-/* ks(gbl_person_name); */
-  strcpy(gbl_name_for_fut, arr(1));  /* for stress num table at bottom */
-  strcpy(gbl_year_for_fut, arr(2));  /* for stress num table at bottom */
-/*   strcpy(gbl_person_name, arr(1)); */
-
-  if (gbl_YearStressScore == 0) gbl_YearStressScore = 1; 
-
-  if (gbl_YearStressScore >= 90) {
-    write_calendar_day_score(gbl_name_for_fut, gbl_YearStressScore);
-  }
-  f_fn_prtlin("  <tr class=\"cGr2\"><td></td> <td> 90  </td> <td>Great</td> </tr>");
-  if (gbl_YearStressScore >= 75) {
-    write_calendar_day_score(gbl_name_for_fut, gbl_YearStressScore);
-  }
-  f_fn_prtlin("  <tr class=\"cGre\"><td></td> <td> 75  </td> <td>Good</td> </tr>");
-
-  if ( gbl_YearStressScore  >= 75) {
-    f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
-    f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
-    f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
-  }
-  if ( gbl_YearStressScore  < 75  &&  gbl_YearStressScore >= 50 ) {
-    write_calendar_day_score(gbl_name_for_fut, gbl_YearStressScore);
-    f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
-    f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
-  }
-    //   if ( gbl_YearStressScore  < 50  &&  gbl_YearStressScore >= 25 ) {
-    if ( gbl_YearStressScore  < 50  &&  gbl_YearStressScore >  25 ) {
-        
-    f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
-    f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
-    write_calendar_day_score(gbl_name_for_fut, gbl_YearStressScore);
-  }
-      //  if ( gbl_YearStressScore <= 25 ) 
-          if ( gbl_YearStressScore <  25 ) {
-              
-    f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
-    f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
-    f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
-  }
-
-  if (gbl_YearStressScore >  25)
-    write_calendar_day_score(gbl_name_for_fut, gbl_YearStressScore);
-  f_fn_prtlin("  <tr class=\"cRed\"><td></td> <td> 25  </td> <td>Stress</td> </tr>");
-  if (gbl_YearStressScore >  10)
-    write_calendar_day_score(gbl_name_for_fut, gbl_YearStressScore);
+// cannot use this since myleftmargin overrides centering on big screens
+// 
+//     int sizeLongestFld;
+//     char myleftmargin[32];
+//     sizeLongestFld = strlen(gbl_name_for_fut);
+//          if (sizeLongestFld ==  1) { strcpy(myleftmargin, "8.00em;"); }
+//     else if (sizeLongestFld ==  2) { strcpy(myleftmargin, "7.75em;"); }
+//     else if (sizeLongestFld ==  3) { strcpy(myleftmargin, "7.50em;"); }
+//     else if (sizeLongestFld ==  4) { strcpy(myleftmargin, "7.25em;"); } // s/b 7.0
+//     else if (sizeLongestFld ==  5) { strcpy(myleftmargin, "7.00em;"); }
+//     else if (sizeLongestFld ==  6) { strcpy(myleftmargin, "6.75em;"); }
+//     else if (sizeLongestFld ==  7) { strcpy(myleftmargin, "6.50em;"); }
+//     else if (sizeLongestFld ==  8) { strcpy(myleftmargin, "6.25em;"); }
+//     else if (sizeLongestFld ==  9) { strcpy(myleftmargin, "6.00em;"); }
+//     else if (sizeLongestFld == 10) { strcpy(myleftmargin, "5.75em;"); }
+//     else if (sizeLongestFld == 11) { strcpy(myleftmargin, "5.50em;"); }
+//     else if (sizeLongestFld == 12) { strcpy(myleftmargin, "5.25em;"); }
+//     else if (sizeLongestFld == 13) { strcpy(myleftmargin, "5.00em;"); }
+//     else if (sizeLongestFld == 14) { strcpy(myleftmargin, "4.75em;"); }
+//     else if (sizeLongestFld == 15) { strcpy(myleftmargin, "4.50em;"); } //2.8
+//     else                           { strcpy(myleftmargin, "4.5em;"); }
+//     "  <table class=\"trait\" style=\"margin-left: %s;\"> <tr> <th colspan=\"3\"> Score For %s </tr>",
+//     myleftmargin,
+//     gbl_year_for_fut
 
 
-  f_fn_prtlin("  <tr class=\"cRe2\"><td></td> <td> 10  </td> <td>OMG</td> </tr>");
-  write_calendar_day_score(gbl_name_for_fut, gbl_YearStressScore); /* only writes if still unwritten */
+    //f_fn_prtlin("  <div><br><br><br></div>");
+    f_fn_prtlin("  <div><br></div>");
+    sprintf(writebuf,
+      "  <table class=\"trait\"> <tr> <th colspan=\"3\"> Score For %s </tr>",
+      gbl_year_for_fut
+    );
+    f_fn_prtlin(writebuf);
 
-  f_fn_prtlin("  </table>");
+
+    f_fn_prtlin("  <tr > <th>Person</th> <th>Score</th> <th></th></tr>");
 
 
-/*   f_fn_prtlin("<div><br></div>"); */
-  f_fn_prtlin("<pre class=checkoutbox> ");
-  gblWeAreInPREblockContent = 1;  /* true */
-/*   f_fn_prtlin(" Check out Group reports \"Best Year\" and \"Best Day\". "); */
-/*   f_fn_prtlin("   Check out Group report \"Best Year\".   "); */
+    /* calibrate stress score for table */
+  /*   int worknum; 
+  *     worknum = targetDayScore;
+  *     worknum = worknum * -1; 
+  *     worknum = worknum + 900;
+  *     if (worknum <= 0) worknum = 1;
+  *     worknum = mapNumStarsToBenchmarkNum(IDX_FOR_SCORE_B, worknum);
+  *     targetDayScore = worknum;
+  * 
+  *     PERCENTILE_RANK_SCORE =
+  *       mapBenchmarkNumToPctlRank(targetDayScore);
+  */
+    strcpy(gbl_name_for_fut, arr(1));  /* for stress num table at bottom */
+    strcpy(gbl_year_for_fut, arr(2));  /* for stress num table at bottom */
 
-/*   f_fn_prtlin(""); */
-/*   f_fn_prtlin("   Check out group report Best Year which uses   "); */
+    if (gbl_YearStressScore == 0) gbl_YearStressScore = 1; 
 
-/* <.> */
-  f_fn_prtlin("  Check out group report \"Best Year\" which uses   ");
-  f_fn_prtlin("  this score to compare with other group members.  ");
-  f_fn_prtlin("");
-  gblWeAreInPREblockContent = 0;  /* false */
-  f_fn_prtlin("</pre> ");
+    if (gbl_YearStressScore >= 90) {
+      write_calendar_day_score(gbl_name_for_fut, gbl_YearStressScore);
+    }
+    f_fn_prtlin("  <tr class=\"cGr2\"><td></td> <td> 90  </td> <td>Great</td> </tr>");
+    if (gbl_YearStressScore >= 75) {
+      write_calendar_day_score(gbl_name_for_fut, gbl_YearStressScore);
+    }
+    f_fn_prtlin("  <tr class=\"cGre\"><td></td> <td> 75  </td> <td>Good</td> </tr>");
+
+    if ( gbl_YearStressScore  >= 75) {
+      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
+      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
+      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
+    }
+    if ( gbl_YearStressScore  < 75  &&  gbl_YearStressScore >= 50 ) {
+      write_calendar_day_score(gbl_name_for_fut, gbl_YearStressScore);
+      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
+      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
+    }
+      //   if ( gbl_YearStressScore  < 50  &&  gbl_YearStressScore >= 25 ) 
+      if ( gbl_YearStressScore  < 50  &&  gbl_YearStressScore >  25 ) {
+          
+      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
+      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
+      write_calendar_day_score(gbl_name_for_fut, gbl_YearStressScore);
+    }
+        //  if ( gbl_YearStressScore <= 25 ) 
+            if ( gbl_YearStressScore <  25 ) {
+                
+      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
+      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
+      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
+    }
+
+    if (gbl_YearStressScore >  25)
+      write_calendar_day_score(gbl_name_for_fut, gbl_YearStressScore);
+    f_fn_prtlin("  <tr class=\"cRed\"><td></td> <td> 25  </td> <td>Stress</td> </tr>");
+    if (gbl_YearStressScore >  10)
+      write_calendar_day_score(gbl_name_for_fut, gbl_YearStressScore);
+
+
+    f_fn_prtlin("  <tr class=\"cRe2\"><td></td> <td> 10  </td> <td>OMG</td> </tr>");
+    write_calendar_day_score(gbl_name_for_fut, gbl_YearStressScore); /* only writes if still unwritten */
+
+    f_fn_prtlin("  </table>");
+
+
+    f_fn_prtlin("<pre class=checkoutbox> ");
+    gblWeAreInPREblockContent = 1;  /* true */
+
+    f_fn_prtlin("  Check out group report \"Best Year\" which uses   ");
+    f_fn_prtlin("  this score to compare with other group members.  ");
+    f_fn_prtlin("");
+    gblWeAreInPREblockContent = 0;  /* false */
+    f_fn_prtlin("</pre> ");
 
   } /* only when gbl_is_first_year_in_life == 0 */
 
@@ -1564,8 +1800,13 @@ STRESS-|<span style="background-color:#FFBAC7; font-family: Andale Mono, Courier
   f_fn_prtlin("<pre class=willpower> ");
   gblWeAreInPREblockContent = 1;  /* true */
 /*   f_fn_prtlin( "                                                                "); */
-  f_fn_prtlin( "  Your intense willpower can overcome and control your destiny  ");
-  f_fn_prtlin( "                                                                ");
+
+  //f_fn_prtlin( "  Your intense willpower can overcome and control your destiny  ");
+  //f_fn_prtlin( "                                                                ");
+
+  f_fn_prtlin( "  Your intense willpower can overcome  ");
+  f_fn_prtlin( "       and control your destiny        ");
+  f_fn_prtlin( "                                       ");
   gblWeAreInPREblockContent = 0;  /* false */
   f_fn_prtlin("</pre>");
 
@@ -1590,17 +1831,16 @@ STRESS-|<span style="background-color:#FFBAC7; font-family: Andale Mono, Courier
   f_fn_prtlin(writebuf);
   gblWeAreInPREblockContent = 0; 
   f_fn_prtlin("</pre>");
-  f_fn_prtlin("");
-  f_fn_prtlin("");
+
+//  f_fn_prtlin("");
+//  f_fn_prtlin("");
+  f_fn_prtlin("<div><br><br></div>");
 
   f_fn_prtlin("\n</body>\n");
   f_fn_prtlin("</html>");
 
+} /* end of fn_outputGrhAndAspects() */    // webview
 
-  f_fn_prtlin("\n</body>\n");
-  f_fn_prtlin("</html>");
-
-} /* end of fn_outputGrhAndAspects() */
 
 
 /* ************************************************************
@@ -1651,7 +1891,7 @@ void f_fn_aspect_text(char *aspect_code) {
 * this is called once per aspect in docin
 * From February 28, 2008 to March 31, 2008 and also from June 17, 2008 to July 1, 2008.  ^(vecju)
 * ************************************************************/
-void fn_aspect_from_to(char *doclin)
+void fn_aspect_from_to(char *doclin)   // webview
 {
   char fromtoline[1024];
   char look_starting_here[1024];
@@ -1678,7 +1918,6 @@ void fn_aspect_from_to(char *doclin)
   *p = '\0';   /* end the fromtoline string here */
   strcpy(look_starting_here, fromtoline);
 
-/* <.> */
  //f_fn_prtlin("<div class=\"fromtodates\">");
  f_fn_prtlin("<pre class=\"fromtodates\">");
  gblWeAreInPREblockContent = 1;  
@@ -1694,12 +1933,6 @@ void fn_aspect_from_to(char *doclin)
       *  (less leading white for 2nd, 3rd)
       */
 
-/*       if (is_first_from_to_in_doclin == 1) { */
-/*         sprintf(s1, "%s%s%s", "  <h4><br><br><br>", look_starting_here, "</h4>"); */
-/*       } else { */
-/*         sprintf(s1, "%s%s%s", "  <h4>", look_starting_here, "</h4>"); */
-/*       } */
-/*       f_fn_prtlin(s1); */
 
       if (is_first_from_to_in_doclin == 1) {
         sprintf(writebuf, "%s", look_starting_here); 
@@ -1756,8 +1989,46 @@ void fn_aspect_from_to(char *doclin)
 */
 void f_fn_prtlin(char *lin) {
   char myEOL[8];
-  char myLastLine[8192];
+  //char myLastLine[8192], next_doclin[8192], current_prtlin[8192], thirdline[8192];
+  char                   next_doclin[8192], current_prtlin[8192], thirdline[8192];
   char *ptr;
+//trn("wv");ki(gbl_do_readahead);ks(lin);
+
+  // ignore rubbish line
+  if (strstr(lin, "raph]") != NULL) return;
+
+
+  // do second line of benchmark label printing, 
+  // BUT not if the  benchmark label is on the last line of the graph
+  // (next line has apostrophe tick marks for the dates)
+  //
+  if (gbl_do_second_line == 1) {
+
+/* tn();trn("in gbl_do_second_line"); */
+    strcpy(next_doclin, global_docin_lines[global_read_idx + 1]); /* get next input line */
+    strcpy(thirdline,   global_docin_lines[global_read_idx + 2]); /* get next input line */
+/* ksn(lin); */
+/* ksn(next_doclin); */
+/* ksn(thirdline); */
+
+    //if (strstr(next_doclin, "||||||||||||||") == NULL) {
+    if (strstr(next_doclin, "''''''''''''''") == NULL) {
+
+      insert_minus_benchmark( lin);
+/* trn("after insert minus");ks(lin); */
+      change_last_7_chars(lin);
+/* trn("after change_last7");ks(lin); */
+
+    }
+
+
+    gbl_do_second_line = 0;
+  } // print second line of benchmark label
+  if (gbl_do_second_line == 7) {  // print of benchmark label was nixed
+    change_last_7_chars(lin);
+    gbl_do_second_line = 0;
+  }
+
 
   /* determine end of line method
   */
@@ -1778,14 +2049,15 @@ void f_fn_prtlin(char *lin) {
   */
   if (gbl_do_readahead == 1) {
 /* b(20); */
+    // not s1
+    strcpy(next_doclin, global_docin_lines[global_read_idx + 1]); /* get next input line */
 
-    strcpy(s1, global_docin_lines[global_read_idx + 1]); /* get next input line */
 /* trn("curr=");ks(lin); */
 /* trn("next=");ks(s1); */
 
     /* if first line of graph is GREAT or GOOD, print it as is
     */
-    if (gbl_just_started_readahead == 1 ) {
+    if (gbl_just_started_readahead == 1 ) {  // 1st line of graph
       if (((strstr(lin, "GREAT") != NULL) || strstr(lin, "GOOD") != NULL)) {
 
 
@@ -1798,22 +2070,21 @@ void f_fn_prtlin(char *lin) {
       } 
       gbl_just_started_readahead = 0;
 
-    } else if (strstr(s1, "GREAT") != NULL) {
+//    } else if (strstr(s1, "GREAT") != NULL) {
+    } else if (strstr(next_doclin, "GREAT") != NULL) {
+
 /* tn();trn("in GREAT NEXT"); */
 
       /* replace last 7 spaces with GREAT */
-/*       s1[strlen(gbl_prtlin_lastline) - 7] = '\0'; */
-      /* lastline,  append GREAT */
-/*       sprintf(lin, "%s<span class=\"cGr2\">-GREAT </span>%s", s1, myEOL); */
-
-/*       strcpy(s2, "-GREAT "); */
       strcpy(s2, " GREAT ");
       /* into s3, get rest of string from 8th char */
-      strcpy(s3, &doclin[8 - 1]);
+      strcpy(s3, &doclin[8 - 1]);  // this is  the CURRENT  doclin, not next
+
 /*       strcpy(s3, &lin[8 - 1]); */
 /* ksn(s3); */
-      /* replace " GREAT|" with "-GREAT " and put on right side */
-      sprintf(writebuf, " %s<span class=\"cGr2\">%s</span>", s3, s2); 
+      /* replace " GREAT|" with "-GREAT " on CURRENT LINE and put on right side 
+      */
+      sprintf(writebuf, " %s<span class=\"cGr2\">%s</span>", s3, s2);   // buf for CURRENT line
       bracket_string_of("X", writebuf, "<span class=\"cGr2\">", "</span>");
 /* tn();b(334);ks(writebuf); */
       bracket_string_of("#", writebuf, "<span class=\"cSky\">", "</span>");
@@ -1823,30 +2094,27 @@ void f_fn_prtlin(char *lin) {
       scharswitch(writebuf, '|', ' ');  /* sideline out */
 /* ksn(writebuf); */
 /* ksn(myEOL); */
-    /*  scharout(writebuf,'\n');*/  /* remove newlines */
+
+      strcpy(gbl_benchmark_label, "GREAT");
+      gbl_do_second_line =  insert_label_benchmark( writebuf, next_doclin);
+      change_last_7_chars(writebuf);
 
       n = sprintf(p,"%s%s", writebuf, myEOL);
 /*       n = sprintf(p,"%s", writebuf); */
 /* trn("GREAT next printed=");ks(p); */
-      fput(p, n, Fp_f_HTML_file);        /* PRINT the line */
+      fput(p, n, Fp_f_HTML_file);        /* PRINT the CURRENT line */
       strcpy(gbl_prtlin_lastline, p); /* save last line printed in gbl */
       return;
 
-    } else if (strstr(s1, "GOOD") != NULL) {
+      // here the NEXT doclin requires fiddling ("----" etc)
+
+//    } else if (strstr(s1, "GOOD") != NULL) {
+    } else if (strstr(next_doclin, "GOOD") != NULL) {
+
 /* tn();trn("in GOOD NEXT"); */
-/* ksn(global_docin_lines[global_read_idx - 1]); */
-/* ksn(global_docin_lines[global_read_idx ]); */
-/* ksn(global_docin_lines[global_read_idx + 1]); */
-      /* replace last 7 spaces with GREAT */
-/*       s1[strlen(gbl_prtlin_lastline) - 7] = '\0';  */
-      /* lastline,  append GREAT */
-/*       sprintf(lin, "%s<span class=\"cGre\">-GOOD </span>%s", s1, myEOL); */
-/* ksn(doclin); */
-/*       strcpy(s2, "-GOOD  "); */
       strcpy(s2, " GOOD  ");
       /* into s3, get rest of string from 8th char */
       strcpy(s3, &doclin[8 - 1]);
-/*       strcpy(s3, &lin[8 - 1]); */
       sprintf(writebuf, " %s<span class=\"cGre\">%s</span>", s3, s2); 
       bracket_string_of("X", writebuf, "<span class=\"cGre\">", "</span>");
       bracket_string_of("#", writebuf, "<span class=\"cSky\">", "</span>");
@@ -1854,30 +2122,35 @@ void f_fn_prtlin(char *lin) {
       scharswitch(writebuf, '#', ' ');
       scharswitch(writebuf, '|', ' ');  /* sideline out */
 
+      strcpy(gbl_benchmark_label, "GOOD");
+      gbl_do_second_line =  insert_label_benchmark( writebuf, next_doclin);  // ---<
+      change_last_7_chars(writebuf);
+
+
       n = sprintf(p,"%s%s", writebuf, myEOL);
 /* trn("GOOD next printed=");ks(p); */
       fput(p, n, Fp_f_HTML_file);
       strcpy(gbl_prtlin_lastline, p);
 
       return;
+      // end of GOOD is in NEXT line
 
     } else if ( strstr(lin, "GREAT") != NULL) {
 /* tn();trn("in GREAT current"); */
-/* ksn(lin); */
+
       /* remove GREAT from current line and substitute 7 spaces */
-      strcpy(s1, lin);
-/* ksn(s1); */
-/*       ptr = strstr(s1, "<span class=\"cGr2\">-GREAT </span>"); */
-      ptr = strstr(s1, "<span class=\"cGr2\"> GREAT </span>");
-/* ksn(ptr); */
-/*       memcpy(ptr, "       \n\0", 9); */
+
+      //strcpy(s1, lin);
+      //ptr = strstr(s1, "<span class=\"cGr2\"> GREAT </span>");
+      strcpy(current_prtlin, lin);
+      ptr = strstr(current_prtlin, "<span class=\"cGr2\"> GREAT </span>");
+
       memcpy(ptr, "       \0", 8);
-/* ksn(ptr); */
-/* ksn(s1); */
-      strcpy(lin,s1);
-/* ksn(lin); */
-/* exit(320); */
+      //strcpy(lin,s1);
+      strcpy(lin,current_prtlin);
+
       n = sprintf(p,"%s%s", writebuf, myEOL);
+
 /* trn("GREAT curr printed=");ks(p); */
       fput(p, n, Fp_f_HTML_file);
       strcpy(gbl_prtlin_lastline, p);
@@ -1895,23 +2168,35 @@ void f_fn_prtlin(char *lin) {
 /* strcpy(tststr, "<span class=\"cGre\"> GOOD </span>"); */
 /* ksn(tststr); */
       myptrtest = strstr(lin, "<span class=\"cGre\"> GOOD  </span>");
-/* ksn(myptrtest); */ 
-/*       memcpy(ptr, "       \n\0", 9); */
       memcpy(myptrtest, "       \0", 8);
-/*       s1[strlen(gbl_prtlin_lastline) - 7] = '\0'; */
-/* ksn(myptrtest); */
-/* ksn(s5); */
-/*       strcpy(lin,s5); */
-/* ksn(lin); */
 
       n = sprintf(p,"%s%s", writebuf, myEOL);
 /* trn("GOOD curr printed=");ks(p); */
       fput(p, n, Fp_f_HTML_file);
       strcpy(gbl_prtlin_lastline, p);
 
-      gbl_do_readahead  = 0; /* do readahead until "GOOD" label is printed */
       return;
     }
+
+
+   else if (strstr(lin, "STRESS") != NULL) {
+
+/* tn();trn("doing STRESS  LABEl !!!!!!!!!!!!!!"); */
+     strcpy(gbl_benchmark_label, "STRESS");
+     gbl_do_second_line =  insert_label_benchmark(writebuf, next_doclin);
+   }
+
+   else if (strstr(lin, "OMG") != NULL) {
+
+/* tn();trn("doing OMG  LABEl !!!!!!!!!!!!!!"); */
+     // check if OMG is on last line of graph
+     // if yes, special output
+     //
+
+     strcpy(gbl_benchmark_label, "OMG");
+     gbl_do_second_line =  insert_label_benchmark(writebuf, next_doclin);
+   }
+
 
   } /* (gbl_do_readahead == 1) */
 
@@ -1948,7 +2233,7 @@ void f_fn_prtlin(char *lin) {
     /* start readahead after printing line with "6 months" in it
     */
     if(strstr(lin, "6 months") != NULL) {
-      gbl_do_readahead           = 1; /* do readahead until "GOOD" label is printed */
+      gbl_do_readahead           = 1; // do readahead until bottom of graph is printed
       gbl_just_started_readahead = 1;
     }
 
@@ -1967,7 +2252,7 @@ void f_fn_prtlin(char *lin) {
     /* start readahead after printing line with "6 months" in it
     */
     if(strstr(lin, "6 months") != NULL) {
-      gbl_do_readahead           = 1; /* do readahead until "GOOD" label is printed */
+      gbl_do_readahead           = 1; // do readahead until bottom of graph is printed
       gbl_just_started_readahead = 1;
     }
 
@@ -1993,9 +2278,19 @@ void f_fn_prtlin(char *lin) {
     return;
   }
 
+//  /* if last line printed has "-OMG"  AND this line has "-OMG"
+//  *  do not print this line
+//  *  (bug with 2 "OMG-" lines when star is on bottom line and
+//  *  bottom line is OMG line)
+//  */
+//  if (   strstr(gbl_prtlin_lastline, "OMG") != NULL
+//      && strstr(lin,                 "OMG") != NULL 
+//     ) {
+//    return;
+//  }
 
-/* if (strstr(lin, "GREAT-") != NULL) { */
-/* tn();trn("f_fn_prtlin() GREAT   at TOP    "); ksn(lin); } */
+/* if (strstr(lin, "GREAT-") != NULL) x */
+/* tn();trn("f_fn_prtlin() GREAT   at TOP    "); ksn(lin); x */
 
 
   /* weird fix 
@@ -2017,23 +2312,39 @@ void f_fn_prtlin(char *lin) {
   *  if line has "OMG-", but does NOT have "cRe2", do not print it
   *  BUT, print a line of spaces in cRe2
   */
+/* tn();trn(";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;"); */
+/* ksn(lin); */
   if(strstr(lin, "OMG-") != NULL
   && strstr(lin, "cRe2")    == NULL)  {
-    /* print blank line with color cRe2 under the 1st OMG */
-    /* #define NUM_PTS_FOR_FUT 92 */
-    sfill(myLastLine, NUM_PTS_FOR_FUT, ' '); 
-    bracket_string_of(" ", myLastLine, "<span class=\"cRe2\">", "</span>");
-  
-/*     n = sprintf(p,"       %s\n", myLastLine );  */
-    n = sprintf(p,"       %s%s", myLastLine, myEOL); /* left margin = 7 spaces */
+    /* print blank line with color cRe2 under the 1st OMG
+       but must have --- for OMG in it */
+
+    // 20121229  HARD CODE THIS LINE  (it worked)
+    //  strcpy(p, " <span style=\"background-color:#ff4477\"> </span><span style=\"color:#ff4477\">---</span><span style=\"background-color:#ff4477\"> </span><span class=\"cRe2\">                                                                                                                                                                                   </span> ");
+  // strcpy(p, " <span style=\"background-color:#ff4477\"> </span><span style=\"color:#ff4477\">---</span><span style=\"background-color:#ff4477\"> </span><span class=\"cRe2\">                                                                                                                                                                                   </span> ");
+     strcpy(p, " <span style=\"background-color:#ff4477\"> </span><span style=\"color:#ff4477\">---</span><span style=\"background-color:#ff4477\"> </span><span class=\"cRe2\">                                                                                       </span> ");
+
+    n = (int)strlen(p);
     fput(p, n, Fp_f_HTML_file);
     strcpy(gbl_prtlin_lastline, p); /* save last line printed in gbl */
+
+
+
+
+
+    /* print blank line with color cRe2 under the 1st OMG */
+    /* #define NUM_PTS_FOR_FUT 92 */
+//    sfill(myLastLine, NUM_PTS_FOR_FUT, ' '); 
+//    bracket_string_of(" ", myLastLine, "<span class=\"cRe2\">", "</span>");
+//    n = sprintf(p,"       %s%s", myLastLine, myEOL); /* left margin = 7 spaces */
+//    fput(p, n, Fp_f_HTML_file);
+//    strcpy(gbl_prtlin_lastline, p); /* save last line printed in gbl */
     return;
   }
 
 /* GREAT is too short here, but OK in docin array   what hpppend? */
-/* if (strstr(lin, "GREAT-") != NULL) { */
-/* tn();trn("f_fn_prtlin() GREAT"); ksn(lin); } */
+/* if (strstr(lin, "GREAT-") != NULL) x */
+/* tn();trn("f_fn_prtlin() GREAT"); ksn(lin); x */
 
   /* remove pipe at end of any line with a pipe in it
   */
@@ -2047,6 +2358,8 @@ void f_fn_prtlin(char *lin) {
     memcpy(end_pipe, " ", 1);
   }
   
+  if (gbl_we_are_printing_graph == 1) change_last_7_chars(lin);
+  
 
   n = sprintf(p,"%s%s", lin, myEOL);
   fput(p, n, Fp_f_HTML_file);        /* PRINT the line */
@@ -2057,12 +2370,6 @@ void f_fn_prtlin(char *lin) {
 } /* end of f_fn_prtlin() */
 
 
-/* no \n at end */
-/* void f_fn_prtlin_aspect(char *lin) { 
-*   n = sprintf(p,"%s", lin);
-*   fput(p, n, Fp_HTML_file);
-* }  
-*/
 
 
 /* arg in_docin_last_idx  is pointing at the last line written.
@@ -2092,6 +2399,7 @@ void f_docin_get(char *in_line)
 
   scharout(in_line,'\n');   /* remove newlines */
 
+/* trn("docin=");ks(in_line); */
 } /* end of f_docin_get */
 
 
@@ -2284,6 +2592,7 @@ int make_calendar_day_html_file(   /* called from futdoc.c  */
   f_fn_prtlin("  <meta name=\"google\" content=\"notranslate\">");
   f_fn_prtlin("  <meta http-equiv=\"Content-Language\" content=\"en\" />");
 
+  f_fn_prtlin("  <meta name = \"format-detection\" content = \"telephone=no\">");
 
 
   /* HEAD   STYLE/CSS
@@ -2403,7 +2712,8 @@ int make_calendar_day_html_file(   /* called from futdoc.c  */
 
   f_fn_prtlin( "    .star        { color:#f7ebd1; }");
 
-  f_fn_prtlin("     .cNam        { color:#3f3ffa;");
+  //f_fn_prtlin("     .cNam        { color:#3f3ffa;");
+  f_fn_prtlin("     .cNam        {               ");   // no blue name
   f_fn_prtlin("                   background-color: #F7ebd1;");
   f_fn_prtlin("                   font-size: 133%;");
   f_fn_prtlin("    }");
@@ -2491,7 +2801,8 @@ int make_calendar_day_html_file(   /* called from futdoc.c  */
 
 
   f_fn_prtlin("<div><br></div>");
-  f_fn_prtlin("  <h1>Calendar Day </h1>");
+//  f_fn_prtlin("  <h1>Calendar Day </h1>");
+  f_fn_prtlin("  <h1>What Color is Today?</h1>");
 
   sprintf(writebuf, "   <h2>%s &nbsp%s %d %d</h2>",
     fN_day_of_week[ day_of_week(itarget_mm, itarget_dd, itarget_yyyy) ],
@@ -2510,10 +2821,10 @@ int make_calendar_day_html_file(   /* called from futdoc.c  */
 
 /*   f_fn_prtlin("  <table class=\"trait\"> <tr> <th colspan=\"3\"><br> \"How was your day?\"<br>&nbsp</th> </tr>"); */
 
-  f_fn_prtlin("  <table class=\"trait\"> <tr> <th colspan=\"3\"> How was your day?</th> </tr>");
+//  f_fn_prtlin("  <table class=\"trait\"> <tr> <th colspan=\"3\"> How was your day?</th> </tr>");
 
-/*   f_fn_prtlin("</table>"); */
-/*   f_fn_prtlin("<table class=\"trait\">" ); */
+   f_fn_prtlin("</table>");
+   f_fn_prtlin("<table class=\"trait\">" );
 
   f_fn_prtlin("  <div><br></div>");
   f_fn_prtlin("  <tr > <th>Person</th> <th>Score</th> <th></th></tr>");
@@ -2631,11 +2942,12 @@ int make_calendar_day_html_file(   /* called from futdoc.c  */
 
 /*   f_fn_prtlin("<h5><br><br>produced by iPhone app Astrology by Measurement</h5>"); */
 
-  sprintf(writebuf, "<h5><br><br><br>produced by iPhone app %s</h5>", APP_NAME);
-  f_fn_prtlin(writebuf);
+//  sprintf(writebuf, "<h5><br><br><br>produced by iPhone app %s</h5>", APP_NAME);
+//  f_fn_prtlin(writebuf);
+  //f_fn_prtlin("<h4><span style=\"background-color:#FFBAC7;\">&nbspThis report is for entertainment purposes only.&nbsp</span></h4>");
 
+  f_fn_prtlin("<div> <span style=\"font-size: 1.0em\"><br>produced by iPhone app \"Me and my BFFs\"</span><br><br><span style=\"font-size: 0.9em; font-weight: bold; color:#FF0000;\">This report is for entertainment purposes only.</span></div><div><br></div>");
 
-  f_fn_prtlin("<h4><span style=\"background-color:#FFBAC7;\">&nbspThis report is for entertainment purposes only.&nbsp</span></h4>");
   f_fn_prtlin("</body>");
   f_fn_prtlin("</html>");
 
@@ -2643,7 +2955,7 @@ int make_calendar_day_html_file(   /* called from futdoc.c  */
 
   gblCalDayScoreIsWritten = 0;  /* re-init */
 
-  fclose_fpdb_for_debug();
+//  fclose_fpdb_for_debug();
 
   return(0);
 
@@ -2680,7 +2992,7 @@ void write_calendar_day_score(char *pname, int istress_score) {
 void f_fnBIGOutPutTopOfHtmlFile(void) {
   int i;
 
-/* trn("in f_fnOutPutTopOfHtmlFile()");  */
+/* trn("in f_fnBIGOutPutTopOfHtmlFile()");  */
 
   /* 1. read until [beg_topinfo1]  (name)
   */
@@ -2699,10 +3011,7 @@ void f_fnBIGOutPutTopOfHtmlFile(void) {
     strcpy(arr(i), doclin);
   }
 
-  /* trn("------------------------------------");
-  * for (k=0; k < i; k++) ksn(arr(k));
-  * trn("------------------------------------");
-  */
+/*    for (k=0; k < i; k++) ksn(arr(k)); */
 
 
 
@@ -2744,7 +3053,7 @@ void f_fnBIGOutPutTopOfHtmlFile(void) {
   /* HEAD  META
   */
   sprintf(writebuf, "  <meta name=\"description\" content=\"Calendar Year for Person produced by iPhone App %s\"> ", APP_NAME);
-  f_fnBIG_prtlin( writebuf);
+  f_fnBIG_prtlin( writebuf); 
 
 
   f_fnBIG_prtlin( "  <meta http-equiv=\"Content-Type\" content=\"text/html\"; charset=\"iso-8859-1\">"); 
@@ -2779,15 +3088,45 @@ void f_fnBIGOutPutTopOfHtmlFile(void) {
 /*   f_fnBIG_prtlin("  <meta name=\"viewport\" content=\"width=device-width\" />"); */
 /*   f_fnBIG_prtlin("  <meta name=\"viewport\" content=\"initial-scale=1.0\"> "); */
 // <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-
 /*   f_fnBIG_prtlin("  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maxium-scale=1.0 />\" " ); */
 /*   f_fnBIG_prtlin("  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0\"> " ); */
+//  f_fnBIG_prtlin("  <meta name=\"viewport\" content=\"initial-scale=1.0\"> "); // OK but big on iPhone  ipad change bad
+//  f_fnBIG_prtlin("  <meta name=\"viewport\" content=\"initial-scale=0.5\"> "); // squiggly
+//  f_fnBIG_prtlin("  <meta name=\"viewport\" content=\"initial-scale=1.0, maximum-scale=1.0 \"> "); // OK but big on iPhone  ipad change bad
+//  f_fnBIG_prtlin("  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0\"> " );//no
 
+
+//f_fnBIG_prtlin("  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, user-scalable=yes\"> " );
+//  f_fnBIG_prtlin("  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, user-scalable=no\"> " );
+
+//  f_fnBIG_prtlin("  <meta name=\"viewport\" content=\"initial-scale=1.0\"> "); // OK but big on iPhone  ipad change bad
+
+  // set only device-width
+  //f_fnBIG_prtlin("  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0;\"> " );
+  //f_fnBIG_prtlin("  <meta name=\"viewport\"; initial-scale=1.0;\"> " );
+  // f_fnBIG_prtlin("  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0;\"> " );
+  //f_fnBIG_prtlin("  <meta name=\"viewport\" content=\"initial-scale=1.0\"> "); // OK but big on iPhone  ipad change bad
+  //f_fnBIG_prtlin("  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0\"> " );//no
+//  f_fnBIG_prtlin("  <meta name=\"viewport\" content=\"initial-scale=1.0, maximum-scale=1.0 \"> "); // OK but big on iPhone  ipad change bad
+//  f_fnBIG_prtlin("  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, user-scalable=no\"> " );
+
+// OLD GOLD    f_fnBIG_prtlin("  <meta name=\"viewport\" content=\"width=device-width, user-scalable=no\"> " ); // best graph fits device-width portrait and landscape and iPad OK!
+
+//  f_fnBIG_prtlin("  <meta name=\"viewport\" content=\"initial-scale=1.0\"> "); // OK but big on iPhone  ipad change bad
+  //f_fnBIG_prtlin("  <meta name=\"viewport\" content=\"initial-scale=0.75\"> "); // bad
+  f_fnBIG_prtlin("  <meta name=\"viewport\" content=\"initial-scale=1.0; \"> "); // 
+  f_fnBIG_prtlin("  <meta name = \"format-detection\" content = \"telephone=no\">");
 
   /* HEAD   STYLE/CSS
   */
   f_fnBIG_prtlin( "\n  <style type=\"text/css\">");
+//  f_fnBIG_prtlin( "    @media print { PRE {  page-break-inside:avoid; } }");
   f_fnBIG_prtlin( "    @media print { PRE {  page-break-inside:avoid; } }");
+
+// none of these work
+//  f_fnBIG_prtlin( "     -webkit-text-size-adjust: none; ");
+//  f_fnBIG_prtlin( "     -webkit-text-size-adjust: auto; ");
+//  f_fnBIG_prtlin( "     -webkit-text-size-adjust: 100%; ");
 
   f_fnBIG_prtlin( "    BODY {");
 /*   f_fnBIG_prtlin( "      width:100%;"); */
@@ -2817,16 +3156,31 @@ void f_fnBIGOutPutTopOfHtmlFile(void) {
 
   f_fnBIG_prtlin( "    H1 { font-size: 137%; font-weight: bold;   line-height: 95%; text-align: center;}");
   f_fnBIG_prtlin( "    H2 { font-size: 137%;                      line-height: 25%; text-align: center;}");
-  f_fnBIG_prtlin( "    H3 { font-size: 110%; font-weight: normal; line-height: 30%; text-align: center;}");
 
-/*   f_fnBIG_prtlin( "    H5 { font-size:  55%; font-weight: normal; line-height: 90%; text-align: center;}"); */
-/*   f_fnBIG_prtlin( "    H5 { font-size:  70%; font-weight: normal; line-height: 30%; text-align: center;}"); */
+  //f_fnBIG_prtlin( "    H3 { font-size: 110%; font-weight: normal; line-height: 30%; text-align: center;}");
+  //f_fnBIG_prtlin( "    H4 { font-size:  75%; font-weight: bold;   line-height: 30%; text-align: center;}");
+  f_fnBIG_prtlin( "    H3 { font-size: 130%; font-weight: normal; line-height: 30%; text-align: center;}");
+  f_fnBIG_prtlin( "    H4 { font-size:  95%; font-weight: bold;   line-height: 30%; text-align: center;}");
 
-/*   f_fnBIG_prtlin( "    H4 { font-size:  85%; font-weight: bold;   line-height: 30%; text-align: center;}"); */
-/*   f_fnBIG_prtlin( "    H5 { font-size:  75%; font-weight: normal; line-height: 30%; text-align: center;}"); */
-
-  f_fnBIG_prtlin( "    H4 { font-size:  75%; font-weight: bold;   line-height: 30%; text-align: center;}");
   f_fnBIG_prtlin( "    H5 { font-size:  70%; font-weight: normal; line-height: 30%; text-align: center;}");
+
+  f_fnBIG_prtlin( "    .bigfromto {");
+  f_fnBIG_prtlin( "      font-size:  95%; font-weight: bold;                   ; text-align: center;");
+  f_fnBIG_prtlin( "      font-size: 1.0em;");
+  f_fnBIG_prtlin( "      line-height: 1.4em");
+  f_fnBIG_prtlin( "    }");
+
+/*   f_fnBIG_prtlin( "    .bigfromto {"); */
+/*   f_fnBIG_prtlin( "      margin-top: 0.5em;"); */
+/*   f_fnBIG_prtlin( "      margin-bottom: 0.1em;"); */
+/*   f_fnBIG_prtlin( "      width: 100%;"); */
+/*   f_fnBIG_prtlin( "      text-align: center;"); */
+/*   f_fnBIG_prtlin( "      line-height: 145%;"); */
+/*   f_fnBIG_prtlin( "      font-size: 150%;"); */
+/*   f_fnBIG_prtlin( "      font-weight: bold;"); */
+/*   f_fnBIG_prtlin( "      background-color: #F7ebd1;"); */
+/*   f_fnBIG_prtlin( "      white-space: pre ; display: block; unicode-bidi: embed"); */
+/*   f_fnBIG_prtlin( "    }"); */
 
 
   f_fnBIG_prtlin( "    PRE {");
@@ -2836,6 +3190,17 @@ void f_fnBIGOutPutTopOfHtmlFile(void) {
   f_fnBIG_prtlin( "      font-size:   75%;");
   f_fnBIG_prtlin( "      line-height: 70%;");
   f_fnBIG_prtlin( "      margin:0 auto;");
+  //f_fnBIG_prtlin( "      letter-spacing: -1.2px;");
+  //f_fnBIG_prtlin( "      letter-spacing: -1.1px;");
+//  f_fnBIG_prtlin( "      letter-spacing: -2px;");
+//  f_fnBIG_prtlin( "      letter-spacing: -1px;"); // moved inline
+
+
+
+  f_fn_prtlin( "      white-space: pre ; display: block; unicode-bidi: embed");
+
+
+
   f_fnBIG_prtlin( "    }");
   f_fnBIG_prtlin( "    .prebox {");
 
@@ -2850,7 +3215,8 @@ void f_fnBIGOutPutTopOfHtmlFile(void) {
   f_fnBIG_prtlin( "      border-collapse: collapse;");
   f_fnBIG_prtlin( "      border-spacing: 0;");
   f_fnBIG_prtlin( "      line-height: 120%;");
-  f_fnBIG_prtlin( "      font-size: 75%;");
+//  f_fnBIG_prtlin( "      font-size: 75%;");
+  f_fnBIG_prtlin( "      font-size: 1.0em;");
 
   f_fnBIG_prtlin( "    }");
 /*   f_fnBIG_prtlin( "    .bgy {background-color:#ffff00;}"); */
@@ -2888,6 +3254,8 @@ void f_fnBIGOutPutTopOfHtmlFile(void) {
   f_fnBIG_prtlin( "    TD {");
   f_fnBIG_prtlin( "      white-space: nowrap;");
   f_fnBIG_prtlin( "      padding: 0;");
+  f_fnBIG_prtlin( "      font-size: 1.1em;");
+  f_fnBIG_prtlin( "      line-height: 1.4em");
   f_fnBIG_prtlin( "    }");
 
 /*   f_fnBIG_prtlin("    .cGre        { background-color:#e1fdc3; }");
@@ -2914,29 +3282,30 @@ void f_fnBIGOutPutTopOfHtmlFile(void) {
 /*   f_fnBIG_prtlin( "    .cRe2        { background-color:#ff3366; }"); */
 
 
-  f_fnBIG_prtlin( "    .cGr2        { background-color:#66ff33; }");
+  f_fnBIG_prtlin( "    .cGr2        { background-color:#66ff33; font-weight: bold; }");
 /*   f_fnBIG_prtlin( "    .cGre        { background-color:#84ff98; }"); */
-  f_fnBIG_prtlin( "    .cGre        { background-color:#a8ff98; }");
-  f_fnBIG_prtlin( "    .cRed        { background-color:#ff98a8; }");
-  f_fnBIG_prtlin( "    .cRe2        { background-color:#ff4477; }");
+  f_fnBIG_prtlin( "    .cGre        { background-color:#a8ff98; font-weight: bold; }");
+  f_fnBIG_prtlin( "    .cRed        { background-color:#ff98a8; font-weight: bold; }");
+  f_fnBIG_prtlin( "    .cRe2        { background-color:#ff4477; font-weight: bold; }");
 
 
   f_fnBIG_prtlin("    .row4        { background-color:#f8f0c0; }");
 
 /*   f_fnBIG_prtlin("    .cNeu        { background-color:#e1ddc3; }"); */
-  f_fnBIG_prtlin("    .cNeu        { background-color:#e5e2c7; }");
+  f_fnBIG_prtlin("    .cNeu        { background-color:#e5e2c7; font-weight: bold; }");
 
-  f_fnBIG_prtlin("    .cSky        { background-color:#3f3ffa; }");
-  f_fnBIG_prtlin( "   .star        { color:#f7ebd1; }");
+  f_fnBIG_prtlin("    .cSky        { background-color:#3f3ffa; font-weight: bold; }");
+  f_fnBIG_prtlin( "   .star        { color:#f7ebd1; font-weight: bold; }");
 
-  f_fnBIG_prtlin("    .cNam        { color:#3f3ffa;");
+  //f_fnBIG_prtlin("    .cNam        { color:#3f3ffa;");
+  f_fnBIG_prtlin("    .cNam        {               ");   // no blue name
   f_fnBIG_prtlin("                   background-color: #F7ebd1;");
   f_fnBIG_prtlin("                   font-size: 133%;");
   f_fnBIG_prtlin("    }");
 
 
   f_fnBIG_prtlin( "    table.trait {");
-  f_fnBIG_prtlin( "      font-size: 100%;");
+  f_fnBIG_prtlin( "      font-size: 1.5em;");
   f_fnBIG_prtlin( "      margin-left: auto;");
   f_fnBIG_prtlin( "      margin-right:auto;");
 /*   f_fnBIG_prtlin( "      font-family: Andale Mono, Monospace, Courier New;"); */
@@ -2999,7 +3368,7 @@ void f_fnBIGOutPutTopOfHtmlFile(void) {
 /*   f_fnBIG_prtlin( "    --> "); */
 
 // put in favicon 
-// old favicon      f_fnBIG_prtlin("<link href=\"data:image/x-icon;base64,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\" rel=\"icon\" type=\"image/x-icon\" />");
+//  f_fnBIG_prtlin("<link href=\"data:image/x-icon;base64,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\" rel=\"icon\" type=\"image/x-icon\" />");
 // ------------------------------------------------------
 // put in favicon  (after first comma and before next \"
 f_fnBIG_prtlin("<link href=\"data:image/x-icon;base64,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\" rel=\"icon\" type=\"image/x-icon\" />");
@@ -3065,9 +3434,14 @@ f_fnBIG_prtlin("<link href=\"data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAAB
 /*     "<h1>&nbsp&nbsp&nbsp&nbsp Calendar Year %s for <span class=\"cNam\">%s</span><br></h1>", */
 /*     arr(2), arr(1) */
 /*   ); */
+//    "<h1>Calendar Year %s for <span class=\"cNam\">%s&nbsp&nbsp </span><br></h1>",
+//    "<div>Calendar Year %s for <span class=\"cNam\">%s&nbsp&nbsp </span><br></div>",
+
+//  f_fnBIG_prtlin( "    H1 { font-size: 137%; font-weight: bold;   line-height: 95%; text-align: center;}");
   n = sprintf(writebuf,
-    "<h1>Calendar Year %s for <span class=\"cNam\">%s&nbsp&nbsp </span><br></h1>",
-    arr(2), arr(1)
+    "<div style=\"font-size: 137%%; font-weight: bold;\">Calendar Year %s for <span class=\"cNam\">%s&nbsp&nbsp </span><br></div>",
+//    arr(2), arr(1)
+     gbl_year_for_fut, gbl_name_for_fut
   );
   f_fnBIG_prtlin(writebuf);
 
@@ -3094,19 +3468,34 @@ void fn_BIGoutputGrhAndAspects(void) {
    */
   if (gblIsThis1stGrhToOutput == 1) {  /* 0 false, 1 true */
     gblIsThis1stGrhToOutput = 0; 
+
 /*     f_fnBIG_prtlin("  <pre><br>");          */
-    f_fnBIG_prtlin("  <pre>");         
+//    f_fnBIG_prtlin("  <pre>");         
+    f_fnBIG_prtlin("<pre style=\"letter-spacing: -1px;\">"); // moved inline
+
+
     gblWeAreInPREblockContent = 1;  /* true */
     f_fnBIG_prtlin("<br>");         
   } else {
     /* second graph start needs some more white space before it */
-/*     f_fnBIG_prtlin("  <pre><br><br><br><br><br><br><br>");  */
+    f_fnBIG_prtlin("  <pre><br><br><br><br><br><br><br>"); 
+
+    //gblWeAreInPREblockContent = 1;  /* true */
+    //f_fnBIG_prtlin("<br><br><br><br><br><br><br>"); 
+
+
     f_fnBIG_prtlin("  <pre>"); 
-    gblWeAreInPREblockContent = 1;  /* true */
-    f_fnBIG_prtlin("<br><br><br><br><br><br><br>"); 
+//    f_fnBIG_prtlin("  <pre style=\"white-space: pre; display: block; unicode-bidi: embed;\" ); >"); 
+//    f_fnBIG_prtlin("  <pre style=\"white-space: pre; display: block; unicode-bidi: embed;\" ); >"); 
+
+
   }
 
+  // init gbl 
+  gbl_we_are_printing_graph = 1;
   gblWeAreInPREblockContent = 1;  /* true */
+  gbl_do_second_line = 0;        // for benchmark label insert
+  strcpy(gbl_benchmark_label, "no label yet");   // GREAT, OMG, etc.
 
 
   /* experiment bg color on left-side column containing label names
@@ -3126,11 +3515,53 @@ void fn_BIGoutputGrhAndAspects(void) {
   have_printed_STRESS_line_already = 0;
   have_printed_OMG_line_already    = 0;
   num_OMG_printed = 0;
+  // for big prtlin
+  gbl_do_readahead           = 1; /* do readahead until "OMG" label is printed or reached bot of graph ('''''')*/
+  gbl_just_started_readahead = 1;
+  gbl_have_hit_OMG = 0;
+  gbl_have_hit_stress = 0;
 
+    /* print blank line with color cSky as first line in graph */
+    /* #define NUM_PTS_FOR_FUT 92 */
+    // NUM_PTS_WHOLE_YEAR 182
+    // sfill(myLastLine, NUM_PTS_FOR_FUT, ' '); 
+//   do {
+// 
+//     char myEOL[8];
+// 
+//     /* determine end of line method
+//     */
+// //     strcpy(myEOL, "\n");
+// //     if (GBL_HTML_HAS_NEWLINES == 1)       strcpy(myEOL, "\n");
+// //     if (GBL_HTML_HAS_NEWLINES == 0) {
+// //       /*    scharout(lin,'\n'); */  /* remove newlines */
+// //       if (gblWeAreInPREblockContent == 1) strcpy(myEOL, "<br>");
+// //       else                                strcpy(myEOL, "");
+// //     }
+//     char myFirstLine[8192];
+//     sfill(myFirstLine, NUM_PTS_WHOLE_YEAR , ' '); 
+//     bracket_string_of(" ", myFirstLine, "<span class=\"cSky\">", "</span>");
+// //    n = sprintf(writebuf,"%s%s", myFirstLine, myEOL); /* left margin = 7 spaces */
+// //    f_fnBIG_prtlin(writebuf);
+//     n = sprintf(p,"       %s%s", myFirstLine, myEOL); /* left margin = 7 spaces */
+//     fput(p, n, Fp_f_HTML_file);
+//     strcpy(gbl_prtlin_lastline, p); /* save last line printed in gbl */
+//   } while(0);
 
+  int len_doclin;
   for (i=0; ; i++) {  // 400 lines print grh
 
     f_docin_get(doclin);  // ------------------- read input lines --------------
+
+//ksn(doclin);
+    len_doclin = (int)strlen(doclin);
+
+    if (len_doclin == 0) continue;
+
+    if(len_doclin > 12 && len_doclin < 60) {  // skip weird garbage= _doclin=[<span class="cSky">  </span>]
+      continue;
+      //trn("short short short ");ks(doclin);
+    }
 
     if (strstr(doclin, "[end_graph]") != NULL) break;
 
@@ -3156,6 +3587,8 @@ void fn_BIGoutputGrhAndAspects(void) {
 
     if (strstr(doclin, "GREAT") != NULL) {
 
+
+
       /* EXPERIMENT   left side to right */
       /* replace " GREAT|" with "-GREAT " and put on right side */
       strcpy(s1, " GREAT ");
@@ -3174,8 +3607,6 @@ void fn_BIGoutputGrhAndAspects(void) {
 
 /*       sprintf(writebuf, */
 /*         "<span class=\"cGr2\">%s</span>|<span class=\"cGr2\">%s</span>|", s1, s2);  */
-/*         "<span class=\"cGr2\">%s</span>|<span class=\"cGr2\">%s</span>|", s1, s2);  */
-
 /*       sprintf(writebuf, "<span class=\"cGr2\">%s</span>|%s|", s1, s2);  */
 
       /* replace " GREAT|" with "-GREAT " and put on right side */
@@ -3243,8 +3674,6 @@ void fn_BIGoutputGrhAndAspects(void) {
 /*       sprintf(current_leftside, "<span class=\"cNeu\"> </span>      "); */
 /*       just_printed_stress_label = 1; */
 
-/*      gbl_do_readahead = 0; */ /* needed only for printing "-GREAT " and "-GOOD " labels */
-
       continue;
     }
     /* for STRESS line, make background colour deeppink
@@ -3253,6 +3682,7 @@ STRESS-|<span style="background-color:#FFBAC7; font-family: Andale Mono, Courier
     if (strstr(doclin, "STRESS") != NULL 
     && have_printed_STRESS_line_already == 0) {
       ;
+      gbl_have_hit_stress = 1;
 
       /* replace "STRESS|" with "-STRESS" and put on right side */
       strcpy(s1, " STRESS");
@@ -3315,6 +3745,8 @@ STRESS-|<span style="background-color:#FFBAC7; font-family: Andale Mono, Courier
     */
     if (strstr(doclin, "OMG") != NULL
     && have_printed_OMG_line_already == 0) {
+
+      gbl_have_hit_OMG = 1;
 
 /* tn();b(221);ki(have_printed_OMG_line_already); */
 
@@ -3511,7 +3943,10 @@ STRESS-|<span style="background-color:#FFBAC7; font-family: Andale Mono, Courier
 
   
   gblWeAreInPREblockContent = 0;  /* false */
-  f_fnBIG_prtlin("  </pre>\n\n"); 
+  gbl_we_are_printing_graph = 0;
+  gbl_do_readahead          = 0; // do readahead until bottom of graph is printed
+
+  f_fnBIG_prtlin("  </pre>\n\n");   // end of graph
 
   /* 2. read until [beg_aspects]  , which look like this:
   *    [beg_aspects]
@@ -3528,7 +3963,7 @@ STRESS-|<span style="background-color:#FFBAC7; font-family: Andale Mono, Courier
 
 /*   f_fnBIG_prtlin("  <h4><span style=\"font-size: 85%; font-weight: normal\">"); */
 /*   f_fnBIG_prtlin("      (they influence the graph above)   </span><br><br><br></h4>"); */
-  f_fnBIG_prtlin("  <h3><br><br>Important Periods</h3>");
+  f_fnBIG_prtlin("  <h3>Important Periods</h3>");
   f_fnBIG_prtlin("  <h4>(they influence the graph above)<br><br><br></h4>");
 
 
@@ -3612,23 +4047,23 @@ STRESS-|<span style="background-color:#FFBAC7; font-family: Andale Mono, Courier
   */
   if (gbl_is_first_year_in_life == 0) {
 
-/*   f_fnBIG_prtlin("  <table class=\"trait\"> <tr> <th colspan=\"3\"> Single Stress Score For the Whole Year </th> </tr>"); */
+  /*   f_fnBIG_prtlin("  <table class=\"trait\"> <tr> <th colspan=\"3\"> Single Stress Score For the Whole Year </th> </tr>"); */
 
-  f_fnBIG_prtlin("  <div><br><br><br></div>");
-/*     "  <table class=\"trait\"> <tr> <th colspan=\"3\"> Single Score For %s </tr>", */
-  sprintf(writebuf,
-    "  <table class=\"trait\"> <tr> <th colspan=\"3\"> Score For %s </tr>",
-    gbl_year_for_fut
-  );
-  f_fnBIG_prtlin(writebuf);
+    f_fnBIG_prtlin("  <div><br><br><br></div>");
+  /*     "  <table class=\"trait\"> <tr> <th colspan=\"3\"> Single Score For %s </tr>", */
+    sprintf(writebuf,
+      "  <table class=\"trait\"> <tr> <th colspan=\"3\"> Score For %s </tr>",
+      gbl_year_for_fut
+    );
+    f_fnBIG_prtlin(writebuf);
 
-/*   f_fnBIG_prtlin("</table>"); */
-/*   f_fnBIG_prtlin("<table class=\"trait\">" ); */
+  /*   f_fnBIG_prtlin("</table>"); */
+  /*   f_fnBIG_prtlin("<table class=\"trait\">" ); */
 
-  f_fnBIG_prtlin("  <tr > <th>Person</th> <th>Score</th> <th></th></tr>");
+    f_fnBIG_prtlin("  <tr > <th>Person</th> <th>Score</th> <th></th></tr>");
 
 
-  /* calibrate stress score for table */
+/* calibrate stress score for table */
 /*   int worknum; 
 *     worknum = targetDayScore;
 *     worknum = worknum * -1; 
@@ -3641,72 +4076,72 @@ STRESS-|<span style="background-color:#FFBAC7; font-family: Andale Mono, Courier
 *       mapBenchmarkNumToPctlRank(targetDayScore);
 */
 /* ks(gbl_person_name); */
-  strcpy(gbl_name_for_fut, arr(1));  /* for stress num table at bottom */
-  strcpy(gbl_year_for_fut, arr(2));  /* for stress num table at bottom */
+    strcpy(gbl_name_for_fut, arr(1));  /* for stress num table at bottom */
+    strcpy(gbl_year_for_fut, arr(2));  /* for stress num table at bottom */
 /*   strcpy(gbl_person_name, arr(1)); */
 
-  if (gbl_YearStressScore == 0) gbl_YearStressScore = 1; 
+    if (gbl_YearStressScore == 0) gbl_YearStressScore = 1; 
 //gbl_YearStressScore = 9;  test
 
-  if (gbl_YearStressScore >= 90) {
-    write_calendar_day_score(gbl_name_for_fut, gbl_YearStressScore);
-  }
-  f_fnBIG_prtlin("  <tr class=\"cGr2\"><td></td> <td> 90  </td> <td>Great</td> </tr>");
-  if (gbl_YearStressScore >= 75) {
-    write_calendar_day_score(gbl_name_for_fut, gbl_YearStressScore);
-  }
-  f_fnBIG_prtlin("  <tr class=\"cGre\"><td></td> <td> 75  </td> <td>Good</td> </tr>");
+    if (gbl_YearStressScore >= 90) {
+      write_calendar_day_score(gbl_name_for_fut, gbl_YearStressScore);
+    }
+    f_fnBIG_prtlin("  <tr class=\"cGr2\"><td></td> <td> 90  </td> <td>Great</td> </tr>");
+    if (gbl_YearStressScore >= 75) {
+      write_calendar_day_score(gbl_name_for_fut, gbl_YearStressScore);
+    }
+    f_fnBIG_prtlin("  <tr class=\"cGre\"><td></td> <td> 75  </td> <td>Good</td> </tr>");
 
-  if ( gbl_YearStressScore  >= 75) {
-    f_fnBIG_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
-    f_fnBIG_prtlin("  <tr class=\"cNeu\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
-    f_fnBIG_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
-  }
-  if ( gbl_YearStressScore  < 75  &&  gbl_YearStressScore >= 50 ) {
-    write_calendar_day_score(gbl_name_for_fut, gbl_YearStressScore);
-    f_fnBIG_prtlin("  <tr class=\"cNeu\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
-    f_fnBIG_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
-  }
-/*   if ( gbl_YearStressScore  < 50  &&  gbl_YearStressScore >= 25 ) x */
-  if ( gbl_YearStressScore  < 50  &&  gbl_YearStressScore >  25 ) {
-    f_fnBIG_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
-    f_fnBIG_prtlin("  <tr class=\"cNeu\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
-    write_calendar_day_score(gbl_name_for_fut, gbl_YearStressScore);
-  }
-/*   if ( gbl_YearStressScore <= 25 ) x */
-  if ( gbl_YearStressScore <  25 ) {
-    f_fnBIG_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
-    f_fnBIG_prtlin("  <tr class=\"cNeu\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
-    f_fnBIG_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
-  }
+    if ( gbl_YearStressScore  >= 75) {
+      f_fnBIG_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
+      f_fnBIG_prtlin("  <tr class=\"cNeu\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
+      f_fnBIG_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
+    }
+    if ( gbl_YearStressScore  < 75  &&  gbl_YearStressScore >= 50 ) {
+      write_calendar_day_score(gbl_name_for_fut, gbl_YearStressScore);
+      f_fnBIG_prtlin("  <tr class=\"cNeu\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
+      f_fnBIG_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
+    }
+  /*   if ( gbl_YearStressScore  < 50  &&  gbl_YearStressScore >= 25 ) x */
+    if ( gbl_YearStressScore  < 50  &&  gbl_YearStressScore >  25 ) {
+      f_fnBIG_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
+      f_fnBIG_prtlin("  <tr class=\"cNeu\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
+      write_calendar_day_score(gbl_name_for_fut, gbl_YearStressScore);
+    }
+  /*   if ( gbl_YearStressScore <= 25 ) x */
+    if ( gbl_YearStressScore <  25 ) {
+      f_fnBIG_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
+      f_fnBIG_prtlin("  <tr class=\"cNeu\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
+      f_fnBIG_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
+    }
 
-  if (gbl_YearStressScore >  25)
-    write_calendar_day_score(gbl_name_for_fut, gbl_YearStressScore);
-  f_fnBIG_prtlin("  <tr class=\"cRed\"><td></td> <td> 25  </td> <td>Stress</td> </tr>");
-  if (gbl_YearStressScore >  10)
-    write_calendar_day_score(gbl_name_for_fut, gbl_YearStressScore);
+    if (gbl_YearStressScore >  25)
+      write_calendar_day_score(gbl_name_for_fut, gbl_YearStressScore);
+    f_fnBIG_prtlin("  <tr class=\"cRed\"><td></td> <td> 25  </td> <td>Stress</td> </tr>");
+    if (gbl_YearStressScore >  10)
+      write_calendar_day_score(gbl_name_for_fut, gbl_YearStressScore);
 
 
-  f_fnBIG_prtlin("  <tr class=\"cRe2\"><td></td> <td> 10  </td> <td>OMG</td> </tr>");
-  write_calendar_day_score(gbl_name_for_fut, gbl_YearStressScore); /* only writes if still unwritten */
+    f_fnBIG_prtlin("  <tr class=\"cRe2\"><td></td> <td> 10  </td> <td>OMG</td> </tr>");
+    write_calendar_day_score(gbl_name_for_fut, gbl_YearStressScore); /* only writes if still unwritten */
 
-  f_fnBIG_prtlin("  </table>");
+    f_fnBIG_prtlin("  </table>");
 
 
 /*   f_fnBIG_prtlin("<div><br></div>"); */
-  f_fnBIG_prtlin("<pre class=prebox> ");
-  gblWeAreInPREblockContent = 1;  /* true */
+    f_fnBIG_prtlin("<pre class=prebox> ");
+    gblWeAreInPREblockContent = 1;  /* true */
 /*   f_fnBIG_prtlin(" Check out Group reports \"Best Year\" and \"Best Day\". "); */
 /*   f_fnBIG_prtlin("   Check out Group report \"Best Year\".   "); */
 
 /*   f_fnBIG_prtlin(""); */
 /*   f_fnBIG_prtlin("   Check out group report Best Year which uses   "); */
 
-  f_fnBIG_prtlin("  Check out group report \"Best Year\" which uses   ");
-  f_fnBIG_prtlin("  this score to compare with other group members.  ");
-  f_fnBIG_prtlin("");
-  gblWeAreInPREblockContent = 0;  /* false */
-  f_fnBIG_prtlin("</pre> ");
+    f_fnBIG_prtlin("  Check out group report \"Best Year\" which uses   ");
+    f_fnBIG_prtlin("  this score to compare with other group members.  ");
+    f_fnBIG_prtlin("");
+    gblWeAreInPREblockContent = 0;  /* false */
+    f_fnBIG_prtlin("</pre> ");
 
   } /* only when gbl_is_first_year_in_life == 0 */
 
@@ -3720,11 +4155,11 @@ STRESS-|<span style="background-color:#FFBAC7; font-family: Andale Mono, Courier
   gblWeAreInPREblockContent = 0;  /* false */
   f_fnBIG_prtlin("</pre>");
 
-  sprintf(writebuf, "<h5><br><br><br>produced by iPhone app %s</h5>", APP_NAME);
-  f_fnBIG_prtlin(writebuf);
-/*   f_fnBIG_prtlin("<h4><span style=\"background-color:#FFBAC7;\">&nbsp&nbsp&nbsp&nbsp&nbsp  This report is for entertainment purposes only.&nbsp&nbsp&nbsp&nbsp&nbsp  </span></h4>"); */
+//  sprintf(writebuf, "<h5><br><br><br>produced by iPhone app %s</h5>", APP_NAME);
+//  f_fnBIG_prtlin(writebuf);
+//  f_fnBIG_prtlin("<h4><span style=\"background-color:#FFBAC7;\">&nbspThis report is for entertainment purposes only.&nbsp</span></h4>");
 
-  f_fnBIG_prtlin("<h4><span style=\"background-color:#FFBAC7;\">&nbspThis report is for entertainment purposes only.&nbsp</span></h4>");
+  f_fn_prtlin("<div> <span style=\"font-size: 1.0em\"><br>produced by iPhone app \"Me and my BFFs\"</span><br><br><span style=\"font-size: 0.9em; font-weight: bold; color:#FF0000;\">This report is for entertainment purposes only.</span></div><div><br></div>");
 
 
   f_fnBIG_prtlin("");
@@ -3760,6 +4195,7 @@ void f_fnBIG_aspect_text(char *aspect_code) {
   strcpy(para_beg, "<table class=\"center\"><tr><td><p>");
 
   strcpy(para_end, "</p></td></tr></table>");
+
   sprintf(writebuf, "  %s%s%s\n", para_beg, my_aspect_text, para_end);
 
   f_fnBIG_prtlin(writebuf);
@@ -3809,10 +4245,13 @@ void fn_BIGaspect_from_to(char *doclin) {
       /* only one from/to in doclin
       *  (less leading white for 2nd, 3rd)
       */
+      //  f_fnBIG_prtlin( "    .bigfromto {");
       if (is_first_from_to_in_doclin == 1) {
-        sprintf(s1, "%s%s%s", "  <h4><br><br><br>", look_starting_here, "</h4>");
+        //sprintf(s1, "%s%s%s", "  <h4><br><br><br>", look_starting_here, "</h4>");
+        //sprintf(s1, "%s%s%s", "  <div class=\"bigfromto\"><br><br><br>", look_starting_here, "</div>");
+        sprintf(s1, "%s%s%s", "  <div class=\"bigfromto\"><br>", look_starting_here, "</div>");
       } else {
-        sprintf(s1, "%s%s%s", "  <h4>", look_starting_here, "</h4>");
+        sprintf(s1, "%s%s%s", "  <div class=\"bigfromto\">", look_starting_here, "</div>");
       }
       f_fnBIG_prtlin(s1);
       is_first_from_to_in_doclin = 0;
@@ -3825,9 +4264,10 @@ void fn_BIGaspect_from_to(char *doclin) {
       */
       mkstr(s2, look_starting_here, p ); /* up to space in " from" */
       if (is_first_from_to_in_doclin == 1) {
-        sprintf(s3, "%s%s%s", "  <h4><br><br><br><br>", s2, "</h4>");
+        //sprintf(s3, "%s%s%s", "  <div class=\"bigfromto\"><br><br><br><br>", s2, "</div>");
+        sprintf(s3, "%s%s%s", "  <div class=\"bigfromto\"><br>", s2, "</div>");
       } else {
-        sprintf(s3, "%s%s%s", "  <h4><br>", s2, "</h4>");
+        sprintf(s3, "%s%s%s", "  <div class=\"bigfromto\"><br>", s2, "</div>");
       }
 
       f_fnBIG_prtlin(s3);
@@ -3841,10 +4281,11 @@ void fn_BIGaspect_from_to(char *doclin) {
 
 
   /* here the from/to intro text has been output */
+  f_fnBIG_prtlin("<div><br></div>");
 
-    /* output the aspect text
-    */
-    f_fnBIG_aspect_text(aspect_code);
+  /* output the aspect text
+  */
+  f_fnBIG_aspect_text(aspect_code);
 
 } // end of  void fn_BIGaspect_from_to(char *);
 
@@ -3859,8 +4300,39 @@ void fn_BIGaspect_from_to(char *doclin) {
 */
 void f_fnBIG_prtlin(char *lin) {
   char myEOL[8];
-  char myLastLine[8192];
+  //char myLastLine[8192], next_doclin[8192], current_prtlin[8192];
+  char                   next_doclin[8192], current_prtlin[8192];
   char *ptr;
+
+/* tn();trn("in f_fnBIG_prtlin()"); */
+/* ksn(lin); */
+//tn();
+//kin(gbl_do_readahead ); ks( gbl_ffnameHTML);
+
+  // ignore rubbish line
+  if (strstr(lin, "raph]") != NULL) return;
+
+
+  // do second line of benchmark label printing, 
+  // BUT not if the  benchmark label is on the last line of the graph
+  // (next line has apostrophe tick marks for the dates)
+  //
+  if (gbl_do_second_line == 1) {
+
+    strcpy(next_doclin, global_docin_lines[global_read_idx + 1]); /* get next input line */
+
+    if (strstr(next_doclin, "''''''''''''''") == NULL) {
+      insert_minus_benchmark( lin);
+/* trn("after insert minus");ks(lin); */
+      change_last_7_chars(lin);
+    }
+    gbl_do_second_line = 0;
+  } // print second line of benchmark label
+  if (gbl_do_second_line == 7) {  // print of benchmark label was nixed
+/* trn("on account of 7 ");ks(lin); */
+    change_last_7_chars(lin);
+    gbl_do_second_line = 0;
+  }
 
   /* determine end of line method
   */
@@ -3880,70 +4352,92 @@ void f_fnBIG_prtlin(char *lin) {
        *   strcpy(in_line, global_docin_lines[global_read_idx] ); *
   */
   if (gbl_do_readahead == 1) {
-/* b(20); */
 
-    strcpy(s1, global_docin_lines[global_read_idx + 1]); /* get next input line */
-/* trn("curr=");ks(lin); */
-/* trn("next=");ks(s1); */
+    strcpy(next_doclin, global_docin_lines[global_read_idx + 1]); /* get next input line */
+
+
+/* tn();trn("curr=");ks(lin); */
+/* trn("next=");ks(next_doclin); */
 
     /* if first line of graph is GREAT or GOOD, print it as is
     */
-    if (gbl_just_started_readahead == 1 ) {
+    if (gbl_just_started_readahead == 1 ) {  // first line of graph
+
       if (((strstr(lin, "GREAT") != NULL) || strstr(lin, "GOOD") != NULL)) {
-
-
 /* tn();trn("in 1st line G"); */
-/* ksn(lin); */
         n = sprintf(p,"%s%s", lin, myEOL);
         fput(p, n, Fp_f_HTML_file);        /* PRINT the line */
         strcpy(gbl_prtlin_lastline, p); /* save last line printed in gbl */
         return;
       } 
       gbl_just_started_readahead = 0;
+      // end of first line of graph
 
-    } else if (strstr(s1, "GREAT") != NULL) {
-/* tn();trn("in GREAT NEXT"); */
+    } else if (strstr(next_doclin, "GREAT") != NULL) {
+
+
+/* tn();trn("in GREAT is on NEXT line"); */
+/* ksn(lin); */
+/* trn("nextline=");ks(next_doclin); */
 
       /* replace last 7 spaces with GREAT */
-/*       s1[strlen(gbl_prtlin_lastline) - 7] = '\0'; */
+/*       next_doclin[strlen(gbl_prtlin_lastline) - 7] = '\0'; */
       /* lastline,  append GREAT */
-/*       sprintf(lin, "%s<span class=\"cGr2\">-GREAT </span>%s", s1, myEOL); */
+/*       sprintf(lin, "%s<span class=\"cGr2\">-GREAT </span>%s", next_doclin, myEOL); */
 
 /*       strcpy(s2, "-GREAT "); */
       strcpy(s2, " GREAT ");
       /* into s3, get rest of string from 8th char */
-      strcpy(s3, &doclin[8 - 1]);
+      strcpy(s3, &doclin[8 - 1]);  // this is  the CURRENT  doclin, not next
 /*       strcpy(s3, &lin[8 - 1]); */
 /* ksn(s3); */
-      /* replace " GREAT|" with "-GREAT " and put on right side */
-      sprintf(writebuf, " %s<span class=\"cGr2\">%s</span>", s3, s2); 
+
+      /* replace " GREAT|" with "-GREAT " on CURRENT LINE and put on right side */
+      sprintf(writebuf, " %s<span class=\"cGr2\">%s</span>", s3, s2);   // buf for CURRENT LINE
       bracket_string_of("X", writebuf, "<span class=\"cGr2\">", "</span>");
-/* tn();b(334);ks(writebuf); */
       bracket_string_of("#", writebuf, "<span class=\"cSky\">", "</span>");
-/* tn();b(335);ks(writebuf); */
       scharswitch(writebuf, 'X', ' ');
       scharswitch(writebuf, '#', ' ');
       scharswitch(writebuf, '|', ' ');  /* sideline out */
+
+
+      // before printing this GREAT line, 
+      // possibly insert GREAT on this line and "---" on next line
+      // if there is room
+/* tn();trn("insert_benchmar_label(\"GREAT\", writebuf, next_doclin);"); */
 /* ksn(writebuf); */
-/* ksn(myEOL); */
-    /*  scharout(writebuf,'\n');*/  /* remove newlines */
+
+      strcpy(gbl_benchmark_label, "GREAT");
+      gbl_do_second_line =  insert_label_benchmark( writebuf, next_doclin);
+/* trn("on account of next_doclin = GREAT ");ks(lin); */
+      change_last_7_chars(writebuf);
 
       n = sprintf(p,"%s%s", writebuf, myEOL);
+
 /*       n = sprintf(p,"%s", writebuf); */
 /* trn("GREAT next printed=");ks(p); */
-      fput(p, n, Fp_f_HTML_file);        /* PRINT the line */
+
+      fput(p, n, Fp_f_HTML_file);        /* PRINT the CURRENT line */
       strcpy(gbl_prtlin_lastline, p); /* save last line printed in gbl */
+
+      // here the NEXT doclin requires fiddling ("----" etc)
+
       return;
 
-    } else if (strstr(s1, "GOOD") != NULL) {
+    } else if (strstr(next_doclin, "GOOD") != NULL) {
+
+/* tn();trn("in GOOD in NEXT line"); */
+/* ksn(lin); */
+/* trn("nextline=");ks(next_doclin); */
+
 /* tn();trn("in GOOD NEXT"); */
 /* ksn(global_docin_lines[global_read_idx - 1]); */
 /* ksn(global_docin_lines[global_read_idx ]); */
 /* ksn(global_docin_lines[global_read_idx + 1]); */
       /* replace last 7 spaces with GREAT */
-/*       s1[strlen(gbl_prtlin_lastline) - 7] = '\0';  */
+/*       next_doclin[strlen(gbl_prtlin_lastline) - 7] = '\0';  */
       /* lastline,  append GREAT */
-/*       sprintf(lin, "%s<span class=\"cGre\">-GOOD </span>%s", s1, myEOL); */
+/*       sprintf(lin, "%s<span class=\"cGre\">-GOOD </span>%s", next_doclin, myEOL); */
 /* ksn(doclin); */
 /*       strcpy(s2, "-GOOD  "); */
       strcpy(s2, " GOOD  ");
@@ -3957,31 +4451,41 @@ void f_fnBIG_prtlin(char *lin) {
       scharswitch(writebuf, '#', ' ');
       scharswitch(writebuf, '|', ' ');  /* sideline out */
 
+
+      strcpy(gbl_benchmark_label, "GOOD");
+      gbl_do_second_line =  insert_label_benchmark( writebuf, next_doclin);
+/* trn("on account of next_doclin = GOOD ");ks(lin); */
+      change_last_7_chars(writebuf);
+
       n = sprintf(p,"%s%s", writebuf, myEOL);
 /* trn("GOOD next printed=");ks(p); */
       fput(p, n, Fp_f_HTML_file);
       strcpy(gbl_prtlin_lastline, p);
 
       return;
+      // end of GOOD is in NEXT line
 
     } else if ( strstr(lin, "GREAT") != NULL) {
 /* tn();trn("in GREAT current"); */
 /* ksn(lin); */
       /* remove GREAT from current line and substitute 7 spaces */
-      strcpy(s1, lin);
-/* ksn(s1); */
-/*       ptr = strstr(s1, "<span class=\"cGr2\">-GREAT </span>"); */
-      ptr = strstr(s1, "<span class=\"cGr2\"> GREAT </span>");
+      strcpy(current_prtlin, lin);
+/* ksn(current_prtlin); */
+/*       ptr = strstr(current_prtlin, "<span class=\"cGr2\">-GREAT </span>"); */
+      ptr = strstr(current_prtlin, "<span class=\"cGr2\"> GREAT </span>");
 /* ksn(ptr); */
 /*       memcpy(ptr, "       \n\0", 9); */
       memcpy(ptr, "       \0", 8);
 /* ksn(ptr); */
-/* ksn(s1); */
-      strcpy(lin,s1);
+/* ksn(current_prtlin); */
+      strcpy(lin,current_prtlin);
 /* ksn(lin); */
 /* exit(320); */
+
       n = sprintf(p,"%s%s", writebuf, myEOL);
 /* trn("GREAT curr printed=");ks(p); */
+
+
       fput(p, n, Fp_f_HTML_file);
       strcpy(gbl_prtlin_lastline, p);
 
@@ -4001,7 +4505,7 @@ void f_fnBIG_prtlin(char *lin) {
 /* ksn(myptrtest); */
 /*       memcpy(ptr, "       \n\0", 9); */
       memcpy(myptrtest, "       \0", 8);
-/*       s1[strlen(gbl_prtlin_lastline) - 7] = '\0'; */
+/*       current_prtlin[strlen(gbl_prtlin_lastline) - 7] = '\0'; */
 /* ksn(myptrtest); */
 /* ksn(s5); */
 /*       strcpy(lin,s5); */
@@ -4012,15 +4516,30 @@ void f_fnBIG_prtlin(char *lin) {
       fput(p, n, Fp_f_HTML_file);
       strcpy(gbl_prtlin_lastline, p);
 
-      gbl_do_readahead  = 0; /* do readahead until "GOOD" label is printed */
       return;
     }
+
+
+   else if (strstr(lin, "STRESS") != NULL) {
+
+/* tn();trn("doing STRESS  LABEl !!!!!!!!!!!!!!"); */
+     strcpy(gbl_benchmark_label, "STRESS");
+     gbl_do_second_line =  insert_label_benchmark(writebuf, next_doclin);
+   }
+
+   else if (strstr(lin, "OMG") != NULL) {
+
+/* tn();trn("doing OMG  LABEl !!!!!!!!!!!!!!"); */
+     strcpy(gbl_benchmark_label, "OMG");
+     gbl_do_second_line =  insert_label_benchmark(writebuf, next_doclin);
+
+   }
 
   } /* (gbl_do_readahead == 1) */
 
 
-
 /* tn();trn("FALL THRU"); */
+
 
 /*   if (   strstr(gbl_prtlin_lastline, "First Half") != NULL */
 /*       && strstr(lin,                 "First Half") != NULL  */
@@ -4038,8 +4557,8 @@ void f_fnBIG_prtlin(char *lin) {
 
     /* start readahead after printing line with "6 months" in it
     */
-    if(strstr(lin, "6 months") != NULL) {
-      gbl_do_readahead           = 1; /* do readahead until "GOOD" label is printed */
+    if(strstr(lin, "6 months") != NULL  ) {
+      gbl_do_readahead           = 1; // do readahead until bottom of graph is printed
       gbl_just_started_readahead = 1;
     }
 
@@ -4058,7 +4577,7 @@ void f_fnBIG_prtlin(char *lin) {
     /* start readahead after printing line with "6 months" in it
     */
     if(strstr(lin, "6 months") != NULL) {
-      gbl_do_readahead           = 1; /* do readahead until "GOOD" label is printed */
+      gbl_do_readahead           = 1; // do readahead until bottom of graph is printed
       gbl_just_started_readahead = 1;
     }
 
@@ -4108,21 +4627,65 @@ void f_fnBIG_prtlin(char *lin) {
   *  if line has "OMG-", but does NOT have "cRe2", do not print it
   *  BUT, print a line of spaces in cRe2
   */
+/* tn();trn(";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;"); */
+/* ksn(lin); */
   if(strstr(lin, "OMG-") != NULL
   && strstr(lin, "cRe2")    == NULL)  {
-    /* print blank line with color cRe2 under the 1st OMG */
-    /* #define NUM_PTS_FOR_FUT 92 */
+/* b(400); */
+    /* print blank line with color cRe2 under the 1st OMG
+       but must have --- for OMG in it */
 
-  // NUM_PTS_WHOLE_YEAR 182
-    // sfill(myLastLine, NUM_PTS_FOR_FUT, ' '); 
-    sfill(myLastLine, NUM_PTS_WHOLE_YEAR , ' '); 
+    // 20121229  HARD CODE THIS LINE  (it worked)
+     strcpy(p, " <span style=\"background-color:#ff4477\"> </span><span style=\"color:#ff4477\">---</span><span style=\"background-color:#ff4477\"> </span><span class=\"cRe2\">                                                                                                                                                                                   </span> ");
 
-    bracket_string_of(" ", myLastLine, "<span class=\"cRe2\">", "</span>");
-  
-/*     n = sprintf(p,"       %s\n", myLastLine );  */
-    n = sprintf(p,"       %s%s", myLastLine, myEOL); /* left margin = 7 spaces */
+    n = (int)strlen(p);
     fput(p, n, Fp_f_HTML_file);
     strcpy(gbl_prtlin_lastline, p); /* save last line printed in gbl */
+
+//     /* #define NUM_PTS_FOR_FUT 92 */
+// 
+//   // NUM_PTS_WHOLE_YEAR 182
+//     // sfill(myLastLine, NUM_PTS_FOR_FUT, ' '); 
+//     sfill(myLastLine, NUM_PTS_WHOLE_YEAR , ' '); 
+// 
+//     bracket_string_of(" ", myLastLine, "<span class=\"cRe2\">", "</span>");
+// 
+//     n = sprintf(p,"       %s%s", myLastLine, myEOL); /* left margin = 7 spaces */
+// 
+// tn();trn("UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU");
+// ksn(p);
+//     insert_minus_benchmark( p);
+// ksn(p);
+// 
+// //    n = sprintf(p," %s%s", myLastLine, myEOL); /* left margin = 7 spaces */
+// 
+// 
+// //    fput(p, n, Fp_f_HTML_file);
+// //    strcpy(gbl_prtlin_lastline, p); /* save last line printed in gbl */
+//   
+// // b(100);
+// //     if (gbl_do_second_line == 1) {
+// // 
+// // b(101);
+// //       strcpy(next_doclin, global_docin_lines[global_read_idx + 1]); /* get next input line */
+// // 
+// //       if (strstr(next_doclin, "''''''''''''''") == NULL) {
+// // b(102);
+// //         insert_minus_benchmark( p);
+// // b(103);
+// // /* trn("after insert minus");ks(lin); */
+// //         change_last_7_chars(p);
+// // b(104);
+// //       }
+// // b(105);
+// //       gbl_do_second_line = 0;
+// //     } // print second line of benchmark label
+// 
+// b(106);
+//     n = (int)strlen(p);
+//    fput(p, n, Fp_f_HTML_file);
+//    strcpy(gbl_prtlin_lastline, p); /* save last line printed in gbl */
+
     return;
   }
 
@@ -4142,6 +4705,11 @@ void f_fnBIG_prtlin(char *lin) {
     memcpy(end_pipe, " ", 1);
   }
   
+  if (gbl_we_are_printing_graph == 1) {
+/* trn("on account of gbl_we_are_printing_graph == 1"); */
+    change_last_7_chars(lin);
+  }
+
 
   n = sprintf(p,"%s%s", lin, myEOL);
   fput(p, n, Fp_f_HTML_file);        /* PRINT the line */
@@ -4155,5 +4723,271 @@ void f_fnBIG_prtlin(char *lin) {
 // ====== END OF ===========  BIG versions of functions needed  =========================
 
 
+
+// e.g.    gbl_do_second_line =  insert_label_benchmark("GREAT", writebuf, next_doclin);
+//  return 1 if OK to put second line ("---")
+// arg 2 + 3  e.g. (first few, last few chars)
+// curr=[ <span class="cGr2">         </span><span class="cSky">      </span> ... <span class="cGr2"> GREAT </span>]
+//                           |
+//       012345678901234567890123456789
+//
+// next_doclin=[ GREAT-XXXXXXXXX######XXXXXXXXXXXXXXXXXXXXXXXXXXX<span class="star">^</span> ...
+//                     |  
+//              01234567890123456789
+//
+// (uses gbl_benchmark_label)
+//
+int insert_label_benchmark(char *line_curr, char * line_next) {
+
+/* tn();trn("insert_label_benchmark() llllllllllllllllllllllllllllllllllllllllllllllllllllllll"); */
+/* ksn(gbl_benchmark_label); */
+/* ksn(line_curr); */
+/* ksn(line_next); */
+
+  int len_label, line_curr_is_good, line_next_is_good, linethird_is_good;
+  char area_line_curr[16], area_line_next[16], area_linethird[16];
+  char myspaces[16], my_Xs[16], my_SHARPs[16], my_ticks[16];
+  char changed_line[8192], part_before[8192], part_after[8192], part_middle[8192], my_bg_color[32];
+  int retval_goodtogo;
+  char linethird[8192]; //spans_removed[8192];
+
+  len_label = (int)strlen(gbl_benchmark_label); // is there room on both curr line and next line  for label
+/* kin(len_label); */
+
+  // line after next line cannot have stars, '^',  in the first len_label + 2 chars
+  strcpy(linethird, global_docin_lines[global_read_idx + 2]); /* get input line after next */
+/* ksn(linethird); */
+
+  remove_spans(linethird);
+/* ksn(linethird); */
+  mkstr(area_linethird, linethird + 7, linethird + 7  + (len_label + 2) -1);  // ignore leading 7 chars (margin)
+  
+  
+/* ki(len_label); */
+  sfill(myspaces,  len_label + 2, ' '); 
+  sfill(my_Xs,     len_label + 2, 'X'); 
+  sfill(my_SHARPs, len_label + 2, '#'); 
+  sfill(my_ticks,  len_label + 2, '\''); 
+
+  mkstr(area_line_curr, line_curr + 20, line_curr + 20 + (len_label + 2 - 1)); // chk for sp+len+sp   (+2)
+
+  if (strcmp(gbl_benchmark_label, "GREAT")  == 0  || 
+      strcmp(gbl_benchmark_label, "GOOD")   == 0) {
+    mkstr(area_line_next, line_next +  7, line_next +  7 + (len_label + 2 - 1));
+  }
+  if (strcmp(gbl_benchmark_label, "STRESS")  == 0  || 
+      strcmp(gbl_benchmark_label, "OMG")     == 0) {
+    mkstr(area_line_next, line_next +  27, line_next + 27 + (len_label + 2 - 1));
+  }
+
+/* ksn(myspaces); */
+/* ksn(my_Xs); */
+/* ksn(my_SHARPs); */
+/* ksn(area_line_curr); */
+/* ksn(area_line_next); */
+/* ksn(area_linethird); */
+/* tn(); */
+
+  if (strcmp(area_line_curr, myspaces)  == 0 ) line_curr_is_good = 1;
+  else                                         line_curr_is_good = 0;
+
+  if (strcmp(area_line_next, my_Xs)     == 0 ||
+      strcmp(area_line_next, myspaces)  == 0 || 
+      strcmp(area_line_next, "    <") == 0 ||    // for webview omg is on last line
+      strcmp(area_line_next, my_SHARPs) == 0 ) line_next_is_good = 1;
+  else                                         line_next_is_good = 0;
+
+  if (strcmp(area_linethird, myspaces)  == 0 ||
+      strcmp(area_linethird, my_Xs)     == 0 ||
+      strcmp(area_linethird, my_ticks)  == 0 ||
+      strcmp(area_linethird, my_SHARPs) == 0 ) linethird_is_good= 1;
+  else                                         linethird_is_good= 0;
+
+/* kin(line_curr_is_good); ki(line_next_is_good ); ki(linethird_is_good ); */
+
+  retval_goodtogo = 0;  // default
+  if (line_curr_is_good == 1 && line_next_is_good == 1 && linethird_is_good) {
+    retval_goodtogo = 1;
+
+    if (strcmp(gbl_benchmark_label, "GREAT")  == 0) strcpy(my_bg_color, "#66ff33");
+    if (strcmp(gbl_benchmark_label, "GOOD")   == 0) strcpy(my_bg_color, "#a8ff98");
+    if (strcmp(gbl_benchmark_label, "STRESS") == 0) strcpy(my_bg_color, "#ff98a8");
+    if (strcmp(gbl_benchmark_label, "OMG")    == 0) strcpy(my_bg_color, "#ff4477");
+    
+    // replace area_line_curr with the benchmark label and color
+
+    mkstr(part_before, line_curr, line_curr + 20 -1);
+
+    strcpy(part_after, line_curr + 20 + (len_label + 2 -1 + 1));
+
+    sprintf(part_middle, "<span style=\"background-color:%s\"> %s </span>",
+      my_bg_color, 
+      gbl_benchmark_label); 
+
+      sprintf(changed_line, "%s%s%s", part_before, part_middle, part_after);
+/* ksn(part_before); */
+/* ksn(part_middle); */
+/* ksn(part_after); */
+/* ksn(changed_line);ki(retval_goodtogo);tn(); */
+       strcpy(line_curr, changed_line);  // return changed line
+  } else {
+    retval_goodtogo = 7;  // flag to run   void  change_last_7_chars()
+  }
+/* kin(retval_goodtogo); */
+  return retval_goodtogo;
+
+} // end of insert_label_benchmark()
+
+
+// e.g. for GREAT  =>    <span style="color:#66ff33;">-------</span
+// algorithm
+//   1. remove the len + 2 spaces altogether from line_to_change
+//   2. remove first char (is a sp)
+//   3. prepend this:  " <span style="color:#000000"> ----- </span>"
+void insert_minus_benchmark(char *line_to_change) {
+/* tn();trn("in insert_minus_benchmark() ,mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm"); */
+/* ksn(line_to_change); */
+  char changed_line[8192], part_before[8192], part_after[8192], part_new_front[8192], mywork[8192], my_text_color[32];
+  char my_minuses[32];
+//  char part_removed[128];
+  int  len_label;
+  len_label = (int)strlen(gbl_benchmark_label);
+  sfill(my_minuses,  len_label, '-'); 
+  //my_minuses[0]             = ' ';    // put sp instead of '-' on first and last char
+  //my_minuses[len_label - 1] = ' ';    // put sp instead of '-' on first and last char
+
+  if (strcmp(gbl_benchmark_label, "GREAT")  == 0) strcpy(my_text_color, "#66ff33");
+  if (strcmp(gbl_benchmark_label, "GOOD")   == 0) strcpy(my_text_color, "#a8ff98");
+  if (strcmp(gbl_benchmark_label, "STRESS") == 0) strcpy(my_text_color, "#ff98a8");
+  if (strcmp(gbl_benchmark_label, "OMG")    == 0) strcpy(my_text_color, "#ff4477");
+
+  
+  //strcpy(my_text_color, "#000000"); // for TEST to see  
+
+
+  //   1. remove the len + 2 spaces altogether from line_to_change
+  //   2. remove first char (is a sp)   (see ange + 1)
+  mkstr(part_before, line_to_change + 1, line_to_change + 20 -1); // +1 removes 1st char (sp)
+  strcpy(part_after, line_to_change + 20 + (len_label + 2 - 1 + 1)); 
+
+//tn();b(300);ks(part_after);
+  // there are trailing 7 spaces.  remove  6 of them, leaving the standard 1 sp at end
+//  part_after[(int)strlen(part_after) - 1 - 7] = '\0';
+//tn();b(301);ks(part_after);
+
+//  mkstr(part_removed, line_to_change + 20 -1 +1, line_to_change  + 20 + (len_label + 2 - 1 + 1 -1));
+
+  sprintf(mywork, "%s%s", part_before, part_after);
+// tn();trn("---------------------------------------------------------------------------");
+// ksn(part_before);
+// ksn(part_after);
+// trn("with spaces removed=");ks(mywork);
+// kin(strlen(line_to_change));
+// trn("strlen of 1sp at beg= [1]");
+// kin(strlen(part_before));
+// kin(strlen(part_removed));
+// kin(strlen(part_after));
+// ksn(line_to_change);
+// trn("is 1 sp at beg (not in graph)");
+// ksn(part_before);
+// ksn(part_removed);
+// ksn(part_after);
+// trn("---------------------------------------------------------------------------");tn();
+
+//<span style="background-color:#66ff33"> </span>
+
+//   3. prepend this:  " <span style="color:#000000"> ----- </span>"
+  sprintf(part_new_front,
+    "%s<span style=\"background-color:%s\"> </span><span style=\"color:%s\">%s</span><span style=\"background-color:%s\"> </span>",
+    " ",           // put back 1 sp removed with +1 in 2. above
+    my_text_color, 
+    my_text_color, 
+    my_minuses, 
+    my_text_color); 
+
+  sprintf(changed_line, "%s%s", part_new_front, mywork);
+/* ksn(part_new_front); */
+/* ksn(changed_line);tn(); */
+
+  strcpy(line_to_change, changed_line);  // return changed line
+
+} // end of insert_minus_benchmark()
+
+
+void  change_last_7_chars(char *line_to_print) {
+  //
+  // remove the 7 chars and replace them with one space
+  // unless it is benchmark line, then remove from the beginning of the last <span>
+  // to the end of the line
+  //    <span class="cGr2"> GREAT </span>
+  //    123456789012345678901234567890123
+  //    <span class="cGre"> GOOD  </span>
+  //    <span class="cRed"> STRESS</span>
+  //  and replace *them* with one space
+
+  char workline[8192], mywk[8192];
+
+/* tn();trn("in change_last_7_chars(char *line_to_print) 7777777777777777777777777777777777777777777777777777777777777777"); */
+/* ksn(line_to_print);tn(); */
+
+  if ((int)strlen(line_to_print) == 0) return;
+
+  strcpy(workline, line_to_print);
+
+  if (strstr(line_to_print, "GREAT")  != NULL  ||
+      strstr(line_to_print, "GOOD")   != NULL  ||
+      strstr(line_to_print, "STRESS") != NULL  ||
+      strstr(line_to_print, "OMG")    != NULL     ) {
+    mkstr(workline, line_to_print, line_to_print + (int)strlen(workline) - 1 - 33);
+  } else {
+    // remove trailing 7  spaces only if they are there
+    strcpy(mywk, line_to_print + (int)strlen(line_to_print) - 7);
+    if (strcmp(mywk, "       ") == 0) {
+      mkstr(workline, line_to_print, line_to_print + (int)strlen(line_to_print) - 1 -  7);
+    } else {
+      strcpy(line_to_print, workline); // do not append one space
+      return;
+    }
+  }
+  // here trailing chars are removed, now append one sp
+  sprintf(line_to_print, "%s ", workline);
+
+  return;
+
+} // end of  change_last_7_chars(char *line_to_print) {
+
+// should be left with raw chars no html
+//
+void  remove_spans(char *linethird) {
+  char workstr[8192], mychar;
+  int  mylen, are_in_a_span, write_idx;
+
+  mylen = (int)strlen(linethird);
+  are_in_a_span = 0;
+  write_idx     = -1;
+
+  for (int i=0; i < mylen; i++) {
+    mychar =  linethird[i];
+    if (mychar == '<') {
+      are_in_a_span = 1;
+      continue;
+    } 
+    if (mychar == '>') {
+      are_in_a_span = 0;
+      continue;
+    }
+    if (are_in_a_span == 1) {
+      continue;
+    } else {
+      write_idx = write_idx + 1;
+      workstr[write_idx] = mychar;
+    }
+  }
+  write_idx = write_idx + 1;
+  workstr[write_idx] = '\0';
+
+  strcpy (linethird, workstr);
+
+} // end of  remove_spans()
 
 /* end of futhtm.c */

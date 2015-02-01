@@ -36,7 +36,7 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
-    dispatch_async(dispatch_get_main_queue(), ^{                                // <===  <.>
+    dispatch_async(dispatch_get_main_queue(), ^{                                // <=== 
         [[self navigationItem] setTitle: @"Second Person"];
     });
 
@@ -60,10 +60,12 @@
         gbl_arrayPersonsToPickFrom = [[NSMutableArray alloc] init];
 
         for (id myPerPSV in gbl_arrayPer) {
-            if (gbl_show_example_data ==  NO  &&
-                [myPerPSV hasPrefix: @"~"]) {  // skip example record
-                continue;         //  ======================-------------------------------------- PUT BACK when we have non-example data!!!
-            }
+// skip example record
+//            if (gbl_show_example_data ==  NO  &&
+//                [myPerPSV hasPrefix: @"~"]) {  // skip example record
+//                continue;         //  ======================-------------------------------------- PUT BACK when we have non-example data!!!
+//            }
+//
             NSArray *psvArray;
             NSString *person1, *person2;
             
@@ -152,8 +154,8 @@
 
 
 
-//<.>  from home code
-// these 5 methods  handlelight grey highlight correctly
+//  from home code
+// these 5 methods  handle light grey highlight correctly
 // when returning from report viewer
 //
 // viewDidAppear
@@ -162,19 +164,77 @@
 // willSelectRowAtIndexPath
 // didSelectRowAtIndexPath
 //
+
+-(void) viewWillAppear:(BOOL)animated {
+    //NSLog(@"in viewWillAppear!");
+
+    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for global methods in appDelegate.m
+    NSIndexPath *highlightIdxPath;
+    NSString *rememberedLastPerson;
+
+    
+//    // get the indexpath of current row
+//    NSIndexPath *myIdxPath = [self.tableView indexPathForSelectedRow];
+//
+//    if(myIdxPath) {
+//        [self.tableView selectRowAtIndexPath:myIdxPath animated:YES scrollPosition:UITableViewScrollPositionNone]; // puts highlight on this row (?)
+//    }
+//
+    // get this to highlight row
+    rememberedLastPerson = [myappDelegate grabLastSelectionValueForEntity: (NSString *) @"person"
+                                                               havingName: (NSString *) gbl_fromHomeCurrentEntityName 
+                                                     fromRememberCategory: (NSString *) @"person"  ];
+
+    if (rememberedLastPerson) {
+
+        // go thru tableview rows to get indexPath for rememberedLastPerson   NO  for now use trick below:
+        //
+        // get the indexpath of row num idxGrpOrPer in tableview
+        //   ASSUMES index of entity in gbl_array Per or Grp
+        //   is the same as its index (row) in the tableview
+
+        BOOL foundName;
+        NSInteger myGblArrIdx;
+        foundName = NO;
+        myGblArrIdx = -1; // zero-based
+
+        for (NSString *elt in gbl_arrayPer) {    // get index in gbl data for this person
+            if ([elt hasPrefix: gbl_fromHomeCurrentEntityName]) {
+                foundName = YES;
+                break;
+            }
+            myGblArrIdx =  myGblArrIdx + 1;
+        }
+        if (foundName == YES) {  
+            highlightIdxPath = [NSIndexPath indexPathForRow: myGblArrIdx   inSection:0];  // indexPath of corresponding row in tableview
+
+            if (highlightIdxPath) {
+                [self.tableView selectRowAtIndexPath: highlightIdxPath
+                                            animated: YES
+                                      scrollPosition: UITableViewScrollPositionNone ]; // puts highlight on this row (?)
+            }
+        }
+    }
+
+} // viewWillAppear
+
+
 - (void)viewDidAppear:(BOOL)animated
 {
     // [super viewDidAppear];
-    
-    // set cell to whatever you want to be selected first
-    // yellow highlight that cell
-    //
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-    if (indexPath) {
-        [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
-        //        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-        // [self.tableView selectRowAtIndexPath:indexPath animated:YES  scrollPosition:UITableViewScrollPositionNone];
-    }
+
+// comment out like in  sel rpt
+//    
+//    // set cell to whatever you want to be selected first
+//    // yellow highlight that cell
+//    //
+//    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+//    if (indexPath) {
+//        [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
+//        //        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+//        // [self.tableView selectRowAtIndexPath:indexPath animated:YES  scrollPosition:UITableViewScrollPositionNone];
+//    }
+//
 }
 
 // - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -226,23 +286,10 @@
 } // willSelectRowAtIndexPath
 
 
--(void) viewWillAppear:(BOOL)animated {
-    //NSLog(@"in viewWillAppear!");
-    
-    // get the indexpath of current row
-    NSIndexPath *myIdxPath = [self.tableView indexPathForSelectedRow];
-    
-    // [tableView reloadData];
-    if(myIdxPath) {
-        [self.tableView selectRowAtIndexPath:myIdxPath animated:YES scrollPosition:UITableViewScrollPositionNone]; // puts highlight on this row (?)
-    }
-} // viewWillAppear
-
-
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath: (NSIndexPath *) indexPath
 {
-     NSLog(@"in SelctPerson  didSelectRowAtIndexPath!");
+     NSLog(@"in didSelectRowAtIndexPath!  in SelectPerson ");
     
     // this is the "currently" selected row now
     NSIndexPath *currentlyselectedIndexPath = [self.tableView indexPathForSelectedRow];
@@ -255,7 +302,6 @@
     [self.tableView scrollToNearestSelectedRowAtScrollPosition: currentlyselectedIndexPath.row
                                                       animated: NO];
     // animated:YES
-    //  animated: YES];
     
     // GOTO  the Correct View for Input Params
     // or, directly to ViewHTML to see the Selected Report
@@ -269,20 +315,16 @@
     
     UITableViewCell *currcell = [self.tableView cellForRowAtIndexPath:currentlyselectedIndexPath];
     // now you can use cell.textLabel.text
-    //   gbl_fromSelRptRowString = currcell.textLabel.text;
-    gbl_selectedPerson = currcell.textLabel.text;
-    gbl_fromSelRptRowPSV    = [_PSVs_for_person_picklist objectAtIndex: currentlyselectedIndexPath.row];
-    nbn(100);
-    NSLog(@"gbl_fromSelRptRowString=%@",gbl_fromSelRptRowString);
+    gbl_lastSelectedPerson = currcell.textLabel.text;
 
-    dispatch_async(dispatch_get_main_queue(), ^{                                // <===  <.>
+    nbn(100);
+
+    dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
         [self performSegueWithIdentifier:@"seguePerSelToViewHTML" sender:self];
     });
 
     
 } // didSelectRowAtIndexPath
-
-
 
 
 

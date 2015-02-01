@@ -260,7 +260,7 @@ struct {
 
 
 /* void g_fn_output_top_of_html_file(void); */
-void put_top_of_just2_group_rpt(void); /* just_2 rpt */
+void put_top_of_just2_group_rpt(void); /* just_2 rpt */  // browser version
 
 void put_top_of_html_group_rpt(char *group_name);
 void put_category_label(char *category_text, int len);
@@ -871,8 +871,12 @@ fopen_fpdb_for_debug(); /* for test  */
   /*   g_fn_prtlin(mybuf); */
 
 //    g_fn_prtlin("                                                                                  "); /* blanks */
-    g_fn_prtlin("                       Low              Average                            High   ");
-    g_fn_prtlin("                        |                  |                                |     ");
+//    g_fn_prtlin("                       Low              Average                            High   ");
+//    g_fn_prtlin("                        |                  |                                |     ");
+
+    g_fn_prtlin("                       Low                  Average                 High          ");
+    g_fn_prtlin("                        |                      |                     |            ");
+
 
 
 
@@ -918,7 +922,7 @@ fopen_fpdb_for_debug(); /* for test  */
   /*   g_fn_prtlin(" "); */
 
     g_fn_prtlin("                                                                                  "); /* blanks */
-    g_fn_prtlin("                                                                                  "); /* blanks */
+//    g_fn_prtlin("                                                                                  "); /* blanks */
   /*   g_fn_prtlin("<br>"); */
 
     /* ================================================================= */
@@ -943,7 +947,7 @@ fopen_fpdb_for_debug(); /* for test  */
   /*   gbl_we_are_in_PRE_block = 1;  */
 
 
-    g_fn_prtlin("                                                                                  "); /* blanks */
+//    g_fn_prtlin("                                                                                  "); /* blanks */
   /*   sprintf(category_text, "FROM %s's POINT OF VIEW ", arr(0) ); */
   /*   sprintf(category_text, */
   /*     "FROM <span class=\"cNam2\">%s</span>'s POINT OF VIEW ", arr(0) ); */
@@ -985,7 +989,7 @@ fopen_fpdb_for_debug(); /* for test  */
     g_fn_prtlin("<pre>");
     gbl_we_are_in_PRE_block = 1; 
 
-    g_fn_prtlin("                                                                                  "); /* blanks */
+//    g_fn_prtlin("                                                                                  "); /* blanks */
 
   /*   sprintf(category_text, "FROM %s's POINT OF VIEW ", arr(1) ); */
     mylen = sprintf(category_text, "FROM %s's POINT OF VIEW ", arr(1) );
@@ -1018,7 +1022,7 @@ fopen_fpdb_for_debug(); /* for test  */
   /*   g_fn_prtlin("<pre>"); */
   /*   gbl_we_are_in_PRE_block = 1;  */
 
-    g_fn_prtlin("                                                                                  "); /* blanks */
+//    g_fn_prtlin("                                                                                  "); /* blanks */
     sprintf(category_text, "LOVE ");
   /*   put_category_label(category_text);  */
     put_category_label(category_text, (int)strlen(category_text)); 
@@ -1049,7 +1053,7 @@ fopen_fpdb_for_debug(); /* for test  */
   */
 
   /*   sprintf(category_text, "MONEY AND BUSINESS "); */
-    g_fn_prtlin("                                                                                  "); /* blanks */
+//    g_fn_prtlin("                                                                                  "); /* blanks */
     sprintf(category_text, "MONEY ");
   /*   put_category_label(category_text);  */
     put_category_label(category_text, (int)strlen(category_text)); 
@@ -1078,16 +1082,16 @@ fopen_fpdb_for_debug(); /* for test  */
   /*   sprintf(mybuf, "%-92s", "<span class=\"cCat\">OVERALL COMPATIBILITY </span>");
   *   g_fn_prtlin(mybuf);
   */
-    g_fn_prtlin("                                                                                  "); /* blanks */
-    sprintf(category_text, "OVERALL COMPATIBILITY ");
-    put_category_label(category_text, (int)strlen(category_text)); 
+//    g_fn_prtlin("                                                                                  "); /* blanks */
+//    sprintf(category_text, "OVERALL COMPATIBILITY ");
+//    put_category_label(category_text, (int)strlen(category_text)); 
 
     for (i=0; ; i++) {
       g_docin_get(doclin);
       if (strstr(doclin, "[end_ovral]") != NULL) break;
   /*     g_fn_prtlin(doclin); */
-      scharout(doclin, '|');  /* remove pipes (for old sideline)    */
-      g_fn_prtlin_stars(doclin);  
+//      scharout(doclin, '|');  /* remove pipes (for old sideline)    */
+//      g_fn_prtlin_stars(doclin);  
     }
   /*   g_fn_prtlin(" A combination of all the different factors of compatibility for this pair.                      "); */
 
@@ -1097,7 +1101,7 @@ fopen_fpdb_for_debug(); /* for test  */
   /*   g_fn_prtlin(mybuf); */
 
   /*   g_fn_prtlin(" "); */
-    g_fn_prtlin("                                                                                  "); /* blanks */
+//    g_fn_prtlin("                                                                                  "); /* blanks */
 
   /*   gbl_we_are_in_PRE_block = 0;  */
   /*   g_fn_prtlin("</pre>"); */
@@ -1115,8 +1119,9 @@ fopen_fpdb_for_debug(); /* for test  */
   /*   g_fn_prtlin("<div>CLOSENESS is by far the most important category because it shows<br> the natural ease of liking the other person in a comfortable way.</div>"); */
 
     g_fn_prtlin("                                                                                  "); /* blanks */
-    g_fn_prtlin("   -  you want to have a \"High\" number of pluses.                                 ");
-    g_fn_prtlin("   -  you also would like to see double the pluses compared to minuses.           ");
+    g_fn_prtlin("      For good compatibility potential                                            ");
+    g_fn_prtlin("      you want to have a \"High\" number of pluses.                                 ");
+    g_fn_prtlin("      you also would like to see double the pluses compared to minuses.           ");
     g_fn_prtlin("                                                                                  ");
 
   /*   gbl_we_are_in_PRE_block = 0; */
@@ -1194,7 +1199,7 @@ fopen_fpdb_for_debug(); /* for test  */
     //g_fn_prtlin("<span style=\"background-color:#FFBAC7;\">&nbspThis report is for entertainment purposes only.&nbsp</span>");
     g_fn_prtlin("This report is for entertainment purposes only.");
     g_fn_prtlin("</div>");  // end of appby
-
+    g_fn_prtlin("<div><br><br></div>");
 
   } else {  // browser version
 
@@ -1218,9 +1223,11 @@ fopen_fpdb_for_debug(); /* for test  */
     g_fn_prtlin("</pre>");
 
 
-    sprintf(writebuf, "<h5><br><br>produced by iPhone app %s</h5>", APP_NAME);
-    g_fn_prtlin(writebuf);
-    g_fn_prtlin("<h4><span style=\"background-color:#FFBAC7;\">&nbspThis report is for entertainment purposes only.&nbsp</span></h4>");
+//    sprintf(writebuf, "<h5><br><br>produced by iPhone app %s</h5>", APP_NAME);
+//    g_fn_prtlin(writebuf);
+//    g_fn_prtlin("<h4><span style=\"background-color:#FFBAC7;\">&nbspThis report is for entertainment purposes only.&nbsp</span></h4>");
+
+    g_fn_prtlin("<div> <span style=\"font-size: 1.0em\"><br>produced by iPhone app \"Me and my BFFs\"</span><br><br><span style=\"font-size: 0.9em; font-weight: bold; color:#FF0000;\">This report is for entertainment purposes only.</span></div><div><br></div>");
 
   } // browser version
 
@@ -2297,12 +2304,11 @@ int make_html_file_whole_group( /* produce actual html file */
 
 
 
-    sprintf(writebuf, "<h5><br><br>produced by iPhone app %s</h5>", APP_NAME);
-    g_fn_prtlin(writebuf);
+//    sprintf(writebuf, "<h5><br><br>produced by iPhone app %s</h5>", APP_NAME);
+//    g_fn_prtlin(writebuf);
+//  g_fn_prtlin("<h4><span style=\"background-color:#FFBAC7;\">&nbspThis report is for entertainment purposes only.&nbsp</span></h4>");
 
-/*   g_fn_prtlin("<h4><span style=\"background-color:#FFBAC7;\">&nbsp&nbsp&nbsp&nbsp&nbsp  This report is for entertainment purposes only.&nbsp&nbsp&nbsp&nbsp&nbsp  </span></h4>"); */
-  g_fn_prtlin("<h4><span style=\"background-color:#FFBAC7;\">&nbspThis report is for entertainment purposes only.&nbsp</span></h4>");
-
+  g_fn_prtlin("<div> <span style=\"font-size: 1.0em\"><br>produced by iPhone app \"Me and my BFFs\"</span><br><br><span style=\"font-size: 0.9em; font-weight: bold; color:#FF0000;\">This report is for entertainment purposes only.</span></div><div><br></div>");
 
 
   g_fn_prtlin( "</body>");
@@ -2473,6 +2479,7 @@ void put_top_of_html_group_rpt(char *group_name) {
   */
   g_fn_prtlin("  <meta name=\"google\" content=\"notranslate\">");
   g_fn_prtlin("  <meta http-equiv=\"Content-Language\" content=\"en\" />");
+  g_fn_prtlin("  <meta name = \"format-detection\" content = \"telephone=no\">");
 
   /* HEAD   STYLE/CSS
   */
@@ -2822,6 +2829,7 @@ void put_top_of_just2_group_rpt(void)  /* just_2 rpt */
   * <meta name="viewport" content="initial-scale=2.3, user-scalable=no">
   */
   g_fn_prtlin("  <meta name=\"viewport\" content=\"width=device-width\" />");
+  g_fn_prtlin("  <meta name = \"format-detection\" content = \"telephone=no\">");
 
 
   /* HEAD   STYLE/CSS
@@ -3305,6 +3313,7 @@ void put_ios_top_of_just2_group_rpt(void)  /* just_2 rpt */
   * <meta name="viewport" content="initial-scale=2.3, user-scalable=no">
   */
   g_fn_prtlin("  <meta name=\"viewport\" content=\"width=device-width\" />");
+  g_fn_prtlin("  <meta name = \"format-detection\" content = \"telephone=no\">");
 
 
   /* HEAD   STYLE/CSS

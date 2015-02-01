@@ -31,6 +31,9 @@
 //@property (strong, nonatomic) IBOutlet UIView *HomeNavBar;
 
 - (IBAction)actionSwitchEntity:(id)sender;
+- (void) dealloc ;
+- (void) doStuffOnEnteringForeground ;
+
 
 @property(nonatomic) NSInteger selectedSegmentIndex;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segEntityOutlet;

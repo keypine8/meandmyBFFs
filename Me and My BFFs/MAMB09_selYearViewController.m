@@ -13,11 +13,12 @@
 
 @implementation MAMB09_selYearViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
 
     fopen_fpdb_for_debug();
-    trn("in MAMB09_selYearViewController viewDidLoad");
+    trn("in viewDidLoad in MAMB09_selYearViewController ");
 
     self.outletYearPicker.delegate = self;
     self.outletYearPicker.dataSource = self;
@@ -35,10 +36,15 @@
         gbl_currentYearInt = [dateComponents year];
         // NSString *yearStr = [@(gbl_currentYear) stringValue];  // convert integer to NSString
         
-        // get the year of birth to start
+        // get the year of birth to start  from   gbl_fromHomeCurrentSelectionPSV 
+        // get the year of birth to start  from   gbl_fromHomeRememberedPSV 
+
+
         NSArray *psvArray = [gbl_fromHomeCurrentSelectionPSV componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"|"]];
+
+
         NSString *psvYearOfBirth    = psvArray[3];
-        NSString *psvRememberedYear = psvArray[10];  // know remembered year is 11th element
+
         dispatch_async(dispatch_get_main_queue(), ^{                                // <===  <.>
             self.outletPersonName.text       = psvArray[0];
         });
@@ -64,23 +70,45 @@
         // 2.  set the Picker's selected field to the same year
         //
 
+        // get remembered year, if present
+        //
+        //NSString *psvRememberedYear = psvArray[10];  // know remembered year is 11th element
+
+// old way (hard code)
+//        NSString *myRemPSV   = gbl_arrayPerRem[gbl_fromHomeCurrentSelectionArrayIdx];
+//        NSArray  *myRemArray = [myRemPSV componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"|"]];
+//        NSString *psvRememberedYear = myRemArray[2];  // year is field # 3 one-based
+//
+        NSString *psvRememberedYear;
+        MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
+        psvRememberedYear = [myappDelegate grabLastSelectionValueForEntity: (NSString *) @"person"
+                                                                havingName: (NSString *) gbl_fromHomeCurrentEntityName 
+                                                      fromRememberCategory: (NSString *) @"year"  ];
+
+
+        NSLog(@"gbl_fromHomeCurrentEntityName =%@",gbl_fromHomeCurrentEntityName );
+        NSLog(@"psvRememberedYear=%@", psvRememberedYear);
+
+
         if (psvRememberedYear == NULL || [psvRememberedYear intValue] == 0) {
-            gbl_selectedYear           = [@(gbl_currentYearInt) stringValue];
+            gbl_lastSelectedYear           = [@(gbl_currentYearInt) stringValue];
             dispatch_async(dispatch_get_main_queue(), ^{                                // <===  <.>
-                self.outletPickedYear.text = [@(gbl_currentYearInt) stringValue];
+                // self.outletPickedYear.text = [@(gbl_currentYearInt) stringValue];
+                self.outletYearSelected.text = [@(gbl_currentYearInt) stringValue];
             });
         } else {   
-            gbl_selectedYear           = psvRememberedYear;
+            gbl_lastSelectedYear           = psvRememberedYear;
             dispatch_async(dispatch_get_main_queue(), ^{                                // <===  <.>
-                self.outletPickedYear.text = psvRememberedYear;
+                //self.outletPickedYear.text = psvRememberedYear;
+                self.outletYearSelected.text = psvRememberedYear;
             });
         }
         
         // INIT  PICKER
-        // in picker set the roller to gbl_selectedYear
-        // find out the rownumber of gbl_selectedYear in yearToPickFrom
+        // in picker set the roller to gbl_lastSelectedYear
+        // find out the rownumber of gbl_lastSelectedYear in yearToPickFrom
         //
-        NSInteger myIndex = [yearsToPickFrom indexOfObject: gbl_selectedYear];
+        NSInteger myIndex = [yearsToPickFrom indexOfObject: gbl_lastSelectedYear];
         if (myIndex == NSNotFound) {
             // second last elt should be current year
             myIndex = yearsToPickFrom.count - 2;
@@ -112,12 +140,12 @@
     //    disclosure.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     //    disclosure.userInteractionEnabled = NO;
     
-}
+} // end of viewDidLoad 
 
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    NSLog(@"selyear viewWillAppear = gbl_arrayPer=%@",gbl_arrayPer);
+    NSLog(@"selyear viewWillAppear");
 
     // disable text field for year always
     //
@@ -125,7 +153,8 @@
     // (detailed view) and come back then also the textField will be disabled.    
 
     //[textfield setEnable:NO];
-    self.outletPickedYear.enabled = NO;
+    // self.outletPickedYear.enabled = NO;
+    self.outletYearSelected.enabled = NO;
     
 }
 
@@ -138,17 +167,14 @@
     // get selected person's name
     NSArray *myPSVarr = [gbl_fromHomeCurrentSelectionPSV componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"|"]];
 
-    //NSLog(@"myPSVarr=%@",myPSVarr);
+    NSLog(@"gbl_fromHomeCurrentSelectionPSV=%@",gbl_fromHomeCurrentSelectionPSV);
 
     MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
-    nbn(103);
-    [myappDelegate rememberSelectionForEntity: (NSString *) @"person"
+    [myappDelegate saveLastSelectionForEntity: (NSString *) @"person"
                       havingName: (NSString *) myPSVarr[0]
         updatingRememberCategory: (NSString *) @"year"
-                      usingValue: (NSString *) gbl_selectedYear
-     ];
-    nbn(105);
-    //NSLog(@"gbl_arrayPer=%@",gbl_arrayPer);
+                      usingValue: (NSString *) gbl_lastSelectedYear
+    ];
 
     
     
@@ -160,13 +186,12 @@
     //
     // Also, all UI-related stuff must be done on the *main queue*. That's way you need that dispatch_async.
     //
-    dispatch_async(dispatch_get_main_queue(), ^{                                // <===  <.>
+    dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
         [self performSegueWithIdentifier:@"segueSelYearToViewHTML" sender:self];
     });
 
 }
 
-// <.>
 // implement methods for  <UIPickerViewDataSource, UIPickerViewDelegate>
 //
 // The number of columns of data in picker
@@ -207,13 +232,52 @@
     
     //   NSLog(@"[_outletToYearPicker selectedRowInComponent:0]=%ld",(long)[_outletToYearPicker selectedRowInComponent:0]);
     
-    gbl_selectedYear = [self pickerView:_outletYearPicker
-                            titleForRow:[_outletYearPicker selectedRowInComponent:0]
-                           forComponent:0
+    gbl_lastSelectedYear = [self pickerView: _outletYearPicker
+                                titleForRow: [_outletYearPicker selectedRowInComponent:0]
+                               forComponent: 0
     ];
     
-    self.outletPickedYear.text = gbl_selectedYear;
-    
+    // self.outletPickedYear.text = gbl_lastSelectedYear;
+    self.outletYearSelected.text = gbl_lastSelectedYear;
+
+
+    MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
+    [myappDelegate saveLastSelectionForEntity: (NSString *) @"person"
+                      havingName: (NSString *) gbl_lastSelectedPerson
+        updatingRememberCategory: (NSString *) @"year"
+                      usingValue: (NSString *) gbl_lastSelectedYear
+    ];
+
+
+
+//    // now, in gbl_arrayPer , update array idx gbl_fromHomeCurrentSelectionArrayIdx with the  new Remembered Year
+//    //
+//    // update delimited string  for saving selection in remember fields
+//    MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
+//    NSString *myStrToUpdate = gbl_arrayPer[gbl_fromHomeCurrentSelectionArrayIdx];
+//    NSString *myupdatedStr =
+//    [myappDelegate updateDelimitedString: (NSMutableString *) myStrToUpdate
+//                             delimitedBy: (NSString *) @"|"
+//                updateOneBasedElementNum: (NSInteger)  11
+//                          withThisString: (NSString *) @"not locked"
+//     ];
+//    gbl_arrayPer[gbl_fromHomeCurrentSelectionArrayIdx] = myupdatedStr;
+//    while (FALSE);
+//
+//    
+////    NSArray *psvArray = [gbl_fromHomeCurrentSelectionPSV componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"|"]];
+////    NSMutableArray * psvMutableArray= [NSMutableArray arrayWithArray: psvArray];
+////    psvMutableArray[10] = gbl_lastSelectedYear;  // know remembered year is 11th element
+////    NSString *updatedPSV = [psvMutableArray componentsJoinedByString: @"|"];
+//
+//    dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+//        [gbl_arrayPer replaceObjectAtIndex: gbl_fromHomeCurrentSelectionArrayIdx
+//                                withObject: myupdatedStr
+//        ];
+//    });
+//
+//    gbl_fromHomeCurrentSelectionPSV = myupdatedStr;
+
 } // didSelectRow
 
 

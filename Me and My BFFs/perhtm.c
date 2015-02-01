@@ -1,4 +1,4 @@
-/* perhtm.c */
+//* perhtm.c */
 
 /* read from input docin_lines string array
 * format and write an html output file
@@ -9,7 +9,10 @@
 /* #define GBL_HTML_HAS_NEWLINES 0 */
 
 int gbl_we_are_in_PRE_block_content; /* 1 = yes, 0 = no */
-char gbl_person_name[64]; 
+
+//char gbl_person_name[64];  // "p_" because same var in objC code
+char gbl_p_person_name[64];  // "p_" because same var in objC code
+
 char gbl_pfnameHTML[2024];
 char gbl_instructions[128];
 
@@ -273,19 +276,20 @@ int make_per_htm_file_webview(
   p_fn_prtlin("");
 /*   p_fn_prtlin("  A score measures how high or low the influence  "); */
 
-/*   p_fn_prtlin("  A score measures how influential the trait is  "); */
-/*   sprintf(writebuf, "  (1 to 99) in the personality of %s.  ", gbl_person_name); */
-/*   p_fn_prtlin(writebuf); */
 
   p_fn_prtlin("  A score from 1 to 99 measures how influential  ");
-  sprintf(writebuf, "  the trait is in the personality of %s.  ", gbl_person_name);
+//  sprintf(writebuf, "  the trait is in the personality of %s.  ", gbl_person_name);
+  sprintf(writebuf, "  the trait is in the personality of %s.  ", gbl_p_person_name);
   p_fn_prtlin(writebuf);
 
 
 
   p_fn_prtlin("");
 /*   p_fn_prtlin("  The score does NOT measure \"good\" or \"bad\", "); */
-  p_fn_prtlin("  The score here does NOT measure \"good\" or \"bad\",  ");
+
+  //p_fn_prtlin("  The score here does NOT measure \"good\" or \"bad\",  ");
+  p_fn_prtlin("  This score does NOT measure \"good\" or \"bad\",  ");
+
   p_fn_prtlin("    which can be found in the paragraphs below: ");
   p_fn_prtlin("");
   gbl_we_are_in_PRE_block_content = 0; /* 1 = yes, 0 = no */
@@ -411,8 +415,9 @@ int make_per_htm_file_webview(
   p_fn_prtlin(writebuf);
   gbl_we_are_in_PRE_block_content = 0;  /* false */
   p_fn_prtlin("</pre>");
-  p_fn_prtlin("");
-  p_fn_prtlin("");
+  p_fn_prtlin("<div><br><br></div>");
+//  p_fn_prtlin("");
+//  p_fn_prtlin("");
 
 
 
@@ -520,6 +525,7 @@ void p_fn_webview_output_top_of_html_file(void)  // =-=-=-=-=-=-=-=-=-=-=-=-=-=-
   * <meta name="viewport" content="initial-scale=2.3, user-scalable=no">
   */
   p_fn_prtlin("  <meta name=\"viewport\" content=\"width=device-width\" />");
+  p_fn_prtlin("  <meta name = \"format-detection\" content = \"telephone=no\">");
 
 
   /* HEAD   STYLE/CSS
@@ -556,7 +562,7 @@ void p_fn_webview_output_top_of_html_file(void)  // =-=-=-=-=-=-=-=-=-=-=-=-=-=-
 /*   p_fn_prtlin( "    H4 { font-size:  150%; font-weight: bold;   line-height: 100%; text-align: center;}"); */
 /*   p_fn_prtlin( "    H5 { font-size:  150%; font-weight: normal; line-height: 100%; text-align: center;}"); */
 
-  p_fn_prtlin( "    PRE {");
+  p_fn_prtlin( "    PRE {");    // webview
   p_fn_prtlin( "      background-color: #fcfce0;");
   p_fn_prtlin( "      font-family: Menlo, Andale Mono, Monospace, Courier New;");
   p_fn_prtlin( "      font-weight: normal;");
@@ -843,7 +849,7 @@ void p_fn_webview_output_top_of_html_file(void)  // =-=-=-=-=-=-=-=-=-=-=-=-=-=-
   p_fn_prtlin("                   font-size: 133%;");
   p_fn_prtlin("    }");
 
-  p_fn_prtlin( "    table.trait {");
+  p_fn_prtlin( "    table.trait {");                   // webview
 /*   p_fn_prtlin( "      margin: auto;"); */
 /*   p_fn_prtlin( "      margin-left: 100px;"); */
 
@@ -953,7 +959,8 @@ void p_fn_webview_output_top_of_html_file(void)  // =-=-=-=-=-=-=-=-=-=-=-=-=-=-
 //  sprintf(writebuf, "\n  <h1>Personality for <span class=\"cNam\">%s</span><br></h1>", arr(0) ); /* of Fred  */
 /*   p_fn_prtlin(writebuf); */
 
-  strcpy(gbl_person_name, arr(0));
+  //strcpy(gbl_person_name, arr(0));
+  strcpy(gbl_p_person_name, arr(0));
 
 //  p_fn_prtlin("<div><pre class=\"myTitle\">");
 //  gbl_we_are_in_PRE_block_content = 1; 
@@ -974,9 +981,11 @@ void p_fn_webview_output_top_of_html_file(void)  // =-=-=-=-=-=-=-=-=-=-=-=-=-=-
   // want 6 sp left margin
   // then max 15 char name centred in 15 char field
   // extra sp on left
-  long namelen1 = strlen(gbl_person_name);
+//  long namelen1 = strlen(gbl_person_name);
+  long namelen1 = strlen(gbl_p_person_name);
   char mynam[32];
-  strcpy(mynam, gbl_person_name);
+  //strcpy(mynam, gbl_person_name);
+  strcpy(mynam, gbl_p_person_name);
   char char15toprint[32];
        if (namelen1 ==  1) sprintf(char15toprint, "       %s       ", mynam); 
   else if (namelen1 ==  2) sprintf(char15toprint, "       %s      ", mynam); 
@@ -1066,24 +1075,25 @@ int make_per_htm_file_browser(
   p_fn_prtlin("<div><br></div>");
 
   p_fn_prtlin("</table>");
-  p_fn_prtlin("<pre\">");
+  //p_fn_prtlin("<pre>");
+  p_fn_prtlin("<pre style=\"font-size: 1.1em;\">");
   gbl_we_are_in_PRE_block_content = 1; /* 1 = yes, 0 = no */
   p_fn_prtlin("");
 /*   p_fn_prtlin("  A score measures how high or low the influence  "); */
 
-/*   p_fn_prtlin("  A score measures how influential the trait is  "); */
-/*   sprintf(writebuf, "  (1 to 99) in the personality of %s.  ", gbl_person_name); */
-/*   p_fn_prtlin(writebuf); */
 
-  p_fn_prtlin("  A score from 1 to 99 measures how influential  ");
-  sprintf(writebuf, "  the trait is in the personality of %s.  ", gbl_person_name);
+  p_fn_prtlin("  A score from 1 to 99 measures how influential  ");                   // browser view
+  sprintf(writebuf, "  the trait is in the personality of %s.  ", gbl_p_person_name);
   p_fn_prtlin(writebuf);
 
 
 
   p_fn_prtlin("");
 /*   p_fn_prtlin("  The score does NOT measure \"good\" or \"bad\", "); */
-  p_fn_prtlin("  The score here does NOT measure \"good\" or \"bad\",  ");
+
+  //p_fn_prtlin("  The score here does NOT measure \"good\" or \"bad\",  ");
+  p_fn_prtlin("  This score does NOT measure \"good\" or \"bad\",  ");
+
   p_fn_prtlin("    which can be found in the paragraphs below: ");
   p_fn_prtlin("");
   gbl_we_are_in_PRE_block_content = 0; /* 1 = yes, 0 = no */
@@ -1128,7 +1138,7 @@ int make_per_htm_file_browser(
 
   /* put trait descriptions
   */
-  p_fn_prtlin("<pre>");
+  p_fn_prtlin("<pre style=\"font-size: 1.0em\">");
   gbl_we_are_in_PRE_block_content = 1;  /* true */
   p_fn_prtlin("    *trait");
   p_fn_prtlin("");
@@ -1162,7 +1172,7 @@ int make_per_htm_file_browser(
 
   p_fn_prtlin("<div><br></div>");
 
-  p_fn_prtlin("<pre> ");
+  p_fn_prtlin("<pre style=\"font-size: 1.0em\">");
   gbl_we_are_in_PRE_block_content = 1; 
   p_fn_prtlin( "                                       ");
   p_fn_prtlin( "  Your intense willpower can overcome  ");
@@ -1172,15 +1182,13 @@ int make_per_htm_file_browser(
   p_fn_prtlin("</pre>");
 
 
-/*   sprintf(writebuf, "<h5><br><br><br>produced by iPhone/iPad app named %s</h5>", APP_NAME); */
-/*   sprintf(writebuf, "<h5><br><br><br>produced by iPhone app %s</h5>", APP_NAME); */
-  sprintf(writebuf, "<h5><br>produced by iPhone app %s</h5>", APP_NAME);
-  p_fn_prtlin(writebuf);
+  //sprintf(writebuf, "<h5 style=\"font-size: 1.0em\"><br>produced by iPhone app %s</h5>", APP_NAME);
+//  sprintf(writebuf, "<div style=\"font-size: 1.0em\"><br>produced by iPhone app %s</div>", APP_NAME);
+//  p_fn_prtlin(writebuf);
+//  p_fn_prtlin("");
+//  p_fn_prtlin("<div style=\"font-size: 0.9em; font-weight: bold; color:#FF0000;\">&nbspThis report is for entertainment purposes only.&nbsp</span></div>");
 
-  p_fn_prtlin("");
-
-/*   p_fn_prtlin("<h4><span style=\"background-color:#FFBAC7;\">&nbsp&nbsp&nbsp&nbsp&nbsp  This report is for entertainment purposes only.&nbsp&nbsp&nbsp&nbsp&nbsp  </span></h4>"); */
-  p_fn_prtlin("<h4><span style=\"background-color:#FFBAC7;\">&nbspThis report is for entertainment purposes only.&nbsp</span></h4>");
+  p_fn_prtlin("<div> <span style=\"font-size: 1.0em\"><br>produced by iPhone app \"Me and my BFFs\"</span><br><br><span style=\"font-size: 0.9em; font-weight: bold; color:#FF0000;\">This report is for entertainment purposes only.</span></div><div><br></div>");
 
 
   p_fn_prtlin("\n</body>\n");
@@ -1201,13 +1209,13 @@ int make_per_htm_file_browser(
 /* b(15); */
   return(0);
 
-} // end of make_per_htm_file_browser      
+} // end of make_per_htm_file_browser      // browser
 
 
 
 /* output the css, headings etc.
 */
-void p_fn_output_top_of_html_file(void)
+void p_fn_output_top_of_html_file(void)                        // browser view
 {
   int i;
 /* trn("in p_fn_output_top_of_html_file()"); */
@@ -1288,7 +1296,11 @@ void p_fn_output_top_of_html_file(void)
   * To set the initial scale and to turn off user scaling, add this to your HTML file:
   * <meta name="viewport" content="initial-scale=2.3, user-scalable=no">
   */
-  p_fn_prtlin("  <meta name=\"viewport\" content=\"width=device-width\" />");
+
+  //f_fnBIG_prtlin("  <meta name=\"viewport\" content=\"initial-scale=1.0; \"> ");       //   browser view
+  //p_fn_prtlin("  <meta name=\"viewport\" content=\"width=device-width\" />");
+  p_fn_prtlin("  <meta name=\"viewport\" content=\"initial-scale=1.0; \"> ");           //   browser view
+  p_fn_prtlin("  <meta name = \"format-detection\" content = \"telephone=no\">");
 
 
   /* HEAD   STYLE/CSS
@@ -1323,11 +1335,15 @@ void p_fn_output_top_of_html_file(void)
   p_fn_prtlin( "    H4 { font-size:  75%; font-weight: bold;   line-height: 30%; text-align: center;}");
   p_fn_prtlin( "    H5 { font-size:  70%; font-weight: normal; line-height: 30%; text-align: center;}");
 
-  p_fn_prtlin( "    PRE {");
+  p_fn_prtlin( "    PRE {");          // browser view
+
+  p_fn_prtlin( "      font-family: Menlo, Andale Mono, Monospace, Courier New;");
+//  p_fn_prtlin( "      white-space: pre ; display: block; unicode-bidi: embed");
+  p_fn_prtlin( "      display: inline-block;");
+
   p_fn_prtlin( "      background-color: #fcfce0;");
   p_fn_prtlin( "      text-align:  left;");
 /*   p_fn_prtlin( "      font-size:   90%;"); */
-  p_fn_prtlin( "      display: inline-block;");
 /*   p_fn_prtlin( "      border-style: solid;"); */
 /*   p_fn_prtlin( "      border-color: black;"); */
 /*   p_fn_prtlin( "      border-width: 2px;"); */
@@ -1339,7 +1355,6 @@ void p_fn_output_top_of_html_file(void)
   p_fn_prtlin( "      border-collapse: collapse;");
   p_fn_prtlin( "      border-spacing: 0;");
 /*   p_fn_prtlin( "      font-family: Andale Mono, Menlo, Monospace, Courier New;"); */
-  p_fn_prtlin( "      font-family: Menlo, Andale Mono, Monospace, Courier New;");
   p_fn_prtlin( "      font-weight: normal;");
 /*   p_fn_prtlin( "      line-height: 70%;"); */
 /*   p_fn_prtlin( "      line-height: 100%;"); */
@@ -1373,9 +1388,11 @@ void p_fn_output_top_of_html_file(void)
   p_fn_prtlin( "      border-collapse: collapse;");
   p_fn_prtlin( "      border-spacing: 0;");
   p_fn_prtlin( "    }");
+
   p_fn_prtlin( "    table.center {");
   p_fn_prtlin( "      margin-left:auto;");
   p_fn_prtlin( "      margin-right:auto;");
+
   p_fn_prtlin( "    }");
   p_fn_prtlin( "    TD {");
   p_fn_prtlin( "      border: none;");
@@ -1439,12 +1456,19 @@ void p_fn_output_top_of_html_file(void)
   p_fn_prtlin("                   font-size: 133%;");
   p_fn_prtlin("    }");
 
-  p_fn_prtlin( "    table.trait {");
+  p_fn_prtlin( "    table.trait {");          // browser view
+
+  //p_fn_prtlin( "      font-size: 1.7em;");
+  //p_fn_prtlin( "      font-size: 1.2em;");
+  p_fn_prtlin( "      font-size: 1.45em;");
+
   p_fn_prtlin( "      margin-left: auto;");
   p_fn_prtlin( "      margin-right:auto;");
-/*   p_fn_prtlin( "      font-family: Andale Mono, Monospace, Courier New;"); */
+/*   p_fn_prtlin( "      font-family: Andale Mono, Monospacae, Courier New;"); */
   p_fn_prtlin( "      font-family: Menlo, Andale Mono, Monospace, Courier New;");
-  p_fn_prtlin( "      text-align: left;");
+
+  //p_fn_prtlin( "      text-align: left;");
+  p_fn_prtlin( "      text-align: center;");
 
 /*   p_fn_prtlin( "      border: 1px solid black;"); */
   p_fn_prtlin( "      border: none;");
@@ -1529,10 +1553,11 @@ void p_fn_output_top_of_html_file(void)
 /*   sprintf(writebuf, "\n  <h1>Personality of %s<br></h1>", arr(0) ); * of Fred  * */
 
   p_fn_prtlin("<div><br></div>");
-  sprintf(writebuf, "\n  <h1>Personality for <span class=\"cNam\">%s</span><br></h1>", arr(0) ); /* of Fred  */
+  sprintf(writebuf, "\n  <h1>Personality of <span class=\"cNam\">%s</span><br></h1>", arr(0) ); /* of Fred  */
   p_fn_prtlin(writebuf);
 
-  strcpy(gbl_person_name, arr(0));
+  //strcpy(gbl_person_name, arr(0));
+  strcpy(gbl_p_person_name, arr(0));
 
   p_fn_prtlin(" ");
 
@@ -2057,8 +2082,7 @@ int Func_compare_trait_line_scores(
 * <tr><td>Ups and Downs</td><td>15 </td><td></td></tr>
 * </table>
 */
-void write_html_for_trait_table(void)
-{
+void write_html_for_trait_table(void) {  // browser version
   int i, score_int;
   char rowcolor[32];
 
@@ -2071,7 +2095,8 @@ void write_html_for_trait_table(void)
 
 /* p_fn_prtlin("<div class=\"centered\"> "); */
 
-  p_fn_prtlin("<table class=\"trait\">");
+  //p_fn_prtlin("<table class=\"trait\">");
+  p_fn_prtlin("<table class=\"trait\" class=\"center\">");
 /*   p_fn_prtlin("<tr> <th>Trait *</th> <th>Score</th> <th>Benchmark</th> </tr>"); */
   p_fn_prtlin("<tr> <th>Trait*</th> <th>Score</th> <th></th> </tr>");
 
@@ -2087,7 +2112,6 @@ void write_html_for_trait_table(void)
       p_fn_prtlin(writebuf);
       continue;
     }
-/*     if (strcmp(trait_lines[i].influence, "Median") == 0) { */
     if (strcmp(trait_lines[i].influence, "Average") == 0) {
       sprintf(writebuf, "  <tr class=\"cNeu\"><td></td><td>50 </td><td>Average</td></tr>");
       p_fn_prtlin(writebuf);

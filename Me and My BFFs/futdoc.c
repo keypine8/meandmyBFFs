@@ -2515,7 +2515,10 @@ void prt_grh_bot(char *p_line, int cols_with_pt[], int pt_ctr, int *p_ln_ctr)
 /*   p_line[Num_eph_grh_pts-1] = GRH_SIDELINE_CHAR;  */ /* one buffer line */
 
   n = sprintf(p,"%s%s\n",&lf_mar[0],&p_line[0]);
+
+  //scharswitch(p, GRH_BACKGROUND_CHAR, '|');   // change tick from apostrophe to pipe
   scharswitch(p, GRH_BACKGROUND_CHAR, '\'');
+
   f_docin_put(p,n);
       /* ^bot line of dots */
 
@@ -4655,7 +4658,7 @@ void do_aBIG_graph(int p_grh[], int grh_num)    /* qqq */
   current_grh_y_val = *(p_grh+Num_eph_grh_pts-1);/* for 1st time thru below */
   last_grh_y_val_printed = current_grh_y_val;  /* for 1st time thru below */
 
-  // prt_BIGgrh_hdr(grh_num);   // whole year does not need header
+  prt_BIGgrh_hdr(grh_num);   // whole year does not need header  yes it does, for blnk line of sky
 
   sfill(&grh_line[0],Num_eph_grh_pts,GRH_BACKGROUND_CHAR);
   for (k=Num_eph_grh_pts-1; k > -1; k--) {
@@ -4721,44 +4724,50 @@ void prt_BIGgrh_hdr(int grh_num)  /* grh title and 2nd line */
     strim(num1," "), strim(num2," ") );
   memcpy(star_desc, star_wk, strlen(star_wk));
 
-  /* put name in field of dots
-  */
-  char dotfield[MAX_SIZE_PERSON_NAME+2];  /* 15 in 201309 */
-  sfill(dotfield, MAX_SIZE_PERSON_NAME+1, '.');
-  memcpy(dotfield, fEvent_name, strlen(fEvent_name));
-  dotfield[MAX_SIZE_PERSON_NAME+1] = '\0';
+
+  // 20141229  for BIG, no grh header
+// 
+//   /* put name in field of dots
+//   */
+//   char dotfield[MAX_SIZE_PERSON_NAME+2];  /* 15 in 201309 */
+//   sfill(dotfield, MAX_SIZE_PERSON_NAME+1, '.');
+//   memcpy(dotfield, fEvent_name, strlen(fEvent_name));
+//   dotfield[MAX_SIZE_PERSON_NAME+1] = '\0';
+// 
+// 
+// /*    "\n\n%s .....%s..........................................%s.....%s..... \n", */
+// /*     Grh_name[grh_num],   */
+// /*    "\n\n%s .....%s.............................................%s.....%s..... \n", */
+// /*     "\n\n%s .....%s.............................................%s.....%s..... \n",  */
+// 
+// /* tn(); */
+// /* ksn(&lf_mar[0]); */
+// /* ksn(dotfield); */
+// /*     "\n\n%s ..<span class=\"bgy\">...%s.....................T.......................%s.....%s..... </span>\n",  */
+// /*     "\n\n%s ..<span class=\"bgy\">...%s..................T.....................%s.....%s..... </span>\n",  */
+// 
+//   // this is big  version, so add 92 dots in middle
+//   char dotfield_92[128];
+//   sfill(dotfield_92, 92, '.'); // #define NUM_PTS_WHOLE_YEAR 184
+//   n = sprintf(p,
+//     "\n\n%s<span class=\"bgy\"> .....%s.................%s.......................%s.....%s..... </span>\n", 
+//     &lf_mar[0],
+//     dotfield,   // with person name
+//     dotfield_92, // fill for big double sized graph
+//     year_in_the_life_todo_yyyy,
+// //    (global_flag_which_graph == 1)? "First 6 months.": "Second 6 months" 
+//     (global_flag_which_graph == 1)? "               ": "               " 
+//   );
+// /*     (global_flag_which_graph == 1)? "First Half.": "Second Half"  */
+// /* kin(strlen(p)); */
+// /* ksn(p); */
+// 
+//   scharswitch(p, '.', ' ');  /* dots out */
+// 
+//   f_docin_put(p,n);
+// 
 
 
-/*    "\n\n%s .....%s..........................................%s.....%s..... \n", */
-/*     Grh_name[grh_num],   */
-/*    "\n\n%s .....%s.............................................%s.....%s..... \n", */
-/*     "\n\n%s .....%s.............................................%s.....%s..... \n",  */
-
-/* tn(); */
-/* ksn(&lf_mar[0]); */
-/* ksn(dotfield); */
-/*     "\n\n%s ..<span class=\"bgy\">...%s.....................T.......................%s.....%s..... </span>\n",  */
-/*     "\n\n%s ..<span class=\"bgy\">...%s..................T.....................%s.....%s..... </span>\n",  */
-
-  // this is big  version, so add 92 dots in middle
-  char dotfield_92[128];
-  sfill(dotfield_92, 92, '.'); // #define NUM_PTS_WHOLE_YEAR 184
-  n = sprintf(p,
-    "\n\n%s<span class=\"bgy\"> .....%s.................%s.......................%s.....%s..... </span>\n", 
-    &lf_mar[0],
-    dotfield,   // with person name
-    dotfield_92, // fill for big double sized graph
-    year_in_the_life_todo_yyyy,
-//    (global_flag_which_graph == 1)? "First 6 months.": "Second 6 months" 
-    (global_flag_which_graph == 1)? "               ": "               " 
-  );
-/*     (global_flag_which_graph == 1)? "First Half.": "Second Half"  */
-/* kin(strlen(p)); */
-/* ksn(p); */
-
-  scharswitch(p, '.', ' ');  /* dots out */
-
-  f_docin_put(p,n);
 
   strcpy(p,"\n");  /* blank line before grh lines */
   n = (int)strlen(p);
@@ -4782,6 +4791,7 @@ void prt_BIGgrh_hdr(int grh_num)  /* grh title and 2nd line */
   n = (int)strlen(p);
 /* kin(n); */
   f_docin_put(p,n);
+
   put_BIGgrh_blnk_lines_at_top();
 
 }   // end of prt_BIGgrh_hdr(int grh_num)  /* grh title and 2nd line */
@@ -4844,7 +4854,10 @@ void prt_BIGgrh_bot(char *p_line, int cols_with_pt[], int pt_ctr, int *p_ln_ctr)
 /*   p_line[Num_eph_grh_pts-1] = GRH_SIDELINE_CHAR;  */ /* one buffer line */
 
   n = sprintf(p,"%s%s\n",&lf_mar[0],&p_line[0]);
+
+  //scharswitch(p, GRH_BACKGROUND_CHAR, '|');   // change tick from apostrophe to pipe
   scharswitch(p, GRH_BACKGROUND_CHAR, '\'');
+
   f_docin_put(p,n);
       /* ^bot line of dots */
 
