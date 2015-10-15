@@ -5,8 +5,6 @@
 //  Copyright (c) 2014 Richard Koskela. All rights reserved.
 //
 
-hey a change is here !!
-
 #import <UIKit/UIKit.h>
          
 //    The viewController life cycle are 
