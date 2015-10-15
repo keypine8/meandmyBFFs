@@ -308,7 +308,7 @@ int mamb_report_personality (   /* in perdoc.o */
     return(0);
   }
   /* NOW, May 2014, stringBuffForTraitCSV, is ALWAYS populated with trait scores */
-/*   strcpy(string_buffer_for_trait_csv, gblBuffTraitScoresCSV); */
+  strcpy(string_buffer_for_trait_csv, gblBuffTraitScoresCSV);
 
 
   docn = sprintf(docp,"\n\n[beg_aspects]\n");

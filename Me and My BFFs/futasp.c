@@ -340,37 +340,81 @@ extern double Day_tab[][13];
  */
 void mk_new_date(double *pm, double *pd, double *py, double dstep)  
 {
-  int i,leap;
+  int i,leap,retvalnewdate;
   double temp,jd;    /* jd julian date */
+  double prev_year_num_days;    /* jd julian date */
+  double prev_year_jd;    /* jd julian date */
   ;
-  if (isinnewyear(*py,*pm,*pd,dstep) == 0) {
-    temp = day_of_year(*py,*pm,*pd);  /* julian day */
-    month_day(*py,temp+dstep,pm,pd);  /* get mn dy,yr  for jd in year *py */
+  retvalnewdate = isinnewyear(*py, *pm, *pd, dstep);
+//kin(retvalnewdate );
+  if (retvalnewdate == 999) {  // new date  is in same year as arg year
+    temp = day_of_year(*py, *pm, *pd);  /* julian day */
+    month_day(*py, temp + dstep, pm, pd);  /* get mn dy, yr  for jd in year *py */
     return;
   }
-  jd = day_of_year(*py,*pm,*pd) + dstep;  /* (is > 365) */
-  while (isinnewyear(*py,*pm,*pd,dstep) == 1) {
-    i = (int)*py;  /* is this year leap? */
-    leap = (i%4 == 0 && i%100) != 0 || i%400 == 0;
-    jd -= Day_tab[leap][0];    /* jd in the new year (or subsequent yr) */
-    dstep = jd;  *py += 1.0;  *pm = 1.0;  *pd = 0.0;
-      /* 01Jan of new year (0 for month_day()) */
+  else if (retvalnewdate == 1) {  // in future  year
+    jd = day_of_year(*py, *pm, *pd) + dstep;  /* (here, this julian date  is > 365 (or 364) */
+
+    while (isinnewyear(*py, *pm, *pd, dstep) == 1) {
+
+      i = (int)*py;  /* is the arg starting year  leap? */
+      leap = (i%4 == 0 && i%100) != 0 || i%400 == 0;
+
+      jd -= Day_tab[leap][0];    /* jd in the new year (or subsequent yr) */
+                                 /* Day_tab[leap][0] is 364 or 365 depending on leap */
+      dstep = jd;  *py += 1.0;  *pm = 1.0;  *pd = 0.0;
+        /* 01Jan of new year (0 for month_day()) */
+    }
+
+    month_day(*py, jd, pm, pd);  /* get mn, dy  for jd in year *py,  */
+    return;
   }
-  month_day(*py,jd,pm,pd);  /* get mn,dy  for jd in year *py, */
+  else { // (retvalnewdate is 0 or negative)  new date is in past   year
+    // this assumes new date is in arg year minus ONE
+//tn();trn("in PreV YEAR!");
+    // get  prev_year_num_days
+    //
+    i = (int) ( *py - 1) ;  /* is the arg starting year  leap? */
+    leap = (i%4 == 0 && i%100) != 0 || i%400 == 0;
+    prev_year_num_days = Day_tab[leap][0]; /* Day_tab[leap][0] is 364 or 365 depending on leap */
+    prev_year_jd = prev_year_num_days - retvalnewdate;
+               /* returns  num days to subtract from num days in prev year  if new date ymd is in past year */
+    *py = *py - 1;
+    month_day(*py, prev_year_jd, pm, pd);  /* get mn, dy  for jd in year *py,  */
+    return;
+  }
+
+
 }  /* end of mk_new_date() */
 
 /* is date + step in new year? */
-/* returns 1 if yes, 0 if in this year */
+             /* NO  returns 1 if yes, 0 if in this year */
+/* returns  num days to subtract from num days in prev year  if new date ymd is in past year 
+*  returns  1  if new date ymd is in future year
+*  returns  0  if new date ymd is in same   year
+*/
 int isinnewyear(double y, double m, double d, double step) 
 {
+//tn();trn(" int isinnewyear(double y, double m, double d, double step) ");
+//tn();kd(y);kd(m);kd(d);
   int i,leap;
   double temp;
   ;
   i = (int)y;
   leap = (i%4 == 0 && i%100) != 0 || i%400 == 0;
   temp = day_of_year(y,m,d) + step;
-  if (temp >  Day_tab[leap][0])  return (1);
-  else  return(0);
+
+  if ( temp >  Day_tab[leap][0]) {  // [0] is num days in year (365 or 366)
+    return (1);   // new date is in future year
+  } 
+
+  if ( temp <  1 ) {            // added 20150406  (backward for what color report)
+    // here, temp could be 0, meaning new date is last day in prev year
+    return (temp);  // (retval is 0 or negative)  new date is in past   year
+  } 
+
+  return(999);    // new date is in same   year
+ 
 }  
 
 /* return jd in year from  month & day */

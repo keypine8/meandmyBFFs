@@ -5,6 +5,7 @@
 //  Created by Richard Koskela on 2014-12-01.
 //  Copyright (c) 2014 Richard Koskela. All rights reserved.
 //
+// selects a person or group
 
 #import "MAMB09_selPersonViewController.h"
 #import "MAMB09_viewHTMLViewController.h"
@@ -25,10 +26,12 @@
 - (void)viewDidLoad
 {
     fopen_fpdb_for_debug();
-    NSLog(@"in Selct Person   viewDidLoad!");
+    NSLog(@"in Select Person   viewDidLoad!");
     
     [super viewDidLoad];
-    
+
+   
+    NSLog(@"gbl_currentMenuPlusReportCode =%@",gbl_currentMenuPlusReportCode );
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -36,9 +39,133 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
-    dispatch_async(dispatch_get_main_queue(), ^{                                // <=== 
-        [[self navigationItem] setTitle: @"Second Person"];
-    });
+
+    //
+    // Note:   MAMB09_selPersonViewController is only ever entered   only ever called   from the home screen, person Entity
+    //      1. to select a Person for this report:
+    //             @"hompco|Compatibility Paired with ...",
+    //      2. to select a Group for this report:
+    //             @"hompbm|My Best Match in Group ...",
+    //     
+
+
+    // set the Nav Bar Title  according to where we came from
+    //
+    do {
+        //    if (       [gbl_fromHomeCurrentSelectionType isEqualToString: @"person"]) {   // came from a person
+        //        dispatch_async(dispatch_get_main_queue(), ^{                                // <=== 
+        //            [[self navigationItem] setTitle: @"Second Person"];
+        //        });
+        //    } else if ([gbl_fromHomeCurrentSelectionType isEqualToString: @"group"]) {   // came from a group {
+        //        dispatch_async(dispatch_get_main_queue(), ^{                                // <=== 
+        //            [[self navigationItem] setTitle: @"Select Group"];
+        //        });
+        //    }
+        //
+//        UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 11, 44)];  // 3rd arg is horizontal length
+//        UIBarButtonItem *mySpacerForTitle = [[UIBarButtonItem alloc] initWithCustomView:spaceView];
+
+
+
+        // UIBarButtonItem *myFlexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemFlexibleSpace
+        //                                                                               target: self
+        //                                                                               action: nil];
+
+        UIButton *myInvisibleButton       = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+//        UIButton *myInvisibleButton       = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+        myInvisibleButton.backgroundColor = [UIColor clearColor];
+        UIBarButtonItem *mySpacerNavItem  = [[UIBarButtonItem alloc] initWithCustomView: myInvisibleButton];
+
+        // setup for TWO-LINE NAV BAR TITLE
+        //    UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 11, 44)];  // 3rd arg is horizontal length
+//        UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 33, 44)];  // 3rd arg is horizontal length
+        UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 55, 44)];  // 3rd arg is horizontal length
+        UIBarButtonItem *mySpacerForTitle = [[UIBarButtonItem alloc] initWithCustomView:spaceView];
+
+        UILabel *myNavBarLabel      = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 480.0, 44.0)];
+
+        NSString *myNavBar2lineTitle;
+        if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]) {   // came from "Compatibility Paired With ..."
+            myNavBar2lineTitle = [NSString stringWithFormat:  @"%@\nSelect Second Person", gbl_lastSelectedPerson ];
+        }
+//        if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"])    // came from "My Best Match in Group ..."
+        else {
+            myNavBar2lineTitle = [NSString stringWithFormat: @"%@\nSelect Group",  gbl_lastSelectedPerson ];
+        }
+
+        myNavBarLabel.numberOfLines = 2;
+    //        myNavBarLabel.font          = [UIFont boldSystemFontOfSize: 16.0];
+        myNavBarLabel.font          = [UIFont boldSystemFontOfSize: 14.0];
+        myNavBarLabel.textColor     = [UIColor blackColor];
+        myNavBarLabel.textAlignment = NSTextAlignmentCenter; 
+        myNavBarLabel.text          = myNavBar2lineTitle;
+
+
+        if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]) {   // came from "Compatibility Paired With ..."
+
+//            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== 
+//                [[self navigationItem] setTitle: @"Second Person"];
+//            });
+
+
+            // TWO-LINE NAV BAR TITLE
+            //
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+                self.navigationItem.titleView           = myNavBarLabel; // myNavBarLabel.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
+        //      self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerForTitle];
+                self.navigationItem.rightBarButtonItem =  mySpacerForTitle;
+            });
+
+
+        }
+//        if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"])    // came from "My Best Match in Group ..."
+        else {
+
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== 
+
+//                [[self navigationItem] setTitle: myTitleGrponeSelGroup ];  // has to go first (stutter)
+                self.navigationItem.titleView           = myNavBarLabel; // mySel2ndPer_Label.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
+
+                self.navigationItem.rightBarButtonItem =  mySpacerNavItem;
+//                self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: myFlexibleSpace ];
+//                self.navigationItem.leftBarButtonItems  = [self.navigationItem.leftBarButtonItems arrayByAddingObject: myFlexibleSpace ];
+                self.navigationItem.rightBarButtonItem =  mySpacerForTitle;
+                [self.navigationController.navigationBar setTranslucent:NO];
+
+//              self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerForTitle];
+//        self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerNavItem];
+
+            });
+        }
+    } while (FALSE);
+
+//<.>
+//    // set up label for  self.navigationItem.titleView 
+//    //
+//    UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 11, 44)];  // 3rd arg is horizontal length
+//    UIBarButtonItem *mySpacerForTitle = [[UIBarButtonItem alloc] initWithCustomView:spaceView];
+//
+//    UILabel *mySelDate_Label      = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 480.0, 44.0)];
+//
+//    NSString *myNavBar2lineTitle  = [NSString stringWithFormat:  @"%@\nSelect Day", gbl_lastSelectedPerson ];
+//
+//    mySelDate_Label.numberOfLines = 2;
+////        mySelDate_Label.font          = [UIFont boldSystemFontOfSize: 16.0];
+//    mySelDate_Label.font          = [UIFont boldSystemFontOfSize: 14.0];
+//    mySelDate_Label.textColor     = [UIColor blackColor];
+//    mySelDate_Label.textAlignment = NSTextAlignmentCenter; 
+//    mySelDate_Label.text          = myNavBar2lineTitle;
+//
+//    // TWO-LINE NAV BAR TITLE
+//    //
+//    dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+//        self.navigationItem.rightBarButtonItem = _goToReportButton;
+//        self.navigationItem.titleView           = mySelDate_Label; // mySelDate_Label.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
+//        self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerForTitle];
+//    });
+//
+//<.>
+//
 
  
     NSLog(@"gbl_fromHomeCurrentSelectionPSV =%@",gbl_fromHomeCurrentSelectionPSV);
@@ -48,10 +175,9 @@
     
     // populate arrayPersonsToPickFrom
     //
-    // if we came here from a person, the domain is all persons except current person
-    // if we came here from a group,  the domain is all persons in the group
-    //   gbl_fromHomeCurrentSelectionType;    // like "group" or "person" or "pair"
-    if ([gbl_fromHomeCurrentSelectionType isEqualToString: @"person"]) {   // came from a person
+    // if we came here from hompco, the domain is all persons except current person
+    // if we came here from hompbm,  the domain is all persons in the group
+    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]) {   
         
         [_PSVs_for_person_picklist removeAllObjects];
         _PSVs_for_person_picklist   = [[NSMutableArray alloc] init];
@@ -60,12 +186,14 @@
         gbl_arrayPersonsToPickFrom = [[NSMutableArray alloc] init];
 
         for (id myPerPSV in gbl_arrayPer) {
-// skip example record
+
+// skip example record  TODO in production
 //            if (gbl_show_example_data ==  NO  &&
 //                [myPerPSV hasPrefix: @"~"]) {  // skip example record
 //                continue;         //  ======================-------------------------------------- PUT BACK when we have non-example data!!!
 //            }
 //
+
             NSArray *psvArray;
             NSString *person1, *person2;
             
@@ -85,46 +213,117 @@
         //NSLog(@"gbl_arrayPersonsToPickFrom.count=%lu",(unsigned long)gbl_arrayPersonsToPickFrom.count);
         //NSLog(@"_PSVs_for_person_picklist=%@",_PSVs_for_person_picklist);
     }
-  
-    
-    if ([gbl_fromHomeCurrentSelectionType isEqualToString: @"group"]) {   // came from a person
-        NSLog(@"TODO  for  from-group sel!");
+//    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"]) 
+    else  { 
+        [_PSVs_for_group_picklist removeAllObjects];
+        _PSVs_for_group_picklist   = [[NSMutableArray alloc] init];
+        
+        [gbl_arrayGroupsToPickFrom removeAllObjects];
+        gbl_arrayGroupsToPickFrom = [[NSMutableArray alloc] init];
+
+        for (id myGrpPSV in gbl_arrayGrp) {
+
+// skip example record  TODO in production
+//            if (gbl_show_example_data ==  NO  &&
+//                [myGrpPSV hasPrefix: @"~"]) {  // skip example record
+//                continue;         //  ======================-------------------------------------- PUT BACK when we have non-example data!!!
+//            }
+//
+
+            NSArray *psvArray;
+            psvArray = [myGrpPSV componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"|"]];
+            NSString *myGroup = psvArray[0];
+
+            [gbl_arrayGroupsToPickFrom addObject: myGroup ]; //  Group name for pick
+            [_PSVs_for_group_picklist addObject: myGrpPSV ]; //  Group PSV  for ViewHTML
+            
+//             NSLog(@"gbl_arrayGroupsToPickFrom=%@",gbl_arrayGroupsToPickFrom);
+        }
+        NSLog(@"gbl_arrayGroupsToPickFrom.count=%lu",(unsigned long)gbl_arrayGroupsToPickFrom.count);
+        NSLog(@"_PSVs_for_group_picklist=%@",_PSVs_for_group_picklist);
     }
 
 } /* viewDidLoad */
 
 
 - (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
+    //    [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"The App received an Memory Warning"
-                                                    message: @"The system has determined that the \namount of available memory is very low."
-                                                   delegate: nil
-                                          cancelButtonTitle: @"OK"
-                                          otherButtonTitles: nil];
-    [alert show];
-}
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle: @"The App received a Memory Warning"
+                                                                   message: @"The system has determined that the \namount of available memory is very low."
+                                                            preferredStyle: UIAlertControllerStyleAlert  ];
+     
+    UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                        style: UIAlertActionStyleDefault
+                                                      handler: ^(UIAlertAction * action) {
+        NSLog(@"Ok button pressed");
+    } ];
+    [alert addAction:  okButton];
+    [self presentViewController: alert  animated: YES  completion: nil   ];
+    [super didReceiveMemoryWarning];
+} // didReceiveMemoryWarning 
+
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
+    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]) {   
+        return 1;
+    }
+//    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"]) {   
+    else {
+        return 1;
+    }
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSLog(@"gbl_arrayPersonsToPickFrom.count=%lu",(unsigned long)gbl_arrayPersonsToPickFrom.count);
+//tn();
+//  NSLog(@" in numberOfRowsInSection!  in selperson/group");
+//  NSLog(@"gbl_currentMenuPlusReportCode =%@",gbl_currentMenuPlusReportCode );
+//  NSLog(@"gbl_currentMenuPrefixFromHome=%@",gbl_currentMenuPrefixFromHome);
+//  NSLog(@"gbl_currentMenuPrefixFromMatchRpt=%@",gbl_currentMenuPrefixFromMatchRpt);
+//
+//  NSLog(@"gbl_lastSelPersonWasA =%@",gbl_lastSelPersonWasA );
+//tn();
 
-    return gbl_arrayPersonsToPickFrom.count;
+//
+////        || [gbl_lastSelPersonWasA         isEqualToString: @"person"]
+////    if (   [gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]
+//    if ([gbl_currentMenuPlusReportCode hasSuffix: @"co"]) {  //   @"Compatibility Potential"
+//
+////kin(gbl_arrayPersonsToPickFrom.count);
+//        return gbl_arrayPersonsToPickFrom.count;
+//    }
+//
+////        || [gbl_lastSelPersonWasA         isEqualToString: @"group" ]
+////    if (   [gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"]
+//    if ([gbl_currentMenuPlusReportCode hasSuffix: @"bm"]) {  //   grpall or grpone (hompbm,pbm2bm, homgbm,gbm1bm,gbm2bm)
+//
+////kin(gbl_arrayGroupsToPickFrom.count);
+//        return gbl_arrayGroupsToPickFrom.count;
+//    }
+////trn("oioioioi");
+//
+
+
+    if (   [gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]) return gbl_arrayPersonsToPickFrom.count;
+    else                                                               return gbl_arrayGroupsToPickFrom.count;
+
+    return 1;
 }
 
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // NSLog(@"in sel Person  cellForRow!");
+//    NSLog(@"in sel Person  cellForRow!");
+//  NSLog(@"indexPath.row=%ld",(long)indexPath.row);
+//  NSLog(@"gbl_currentMenuPlusReportCode =%@",gbl_currentMenuPlusReportCode );
+
     
     // create an NSString  we can use as the reuse identifier
     static NSString *CellIdentifier = @"SelPersonCellIdentifier";
@@ -134,11 +333,19 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
+    
+    //   cell.selectedBackgroundView =  gbl_myCellBgView ;  // get my own background color for selected rows (see MAMB09AppDelegate.m)
+
     //NSLog(@"cwll=%@",cell);
 
     // Configure the cell...
-    cell.textLabel.text = [gbl_arrayPersonsToPickFrom   objectAtIndex:indexPath.row];
-    //NSLog(@"cell.textLabel.text=%@",cell.textLabel.text);
+    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]) {   
+        cell.textLabel.text = [gbl_arrayPersonsToPickFrom   objectAtIndex:indexPath.row];
+    }
+//    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"]) {   
+    else {
+        cell.textLabel.text = [gbl_arrayGroupsToPickFrom   objectAtIndex:indexPath.row];
+    } 
 
     return cell;
 } // cellForRowAtIndexPath
@@ -168,11 +375,17 @@
 -(void) viewWillAppear:(BOOL)animated {
     //NSLog(@"in viewWillAppear!");
 
-    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for global methods in appDelegate.m
-    NSIndexPath *highlightIdxPath;
-    NSString *rememberedLastPerson;
+    [self.tableView reloadData];  // moved reloaddata from viewdidappear (flashing highlight on selected row)
 
-    
+
+// had to move this block to viewDidAppear (maybe because viewDidAppear   has new reloaddata)
+//
+//    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for global methods in appDelegate.m
+//    NSIndexPath *highlightIdxPath;
+//    NSString *rememberedLastPerson;
+//    NSString *rememberedLastGroup;
+//
+//    
 //    // get the indexpath of current row
 //    NSIndexPath *myIdxPath = [self.tableView indexPathForSelectedRow];
 //
@@ -180,48 +393,83 @@
 //        [self.tableView selectRowAtIndexPath:myIdxPath animated:YES scrollPosition:UITableViewScrollPositionNone]; // puts highlight on this row (?)
 //    }
 //
-    // get this to highlight row
-    rememberedLastPerson = [myappDelegate grabLastSelectionValueForEntity: (NSString *) @"person"
-                                                               havingName: (NSString *) gbl_fromHomeCurrentEntityName 
-                                                     fromRememberCategory: (NSString *) @"person"  ];
-
-    if (rememberedLastPerson) {
-
-        // go thru tableview rows to get indexPath for rememberedLastPerson   NO  for now use trick below:
-        //
-        // get the indexpath of row num idxGrpOrPer in tableview
-        //   ASSUMES index of entity in gbl_array Per or Grp
-        //   is the same as its index (row) in the tableview
-
-        BOOL foundName;
-        NSInteger myGblArrIdx;
-        foundName = NO;
-        myGblArrIdx = -1; // zero-based
-
-        for (NSString *elt in gbl_arrayPer) {    // get index in gbl data for this person
-            if ([elt hasPrefix: gbl_fromHomeCurrentEntityName]) {
-                foundName = YES;
-                break;
-            }
-            myGblArrIdx =  myGblArrIdx + 1;
-        }
-        if (foundName == YES) {  
-            highlightIdxPath = [NSIndexPath indexPathForRow: myGblArrIdx   inSection:0];  // indexPath of corresponding row in tableview
-
-            if (highlightIdxPath) {
-                [self.tableView selectRowAtIndexPath: highlightIdxPath
-                                            animated: YES
-                                      scrollPosition: UITableViewScrollPositionNone ]; // puts highlight on this row (?)
-            }
-        }
-    }
+//
+//    // if there is a remembered selection, highlight its row
+//    //
+//    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]) {   
+//        rememberedLastPerson = [myappDelegate grabLastSelectionValueForEntity: (NSString *) @"person"
+//                                                                   havingName: (NSString *) gbl_fromHomeCurrentEntityName 
+//                                                         fromRememberCategory: (NSString *) @"person"  ];
+//
+//        NSLog(@"rememberedLastPerson =%@",rememberedLastPerson );
+//        if (rememberedLastPerson  &&  rememberedLastPerson.length != 0 ) {
+//nbn(100);
+//            // go thru tableview rows to get indexPath for rememberedLastPerson 
+//            //
+//            highlightIdxPath = [myappDelegate  indexpathForTableView: (UITableView *) self.tableView
+//                                                      havingCellText: (NSString *)    rememberedLastPerson ];
+//            if (highlightIdxPath) {
+//nbn(101);
+//tn();trn("hightlight ON");
+//                [self.tableView selectRowAtIndexPath: highlightIdxPath
+//                                            animated: YES
+//                                      scrollPosition: UITableViewScrollPositionNone ]; // puts highlight on this row (?)
+//            }
+//        }
+//    }
+//    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"]) {   
+//
+//        rememberedLastGroup = [myappDelegate grabLastSelectionValueForEntity: (NSString *) @"person"
+//                                                                   havingName: (NSString *) gbl_fromHomeCurrentEntityName 
+//                                                         fromRememberCategory: (NSString *) @"group"  ];
+//
+//        NSLog(@"rememberedLastGroup =%@",rememberedLastGroup );
+//        if (rememberedLastGroup  &&  rememberedLastGroup.length != 0 ) {
+//nbn(110);
+//            // go thru tableview rows to get indexPath for rememberedLastGroup 
+//            //
+//            highlightIdxPath = [myappDelegate  indexpathForTableView: (UITableView *) self.tableView
+//                                                      havingCellText: (NSString *)    rememberedLastGroup ];
+//            if (highlightIdxPath) {
+//nbn(111);
+//tn();trn("hightlight ON");
+//                [self.tableView selectRowAtIndexPath: highlightIdxPath
+//                                            animated: YES
+//                                      scrollPosition: UITableViewScrollPositionNone ]; // puts highlight on this row (?)
+//            }
+//        }
+//    }
+//
+// had to move this block to viewDidAppear (maybe because viewDidAppear   has new reloaddata)
 
 } // viewWillAppear
 
 
+// 
+// A good way to update a table view when starting up or returning from another view
+// is to add code like this to viewDidAppear:
+//- (void)viewDidAppear:(BOOL)animated {
+// NSLog(@"rootViewController: viewDidAppear");
+// [super viewDidAppear:animated];
+// [self.view reloadData]; // self.view is the table view if self is its controller
+//}
+//
+
 - (void)viewDidAppear:(BOOL)animated
 {
+//  NSLog(@" in viewDidAppear!  in selperson/group");
     // [super viewDidAppear];
+
+    [super viewDidAppear:animated];
+    // [self.view reloadData]; // self.view is the table view if self is its controller
+
+
+
+//    [self.tableView reloadData];
+
+
+//<.>
+
 
 // comment out like in  sel rpt
 //    
@@ -235,12 +483,83 @@
 //        // [self.tableView selectRowAtIndexPath:indexPath animated:YES  scrollPosition:UITableViewScrollPositionNone];
 //    }
 //
+    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for global methods in appDelegate.m
+    NSIndexPath *highlightIdxPath;
+    NSString *rememberedLastPerson;
+    NSString *rememberedLastGroup;
+
+    
+    // get the indexpath of current row
+    NSIndexPath *myIdxPath = [self.tableView indexPathForSelectedRow];
+//tn();tr("indexPathForSelectedRow.row viewdidappear in SelPerson");   NSLog(@"myIdxPath.row=%ld",myIdxPath.row);
+
+    if(myIdxPath) {
+        [self.tableView selectRowAtIndexPath: myIdxPath
+                                    animated: YES
+                              scrollPosition: UITableViewScrollPositionNone ]; // puts highlight on this row (?)
+    } else {
+//tn();tr("gbl_IdxPathSaved_SelPerson.row viewdidappear in SelPerson"); NSLog(@"gbl_IdxPathSaved_SelPerson.row=%ld",gbl_IdxPathSaved_SelPerson.row);
+        if(gbl_IdxPathSaved_SelPerson) {
+           [self.tableView selectRowAtIndexPath: gbl_IdxPathSaved_SelPerson
+                                       animated: YES
+                                 scrollPosition: UITableViewScrollPositionNone ]; // puts highlight on this row (?)
+           gbl_IdxPathSaved_SelPerson = nil;
+        }
+    }
+
+
+    // if there is a remembered selection, highlight its row
+    //
+    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]) {   
+        rememberedLastPerson = [myappDelegate grabLastSelectionValueForEntity: (NSString *) @"person"
+                                                                   havingName: (NSString *) gbl_fromHomeCurrentEntityName 
+                                                         fromRememberCategory: (NSString *) @"person"  ];
+
+        NSLog(@"rememberedLastPerson =%@",rememberedLastPerson );
+        if (rememberedLastPerson  &&  rememberedLastPerson.length != 0 ) {
+//nbn(100);
+            // go thru tableview rows to get indexPath for rememberedLastPerson 
+            //
+            highlightIdxPath = [myappDelegate  indexpathForTableView: (UITableView *) self.tableView
+                                                      havingCellText: (NSString *)    rememberedLastPerson ];
+            if (highlightIdxPath) {
+//nbn(101);
+//tn();trn("hightlight ON");
+                [self.tableView selectRowAtIndexPath: highlightIdxPath
+                                            animated: YES
+                                      scrollPosition: UITableViewScrollPositionNone ]; // puts highlight on this row (?)
+            }
+        }
+    }
+//    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"]) {   
+    else  {
+        rememberedLastGroup = [myappDelegate grabLastSelectionValueForEntity: (NSString *) @"person"
+                                                                   havingName: (NSString *) gbl_fromHomeCurrentEntityName 
+                                                         fromRememberCategory: (NSString *) @"group"  ];
+
+        NSLog(@"rememberedLastGroup =%@",rememberedLastGroup );
+        if (rememberedLastGroup  &&  rememberedLastGroup.length != 0 ) {
+//nbn(110);
+            // go thru tableview rows to get indexPath for rememberedLastGroup 
+            //
+            highlightIdxPath = [myappDelegate  indexpathForTableView: (UITableView *) self.tableView
+                                                      havingCellText: (NSString *)    rememberedLastGroup ];
+            if (highlightIdxPath) {
+//nbn(111);
+//tn();trn("hightlight ON");
+                [self.tableView selectRowAtIndexPath: highlightIdxPath
+                                            animated: YES
+                                      scrollPosition: UITableViewScrollPositionNone ]; // puts highlight on this row (?)
+            }
+        }
+    }
+
 }
 
 // - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 - (NSIndexPath *)tableView:(UITableView *)tableView willDeselectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // NSLog(@"in willDeselectRowAtIndexPath!");
+    NSLog(@"in willDeselectRowAtIndexPath!");
     
     // When the user selects a cell, you should respond by deselecting the previously selected cell (
     // by calling the deselectRowAtIndexPath:animated: method) as well as by
@@ -257,6 +576,7 @@
     
     // here deselect "previously" selected row
     // and remove yellow highlight
+//tn();trn("hightlight OFF");
     [self.tableView deselectRowAtIndexPath: previouslyselectedIndexPath
                                   animated: NO];
     //animated: YES];
@@ -273,15 +593,17 @@
 //
 -(NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath: (NSIndexPath*)indexPath {
     
-    // NSLog(@"willSelectRowAtIndexPath!");
+//     NSLog(@"willSelectRowAtIndexPath! selPer");
     
     // this is the "previously" selected row now
     NSIndexPath *previouslyselectedIndexPath = [self.tableView indexPathForSelectedRow];
     
     // here deselect "previously" selected row
     // and remove yellow highlight
+//tn();trn("hightlight OFF");
     [self.tableView deselectRowAtIndexPath: previouslyselectedIndexPath
                                   animated: NO];
+//     NSLog(@"END OF willSelectRowAtIndexPath! selPer");
     return(indexPath);
 } // willSelectRowAtIndexPath
 
@@ -289,13 +611,19 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath: (NSIndexPath *) indexPath
 {
-     NSLog(@"in didSelectRowAtIndexPath!  in SelectPerson ");
+tn();    NSLog(@"in didSelectRowAtIndexPath!  in SelectPerson !!!!!!!!!!!!");
     
+  NSLog(@"gbl_currentMenuPlusReportCode=%@", gbl_currentMenuPlusReportCode);
     // this is the "currently" selected row now
     NSIndexPath *currentlyselectedIndexPath = [self.tableView indexPathForSelectedRow];
     
+    gbl_IdxPathSaved_SelPerson = currentlyselectedIndexPath ;  // for highlight previous choice when come back to SelPerson
+  NSLog(@"SAVED HERE  gbl_IdxPathSaved_SelPerson.row=%ld",(long)gbl_IdxPathSaved_SelPerson.row);
+
+
     // select the row in UITableView
     // This puts in the light grey "highlight" indicating selection
+//tn();trn("hightlight ON");
     [self.tableView selectRowAtIndexPath:currentlyselectedIndexPath
                                 animated:NO
                           scrollPosition:UITableViewScrollPositionNone];
@@ -315,17 +643,129 @@
     
     UITableViewCell *currcell = [self.tableView cellForRowAtIndexPath:currentlyselectedIndexPath];
     // now you can use cell.textLabel.text
-    gbl_lastSelectedPerson = currcell.textLabel.text;
 
-    nbn(100);
 
-    dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
-        [self performSegueWithIdentifier:@"seguePerSelToViewHTML" sender:self];
-    });
+    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]) {   
+        // gbl_lastSelectedPerson = currcell.textLabel.text;
+        gbl_lastSelectedSecondPerson = currcell.textLabel.text;  // not used (20150405)
+//        gbl_lastSelPersonWasA        = @"person";
+
+        // save selection
+        //
+        gbl_fromSelSecondPersonPSV = _PSVs_for_person_picklist[currentlyselectedIndexPath.row];
+        //correct   NSLog(@"gbl_fromSelSecondPersonPSV =%@",gbl_fromSelSecondPersonPSV );
+
+        // grab selected name to save
+        NSArray *psvArray = [gbl_fromSelSecondPersonPSV componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"|"]];
+        NSString *selectedPersonName  = psvArray[0];
+
+        MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // to access global methods in appDelegate.m
+        [myappDelegate saveLastSelectionForEntity: (NSString *) @"person"
+                                       havingName: (NSString *) gbl_fromHomeCurrentEntityName
+                         updatingRememberCategory: (NSString *) @"person"
+                                       usingValue: (NSString *) selectedPersonName
+        ];
+
+        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+            [self performSegueWithIdentifier:@"seguePerSelToViewHTML" sender:self];
+        });
+    }
+
+//    if (   [gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"]
+//        || [gbl_currentMenuPlusReportCode isEqualToString: @"pbm2bm"]
+//    ) {   
+      else {
+
+        gbl_lastSelectedGroup = currcell.textLabel.text;
+//        gbl_lastSelPersonWasA = @"group";
+
+        // save selection
+        //
+        gbl_fromSelGroupPSV   = _PSVs_for_group_picklist[currentlyselectedIndexPath.row];
+        gbl_lastSelectedGroup = [gbl_fromSelGroupPSV componentsSeparatedByString:@"|"][0]; // get field #1 (name) (zero-based)
+
+        // grab selected name to save
+        NSArray *psvArray = [gbl_fromSelGroupPSV componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"|"]];
+        NSString *selectedGroupName  = psvArray[0];
+
+        MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // to access global methods in appDelegate.m
+        [myappDelegate saveLastSelectionForEntity: (NSString *) @"person"
+                                       havingName: (NSString *) gbl_fromHomeCurrentEntityName
+                         updatingRememberCategory: (NSString *) @"group"
+                                       usingValue: (NSString *) selectedGroupName
+        ];
+
+        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+            [self performSegueWithIdentifier:@"segueGrpSelToViewTBLRPT1" sender:self];
+        });
+
+    }
+
+//     NSLog(@"END OF  in didSelectRowAtIndexPath!  in SelectPerson ");
 
     
 } // didSelectRowAtIndexPath
 
 
-
 @end
+
+
+
+//
+//       // NO 
+//       // for now use trick below:
+//        //
+//        // get the indexpath of row num idxGrpOrPer in tableview
+//        //   ASSUMES index of entity in gbl_array Per or Grp
+//        //   is the same as its index (row) in the tableview
+//
+//        BOOL foundName;
+//        NSInteger myGblArrIdx;
+//        foundName = NO;
+//        myGblArrIdx = -1; // zero-based
+//
+//        for (NSString *elt in gbl_arrayPer) {    // get index in gbl data for this person
+//            if ([elt hasPrefix: gbl_fromHomeCurrentEntityName]) {
+//                foundName = YES;
+//                break;
+//            }
+//            myGblArrIdx =  myGblArrIdx + 1;
+//        }
+//        if (foundName == YES) {  
+//            highlightIdxPath = [NSIndexPath indexPathForRow: myGblArrIdx   inSection:0];  // indexPath of corresponding row in tableview
+//
+//            if (highlightIdxPath) {
+//                [self.tableView selectRowAtIndexPath: highlightIdxPath
+//                                            animated: YES
+//                                      scrollPosition: UITableViewScrollPositionNone ]; // puts highlight on this row (?)
+//            }
+//        }
+//
+//            if ([gbl_lastSelectedPerson length] <= 10) {
+// for test
+//        gbl_lastSelectedPerson =  @"Aiden6789012345";
+//        gbl_lastSelectedPerson =  @"Aiden6789012";
+//            gbl_lastSelectedPerson =  @"MMMMMMMMMMMMMMM";
+//            } else {  // need smaller  font to fit
+//nbn(2);
+//                dispatch_async( dispatch_get_main_queue(), ^{                                // <=== 
+//                    NSDictionary *navbarTitleTextAttributes = [ NSDictionary dictionaryWithObjectsAndKeys:
+//                       [UIColor blackColor]                                 ,  NSForegroundColorAttributeName,
+////                [UIFont fontWithName:@"HelveticaNeueBold" size: 17.0],  NSFontAttributeName,
+////                [UIFont fontWithName:@"HelveticaNeueBold" size: 12.0],  NSFontAttributeName,
+////                [UIFont fontWithName:@"HelveticaNeueBold" size: 8.0],  NSFontAttributeName,
+////                [UIFont fontWithName:@"HelveticaNeueBold" size: 12.0],  NSFontAttributeName,
+////                [UIFont fontWithName:@"HelveticaNeue" size: 12.0],  NSFontAttributeName,
+////                [UIFont fontWithName:@"HelveticaNeue" size: 18.0],  NSFontAttributeName,
+////                [UIFont fontWithName:@"HelveticaNeue" size: 15.0],  NSFontAttributeName,
+//                        [UIFont fontWithName:@"HelveticaNeue" size: 17.0],  NSFontAttributeName,
+//                        nil
+//                    ];
+//
+//                    [self.navigationController.navigationBar setTitleTextAttributes: navbarTitleTextAttributes];
+//
+//                    [[self navigationItem] setTitle: myTitleGrponeSelGroup ];
+//                });
+//            }
+//
+

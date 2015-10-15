@@ -26,6 +26,19 @@
 #include "grpdoc.h"
  
 
+char *set_cell_bg_color_2(int in_score) ;
+
+//int  gbl_g_max_len_group_data_PSV = 64;
+int  gbl_g_max_len_group_data_PSV = 128;
+int  gbl_g_top_bot_threshold  = 300;    // more data lines than this, then show top 200 + bot 100
+int  gbl_g_show_top_this_many = 200;
+int  gbl_g_show_bot_this_many = 100;
+char gbl_my1_group_report_line[128];  // int gbl_g_max_len_group_data_PSV = 128;
+char gbl_my2_group_report_line[128];
+char gbl_my3_group_report_line[128];
+
+
+
 #define IDX_FOR_MYSTERIOUS 91
 
 /*  struct timeval tdbeg, tdend;  long us2; gettimeofday(&tdbeg, NULL ); */
@@ -43,12 +56,7 @@
 #define MAX_SIZE_PERSON_NAME  15
 
 
-/* trait_report_line array declarations */
-struct trait_report_line {
-  int  rank_in_group;
-  int  score;
-  char person_name[MAX_SIZE_PERSON_NAME+1];
-};
+
 /*   char score_color[4];   * "vhi","hi","avg","lo","vlo" * */
 struct rank_report_line {      /* info for html file production */
   int  rank_in_group;
@@ -56,6 +64,31 @@ struct rank_report_line {      /* info for html file production */
   char person_A[MAX_SIZE_PERSON_NAME+1];
   char person_B[MAX_SIZE_PERSON_NAME+1];
 };
+
+/* trait_report_line array declarations */
+struct trait_report_line {
+  int  rank_in_group;
+  int  score;
+  char person_name[MAX_SIZE_PERSON_NAME+1];
+};
+
+/* 
+*   assuming MAX_PERSONS_IN_GROUP = 250, num pairs max is  31,125 
+*   (5 sec to run on pc/gcc , 1 sec on mac/llvm )
+*/
+#define MAX_PERSONS_IN_GROUP 250   /* also defined incocoa.c and grphtm.c */
+#define MAX_IN_RANK_LINE_ARRAY \
+( ( (MAX_PERSONS_IN_GROUP * (MAX_PERSONS_IN_GROUP - 1) / 2) ) + 128 )
+
+struct rank_report_line *out_rank_lines[MAX_IN_RANK_LINE_ARRAY];
+int out_rank_line_idx;  /* pts to current line in out_rank_lines */
+
+
+struct trait_report_line *out_trait_lines[MAX_PERSONS_IN_GROUP + 128];
+int out_trait_line_idx;  /* pts to current line in out_trait_lines */
+
+
+
 
 
 #ifdef PUT_BACK_COMMENTED_OUT_STUFF /****************************************/
@@ -65,6 +98,7 @@ struct rank_report_line {      /* info for html file production */
 *                                /* like "                        90  Great"  */
 * };
 #endif /* ifdef PUT_BACK_COMMENTED_OUT_STUFF ********************************/
+
 
 
 
@@ -88,11 +122,19 @@ extern int mamb_report_year_in_the_life(  /* in futdoc.o */
 
 
 /* ----------------------------------------------------------- */
+//int mamb_report_personality ( /* in perdoc.o, called from incocoa */
+//  char *html_file_name,
+//  char *csv_person_string,
+//  char *instructions,  /* like "return only csv with all trait scores",  */
+//  char *stringBuffForTraitCSV
+//);
+//
 int mamb_report_personality ( /* in perdoc.o, called from incocoa */
-  char *html_file_name,
+  char *html_output_filename_webview,
+  char *html_output_filename_browser,
   char *csv_person_string,
   char *instructions,  /* like "return only csv with all trait scores",  */
-  char *stringBuffForTraitCSV
+  char *string_buffer_for_trait_csv
 );
 /* ----------------------------------------------------------- */
 
@@ -105,8 +147,10 @@ int mamb_report_trait_rank(    /* is called from cocoa */
   char *trait_name,
 /*   struct rank_report_line *rank_lines[],  do not need */
 /*   int  *rank_idx, */
-  struct trait_report_line *trait_lines[],   /* array of output report data */
-  int  *trait_idx            /* ptr to int having last index written */                   
+//  struct trait_report_line *trait_lines[],   /* array of output report data */
+//  int  *trait_idx,           /* ptr to int having last index written */                   
+  char out_group_report_PSVs[],   /* array of output report data to pass to cocoa */
+  int  *out_group_report_idx       /* ptr to int having last index written */
 );
 int get_trait_score(char *trait_name, char *stringBuffForTraitCSV);
 
@@ -117,24 +161,15 @@ int make_html_file_trait_rank( /* in grphtm.c */
   char *in_html_filename,           /* in grphtm.c */
   struct trait_report_line  *in_trait_lines[],
   int   in_trait_lines_last_idx,
-  char *grp_average_trait_scores_csv
+  char *grp_average_trait_scores_csv 
 );
+//  char out_group_report_PSVs[],   /* array of output report data to pass to cocoa */
+//  int  *out_group_report_idx       /* ptr to int having last index written */
 /* ----------------------------------------------------------- */
 
 /* ----------------------------------------------------------- */
 /* NOTE: best yr rpt uses a lot of trait code
 */
-
-
-/* 
-*   assuming MAX_PERSONS_IN_GROUP = 250, num pairs max is  31,125 
-*   (5 sec to run on pc/gcc , 1 sec on mac/llvm )
-*/
-#define MAX_PERSONS_IN_GROUP 250   /* also defined incocoa.c and grphtm.c */
-#define MAX_IN_RANK_LINE_ARRAY \
-( ( (MAX_PERSONS_IN_GROUP * (MAX_PERSONS_IN_GROUP - 1) / 2) ) + 64 )
-struct rank_report_line *out_rank_lines[MAX_IN_RANK_LINE_ARRAY];
-int out_rank_idx;  /* pts to current line in out_rank_lines */
 
 
 int mamb_report_best_day(    /* in grpdoc.c */
@@ -143,8 +178,10 @@ int mamb_report_best_day(    /* in grpdoc.c */
   char *in_csv_person_arr[],  /* fmt= "Fred,3,21,1987,11,58,1,5,80.34" */
   int  num_persons_in_grp,
   char *yyyymmdd_todo, 
-  struct trait_report_line *trait_lines[],   /* array of output report data */
-  int  *trait_idx            /* ptr to int having last index written */                   
+//  struct trait_report_line *trait_lines[],   /* array of output report data */
+//  int  *trait_idx,           /* ptr to int having last index written */                   
+  char out_group_report_PSVs[],   /* array of output report data to pass to cocoa */
+  int  *out_group_report_idx       /* ptr to int having last index written */
 );
 
 int mamb_report_best_year(    /* in grpdoc.c */
@@ -153,8 +190,10 @@ int mamb_report_best_year(    /* in grpdoc.c */
   char *in_csv_person_arr[],  /* fmt= "Fred,3,21,1987,11,58,1,5,80.34" */
   int  num_persons_in_grp,
   char *yyyy_todo, 
-  struct trait_report_line *trait_lines[],   /* array of output report data */
-  int  *trait_idx            /* ptr to int having last index written */                   
+//  struct trait_report_line *trait_lines[],   /* array of output report data */
+//  int  *trait_idx,           /* ptr to int having last index written */                   
+  char out_group_report_PSVs[],   /* array of output report data to pass to cocoa */
+  int  *out_group_report_idx       /* ptr to int having last index written */
 );
 /* ----------------------------------------------------------- */
 
@@ -189,36 +228,90 @@ int mamb_report_best_year(    /* in grpdoc.c */
 /* ----------------------------------------------------------- */
 
 /* ----------------------------------------------------------- */
+//int  mamb_report_person_in_group(  /* in grpdoc.o */ 
+//  char *html_file_name,
+//  char *group_name,
+//  char *in_csv_person_arr[],
+//  int  num_persons_in_grp,
+//  char *compare_everyone_with, /* fmt= "Fred,3,21,1987,11,58,1,5,80.34" */
+//  struct rank_report_line *rank_lines[],   /* array of output report data */
+//  int  *rank_idx           /* ptr to int having last index written */
+//);
+//
 int  mamb_report_person_in_group(  /* in grpdoc.o */ 
   char *html_file_name,
   char *group_name,
   char *in_csv_person_arr[],
   int  num_persons_in_grp,
-  char *compare_everyone_with, /* fmt= "Fred,3,21,1987,11,58,1,5,80.34" */
-  struct rank_report_line *rank_lines[],   /* array of output report data */
-  int  *rank_idx           /* ptr to int having last index written */
+  char *compare_everyone_with,   /* fmt= "Fred,3,21,1987,11,58,1,5,80.34" */
+//  struct rank_report_line *out_rank_lines[],   /* array of output report data */
+//  int  *out_rank_line_idx,                     /* ptr to int having last index written */
+  //char *out_group_report_PSVs[],   /* array of output report data to pass to cocoa */
+  char out_group_report_PSVs[],   /* array of output report data to pass to cocoa */
+  int  *out_group_report_idx,      /* ptr to int having last index written */
+  int  kingpin_is_in_group
 );
+
+//int make_html_file_person_in_group( /* produce actual html file */
+//  char *group_name,
+//  int   num_persons_in_grp,
+//  char *html_file_name,                    /* in grphtm.c */
+//  struct rank_report_line  *in_rank_lines[],  /* array of report data */
+//  int   in_rank_lines_last_idx,   /* int having last index written */
+//  int   avg_score_this_member     /* for report bottom */
+//);
+//
 int make_html_file_person_in_group( /* produce actual html file */
   char *group_name,
   int   num_persons_in_grp,
   char *html_file_name,                    /* in grphtm.c */
   struct rank_report_line  *in_rank_lines[],  /* array of report data */
   int   in_rank_lines_last_idx,   /* int having last index written */
-  int   avg_score_this_member     /* for report bottom */
+  int   avg_score_this_member,    /* for report bottom */
+//  //char *out_group_report_PSVs[],   /* array of output report data to pass to cocoa */
+//  char out_group_report_PSVs[],   /* array of output report data to pass to cocoa */
+//  int  *out_group_report_idx ,     /* ptr to int having last index written */
+  int  kingpin_is_in_group
 );
+
+
 /* ----------------------------------------------------------- */
 
 /* int mamb_report_all_grp_members(  */
+//int mamb_report_whole_group(    /* called from cocoa */
+//  char *html_file_name,
+//  char *group_name,
+//  char *in_csv_person_arr[], /* fmt= "Fred,3,21,1987,11,58,1,5,80.34" */
+//  int  num_persons_in_grp,
+//  struct rank_report_line *rank_lines[],   /* array of output report data */
+//  int  *rank_idx,           /* ptr to int having last index written */                   
+//  char *instructions,
+//  char *string_for_table_only  /* 1024 chars max (its 9 lines formatted) */
+//);
+//
 int mamb_report_whole_group(    /* called from cocoa */
   char *html_file_name,
   char *group_name,
   char *in_csv_person_arr[], /* fmt= "Fred,3,21,1987,11,58,1,5,80.34" */
   int  num_persons_in_grp,
-  struct rank_report_line *rank_lines[],   /* array of output report data */
-  int  *rank_idx,           /* ptr to int having last index written */                   
+//  struct rank_report_line *rank_lines[],   /* array of output report data */
+//  int  *rank_idx,           /* ptr to int having last index written */                   
   char *instructions,
-  char *string_for_table_only  /* 1024 chars max (its 9 lines formatted) */
+  char *string_for_table_only, /* 1024 chars max (its 9 lines formatted) */
+  char out_group_report_PSVs[],   /* array of output report data to pass to cocoa */
+  int  *out_group_report_idx       /* ptr to int having last index written */
 );
+
+//int make_html_file_whole_group( /* produce actual html file */
+//  char *group_name,
+//  int   num_persons_in_grp,
+//  char *in_html_filename,           /* in grphtm.c */
+//  struct rank_report_line  *in_rank_lines[],
+//  int   in_rank_lines_last_idx,
+//  char *instructions,
+//  char *string_for_table_only  /* 1024 chars max (its 9 lines formatted) */
+//);
+//
 int make_html_file_whole_group( /* produce actual html file */
   char *group_name,
   int   num_persons_in_grp,
@@ -226,8 +319,11 @@ int make_html_file_whole_group( /* produce actual html file */
   struct rank_report_line  *in_rank_lines[],
   int   in_rank_lines_last_idx,
   char *instructions,
-  char *string_for_table_only  /* 1024 chars max (its 9 lines formatted) */
+  char *string_for_table_only, /* 1024 chars max (its 9 lines formatted) */
+  char out_group_report_PSVs[],   /* array of output report data to pass to cocoa */
+  int  *out_group_report_idx       /* ptr to int having last index written */
 );
+
 /* ----------------------------------------------------------- */
 int mamb_report_just_2_people(    /* called from cocoa */
   char *html_browser_file_name,
@@ -353,6 +449,7 @@ extern int binsearch_person_in_cache(
 
 
 /* declarations */
+void gmake_paras(void);
 int get_unbalanced_score(char *stringBuffForTraitCSV);
 void display_buffs_to_stderr(void);
 void save_pair_compat_score(int good, int bad);
@@ -440,9 +537,9 @@ typedef int (*compareFunc_trait) (const void *, const void *);
 /*     struct cached_person_positions *, */
 /*     struct cached_person_positions *); */
 
-char xxx1[64];
+char xxx1[128];
 /* static char sav_compat_line[SIZE_INBUF+1]; */
-char xxx2[64];
+char xxx2[128];
 char sav_b_long[40];
 char sav_b_birth[50];
 char sav_ordnum[32];
@@ -511,9 +608,14 @@ int is_first_g_trait_line_put;   /* 1=yes, 0=no */
 int allow_docin_puts_for_now;  /* 1=yes, 0=no  no= no graph output (like for just2) */
 
 
+//int global_pair_compatibility_score;
+//int global_pair_compatibility_score_a;
+//int global_pair_compatibility_score_b;
+//
 int global_pair_compatibility_score;
-int global_pair_compatibility_score_a;
-int global_pair_compatibility_score_b;
+int global_pair_a_compatibility_score;
+int global_pair_b_compatibility_score;
+
 char  gbl_fut_yyyy_todo[128];
 char  gbl_fut_yyyymmdd_todo[128];
 double gbl_best_day_mth; 
@@ -522,7 +624,7 @@ double gbl_best_day_year;
 char   gbl_bestyear_yyyy_todo[16];
 char   gbl_bestday_yyyy_todo[16];
 int  gbl_is_best_year_or_day;
-char gblGrpAvgTraitScoresCSV1[64];
+char gblGrpAvgTraitScoresCSV1[128];
 
 
 /* ----------------  BEST YEAR  -------------------------- */
@@ -533,11 +635,12 @@ int mamb_report_best_year(    /* in grpdoc.c */
   char *in_csv_person_arr[],  /* fmt= "Fred,3,21,1987,11,58,1,5,80.34" */
   int  num_persons_in_grp,
   char *yyyy_todo, 
-  struct trait_report_line *trait_lines[],   /* array of output report data */
-  int  *trait_idx            /* ptr to int having last index written */                   
+//  struct trait_report_line *trait_lines[],   /* array of output report data */
+//  int  *trait_idx,           /* ptr to int having last index written */                   
+  char out_group_report_PSVs[],   /* array of output report data to pass to cocoa */
+  int  *out_group_report_idx       /* ptr to int having last index written */
 ) 
 {
-/*   int out_rank_idx; */
   int retval;
   char my_trait_name[128];
 
@@ -554,7 +657,7 @@ int mamb_report_best_year(    /* in grpdoc.c */
   strcpy(gbl_bestyear_yyyy_todo, yyyy_todo);
   strcpy(gbl_bestday_yyyy_todo, "not applicable");
 
-  out_rank_idx = 0;
+  out_rank_line_idx = 0;
 /*   trait_idx    = 0; */
 
   /* note: trait_name contains "Best Calendar Year"
@@ -568,9 +671,12 @@ int mamb_report_best_year(    /* in grpdoc.c */
     num_persons_in_grp,  /* num_persons_in_grp */
     my_trait_name,       /* trait_name  assertive, emotional, etc, 6 of them */
                          /* but, here it will be  "Best Calendar Year nnnn" */
-    trait_lines,         /* struct rank_report_line *out_trait_lines[]; */
-    trait_idx
+//    trait_lines,         /* struct rank_report_line *out_trait_lines[]; */
+//    trait_idx,
+    out_group_report_PSVs,   /* array of output report data to pass to cocoa */
+    out_group_report_idx       /* ptr to int having last index written */
   );
+
 
   fclose_fpdb_for_debug();
   return(0);
@@ -585,17 +691,18 @@ int mamb_report_best_day(    /* in grpdoc.c */
   char *in_csv_person_arr[],  /* fmt= "Fred,3,21,1987,11,58,1,5,80.34" */
   int  num_persons_in_grp,
   char *yyyymmdd_todo, 
-  struct trait_report_line *trait_lines[],   /* array of output report data */
-  int  *trait_idx            /* ptr to int having last index written */                   
+//  struct trait_report_line *trait_lines[],   /* array of output report data */
+//  int  *trait_idx,           /* ptr to int having last index written */                   
+  char out_group_report_PSVs[],   /* array of output report data to pass to cocoa */
+  int  *out_group_report_idx       /* ptr to int having last index written */
 ) 
 {
-/*   int out_rank_idx; */
   int retval,imm,idd,iyyyy;
   char my_trait_name[128], s[32];
 
   fopen_fpdb_for_debug();
 
-  out_rank_idx = 0;
+  out_rank_line_idx = 0;
 
   strcpy(gbl_fut_yyyymmdd_todo, yyyymmdd_todo);
 
@@ -620,8 +727,10 @@ int mamb_report_best_day(    /* in grpdoc.c */
     num_persons_in_grp,  /* num_persons_in_grp */
     my_trait_name,       /* trait_name  assertive, emotional, etc, 6 of them */
                          /* but, here it will be  "Best Day on mth dd, yyyy" */
-    trait_lines,         /* struct rank_report_line *out_trait_lines[]; */
-    trait_idx
+//    trait_lines,         /* struct rank_report_line *out_trait_lines[]; */
+//    trait_idx,
+    out_group_report_PSVs,   /* array of output report data to pass to cocoa */
+    out_group_report_idx       /* ptr to int having last index written */
   );
 
   fclose_fpdb_for_debug();
@@ -638,19 +747,29 @@ int mamb_report_trait_rank(    /* in called from cocoa */
   char *in_csv_person_arr[],  /* fmt= "Fred,3,21,1987,11,58,1,5,80.34" */
   int  num_persons_in_grp,
   char *trait_name,          /* could be  "Best Calendar Year nnnn" */
-  struct trait_report_line *out_trait_lines[],   /* array of output report data */
-  int  *out_trait_line_idx            /* ptr to int having last index written */                   
+//  struct trait_report_line *out_trait_lines[],   /* array of output report data */
+//  int  *out_trait_line_idx,           /* ptr to int having last index written */                   
+  char out_group_report_PSVs[],   /* array of output report data to pass to cocoa */
+  int  *out_group_report_idx       /* ptr to int having last index written */
 )
 {
-  char stringBuffForTraitCSV[64]; /* for instruction "return only csv with all 6 trait scores" */
-  char stringBuffForStressScore[64]; /* for instruction  "return only year stress score" */
-  char stringBuffForCompatScore[1024]; /* for instruction  "return only compatibility score" */
+
+//tn();trn("in  mamb_report_trait_rank()"); ks(trait_name);
+//ksn(html_file_name);
+//ksn(group_name);
+//kin(num_persons_in_grp);
+//ksn(trait_name);
+  out_trait_line_idx = 0;  // init
+
+  char stringBuffForTraitCSV[128]; /* for instruction "return only csv with all 6 trait scores" */
+  char stringBuffForStressScore[128]; /* for instruction  "return only year stress score" */
+//  char stringBuffForCompatScore[1024]; /* for instruction  "return only compatibility score" */
   int kk, num_persons_in_cached_array, irank, my_rank_number, retval;
   char current_person[64], current_birth_year[16], current_birth_mth[16], current_birth_day[16];
   char current_person_name[MAX_SIZE_PERSON_NAME+1];;
   struct trait_report_line my_trait_line, my_trait_line2;
 
-  char *my_csv_person_arr_2[2]; /* only 2 persons for only compat score instruction */
+//  char *my_csv_person_arr_2[2]; /* only 2 persons for only compat score instruction */
   int fldno;
   int arr_tot_trait_scores[8];  
 
@@ -659,8 +778,9 @@ int mamb_report_trait_rank(    /* in called from cocoa */
 /* fpdb=stderr; put me in main(). output file for debug code */
 /* fpdb = fopen("t.out","a"); */
 
+
+
   fopen_fpdb_for_debug();
-/* tn();trn("in  mamb_report_trait_rank()"); ks(trait_name); */
 
 
   /* set gbl_is_best_year_or_day 
@@ -706,7 +826,6 @@ trn("    for BEST DAY on ");
 
 
   for (kk=0; kk <= num_persons_in_grp - 1; kk++) {      /* for each current_person */
-/* b(15); */
     strcpy(current_person, in_csv_person_arr[kk]);
     strcpy(current_person_name, csv_get_field(in_csv_person_arr[kk], ",", 1));
     strcpy(current_birth_year,  csv_get_field(in_csv_person_arr[kk], ",", 4));
@@ -747,34 +866,13 @@ trn("    for BEST DAY on ");
 /* fopen_fpdb_for_debug(); */
 
     } else  if (strstr(trait_name, "mysterious") != NULL) {
-
-      /* fill group array (mysterious does twin compat)
-      */
-      my_csv_person_arr_2[0] = current_person;   /* fmt= "Fred,3,21,1987,11,58,1,5,80.34" */
-      my_csv_person_arr_2[1] = current_person; 
-
-      mamb_report_whole_group(    /* called from cocoa or just_2_people() in grphtm.c */
-        "",                   /* *html_file_name,*/
-        "mambTempGroup",      /* *group_name,*/
-        my_csv_person_arr_2,  /* fmt= "Fred,3,21,1987,11,58,1,5,80.34" */
-        2,                    /* num_persons_in_grp,*/
-        out_rank_lines,  /* rank_report_line *out_rank_lines[],   output params returned (UNUSED HERE */
-                              /* (the array contents are not used here) */
-        &out_rank_idx,        /* UNUSED HERE */
-        "return only compatibility score",  /* instructions */
-        stringBuffForCompatScore
-      );
-/* tn();ks(stringBuffForCompatScore); */
-/* char mydbl[128]; */
-fprintf(stdout, "%s|%6d|\n", current_person_name, atoi(stringBuffForCompatScore));
-/* fprintf(stderr, "%s|%d|\n", current_person, atoi(stringBuffForStressScore)); */
-/* sprintf(mydbl, "%s|%d|", current_person, atoi(stringBuffForStressScore)); */
-/* ksn(mydbl); */
+      ;
 
     } else {
 
       mamb_report_personality(
-        "",                                       /* *html_file_name,*/
+        "",                                       /* *html_file_name, for webview  */
+        "",                                       /* *html_file_name, for browser  */
         current_person,
         "return only csv with all trait scores",  /* instructions for mamb_report_personality() */
         stringBuffForTraitCSV
@@ -841,7 +939,7 @@ fprintf(stdout, "%s|%6d|\n", current_person_name, atoi(stringBuffForCompatScore)
     g_trait_line_put(  /* into out_trait_lines[] */
       my_trait_line,
       out_trait_lines,
-      out_trait_line_idx
+      &out_trait_line_idx
     );
 
 
@@ -883,29 +981,31 @@ fprintf(stdout, "%s|%6d|\n", current_person_name, atoi(stringBuffForCompatScore)
   my_trait_line2.rank_in_group = 0;
   my_trait_line2.score         = BENCHMARK_SCORES[1];
   /* sort below ties with 203 */
-  strcpy(my_trait_line2.person_name, "zzzhilite-top10");
+  /* sort below ties with  90 */
+//  strcpy(my_trait_line2.person_name, "zzzhilite-top10");
+  strcpy(my_trait_line2.person_name, "~~~hilite-top10");
   g_trait_line_put(
     my_trait_line2,
     out_trait_lines,
-    out_trait_line_idx
+    &out_trait_line_idx
   );
   my_trait_line2.rank_in_group = 0;
   my_trait_line2.score         = BENCHMARK_SCORES[2];
   /* sort below ties with 180 */
-  strcpy(my_trait_line2.person_name, "zzzhilite-good");
+  strcpy(my_trait_line2.person_name, "~~~hilite-good");
   g_trait_line_put(
     my_trait_line2,
     out_trait_lines,
-    out_trait_line_idx
+    &out_trait_line_idx
   );
   my_trait_line2.rank_in_group = 0;
   my_trait_line2.score         = BENCHMARK_SCORES[3];
   /* sort below ties with 154 */
-  strcpy(my_trait_line2.person_name, "zzzhilite-trait");
+  strcpy(my_trait_line2.person_name, "~~~hilite-trait");
   g_trait_line_put(
     my_trait_line2,
     out_trait_lines,
-    out_trait_line_idx
+    &out_trait_line_idx
   );
   my_trait_line2.rank_in_group = 0;
   my_trait_line2.score         =  BENCHMARK_SCORES[4];
@@ -914,7 +1014,7 @@ fprintf(stdout, "%s|%6d|\n", current_person_name, atoi(stringBuffForCompatScore)
   g_trait_line_put(
     my_trait_line2,
     out_trait_lines,
-    out_trait_line_idx
+    &out_trait_line_idx
   );
   my_trait_line2.rank_in_group = 0;
   my_trait_line2.score         =  BENCHMARK_SCORES[5];
@@ -923,7 +1023,7 @@ fprintf(stdout, "%s|%6d|\n", current_person_name, atoi(stringBuffForCompatScore)
   g_trait_line_put(
     my_trait_line2,
     out_trait_lines,
-    out_trait_line_idx
+    &out_trait_line_idx
   );
 
 
@@ -931,7 +1031,7 @@ fprintf(stdout, "%s|%6d|\n", current_person_name, atoi(stringBuffForCompatScore)
   */
   qsort(
     out_trait_lines,
-    *(out_trait_line_idx) + 1,   /* number of elements */
+    out_trait_line_idx + 1,   /* number of elements */
     sizeof(struct trait_report_line *),   /* capital R denotes a typedef */
     (compareFunc_trait)Func_compare_trait_report_line_scores
   );
@@ -941,12 +1041,12 @@ fprintf(stdout, "%s|%6d|\n", current_person_name, atoi(stringBuffForCompatScore)
   *  (except for milestone lines)
   */
   my_rank_number = 0;
-  for (irank=0; irank <= *(out_trait_line_idx); irank++) {
+  for (irank=0; irank <= out_trait_line_idx; irank++) {
     /* trn("rank num PUT");ki(irank);ks(out_trait_lines[irank]->person_B);  */
-    if (strcmp(out_trait_lines[irank]->person_name, "zzzhilite-top10") == 0  ||
-        strcmp(out_trait_lines[irank]->person_name, "zzzhilite-good")  == 0  ||
-        strcmp(out_trait_lines[irank]->person_name, "zzzhilite-trait")   == 0  ||
-        strcmp(out_trait_lines[irank]->person_name, "zzzhilite-avg")   == 0  ||
+    if (strcmp(out_trait_lines[irank]->person_name, "~~~hilite-top10") == 0  ||
+        strcmp(out_trait_lines[irank]->person_name, "~~~hilite-good")  == 0  ||
+        strcmp(out_trait_lines[irank]->person_name, "~~~hilite-trait")   == 0  ||
+        strcmp(out_trait_lines[irank]->person_name, "~~~hilite-avg")   == 0  ||
         strcmp(out_trait_lines[irank]->person_name, "   hilite-bad")   == 0  ||
         strcmp(out_trait_lines[irank]->person_name, "   hilite-bot10") == 0 ) {
       continue;
@@ -956,7 +1056,7 @@ fprintf(stdout, "%s|%6d|\n", current_person_name, atoi(stringBuffForCompatScore)
   }
 
 
-/* int i; for (i = 0; i <= (*out_trait_line_idx); i++) {  * test *
+/* int i; for (i = 0; i <= out_trait_line_idx; i++) {  * test *
 *   kin(out_trait_lines[i]->rank_in_group);
 *   ks(out_trait_lines[i]->person_name);
 *   ki(out_trait_lines[i]->score);
@@ -976,7 +1076,7 @@ fprintf(stdout, "%s|%6d|\n", current_person_name, atoi(stringBuffForCompatScore)
     trait_name,            /* could be  "Best Calendar Year nnnn" */
     html_file_name,                     /* in grphtm.c */
     out_trait_lines,       /* array of report data */
-    *out_trait_line_idx,   /* int having last index written */
+    out_trait_line_idx,   /* int having last index written */
     gblGrpAvgTraitScoresCSV1
   );
 
@@ -988,10 +1088,142 @@ fprintf(stdout, "%s|%6d|\n", current_person_name, atoi(stringBuffForCompatScore)
     return(1);
   }
 
-
   allow_docin_puts_for_now = 1;  /* 1=yes, 0=no = no graph output (like pt of view in just2 rpt) */
 
-  trn("end of mamb_report_trait_rank()");
+
+
+
+  tn();trn("doing trait rank build of  out_group_report_PSVs[]  ...");  ks(html_file_name);
+
+  // here, build raw display data for tableview in cocoa -----------------------------------------------i-
+  //
+
+  // populate   out_group_report_PSVs 
+  //      char *out_group_report_PSVs[],   /* array of output report data to pass to cocoa */
+  //      int  *out_group_report_idx       /* ptr to int having last index written */
+  //
+  *out_group_report_idx = -1;  // zero-based
+
+
+  int i, lenA, longest_A, len_name, size_grp_mem;
+  char sfmt_person_line[128];
+  /*   char pad_spaces[32]; */
+  char person_line[128], benchmark_label[16], cocoa_rowcolor[16];
+
+  /* get size of longest names for person_A 
+  */
+  for (longest_A=0,i=0; i <= out_trait_line_idx; i++) {
+    if (out_trait_lines[i]->rank_in_group == 0) {
+      continue;
+    }
+    lenA = (int)strlen(out_trait_lines[i]->person_name);
+    if(lenA > longest_A) longest_A = lenA;
+  }
+ 
+  if (longest_A + 2 > 14) size_grp_mem = longest_A + 2 ; /* use max of these */
+  else                    size_grp_mem = 14;
+
+  /*        Group Member   Score          */
+  /*    1   Fred flinstone  98          ] */
+  
+  len_name = longest_A;
+
+
+  /* =========  PUT HEADER LINES  ==============
+  */
+
+  // put out line to represent spacer before column headers in cocoa
+    *out_group_report_idx = *out_group_report_idx + 1;      /* put in cocoa table here */
+    sprintf(gbl_my2_group_report_line, "%s", "cHed|top space||");
+    strcpy(out_group_report_PSVs + *out_group_report_idx * gbl_g_max_len_group_data_PSV , gbl_my2_group_report_line); // every 128
+
+
+  //sprintf(sfmt_person_line, "       %%-%dsScore", size_grp_mem);
+    sprintf(sfmt_person_line, "       %%-%ds  Score         ", size_grp_mem);
+  sprintf(person_line, sfmt_person_line, "Group Member");
+    /* put in cocoa table here */
+  strcpy(cocoa_rowcolor, "cHed");   /* for hdr */
+  *out_group_report_idx = *out_group_report_idx + 1;      /* put in cocoa table here */
+//  sprintf(gbl_my1_group_report_line, "%s|%s", cocoa_rowcolor, person_line);
+  sprintf(gbl_my1_group_report_line, "%s|%s||", cocoa_rowcolor, person_line);
+  strcpy(out_group_report_PSVs + *out_group_report_idx * gbl_g_max_len_group_data_PSV , gbl_my1_group_report_line); // every 128
+  /* end of =========  PUT HEADER LINES  ============== */
+
+
+  /* ===== PUT DATA + BENCHMARK LINES  =====
+  * 
+  *  1. format lines into one string   2. get color
+  *  3. populate cocoa table with that
+  */
+  for (i=0; i <= out_trait_line_idx; i++) {
+
+    /* put out benchmark lines
+    */
+    if (out_trait_lines[i]->rank_in_group == 0) {
+      if (out_trait_lines[i]->score == 90) strcpy(benchmark_label, "Great");
+      if (out_trait_lines[i]->score == 75) strcpy(benchmark_label, "Very Good");
+      if (out_trait_lines[i]->score == 50) strcpy(benchmark_label, "Average");
+      if (out_trait_lines[i]->score == 25) strcpy(benchmark_label, "Not Good");
+      if (out_trait_lines[i]->score == 10) strcpy(benchmark_label, "OMG");
+
+      //sprintf(sfmt_person_line, " %%3s   %%-%ds  %%2d  %%-9s", size_grp_mem );
+        sprintf(sfmt_person_line, " %%3s   %%-%ds  %%2d  %%-9s ", size_grp_mem );
+      sprintf(person_line, sfmt_person_line, " ", " ",
+        out_trait_lines[i]->score, benchmark_label);
+
+      /* put in cocoa table here */
+      strcpy(cocoa_rowcolor, set_cell_bg_color_2(out_trait_lines[i]->score));  
+      *out_group_report_idx = *out_group_report_idx + 1;      /* put in cocoa table here */
+//      sprintf(gbl_my1_group_report_line, "%s|%s", cocoa_rowcolor, person_line);
+      sprintf(gbl_my1_group_report_line, "%s|%s||", cocoa_rowcolor, person_line);
+
+      strcpy(out_group_report_PSVs + *out_group_report_idx * gbl_g_max_len_group_data_PSV , gbl_my1_group_report_line); // every 128
+
+      continue;
+    }
+    
+    strcpy(benchmark_label, "");
+
+
+    char person_A_for_UITableView[32]; // in each name, replace all ' ' with '_'
+    strcpy(person_A_for_UITableView,  out_trait_lines[i]->person_name);
+    scharswitch(person_A_for_UITableView, ' ', '_');
+
+
+    //sprintf(sfmt_person_line, " %%3d   %%-%ds  %%2d  %%-9s", size_grp_mem);
+      sprintf(sfmt_person_line, " %%3d   %%-%ds  %%2d  %%-9s ", size_grp_mem);
+    sprintf(person_line, sfmt_person_line, 
+      out_trait_lines[i]->rank_in_group,
+
+//      out_trait_lines[i]->person_name,
+      person_A_for_UITableView,
+
+      out_trait_lines[i]->score,
+      benchmark_label
+    );
+
+    /* Note: set bg color of cell (UIColor) in "tableView: cellForRowAtIndexPath: "
+    */
+    /* put in cocoa table here */
+    strcpy(cocoa_rowcolor, set_cell_bg_color_2(out_trait_lines[i]->score));
+    *out_group_report_idx = *out_group_report_idx + 1;      /* put in cocoa table here */
+//    sprintf(gbl_my1_group_report_line, "%s|%s", cocoa_rowcolor, person_line);
+//    sprintf(gbl_my1_group_report_line, "%s|%s||", cocoa_rowcolor, person_line);
+
+    sprintf(gbl_my1_group_report_line, "%s|%s|%s|", cocoa_rowcolor, person_line, out_trait_lines[i]->person_name);
+
+    strcpy(out_group_report_PSVs + *out_group_report_idx * gbl_g_max_len_group_data_PSV , gbl_my1_group_report_line); // every 128
+
+  } /* ===== PUT DATA + BENCHMARK LINES  ===== */
+
+tn();trn("finished  doing trait rank build of  out_group_report_PSVs[]  ...");  ks(html_file_name);
+
+  /* when finished, free allocated array elements 
+  */
+  g_trait_line_free(out_trait_lines, out_trait_line_idx);  /* when finished, free allocated array elements  */
+
+
+trn("end of mamb_report_trait_rank()");
 
   fclose_fpdb_for_debug();
   return(0);  
@@ -1115,8 +1347,8 @@ int get_unbalanced_score(char *stringBuffForTraitCSV)
 *       /* current_person first
 *       */
 *       global_pair_compatibility_score   = 0;
-*       global_pair_compatibility_score_a = 0;
-*       global_pair_compatibility_score_b = 0;
+*       global_pair_a_compatibility_score = 0;
+*       global_pair_b_compatibility_score = 0;
 *       init_grh_datas();
 *       this_pair_get_data(   /* data is put in avg_lines array */
 *         current_person,
@@ -1124,7 +1356,7 @@ int get_unbalanced_score(char *stringBuffForTraitCSV)
 *         num_persons_in_grp,
 *         num_persons_in_cached_array
 *       );
-*       global_pair_compatibility_score_a = global_pair_compatibility_score;
+*       global_pair_a_compatibility_score = global_pair_compatibility_score;
 * 
 *       /* other_person second
 *       */
@@ -1135,10 +1367,10 @@ int get_unbalanced_score(char *stringBuffForTraitCSV)
 *         num_persons_in_grp,
 *         num_persons_in_cached_array
 *       );
-*       global_pair_compatibility_score_b = global_pair_compatibility_score;
+*       global_pair_b_compatibility_score = global_pair_compatibility_score;
 * 
-*       global_pair_compatibility_score = (global_pair_compatibility_score_a +
-*         global_pair_compatibility_score_b) / 2; 
+*       global_pair_compatibility_score = (global_pair_a_compatibility_score +
+*         global_pair_b_compatibility_score) / 2; 
 *       
 *       /* write the data for this pair into report rank line array
 *       */
@@ -1376,21 +1608,39 @@ int get_unbalanced_score(char *stringBuffForTraitCSV)
 *  Do compatibilities for person_csv with each member of the named group.
 *
 */
+//int  mamb_report_person_in_group(  /* in grpdoc.o */ 
+//  char *html_file_name,
+//  char *group_name,
+//  char *in_csv_person_arr[],
+//  int  num_persons_in_grp,
+//  char *compare_everyone_with,   /* fmt= "Fred,3,21,1987,11,58,1,5,80.34" */
+//  struct rank_report_line *out_rank_lines[],   /* array of output report data */
+//  int  *out_rank_line_idx )         /* ptr to int having last index written */
+//{
+//
+
 int  mamb_report_person_in_group(  /* in grpdoc.o */ 
   char *html_file_name,
   char *group_name,
   char *in_csv_person_arr[],
   int  num_persons_in_grp,
   char *compare_everyone_with,   /* fmt= "Fred,3,21,1987,11,58,1,5,80.34" */
-  struct rank_report_line *out_rank_lines[],   /* array of output report data */
-  int  *out_rank_line_idx )         /* ptr to int having last index written */
+//  struct rank_report_line *out_rank_lines[],   /* array of output report data */
+//  int  *out_rank_line_idx ,                    /* ptr to int having last index written */
+  //char *out_group_report_PSVs[],   /* array of output report data to pass to cocoa */
+  char out_group_report_PSVs[],   /* array of output report data to pass to cocoa */
+  int  *out_group_report_idx ,     /* ptr to int having last index written */
+  int  kingpin_is_in_group
+)
 {
+
+
   int  ii, mm, irank, my_rank_number;
-  char current_person[64], other_person[64];
+  char current_person[256], other_person[256];
   struct rank_report_line my_rank_line;
   struct rank_report_line my_rank_line2;
   char name_of_compare_everyone_with[32];
-  char tmp_name[SIZE_INBUF+1], my_csv[64];
+  char tmp_name[SIZE_INBUF+1], my_csv[128];
   int num_persons_in_cached_array;
   int tot_scores_this_member;  /* for compare_everyone_with */
   int avg_score_this_member ;  /* for compare_everyone_with */
@@ -1402,6 +1652,19 @@ int  mamb_report_person_in_group(  /* in grpdoc.o */
   fopen_fpdb_for_debug();
 
 trn("in mamb_report_person_in_group()");
+//kin(kingpin_is_in_group);
+
+//ksn(group_name);
+//kin(num_persons_in_grp);
+//ksn(compare_everyone_with);
+//for (int m=0; m < num_persons_in_grp; m++) {
+//char mybufff[256];
+//strcpy(mybufff, in_csv_person_arr[m]);
+//ksn(mybufff);
+//}
+
+
+
   /* fprintf(stdout, "\nin mamb_report_person_in_group()\n");  */
 
   gbl_is_best_year_or_day = 0;  /* no */
@@ -1490,11 +1753,12 @@ trn("in mamb_report_person_in_group()");
     */
     if (strcmp(other_person, current_person) == 0 ) continue;
 
+//tn();ksn(current_person);ksn(other_person);b(1);
     /* do comparison in the order  1.current_person, 2.other_person
     */
     global_pair_compatibility_score   = 0;
-    global_pair_compatibility_score_a = 0;
-    global_pair_compatibility_score_b = 0;
+    global_pair_a_compatibility_score = 0;
+    global_pair_b_compatibility_score = 0;
     init_grh_datas();
     this_pair_get_data(   /* data is put in rank_lines array */
       current_person,
@@ -1502,15 +1766,17 @@ trn("in mamb_report_person_in_group()");
       num_persons_in_grp,
       num_persons_in_cached_array
     );
-    global_pair_compatibility_score_a = global_pair_compatibility_score;
-
+    global_pair_a_compatibility_score = global_pair_compatibility_score;
+//tn();ksn(current_person);ksn(other_person);b(2);
+//tn();tr("person A score=");ki(global_pair_a_compatibility_score);
 
     /* char nam1[32]; char nam2[32];
     * strcpy(nam1, csv_get_field(current_person,",",1));
     * strcpy(nam2, csv_get_field(other_person,",",1));
-    * fprintf(stdout,"%-15s|%-15s|%d|",nam1,nam2,global_pair_compatibility_score_a);
+    * fprintf(stdout,"%-15s|%-15s|%d|",nam1,nam2,global_pair_a_compatibility_score);
     */
 
+//tn();ksn(current_person);ksn(other_person);b(3);
     /* do comparison in the order  1.other_person, 2.current_person
     */
     init_grh_datas();
@@ -1520,19 +1786,24 @@ trn("in mamb_report_person_in_group()");
       num_persons_in_grp,
       num_persons_in_cached_array
     );
-    global_pair_compatibility_score_b = global_pair_compatibility_score;
+    global_pair_b_compatibility_score = global_pair_compatibility_score;
+//tn();ksn(current_person);ksn(other_person);b(4);
+//tn();tr("person B score=");ki(global_pair_b_compatibility_score);
 
-    /* fprintf(stdout,"%d|%d|", global_pair_compatibility_score_b,
-    * global_pair_compatibility_score_a -  global_pair_compatibility_score_b);
+    /* fprintf(stdout,"%d|%d|", global_pair_b_compatibility_score,
+    * global_pair_a_compatibility_score -  global_pair_b_compatibility_score);
     */
+
 
 
     /* write the data for this pair in report line array
     */
-    global_pair_compatibility_score = (global_pair_compatibility_score_a +
-      global_pair_compatibility_score_b) / 2; 
+    global_pair_compatibility_score = (global_pair_a_compatibility_score +
+      global_pair_b_compatibility_score) / 2; 
+//tn();tr("PAIR     score=");ki(global_pair_compatibility_score);
 
-    /* fprintf(stdout,"%d|\n", global_pair_compatibility_score); fflush(stdout); */
+
+
 
     my_rank_line.rank_in_group    = 0;
 
@@ -1540,6 +1811,7 @@ trn("in mamb_report_person_in_group()");
 
     PERCENTILE_RANK_SCORE =
       mapBenchmarkNumToPctlRank(global_pair_compatibility_score);
+//tn();kin(PERCENTILE_RANK_SCORE );tn();
 
     my_rank_line.score         = PERCENTILE_RANK_SCORE;
 
@@ -1565,7 +1837,7 @@ trn("in mamb_report_person_in_group()");
     g_rank_line_put(
       my_rank_line,
       out_rank_lines,
-      out_rank_line_idx
+      &out_rank_line_idx
     );
 
   } /* for each person in group */
@@ -1601,32 +1873,37 @@ trn("in mamb_report_person_in_group()");
   my_rank_line2.rank_in_group = 0;
 /*   my_rank_line2.score         = 373; */
   my_rank_line2.score         = 90;
-  strcpy(my_rank_line2.person_A, "zzzzzzzzzzzzzzz"); /* sort below ties with 373 */
+
+//strcpy(my_rank_line2.person_A, "zzzzzzzzzzzzzzz"); /* sort below ties with 373 */
+  strcpy(my_rank_line2.person_A, "~~~~~~~~~~~~~~~"); /* sort below ties with 373 */
+
   strcpy(my_rank_line2.person_B, "qhilite - top10");
   g_rank_line_put(
     my_rank_line2,
     out_rank_lines,
-    out_rank_line_idx
+    &out_rank_line_idx
   );
   my_rank_line2.rank_in_group = 0;
 /*   my_rank_line2.score         = 213; */
   my_rank_line2.score         = 75;
-  strcpy(my_rank_line2.person_A, "zzzzzzzzzzzzzzz"); /* sort below ties with 213 */
+//strcpy(my_rank_line2.person_A, "zzzzzzzzzzzzzzz"); /* sort below ties with 213 */
+  strcpy(my_rank_line2.person_A, "~~~~~~~~~~~~~~~"); /* sort below ties with 213 */
   strcpy(my_rank_line2.person_B, "qhilite - good");
   g_rank_line_put(
     my_rank_line2,
     out_rank_lines,
-    out_rank_line_idx
+    &out_rank_line_idx
   );
   my_rank_line2.rank_in_group = 0;
 /*   my_rank_line2.score         = 100; */
   my_rank_line2.score         = 50;
-  strcpy(my_rank_line2.person_A, "zzzzzzzzzzzzzzz"); /* sort below ties with 100 */
+//strcpy(my_rank_line2.person_A, "zzzzzzzzzzzzzzz"); /* sort below ties with 100 */
+  strcpy(my_rank_line2.person_A, "~~~~~~~~~~~~~~~"); /* sort below ties with 100 */
   strcpy(my_rank_line2.person_B, "qhilite - avg");
   g_rank_line_put(
     my_rank_line2,
     out_rank_lines,
-    out_rank_line_idx
+    &out_rank_line_idx
   );
   my_rank_line2.rank_in_group = 0;
 /*   my_rank_line2.score         = 42; */
@@ -1636,7 +1913,7 @@ trn("in mamb_report_person_in_group()");
   g_rank_line_put(
     my_rank_line2,
     out_rank_lines,
-    out_rank_line_idx
+    &out_rank_line_idx
   );
   my_rank_line2.rank_in_group = 0;
 /*   my_rank_line2.score         = 18; */
@@ -1646,7 +1923,7 @@ trn("in mamb_report_person_in_group()");
   g_rank_line_put(
     my_rank_line2,
     out_rank_lines,
-    out_rank_line_idx
+    &out_rank_line_idx
   );
 
 
@@ -1658,7 +1935,7 @@ trn("in mamb_report_person_in_group()");
   */
   qsort(
     out_rank_lines,
-    *(out_rank_line_idx) + 1,   /* number of elements */
+    out_rank_line_idx + 1,   /* number of elements */
     sizeof(struct rank_report_line *),   /* capital R denotes a typedef */
     (compareFunc_rank)Func_compare_rank_report_line_scores
   );
@@ -1667,7 +1944,7 @@ trn("in mamb_report_person_in_group()");
   *  (except for milestone lines)
   */
   my_rank_number = 0;
-  for (irank=0; irank <= *(out_rank_line_idx); irank++) {
+  for (irank=0; irank <= out_rank_line_idx; irank++) {
 
 
     if (strcmp(out_rank_lines[irank]->person_B, "qhilite - top10") == 0  ||
@@ -1686,7 +1963,17 @@ trn("in mamb_report_person_in_group()");
 /* for test */ /* display_buffs_to_stderr(); */
 
 
-  /* HTML HTML HTML HTML HTML HTML HTML HTML HTML HTML 
+
+
+
+
+
+
+
+trn("doing ... make_html_file_person_in_group() in mamb_report_person_in_group()");
+//kin(kingpin_is_in_group);
+
+  /* HTML HTML HTML HTML HTML HTML HTML HTML HTML HTML  HTML HTML HTML HTML HTML HTML  HTML HTML HTML HTML HTML HTML 
   *  html report produced here
   */
   int retval;
@@ -1694,10 +1981,17 @@ trn("in mamb_report_person_in_group()");
     group_name,
     num_persons_in_grp,
     html_file_name,                     /* in grphtm.c */
-    out_rank_lines,       /* array of report data */
-    *out_rank_line_idx,   /* int having last index written */
-    avg_score_this_member /* for report bottom */
+    out_rank_lines,          /* array of report data */
+    out_rank_line_idx,      /* int having last index written */
+    avg_score_this_member,   /* for report bottom */
+//    out_group_report_PSVs,   // defined in cocoa  char *out_group_report_PSVs[],  
+//                             // array of output report data to pass to cocoa 
+//    out_group_report_idx ,  // ptr to int having last index written */
+    kingpin_is_in_group
   );
+
+//trn("finished ... make_html_file_person_in_group() in mamb_report_person_in_group()");
+//kin(retval);
 
   if (retval != 0) {
     g_docin_free();      /* free all allocated array elements */
@@ -1706,11 +2000,259 @@ trn("in mamb_report_person_in_group()");
     return(1);
   }
 
+
+
+  // here, build raw display data for tableview in cocoa ------------------------------------------------
+  //
+
+  // populate   out_group_report_PSVs 
+  //      char *out_group_report_PSVs[],   /* array of output report data to pass to cocoa */
+  //      int  *out_group_report_idx       /* ptr to int having last index written */
+  //
+  *out_group_report_idx = -1;  // zero-based
+
+//  fopen_fpdb_for_debug();  /* for test */
+
+  int i, lenA, lenB, longest_A, longest_B, len2names;
+  int pad_len, pad_left, pad_right;
+  char sfmt_pair_line[64];
+  char sfmt_pair_names[64];
+/*   char pad_spaces[32]; */
+  char pair_line[128], benchmark_label[16], cocoa_rowcolor[16];
+  char pair_names[128]; 
+
+  int  num_pairs_in_grp;
+  num_pairs_in_grp = (num_persons_in_grp * (num_persons_in_grp - 1)) / 2;
+  char s_npig[8]; int size_NPIG;
+  sprintf(s_npig, "%d", num_pairs_in_grp);
+  size_NPIG = (int)strlen(s_npig);
+
+  pad_left  = 0;
+  pad_right = 0;
+  for (longest_A=0,longest_B=0, i=0; i <= out_rank_line_idx; i++) { // get size of longest names for person_A and B
+    if (out_rank_lines[i]->rank_in_group == 0) {
+      continue;
+    }
+    lenA = (int)strlen(out_rank_lines[i]->person_A);
+    lenB = (int)strlen(out_rank_lines[i]->person_B);
+    if(lenA > longest_A) longest_A = lenA;
+    if(lenB > longest_B) longest_B = lenB;
+  }
+  
+  /*          Pair of                     */
+  /*        Group Members  Score          */
+  /*    1   Fa  Mo 890123   98          ] */
+  
+  len2names = longest_A + 2 + longest_B;
+  if (len2names < 13) pad_len = 13 - len2names;
+  else                pad_len = 0;
+
+
+  /* =========  PUT HEADER LINES  ==============
+  */
+  // put out line to represent spacer before column headers in cocoa
+    *out_group_report_idx = *out_group_report_idx + 1;      /* put in cocoa table here */
+    sprintf(gbl_my2_group_report_line, "%s", "cHed|top space||");
+    strcpy(out_group_report_PSVs + *out_group_report_idx * gbl_g_max_len_group_data_PSV , gbl_my2_group_report_line); // every 128
+
+
+  strcpy(cocoa_rowcolor, "cHed");   /* for hdr */
+  if (len2names <= 13 ) {  /* SHORT NAMES  ---------------------------------------*/
+    sprintf(sfmt_pair_line, " %%%ds   %%-%ds",
+      size_NPIG,
+      len2names + pad_len +2+1+9+1+1);
+    sprintf(pair_line, sfmt_pair_line, " ", "  Pair of      Compatibility  ");
+
+    *out_group_report_idx = *out_group_report_idx + 1;      /* put in cocoa table here */
+    sprintf(gbl_my2_group_report_line, "%s|%s||", "cHed", pair_line);
+    strcpy(out_group_report_PSVs + *out_group_report_idx * gbl_g_max_len_group_data_PSV , gbl_my2_group_report_line); // every 128
+
+// build both lines in cocoa
+//    sprintf(sfmt_pair_line, " %%%ds   %%-%ds",
+//      size_NPIG,
+//      len2names + pad_len +2+1+9+1+1);
+//    sprintf(pair_line, sfmt_pair_line, " ", "Group Members    Potential    ");
+//
+//    *out_group_report_idx = *out_group_report_idx + 1;      /* put in cocoa table here */
+//    sprintf(gbl_my2_group_report_line, "%s|%s||", "cHed", pair_line);
+//    strcpy(out_group_report_PSVs + *out_group_report_idx * gbl_g_max_len_group_data_PSV , gbl_my2_group_report_line); // every 128
+//
+
+    sprintf(sfmt_pair_line, " %%%ds   %%-%ds",
+      size_NPIG,
+      len2names + pad_len +2+1+9+1+1);
+    sprintf(pair_line, sfmt_pair_line, " ", "Group Members    Potential    ");
+
+    *out_group_report_idx = *out_group_report_idx + 1;      /* put in cocoa table here */
+    sprintf(gbl_my2_group_report_line, "%s|%s||", "cHed", pair_line);
+    strcpy(out_group_report_PSVs + *out_group_report_idx * gbl_g_max_len_group_data_PSV , gbl_my2_group_report_line); // every 128
+
+  } else {                 /* ORDINARY LENGTH NAMES ------------------------------*/
+    /* center "Pair of" in len2names spaces */
+    pad_left = ((len2names - 7) /2) -1;      /* 7 = "Pair of" */
+    pad_right = len2names - 7 - pad_left;    /* 7 = "Pair of" */
+    sprintf(sfmt_pair_names, "%%-%ds%%s%%-%ds  Compatibility  ", pad_left, pad_right);
+    sprintf(pair_names, sfmt_pair_names, " ", "Pair of", " ");  
+    sprintf(sfmt_pair_line, " %%%ds   %%-%ds",
+      size_NPIG,
+      len2names + pad_len +3+2+1+9+1);
+    sprintf(pair_line, sfmt_pair_line, " ", pair_names);
+
+    *out_group_report_idx = *out_group_report_idx + 1;      /* put in cocoa table here */
+    sprintf(gbl_my2_group_report_line, "%s|%s||", "cHed", pair_line);
+    strcpy(out_group_report_PSVs + *out_group_report_idx * gbl_g_max_len_group_data_PSV , gbl_my2_group_report_line); // every 128
+
+// build both lines in cocoa
+//    pad_left = ((len2names - 13) /2) -1;        /* 13 = "Group Members" */
+//    pad_right = len2names - 13 - pad_left; /* 13 = "Group Members" */
+//    sprintf(sfmt_pair_names, "%%-%ds%%s%%-%ds", pad_left, pad_right);
+//    sprintf(pair_names, sfmt_pair_names, " ", "Group Members", " ");  
+//    //sprintf(sfmt_pair_line, " %%%ds   %%-%ds    Potential    ", size_NPIG, len2names);
+//      sprintf(sfmt_pair_line, " %%%ds   %%-%ds   Potential    ", size_NPIG, len2names);
+//    sprintf(pair_line, sfmt_pair_line, " ", pair_names);
+//
+//    *out_group_report_idx = *out_group_report_idx + 1;      /* put in cocoa table here */
+//    sprintf(gbl_my2_group_report_line, "%s|%s||", "cHed", pair_line);
+//    strcpy(out_group_report_PSVs + *out_group_report_idx * gbl_g_max_len_group_data_PSV , gbl_my2_group_report_line); // every 128
+//
+    pad_left = ((len2names - 13) /2) -1;        /* 13 = "Group Members" */
+    pad_right = len2names - 13 - pad_left; /* 13 = "Group Members" */
+    sprintf(sfmt_pair_names, "%%-%ds%%s%%-%ds", pad_left, pad_right);
+    sprintf(pair_names, sfmt_pair_names, " ", "Group Members", " ");  
+    //sprintf(sfmt_pair_line, " %%%ds   %%-%ds    Potential    ", size_NPIG, len2names);
+      sprintf(sfmt_pair_line, " %%%ds   %%-%ds   Potential    ", size_NPIG, len2names);
+    sprintf(pair_line, sfmt_pair_line, " ", pair_names);
+
+    *out_group_report_idx = *out_group_report_idx + 1;      /* put in cocoa table here */
+    sprintf(gbl_my2_group_report_line, "%s|%s||", "cHed", pair_line);
+    strcpy(out_group_report_PSVs + *out_group_report_idx * gbl_g_max_len_group_data_PSV , gbl_my2_group_report_line); // every 128
+
+
+  } /* end of =========  PUT HEADER LINES  ============== */
+
+
+  /* 1. format lines into one string  
+  *  2. get color
+  *  3. populate array for cocoa table (out_group_report_PSVs) with that  (PSV format)
+  */
+  for (i=0; i <= out_rank_line_idx; i++) { /* ===== PUT DATA + BENCHMARK LINES  into array out_group_report_PSVs ===== */
+
+    /* put out benchmark lines
+    */
+    if (out_rank_lines[i]->rank_in_group == 0) {
+      if (out_rank_lines[i]->score == 90) strcpy(benchmark_label, "Great");
+      if (out_rank_lines[i]->score == 75) strcpy(benchmark_label, "Very Good");
+      if (out_rank_lines[i]->score == 50) strcpy(benchmark_label, "Average");
+      if (out_rank_lines[i]->score == 25) strcpy(benchmark_label, "Not Good");
+      if (out_rank_lines[i]->score == 10) strcpy(benchmark_label, "OMG");
+
+      if (pad_len == 0) {
+        sprintf(sfmt_pair_line, " %%%ds   %%-%ds  %%-%ds   %%2d  %%-10s",
+          size_NPIG, longest_A, longest_B         );
+        sprintf(pair_line, sfmt_pair_line, " ", " ", " ",
+          out_rank_lines[i]->score, benchmark_label);
+      } else {
+        sprintf(sfmt_pair_line, " %%%ds   %%-%ds  %%-%ds%%%ds   %%2d  %%-10s",
+          size_NPIG, longest_A, longest_B, pad_len);
+        sprintf(pair_line, sfmt_pair_line, " ", " ", " ", " ",
+          out_rank_lines[i]->score, benchmark_label);
+      }
+
+      strcpy(cocoa_rowcolor, set_cell_bg_color_2(out_rank_lines[i]->score));    /* put in cocoa table here */
+      sprintf(gbl_my2_group_report_line, "%s|%s||", cocoa_rowcolor, pair_line);
+      *out_group_report_idx = *out_group_report_idx + 1;
+      strcpy(out_group_report_PSVs + (*out_group_report_idx * gbl_g_max_len_group_data_PSV) , gbl_my2_group_report_line); // every 128
+
+      continue;
+    }
+    strcpy(benchmark_label, "");
+
+
+    /* put out data lines
+    */
+
+    char person_A_for_UITableView[32]; // in each name, replace all ' ' with '_'
+    char person_B_for_UITableView[32];
+    strcpy(person_A_for_UITableView,  out_rank_lines[i]->person_A);
+    strcpy(person_B_for_UITableView,  out_rank_lines[i]->person_B);
+    scharswitch(person_A_for_UITableView, ' ', '_');
+    scharswitch(person_B_for_UITableView, ' ', '_');
+
+    if (pad_len == 0) {
+      sprintf(sfmt_pair_line, " %%%dd   %%-%ds  %%-%ds   %%2d  %%-10s",
+        size_NPIG, longest_A, longest_B         );
+
+      sprintf(pair_line, sfmt_pair_line, 
+        out_rank_lines[i]->rank_in_group,
+
+//        out_rank_lines[i]->person_A,
+//        out_rank_lines[i]->person_B,
+        person_A_for_UITableView,
+        person_B_for_UITableView,
+
+        out_rank_lines[i]->score,
+        benchmark_label
+      );
+    } else {
+      sprintf(sfmt_pair_line, " %%%dd   %%-%ds  %%-%ds%%%ds   %%2d  %%-10s",
+        size_NPIG, longest_A, longest_B, pad_len);
+
+      sprintf(pair_line, sfmt_pair_line, 
+        out_rank_lines[i]->rank_in_group,
+
+//        out_rank_lines[i]->person_A,
+//        out_rank_lines[i]->person_B,
+        person_A_for_UITableView,
+        person_B_for_UITableView,
+
+        " ",  /* padding */
+        out_rank_lines[i]->score,
+        benchmark_label
+      );
+    }
+
+    // Note: set bg color of cell (UIColor) in "tableView: cellForRowAtIndexPath: "
+
+    strcpy(cocoa_rowcolor, set_cell_bg_color_2(out_rank_lines[i]->score));      /* put in cocoa table here */
+
+
+  //sprintf(gbl_my2_group_report_line, "%s|%s", cocoa_rowcolor, pair_line);
+    sprintf(gbl_my2_group_report_line, "%s|%s|%s|%s", cocoa_rowcolor, pair_line,
+        person_A_for_UITableView,
+        person_B_for_UITableView
+    );
+
+
+    *out_group_report_idx = *out_group_report_idx + 1;
+    strcpy(out_group_report_PSVs + *out_group_report_idx * gbl_g_max_len_group_data_PSV , gbl_my2_group_report_line); // every 128
+
+  }  /* ===== PUT DATA + BENCHMARK LINES  into array out_group_report_PSVs ===== */
+
+
+  g_rank_line_free(out_rank_lines, out_rank_line_idx);   // when finished, free arr elements 
+
   trn("end of mamb_report_person_in_group()"); 
   fclose_fpdb_for_debug();
+
   return(0);  
 
 }  /* end of  mamb_report_person_in_group() */
+
+
+char * set_cell_bg_color_2(int in_score) {
+    if (in_score == 999) return( "cHed"); /* top 200/bot 100 */
+
+    if (in_score >= 90) return( "cGr2");
+    if (in_score <  90 &&
+        in_score >= 75) return( "cGre");
+    if (in_score <  75 &&
+        in_score >  25) return( "cNeu");
+    if (in_score <= 25 &&
+        in_score >  10) return( "cRed");
+    if (in_score <= 10) return( "cRe2");
+    return("cNeu");
+}
+
 
 
 /* ============================================================== */
@@ -1732,11 +2274,24 @@ int mamb_report_whole_group(    /* called from cocoa */
   char *group_name,
   char *in_csv_person_arr[],  /* fmt= "Fred,3,21,1987,11,58,1,5,80.34" */
   int  num_persons_in_grp,
-  struct rank_report_line *out_rank_lines[],  /* output params returned */
-  int  *out_rank_line_idx,                    /* to calling function    */
+//  struct rank_report_line *out_rank_lines[],  /* output params returned */
+//  int  *out_rank_line_idx,                    /* to calling function    */
   char *instructions,
-  char *string_for_table_only  /* 1024 chars max (its 9 lines formatted) */
+  char *string_for_table_only, /* 1024 chars max (its 9 lines formatted) */
+  char out_group_report_PSVs[],   /* array of output report data to pass to cocoa */
+  int  *out_group_report_idx       /* ptr to int having last index written */
 ) {
+
+tn();tn();trn("in mamb_report_whole_group()");
+//ksn(instructions);
+//ksn(string_for_table_only);
+//ksn(html_file_name);
+//ksn(group_name);
+//kin(num_persons_in_grp);
+//ksn(in_csv_person_arr[0]);
+//ksn(in_csv_person_arr[1]);
+
+
 /*  struct rank_report_line **out_rank_lines, */ /* output params returned */
   int kk, ii, irank, my_rank_number;
   char current_person[64], other_person[64];
@@ -1766,14 +2321,6 @@ int mamb_report_whole_group(    /* called from cocoa */
     trn("in mamb_report_whole_group()");
   }  /* avoid dbmsg on non-rpt call */
 
-
-/* ksn(html_file_name);
-* ksn(group_name);
-* kin(num_persons_in_grp);
-* ksn(in_csv_person_arr[0]);
-* ksn(instructions);
-* ksn(string_for_table_only);
-*/
 
 
   /* fprintf(stdout, "\nin mamb_report_whole_group()\n");  */
@@ -1839,8 +2386,8 @@ int mamb_report_whole_group(    /* called from cocoa */
       /* current_person first
       */
       global_pair_compatibility_score   = 0;
-      global_pair_compatibility_score_a = 0;
-      global_pair_compatibility_score_b = 0;
+      global_pair_a_compatibility_score = 0;
+      global_pair_b_compatibility_score = 0;
       init_grh_datas();
       this_pair_get_data(   /* data is put in rank_lines array */
         current_person,
@@ -1848,12 +2395,12 @@ int mamb_report_whole_group(    /* called from cocoa */
         num_persons_in_grp,
         num_persons_in_cached_array
       );
-      global_pair_compatibility_score_a = global_pair_compatibility_score;
-/* kin(global_pair_compatibility_score_a ); */
+      global_pair_a_compatibility_score = global_pair_compatibility_score;
+/* kin(global_pair_a_compatibility_score ); */
       /* char nam1[32]; char nam2[32];
       * strcpy(nam1, csv_get_field(current_person,",",1));
       * strcpy(nam2, csv_get_field(other_person,",",1));
-      * fprintf(stdout,"%-15s|%-15s|%d|",nam1,nam2,global_pair_compatibility_score_a);
+      * fprintf(stdout,"%-15s|%-15s|%d|",nam1,nam2,global_pair_a_compatibility_score);
       */
 
       /* other_person first
@@ -1865,16 +2412,16 @@ int mamb_report_whole_group(    /* called from cocoa */
         num_persons_in_grp,
         num_persons_in_cached_array
       );
-      global_pair_compatibility_score_b = global_pair_compatibility_score;
-/* kin(global_pair_compatibility_score_b ); */
+      global_pair_b_compatibility_score = global_pair_compatibility_score;
+/* kin(global_pair_b_compatibility_score ); */
 
-      /* fprintf(stdout,"%d|%d|%d|\n", global_pair_compatibility_score_a,
-      * global_pair_compatibility_score_b,
-      * (global_pair_compatibility_score_a - global_pair_compatibility_score_b));
+      /* fprintf(stdout,"%d|%d|%d|\n", global_pair_a_compatibility_score,
+      * global_pair_b_compatibility_score,
+      * (global_pair_a_compatibility_score - global_pair_b_compatibility_score));
       */
 
-      global_pair_compatibility_score = (global_pair_compatibility_score_a +
-        global_pair_compatibility_score_b) / 2; 
+      global_pair_compatibility_score = (global_pair_a_compatibility_score +
+        global_pair_b_compatibility_score) / 2; 
 
       /* fprintf(stdout,"%d|\n", global_pair_compatibility_score); fflush(stdout); */
 
@@ -1898,7 +2445,7 @@ int mamb_report_whole_group(    /* called from cocoa */
       g_rank_line_put(
         my_rank_line,
         out_rank_lines,
-        out_rank_line_idx
+        &out_rank_line_idx
       );
 
     } /* for each other_person */
@@ -1916,32 +2463,35 @@ int mamb_report_whole_group(    /* called from cocoa */
   my_rank_line2.rank_in_group = 0;
 /*   my_rank_line2.score         = 373; */
   my_rank_line2.score         = 90;
-  strcpy(my_rank_line2.person_A, "zzzzzzzzzzzzzzz"); /* sort below ties with 373 */
+//strcpy(my_rank_line2.person_A, "zzzzzzzzzzzzzzz"); /* sort below ties with 373 */
+  strcpy(my_rank_line2.person_A, "~~~~~~~~~~~~~~~"); /* sort below ties with 373 */
   strcpy(my_rank_line2.person_B, "qhilite - top10");
   g_rank_line_put(
     my_rank_line2,
     out_rank_lines,
-    out_rank_line_idx
+    &out_rank_line_idx
   );
   my_rank_line2.rank_in_group = 0;
 /*   my_rank_line2.score         = 213; */
   my_rank_line2.score         = 75;
-  strcpy(my_rank_line2.person_A, "zzzzzzzzzzzzzzz"); /* sort below ties with 213 */
+//strcpy(my_rank_line2.person_A, "zzzzzzzzzzzzzzz"); /* sort below ties with 213 */
+  strcpy(my_rank_line2.person_A, "~~~~~~~~~~~~~~~"); /* sort below ties with 213 */
   strcpy(my_rank_line2.person_B, "qhilite - good");
   g_rank_line_put(
     my_rank_line2,
     out_rank_lines,
-    out_rank_line_idx
+    &out_rank_line_idx
   );
   my_rank_line2.rank_in_group = 0;
 /*   my_rank_line2.score         = 100; */
   my_rank_line2.score         = 50;
-  strcpy(my_rank_line2.person_A, "zzzzzzzzzzzzzzz"); /* sort below ties with 100 */
+//strcpy(my_rank_line2.person_A, "zzzzzzzzzzzzzzz"); /* sort below ties with 100 */
+  strcpy(my_rank_line2.person_A, "~~~~~~~~~~~~~~~"); /* sort below ties with 100 */
   strcpy(my_rank_line2.person_B, "qhilite - avg");
   g_rank_line_put(
     my_rank_line2,
     out_rank_lines,
-    out_rank_line_idx
+    &out_rank_line_idx
   );
   my_rank_line2.rank_in_group = 0;
 /*   my_rank_line2.score         = 42; */
@@ -1951,7 +2501,7 @@ int mamb_report_whole_group(    /* called from cocoa */
   g_rank_line_put(
     my_rank_line2,
     out_rank_lines,
-    out_rank_line_idx
+    &out_rank_line_idx
   );
   my_rank_line2.rank_in_group = 0;
 /*   my_rank_line2.score         = 18; */
@@ -1961,7 +2511,7 @@ int mamb_report_whole_group(    /* called from cocoa */
   g_rank_line_put(
     my_rank_line2,
     out_rank_lines,
-    out_rank_line_idx
+    &out_rank_line_idx
   );
 
 
@@ -2007,7 +2557,7 @@ int mamb_report_whole_group(    /* called from cocoa */
   */
   qsort(
     out_rank_lines,
-    *(out_rank_line_idx) + 1,   /* number of elements */
+    out_rank_line_idx + 1,   /* number of elements */
     sizeof(struct rank_report_line *),   /* capital R denotes a typedef */
     (compareFunc_rank)Func_compare_rank_report_line_scores
   );
@@ -2024,8 +2574,8 @@ int mamb_report_whole_group(    /* called from cocoa */
   */
   /* fprintf(stdout,"\n\n\n  AFTER SORT in grpdoc.c\n\n");
   * fflush(stdout);
-  * b(27); kin(*(out_rank_line_idx));
-  * for(int rr=0; rr <= *(out_rank_line_idx); rr++) {
+  * b(27); kin(out_rank_line_idx);
+  * for(int rr=0; rr <= out_rank_line_idx; rr++) {
   * ki(rr); 
   *   fprintf(stdout,"%3d|%5d|%s|%s\n",
   *     out_rank_lines[rr]->rank_in_group,
@@ -2045,7 +2595,7 @@ int mamb_report_whole_group(    /* called from cocoa */
 
 /* tn();trn("put in rank numbers"); */
   my_rank_number = 0;
-  for (irank=0; irank <= *(out_rank_line_idx); irank++) {
+  for (irank=0; irank <= out_rank_line_idx; irank++) {
     /* kin(irank);ks(out_rank_lines[irank]->person_B);  */
     /*   strcpy(my_rank_line2.person_B, "qhilite - top10");
     *   strcpy(my_rank_line2.person_B, "qhilite - good");
@@ -2068,7 +2618,7 @@ int mamb_report_whole_group(    /* called from cocoa */
 
   /* fprintf(stdout,"\n\n\n  AFTER PUTTING IN RANK NUMS in grpdoc.c\n\n");
   * fflush(stdout);
-  * int rr; for(rr=0; rr <= *(out_rank_line_idx); rr++) {
+  * int rr; for(rr=0; rr <= out_rank_line_idx; rr++) {
   *   fprintf(stdout,"%3d|%5d|%s|%s\n",
   *     out_rank_lines[rr]->rank_in_group,
   *     out_rank_lines[rr]->score,
@@ -2080,21 +2630,37 @@ int mamb_report_whole_group(    /* called from cocoa */
   * b(28);
   */
 
-  /* HTML HTML HTML HTML HTML HTML HTML HTML HTML HTML 
+
+//trn("doing ... make_html_file_whole_group() in mamb_report_whole_group()");
+//ksn(instructions);
+  /* HTML HTML HTML HTML HTML HTML HTML HTML HTML HTML  HTML HTML HTML HTML HTML HTML  HTML HTML HTML HTML HTML HTML 
   *  html report produced here
   */
+
   int retval;
   retval = make_html_file_whole_group( /* produce actual html file */
     group_name,
     num_persons_in_grp,
     html_file_name,                     /* in grphtm.c */
-    out_rank_lines,       /* array of report data */
-    *out_rank_line_idx,   /* int having last index written */
-    instructions,         /* might be instructions for table-only OR */
-                          /* "top_this_many=|%d|bot_this_many=|%d|" */
-    string_for_table_only /* 1024 chars max (its 9 lines formatted) */
-                          /* buf to hold html for table */
+    out_rank_lines,           /* array of report data */
+    out_rank_line_idx,       /* int having last index written */
+    instructions,             /* might be instructions for table-only OR */
+                              /* "top_this_many=|%d|bot_this_many=|%d|" */
+    string_for_table_only,    /* 1024 chars max (its 9 lines formatted) */
+                              /* buf to hold html for table */
+    out_group_report_PSVs,    /* array of output report data to pass to cocoa */
+    out_group_report_idx      /* ptr to int having last index written */
   );
+//tn();b(300);ksn(string_for_table_only);
+//trn("at end of  ... make_html_file_whole_group() in mamb_report_whole_group()");
+
+//ksn(group_name);
+//kin(num_persons_in_grp);
+//ksn(instructions);
+//kin(out_rank_line_idx);
+
+
+
 
   if (retval != 0) {
     g_docin_free();      /* free all allocated array elements */
@@ -2103,9 +2669,327 @@ int mamb_report_whole_group(    /* called from cocoa */
     return(1);
   }
 
-  if (strstr(instructions, "return only") == NULL) {
-    trn("end of mamb_report_whole_group()");
+
+
+  // here, build raw display data for tableview in cocoa ------------------------------------------------
+  //
+  //
+  // but not if this is "return only" 
+  if (strstr(instructions, "return only") != NULL) {
+//    trn("end of mamb_report_whole_group()");
+    fclose_fpdb_for_debug();
+    return(0);  
   }  /* avoid dbmsg on non-rpt call */
+
+
+  // determine if we need to show top 200 and bottom 100
+  //   int gbl_g_top_bot_threshold  = 300;    // more data lines than this, then show top 200 + bot 100
+  //
+  int is_topbot;
+  if (out_rank_line_idx > gbl_g_top_bot_threshold) { is_topbot = 1; } // gbl_g_show_top_this_many and gbl_g_show_bot_this_many
+  else                                             { is_topbot = 0; } // NO
+
+
+
+  // populate   out_group_report_PSVs 
+  //      char *out_group_report_PSVs[],   /* array of output report data to pass to cocoa */
+  //      int  *out_group_report_idx       /* ptr to int having last index written */
+  //
+  //char my_group_report_line[gbl_g_max_len_group_data_PSV + 8];
+  *out_group_report_idx = -1;  // zero-based
+
+//  fopen_fpdb_for_debug();  /* for test */
+
+  int i, lenA, lenB, longest_A, longest_B, len2names;
+  int pad_len, pad_left, pad_right;
+  char sfmt_pair_line[64];
+  char sfmt_pair_names[64];
+/*   char pad_spaces[32]; */
+  char pair_line[128], benchmark_label[16], cocoa_rowcolor[16];
+  char pair_names[128]; 
+
+  int  num_pairs_in_grp;
+  num_pairs_in_grp = (num_persons_in_grp * (num_persons_in_grp - 1)) / 2;
+  char s_npig[8]; int size_NPIG;
+  sprintf(s_npig, "%d", num_pairs_in_grp);
+  size_NPIG = (int)strlen(s_npig);
+
+
+
+  /* get size of longest names for person_A and B
+  */
+  for (longest_A=0,longest_B=0, i=0; i <= out_rank_line_idx; i++) {
+    if (out_rank_lines[i]->rank_in_group == 0) {
+      continue;
+    }
+    lenA = (int)strlen(out_rank_lines[i]->person_A);
+    lenB = (int)strlen(out_rank_lines[i]->person_B);
+    if(lenA > longest_A) longest_A = lenA;
+    if(lenB > longest_B) longest_B = lenB;
+  }
+  
+
+  /*          Pair of                     */
+  /*        Group Members  Score          */
+  /*    1   Fa  Mo 890123   98          ] */
+  
+  len2names = longest_A + 2 + longest_B;
+  if (len2names < 13) pad_len = 13 - len2names;
+  else                pad_len = 0;
+
+//kin(longest_A);
+//kin(longest_B);
+//kin(*out_group_report_idx);
+  /* =========  PUT HEADER LINES  ==============
+  */
+
+  // put out line to represent spacer before column headers in cocoa  (same as grpone)
+    *out_group_report_idx = *out_group_report_idx + 1;      /* put in cocoa table here */
+    sprintf(gbl_my2_group_report_line, "%s", "cHed|top space||");
+    strcpy(out_group_report_PSVs + *out_group_report_idx * gbl_g_max_len_group_data_PSV , gbl_my2_group_report_line); // every 128
+
+  strcpy(cocoa_rowcolor, "cHed");   /* for hdr */
+
+  if (is_topbot == 1) {  // check for top / bot
+    strcpy(cocoa_rowcolor, "cBgr");   /* for html bg, etc.  */
+
+    *out_group_report_idx = *out_group_report_idx + 1;      /* put in cocoa table here */
+    sprintf(gbl_my3_group_report_line, "cBgr|This report has over %d lines, so||", gbl_g_top_bot_threshold); // 300
+//ksn(gbl_my3_group_report_line);
+    strcpy(out_group_report_PSVs + *out_group_report_idx * gbl_g_max_len_group_data_PSV , gbl_my3_group_report_line); // every 128
+
+    *out_group_report_idx = *out_group_report_idx + 1;      /* put in cocoa table here */
+    sprintf(gbl_my3_group_report_line, "cBgr|we show the top %d and Bottom %d||",
+      gbl_g_show_top_this_many, // 300
+      gbl_g_show_bot_this_many  // 100
+    );
+//ksn(gbl_my3_group_report_line);
+    strcpy(out_group_report_PSVs + *out_group_report_idx * gbl_g_max_len_group_data_PSV , gbl_my3_group_report_line); // every 128
+
+  } // check for top / bot
+
+
+  if (len2names <= 13 ) {  /* SHORT NAMES  ---------------------------------------*/
+    sprintf(sfmt_pair_line, " %%%ds   %%-%ds",
+      size_NPIG,
+      len2names + pad_len +2+1+9+1+1);
+    sprintf(pair_line, sfmt_pair_line, " ", "  Pair of      Compatibility  ");
+//ksn(pair_line);
+//kin(*out_group_report_idx);
+
+    *out_group_report_idx = *out_group_report_idx + 1;      /* put in cocoa table here */
+//kin(*out_group_report_idx);
+
+    sprintf(gbl_my3_group_report_line, "%s|%s||", "cHed", pair_line);
+
+//kin(*out_group_report_idx);
+//kin(gbl_g_max_len_group_data_PSV );
+//ksn(gbl_my3_group_report_line);
+
+
+//  strcpy(out_group_report_PSVs +  *out_group_report_idx  * gbl_g_max_len_group_data_PSV , gbl_my3_group_report_line); // every 128
+    strcpy(out_group_report_PSVs + (*out_group_report_idx) * gbl_g_max_len_group_data_PSV , gbl_my3_group_report_line); // every 128
+
+
+
+    sprintf(sfmt_pair_line, " %%%ds   %%-%ds",
+      size_NPIG,
+      len2names + pad_len +2+1+9+1+1);
+      sprintf(pair_line, sfmt_pair_line, " ", "Group Members    Potential    ");
+    //sprintf(pair_line, sfmt_pair_line, " ", "Group Members   Potential    ");
+
+    *out_group_report_idx = *out_group_report_idx + 1;      /* put in cocoa table here */
+
+
+    sprintf(gbl_my3_group_report_line, "%s|%s||", "cHed", pair_line);
+// ksn(gbl_my3_group_report_line);
+    strcpy(out_group_report_PSVs + *out_group_report_idx * gbl_g_max_len_group_data_PSV , gbl_my3_group_report_line); // every 128
+
+  } else {                 /* ORDINARY LENGTH NAMES ------------------------------*/
+    /* center "Pair of" in len2names spaces */
+    pad_left = ((len2names - 7) /2) -1;      /* 7 = "Pair of" */
+    pad_right = len2names - 7 - pad_left;    /* 7 = "Pair of" */
+    sprintf(sfmt_pair_names, "%%-%ds%%s%%-%ds  Compatibility  ", pad_left, pad_right);
+    sprintf(pair_names, sfmt_pair_names, " ", "Pair of", " ");  
+    sprintf(sfmt_pair_line, " %%%ds   %%-%ds",
+      size_NPIG,
+      len2names + pad_len +3+2+1+9+1);
+    sprintf(pair_line, sfmt_pair_line, " ", pair_names);
+
+    *out_group_report_idx = *out_group_report_idx + 1;      /* put in cocoa table here */
+    sprintf(gbl_my3_group_report_line, "%s|%s||", "cHed", pair_line);
+// ksn(gbl_my3_group_report_line);
+    strcpy(out_group_report_PSVs + *out_group_report_idx * gbl_g_max_len_group_data_PSV , gbl_my3_group_report_line); // every 128
+
+    pad_left = ((len2names - 13) /2) -1;        /* 13 = "Group Members" */
+    pad_right = len2names - 13 - pad_left; /* 13 = "Group Members" */
+    sprintf(sfmt_pair_names, "%%-%ds%%s%%-%ds", pad_left, pad_right);
+    sprintf(pair_names, sfmt_pair_names, " ", "Group Members", " ");  
+    sprintf(sfmt_pair_line, " %%%ds   %%-%ds    Potential    ", size_NPIG, len2names);
+    sprintf(pair_line, sfmt_pair_line, " ", pair_names);
+
+    *out_group_report_idx = *out_group_report_idx + 1;      /* put in cocoa table here */
+    sprintf(gbl_my3_group_report_line, "%s|%s||", "cHed", pair_line);
+// ksn(gbl_my3_group_report_line);
+    strcpy(out_group_report_PSVs + *out_group_report_idx * gbl_g_max_len_group_data_PSV , gbl_my3_group_report_line); // every 128
+
+  } // put out column headers
+
+  /* end of =========  PUT HEADER LINES  ============== */
+
+
+  /* 1. format lines into one string  
+  *  2. get color
+  *  3. populate array for cocoa table (out_group_report_PSVs) with that  (PSV format)
+  */
+  int ctr_rank_lines_encountered;
+  int len_my_group_report_line;
+  int num_end_spaces;             // for Top... / Bot...lines
+  ctr_rank_lines_encountered = 0;
+  len_my_group_report_line   = 0;
+  num_end_spaces             = 0;             // for Top... / Bot...lines
+
+  for (i=0; i <= out_rank_line_idx; i++) { /* ===== PUT DATA + BENCHMARK LINES  into array out_group_report_PSVs ===== */
+    /* put out benchmark lines
+    */
+    if (out_rank_lines[i]->rank_in_group == 0) {
+      if (out_rank_lines[i]->score == 90) strcpy(benchmark_label, "Great");
+      if (out_rank_lines[i]->score == 75) strcpy(benchmark_label, "Very Good");
+      if (out_rank_lines[i]->score == 50) strcpy(benchmark_label, "Average");
+      if (out_rank_lines[i]->score == 25) strcpy(benchmark_label, "Not Good");
+      if (out_rank_lines[i]->score == 10) strcpy(benchmark_label, "OMG");
+
+      if (pad_len == 0) {
+        sprintf(sfmt_pair_line, " %%%ds   %%-%ds  %%-%ds   %%2d  %%-10s",
+          size_NPIG, longest_A, longest_B         );
+        sprintf(pair_line, sfmt_pair_line, " ", " ", " ",
+          out_rank_lines[i]->score, benchmark_label);
+      } else {
+        sprintf(sfmt_pair_line, " %%%ds   %%-%ds  %%-%ds%%%ds   %%2d  %%-10s",
+          size_NPIG, longest_A, longest_B, pad_len);
+        sprintf(pair_line, sfmt_pair_line, " ", " ", " ", " ",
+          out_rank_lines[i]->score, benchmark_label);
+      }
+
+      strcpy(cocoa_rowcolor, set_cell_bg_color_2(out_rank_lines[i]->score));    /* put in cocoa table here */
+
+
+      sprintf(gbl_my3_group_report_line, "%s|%s||", cocoa_rowcolor, pair_line);
+
+
+// ksn(gbl_my3_group_report_line);
+      *out_group_report_idx = *out_group_report_idx + 1;
+      strcpy(out_group_report_PSVs + (*out_group_report_idx * gbl_g_max_len_group_data_PSV) , gbl_my3_group_report_line); // every 128
+
+      continue;
+    }
+    strcpy(benchmark_label, "");
+
+
+    /* put out data lines
+    */
+
+    char person_A_for_UITableView[32]; // in each name, replace all ' ' with '_'
+    char person_B_for_UITableView[32];
+    strcpy(person_A_for_UITableView,  out_rank_lines[i]->person_A);
+    strcpy(person_B_for_UITableView,  out_rank_lines[i]->person_B);
+    scharswitch(person_A_for_UITableView, ' ', '_');
+    scharswitch(person_B_for_UITableView, ' ', '_');
+
+    if (pad_len == 0) {
+      sprintf(sfmt_pair_line, " %%%dd   %%-%ds  %%-%ds   %%2d  %%-10s",
+        size_NPIG, longest_A, longest_B         );
+
+      sprintf(pair_line, sfmt_pair_line, 
+        out_rank_lines[i]->rank_in_group,
+
+//        out_rank_lines[i]->person_A,
+//        out_rank_lines[i]->person_B,
+        person_A_for_UITableView,
+        person_B_for_UITableView,
+
+        out_rank_lines[i]->score,
+        benchmark_label
+      );
+    } else {
+      sprintf(sfmt_pair_line, " %%%dd   %%-%ds  %%-%ds%%%ds   %%2d  %%-10s",
+        size_NPIG, longest_A, longest_B, pad_len);
+
+      sprintf(pair_line, sfmt_pair_line, 
+        out_rank_lines[i]->rank_in_group,
+
+//        out_rank_lines[i]->person_A,
+//        out_rank_lines[i]->person_B,
+        person_A_for_UITableView,
+        person_B_for_UITableView,
+
+        " ",  /* padding */
+        out_rank_lines[i]->score,
+        benchmark_label
+      );
+    }
+    ctr_rank_lines_encountered = ctr_rank_lines_encountered + 1;
+
+    // check if we are on middle lines not to print due to Top / Bot
+    //
+    //int gbl_g_top_bot_threshold  = 300;    // more data lines than this, then show top 200 + bot 100
+    //int gbl_g_show_top_this_many = 200;
+    //int gbl_g_show_bot_this_many = 100;
+    //
+    if (is_topbot == 1) {  // check for top / bot
+      if (ctr_rank_lines_encountered  == gbl_g_show_top_this_many + 1) {
+
+        num_end_spaces = len_my_group_report_line - 6 - size_NPIG - 3 -4 -3; // for Top... / Bot...lines
+
+        sprintf(sfmt_pair_line, "cHed| %%%ds   %%s %%3d%%%ds", size_NPIG, num_end_spaces); 
+        sprintf(gbl_my3_group_report_line, sfmt_pair_line, " ", "Top", gbl_g_show_top_this_many, " ");
+        *out_group_report_idx = *out_group_report_idx + 1;
+        strcpy(out_group_report_PSVs + (*out_group_report_idx * gbl_g_max_len_group_data_PSV) , gbl_my3_group_report_line); // every 128
+      }
+      if (ctr_rank_lines_encountered  == num_pairs_in_grp - gbl_g_show_bot_this_many + 1) {
+
+        num_end_spaces = len_my_group_report_line - 6 - size_NPIG - 6 -4 -3; // for Top... / Bot...lines
+
+        sprintf(sfmt_pair_line, "cHed| %%%ds   %%s %%3d%%%ds", size_NPIG, num_end_spaces); 
+        sprintf(gbl_my3_group_report_line, sfmt_pair_line, " ", "Bottom", gbl_g_show_bot_this_many, " ");
+        *out_group_report_idx = *out_group_report_idx + 1;
+        strcpy(out_group_report_PSVs + (*out_group_report_idx * gbl_g_max_len_group_data_PSV) , gbl_my3_group_report_line); // every 128
+      }
+
+      if (ctr_rank_lines_encountered  > gbl_g_show_top_this_many   &&
+          ctr_rank_lines_encountered  < num_pairs_in_grp - gbl_g_show_bot_this_many + 1)
+      {
+        continue; // i is zero-based
+      }
+
+    } // check for top / bot
+
+
+
+    // Note: set bg color of cell (UIColor) in "tableView: cellForRowAtIndexPath: "
+    strcpy(cocoa_rowcolor, set_cell_bg_color_2(out_rank_lines[i]->score));      /* put in cocoa table here */
+
+
+  //sprintf(gbl_my3_group_report_line, "%s|%s", cocoa_rowcolor, pair_line);
+    sprintf(gbl_my3_group_report_line, "%s|%s|%s|%s", cocoa_rowcolor, pair_line,
+        person_A_for_UITableView,
+        person_B_for_UITableView
+    );
+
+
+
+// ksn(gbl_my3_group_report_line);
+    *out_group_report_idx    = *out_group_report_idx + 1;
+    len_my_group_report_line = (int)strlen(gbl_my3_group_report_line);
+    strcpy(out_group_report_PSVs + *out_group_report_idx * gbl_g_max_len_group_data_PSV , gbl_my3_group_report_line); // every 128
+
+
+  }  /* ===== PUT DATA + BENCHMARK LINES  into array out_group_report_PSVs ===== */
+
+
+  g_rank_line_free(out_rank_lines, out_rank_line_idx);   // when finished, free arr elements 
+
+
 
   fclose_fpdb_for_debug();
   return(0);  
@@ -2194,7 +3078,11 @@ int Func_compare_trait_report_line_scores( const void *line1, const void *line2 
 
 
 
-void this_pair_get_data(
+// called for int mamb_report_whole_group(    /* called from cocoa */
+// also
+// called for int  mamb_report_person_in_group(  /* in grpdoc.o */ 
+//
+void this_pair_get_data( 
   char *current_person,
   char *other_person,
   int num_persons_in_grp,
@@ -2215,6 +3103,7 @@ void this_pair_get_data(
 
   set_constants();
 
+
   /* get_stuff_from_cached_array() populates these:
   *  
   *  gA_EVENT_NAME, gB_EVENT_NAME
@@ -2231,8 +3120,8 @@ void this_pair_get_data(
 
   g_add_all_asps_to_grh_data();
 
-  fill_A_position_strings();  /* for testing aid */
-  fill_B_position_strings();
+//  fill_A_position_strings();  /* for testing aid */
+//  fill_B_position_strings();
 
 
   /* this calls do_special_lines, which populates 
@@ -2445,7 +3334,7 @@ void g_trait_line_free(
 void put_stuff_in_cached_array(char *in_csv_person_arr[], int num_persons_in_grp)
 {
   int kk,mm;
-  char tmp_name[SIZE_INBUF+1], my_csv[64];
+  char tmp_name[SIZE_INBUF+1], my_csv[128];
 /*   char my_birth_year[16]; */
 /* trn("in put_stuff_in_cached_array"); */
 
@@ -2630,18 +3519,31 @@ int mamb_report_just_2_people(    /* called from incocoa */
 {
   allow_docin_puts_for_now = 1;  /* 1=yes, 0=no  yes= allow graph output (like pt of view) */
 
-/* trn("JUST 2   JUST 2   JUST 2   JUST 2   JUST 2   JUST 2   JUST 2   JUST 2   "); */
-trn("in mamb_report_just_2_people()");
-
 /* fpdb=stderr; put me in main(). output file for debug code */
 /* fpdb = fopen("t.out","a"); */
 
   fopen_fpdb_for_debug();
 
+/* trn("JUST 2   JUST 2   JUST 2   JUST 2   JUST 2   JUST 2   JUST 2   JUST 2   "); */
+tn();trn("in mamb_report_just_2_people()");
+
+  g_init_item_tbl();  // for aspect codes
+//<.>
+
   gbl_is_best_year_or_day = 0;  /* no */
 
   set_constants();
   /*   open_fut_output_file(); */
+
+
+//  /* get names in the order of the initial args
+//  */
+//  char person_name_A[32];
+//  char person_name_B[32];
+//  strcpy(person_name_A, csv_get_field(csv_person_1, ",", 1));
+//  strcpy(person_name_B, csv_get_field(csv_person_2, ",", 1));
+//
+
 
   /* get the data for num_stars for person1 being first
   */
@@ -2651,10 +3553,14 @@ trn("in mamb_report_just_2_people()");
   */
   A_stars_persn_g  =  stars_persn_g;
   A_stars_persn_b  =  stars_persn_b;
+
+
   A_stars_aview_g  =  stars_aview_g;
   A_stars_aview_b  =  stars_aview_b;
   A_stars_bview_g  =  stars_bview_g;
   A_stars_bview_b  =  stars_bview_b;
+
+
   A_stars_love_g   =  stars_love_g;
   A_stars_love_b   =  stars_love_b;
   A_stars_money_g  =  stars_money_g;
@@ -2662,20 +3568,21 @@ trn("in mamb_report_just_2_people()");
   A_stars_ovral_g  =  stars_ovral_g;
   A_stars_ovral_b  =  stars_ovral_b;
 
-  /* tn();
-  * kin(A_stars_persn_g);
-  * kin(A_stars_persn_b);
-  * kin(A_stars_aview_g);
-  * kin(A_stars_aview_b);
-  * kin(A_stars_bview_g);
-  * kin(A_stars_bview_b);
-  * kin(A_stars_love_g);
-  * kin(A_stars_love_b);
-  * kin(A_stars_money_g);
-  * kin(A_stars_money_b);
-  * kin(A_stars_ovral_g);
-  * kin(A_stars_ovral_b);
-  */
+ tn();
+//kin(A_stars_persn_g);
+//kin(A_stars_persn_b);
+//kin(A_stars_aview_g);
+//kin(A_stars_aview_b);
+//kin(A_stars_bview_g);
+//kin(A_stars_bview_b);
+//
+//kin(A_stars_love_g);
+//kin(A_stars_love_b);
+//kin(A_stars_money_g);
+//kin(A_stars_money_b);
+//kin(A_stars_ovral_g);
+//kin(A_stars_ovral_b);
+
 
 
   /* get the data for num_starts for person2 being first
@@ -2686,10 +3593,12 @@ trn("in mamb_report_just_2_people()");
   */
   B_stars_persn_g  =  stars_persn_g;
   B_stars_persn_b  =  stars_persn_b;
+
   B_stars_aview_g  =  stars_aview_g;
   B_stars_aview_b  =  stars_aview_b;
   B_stars_bview_g  =  stars_bview_g;
   B_stars_bview_b  =  stars_bview_b;
+
   B_stars_love_g   =  stars_love_g;
   B_stars_love_b   =  stars_love_b;
   B_stars_money_g  =  stars_money_g;
@@ -2697,20 +3606,23 @@ trn("in mamb_report_just_2_people()");
   B_stars_ovral_g  =  stars_ovral_g;
   B_stars_ovral_b  =  stars_ovral_b;
 
-  /* tn();
-  * kin(B_stars_persn_g);
-  * kin(B_stars_persn_b);
-  * kin(B_stars_aview_g);
-  * kin(B_stars_aview_b);
-  * kin(B_stars_bview_g);
-  * kin(B_stars_bview_b);
-  * kin(B_stars_love_g);
-  * kin(B_stars_love_b);
-  * kin(B_stars_money_g);
-  * kin(B_stars_money_b);
-  * kin(B_stars_ovral_g);
-  * kin(B_stars_ovral_b);
-  */
+ tn();
+//kin(B_stars_persn_g);
+//kin(B_stars_persn_b);
+//kin(B_stars_aview_g);
+//kin(B_stars_aview_b);
+//kin(B_stars_bview_g);
+//kin(B_stars_bview_b);
+//
+//kin(B_stars_love_g);
+//kin(B_stars_love_b);
+//kin(B_stars_money_g);
+//kin(B_stars_money_b);
+//kin(B_stars_ovral_g);
+//kin(B_stars_ovral_b);
+//
+ tn();
+
 
 
   is_first_g_docin_put = 1;  /* 1=yes, 0=no */
@@ -2730,13 +3642,38 @@ trn("in mamb_report_just_2_people()");
   strcpy(person_name_A, csv_get_field(csv_person_1, ",", 1));
   strcpy(person_name_B, csv_get_field(csv_person_2, ",", 1));
 
+
+//tn();tr("ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss");
+//
+//tn();
+//ksn(person_name_A);
+////ksn(SAVE_name_A);
+//ksn(gA_EVENT_NAME);
+//kin(A_stars_aview_g);
+//kin(A_stars_aview_b);
+//kin(A_stars_bview_g);
+//kin(A_stars_bview_b);
+//tn();ksn(person_name_B);
+//ksn(gB_EVENT_NAME);
+//kin(B_stars_aview_g);
+//kin(B_stars_aview_b);
+//kin(B_stars_bview_g);
+//kin(B_stars_bview_b);
+//tn();tr("ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss");
+//
+
+
 /*   gdocn = sprintf(gdocp,"%s\n", &gA_EVENT_NAME[0]);  */
+//  gdocn = sprintf(gdocp,"%s\n", person_name_A); 
+//  gdocn = sprintf(gdocp,"%s\n", &gA_EVENT_NAME[0]);
   gdocn = sprintf(gdocp,"%s\n", person_name_A); 
-  g_docin_put(gdocp, gdocn);
+  g_docin_put(gdocp, gdocn);    // NOTE:  this becomes arr(0) in grphtm.c
 
 /*   gdocn = sprintf(gdocp,"%s\n", &gB_EVENT_NAME[0]); */
+//  gdocn = sprintf(gdocp,"%s\n", person_name_B); 
+//  gdocn = sprintf(gdocp,"%s\n", &gB_EVENT_NAME[0]); 
   gdocn = sprintf(gdocp,"%s\n", person_name_B); 
-  g_docin_put(gdocp, gdocn);
+  g_docin_put(gdocp, gdocn);    // NOTE:  this becomes arr(0) in grphtm.c
 
 
   gdocn = sprintf(gdocp,"%s", "[end_topinfo1]\n");
@@ -2762,32 +3699,62 @@ trn("in mamb_report_just_2_people()");
   gdocn = sprintf(gdocp,"[end_persn]\n");
   g_docin_put(gdocp, gdocn);
 
-  gdocn = sprintf(gdocp,"[beg_aview]\n");  /* idx = 2 */
+
+
+// ------------------------------------------------------------------------------------
+//  gdocn = sprintf(gdocp,"[beg_aview]\n");  /* idx = 2 */
+  gdocn = sprintf(gdocp,"[beg_aview]|%s\n", person_name_A);  /* idx = 2 */
   g_docin_put(gdocp, gdocn);
+
+
+
+//tn();tr("beg_aview");
+//ksn(gdocp);
+//ksn(person_name_A);
+//tn();
+//
+
   g_mk_grh_line(
-    (A_stars_aview_g + B_stars_aview_g) / 2,
+//    (A_stars_aview_g + B_stars_aview_g) / 2,
+    (A_stars_aview_g + B_stars_bview_g) / 2,
     PLUS_OR_MINUS_IDX_FOR_GOOD
   );
   g_mk_grh_line(
-    (A_stars_aview_b + B_stars_aview_b) / 2,
+//    (A_stars_aview_b + B_stars_aview_b) / 2,
+    (A_stars_aview_b + B_stars_bview_b) / 2,
     PLUS_OR_MINUS_IDX_FOR_BAD
   );
   gdocn = sprintf(gdocp,"[end_aview]\n");
   g_docin_put(gdocp, gdocn);
 
-  gdocn = sprintf(gdocp,"[beg_bview]\n");  /* idx = 3 */
+
+//  gdocn = sprintf(gdocp,"[beg_bview]\n");  /* idx = 3 */
+  gdocn = sprintf(gdocp,"[beg_bview]|%s\n", person_name_B);  /* idx = 2 */
   g_docin_put(gdocp, gdocn);
+
+//tn();tr("beg_bview");
+//ksn(gdocp);
+//ksn(person_name_B);
+//tn();
+//
+
+
   g_mk_grh_line(
-    (A_stars_bview_g + B_stars_bview_g) / 2,
+//    (A_stars_bview_g + B_stars_bview_g) / 2,
+    (A_stars_bview_g + B_stars_aview_g) / 2,
     PLUS_OR_MINUS_IDX_FOR_GOOD
   );
   g_mk_grh_line(
-    (A_stars_bview_b + B_stars_bview_b) / 2,
+//    (A_stars_bview_b + B_stars_bview_b) / 2,
+    (A_stars_bview_b + B_stars_aview_b) / 2,
     PLUS_OR_MINUS_IDX_FOR_BAD
   );
   gdocn = sprintf(gdocp,"[end_bview]\n");
   g_docin_put(gdocp, gdocn);
+// ------------------------------------------------------------------------------------
   
+
+
   gdocn = sprintf(gdocp,"[beg_love]\n");  /* idx = 0 */
   g_docin_put(gdocp, gdocn);
   g_mk_grh_line(
@@ -2831,13 +3798,30 @@ trn("in mamb_report_just_2_people()");
   g_docin_put(gdocp, gdocn);
 
 
+
+
+
+
+//<.> where to put this ? for just 2  aspect paras ???
+  g_put_aspect_strings();  // codes for all aspects
+
+  gmake_paras(); //  back from the past  20151012 not any more 
+
+
+
+
+
   gdocn = sprintf(gdocp,"[end_program]\n\n");
   g_docin_put(gdocp, gdocn);
 
   /* put positions at bot of docin_lines / t.perdoc (for checking)
   *  goes to docin_put
   */
-/*   display_for_astrology_buffs(); */
+
+
+//  display_for_astrology_buffs();
+
+
 
   /* int ii; for (ii = 0; ii <= docin_idx; ii++) { for test
   *   strcpy(Swk, docin_lines[ii] );
@@ -2859,6 +3843,7 @@ trn("in mamb_report_just_2_people()");
   */
   /* html report produced here
   */
+//tn();trn(" doing make_html_file_just_2_people() with A,B   in mamb_report_just_2_people");
   int retval;
   retval = make_html_file_just_2_people(
     html_browser_file_name,
@@ -2867,6 +3852,7 @@ trn("in mamb_report_just_2_people()");
     csv_person_1,
     csv_person_2
   );
+//tn();trn(" doing make_html_file_just_2_people() with B,A   in mamb_report_just_2_people");
   int retval2;
   retval2 = make_html_file_just_2_people(
     html_webview_file_name,
@@ -2882,7 +3868,7 @@ trn("in mamb_report_just_2_people()");
     return(1);
   }
 
-/* trn("end of mamb_report_just_2_people()"); */
+trn("end of mamb_report_just_2_people()");
 
   fclose_fpdb_for_debug();
   return(0);
@@ -2892,15 +3878,11 @@ trn("in mamb_report_just_2_people()");
 
 
 
-void do_comparisons(char *csv_person_1, char *csv_person_2) 
+void do_comparisons(char *csv_person_1, char *csv_person_2)  // called from   int mamb_report_just_2_people(    /* called from incocoa */
 {
   ;
 
 /* tn();trn("in do_comparisons() ------------------------------------"); */
-
-  /* for (i=1; get_compat_id(i) == Found; ++i) { */ /* now only one (may2013) */
-  /*     g_init_item_tbl();   for aspect paragraphs */
-
     init_grh_datas();
 
   sfill(&gEVENT_NAME[0],SIZE_INBUF,' ');
@@ -2921,6 +3903,7 @@ void do_comparisons(char *csv_person_1, char *csv_person_2)
 
   sfill(&gEVENT_NAME[0],SIZE_INBUF,' ');
   
+
   get_event_details(csv_person_2, gEVENT_NAME, 
     &gINMN, &gINDY, &gINYR, &gINHR, &gINMU, &gINAP, &gINTZ, &gINLN);
 
@@ -2931,19 +3914,188 @@ void do_comparisons(char *csv_person_1, char *csv_person_2)
 
   g_put_minutes(&ar_minutes_natal_2[0]);
   store_sgn_and_hse_placements_2();
-  store_comp_aspects();  /* gAR_ASP[i][k] = g_isaspect( */
-  g_add_all_asps_to_grh_data();
 
-  fill_A_position_strings();  /* for testing aid */
-  fill_B_position_strings();
+  store_comp_aspects();  /* gAR_ASP[i][k] = g_isaspect( */  // also, capture orb data in here
+
+//  fill_A_position_strings();  /* for testing aid */
+//  fill_B_position_strings();
+
+  g_add_all_asps_to_grh_data();                             // also, capture plus or minus for aspect in here
+
 
   /* this changed to not write anything, but save num_stars data
   *  > do_special_lines() and > do_grh_data_lines()
   */
   g_make_special_graphs();
 
-  /*     make_paras(); not any more */
+//<.>
+//  g_init_item_tbl();  // for aspect codes
+//nbn(501);
+//  gmake_paras(); //  back from the past  20151012 not any more 
+//nbn(502);
+//
+//
+
+
 } /* end of do_comparisons() */
+
+
+void g_init_item_tbl(void)
+{
+//tn();tr("g_init_item_tbl");
+  int i;
+  ;
+  for (i=0; i <= gMAX_IN_ITEM_TBL-1; ++i) {
+    gP_ITEM_TBL[i] = &gITEM_TBL[i*(SIZE_ITEM+1)];
+//ki(i);ksn(gP_ITEM_TBL[i]);
+  }
+  gITEM_TBL_IDX = -1;  /* setup use as ++subscript */
+}  /* end of g_init_item_tbl() */
+
+
+//<.>
+//void g_put_aspect_strings(void)
+//{
+//  int i,k;  /* i=1st plt  k=2nd plt */
+//  ;
+//tn();tr("g_put_aspect_strings");
+//  for (i=1; i <= NUM_PLT_FOR_PARAS; ++i) {
+//    for (k=i+1; k <= NUM_PLANETS; ++k) {
+//      if (gAR_ASP[i][k] == 0) continue;
+//      ++gITEM_TBL_IDX;
+//      sprintf(gP_ITEM_TBL[gITEM_TBL_IDX],"%02d%1s%02d",
+//        i,  /* plt1 */
+//        gN_SHORT_DOC_ASPECT[gASPECT_TYPE[gAR_ASP[i][k]]],
+//        k);  /* plt2 */
+//
+//tn();ki(gITEM_TBL_IDX);ks(gP_ITEM_TBL[gITEM_TBL_IDX]);
+//
+//    }
+//  }
+//tn();tr("end of g_put_aspect_strings");
+//}  /* end of g_put_aspect_strings() */
+//<.>
+//
+
+void g_put_aspect_strings(void)
+{
+  int i,k;  /* i=A plt  k=B plt */
+//tn();tr("g_put_aspect_strings");
+  ;
+//trn("HEY222");
+  RKDO(i,1,NUM_PLANETS) {
+  
+    RKDO(k,1,NUM_PLANETS) {
+
+      if (gAR_ASP[i][k] == 0) continue;  // no aspect
+
+      // missed mar opp sat
+      //      if (RKISBETWEEN(i, MAR_IDX,PLU_IDX)
+      //      &&  RKISBETWEEN(k, MAR_IDX,PLU_IDX)) { continue;  /* no far,far */ }
+      //
+      if (RKISBETWEEN(i, JUP_IDX,PLU_IDX)  // is inclusive of  bounds
+      &&  RKISBETWEEN(k, JUP_IDX,PLU_IDX)) { continue;  /* no far,far */ }
+
+      ++gITEM_TBL_IDX;
+
+//      sprintf(gP_ITEM_TBL[gITEM_TBL_IDX],"%02d%1s%02d",
+//        i,  /* A plt */
+//        gN_SHORT_DOC_ASPECT[gASPECT_TYPE[gAR_ASP[i][k]]],
+//        k   /* B plt */
+//      );
+//
+      // make pipe-delimited with 2 added fields
+      // add 1 ->25 plus/minus  (neg=minus signs red, pos=plus signs green)
+      //
+      // int gEXPRESSION_1_25[NUM_PLANETS+1][NUM_PLANETS+1]; // -25 -> +25 (nozero) num minuses or pluses below each aspect para (negative=red, positive-green)
+      //
+
+//tn();tr("store expressionval in gP_ITEM_TBL[gITEM_TBL_IDX]");ki(i);ki(k);kin(gEXPRESSION_1_25[i][k]);
+
+      sprintf(gP_ITEM_TBL[gITEM_TBL_IDX], "%02d%1s%02d|%d",
+        i,  /* A plt */
+        gN_SHORT_DOC_ASPECT[gASPECT_TYPE[gAR_ASP[i][k]]],
+        k,  /* B plt */
+        gEXPRESSION_1_25[i][k]
+      );
+//ki(gITEM_TBL_IDX); ksn(gP_ITEM_TBL[gITEM_TBL_IDX]); 
+//<.>
+
+
+
+//      char test_aspstr[32];
+//      sprintf(test_aspstr,"%02d%1s%02d",
+//        i,  /* A plt */
+//        gN_SHORT_DOC_ASPECT[gASPECT_TYPE[gAR_ASP[i][k]]],
+//        k   /* B plt */
+//      );
+////<.>
+////double testorb; testorb = gAR_ASP_ORB[i][k];
+////tn();tr("is orb OK to add here?");ks(test_aspstr);kd(testorb);
+//
+//
+    } // RKDO(i,1,NUM_PLANETS) {
+
+  } // RKDO(k,1,NUM_PLANETS) {
+
+//tn();tr("end of g_put_aspect_strings");
+}  /* end of put_aspect_strings() */
+
+
+
+void gmake_paras(void)  // generates codes  for aspect text
+{
+  int i;
+  char oldAspCode[32];
+  char numplusminus[32], paraworkstr[128];
+  ;
+//tn();tr("gmake_paras");
+  /*  set_doc_for_paras();   old old */
+//<.>
+  fill_A_position_strings();  /* for testing aid */
+  fill_B_position_strings();
+
+  //  fprintf(_FP_DOCIN_FILE,"\n\n[beg_aspects]\n");
+  gdocn = sprintf(gdocp,"[beg_aspects]\n");
+  g_docin_put(gdocp, gdocn);
+
+  /*  fprintf(_FP_DOCIN_FILE,"\n.(compttl)\n"); */
+  /* read stuff in */
+  strsort(gP_ITEM_TBL, gITEM_TBL_IDX + 1);
+
+//tn();trn("HEY");
+
+  for (i=0; i <= gITEM_TBL_IDX; ++i) {  /* idx pts to last element */
+
+//ki(i); ksn(gP_ITEM_TBL[i]); 
+    // get old gP_ITEM_TBL from PSV
+    //
+    strcpy(paraworkstr, gP_ITEM_TBL[i]);
+//ksn(paraworkstr);
+    strcpy(oldAspCode,   csv_get_field(paraworkstr, "|", 1) );
+    strcpy(numplusminus, csv_get_field(paraworkstr, "|", 2) );
+//ks(oldAspCode);ksn(numplusminus);
+
+    /* put 'c' at head of doc register name */
+    /* (bad form to start with a number) */
+
+//    gdocn = sprintf(gdocp, "^(c%s)\n", gP_ITEM_TBL[i] );  /* c for comp */
+//    g_docin_put(gdocp, gdocn);
+
+          // fprintf(stdout,"^(c%s)\n",_P_ITEM_TBL[i]);
+          //     * ^to be piped to pick_stuff >compdoc/@ in ws futin1 "comp * 
+
+    gdocn = sprintf(gdocp, "^(c%s)|%s", oldAspCode, numplusminus);  /* c for comp */
+    g_docin_put(gdocp, gdocn);
+  }
+
+  /*  fprintf(_FP_DOCIN_FILE,"\n.(compftr)\n"); */
+
+  // fprintf(_FP_DOCIN_FILE,"[end_aspects]\n");
+  gdocn = sprintf(gdocp,"[end_aspects]\n");
+  g_docin_put(gdocp, gdocn);
+
+}  /* end of gmake_paras() */
 
 
 /* for docin lines for debug, not in html
@@ -3065,10 +4217,14 @@ void display_buffs_to_stderr(void)
 */
 void g_docin_put(char *line, int length)
 {
+//tn();tr("in g_docin_PUT");  ksn(line);
   if (allow_docin_puts_for_now == 0) return; /* (like pt of view in just2) */
   
   if (is_first_g_docin_put == 1) docin_idx = 0;
   else                           docin_idx++;
+//tr("docin_put");ki(docin_idx);ki(length);ks(line);
+
+//tn();ki(docin_idx);ks(line);
 
   docin_lines[docin_idx] = malloc(length + 1);
 
@@ -3088,6 +4244,7 @@ void g_docin_put(char *line, int length)
   * run from index = 0 to index = docin_idx. (see g_docin_free() below)
   */
 }
+
 
 /* Free the memory allocated for every member of docin_lines array.
 */
@@ -3174,7 +4331,7 @@ void do_special_lines(int idx, int numer, int denom)  /* for grpdoc */
 void save_pair_compat_score(int good_int, int bad_int) {
   double good_dbl, bad_dbl, tmpdouble, maxgood, maxbad, g_b;
 
-  /* tn();trn(" in save_pair_compat_score()"); */
+//tn();trn(" in save_pair_compat_score()");
   if (good_int == 0) good_int = 1;
   if (bad_int  == 0) bad_int  = 1;
 
@@ -3199,6 +4356,8 @@ void save_pair_compat_score(int good_int, int bad_int) {
   if (tmpdouble < 1.0) tmpdouble = 1.0;  /* no zero scores allowed */
 
   global_pair_compatibility_score =  (int) tmpdouble;
+
+//kin(global_pair_compatibility_score);
 
 }  /* end of  save_pair_compat_score(); */
 
@@ -3240,7 +4399,7 @@ void g_mk_grh_line(int num_stars, int g_or_b)
     /* send thru "easy"/"difficult" labels as flags even though
     *  they are not printed out now  (aug 2013)
     */
-    sprintf(sformat,"|%%12s %%-%ds|\n",(MAX_STARS -1)+2); /*"|%11s %-100s|\n"*/
+    sprintf(sformat,"|%%12s %%-%ds|\n",(MAX_STARS -1)+2); /*"|%11s %-100s|\n"); */
     gdocn = sprintf(gdocp,sformat,(g_or_b)?"difficult":"easy",s);
 
     /* #define PLUS_OR_MINUS_IDX_FOR_GOOD 0 */
@@ -3263,10 +4422,9 @@ void g_wrap_grh_line(int num_stars, int g_or_b)
   int i,last_line_stars;
   ;
   sfill(s,(MAX_STARS -1),GRH_CHAR);
-/* <.> */
 /* kin(num_stars);ki(g_or_b); */
 
-  sprintf(sformat,"|%%12s %%%ds  |\n",(MAX_STARS -1)); /* "|%11s %-100s|\n" */
+  sprintf(sformat,"|%%12s %%%ds  |\n",(MAX_STARS -1)); /* "|%11s %-100s|\n"); */
   gdocn = sprintf(gdocp, sformat,(g_or_b)?"difficult":"easy",s);
 
 /* tn();b(210);ks(gdocp);tn(); */
@@ -3288,10 +4446,14 @@ void g_wrap_grh_line(int num_stars, int g_or_b)
 
     g_docin_put(gdocp, gdocn);
   }
+
   if ((last_line_stars = (num_stars % (MAX_STARS -1))) == 0) return;
+
   sfill(s,last_line_stars,GRH_CHAR);
 
-  sprintf(sformat,"|%%12s %%%ds  |\n",(MAX_STARS -1)); /* "|%11s %100s|\n" */
+//  sprintf(sformat,"|%%12s %%%ds  |\n",(MAX_STARS -1));
+//  sprintf(sformat,"|%%12s %%%ds z|\n",(MAX_STARS -1)); 
+    sprintf(sformat,"|%%12s %%%dsqx|\n",(MAX_STARS -1));    // weird fix
   gdocn = sprintf(gdocp, sformat,"",s);
 
 /* tn();b(230);ks(gdocp);tn(); */
@@ -3326,16 +4488,128 @@ void store_sgn_and_hse_placements_2(void)
 
 void store_comp_aspects(void)
 {
-  int i,k;  /* i=1st plt, k=2nd plt */
+//tn();ksn("store_comp_aspects");tn();
+  int i,k, isasp;  /* i=1st plt, k=2nd plt */
+  double orb_double;          // 0.0 --> 1.0
+  int    orb_int_0_1000;  // 0 --> 1000
+  int    orb_int_1_25;    // 1 --> 25   (number of pluses or minuses)
+
+  int    myAspectID;      // 0 -> 8
+                          //   int gASPECT_ID[NUM_ASPECTS+1] =
+                          //                {0,  1,   2,   3,   4,    5,    6,    7,    8  ,9};
+                          //           /* name x cnj  sxt  squ  tri   opp   tri   squ   sxt  cnj */
+                          //         /* degrees  x  0  60   90   120   180   240   270   300  360 */
+
+  int    myAspectType;    // 0 cnj, 1 good, 2 bad
+                          //   int gASPECT_TYPE[NUM_ASPECTS+1] =
+                          //               {-1,  0,   1,   2,   1,    2,    1,    2,    1,    0};
+                          //    /* aspect_type  0=cnj, 1=good, 2=bad (subscripts into aspect_multipier[]) */
+
+  int    myAspectSign;  // +1 or -1
+  int    myAspectExpressionVal;      // -25 -> +25 but no zero
   ;
   RKDO(i,1,NUM_PLANETS) {
+
     RKDO(k,1,NUM_PLANETS) {
-      gAR_ASP[i][k] = g_isaspect(
+
+      isasp = g_isaspect(    // in here, function g_isaspect(),  gCURRENT_ASPECT_FORCE (gbl) is calculated.
         ar_minutes_natal_1[i],
         ar_minutes_natal_2[k],
         &gORBS_NAT[0] );
-    }
-  }
+      gAR_ASP[i][k] = isasp;
+
+      //<.>
+      // data DUMP here from grpdoc.h
+      // 
+      //            /* trn orbs all 2 degrees */
+      //            int gORBS_TRN[NUM_ASPECTS+1] = {0,120,120,120,120,120,120,120,120,120};
+      //            int gORBS_NAT[NUM_ASPECTS+1] = {0,360,240,360,360,360,360,360,240,360};
+      //            int gASPECT_ID[NUM_ASPECTS+1] =
+      //                         {0,  1,   2,   3,   4,    5,    6,    7,    8  ,9};
+      //                    /* name x cnj  sxt  squ  tri   opp   tri   squ   sxt  cnj */
+      //                  /* degrees  x  0  60   90   120   180   240   270   300  360 */
+      //            int gASPECT_TYPE[NUM_ASPECTS+1] =
+      //                        {-1,  0,   1,   2,   1,    2,    1,    2,    1,    0};
+      //             /* aspect_type  0=cnj, 1=good, 2=bad (subscripts into aspect_multipier[]) */
+      //            int gASPECTS[NUM_ASPECTS+1]=
+      //                          {-1,  0,3600,5400,7200,10800,14400,16200,18000,21600};
+      //
+      if (isasp != 0) {
+
+//
+//// for test
+//
+//tn();
+//if (isasp != 0) {
+//  char plt1[8], plt2[8],myasp[8], myshow[128];
+////ki(i);ki(k);ki(gAR_ASP[i][k]);
+// strcpy(plt1,  gN_PLANET[i]);
+// strcpy(myasp, gN_ASPECT[ gAR_ASP[i][k] ]); 
+// strcpy(plt2,  gN_PLANET[k]);
+// sprintf(myshow, "%s %s %s", plt1, myasp, plt2);
+//ks(myshow);
+////kdn(gCURRENT_ASPECT_FORCE);
+//}
+////for test
+//
+
+
+        //  capture orb here  (for htm para  red/green  for each aspect)
+        //  we want to map the orb double(0.000 --> 1.000) to int(1 --> 25) (for influence expression graph)
+        //
+        orb_double = gCURRENT_ASPECT_FORCE - BASE_CURRENT_ASPECT_FORCE; // 1.0< gCURRENT_ASPECT_FORCE <2.0, also BASE_CURRENT_ASPECT_FORCE = 1
+        orb_int_0_1000 = (int) (orb_double * 1000);
+        orb_int_1_25   = orb_int_0_1000 / (1000/25) + 1 ; // from 1000, 25 pluses or minuses,  each section is size 40 (1000/25)
+//ki(orb_int_0_1000);
+//kin(orb_int_1_25);
+        //gCURRENT_ASPECT_FORCE = BASE_CURRENT_ASPECT_FORCE +  sin(gPI_OVER_2*(orb-diff_from_exact)/orb); 
+
+        //  capture sign of aspect (plus or minus) here  (for htm para  red/green  for each aspect)
+        //
+        // default to positive  (yes, it's minus one)
+//        myAspectSign = 1;
+
+        myAspectID = gAR_ASP[i][k];              // 1 -> 8 see above 
+//ki(myAspectID);
+
+        myAspectType = gASPECT_TYPE[myAspectID]; //  aspect_type  0=cnj, 1=good, 2=bad 
+//kin(myAspectType);
+
+        if (myAspectType == ASPECT_TYPE_IDX_FOR_UNFVR) {
+          myAspectSign = -1;
+//ki(myAspectSign);trn("#BAD");
+        } else  if (myAspectType == ASPECT_TYPE_IDX_FOR_CNJ) {
+          myAspectSign = gNEG_CNJ_TBL[i - 1][k - 1];               //  E.G.  temp *= gNEG_CNJ_TBL[plt1-1][plt2-1];
+//ki(myAspectSign);trn("#CNJ #1");
+          if (myAspectSign == 0) {
+          myAspectSign = gNEG_CNJ_TBL[k -1][i - 1];
+//ki(myAspectSign);trn("#CNJ #2");
+          }
+        } else  {
+          myAspectSign = 1;  // good
+//ki(myAspectSign);trn("#GOOD");
+        }
+//        myAspectSign = myAspectSign * -1;  // historical probably (old stress graph)
+//tn();ki(myAspectSign);trn("#4");
+
+        myAspectExpressionVal = myAspectSign * orb_int_1_25; // -25 -> +25 (nozero) num minuses or pluses below each aspect para (negative=red, positive-green)
+
+//tn();ki(i);ki(k);kin(myAspectExpressionVal);
+//tn();tr("store expressionval in gEXPRESSION_1_25[i][k]");ki(i);ki(k);
+
+        gEXPRESSION_1_25[i][k] = myAspectExpressionVal;
+
+//int myworki; myworki = gEXPRESSION_1_25[i][k] ; // for test
+//kin(myworki);
+//<.>
+
+      } // if isasp is true
+
+    } //  RKDO(i,1,NUM_PLANETS) 
+
+  } //    RKDO(k,1,NUM_PLANETS) 
+
+//tn();
 }  /* end of store_comp_aspects() */
 
 void g_add_all_asps_to_grh_data(void)
@@ -3361,6 +4635,8 @@ void g_add_an_asp_to_grh_data(int plt1, int plt2, int aspect_num)
 /* tn(); */
   gPLT_HAS_ASP_TBL[plt1] = Yes;
   gPLT_HAS_ASP_TBL[plt2] = Yes;
+
+
 
   for (i=0; i <= TOT_CATEGORIES-1; ++i) { /* 2 - love,money */
 
@@ -3389,7 +4665,7 @@ void g_add_an_asp_to_grh_data(int plt1, int plt2, int aspect_num)
     }
 /* kdn(d); */
 
-    e = g_get_aspect_multiplier(gASPECT_TYPE[aspect_num],plt1,plt2,i);
+    e = g_get_aspect_multiplier(gASPECT_TYPE[aspect_num],plt1,plt2,i); // here plus or minus for addval is set
 /* kdn(e); */
 
 /* <> */
@@ -3416,7 +4692,7 @@ void g_add_an_asp_to_grh_data(int plt1, int plt2, int aspect_num)
     }
     put_comp_stuff(plt1,plt2,addval);
   }
-}  /* end of add_asp_to_grh_data() */
+}  /* end of g_add_an_asp_to_grh_data() */
 
 void adjust_addval(int *paddval, int plt1, int plt2)
 {
@@ -3544,8 +4820,16 @@ void g_calc_current_aspect_force(int m1, int m2, int *porbs, int aspect_num)
   ;
   orb = (double)*(porbs+aspect_num);
   diff_from_exact = (double)abs(gASPECTS[aspect_num]-abs(m1-m2));
-  gCURRENT_ASPECT_FORCE = BASE_CURRENT_ASPECT_FORCE +  /* 1.0< force <2.0 */
-    sin(gPI_OVER_2*(orb-diff_from_exact)/orb);
+
+//  gCURRENT_ASPECT_FORCE = BASE_CURRENT_ASPECT_FORCE +  /* 1.0< force <2.0 */
+//    sin(gPI_OVER_2*(orb-diff_from_exact)/orb);
+
+  gCURRENT_ASPECT_FORCE = BASE_CURRENT_ASPECT_FORCE +  sin(gPI_OVER_2*(orb-diff_from_exact)/orb); /* 1.0< gCURRENT_ASPECT_FORCE <2.0 */
+
+
+// not here gAR_ASP_ORB[m1][m2]  =  sin(gPI_OVER_2*(orb-diff_from_exact)/orb); // corresponding orb for the above aspect
+
+
 }  /* end of g_calc_current_aspect_force() */
 
 #ifdef PUT_BACK_COMMENTED_OUT_STUFF /****************************************/
@@ -3626,7 +4910,11 @@ int g_get_minutes(double d)
 
 void fill_A_position_strings(void)
 {
+  static int mytimesthroo;
   int i,sign,min_in_sign,deg_in_sign,min_in_deg;
+  if (mytimesthroo > 0) return;
+  mytimesthroo++;
+//tn();trn("person AAA");
   
   for (i=1; i <= NUM_PLANETS +3; ++i) {
     sign = g_get_sign(ar_minutes_natal_1[i]);
@@ -3634,14 +4922,19 @@ void fill_A_position_strings(void)
     deg_in_sign = min_in_sign/60;
     min_in_deg  = min_in_sign - 60*deg_in_sign;
     sprintf(gPOS_STR_1+i*(11+1),"%s%s%02d%s%02d",
-      N_PLANET[i],    "_"        ,deg_in_sign,gN_SIGN[sign],min_in_deg);
+      gN_PLANET[i],    "_"        ,deg_in_sign,gN_SIGN[sign],min_in_deg);
 /*       N_PLANET[i],gPRT_RETRO_1[i],deg_in_sign,gN_SIGN[sign],min_in_deg); */
+//ksn(gPOS_STR_1+i*(11+1));
   }
 } 
 
 void fill_B_position_strings(void)
 {
+  static int mytimesthroo;
   int i,sign,min_in_sign,deg_in_sign,min_in_deg;
+  if (mytimesthroo > 0) return;
+  mytimesthroo++;
+//tn();trn("person BBB");
   ;
   for (i=1; i <= NUM_PLANETS +3; ++i) {
     sign = g_get_sign(ar_minutes_natal_2[i]);
@@ -3649,8 +4942,9 @@ void fill_B_position_strings(void)
     deg_in_sign = min_in_sign/60;
     min_in_deg  = min_in_sign - 60*deg_in_sign;
     sprintf(gPOS_STR_2+i*(11+1),"%s%s%02d%s%02d",
-      N_PLANET[i],    "_"        ,deg_in_sign,gN_SIGN[sign],min_in_deg);
+      gN_PLANET[i],    "_"        ,deg_in_sign,gN_SIGN[sign],min_in_deg);
 /*       N_PLANET[i],gPRT_RETRO_2[i],deg_in_sign,gN_SIGN[sign],min_in_deg); */
+//ksn(gPOS_STR_2+i*(11+1));
   }
 }
 

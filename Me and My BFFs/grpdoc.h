@@ -108,8 +108,12 @@ int BENCHMARK_SCORES  [6] = { -1, 373, 213, 100, 42, 18 };
 #define ASPECT_TYPE_IDX_FOR_CNJ 0
 #define ASPECT_TYPE_IDX_FOR_FVR 1
 #define ASPECT_TYPE_IDX_FOR_UNFVR 2
-#define SIZE_ITEM 5
-#define MAX_IN_ITEM_TBL 50
+
+//#define MAX_IN_ITEM_TBL 50
+#define gMAX_IN_ITEM_TBL 50
+//#define SIZE_ITEM 5
+#define SIZE_ITEM 32          // EPANDED 20150518  aspect code | -15   for num plus,minus
+
 #define NUM_PLT_FOR_PARAS 5
 #define SIZE_ORDNUM 5
 
@@ -183,10 +187,10 @@ extern char * rkstrrchr();
 extern char * strchr();
 
 char *N_day_of_week[] = { "Sun","Mon","Tue","Wed","Thu","Fri","Sat",""}; /* see day_of_week() */
-char * N_PLANET[] =
+char * gN_PLANET[] =
     {"   ","sun","moo","mer","ven","mar","jup","sat","ura","nep","plu",
      "nod","asc","mc_"};
-char * N_TRN_PLANET[] =  /* i think this should be xmjsunp (mars 1st) */
+char * gN_TRN_PLANET[] =  /* i think this should be xmjsunp (mars 1st) */
     {"   ","jup","sat","ura","nep","plu","mar"};
 char * gN_SIGN[] = {
 "sgn","ari","tau","gem","can","leo","vir","lib","scp","sag","cap","aqu","pis"};
@@ -321,14 +325,18 @@ int gAR_HSE_1[NUM_PLANETS+1];
 int gAR_SGN_2[NUM_PLANETS+1];
 int gAR_HSE_2[NUM_PLANETS+1];
 int gAR_ASP[NUM_PLANETS+1][NUM_PLANETS+1];
+
+int gEXPRESSION_1_25[NUM_PLANETS+1][NUM_PLANETS+1]; // -25 -> +25 (nozero) num minuses or pluses below each aspect para (negative=red, positive-green)
+//<.>
+
 int gPLT_HAS_ASP_TBL[NUM_PLANETS+1];  /* for free-floating control */
 int gCONSIDER_HOUSE_FACTOR[TOT_CATEGORIES] = 
     {1,1};
 /* special grhs- no hse works best */  /* 09oct85 used to be =0 */
 
 /* item tbl stuff follows: */
-char gITEM_TBL[MAX_IN_ITEM_TBL*(SIZE_ITEM+1)];
-char *gP_ITEM_TBL[MAX_IN_ITEM_TBL];  /* ptrs to elements in above tbl */
+char gITEM_TBL[gMAX_IN_ITEM_TBL*(SIZE_ITEM+1)];
+char *gP_ITEM_TBL[gMAX_IN_ITEM_TBL];  /* ptrs to elements in above tbl */
 int gITEM_TBL_IDX;  /* is idx to tbl (not counter of elements) */
 /********
   an item is 5 char

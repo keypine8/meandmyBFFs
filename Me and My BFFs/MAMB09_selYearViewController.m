@@ -26,13 +26,75 @@
     self.view.backgroundColor = gbl_colorSelParamForReports;
     // self.outletYearPicker.backgroundColor = [UIColor whiteColor];
     
-    //_yearsToPickFrom = @[ @"1999", @"2000", @"2001", @"2002", @"2003", @"2004", @"2005", @"2006", @"2007", @"2008",  ];
+
+    // set up navigation bar  right button  "Report >"
+    //
+//        UIImage *myImage = [[UIImage imageNamed: @"ReportArrow_14.png"]
+//                         imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal ];
+//        UIBarButtonItem *_goToReportButton = [[UIBarButtonItem alloc]initWithImage: myImage
+//                                                                             style: UIBarButtonItemStylePlain 
+//                                                                            target: self 
+//                                                                            action: @selector(actionDoReport)];
+//        self.navigationItem.rightBarButtonItem = _goToReportButton;
+//
+
+    // set up navigation bar  right button  ">" in image format
+    UIImage *myImage = [[UIImage imageNamed: @"forwardArrow_029.png"]
+                     imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal ];
+
+//        UIImage *myImage = [[UIImage imageNamed: @"forwardArrow_01.png"]
+//        UIImage *myImage = [UIImage imageNamed: @"forwardArrow_01.png" inBundle: nil compatibleWithTraitCollection: nil ];
+
+    UIBarButtonItem *_goToReportButton = [[UIBarButtonItem alloc]initWithImage: myImage
+                                                                         style: UIBarButtonItemStylePlain 
+                                                                        target: self 
+                                                                        action: @selector(actionDoReport)];
+
+    // set up label for  self.navigationItem.titleView 
+    //
+//    UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 11, 44)];  // 3rd arg is horizontal length
+    UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 33, 44)];  // 3rd arg is horizontal length
+    UIBarButtonItem *mySpacerForTitle = [[UIBarButtonItem alloc] initWithCustomView:spaceView];
+
+    UILabel *mySelDate_Label      = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 480.0, 44.0)];
+
+
+    NSString *myNavBar2lineTitle;
+    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompcy"] ) { // calendar year
+        myNavBar2lineTitle  = [NSString stringWithFormat:  @"%@\nSelect year", gbl_lastSelectedPerson ];
+    }
+    if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgby"] ) { // best year
+        myNavBar2lineTitle  = [NSString stringWithFormat:  @"%@\nSelect year", gbl_lastSelectedGroup ];
+    }
+
+    mySelDate_Label.numberOfLines = 2;
+//        mySelDate_Label.font          = [UIFont boldSystemFontOfSize: 16.0];
+    mySelDate_Label.font          = [UIFont boldSystemFontOfSize: 14.0];
+    mySelDate_Label.textColor     = [UIColor blackColor];
+    mySelDate_Label.textAlignment = NSTextAlignmentCenter; 
+    mySelDate_Label.text          = myNavBar2lineTitle;
+
+    // TWO-LINE NAV BAR TITLE
+    //
+    dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+        self.navigationItem.rightBarButtonItem = _goToReportButton;
+        self.navigationItem.titleView           = mySelDate_Label; // mySelDate_Label.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
+        self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerForTitle];
+    });
+
+
+
+
     
     do {    // populate array yearsToPickFrom for uiPickerView and init picker and calendar year text field
         
         // get the current year
         NSCalendar *gregorian = [NSCalendar currentCalendar];          // Get the Current Date and Time
-        NSDateComponents *dateComponents = [gregorian components:(NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit) fromDate:[NSDate date]];
+        //        NSDateComponents *dateComponents = [gregorian components:(NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit) fromDate:[NSDate date]];
+        NSDateComponents *dateComponents = [gregorian components:(NSCalendarUnitDay| NSCalendarUnitMonth | NSCalendarUnitYear)
+                                                        fromDate:[NSDate date]  ];
+
+        
         gbl_currentYearInt = [dateComponents year];
         // NSString *yearStr = [@(gbl_currentYear) stringValue];  // convert integer to NSString
         
@@ -40,23 +102,26 @@
         // get the year of birth to start  from   gbl_fromHomeRememberedPSV 
 
 
-        NSArray *psvArray = [gbl_fromHomeCurrentSelectionPSV componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"|"]];
+        // NSArray *psvArray = [gbl_fromHomeCurrentSelectionPSV componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"|"]];
 
 
-        NSString *psvYearOfBirth    = psvArray[3];
+        //NSString *psvYearOfBirth    = psvArray[3];
 
-        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  <.>
-            self.outletPersonName.text       = psvArray[0];
-        });
+        // name now in nav bar title
+        //        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  <.>
+        //            self.outletPersonName.text       = psvArray[0];
+        //        });
+        //
         
-        NSInteger yearOfBirthInt = [psvYearOfBirth intValue];  // convert NSString to integer
+        //NSInteger yearOfBirthInt = [psvYearOfBirth intValue];  // convert NSString to integer
         
         // for the picker, set yearsToPickFrom str array
         //
         [yearsToPickFrom removeAllObjects];
         yearsToPickFrom   = [[NSMutableArray alloc] init];
         
-        for (NSInteger pickyr = yearOfBirthInt; pickyr <=  gbl_currentYearInt + 1; pickyr++) {  // only allow to go to next calendar year
+        //for (NSInteger pickyr = yearOfBirthInt; pickyr <=  gbl_currentYearInt + 1; pickyr++)   // only allow to go to next calendar year
+        for (NSInteger pickyr = gbl_earliestYear; pickyr <=  gbl_currentYearInt + 1; pickyr++) {  // only allow to go to next calendar year
             [yearsToPickFrom addObject: [@(pickyr) stringValue] ];
         }
         //NSLog(@"yearsToPickFrom.count=%lu",(unsigned long)yearsToPickFrom.count);
@@ -158,37 +223,56 @@
     
 }
 
-- (IBAction)actionDoReport:(id)sender {    // take  the global report specs and do ViewHTML
+//- (IBAction)actionDoReport:(id)sender {    // take  the global report specs and do ViewHTML
+- (void)actionDoReport {    // take  the global report specs and do ViewHTML
     
     NSLog(@"in actionDoReport!");
 
     // The report param selection has been made just now, so save it.
     //
     // get selected person's name
-    NSArray *myPSVarr = [gbl_fromHomeCurrentSelectionPSV componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"|"]];
+    //NSArray *myPSVarr = [gbl_fromHomeCurrentSelectionPSV componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"|"]];
 
     NSLog(@"gbl_fromHomeCurrentSelectionPSV=%@",gbl_fromHomeCurrentSelectionPSV);
 
-    MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
-    [myappDelegate saveLastSelectionForEntity: (NSString *) @"person"
-                      havingName: (NSString *) myPSVarr[0]
-        updatingRememberCategory: (NSString *) @"year"
-                      usingValue: (NSString *) gbl_lastSelectedYear
-    ];
+    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompcy"]  // calendar year
+    ) {
+        // gbl_lastSelectedYear is 1. remembered year (above) 2. default current year (above) or 3. didSelect year (spinner)
+        MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
+        [myappDelegate saveLastSelectionForEntity: (NSString *) @"person"
+                          havingName: (NSString *) gbl_lastSelectedPerson
+            updatingRememberCategory: (NSString *) @"year"
+                          usingValue: (NSString *) gbl_lastSelectedYear
+        ];
 
-    
-    
-    //[yearsToPickFrom addObject: [@(pickyr) stringValue] ];
+        // Because background threads are not prioritized and will wait a very long time
+        // before you see results, unlike the mainthread, which is high priority for the system.
+        //
+        // Also, all UI-related stuff must be done on the *main queue*. That's way you need that dispatch_async.
+        //
+        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+            [self performSegueWithIdentifier:@"segueSelYearToViewHTML" sender:self];
+        });
+    }
+    if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgby"]  // best year
+    ) {
+        // gbl_lastSelectedYear is 1. remembered year (above) 2. default current year (above) or 3. didSelect year (spinner)
+        MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
+        [myappDelegate saveLastSelectionForEntity: (NSString *) @"group"
+                          havingName: (NSString *) gbl_lastSelectedPerson
+            updatingRememberCategory: (NSString *) @"year"
+                          usingValue: (NSString *) gbl_lastSelectedYear
+        ];
 
-    
-    // Because background threads are not prioritized and will wait a very long time
-    // before you see results, unlike the mainthread, which is high priority for the system.
-    //
-    // Also, all UI-related stuff must be done on the *main queue*. That's way you need that dispatch_async.
-    //
-    dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
-        [self performSegueWithIdentifier:@"segueSelYearToViewHTML" sender:self];
-    });
+        // Because background threads are not prioritized and will wait a very long time
+        // before you see results, unlike the mainthread, which is high priority for the system.
+        //
+        // Also, all UI-related stuff must be done on the *main queue*. That's way you need that dispatch_async.
+        //
+        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+            [self performSegueWithIdentifier:@"segueSelYearToViewTBLRPT1" sender:self];
+        });
+    }
 
 }
 
@@ -241,15 +325,6 @@
     self.outletYearSelected.text = gbl_lastSelectedYear;
 
 
-    MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
-    [myappDelegate saveLastSelectionForEntity: (NSString *) @"person"
-                      havingName: (NSString *) gbl_lastSelectedPerson
-        updatingRememberCategory: (NSString *) @"year"
-                      usingValue: (NSString *) gbl_lastSelectedYear
-    ];
-
-
-
 //    // now, in gbl_arrayPer , update array idx gbl_fromHomeCurrentSelectionArrayIdx with the  new Remembered Year
 //    //
 //    // update delimited string  for saving selection in remember fields
@@ -285,6 +360,23 @@
 // end of implement methods for  <UIPickerViewDataSource, UIPickerViewDelegate>
 
 
+
+- (void)didReceiveMemoryWarning {
+    //    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle: @"The App received a Memory Warning"
+                                                                   message: @"The system has determined that the \namount of available memory is very low."
+                                                            preferredStyle: UIAlertControllerStyleAlert  ];
+     
+    UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                        style: UIAlertActionStyleDefault
+                                                      handler: ^(UIAlertAction * action) {
+        NSLog(@"Ok button pressed");
+    } ];
+    [alert addAction:  okButton];
+    [self presentViewController: alert  animated: YES  completion: nil   ];
+    [super didReceiveMemoryWarning];
+} // didReceiveMemoryWarning 
 
 
 @end

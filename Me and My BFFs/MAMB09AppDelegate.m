@@ -7,6 +7,7 @@
 //
 
 #import "MAMB09AppDelegate.h"
+#import "rkdebug_externs.h"
 #import "mamblib.h"
 #import "NSData+MAMB09_NSData_encryption.h"
 
@@ -14,12 +15,16 @@
 @implementation MAMB09AppDelegate
 
 
-
-
 #define KEY_LAST_ENTITY_STR  @"myLastEntityStr"
 
-//#define DEFAULT_LAST_ENTITY  @"person|~Anya|group|~SwimTeam"
-#define DEFAULT_LAST_ENTITY  @"person|~Sophia|group|~SwimTeam"    // for test  (testing has "~Anya 567789..." , not "~Anya"
+//#define DEFAULT_LAST_ENTITY  @"person|~Sophia|group|~Swim Team"    // for test  (testing has "~Anya 56789..." , not "~Anya"
+#define DEFAULT_LAST_ENTITY  @"person|~Abigail 012345|group|~Swim Team"    // for test  (testing has "~Anya 56789..." , not "~Anya"
+
+
+//- (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window  // iOS 6
+//{
+//return UIInterfaceOrientationMaskAll;
+//}
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -32,70 +37,225 @@
     // to access global method in appDelegate .h and .m
     //MAMB09AppDelegate *gbl_myappDelegate=[[UIApplication sharedApplication] delegate];
 
+
+    // EDITING stuff
+    //
+    gbl_myname              = [[UITextField alloc] initWithFrame:CGRectMake(16, 8, 200, 30)]; // arg 1=x 2=y 3=width 4=height
+
+    // field for  displaying current found  city,prov,coun 
+//    gbl_mycityprovcounLabel  = [[UITextView alloc]initWithFrame: CGRectMake(16, 0, 250, 57)];
+//    gbl_mycityprovcounLabel  = [[UITextField alloc]initWithFrame: CGRectMake(16, 0, 250, 57)];
+//    gbl_mycityprovcounLabel  = [[UILabel alloc]initWithFrame: CGRectMake(16, 0, 250, 70)];
+
+//    gbl_mycityprovcounLabel  = [[UITextField alloc]initWithFrame: CGRectMake(16, 0, 250, 57)];
+    gbl_mycityprovcounLabel  = [[UILabel alloc]initWithFrame: CGRectMake(16, 0, 250, 57)];
+
+    // field for  displaying current picker birth date/time info
+    gbl_mybirthinformation   = [[UITextField alloc] initWithFrame:CGRectMake(16, 8, 250, 30)]; // arg 1=x 2=y 3=width 4=height
+
+    // field for  entering city search string
+//    gbl_mycity  = [[UITextField alloc] initWithFrame:CGRectMake(16, 8, 180, 30)]; // arg 1=x 2=y 3=width 4=height
+    gbl_mycitySearchString   = [[UITextField alloc] initWithFrame:CGRectMake(16, 8, 180, 36)]; // arg 1=x 2=y 3=width 4=height
+
+//    <.>
+//        UIImageView *myRightViewImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"forwardArrow_029.png"]];
+//
+//            gbl_mycitySearchString.rightViewMode          = UITextFieldViewModeAlways;
+//            gbl_mycitySearchString.rightView              = myRightViewImage;
+////           [gbl_mycitySearchString addSubview: myRightViewImage];
+//
+//
+
+    gbl_title_personName   = [[UIBarButtonItem alloc]initWithTitle: @"Type Person Name"
+                                                           style: UIBarButtonItemStylePlain
+                              //  style: UIBarButtonItemStyleBordered
+                                                            target: self
+                                                            action: nil ];
+    gbl_title_cityPicklist = [[UIBarButtonItem alloc]initWithTitle: @"Pick City"
+                                                              style: UIBarButtonItemStylePlain
+                              //  style: UIBarButtonItemStyleBordered
+                                                            target: self
+                                                            action: nil ];
+    gbl_title_cityKeyboard = [[UIBarButtonItem alloc]initWithTitle: @"Type City Name"
+                                                             style: UIBarButtonItemStylePlain
+                                                            target: self
+                                                            action: nil ];
+    gbl_title_birthDate    = [[UIBarButtonItem alloc]initWithTitle: @"Pick Birth Date"
+                                                             style: UIBarButtonItemStylePlain
+                              //style: UIBarButtonItemStyleBordered
+                                                            target: self
+                                                            action: nil ];
+    gbl_flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemFlexibleSpace
+                                                                      target: self
+                                                                      action: nil
+        ];
+//    gbl_title_cityKeyboardWithNoPicklist    = [[UIBarButtonItem alloc]initWithTitle: @"Type City Name"
+//                                                                style: UIBarButtonItemStyleBordered
+//                                                               target: self
+//                                                               action: nil ];
+//    gbl_title_cityKeyboardHavingPicklist    = [[UIBarButtonItem alloc]initWithTitle: @"Type City Name"
+//                                                                style: UIBarButtonItemStyleBordered
+//                                                               target: self
+//                                                               action: nil ];
+
+
+
+     gbl_initPromptName = @"Name";
+     gbl_initPromptCity = @"Birth City or Town";
+     gbl_initPromptProv = @"State or Province";
+     gbl_initPromptCoun = @"Country";
+     gbl_initPromptDate = @"Birth Date and Time";
+
+     gbl_colorPlaceHolderPrompt = [UIColor colorWithRed:064.0/255.0 green:064.0/255.0 blue:064.0/255.0 alpha:1.0]; // gray
+
+
+//    gbl_colorEditing = [UIColor colorWithRed:230.0/255.0 green:242.0/255.0 blue:0.0/255.0 alpha:1.0]; // yellowy for edit
+//    gbl_colorEditing = [UIColor colorWithRed:200.0/255.0 green:212.0/255.0 blue:0.0/255.0 alpha:1.0]; // yellowy for edit
+//    gbl_colorEditing = [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:100.0/255.0 alpha:1.0]; // yellowy for edit
+//    gbl_colorEditing = [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:200.0/255.0 alpha:1.0]; // yellowy for edit
+
+    gbl_colorEditingBG = [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:150.0/255.0 alpha:1.0]; // yellowy for edit
+//    gbl_colorEditing = [UIColor colorWithRed:225.0/255.0 green:225.0/255.0 blue:255.0/255.0 alpha:1.0]; // bluey for edit
+//    gbl_colorEditing = [UIColor colorWithRed:160.0/255.0 green:250.0/255.0 blue:255.0/255.0 alpha:1.0]; // bluey for edit
+//    gbl_colorEditing = [UIColor colorWithRed:252.0/255.0 green:237.0/255.0 blue:189.0/255.0 alpha:1.0]; // orangey for edit
+//    gbl_colorEditing = [UIColor colorWithRed:252.0/255.0 green:224.0/255.0 blue:133.0/255.0 alpha:1.0]; // orangey for edit
+//    gbl_colorEditing = [UIColor colorWithRed:252.0/255.0 green:196.0/255.0 blue:108.0/255.0 alpha:1.0]; // orangey for edit
+//    gbl_colorEditing = [UIColor colorWithRed:229.0/255.0 green:198.0/255.0 blue:166.0/255.0 alpha:1.0]; // browny for edit
+
+    gbl_colorEditingBGforInputField = [UIColor colorWithRed:252.0/255.0 green:252.0/255.0 blue:252.0/255.0 alpha:1.0]; // white
+
+//    gbl_myname.placeholder         = @"Name";
+//    gbl_myname.autocorrectionType  = UITextAutocorrectionTypeNo;
+//    [gbl_myname setClearButtonMode: UITextFieldViewModeWhileEditing ];
+//    [gbl_myname setKeyboardType:    UIKeyboardTypeNamePhonePad];          // A type optimized for entering a person's name or phone number.
+//
+
+
+
+// for test <.>  try with text "back"
+
     // make all "Back" buttons have just the arrow
-    [UIBarButtonItem.appearance setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];     // make all "Back" buttons have just the arrow
+    //
+    //   [UIBarButtonItem.appearance setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -45) forBarMetrics:UIBarMetricsDefault];     // make all "Back" buttons have just the arrow
+    //  [UIBarButtonItem.appearance setBackButtonTitlePositionAdjustment:UIOffsetMake(, -60) forBarMetrics:UIBarMetricsDefault];     // make all "Back" buttons have just the arrow
+
+    [UIBarButtonItem.appearance setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics: UIBarMetricsDefault];     // make all "Back" buttons have just the arrow
+    //    [UIBarButtonItem.appearance setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics: UIBarMetricsLandscapePhone];     // make all "Back" buttons have just the arrow
+    [UIBarButtonItem.appearance setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics: UIBarMetricsCompact];     // make all "Back" buttons have just the arrow
 
 
-    // SET GBL DATA  HERE
+
+
+
+
+    // SET GBL DATA  HERE        ----------------------------------------------------------
     
+    
+    gbl_MAX_persons         = 250;   // max in app and max in group
+    gbl_MAX_lengthOfName    =  15;   // 15 (applies to Person and Group both)
+    gbl_MAX_lengthOfCity    =  30;   
+
+    gbl_maxGrpBirthinfoCSVs = 250;   // max 250 members in a Group
+    gbl_maxLenBirthinfoCSV  = 128;   // max len of birthinfo CSV for a Group Member 
+    gbl_maxGrpRptLines      = 333;   // max 333 cells in app tableview 
+    gbl_maxLenRptLinePSV    = 128;   // max len of report data PSV for a cell is 128 chars
+                                     //   example: 128 "cGre"/"cRe2" |  "  1  Anya_   Liz_       90  Great"
+
+    gbl_earliestYear = 1850;     // minimum birthyear (privacy)
+    
+    gbl_numRowsToTurnOnIndexBar    = 90;
+    gbl_numCitiesToTriggerPicklist = 25;
+
+    gbl_haveSetUpHomeNavButtons    =  0;      // beginning default is no   0=n, 1=y
+
+//    gbl_secondsPauseInCityKeyStrokesToTriggerPicklist = 2.0;
+//    gbl_secondsPauseInCityKeyStrokesToTriggerPicklist = 1.5;
+//    gbl_secondsPauseInCityKeyStrokesToTriggerPicklist = 1.2;
+//    gbl_secondsPauseInCityKeyStrokesToTriggerPicklist = 1.0;
+//    gbl_secondsPauseInCityKeyStrokesToTriggerPicklist = 0.8;  qOLD
+//    gbl_secondsPauseInCityKeyStrokesToTriggerPicklist = 0.5;
+//    gbl_frequencyOfCheckingCityPicklistTrigger        = 0.5; 
+//    gbl_frequencyOfCheckingCityPicklistTrigger        = 0.3;
+//    gbl_frequencyOfCheckingCityPicklistTrigger        = 0.5;   qOLD   // 0.8 and 0.5  min=0.8   max=1.0 (1st multiple > 0.8)
+                                                                 // 1.2 and 0.5  min=1.2   max=1.5 (1st multiple > 1.2) 
+//    gbl_frequencyOfCheckingCityPicklistTrigger        = 2.5;     // 0.8 and 0.5  min=0.8   max=1.0 (1st multiple > 0.8)
+
+
+
+//    char *gbl_grp_CSVs[gbl_MAX_persons + 16]; // for filling array of group member data
+
+
 
     // This is the initial example data in DB when app first starts.
     // This is NOT the ongoing data, which is in  data files.
     //
     gbl_arrayExaGrp =   // field 1=name-of-group  field 2=locked-or-not
     @[
-      @"~Swim Team||",
+      @"Long Names||",
+      @"Short Names||",
       @"~My Family||",
+      @"~Swim Team||",
     ];
 
-    gbl_arrayExaPer = // field 11= locked or not
+    gbl_arrayExaPer = // field 11= locked or not   HAVE TO BE PRE-SORTED
     @[
+      @"Father Lastnae|7|11|1961|11|8|1|Los Angeles|California|United States||",
+      @"Fa|7|11|1961|11|8|1|Los Angeles|California|United States||",
+      @"Mother Lastna|3|12|1965|10|45|0|Los Angeles|California|United States||",
+      @"Mo|3|12|1965|10|45|1|Los Angeles|California|United States||",
+      @"Sister1 Lastnam|2|31|1988|0|30|1|Los Angeles|California|United States||",
+      @"Sis|2|31|1988|0|30|1|Los Angeles|California|United States||",
+      @"~Abigail 012345|8|21|1994|1|20|0|Los Angeles|California|United States||",
+      @"~Aiden 89012345|8|4|1991|10|30|1|Los Angeles|California|United States||",
+      @"~Anya|10|19|1990|8|20|0|Los Angeles|California|United States||",
+      @"~Ava|2|3|1992|8|10|0|Los Angeles|California|United States||",
+      @"~Brother|11|6|1986|8|1|1|Los Angeles|California|United States||",
+      @"~Elijah|10|10|1992|0|1|1|Los Angeles|California|United States||",
+      @"~Emma|5|17|1993|0|1|1|Los Angeles|California|United States||",
       @"~Father|7|11|1961|11|8|1|Los Angeles|California|United States||",
+      @"~Grandma|8|17|1939|8|5|0|Los Angeles|California|United States||",
+      @"~Ingrid|3|13|1993|4|10|1|Los Angeles|California|United States||",
+      @"~Jackson|2|3|1993|0|1|1|Los Angeles|California|United States||",
+      @"~Jen|6|22|1992|4|10|0|Los Angeles|California|United States||",
+      @"~Liam|4|8|1993|0|1|1|Los Angeles|California|United States||",
+      @"~Liz|3|13|1991|4|10|1|Los Angeles|California|United States||",
+      @"~Lucas|4|20|1992|6|30|1|Los Angeles|California|United States||",
       @"~Mother|3|12|1965|10|45|0|Los Angeles|California|United States||",
+      @"~Noah|12|19|1994|11|4|0|Los Angeles|California|United States||",
+      @"~Olivia|4|13|1994|0|53|1|Los Angeles|California|United States||",
       @"~Sister1|2|31|1988|0|30|1|Los Angeles|California|United States||",
       @"~Sister2|2|13|1990|3|35|0|Los Angeles|California|United States||",
-      @"~Brother|11|6|1986|8|1|1|Los Angeles|California|United States||",
-      @"~Grandma|8|17|1939|8|5|0|Los Angeles|California|United States||",
-      @"~Mike|4|20|1992|6|30|1|Los Angeles|California|United States||",
-      @"~Anya 789012345|10|19|1990|8|20|0|Los Angeles|California|United States||",
-      @"~Billy 89012345|8|4|1991|10|30|1|Los Angeles|California|United States||",
-      @"~Emma|5|17|1993|0|1|1|Los Angeles|California|United States||",
-      @"~Jacob|10|10|1992|0|1|1|Los Angeles|California|United States||",
-      @"~Grace|8|21|1994|1|20|0|Los Angeles|California|United States||",
-      @"~Ingrid|3|13|1993|4|10|1|Los Angeles|California|United States||",
-      @"~Jen|6|22|1992|4|10|0|Los Angeles|California|United States||",
-      @"~Liz|3|13|1991|4|10|1|Los Angeles|California|United States||",
-      @"~Jim|2|3|1993|0|1|1|Los Angeles|California|United States||",
-      @"~Olivia|4|13|1994|0|53|1|Los Angeles|California|United States||",
-      @"~Dave|4|8|1993|0|1|1|Los Angeles|California|United States||",
-      @"~Noah|12|19|1994|11|4|0|Los Angeles|California|United States||",
       @"~Sophia|9|20|1991|4|0|0|Los Angeles|California|United States||",
-      @"~Susie|2|3|1992|8|10|0|Los Angeles|California|United States||",
     ];
-
-    gbl_arrayExaMem = // field 11= locked or not
+    gbl_arrayExaMem = // field 11= locked or not   HAVE TO BE PRE-SORTED
     @[
+      @"Long Names|Father Lastnae|",
+      @"Long Names|Mother Lastna|",
+      @"Long Names|Sister1 Lastnam|",
+      @"Short Names|Fa|",
+      @"Short Names|Mo|",
+      @"Short Names|Sis|",
       @"~My Family|~Brother|",
       @"~My Family|~Father|",
       @"~My Family|~Grandma|",
       @"~My Family|~Mother|",
       @"~My Family|~Sister1|",
       @"~My Family|~Sister2|",
+      @"~Swim Team|~Abigail 012345|",
+      @"~Swim Team|~Aiden 89012345|",
       @"~Swim Team|~Anya|",
-      @"~Swim Team|~Billy 89012345|",
-      @"~Swim Team|~Dave|",
+      @"~Swim Team|~Ava|",
+      @"~Swim Team|~Elijah|",
       @"~Swim Team|~Emma|",
-      @"~Swim Team|~Grace|",
       @"~Swim Team|~Ingrid|",
-      @"~Swim Team|~Jacob|",
+      @"~Swim Team|~Jackson|",
       @"~Swim Team|~Jen|",
-      @"~Swim Team|~Jim|",
+      @"~Swim Team|~Liam|",
       @"~Swim Team|~Liz|",
-      @"~Swim Team|~Mike|",
+      @"~Swim Team|~Lucas|",
       @"~Swim Team|~Noah|",
       @"~Swim Team|~Olivia|",
-      @"~Swim Team|~Sophie|",
-      @"~Swim Team|~Susie|",
+      @"~Swim Team|~Sophia|",
     ];
 
     // REMEMBER DATA for each Group 
@@ -114,10 +274,12 @@
     //     field  4  day        last selection for this report parameter for this Group
     //     + extra "|" at end
     // 
-    gbl_arrayExaGrpRem = 
+    gbl_arrayExaGrpRem =  // HAVE TO BE PRE-SORTED
     @[
-      @"~Family||||",
+      @"Long Names||||",
+      @"Short Names||||",
       @"~My Family||||",
+      @"~Swim Team||||",
     ];
 
     // REMEMBER DATA for each Person
@@ -136,30 +298,37 @@
     //     field 6  day
     //              extra "|" at end
     //
-    gbl_arrayExaPerRem = 
+    gbl_arrayExaPerRem =   // HAVE TO BE PRE-SORTED here
     @[
+      @"Father Lastnae||||||",
+      @"Fa||||||",
+      @"Mother Lastna||||||",
+      @"Mo||||||",
+      @"Sister1 Lastnam||||||",
+      @"Sis||||||",
+      @"~Abigail 012345||||||",
+      @"~Aiden 89012345||||||",
+      @"~Anya||||||",
+      @"~Ava||||||",
+      @"~Brother||||||",
+      @"~Elijah||||||",
+      @"~Emma||||||",
       @"~Father||||||",
+      @"~Grandma||||||",
+      @"~Ingrid||||||",
+      @"~Jackson||||||",
+      @"~Jen||||||",
+      @"~Liam||||||",
+      @"~Liz||||||",
+      @"~Lucas||||||",
       @"~Mother||||||",
+      @"~Noah||||||",
+      @"~Olivia||||||",
       @"~Sister1||||||",
       @"~Sister2||||||",
-      @"~Brother||||||",
-      @"~Grandma||||||",
-      @"~Mike||||||",
-      @"~Anya 789012345||||||",
-      @"~Billy 89012345||||||",
-      @"~Emma||||||",
-      @"~Jacob||||||",
-      @"~Grace||||||",
-      @"~Ingrid||||||",
-      @"~Jen||||||",
-      @"~Liz||||||",
-      @"~Jim||||||",
-      @"~Olivia||||||",
-      @"~Dave||||||",
-      @"~Noah||||||",
       @"~Sophia||||||",
-      @"~Susie||||||",
     ];
+
 
 
 //
@@ -198,36 +367,49 @@
 //        @"<per2> Calendar Year ...",
 //    ];
 //
-    gbl_mambReports =
-    @[
-        @"pcy|Calendar Year ...",             // person reports
-        @"ppe|Personality",
-        @"pco|Compatibility Paired with ...",
-        @"pbm|My Best Match in Group ...",
-        @"pwc|What Color is Today? ...",
-        @"p|",
-        @"gbm|Best Match",                    // group reports
-        @"g|",
-        @"gma|Most Assertive Person",
-        @"gme|Most Emotional",
-        @"gmr|Most Restless",
-        @"gmp|Most Passionate",
-        @"gmd|Most Down-to-earth",
-        @"gmu|Most Ups and Downs",
-        @"g|",
-        @"gby|Best Year ...",
-        @"gbd|Best Day ...",
-        @"2co|Compatibility Potential",       // pair reports
-        @"2|",
-        @"2bm|<per1> Best Match",
-        @"21p|<per1> Personality",
-        @"21c|<per1> Calendar Year ...",
-        @"2|",
-        @"22m|<per2> Best Match",
-        @"22p|<per2> Personality",
-        @"22c|<per2> Calendar Year ...",
+    gbl_mambReports = // all reports in all report selection menus, "homp*" "homg*" "gbm*" or "pbm*" 
+    @[  // field 1 = menu code + rptcode, field 2 = menu text
+    // REPORTS from home PERSON segment
+        @"homp|",     // these empty ones are spacers on the tableview
+        @"hompcy|Calendar Year ...",             // from home in "People" > tap on a Person  - display homp*
+        @"homppe|Personality",
+        @"hompco|Compatibility Paired with ...",
+        @"homp|",
+        @"hompbm|My Best Match in Group ...",           // in pbm, tap Pair   > direct pco for pre-selected pair (now 2 lines)
+        @"homp|",
+        @"hompwc|What Color is Today? ...",
+    // REPORTS from home GROUP  segment
+        @"homg|",     // these empty ones are spacers
+        @"homgbm|Best Match",           // from home in "Group"  > tap on a Group    - display homg*
+        @"homg|",
+        @"homgma|Most Assertive Person",                // in gma, tap Person > direct ppe for pre-selected person
+        @"homgme|Most Emotional",                       // in gme, tap Person > direct ppe for pre-selected person
+        @"homgmr|Most Restless",                        // in gmr, tap Person > direct ppe for pre-selected person
+        @"homgmp|Most Passionate",                      // in gmp, tap Person > direct ppe for pre-selected person
+        @"homgmd|Most Down-to-earth",                   // in gmd, tap Person > direct ppe for pre-selected person
+        //   @"homgmu|Most Ups and Downs",                   // in gmu, tap Person > direct ppe for pre-selected person
+        @"homg|",
+        @"homgby|Best Year ...",                        // in gby, tap Person > direct pcy for pre-selected year
+        @"homgbd|Best Day ...",                         // in gbd, tap Person > direct pwc for pre-selected date
+    // REPORTS from homgbm  "Best Match" report
+        @"gbm|",     // these empty ones are spacers on the tableview
+        @"gbmco|Compatibility Potential",       // from homgbm > tap on a pair  - display gbm*
+        @"gbm|",            
+        @"gbm1pe|<per1> Personality",
+        @"gbm2pe|<per2> Personality",
+        @"gbm|",
+        @"gbm1bm|<per1>'s Best Match",                 // in gbm1bm, tap Pair> direct pco for pre-selected pair
+        @"gbm2bm|<per2>'s Best Match",                 // in gbm2bm, tap Pair> direct pco for pre-selected pair
+    // REPORTS from hompbm  "My Best Match in Group ..." report
+        @"pbm|",     // these empty ones are spacers on the tableview
+        @"pbmco|Compatibility Potential",       // from hompbm > tap on a pair  - display pbm*
+        @"pbm|",            
+        @"pbm1pe|<per1> Personality",
+        @"pbm2pe|<per2> Personality",
+        @"pbm|",            
+        @"pbm2bm|<per2>'s Best Match",                 // in 21bm, tap Pair> direct pco for pre-selected pair
     ];
-    
+    //
 
 
     gbl_show_example_data = YES;  // add option later to not show them
@@ -237,12 +419,136 @@
     gbl_colorReportsBG          = [UIColor alloc];
     gbl_colorSelParamForReports = [UIColor alloc];
     
-    //    gbl_colorReportsBG          = [UIColor colorWithRed:242./255.0 green:247./255.0 blue:255./255.0 alpha:1.0];  //  apple blue 2.5
-    gbl_colorReportsBG          = [UIColor colorWithRed:238.0/255.0 green:247.0/255.0 blue:255.0/255.0 alpha:1.0];  //  apple blue 2.5  <---
-    gbl_colorSelParamForReports = [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:136.0/224.0 alpha:1.0];
-    gbl_colorSelParamForReports = gbl_colorReportsBG;
 
-    
+    // color for highlight on selected tableview rows
+    //
+    // in cellForRowAtIndexPath in each tableview, below this:
+    //      if (cell == nil) {
+    //          cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    //      }
+    //  do this:
+    //      cell.selectedBackgroundView =  gbl_myCellBgView;
+    //
+//    UIView *gbl_myCellBgView =[[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, [cell frame].size.width, [cell frame].size.height)];
+//    UIView *gbl_myCellBgView =[[UIView alloc] initWithFrame:CGRectZero];
+
+//      gbl_myCellBgView =[[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, [cell frame].size.width -20, [cell frame].size.height)];
+//    NSInteger myCellHighlightWidth = [cell frame].size.width -20; 
+
+//    NSInteger myCellHighlightWidth = _window.width - 20; 
+//    double myCellHighlightWidth = [[UIScreen mainScreen] applicationFrame].size.height - 30.0;
+//kdn(myCellHighlightWidth);
+//    gbl_myCellBgView =[[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, myCellHighlightWidth, 44.0f)];
+
+
+    //[cellBgView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"cellBgView.png"]]];
+    //[gbl_myCellBgView setBackgroundColor:  gbl_color_cBGforSelected ];
+//[gbl_myCellBgView setBackgroundColor:  [UIColor lightTextColor] ];
+
+    gbl_myCellBgView =[[UIView alloc] initWithFrame:CGRectZero];     // for highlight selected cell flash
+    [gbl_myCellBgView setBackgroundColor:  [UIColor whiteColor] ];   // for highlight selected cell flash
+//[gbl_myCellBgView setBackgroundColor:  [UIColor lightTextColor] ];
+
+
+
+
+    //  gbl_colorReportsBG           is for SELRPTs 1 and 2 and and select 2nd person
+    //  gbl_colorSelParamForReports  is for pickerYear, selYear and sel Date
+
+//    gbl_colorReportsBG          = [UIColor colorWithRed:242./255.0 green:247./255.0 blue:255./255.0 alpha:1.0];  //  apple blue 2.5
+//    gbl_colorReportsBG = [UIColor colorWithRed:181.0/255.0 green:214.0/255.0 blue:252.0/255.0 alpha:1.0]; // test  sail
+//    gbl_colorReportsBG = [UIColor colorWithRed:206.0/255.0 green:227.0/255.0 blue:252.0/255.0 alpha:1.0]; // test  Hawkes blue
+//    gbl_colorReportsBG = [UIColor colorWithRed:154.0/255.0 green:200.0/255.0 blue:251.0/255.0 alpha:1.0]; // test  9ac8fb  baby blue
+//    gbl_colorReportsBG = [UIColor colorWithRed:181.0/255.0 green:214.0/255.0 blue:252.0/255.0 alpha:1.0]; // test  sail
+//    gbl_colorReportsBG = [UIColor colorWithRed:167.0/255.0 green:207.0/255.0 blue:252.0/255.0 alpha:1.0]; // test  mid
+//
+
+    // this is lighter than home 230/242
+    // gbl_colorReportsBG = [UIColor colorWithRed:238.0/255.0 green:247.0/255.0 blue:255.0/255.0 alpha:1.0];  // eef7ff apple blue 2.5  <---
+
+    gbl_colorReportsBG = [UIColor colorWithRed:225.0/255.0 green:238.0/255.0 blue:255.0/255.0 alpha:1.0];  // little darker than home 230/242
+
+    gbl_colorSelParamForReports = gbl_colorReportsBG;  // these are for SELRPTs sceens and select 2nd person
+
+
+
+
+//    gbl_colorHomeBG = [UIColor colorWithRed:167.0/255.0 green:207.0/255.0 blue:252.0/255.0 alpha:1.0]; // test  mid of sail/baby blue
+//    gbl_colorHomeBG = [UIColor colorWithRed:181.0/255.0 green:214.0/255.0 blue:252.0/255.0 alpha:1.0]; // test  sail
+//    gbl_colorHomeBG = [UIColor colorWithRed:206.0/255.0 green:227.0/255.0 blue:252.0/255.0 alpha:1.0]; // test  Hawkes blue
+//    gbl_colorHomeBG = [UIColor colorWithRed:222.0/255.0 green:237.0/255.0 blue:252.0/255.0 alpha:1.0]; // test  mid
+//
+    gbl_colorHomeBG      = [UIColor colorWithRed:230.0/255.0 green:242.0/255.0 blue:254.0/255.0 alpha:1.0]; // test  mid
+
+    gbl_colorHomeBG_save = gbl_colorHomeBG ;  // in order to put back after editing mode color
+
+
+//    gbl_color_cBGforSelected  = [UIColor colorWithRed: 255.0/255.0 green: 204.0/255.0 blue: 153.0/255.0 alpha:1.0]; // ffcc99
+//    gbl_color_cBGforSelected  = [UIColor colorWithRed: 255.0/255.0 green: 226.0/255.0 blue: 175.0/255.0 alpha:1.0]; // ffe2af
+//    gbl_color_cBGforSelected  = [UIColor colorWithRed: 255.0/255.0 green: 249.0/255.0 blue: 198.0/255.0 alpha:1.0]; //#FFF9C6 
+//
+    gbl_color_cBGforSelected  = [UIColor colorWithRed: 255.0/255.0 green: 255.0/255.0 blue: 238.0/255.0 alpha:1.0]; //#FFFfdd 
+
+    // NOTE:  cHed is good for column  header group reports
+    // NOTE:  cHed is good for box comments
+    //
+    gbl_color_cBgr  = [UIColor colorWithRed:247.0/255.0 green:235.0/255.0 blue:209.0/255.0 alpha:1.0]; // f7ebd1  bg below/above all tbl cells
+    gbl_color_cHed  = [UIColor colorWithRed:252.0/255.0 green:252.0/255.0 blue:224.0/255.0 alpha:1.0]; // fcfce0
+    gbl_color_cGr2  = [UIColor colorWithRed:042.0/255.0 green:255.0/255.0 blue:021.0/255.0 alpha:1.0]; // 66ff33
+    gbl_color_cGre  = [UIColor colorWithRed:168.0/255.0 green:255.0/255.0 blue:152.0/255.0 alpha:1.0]; // a8ff98
+
+    gbl_color_cNeu  = [UIColor colorWithRed:229.0/255.0 green:226.0/255.0 blue:199.0/255.0 alpha:1.0]; // e5e2c7
+//    gbl_color_cNeu  = [UIColor colorWithRed:237.0/255.0 green:235.0/255.0 blue:216.0/255.0 alpha:1.0]; // edebd8
+//    gbl_color_cNeu  = [UIColor colorWithRed:245.0/255.0 green:244.0/255.0 blue:234.0/255.0 alpha:1.0]; // f5f4ea
+
+    // new reds    20150511
+    //
+//    gbl_color_cRed  = [UIColor colorWithRed:255.0/255.0 green:152.0/255.0 blue:168.0/255.0 alpha:1.0]; // ff98a8
+//    gbl_color_cRe2  = [UIColor colorWithRed:255.0/255.0 green:068.0/255.0 blue:119.0/255.0 alpha:1.0]; // ff4477
+    gbl_color_cRed  = [UIColor colorWithRed:255.0/255.0 green:181.0/255.0 blue:201.0/255.0 alpha:1.0]; // ffb5c9
+    gbl_color_cRe2  = [UIColor colorWithRed:255.0/255.0 green:103.0/255.0 blue:143.0/255.0 alpha:1.0]; // ff678f
+
+//    gbl_color_textRe2  = [UIColor colorWithRed:034.0/255.0 green:034.0/255.0 blue:102.0/255.0 alpha:1.0]; // 222266  FOR TEST
+
+    // color of top of iPhone screen  246,248,249
+    gbl_color_cAplTop  = [UIColor colorWithRed:248.0/255.0 green:248.0/255.0 blue:248.0/255.0 alpha:1.0]; // f8f8f8 or 246,248,249
+    gbl_color_cAplBlue = [UIColor colorWithRed:000.0/255.0 green:128.0/255.0 blue:255.0/255.0 alpha:1.0]; // 0080ff  (blue text, chevron)
+
+
+//    // light green for personality neutral color bg  (alternate the two colors)
+//    gbl_color_cPerGreen  = [UIColor colorWithRed:211.0/255.0 green:255.0/255.0 blue:165.0/255.0 alpha:1.0]; // d3ffa5 // light green for personality neutral color bg
+    gbl_color_cPerGreen  = [UIColor colorWithRed:166.0/255.0 green:247.0/255.0 blue:255.0/255.0 alpha:1.0]; // a6f7ff // light green for personality neutral color bg
+    gbl_color_cPerGreen  = [UIColor colorWithRed:205.0/255.0 green:251.0/255.0 blue:255.0/255.0 alpha:1.0]; // cdfbff // light green for personality neutral color bg
+    gbl_color_cPerGreen  = [UIColor colorWithRed:225.0/255.0 green:252.0/255.0 blue:255.0/255.0 alpha:1.0]; // e1fcff // light green for personality neutral color bg
+    gbl_color_cPerGreen  = [UIColor colorWithRed:247.0/255.0 green:235.0/255.0 blue:209.0/255.0 alpha:1.0]; // f7ebd1
+    gbl_color_cPerGreen  = [UIColor colorWithRed:229.0/255.0 green:226.0/255.0 blue:199.0/255.0 alpha:1.0]; // e5e2c7
+
+//    gbl_color_cPerGreen1 = [UIColor colorWithRed:211.0/255.0 green:255.0/255.0 blue:165.0/255.0 alpha:1.0]; // d3ffa5 // light green for personality neutral color bg
+//    gbl_color_cPerGreen2 = [UIColor colorWithRed:230.0/255.0 green:255.0/255.0 blue:204.0/255.0 alpha:1.0]; // e6ffcc // really light green for personality neutral color bg
+//
+
+//    gbl_color_cPerGreen5 = [UIColor colorWithRed:201.0/255.0 green:255.0/255.0 blue:145.0/255.0 alpha:1.0]; // c9ff91 // pretty light green for personality neutral color bg
+//    gbl_color_cPerGreen4 = [UIColor colorWithRed:211.0/255.0 green:255.0/255.0 blue:165.0/255.0 alpha:1.0]; // d3ffa5 // light green for personality neutral color bg
+//    gbl_color_cPerGreen3 = [UIColor colorWithRed:221.0/255.0 green:255.0/255.0 blue:185.0/255.0 alpha:1.0]; // ddffb9 // lightER green for personality neutral color bg
+//    gbl_color_cPerGreen2 = [UIColor colorWithRed:230.0/255.0 green:255.0/255.0 blue:204.0/255.0 alpha:1.0]; // e6ffcc // really light green for personality neutral color bg
+//    gbl_color_cPerGreen1 = [UIColor colorWithRed:240.0/255.0 green:255.0/255.0 blue:224.0/255.0 alpha:1.0]; // f0ffe0 // really,really light green for personality neutral color bg
+
+    gbl_color_cPerGreen5 = [UIColor colorWithRed:185.0/255.0 green:255.0/255.0 blue:130.0/255.0 alpha:1.0]; // b9ff82 // pretty light green for personality neutral color bg
+
+    gbl_color_cPerGreen4 = [UIColor colorWithRed:206.0/255.0 green:255.0/255.0 blue:160.0/255.0 alpha:1.0]; // ceffa0 // light green for personality neutral color bg
+    gbl_color_cPerGreen3 = [UIColor colorWithRed:223.0/255.0 green:255.0/255.0 blue:187.0/255.0 alpha:1.0]; // dfffbb // lightER green for personality neutral color bg
+
+    gbl_color_cPerGreen2 = [UIColor colorWithRed:236.0/255.0 green:255.0/255.0 blue:211.0/255.0 alpha:1.0]; // ecffd3 // really light green for personality neutral color bg
+    gbl_color_cPerGreen1 = [UIColor colorWithRed:246.0/255.0 green:255.0/255.0 blue:230.0/255.0 alpha:1.0]; // f6ffe6 // really,really light green for personality neutral color bg
+
+
+//    gbl_color_cPerGreen1 = [UIColor colorWithRed:211.0/255.0 green:255.0/255.0 blue:165.0/255.0 alpha:1.0]; // d3ffa5 // light green for personality neutral color bg
+//    gbl_color_cPerGreen2 = [UIColor colorWithRed:211.0/255.0 green:255.0/255.0 blue:165.0/255.0 alpha:1.0]; // d3ffa5 // light green for personality neutral color bg
+//    gbl_color_cPerGreen3 = [UIColor colorWithRed:211.0/255.0 green:255.0/255.0 blue:165.0/255.0 alpha:1.0]; // d3ffa5 // light green for personality neutral color bg
+//    gbl_color_cPerGreen4 = [UIColor colorWithRed:211.0/255.0 green:255.0/255.0 blue:165.0/255.0 alpha:1.0]; // d3ffa5 // light green for personality neutral color bg
+//    gbl_color_cPerGreen5 = [UIColor colorWithRed:211.0/255.0 green:255.0/255.0 blue:165.0/255.0 alpha:1.0]; // d3ffa5 // light green for personality neutral color bg
+
+
 
     // get Document directory as URL and Str
     //
@@ -255,26 +561,20 @@
     gbl_appDocDirStr = [gbl_appDocDirURL path];
     
     // get DB names as URL and Str
-    gbl_pathToGroup  = [gbl_appDocDirStr stringByAppendingPathComponent: @"mambd2"];  // @"mambGroup.txt"];
-    gbl_pathToPerson = [gbl_appDocDirStr stringByAppendingPathComponent: @"mambd3"];  // @"mambPerson.txt"];
-    gbl_pathToMember = [gbl_appDocDirStr stringByAppendingPathComponent: @"mambd4"];  // @"mambMember.txt"];
-//    gbl_pathToGrpExa = [gbl_appDocDirStr stringByAppendingPathComponent: @"mambd5"];  // group  example data
-//    gbl_pathToPerExa = [gbl_appDocDirStr stringByAppendingPathComponent: @"mambd6"];  // person example data
-//    gbl_pathToMemExa = [gbl_appDocDirStr stringByAppendingPathComponent: @"mambd7"];  // member example data
-//
+    gbl_pathToLastEnt = [gbl_appDocDirStr stringByAppendingPathComponent: @"mambd1"];  // @"lastEntity.txt"];
+    gbl_pathToGroup   = [gbl_appDocDirStr stringByAppendingPathComponent: @"mambd2"];  // @"mambGroup.txt"];
+    gbl_pathToPerson  = [gbl_appDocDirStr stringByAppendingPathComponent: @"mambd3"];  // @"mambPerson.txt"];
+    gbl_pathToMember  = [gbl_appDocDirStr stringByAppendingPathComponent: @"mambd4"];  // @"mambMember.txt"];
+    gbl_pathToGrpRem  = [gbl_appDocDirStr stringByAppendingPathComponent: @"mambd5"];  // group  remember data
+    gbl_pathToPerRem  = [gbl_appDocDirStr stringByAppendingPathComponent: @"mambd6"];  // person remember data
 
-    gbl_pathToGrpRem = [gbl_appDocDirStr stringByAppendingPathComponent: @"mambd5"];  // group  remember data
-    gbl_pathToPerRem = [gbl_appDocDirStr stringByAppendingPathComponent: @"mambd6"];  // person remember data
 
-    gbl_URLToGroup   = [NSURL fileURLWithPath: gbl_pathToGroup  isDirectory:NO];
-    gbl_URLToPerson  = [NSURL fileURLWithPath: gbl_pathToPerson isDirectory:NO];
-    gbl_URLToMember  = [NSURL fileURLWithPath: gbl_pathToMember isDirectory:NO];
-//    gbl_URLToGrpExa  = [NSURL fileURLWithPath: gbl_pathToGrpExa isDirectory:NO];
-//    gbl_URLToPerExa  = [NSURL fileURLWithPath: gbl_pathToPerExa isDirectory:NO];
-//    gbl_URLToMemExa  = [NSURL fileURLWithPath: gbl_pathToMemExa isDirectory:NO];
-//
-    gbl_URLToGrpRem  = [NSURL fileURLWithPath: gbl_pathToGrpRem isDirectory:NO];
-    gbl_URLToPerRem  = [NSURL fileURLWithPath: gbl_pathToPerRem isDirectory:NO];
+    gbl_URLToLastEnt = [NSURL fileURLWithPath: gbl_pathToLastEnt isDirectory:NO];
+    gbl_URLToGroup   = [NSURL fileURLWithPath: gbl_pathToGroup   isDirectory:NO];
+    gbl_URLToPerson  = [NSURL fileURLWithPath: gbl_pathToPerson  isDirectory:NO];
+    gbl_URLToMember  = [NSURL fileURLWithPath: gbl_pathToMember  isDirectory:NO];
+    gbl_URLToGrpRem  = [NSURL fileURLWithPath: gbl_pathToGrpRem  isDirectory:NO];
+    gbl_URLToPerRem  = [NSURL fileURLWithPath: gbl_pathToPerRem  isDirectory:NO];
 
     
     //  end of   SET GBL DATA  HERE
@@ -301,11 +601,11 @@
             updateOneBasedElementNum: (NSInteger)  oneBasedElementnum
                       withThisString: (NSString *) newString
 {
-    // NSLog(@"in updateDelimitedString!");
-    // NSLog(@"DSV=%@",DSV);
-    // NSLog(@"delimiters=%@",delimiters);
-    // NSLog(@"oneBasedElementnum=%ld",(long)oneBasedElementnum);
-    // NSLog(@"newString=%@",newString);
+// NSLog(@"in updateDelimitedString!");
+// NSLog(@"DSV=%@",DSV);
+// NSLog(@"delimiters=%@",delimiters);
+// NSLog(@"oneBasedElementnum=%ld",(long)oneBasedElementnum);
+// NSLog(@"newString=%@",newString);
 
     NSArray *myarr = [DSV componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString: delimiters]];
     // NSLog(@"myarr=%@",myarr);
@@ -344,17 +644,29 @@
            updatingRememberCategory: (NSString *) argRememberCategory
                          usingValue: (NSString *) argChangeToThis
 {
-NSLog(@"in saveLastSelectionForEntity !");
+//tn();NSLog(@"in saveLastSelectionForEntity sssssssssssssssssssssssssss !");
     
-    NSString *PSVthatWasFound;
-    NSString *prefixStr = [NSString stringWithFormat: @"%@|", argEntityName];
-    NSInteger myElementNum = 0;
-    NSInteger arrayIdx;
-    NSString *myupdatedStr;
+    NSString  *PSVthatWasFound;
+    NSString  *prefixStr;
+    NSInteger  myElementNum = 0;
+    NSInteger  arrayIdx;
+    NSString  *myStrToUpdate;
+    NSString  *myupdatedStr;
+
+
+tn(); NSLog(@"       ssssssssssssssssssssssssssss saveLastSelectionForEntity   argPersonOrGroup    =%@",argPersonOrGroup);
+      NSLog(@"       ssssssssssssssssssssssssssss saveLastSelectionForEntity   argEntityName       =%@",argEntityName);
+      NSLog(@"       ssssssssssssssssssssssssssss saveLastSelectionForEntity   argRememberCategory =%@",argRememberCategory);
+      NSLog(@"       ssssssssssssssssssssssssssss saveLastSelectionForEntity   argChangeToThis     =%@",argChangeToThis);
 
     MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for global methods in appDelegate.m
 
+    prefixStr = [NSString stringWithFormat: @"%@|", argEntityName];
+  NSLog(@"prefixStr =%@",prefixStr );
+
     if ([argPersonOrGroup isEqualToString:@"person"]) {
+
+//        NSLog(@"beg of  saveLastSelectionForEntity gbl_arrayPerRem=%@",gbl_arrayPerRem);
 
         // get the PSV of  ~Liz in gbl_arrayPerRem
         PSVthatWasFound = NULL;
@@ -366,6 +678,7 @@ NSLog(@"in saveLastSelectionForEntity !");
             }
             arrayIdx = arrayIdx + 1;
         }
+//  NSLog(@"PSVthatWasFound =%@",PSVthatWasFound );
 
         if      ([argRememberCategory isEqualToString: @"rptsel"]) myElementNum = 2;  // one-based index number
         else if ([argRememberCategory isEqualToString: @"year"])   myElementNum = 3;
@@ -379,7 +692,8 @@ NSLog(@"in saveLastSelectionForEntity !");
 
         if (PSVthatWasFound != NULL) {
             // NSLog(@"in remember!!  before ®gbl_arrayPerRem =%@",gbl_arrayPerRem);
-            NSString *myStrToUpdate = PSVthatWasFound;
+            myStrToUpdate = PSVthatWasFound;
+//  NSLog(@"myStrToUpdate =%@",myStrToUpdate );
             
             myupdatedStr = [myappDelegate updateDelimitedString: (NSMutableString *) myStrToUpdate
                                                     delimitedBy: (NSString *) @"|"
@@ -392,20 +706,28 @@ NSLog(@"in saveLastSelectionForEntity !");
             [gbl_arrayPerRem replaceObjectAtIndex: arrayIdx  withObject: myupdatedStr];
 
         }
+//        NSLog(@"end of  saveLastSelectionForEntity updated gbl_arrayPerRem=%@",gbl_arrayPerRem);
+//tn(); NSLog(@"end of ssssssssssssssssssssssssssss saveLastSelectionForEntity   myStrToUpdate=%@", myStrToUpdate);
+//      NSLog(@"end of ssssssssssssssssssssssssssss saveLastSelectionForEntity    myupdatedStr=%@", myupdatedStr);
     }  // person
     
 
     if ([argPersonOrGroup isEqualToString:@"group"]) {
+        //NSLog(@"end of  saveLastSelectionForEntity gbl_arrayGrpRem=%@",gbl_arrayGrpRem);
         // get the PSV of  "~Swim Team" in gbl_arrayGrpRem
         PSVthatWasFound = NULL;
         arrayIdx = 0;
+
+
         for (NSString *element in gbl_arrayGrpRem) {
             if ([element hasPrefix: prefixStr]) {
                 PSVthatWasFound = element;
                 break;
             }
+//NSLog(@"gbl_arrayGrpRem[arrayIdx]=%@",gbl_arrayGrpRem[arrayIdx]);
             arrayIdx = arrayIdx + 1;
         }
+//  NSLog(@"PSVthatWasFound =%@",PSVthatWasFound );
 
         if      ([argRememberCategory isEqualToString: @"rptsel"]) myElementNum = 2;  // one-based index number
         else if ([argRememberCategory isEqualToString: @"year"])   myElementNum = 3;
@@ -419,6 +741,7 @@ NSLog(@"in saveLastSelectionForEntity !");
         if (PSVthatWasFound != NULL) {
             // NSLog(@"in remember!!  before ®gbl_arrayGrpRem =%@",gbl_arrayGrpRem);
             NSString *myStrToUpdate = PSVthatWasFound;
+//  NSLog(@"myStrToUpdate =%@",myStrToUpdate );
             myupdatedStr = [myappDelegate updateDelimitedString: (NSMutableString *) myStrToUpdate
                                                     delimitedBy: (NSString *) @"|"
                                        updateOneBasedElementNum: (NSInteger)  myElementNum
@@ -429,13 +752,19 @@ NSLog(@"in saveLastSelectionForEntity !");
 
             [gbl_arrayGrpRem replaceObjectAtIndex: arrayIdx  withObject: myupdatedStr];
 
-            // NSLog(@"in memorize!!  after gbl_arrayGrpRem =%@",gbl_arrayGrpRem);
+
+//tn(); NSLog(@"end of ssssssssssssssssssssssssssss saveLastSelectionForEntity   myStrToUpdate=%@", myStrToUpdate);
+//      NSLog(@"end of ssssssssssssssssssssssssssss saveLastSelectionForEntity    myupdatedStr=%@", myupdatedStr);
         }
     }
     
-NSLog(@"in saveLastSelectionForEntity !!  after gbl_arrayGrpRem =%@",gbl_arrayGrpRem);
-NSLog(@"in saveLastSelectionForEntity !!  after gbl_arrayPerRem =%@",gbl_arrayPerRem);
-    gbl_fromHomeCurrentSelectionPSV = myupdatedStr;
+// cannot be right  ?        upd   it IS wrong
+//    gbl_fromHomeCurrentSelectionPSV = myupdatedStr;
+//    NSLog(@"gbl_fromHomeCurrentSelectionPSV =%@",gbl_fromHomeCurrentSelectionPSV );
+//
+
+      NSLog(@"end of ssssssssssssssssssssssssssss saveLastSelectionForEntity   myStrToUpdate=%@", myStrToUpdate);
+      NSLog(@"end of ssssssssssssssssssssssssssss saveLastSelectionForEntity    myupdatedStr=%@", myupdatedStr);
 
 } // saveLastSelectionForEntity 
 
@@ -443,6 +772,7 @@ NSLog(@"in saveLastSelectionForEntity !!  after gbl_arrayPerRem =%@",gbl_arrayPe
 // grabLastSelectionValueForEntity
 //
 // for rememberCategory = "rptsel",   returns 3-char code string to search for in report selection table
+// for rememberCategory = "rptsel",   returns  code of menu+rpt like "homppe" string to search for in report selection table
 // for rememberCategory = "person",   returns string to search for gbl_arrayPer
 // for rememberCategory = "group",    returns string to search for gbl_arrayGrp
 // for rememberCategory = "year",     returns string year
@@ -452,10 +782,15 @@ NSLog(@"in saveLastSelectionForEntity !!  after gbl_arrayPerRem =%@",gbl_arrayPe
                                     havingName: (NSString *) argEntityName
                           fromRememberCategory: (NSString *) argRememberCategory
 {
+tn(); NSLog(@"       gggggggggggggggggggggggggggggggggggggggg grabLastSelectionValueForEntity   entity     =%@", argPersonOrGroup );
+      NSLog(@"       gggggggggggggggggggggggggggggggggggggggg grabLastSelectionValueForEntity   entityName =%@", argEntityName);
+      NSLog(@"       gggggggggggggggggggggggggggggggggggggggg grabLastSelectionValueForEntity rememberCat  =%@", argRememberCategory);
+
     NSInteger myPSVfldNum = 0;
     NSArray  *myRemArr;
     NSInteger myRemArrIdx = 0;
     NSString *myRemPSV;
+    NSString *myReturnStr;
     NSCharacterSet *myNSCharacterSet = [NSCharacterSet characterSetWithCharactersInString:@"|"]; // separators
 
 
@@ -470,7 +805,7 @@ NSLog(@"in saveLastSelectionForEntity !!  after gbl_arrayPerRem =%@",gbl_arrayPe
                                                                                   // get element fld num in PSV 
         if      ([argRememberCategory isEqualToString: @"rptsel"]) myPSVfldNum = 2;  // one-based fld number
         else if ([argRememberCategory isEqualToString: @"year"])   myPSVfldNum = 3;
-        else if ([argRememberCategory isEqualToString: @"person"]) myPSVfldNum = 4;
+        else if ([argRememberCategory isEqualToString: @"person"]) myPSVfldNum = 4;  // second person for compatibility
         else if ([argRememberCategory isEqualToString: @"group"])  myPSVfldNum = 5;
         else if ([argRememberCategory isEqualToString: @"day"])    myPSVfldNum = 6;
         else  
@@ -488,8 +823,9 @@ NSLog(@"in saveLastSelectionForEntity !!  after gbl_arrayPerRem =%@",gbl_arrayPe
     }
 
 
+    NSString *prefixStr2 = [NSString stringWithFormat: @"%@|", argEntityName];
     for (NSString *elt in myRemArr) {  // get PSV of remembered data for this entity
-        if ([elt hasPrefix: argEntityName]) {
+        if ([elt hasPrefix: prefixStr2]) {
             myRemPSV = elt;
             break;
         }
@@ -497,11 +833,18 @@ NSLog(@"in saveLastSelectionForEntity !!  after gbl_arrayPerRem =%@",gbl_arrayPe
     }
     if (myRemPSV) {                           // get remembered value
         myRemArr = [myRemPSV componentsSeparatedByCharactersInSet: myNSCharacterSet];
-        return myRemArr[myPSVfldNum -1]; // one-based 
+
+//        return myRemArr[myPSVfldNum -1]; // one-based 
+        myReturnStr = myRemArr[myPSVfldNum -1]; // one-based 
+
+      NSLog(@"end of gggggggggggggggggggggggggggggggggggggggg grabLastSelectionValueForEntity   myReturnStr=%@", myReturnStr);
+
+        return myReturnStr;
     }
 
-    return nil; // should not happen
-} // end of lastSelTblIdxForEntity
+NSLog(@"end of gggggggggggggggggggggggggggggggggggggggg grabLastSelectionValueForEntity   myReturnStr=NIL");
+    return nil;  // no previous selection  (pgm startup after download)
+} // end of grabLastSelectionValueForEntity
 
 
 
@@ -548,29 +891,43 @@ NSLog(@"in saveLastSelectionForEntity !!  after gbl_arrayPerRem =%@",gbl_arrayPe
     NSData  *myArchive;
     NSData  *myWriteable;
 
+    BOOL haveGrp, havePer, haveMem, haveGrpRem, havePerRem;
+
+    //tn();tr("BEG of mambWriteNSArrayWithDescription         ");
+    haveGrp    = [gbl_sharedFM fileExistsAtPath: gbl_pathToGroup];
+    havePer    = [gbl_sharedFM fileExistsAtPath: gbl_pathToPerson];
+    haveMem    = [gbl_sharedFM fileExistsAtPath: gbl_pathToMember];
+    haveGrpRem = [gbl_sharedFM fileExistsAtPath: gbl_pathToGrpRem];
+    havePerRem = [gbl_sharedFM fileExistsAtPath: gbl_pathToPerRem];
+    ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
+ tn();
 
     // determine what array to write  and  where to write it
     //                                                           -------------------------------------------------------------------------
     //                                                                              file to write to             array to write           
     //                                                           -------------------------------------------------------------------------
     //
-    if ([argEntityDescription isEqualToString:@"group"])         { myURLtoWriteTo = gbl_URLToGroup;    myArray = gbl_arrayGrp;    }
-    if ([argEntityDescription isEqualToString:@"person"])        { myURLtoWriteTo = gbl_URLToPerson;   myArray = gbl_arrayPer;    }
-    if ([argEntityDescription isEqualToString:@"member"])        { myURLtoWriteTo = gbl_URLToMember;   myArray = gbl_arrayMem;    }
+    if ([argEntityDescription isEqualToString:@"examplegroup"])  { myURLtoWriteTo = gbl_URLToGroup;    myArray = gbl_arrayExaGrp;    } // write on init app
+    if ([argEntityDescription isEqualToString:@"exampleperson"]) { myURLtoWriteTo = gbl_URLToPerson;   myArray = gbl_arrayExaPer;    } // write on init app
+    if ([argEntityDescription isEqualToString:@"examplemember"]) { myURLtoWriteTo = gbl_URLToMember;   myArray = gbl_arrayExaMem;    } // write on init app
+    if ([argEntityDescription isEqualToString:@"examplegrprem"]) { myURLtoWriteTo = gbl_URLToGrpRem;   myArray = gbl_arrayExaGrpRem; } // write on init app
+    if ([argEntityDescription isEqualToString:@"exampleperrem"]) { myURLtoWriteTo = gbl_URLToPerRem;   myArray = gbl_arrayExaPerRem; } // write on init app
 
-    if ([argEntityDescription isEqualToString:@"grprem"])        { myURLtoWriteTo = gbl_URLToGrpRem;   myArray = gbl_arrayGrpRem; }
-    if ([argEntityDescription isEqualToString:@"perrem"])        { myURLtoWriteTo = gbl_URLToPerRem;   myArray = gbl_arrayPerRem; }
-
-    if ([argEntityDescription isEqualToString:@"examplegroup"])  { myURLtoWriteTo = gbl_URLToGroup;    myArray = gbl_arrayExaGrp; }
-    if ([argEntityDescription isEqualToString:@"exampleperson"]) { myURLtoWriteTo = gbl_URLToPerson;   myArray = gbl_arrayExaPer; }
-    if ([argEntityDescription isEqualToString:@"examplemember"]) { myURLtoWriteTo = gbl_URLToMember;   myArray = gbl_arrayExaMem; }
+    if ([argEntityDescription isEqualToString:@"group"])         { myURLtoWriteTo = gbl_URLToGroup;    myArray = gbl_arrayGrp;    }    // write ongoing
+    if ([argEntityDescription isEqualToString:@"person"])        { myURLtoWriteTo = gbl_URLToPerson;   myArray = gbl_arrayPer;    }    // write ongoing
+    if ([argEntityDescription isEqualToString:@"member"])        { myURLtoWriteTo = gbl_URLToMember;   myArray = gbl_arrayMem;    }    // write ongoing
+    if ([argEntityDescription isEqualToString:@"grprem"])        { myURLtoWriteTo = gbl_URLToGrpRem;   myArray = gbl_arrayGrpRem; }    // write ongoing
+    if ([argEntityDescription isEqualToString:@"perrem"])        { myURLtoWriteTo = gbl_URLToPerRem;   myArray = gbl_arrayPerRem; }    // write ongoing
     //                                                           -------------------------------------------------------------------------
 
 
-//    NSLog(@"in writensarray myArray=%@",myArray);
+//NSLog(@"in writensarray BEFORE WRITE  my EXAMPLE Array=%@",myArray);
+
+    //NSLog(@"gbl_URLToGroup=%@",gbl_URLToGroup);
+//    NSLog(@"myURLtoWriteTo  =%@",myURLtoWriteTo  );
 
     [gbl_sharedFM removeItemAtURL: myURLtoWriteTo  error:&err01];     // remove old (because no overcopy)
-    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"Error on write %@= %@", argEntityDescription, err01); }
+    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"Error on remove %@= %@", argEntityDescription, err01); }
 
     myArchive   = [NSKeyedArchiver  archivedDataWithRootObject: myArray];
 //tn();  NSLog(@"myArchive=\n%@",myArchive);
@@ -582,6 +939,22 @@ NSLog(@"in saveLastSelectionForEntity !!  after gbl_arrayPerRem =%@",gbl_arrayPe
 
     BOOL ret01 = [myWriteable writeToURL: myURLtoWriteTo  atomically:YES];
     if (!ret01)  NSLog(@"Error write to %@ \n  %@", argEntityDescription, [err01 localizedFailureReason]);
+    // for some reason the below, gives error code 4,  but above has no error
+    //    [myWriteable writeToURL: myURLtoWriteTo  options:NSDataWritingAtomic  error: &err01];   // for some reason, gives error code 4
+    //    if (err01) { NSLog(@"Error on writeToURL %@= %@", argEntityDescription, err01); }
+    //
+
+
+    haveGrp    = [gbl_sharedFM fileExistsAtPath: gbl_pathToGroup];
+    havePer    = [gbl_sharedFM fileExistsAtPath: gbl_pathToPerson];
+    haveMem    = [gbl_sharedFM fileExistsAtPath: gbl_pathToMember];
+    haveGrpRem = [gbl_sharedFM fileExistsAtPath: gbl_pathToGrpRem];
+    havePerRem = [gbl_sharedFM fileExistsAtPath: gbl_pathToPerRem];
+
+//ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
+//tn();tr("end of mambWriteNSArrayWithDescription         ");
+//tn();
+
 
 } // end of mambWriteNSArrayWithDescription
 
@@ -605,7 +978,10 @@ NSLog(@"in saveLastSelectionForEntity !!  after gbl_arrayPerRem =%@",gbl_arrayPe
     if ([entDesc isEqualToString:@"perrem"])        { myURLtoReadFrom = gbl_URLToPerRem;   my_gbl_array = gbl_arrayPerRem; }
 
     myWritten = [[NSData alloc] initWithContentsOfURL: myURLtoReadFrom];
-    if (myWritten == nil) { NSLog(@"%@", @"Error reading mambd2"); }
+    if (myWritten == nil) {
+        NSLog(@"Error reading %@, skip it (ok)", entDesc);
+        return;
+    }
 //tn();  NSLog(@"myWritten=\n%@",myWritten);
 
     MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for global methods in appDelegate.m
@@ -617,11 +993,11 @@ NSLog(@"in saveLastSelectionForEntity !!  after gbl_arrayPerRem =%@",gbl_arrayPe
 //tn();  NSLog(@"myUnarchived=\n%@",myUnarchived );
 
     //if ([entDesc isEqualToString:@"group"])         { gbl_arrayGrp       = [[NSMutableArray alloc]initWithArray: (NSMutableArray*) myLocalArray]; }
-    if ([entDesc isEqualToString:@"group"])         { gbl_arrayGrp       = [[NSMutableArray alloc]initWithArray: (NSMutableArray*) myUnarchived]; }
-    if ([entDesc isEqualToString:@"person"])        { gbl_arrayPer       = [[NSMutableArray alloc]initWithArray: (NSMutableArray*) myUnarchived]; }
-    if ([entDesc isEqualToString:@"member"])        { gbl_arrayMem       = [[NSMutableArray alloc]initWithArray: (NSMutableArray*) myUnarchived]; }
-    if ([entDesc isEqualToString:@"grprem"])        { gbl_arrayGrpRem    = [[NSMutableArray alloc]initWithArray: (NSMutableArray*) myUnarchived]; }
-    if ([entDesc isEqualToString:@"perrem"])        { gbl_arrayPerRem    = [[NSMutableArray alloc]initWithArray: (NSMutableArray*) myUnarchived]; }
+    if ([entDesc isEqualToString:@"group"])  { gbl_arrayGrp       = [[NSMutableArray alloc]initWithArray: (NSMutableArray*) myUnarchived]; }
+    if ([entDesc isEqualToString:@"person"]) { gbl_arrayPer       = [[NSMutableArray alloc]initWithArray: (NSMutableArray*) myUnarchived]; }
+    if ([entDesc isEqualToString:@"member"]) { gbl_arrayMem       = [[NSMutableArray alloc]initWithArray: (NSMutableArray*) myUnarchived]; }
+    if ([entDesc isEqualToString:@"grprem"]) { gbl_arrayGrpRem    = [[NSMutableArray alloc]initWithArray: (NSMutableArray*) myUnarchived]; }
+    if ([entDesc isEqualToString:@"perrem"]) { gbl_arrayPerRem    = [[NSMutableArray alloc]initWithArray: (NSMutableArray*) myUnarchived]; }
 
 } // end of mambReadArrayFileWithDescription
 
@@ -690,13 +1066,12 @@ NSLog(@"in saveLastSelectionForEntity !!  after gbl_arrayPerRem =%@",gbl_arrayPe
 //- (void) mambWriteLastEntityFileIntoDir: (NSString *)      argAppDocDirStr
 //                       usingFileManager: (NSFileManager *) argSharedFM
 //
-- (void) mambWriteLastEntityFile
+- (void) mambWriteLastEntityFile  // uses gbl_appDocDirStr gbl_lastSelectedPerson gbl_lastSelectedGroup gbl_fromHomeCurrentSelectionType 
 {
     NSLog(@"in mambWriteLastEntityFile() ----------");
 
-    //NSString *pathToLastEntity = [argAppDocDirStr stringByAppendingPathComponent: @"mambLastEntity.txt"];
-    NSString *pathToLastEntity = [gbl_appDocDirStr stringByAppendingPathComponent: @"mambd1"];
-    NSURL     *URLToLastEntity = [NSURL fileURLWithPath: pathToLastEntity isDirectory:NO];
+    //NSString *pathToLastEntity = [gbl_appDocDirStr stringByAppendingPathComponent: @"mambd1"];
+    //NSURL     *URLToLastEntity = [NSURL fileURLWithPath: pathToLastEntity isDirectory:NO];
     NSError *err01;
 
     NSData     *myLastEntityArchive;    
@@ -704,22 +1079,24 @@ NSLog(@"in saveLastSelectionForEntity !!  after gbl_arrayPerRem =%@",gbl_arrayPe
 
     MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for global method myappDelegate in appDelegate.m
 
-    [gbl_sharedFM removeItemAtURL:URLToLastEntity // remove old (because no overcopy), write out new lastEntity file with current entity
-                        error:&err01];
+    // remove old (because no overcopy),
+    // write out new lastEntity file with current entity
+    [gbl_sharedFM removeItemAtURL: gbl_URLToLastEnt
+                            error: &err01];
     if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"lastEntity %@", err01); }
 
         // 20150113, 20150121 NEW FORMAT=  exampl "person|~Jim|group|~Family"  which means the following:
         //    1. set "person" on home segemented control  (1st attribute is what to put on home screen)
         //    2. set grey highlight on row for "~Jim"
         //    3. set gbl_lastSelectedGroup = "~Family"
-        //NSLog(@"enterBG_gbl_lastSelectedPerson=%@", gbl_lastSelectedPerson);
-        //NSLog(@"enterBG_gbl_lastSelectedGroup=%@" , gbl_lastSelectedGroup);
-        //NSLog(@"enterBG_gbl_fromHomeCurrentSelectionType=%@", gbl_fromHomeCurrentSelectionType); // determines who goes first attribute
-        //
+NSLog(@"enterBG_gbl_lastSelectedPerson=%@", gbl_lastSelectedPerson);
+NSLog(@"enterBG_gbl_lastSelectedGroup=%@" , gbl_lastSelectedGroup);
+NSLog(@"enterBG_gbl_fromHomeCurrentSelectionType=%@", gbl_fromHomeCurrentSelectionType); // determines who goes first attribute
+
    
     if (gbl_lastSelectedPerson == NULL ||  gbl_lastSelectedGroup == NULL  ||   gbl_fromHomeCurrentSelectionType == NULL ||
         gbl_lastSelectedPerson.length == 0 ||  gbl_lastSelectedGroup.length == 0  ||   gbl_fromHomeCurrentSelectionType.length == 0 ) {
-
+//trn("using DEFAULT lastEnt");
         self.myLastEntityStr =  DEFAULT_LAST_ENTITY  ;  // DEFAULT lastEntity
 
     } else {  // not empty vars
@@ -729,7 +1106,7 @@ NSLog(@"in saveLastSelectionForEntity !!  after gbl_arrayPerRem =%@",gbl_arrayPe
             self.myLastEntityStr = [NSString stringWithFormat:@"group|%@|person|%@", gbl_lastSelectedGroup, gbl_lastSelectedPerson];
         }
     }
-    NSLog(@"self.myLastEntityStr=%@",self.myLastEntityStr);
+    NSLog(@"self.myLastEntityStr=%@",self.myLastEntityStr);   // this is file contents to write out
 
 
 //tn();trn("ENCODE HERE :");
@@ -753,8 +1130,8 @@ NSLog(@"in saveLastSelectionForEntity !!  after gbl_arrayPerRem =%@",gbl_arrayPe
     // now dispatch the save operation
     dispatch_async(dispatch_get_main_queue(),  ^{
         // do the save operation here
-        [myLastEntityDataFil writeToURL:URLToLastEntity
-                             atomically:YES ];
+        [myLastEntityDataFil writeToURL: gbl_URLToLastEnt
+                             atomically: YES ];
 
         // now tell the OS that you're done
         if (task != UIBackgroundTaskInvalid) {
@@ -763,9 +1140,7 @@ NSLog(@"in saveLastSelectionForEntity !!  after gbl_arrayPerRem =%@",gbl_arrayPe
         }
      });
 
-
-
-BOOL haveLastEntity        = [gbl_sharedFM fileExistsAtPath: pathToLastEntity];
+BOOL haveLastEntity        = [gbl_sharedFM fileExistsAtPath: gbl_pathToLastEnt];
 NSLog(@"haveLastEntity= %d", haveLastEntity);
 tn();trn("finished WRITE   lastEntity");
 
@@ -780,8 +1155,8 @@ tn();trn("finished WRITE   lastEntity");
 {
     NSLog(@"in mambReadLastEntityFile() ----------");
     //NSString *pathToLastEntity = [argAppDocDirStr stringByAppendingPathComponent: @"mambLastEntity.txt"];
-    NSString *pathToLastEntity = [gbl_appDocDirStr stringByAppendingPathComponent: @"mambd1"];
-    NSURL     *URLToLastEntity = [NSURL fileURLWithPath: pathToLastEntity isDirectory:NO];
+    //NSString *pathToLastEntity = [gbl_appDocDirStr stringByAppendingPathComponent: @"mambd1"];
+    //NSURL     *URLToLastEntity = [NSURL fileURLWithPath: pathToLastEntity isDirectory:NO];
 
     NSData     *myLastEntityDataFil;        // NSData in file
     NSData     *myLastEntityArchive;
@@ -790,12 +1165,12 @@ tn();trn("finished WRITE   lastEntity");
     MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for global methods in appDelegate.m
 
     // for test, remove lastEntity file
-    //  [argSharedFM removeItemAtURL:URLToLastEntity
+    //  [argSharedFM removeItemAtURL: gbl_URLToLastEntity
     //                      error:&err01];
     //  if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"lastEntity test rm %@", err01); }
 
-    BOOL haveLastEntity        = [gbl_sharedFM fileExistsAtPath: pathToLastEntity];
-//    NSLog(@"haveLastEntity= %d", haveLastEntity);
+    BOOL haveLastEntity        = [gbl_sharedFM fileExistsAtPath: gbl_pathToLastEnt];
+    NSLog(@"haveLastEntity= %d", haveLastEntity);
 
 // haveLastEntity = NO; // for test
 
@@ -810,7 +1185,7 @@ tn();trn("finished WRITE   lastEntity");
 
         // here we have the lastEntity file, so read and decode it
         //
-        myLastEntityDataFil = [[NSData alloc] initWithContentsOfURL:URLToLastEntity ];    // READ READ READ READ READ READ READ READ 
+        myLastEntityDataFil = [[NSData alloc] initWithContentsOfURL: gbl_URLToLastEnt ];    // READ READ READ READ READ READ READ READ
 //tn();           NSLog(@"myLastEntityDataFil=%@",myLastEntityDataFil);
 
 //        tn();trn("DECODE lastEntity  HERE :");
@@ -819,9 +1194,9 @@ tn();trn("finished WRITE   lastEntity");
 //tn();  NSLog(@"myLastEntityArchive =\n%@",myLastEntityArchive );
        
         myLastEntityDecoded = [NSKeyedUnarchiver unarchiveObjectWithData: myLastEntityArchive]; 
-//tn();  NSLog(@"myLastEntityDecoded=\n%@",myLastEntityDecoded); // should = gbl_arrayGrp
     }
 
+tn();  NSLog(@"at end of   mambReadLastEntityFile  myLastEntityDecoded=\n%@",myLastEntityDecoded); // should = gbl_arrayGrp
     return myLastEntityDecoded;
 
 } // end of  mambReadLastEntityFile()
@@ -864,32 +1239,17 @@ tn();trn("finished WRITE   lastEntity");
     // 3. also save lastentity.dat to highlight correct entity in seg control at top
     // 
     //BOOL ret01;
-    NSError *err01;
-
-    //      remove all regular named files (these cannot exist - no overcopy)
-    [gbl_sharedFM removeItemAtURL: gbl_URLToGroup error:&err01];
-    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"grp %@", err01); }
-    [gbl_sharedFM removeItemAtURL: gbl_URLToPerson error:&err01];
-    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"per %@", err01); }
-    nb(2);
- 
-    // write out  data files from internal arrays
-
-    //[myappDelegate mambWriteGroupArray: (NSArray *) gbl_arrayGrp];  // data moved to remember files
-    //[myappDelegate mambWritePersonArray: (NSArray *) gbl_arrayPer]; 
-
-    [myappDelegate mambWriteNSArrayWithDescription: (NSString *) @"grprem"];  // only remember files (data dealt with at change time)
-    [myappDelegate mambWriteNSArrayWithDescription: (NSString *) @"perrem"];
-//<.> TODO  done ?
-
+    //NSError *err01;
 
     [myappDelegate mambWriteLastEntityFile];
-    
 
-//    NSString *pathToLastEntity = [gbl_appDocDirStr stringByAppendingPathComponent: @"mambd1"];
-//BOOL haveLastEntity        = [gbl_sharedFM fileExistsAtPath: pathToLastEntity];
-//NSLog(@"haveLastEntity= %d", haveLastEntity);
-//
+    //BOOL haveLastEntity        = [gbl_sharedFM fileExistsAtPath: gbl_pathToLastEnt];
+    //NSLog(@"haveLastEntity= %d", haveLastEntity);
+
+    // save only remember files (data dealt with at change time)
+    [myappDelegate mambWriteNSArrayWithDescription: (NSString *) @"perrem"];
+    [myappDelegate mambWriteNSArrayWithDescription: (NSString *) @"grprem"];
+    
 
     NSLog(@"finished  did enter BG!");
 } // applicationDidEnterBackground
@@ -911,6 +1271,36 @@ tn();trn("finished WRITE   lastEntity");
     // If the application was previously in the background, OPTIONALLY REFRESH THE USER INTERFACE.
 }
 
+
+- (NSIndexPath *) indexpathForTableView: (UITableView *) argTableView
+                         havingCellText: (NSString *)    argCellText;
+{
+//NSLog(@"in indexpathForTableView");
+//    NSLog(@"argTableView=%@",argTableView);
+//    NSLog(@"argCellText=%@",argCellText);
+    NSInteger nSections = [argTableView numberOfSections];
+
+    for (int j=0; j<nSections; j++) {
+
+        NSInteger nRows = [argTableView numberOfRowsInSection: j];
+        for (int i=0; i<nRows; i++) {
+
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow: i
+                                                        inSection: j];
+            UITableViewCell *cell = [argTableView cellForRowAtIndexPath: indexPath];
+
+//NSLog(@"cell.textLabel.text =%@",cell.textLabel.text );
+            if ([cell.textLabel.text isEqualToString: argCellText]) {
+//trn("FOUND CELL TEXT");
+                return indexPath;
+            }
+        }
+    }
+//trn("DID NOT  FIND CELL TEXT");
+    return nil;
+} // end of  indexpathForTableView
+
+
 //+(BOOL)isJailbroken {
 - (BOOL)isJailbroken {
     NSURL* url = [NSURL URLWithString:@"cydia://package/com.example.package"];
@@ -922,6 +1312,342 @@ tn();trn("finished WRITE   lastEntity");
 {
     NSLog(@"in applicationWillTerminate()  in appdelegate");
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+
+
+
+// get a NSString CSV for each member of the group into NSArray gbl_grp_CSVs or gbl_grp_CSVs_B
+// but possibly excluding  one person who is kingpin of grpone report "MY Best Match in Group ..." 
+// RETURNs 0/1 no/yes  kingpinIsInGroup
+//
+- (NSInteger) getNSArrayOfCSVsForGroup: (NSString *) argGroupName
+               excludingThisPersonName: (NSString *) argPersonToCompareEveryoneElseWith // non-empty string for groupOne
+       puttingIntoArrayWithDescription: (NSString *) argArrayDescription                // destination array "" or "_B"
+{
+//tn();    NSLog(@"=in getNSArrayOfCSVsForGroup");
+//    NSLog(@"argGroupName=[%@]",argGroupName);
+//    NSLog(@"argPersonToCompareEveryoneElseWith =%@",argPersonToCompareEveryoneElseWith );
+//  NSLog(@"argArrayDescription =%@",argArrayDescription );
+
+    MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // access global methods in appDelegate.m
+    NSInteger  we_have_hit_target_group;
+    we_have_hit_target_group = 0;
+
+    if ([argArrayDescription isEqualToString: @"gbl_grp_CSVs"]) {
+//trn("init  gbl_grp_CSVs");
+        [gbl_grp_CSVs removeAllObjects];               // empty array for this new group
+         gbl_grp_CSVs = [[NSMutableArray alloc] init];  // init  array for this new group
+//NSMutableArray *outputArray=[NSMutableArray new];
+//         gbl_grp_CSVs = [NSMutableArray new];  // init  array for this new group
+
+    }
+    if ([argArrayDescription isEqualToString: @"gbl_grp_CSVs_B"]) {
+//trn("init  gbl_grp_CSVs_B");
+        [gbl_grp_CSVs_B removeAllObjects];               // empty array for this new group
+         gbl_grp_CSVs_B = [[NSMutableArray alloc] init];  // init  array for this new group
+    }
+
+    gbl_numPeopleInCurrentGroup = 0;  // INIT
+    gbl_kingpinIsInGroup        = 0;  // INIT
+
+//    NSInteger insertAt;
+//    insertAt = -1;
+    for (id member in gbl_arrayMem) {   // loop thru gbl group member array
+
+        NSCharacterSet *mySeparators           = [NSCharacterSet characterSetWithCharactersInString:@"|"];
+        NSArray        *groupMemberComponents  = [member componentsSeparatedByCharactersInSet: mySeparators];
+//NSLog(@"groupMemberComponents  =%@",groupMemberComponents  );
+
+        NSString *nameOfGroup  = groupMemberComponents[0];  // group name is 1st fld
+        NSString *nameOfMember = groupMemberComponents[1];  // member (person) name is 2nd fld
+//    NSLog(@"nameOfGroup  =%@",nameOfGroup  );
+//    NSLog(@"nameOfMember =%@",nameOfMember );
+
+        if (! [nameOfGroup isEqualToString: argGroupName]) {
+            if (we_have_hit_target_group == 1) break;
+            else                              continue;
+        }
+
+        // here we are in our target group
+        we_have_hit_target_group = 1;
+
+        gbl_numPeopleInCurrentGroup = gbl_numPeopleInCurrentGroup + 1;
+
+        
+        if (  [nameOfMember isEqualToString: argPersonToCompareEveryoneElseWith]) {
+            gbl_kingpinIsInGroup = 1;
+            continue;
+        }
+
+//tn(); NSLog(@"member=%@", member);
+
+        // add this member's CSV to our array of Group CSVs
+        //
+        NSString *PSVthatWasFound;
+        do {
+            // grab this members's Obj PSV from gbl_arrayPer
+            PSVthatWasFound = nil;
+
+
+//  NSLog(@"nameOfMember=%@",nameOfMember);
+           NSString *myCSVobj = [myappDelegate getCSVforPersonName: (NSString *) nameOfMember]; 
+//  NSLog(@"myCSVobj =%@",myCSVobj );
+
+           if (myCSVobj != nil) {
+
+                if ([argArrayDescription isEqualToString: @"gbl_grp_CSVs"]) {
+
+                    [gbl_grp_CSVs   addObject: myCSVobj];
+//                    insertAt = insertAt + 1;
+//                    [gbl_grp_CSVs   insertObject: myCSVobj atIndex: insertAt];
+
+
+//trn("[gbl_grp_CSVs   addObject: myCSVobj];");
+//  NSLog(@"gbl_grp_CSVs=%@",gbl_grp_CSVs);
+//  NSLog(@"gbl_grp_CSVs.count=%ld",(unsigned long)gbl_grp_CSVs.count);
+                }
+                if ([argArrayDescription isEqualToString: @"gbl_grp_CSVs_B"]) {
+                    [gbl_grp_CSVs_B addObject: myCSVobj];
+//trn("[gbl_grp_CSVs_B  addObject: myCSVobj];");
+//  NSLog(@"myCSVobj =%@",myCSVobj );
+//  NSLog(@"gbl_grp_CSVs_B=%@",gbl_grp_CSVs);
+                }
+           }
+        } while (FALSE); // add this member's CSV to our array of Group CSVs
+
+    }   // loop thru gbl group member array 
+// get a NSString CSV for each member of the group into NSArray gbl_grp_CSVs or gbl_grp_CSVs_B
+//tn();
+//  NSLog(@"gbl_grp_CSVs=%@",gbl_grp_CSVs);
+//  NSLog(@"gbl_grp_CSVs_B=%@",gbl_grp_CSVs_B);
+//tn();
+
+    return gbl_kingpinIsInGroup;
+
+} // end of  getNSArrayOfCSVsForGroup
+
+
+- (NSString *) getPSVforPersonName: (NSString *) argPersonName;
+{
+    NSString *myPerPSV;
+    myPerPSV = nil;
+
+    NSString *prefixStr5 = [NSString stringWithFormat: @"%@|", argPersonName];  // notice '|'
+    for (NSString *elt in gbl_arrayPer) {     // get PSV of arg name
+        if ([elt hasPrefix: prefixStr5]) { 
+            myPerPSV = elt;
+            break;
+        }
+    }
+    if (myPerPSV == nil) return nil;
+    return myPerPSV;
+
+} // end of  getPSVforPersonName
+
+//  NSLog(@"in getCSVforPersonName !");
+//  NSLog(@"argPersonName=%@",argPersonName);
+
+// get NSString  CSV  for a person name
+//
+//   1. get PSV NSString from gbl_arrayPer
+//   2. make C string from PSV 
+//   3. grab birth info fields 
+//   4. make C string CSV 
+//   5. return NSString of the C string CSV 
+//
+- (NSString *) getCSVforPersonName: (NSString *) argPersonName;
+{
+
+//  NSLog(@"in getCSVforPersonName !");
+//  NSLog(@"argPersonName=%@",argPersonName);
+    // 1.
+    NSString *myPerPSV;
+    myPerPSV = nil;
+
+    NSString *prefixStr3 = [NSString stringWithFormat: @"%@|", argPersonName];
+    for (NSString *elt in gbl_arrayPer) {     // get PSV of arg name
+        if ([elt hasPrefix: prefixStr3]) {  // TODO  add |  ?
+            myPerPSV = elt;
+            break;
+        }
+    }
+    if (myPerPSV == nil) return nil;
+
+    // 2.
+    const char *my_psvc; // psv=pipe-separated values                 // NSString object to C string
+    char my_psv[128];                                                 // NSString object to C string
+    my_psvc = [myPerPSV cStringUsingEncoding:NSUTF8StringEncoding];   // NSString object to C string
+    strcpy(my_psv, my_psvc);                                          // NSString object to C string
+
+    // 3.    
+    char psvName[32], psvMth[4], psvDay[4], psvYear[8]; 
+    char psvHour[4], psvMin[4], psvAmPm[4], psvCity[64], psvProv[64], psvCountry[64];
+    char psvLongitude[16], psvHoursDiff[8], returnPSV[64];
+
+    strcpy(psvName, csv_get_field(my_psv, "|", 1));
+    strcpy(psvMth,  csv_get_field(my_psv, "|", 2));
+    strcpy(psvDay,  csv_get_field(my_psv, "|", 3));
+    strcpy(psvYear, csv_get_field(my_psv, "|", 4));
+    strcpy(psvHour, csv_get_field(my_psv, "|", 5));
+    strcpy(psvMin,  csv_get_field(my_psv, "|", 6));
+    strcpy(psvAmPm, csv_get_field(my_psv, "|", 7));
+    strcpy(psvCity, csv_get_field(my_psv, "|", 8));
+    strcpy(psvProv, csv_get_field(my_psv, "|", 9));
+    strcpy(psvCountry, csv_get_field(my_psv, "|", 10));
+
+//ksn(psvMth);ks(psvDay);ks(psvYear);ks(psvHour);ks(psvMin);ks(psvAmPm);tn();
+//ksn(psvCity);ks(psvProv);ks(psvCountry);tn();
+//
+    // get longitude and timezone hoursDiff from Greenwich
+    // by looking up psvCity, psvProv, psvCountry
+    //
+    seq_find_exact_citPrvCountry(returnPSV, psvCity, psvProv, psvCountry);
+    
+    strcpy(psvHoursDiff,  csv_get_field(returnPSV, "|", 1));
+    strcpy(psvLongitude,  csv_get_field(returnPSV, "|", 2));
+
+    
+    // 4.
+    char csv_person_string[128];
+    sprintf(csv_person_string, "%s,%s,%s,%s,%s,%s,%s,%s,%s",
+            psvName,psvMth,psvDay,psvYear,psvHour,psvMin,psvAmPm,psvHoursDiff,psvLongitude);
+
+//ksn(csv_person_string);tn();
+
+    NSString *myReturnNSStringCSV;
+    myReturnNSStringCSV = [NSString stringWithUTF8String: csv_person_string];  // convert C string to NSString
+
+    return myReturnNSStringCSV;
+
+} // end of  getCSVforPersonName
+
+// It's a fishy business to mess with the font names.
+// And supposedly you have an italic font and you wanna make it bold -
+// adding simply @"-Bold" to the name doesn't work. There's much more elegant way:
+//
+// You might find useful UIFontDescriptorTraitItalic trait if you need to get an italic font
+//
+- (UIFont *)boldFontWithFont: (UIFont *) argFont
+{
+//  NSLog(@"in boldFontWithFont,");
+
+    UIFontDescriptor *fontD = [argFont.fontDescriptor fontDescriptorWithSymbolicTraits: UIFontDescriptorTraitBold];
+//  NSLog(@"fontD =%@",fontD );
+
+    UIFont *myBoldedFont = [UIFont fontWithDescriptor: fontD
+                                                 size: 0];    // size:0 means 'keep the size as it is in the descriptor'.
+//  NSLog(@"myBoldedFont =%@",myBoldedFont );
+
+    return myBoldedFont ;
+}
+
+
+
+- (void) mambSortOnFieldOneForPSVarrayWithDescription:  (NSString *) argArrayDesc; // like "group" "grprem"
+{
+    // assumption  "}" does not occur in array of PSVs,
+    // assumption  "\t" sorts below all letters,nums,space
+
+  NSLog(@"in mambSortArrayOfPSVsOnFieldOne");
+//  NSLog(@"BEG  gbl_arrayPer  =%@",gbl_arrayPer  );
+
+    // make big string from starting array  (PSV field sep = "|")
+    //
+    NSString *joinedString;
+
+    if ([argArrayDesc isEqualToString: @"group"])    { joinedString = [gbl_arrayGrp    componentsJoinedByString: @"}"]; }
+    if ([argArrayDesc isEqualToString: @"person"])   { joinedString = [gbl_arrayPer    componentsJoinedByString: @"}"]; }
+    if ([argArrayDesc isEqualToString: @"member"])   { joinedString = [gbl_arrayMem    componentsJoinedByString: @"}"]; }
+    if ([argArrayDesc isEqualToString: @"grprem"])   { joinedString = [gbl_arrayGrpRem componentsJoinedByString: @"}"]; }
+    if ([argArrayDesc isEqualToString: @"perrem"])   { joinedString = [gbl_arrayPerRem componentsJoinedByString: @"}"]; }
+
+    // now we have one string with lines sep by "}"  and fields sep by "|"
+
+    // change delimiter of PSV 
+    NSString *stringWithNewDelim   = [joinedString stringByReplacingOccurrencesOfString:@"|" withString:@"\t"];
+    //  NSLog(@"stringWithNewDelim   =%@",stringWithNewDelim   );
+
+    // now we have one string with lines sep by "}"  and fields sep by "\t" (tab)
+
+    // make temp array with  new PSV delimiter
+    //
+    NSMutableArray *mutArrayNewTmp = (NSMutableArray *)
+       [stringWithNewDelim componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"}"]];
+    //  NSLog(@"mutArrayNewTmp =%@",mutArrayNewTmp );
+
+    // now we have tmp array with each element  a TSV (string with fields sep by "\t" TAB)
+
+    // sort temp array  mutArrayNewTmp  here (has new delimiters)
+    //
+    if (mutArrayNewTmp)  { [mutArrayNewTmp sortUsingSelector:@selector(caseInsensitiveCompare:)]; }
+
+    // now we have SORTED tmp array with each element  a TSV (string with fields sep by "\t" TAB)
+
+    // make big string from  sorted temp  array
+    //
+    NSString *joinedStringSorted   = [mutArrayNewTmp componentsJoinedByString:@"}"];
+    //  NSLog(@"joinedStringSorted   =%@",joinedStringSorted   );
+
+    // now we have one string with SORTED lines sep by "}"  and fields sep by "\t" (tab)
+
+    // change delimiter of PSV back to original
+    //
+    NSString *stringWithNewDelim2  = [joinedStringSorted stringByReplacingOccurrencesOfString:@"\t" withString:@"|"];
+    //  NSLog(@"stringWithNewDelim2  =%@",stringWithNewDelim2  );
+
+    // now we have one string with SORTED lines sep by "}"  and fields sep by "|" (pipe)
+
+    // make new sorted array with  old PSV delimiter
+    //
+    if ([argArrayDesc isEqualToString:@"group"])    {
+        [gbl_arrayGrp  removeAllObjects];               // empty array
+         gbl_arrayGrp    = [[NSMutableArray alloc] init];   // init  array
+         gbl_arrayGrp    = (NSMutableArray *)
+            [stringWithNewDelim2 componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"}"]];
+    }
+    if ([argArrayDesc isEqualToString:@"person"])   {
+        [gbl_arrayPer  removeAllObjects];               // empty array
+         gbl_arrayPer    = [[NSMutableArray alloc] init];   // init  array
+         gbl_arrayPer    = (NSMutableArray *)
+            [stringWithNewDelim2 componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"}"]];
+    }
+    if ([argArrayDesc isEqualToString:@"member"])   {
+        [gbl_arrayMem  removeAllObjects];               // empty array
+         gbl_arrayMem    = [[NSMutableArray alloc] init];   // init  array
+         gbl_arrayMem    = (NSMutableArray *)
+            [stringWithNewDelim2 componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"}"]];
+    }
+    if ([argArrayDesc isEqualToString:@"grprem"])   {
+        [gbl_arrayGrpRem  removeAllObjects];               // empty array
+         gbl_arrayGrpRem = [[NSMutableArray alloc] init];   // init  array
+         gbl_arrayGrpRem = (NSMutableArray *)
+            [stringWithNewDelim2 componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"}"]];
+    }
+    if ([argArrayDesc isEqualToString:@"perrem"])   {
+        [gbl_arrayPerRem  removeAllObjects];               // empty array
+         gbl_arrayPerRem = [[NSMutableArray alloc] init];   // init  array
+         gbl_arrayPerRem = (NSMutableArray *)
+            [stringWithNewDelim2 componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"}"]];
+    }
+
+//  NSLog(@"END  gbl_arrayPer  =%@",gbl_arrayPer  );
+
+} // end of mambSortArrayOfPSVsOnFieldOne
+
+
+- (CGSize)currentScreenSize {
+    CGRect myScreenBounds = [[UIScreen mainScreen] bounds];
+    CGSize myScreenSize = myScreenBounds.size;
+
+    if ( NSFoundationVersionNumber <= NSFoundationVersionNumber_iOS_7_1 ) {  
+        UIInterfaceOrientation interfaceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
+        if ( UIInterfaceOrientationIsLandscape(interfaceOrientation) ) {
+            myScreenSize = CGSizeMake(myScreenSize.height, myScreenSize.width);
+        }
+    }
+
+    return myScreenSize;
 }
 
 
@@ -1128,124 +1854,7 @@ tn();trn("finished WRITE   lastEntity");
 //    NSLog(@"cnt1=%ld",(long)cnt1);
 //
 //
-//    //NSArray *arrayMAMBexamplePerson = // field 11= locked or not
-//    NSArray *gbl_arrayExaPer = // field 11= locked or not
-//    @[
-//      @"~Father|7|11|1961|11|8|1|Los Angeles|California|United States||",
-//      @"~Mother|3|12|1965|10|45|0|Los Angeles|California|United States||",
-//      @"~Sister1|2|31|1988|0|30|1|Los Angeles|California|United States||",
-//      @"~Sister2|2|13|1990|3|35|0|Los Angeles|California|United States||",
-//      @"~Brother|11|6|1986|8|1|1|Los Angeles|California|United States||",
-//      @"~Grandma|8|17|1939|8|5|0|Los Angeles|California|United States||",
-//      @"~Mike|4|20|1992|6|30|1|Los Angeles|California|United States||",
-//      @"~Anya 789012345|10|19|1990|8|20|0|Los Angeles|California|United States||",
-//      @"~Billy 89012345|8|4|1991|10|30|1|Los Angeles|California|United States||",
-//      @"~Emma|5|17|1993|0|1|1|Los Angeles|California|United States||",
-//      @"~Jacob|10|10|1992|0|1|1|Los Angeles|California|United States||",
-//      @"~Grace|8|21|1994|1|20|0|Los Angeles|California|United States||",
-//      @"~Ingrid|3|13|1993|4|10|1|Los Angeles|California|United States||",
-//      @"~Jen|6|22|1992|4|10|0|Los Angeles|California|United States||",
-//      @"~Liz|3|13|1991|4|10|1|Los Angeles|California|United States||",
-//      @"~Jim|2|3|1993|0|1|1|Los Angeles|California|United States||",
-//      @"~Olivia|4|13|1994|0|53|1|Los Angeles|California|United States||",
-//      @"~Dave|4|8|1993|0|1|1|Los Angeles|California|United States||",
-//      @"~Noah|12|19|1994|11|4|0|Los Angeles|California|United States||",
-//      @"~Sophia|9|20|1991|4|0|0|Los Angeles|California|United States||",
-//      @"~Susie|2|3|1992|8|10|0|Los Angeles|California|United States||",
-//    ];
-//    cnt1 = gbl_arrayExaPer.count;
-//
-//    //NSArray *arrayMAMBexampleMember =
-//    NSArray *gbl_arrayExaMem = // field 11= locked or not
-//    @[
-//      @"~My Family|~Brother|",
-//      @"~My Family|~Father|",
-//      @"~My Family|~Grandma|",
-//      @"~My Family|~Mother|",
-//      @"~My Family|~Sister1|",
-//      @"~My Family|~Sister2|",
-//      @"~Swim Team|~Anya|",
-//      @"~Swim Team|~Billy 89012345|",
-//      @"~Swim Team|~Dave|",
-//      @"~Swim Team|~Emma|",
-//      @"~Swim Team|~Grace|",
-//      @"~Swim Team|~Ingrid|",
-//      @"~Swim Team|~Jacob|",
-//      @"~Swim Team|~Jen|",
-//      @"~Swim Team|~Jim|",
-//      @"~Swim Team|~Liz|",
-//      @"~Swim Team|~Mike|",
-//      @"~Swim Team|~Noah|",
-//      @"~Swim Team|~Olivia|",
-//      @"~Swim Team|~Sophie|",
-//      @"~Swim Team|~Susie|",
-//    ];
-//    cnt1 = gbl_arrayExaMem.count;
-//
-//    // REMEMBER DATA for each Group 
-//    //     field 1  name-of-group
-//    //     field 2  last report selected for this Group:
-//    //              ="m"  for   "Best Match"
-//    //              ="a"  for   "Most Assertive Person"
-//    //              ="e"  for   "Most Emotional"
-//    //              ="r"  for   "Most Restless"
-//    //              ="p"  for   "Most Passionate"
-//    //              ="d"  for   "Most Down-to-earth"
-//    //              ="u"  for   "Most Ups and Downs"
-//    //              ="y"  for   "Best Year ..."
-//    //              ="d"  for   "Best Day ..."
-//    //     field  3  last year  last selection for this report parameter for this Group
-//    //     field  4  day        last selection for this report parameter for this Group
-//    //     + extra "|" at end
-//    // 
-//    //NSArray *arrayMAMBexampleGroupRemember = 
-//    NSArray *gbl_arrayExaGrpRem = 
-//    @[
-//      @"~Family||||",
-//      @"~My Family||||",
-//    ];
-//    cnt1 = gbl_arrayExaGrpRem.count;
-//
-//    // REMEMBER DATA for each Person
-//    //     field 1  name-of-person
-//    //     field 2  last report selected for this Person:
-//    //              ="m"  for   "Best Match"
-//    //              ="y"  for   "Calendar Year ...",
-//    //              ="p"  for   "Personality",
-//    //              ="c"  for   "Compatibility Paired with ...",
-//    //              ="g"  for   "My Best Match in Group ...",
-//    //              ="d"  for   "How was your Day? ...",
-//    //     field 3  last year
-//    //     field 4  person
-//    //     field 5  group
-//    //     field 6  day
-//    //              extra "|" at end
-//    //
-//    //NSArray *arrayMAMBexamplePersonRemember = 
-//    NSArray *gbl_arrayExaPerRem = 
-//    @[
-//      @"~Father||||||",
-//      @"~Mother||||||",
-//      @"~Sister1||||||",
-//      @"~Sister2||||||",
-//      @"~Brother||||||",
-//      @"~Grandma||||||",
-//      @"~Mike||||||",
-//      @"~Anya 789012345||||||",
-//      @"~Billy 89012345||||||",
-//      @"~Emma||||||",
-//      @"~Jacob||||||",
-//      @"~Grace||||||",
-//      @"~Ingrid||||||",
-//      @"~Jen||||||",
-//      @"~Liz||||||",
-//      @"~Jim||||||",
-//      @"~Olivia||||||",
-//      @"~Dave||||||",
-//      @"~Noah||||||",
-//      @"~Sophia||||||",
-//      @"~Susie||||||",
-//    ];
+
 //    cnt1 = gbl_arrayExaPerRem.count;
 //
 
@@ -1504,132 +2113,74 @@ tn();trn("finished WRITE   lastEntity");
 //#pragma mark -
 //
 
+
 //
-//    // This is the initial example data in DB when app first starts.
-//    // This is NOT the ongoing data, which is in  data files.
-//    //
-//    //NSArray *arrayMAMBexampleGroup =   // field 1=name-of-group  field 2=locked-or-not
-//    NSArray *arrayExaGrp =   // field 1=name-of-group  field 2=locked-or-not
-//    @[
-//      @"~Swim Team||",
-//      @"~My Family||",
-//    ];
+//        NSString *prefixStr = [NSString stringWithFormat: @"%@|", nameOfMember];
+//            for (NSString *element in gbl_arrayPer) {
+//                if ([element hasPrefix: prefixStr]) {
+//                    PSVthatWasFound = element;
+//                    break;
+//                }
+//            }
+////NSLog(@"PSVthatWasFound=%@",PSVthatWasFound);
+//            if ( ! PSVthatWasFound) continue;
 //
-//    //NSArray *arrayMAMBexamplePerson = // field 11= locked or not
-//    NSArray *arrayExaPer = // field 11= locked or not
-//    @[
-//      @"~Father|7|11|1961|11|8|1|Los Angeles|California|United States||",
-//      @"~Mother|3|12|1965|10|45|0|Los Angeles|California|United States||",
-//      @"~Sister1|2|31|1988|0|30|1|Los Angeles|California|United States||",
-//      @"~Sister2|2|13|1990|3|35|0|Los Angeles|California|United States||",
-//      @"~Brother|11|6|1986|8|1|1|Los Angeles|California|United States||",
-//      @"~Grandma|8|17|1939|8|5|0|Los Angeles|California|United States||",
-//      @"~Mike|4|20|1992|6|30|1|Los Angeles|California|United States||",
-//      @"~Anya 789012345|10|19|1990|8|20|0|Los Angeles|California|United States||",
-//      @"~Billy 89012345|8|4|1991|10|30|1|Los Angeles|California|United States||",
-//      @"~Emma|5|17|1993|0|1|1|Los Angeles|California|United States||",
-//      @"~Jacob|10|10|1992|0|1|1|Los Angeles|California|United States||",
-//      @"~Grace|8|21|1994|1|20|0|Los Angeles|California|United States||",
-//      @"~Ingrid|3|13|1993|4|10|1|Los Angeles|California|United States||",
-//      @"~Jen|6|22|1992|4|10|0|Los Angeles|California|United States||",
-//      @"~Liz|3|13|1991|4|10|1|Los Angeles|California|United States||",
-//      @"~Jim|2|3|1993|0|1|1|Los Angeles|California|United States||",
-//      @"~Olivia|4|13|1994|0|53|1|Los Angeles|California|United States||",
-//      @"~Dave|4|8|1993|0|1|1|Los Angeles|California|United States||",
-//      @"~Noah|12|19|1994|11|4|0|Los Angeles|California|United States||",
-//      @"~Sophia|9|20|1991|4|0|0|Los Angeles|California|United States||",
-//      @"~Susie|2|3|1992|8|10|0|Los Angeles|California|United States||",
-//    ];
 //
-//    //NSArray *arrayMAMBexampleMember =
-//    NSArray *arrayExaMem = // field 11= locked or not
-//    @[
-//      @"~My Family|~Brother|",
-//      @"~My Family|~Father|",
-//      @"~My Family|~Grandma|",
-//      @"~My Family|~Mother|",
-//      @"~My Family|~Sister1|",
-//      @"~My Family|~Sister2|",
-//      @"~Swim Team|~Anya|",
-//      @"~Swim Team|~Billy 89012345|",
-//      @"~Swim Team|~Dave|",
-//      @"~Swim Team|~Emma|",
-//      @"~Swim Team|~Grace|",
-//      @"~Swim Team|~Ingrid|",
-//      @"~Swim Team|~Jacob|",
-//      @"~Swim Team|~Jen|",
-//      @"~Swim Team|~Jim|",
-//      @"~Swim Team|~Liz|",
-//      @"~Swim Team|~Mike|",
-//      @"~Swim Team|~Noah|",
-//      @"~Swim Team|~Olivia|",
-//      @"~Swim Team|~Sophie|",
-//      @"~Swim Team|~Susie|",
-//    ];
+//            // build this members's C CSV from his gbl_arrayPer PSV 
+//            //
+//            char csv_person_string[128];
+//            char psvName[32], psvMth[4], psvDay[4], psvYear[8]; 
+//            char psvHour[4], psvMin[4], psvAmPm[4], psvCity[64], psvProv[64], psvCountry[64];
+//            char psvLongitude[16], psvHoursDiff[8], returnPSV[64];
+//            const char *my_psvc; // psv=pipe-separated values
+//            char my_psv[128];
+//    
+//            // NSString object to C
+//            my_psvc = [PSVthatWasFound cStringUsingEncoding:NSUTF8StringEncoding];  // psv=pipe-separated values 
+//            strcpy(my_psv, my_psvc);
+////  ksn(my_psv);
+//            
+//            strcpy(psvName, csv_get_field(my_psv, "|", 1));
+//            strcpy(psvMth,  csv_get_field(my_psv, "|", 2));
+//            strcpy(psvDay,  csv_get_field(my_psv, "|", 3));
+//            strcpy(psvYear, csv_get_field(my_psv, "|", 4));
+//            strcpy(psvHour, csv_get_field(my_psv, "|", 5));
+//            strcpy(psvMin,  csv_get_field(my_psv, "|", 6));
+//            strcpy(psvAmPm, csv_get_field(my_psv, "|", 7));
+//            strcpy(psvCity, csv_get_field(my_psv, "|", 8));
+//            strcpy(psvProv, csv_get_field(my_psv, "|", 9));
+//            strcpy(psvCountry, csv_get_field(my_psv, "|", 10));
 //
-//    // REMEMBER DATA for each Group 
-//    //     field 1  name-of-group
-//    //     field 2  last report selected for this Group:
-//    //              ="gbm"  for   "Best Match"
-//    //              ="gma"  for   "Most Assertive Person"
-//    //              ="gme"  for   "Most Emotional"
-//    //              ="gmr"  for   "Most Restless"
-//    //              ="gmp"  for   "Most Passionate"
-//    //              ="gmd"  for   "Most Down-to-earth"
-//    //              ="gmu"  for   "Most Ups and Downs"
-//    //              ="gby"  for   "Best Year ..."
-//    //              ="gbd"  for   "Best Day ..."
-//    //     field  3  last year  last selection for this report parameter for this Group
-//    //     field  4  day        last selection for this report parameter for this Group
-//    //     + extra "|" at end
-//    // 
-//    //NSArray *arrayMAMBexampleGroupRemember = 
-//    NSArray *arrayExaGrpRem = 
-//    @[
-//      @"~Family||||",
-//      @"~My Family||||",
-//    ];
+////ksn(psvMth);ks(psvDay);ks(psvYear);ks(psvHour);ks(psvMin);ks(psvAmPm);tn();
+////ksn(psvCity);ks(psvProv);ks(psvCountry);tn();
+////
+//            
+//            // get longitude and timezone hoursDiff from Greenwich
+//            // by looking up psvCity, psvProv, psvCountry
+//            //
+//            seq_find_exact_citPrvCountry(returnPSV, psvCity, psvProv, psvCountry);
+//            
+//            strcpy(psvHoursDiff,  csv_get_field(returnPSV, "|", 1));
+//            strcpy(psvLongitude,  csv_get_field(returnPSV, "|", 2));
+//            
+//            // set gbl for email
+////            ksn(psvName);
+////            gbl_person_name =  [NSString stringWithUTF8String:psvName ];
 //
-//    // REMEMBER DATA for each Person
-//    //     field 1  name-of-person
-//    //     field 2  last report selected for this Person:
-//    //              ="pbm"  for   "Best Match"
-//    //              ="pcy"  for   "Calendar Year ...",
-//    //              ="ppe"  for   "Personality",
-//    //              ="pco"  for   "Compatibility Paired with ...",
-//    //              ="pbg"  for   "My Best Match in Group ...",
-//    //              ="pwc"  for   "What color is today? ...",
-//    //     field 3  last year
-//    //     field 4  person
-//    //     field 5  group
-//    //     field 6  day
-//    //              extra "|" at end
-//    //
-//    //NSArray *arrayMAMBexamplePersonRemember = 
-//    NSArray *arrayExaPerRem = 
-//    @[
-//      @"~Father||||||",
-//      @"~Mother||||||",
-//      @"~Sister1||||||",
-//      @"~Sister2||||||",
-//      @"~Brother||||||",
-//      @"~Grandma||||||",
-//      @"~Mike||||||",
-//      @"~Anya 789012345||||||",
-//      @"~Billy 89012345||||||",
-//      @"~Emma||||||",
-//      @"~Jacob||||||",
-//      @"~Grace||||||",
-//      @"~Ingrid||||||",
-//      @"~Jen||||||",
-//      @"~Liz||||||",
-//      @"~Jim||||||",
-//      @"~Olivia||||||",
-//      @"~Dave||||||",
-//      @"~Noah||||||",
-//      @"~Sophia||||||",
-//      @"~Susie||||||",
-//    ];
+//            // build C  CSV for this person in group
+//            //
+//            sprintf(csv_person_string, "%s,%s,%s,%s,%s,%s,%s,%s,%s",
+//                    psvName,psvMth,psvDay,psvYear,psvHour,psvMin,psvAmPm,psvHoursDiff,psvLongitude);
+////ksn(csv_person_string);tn();
+////kin((int)(strlen(csv_person_string) + 1));
+////
+//        
+//
+//
+//            // convert this members's C CSV to NSString object 
+//            // and add to argArrayToWriteInto  NSArray
+//            //
+//            NSString *myCSVobj = [NSString stringWithUTF8String: csv_person_string];  // convert c string to NSString
 //
 //
 

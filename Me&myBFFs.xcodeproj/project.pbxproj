@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5004DD3A1ACC426A0094BA14 /* MAMB09_info_TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5004DD391ACC426A0094BA14 /* MAMB09_info_TableViewController.m */; };
+		5019A6471A87FDBB002408DA /* MAMB09_selDateViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = 5019A6461A87FDBB002408DA /* MAMB09_selDateViewController2.m */; };
 		503546041A434EEB00FE7853 /* icon_MAMB09_66x87.png in Resources */ = {isa = PBXBuildFile; fileRef = 503545FA1A434EEB00FE7853 /* icon_MAMB09_66x87.png */; };
 		503546051A434EEB00FE7853 /* icon_MAMB09_0320.png in Resources */ = {isa = PBXBuildFile; fileRef = 503545FB1A434EEB00FE7853 /* icon_MAMB09_0320.png */; };
 		503546061A434EEB00FE7853 /* icon_MAMB09_0064.png in Resources */ = {isa = PBXBuildFile; fileRef = 503545FC1A434EEB00FE7853 /* icon_MAMB09_0064.png */; };
@@ -39,6 +41,10 @@
 		504B299A1A4350AB009A6A25 /* icon_MAMB09_0029.png in Resources */ = {isa = PBXBuildFile; fileRef = 504B29821A4350AB009A6A25 /* icon_MAMB09_0029.png */; };
 		504B299B1A4350AB009A6A25 /* icon_MAMB09_0144.png in Resources */ = {isa = PBXBuildFile; fileRef = 504B29831A4350AB009A6A25 /* icon_MAMB09_0144.png */; };
 		504B299C1A4350AB009A6A25 /* icon_MAMB09_0072.png in Resources */ = {isa = PBXBuildFile; fileRef = 504B29841A4350AB009A6A25 /* icon_MAMB09_0072.png */; };
+		5055382E1A9F79C5003DC816 /* MAMB09viewTBLRPTs_1_TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5055382D1A9F79C5003DC816 /* MAMB09viewTBLRPTs_1_TableViewController.m */; };
+		505538341A9FAA6D003DC816 /* MAMB09viewTBLRPTs_2_TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 505538331A9FAA6D003DC816 /* MAMB09viewTBLRPTs_2_TableViewController.m */; };
+		50661E641B41F5AA005BDFCC /* MAMB09_addChangeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50661E631B41F5AA005BDFCC /* MAMB09_addChangeTableViewController.m */; };
+		50796A7C1ADC286000360BA4 /* MAMB09_selectReports_B_TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50796A7B1ADC286000360BA4 /* MAMB09_selectReports_B_TableViewController.m */; };
 		50AC38F419D082EB00FF3997 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50AC38F319D082EB00FF3997 /* Foundation.framework */; };
 		50AC38F619D082EB00FF3997 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50AC38F519D082EB00FF3997 /* CoreGraphics.framework */; };
 		50AC38F819D082EB00FF3997 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50AC38F719D082EB00FF3997 /* UIKit.framework */; };
@@ -84,6 +90,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5004DD381ACC426A0094BA14 /* MAMB09_info_TableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAMB09_info_TableViewController.h; sourceTree = "<group>"; };
+		5004DD391ACC426A0094BA14 /* MAMB09_info_TableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAMB09_info_TableViewController.m; sourceTree = "<group>"; };
+		5019A6451A87FDBB002408DA /* MAMB09_selDateViewController2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MAMB09_selDateViewController2.h; path = ../MAMB09_selDateViewController2.h; sourceTree = "<group>"; };
+		5019A6461A87FDBB002408DA /* MAMB09_selDateViewController2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MAMB09_selDateViewController2.m; path = ../MAMB09_selDateViewController2.m; sourceTree = "<group>"; };
+		5032F7E41B06897800EC964B /* grphtm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = grphtm.h; sourceTree = "<group>"; };
 		503545FA1A434EEB00FE7853 /* icon_MAMB09_66x87.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_MAMB09_66x87.png; sourceTree = "<group>"; };
 		503545FB1A434EEB00FE7853 /* icon_MAMB09_0320.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_MAMB09_0320.png; sourceTree = "<group>"; };
 		503545FC1A434EEB00FE7853 /* icon_MAMB09_0064.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_MAMB09_0064.png; sourceTree = "<group>"; };
@@ -116,6 +127,14 @@
 		504B29821A4350AB009A6A25 /* icon_MAMB09_0029.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_MAMB09_0029.png; path = ../../_old/icon/planet_54jb2a/icon_MAMB09/icon_MAMB09_0029.png; sourceTree = "<group>"; };
 		504B29831A4350AB009A6A25 /* icon_MAMB09_0144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_MAMB09_0144.png; path = ../../_old/icon/planet_54jb2a/icon_MAMB09/icon_MAMB09_0144.png; sourceTree = "<group>"; };
 		504B29841A4350AB009A6A25 /* icon_MAMB09_0072.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_MAMB09_0072.png; path = ../../_old/icon/planet_54jb2a/icon_MAMB09/icon_MAMB09_0072.png; sourceTree = "<group>"; };
+		5055382C1A9F79C5003DC816 /* MAMB09viewTBLRPTs_1_TableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAMB09viewTBLRPTs_1_TableViewController.h; sourceTree = "<group>"; };
+		5055382D1A9F79C5003DC816 /* MAMB09viewTBLRPTs_1_TableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MAMB09viewTBLRPTs_1_TableViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		505538321A9FAA6D003DC816 /* MAMB09viewTBLRPTs_2_TableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAMB09viewTBLRPTs_2_TableViewController.h; sourceTree = "<group>"; };
+		505538331A9FAA6D003DC816 /* MAMB09viewTBLRPTs_2_TableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MAMB09viewTBLRPTs_2_TableViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		50661E621B41F5AA005BDFCC /* MAMB09_addChangeTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAMB09_addChangeTableViewController.h; sourceTree = "<group>"; };
+		50661E631B41F5AA005BDFCC /* MAMB09_addChangeTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAMB09_addChangeTableViewController.m; sourceTree = "<group>"; };
+		50796A7A1ADC286000360BA4 /* MAMB09_selectReports_B_TableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAMB09_selectReports_B_TableViewController.h; sourceTree = "<group>"; };
+		50796A7B1ADC286000360BA4 /* MAMB09_selectReports_B_TableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAMB09_selectReports_B_TableViewController.m; sourceTree = "<group>"; };
 		50AC38F019D082EB00FF3997 /* Me and My BFFs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Me and My BFFs.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		50AC38F319D082EB00FF3997 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		50AC38F519D082EB00FF3997 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -237,16 +256,28 @@
 				50AC390B19D082EB00FF3997 /* Images.xcassets */,
 				50E05BF61A2F994100B48107 /* iTunesArtwork */,
 				50EB4F701A3552CE001F15C0 /* iTunesArtwork@2x */,
+				5004DD381ACC426A0094BA14 /* MAMB09_info_TableViewController.h */,
+				5004DD391ACC426A0094BA14 /* MAMB09_info_TableViewController.m */,
 				50AC392819D0864A00FF3997 /* MAMB09_homeTableViewController.h */,
 				50AC392919D0864A00FF3997 /* MAMB09_homeTableViewController.m */,
+				50661E621B41F5AA005BDFCC /* MAMB09_addChangeTableViewController.h */,
+				50661E631B41F5AA005BDFCC /* MAMB09_addChangeTableViewController.m */,
 				50AC392B19D08D3200FF3997 /* MAMB09_selectReportsTableViewController.h */,
 				50AC392C19D08D3200FF3997 /* MAMB09_selectReportsTableViewController.m */,
-				50CC4EB11A1D1592001DD245 /* MAMB09_viewHTMLViewController.h */,
-				50CC4EB21A1D1592001DD245 /* MAMB09_viewHTMLViewController.m */,
 				50DE03111A27AB1700425BAC /* MAMB09_selYearViewController.h */,
 				50DE03121A27AB1700425BAC /* MAMB09_selYearViewController.m */,
 				50DCAC431A2CDF530018624D /* MAMB09_selPersonViewController.h */,
 				50DCAC441A2CDF530018624D /* MAMB09_selPersonViewController.m */,
+				5019A6451A87FDBB002408DA /* MAMB09_selDateViewController2.h */,
+				5019A6461A87FDBB002408DA /* MAMB09_selDateViewController2.m */,
+				50CC4EB11A1D1592001DD245 /* MAMB09_viewHTMLViewController.h */,
+				50CC4EB21A1D1592001DD245 /* MAMB09_viewHTMLViewController.m */,
+				5055382C1A9F79C5003DC816 /* MAMB09viewTBLRPTs_1_TableViewController.h */,
+				5055382D1A9F79C5003DC816 /* MAMB09viewTBLRPTs_1_TableViewController.m */,
+				50796A7A1ADC286000360BA4 /* MAMB09_selectReports_B_TableViewController.h */,
+				50796A7B1ADC286000360BA4 /* MAMB09_selectReports_B_TableViewController.m */,
+				505538321A9FAA6D003DC816 /* MAMB09viewTBLRPTs_2_TableViewController.h */,
+				505538331A9FAA6D003DC816 /* MAMB09viewTBLRPTs_2_TableViewController.m */,
 				50C0BAA21A2108CE005B79F4 /* mamblib.h */,
 				50C0BA9D1A2108CE005B79F4 /* futasp.c */,
 				50C0BA9E1A2108CE005B79F4 /* futdefs.h */,
@@ -257,6 +288,7 @@
 				50C0BA9A1A2108CE005B79F4 /* grpdoc.c */,
 				50C0BA971A2108CE005B79F4 /* grpdoc.h */,
 				50C0BA9B1A2108CE005B79F4 /* grphtm.c */,
+				5032F7E41B06897800EC964B /* grphtm.h */,
 				50C0BA991A2108CE005B79F4 /* incocoa.c */,
 				50ED86C61A23BADF003CED81 /* incocoa.h */,
 				50C0BA9C1A2108CE005B79F4 /* mambutil.c */,
@@ -378,7 +410,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = MAMB09;
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Richard Koskela";
 				TargetAttributes = {
 					50AC38EF19D082EB00FF3997 = {
@@ -468,8 +500,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				505538341A9FAA6D003DC816 /* MAMB09viewTBLRPTs_2_TableViewController.m in Sources */,
 				50CC4EB31A1D1592001DD245 /* MAMB09_viewHTMLViewController.m in Sources */,
+				50796A7C1ADC286000360BA4 /* MAMB09_selectReports_B_TableViewController.m in Sources */,
+				50661E641B41F5AA005BDFCC /* MAMB09_addChangeTableViewController.m in Sources */,
 				50AC390419D082EB00FF3997 /* MAMB09AppDelegate.m in Sources */,
+				5004DD3A1ACC426A0094BA14 /* MAMB09_info_TableViewController.m in Sources */,
+				5055382E1A9F79C5003DC816 /* MAMB09viewTBLRPTs_1_TableViewController.m in Sources */,
+				5019A6471A87FDBB002408DA /* MAMB09_selDateViewController2.m in Sources */,
 				50E044271A73FCA200A5330A /* NSData+MAMB09_NSData_encryption.m in Sources */,
 				50AC390019D082EB00FF3997 /* main.m in Sources */,
 				50C0BAB21A2108CE005B79F4 /* perhtm.c in Sources */,
@@ -553,6 +591,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -615,7 +654,8 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Me and My BFFs/Me and My BFFs-Prefix.pch";
 				INFOPLIST_FILE = "Me and My BFFs/Me and My BFFs-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.example.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
@@ -632,7 +672,8 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Me and My BFFs/Me and My BFFs-Prefix.pch";
 				INFOPLIST_FILE = "Me and My BFFs/Me and My BFFs-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.example.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
@@ -655,6 +696,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "Me and My BFFsTests/Me and My BFFsTests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.example.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
@@ -673,6 +715,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Me and My BFFs/Me and My BFFs-Prefix.pch";
 				INFOPLIST_FILE = "Me and My BFFsTests/Me and My BFFsTests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.example.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;

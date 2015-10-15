@@ -15,10 +15,10 @@
 
 @interface MAMB09_selectReportsTableViewController ()
 {
-    //@property (strong, nonatomic) UIView *HomeNavBar;
 
 }
 @end
+
 
 @implementation MAMB09_selectReportsTableViewController
 
@@ -38,8 +38,7 @@
     [super viewDidLoad];
 
     fopen_fpdb_for_debug();
-    tn();
-    NSLog(@"in sel Reports viewDidLoad!");
+tn(); NSLog(@"in sel Reports viewDidLoad!");
 
     
     // Uncomment the following line to preserve selection between presentations.
@@ -60,23 +59,30 @@
     });
     
     // NSLog(@"fromHomeCurrentEntity=%@",self.fromHomeCurrentEntity);                  // like "group" or "person"
-    NSLog(@"gbl_fromHomeCurrentSelectionPSV =%@",gbl_fromHomeCurrentSelectionPSV);
-    NSLog(@"gbl_fromHomeCurrentSelectionType=%@",gbl_fromHomeCurrentSelectionType);
-    NSLog(@"gbl_fromHomeCurrentEntity=%@",gbl_fromHomeCurrentEntity);
+//    NSLog(@"gbl_fromHomeCurrentSelectionPSV =%@",gbl_fromHomeCurrentSelectionPSV);
+//    NSLog(@"gbl_fromHomeCurrentSelectionType=%@",gbl_fromHomeCurrentSelectionType);
+//    NSLog(@"gbl_fromHomeCurrentEntity=%@",gbl_fromHomeCurrentEntity);
 
 } /* viewDidLoad */
 
 
 - (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
+    //    [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"The App received an Memory Warning"
-                                                    message: @"The system has determined that the \namount of available memory is very low."
-                                                   delegate: nil
-                                          cancelButtonTitle: @"OK"
-                                          otherButtonTitles: nil];
-    [alert show];
-}
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle: @"The App received a Memory Warning"
+                                                                   message: @"The system has determined that the \namount of available memory is very low."
+                                                            preferredStyle: UIAlertControllerStyleAlert  ];
+     
+    UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                        style: UIAlertActionStyleDefault
+                                                      handler: ^(UIAlertAction * action) {
+        NSLog(@"Ok button pressed");
+    } ];
+    [alert addAction:  okButton];
+    [self presentViewController: alert  animated: YES  completion: nil   ];
+    [super didReceiveMemoryWarning];
+} // didReceiveMemoryWarning 
+
 
 #pragma mark - Table view data source
 
@@ -89,36 +95,45 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-
     NSInteger rowcount;
     rowcount = 0;
 
     // Return the number of rows in the section.
     // return 0;
-    // if ([self.fromHomeCurrentSelectionType isEqualToString:@"person"]) {
     if ([gbl_fromHomeCurrentSelectionType isEqualToString:@"person"]) {
-        return 5;
-        //rowcount = mambReportsPerson.count;
-
+//        return 7;
+        return 8;
     }
     if ([gbl_fromHomeCurrentSelectionType isEqualToString:@"group"])  {
-        //rowcount = mambReportsGroup.count;
-        return 11;
-
+//        return 11;
+        return 12;
     }
-    if ([gbl_fromHomeCurrentSelectionType isEqualToString:@"pair"])   {
-        //rowcount = mambReportsPair.count;
-        return 11;
-
-    }
-    //NSLog(@"rowcount=%ld",(long)rowcount);
-    return 0;
+    return 1;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath 
+{
+//  NSLog(@"in heightForRowAtIndexPath  INFO ");
+//    if (  [gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"] ){   // my best match (grpone)
+    if ([gbl_currentMenuPrefixFromHome isEqualToString: @"homp"] ) {   // home menu, person was selected
+        if (indexPath.row == 0) return    16.0;  // spacer
+        if (indexPath.row == 4) return    16.0;  // spacer
+        if (indexPath.row == 6) return    16.0;  // spacer
+        if (indexPath.row == 5) return    48.0;  // 2-row  grpone desc
+        return 32.0;  //default
+    }
+    if ([gbl_currentMenuPrefixFromHome isEqualToString: @"homg"] ) {   // home menu, group was selected
+        if (indexPath.row == 0) return    16.0;  // spacer
+        if (indexPath.row == 2) return    16.0;  // spacer
+        if (indexPath.row == 8) return    16.0;  // spacer
+        return 32.0;  //default
+    }
+    return 32.0;
+}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //NSLog(@"in selREP numberOfRowsInSection!");
+//    NSLog(@"in selREP cellForRowAtIndexPath!");
 
     // create an NSString  we can use as the reuse identifier
     static NSString *CellIdentifier = @"SelReportsCellIDentifier";
@@ -126,21 +141,31 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: CellIdentifier];
     // if there are no cells to be reused, create a new cell
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle: UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
 
     // Configure the cell...
 
+    //   cell.selectedBackgroundView =  gbl_myCellBgView ;  // get my own background color for selected rows (see MAMB09AppDelegate.m)
+
+    NSString *myNewCellText;
+    NSInteger thisCellIsActive;
+    myNewCellText    = @" ";
+    thisCellIsActive = 0;
+
+    UIButton *myInvisibleButton       = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+    myInvisibleButton.backgroundColor = [UIColor clearColor];
+
     NSString *myPrefix;  // for 3-char code in rptsel array PSV field # 1
-    if ([gbl_fromHomeCurrentSelectionType isEqualToString:@"person"]) myPrefix = @"p";
-    if ([gbl_fromHomeCurrentSelectionType isEqualToString:@"group"])  myPrefix = @"g";
-    if ([gbl_fromHomeCurrentSelectionType isEqualToString:@"pair"])   myPrefix = @"2";
+    myPrefix = gbl_currentMenuPrefixFromHome;  // this is "homp" or "homg"   <<----------------
+
+    //NSLog(@"    myPrefix=%@",myPrefix);
 
     // match the tableview index we are on 
     // to the same index in gbl_mambReports  (but for the correct prefix  p,g,2)
     int myIdxInto_gbl_mambReports = (int) indexPath.row;
 
-    // goto gbl_mambReports 
+    // goto gbl_mambReports  and  grab menu cell text
     // consider  elements who have correct prefix    like "p" for person reports
     // get str with index of  myIdxInto_gbl_mambReports into those
     // grab field #2 of that PSV (will be report table text)
@@ -154,12 +179,88 @@
         if (idx == myIdxInto_gbl_mambReports) {
             NSCharacterSet *mySeparators = [NSCharacterSet characterSetWithCharactersInString:@"|"];
             NSArray *myRptSelarr         = [perRptPSV componentsSeparatedByCharactersInSet: mySeparators];
-            cell.textLabel.text          = myRptSelarr[1];  // field # 2  in like,  @"pcy|Calendar Year ...",
+            myNewCellText                = myRptSelarr[1];  // field # 2  in like,  @"pcy|Calendar Year ...",
+            thisCellIsActive = 1;
         }
+    }
+//tn();kin(myIdxInto_gbl_mambReports);
+//  NSLog(@"myNewCellText                =%@",myNewCellText                );
+
+    // override if spacer cell
+    //
+    if (  [myPrefix isEqualToString: @"homp"] )   // my best match (grpone)
+    { 
+        if (indexPath.row == 0      // spacer
+        ||  indexPath.row == 4      // spacer
+        ||  indexPath.row == 6      // spacer
+        ) {
+            thisCellIsActive = 0;
+            myNewCellText    = @" ";
+        }
+    } 
+    if (  [myPrefix isEqualToString: @"homg"] )   // my best match (grpone)
+    { 
+//        if (indexPath.row == 1      // spacer
+//        ||  indexPath.row == 7)     // spacer
+        if (indexPath.row == 0      // spacer
+        ||  indexPath.row == 2      // spacer
+        ||  indexPath.row == 8      // spacer
+        ) {
+            thisCellIsActive = 0;
+            myNewCellText    = @" ";
+        }
+    } 
+
+
+    if (thisCellIsActive == 0) {
+        dispatch_async(dispatch_get_main_queue(), ^{        
+            cell.textLabel.text                      = myNewCellText;  // --------------------------------------------------
+            cell.userInteractionEnabled              = NO;                           // no selection highlighting
+            cell.accessoryView                       = myInvisibleButton;            // no right arrow on benchmark label
+            cell.accessoryType                       = UITableViewCellAccessoryDisclosureIndicator;
+
+            cell.textLabel.numberOfLines             = 1; 
+            cell.textLabel.textColor                 = [UIColor blackColor];
+//            cell.textLabel.font                      = myFont;
+            cell.textLabel.adjustsFontSizeToFitWidth = YES;
+        });
+    }
+
+    if (thisCellIsActive == 1) {
+
+        if (   indexPath.row == 5     // 2 lines. old "My Best Match in Group" before 2 line version below with person name
+            && [myPrefix isEqualToString: @"homp"]    // my best match (grpone)
+        ) {
+            myNewCellText = [NSString stringWithFormat:  @"Best Match for\n %@ in Group ...", gbl_lastSelectedPerson ]; 
+
+            dispatch_async(dispatch_get_main_queue(), ^{            // <  active
+                cell.textLabel.text                      = myNewCellText;  // --------------------------------------------------
+                cell.userInteractionEnabled              = YES;                  
+                cell.accessoryType                       = UITableViewCellAccessoryDisclosureIndicator;
+
+                cell.textLabel.numberOfLines             = 2; 
+                cell.textLabel.textColor                 = [UIColor blackColor];
+                cell.textLabel.adjustsFontSizeToFitWidth = YES;
+            });
+            return cell;  // row 4, homp
+        }
+
+        dispatch_async(dispatch_get_main_queue(), ^{            // <  active
+            cell.textLabel.text                      = myNewCellText;  // --------------------------------------------------
+            cell.userInteractionEnabled              = YES;                  
+//            cell.accessoryView                       = myDisclosureIndicatorLabel;
+            cell.accessoryType                       = UITableViewCellAccessoryDisclosureIndicator;
+
+            cell.textLabel.numberOfLines             = 1; 
+            cell.textLabel.textColor                 = [UIColor blackColor];
+//            cell.textLabel.font                      = myFont;
+            cell.textLabel.adjustsFontSizeToFitWidth = YES;
+        });
     }
 
     return cell;
 } // cellForRowAtIndexPath
+
 
 // color cell bg
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -223,8 +324,9 @@
     // get the indexpath of current row
 
     // this is the "currently" selected row now
-    NSIndexPath *currentlyselectedIndexPath = [self.tableView indexPathForSelectedRow];
-    UITableViewCell *currcell = [self.tableView cellForRowAtIndexPath:currentlyselectedIndexPath];
+    //
+    //NSIndexPath *currentlyselectedIndexPath = [self.tableView indexPathForSelectedRow];
+    //   UITableViewCell *currcell = [self.tableView cellForRowAtIndexPath:currentlyselectedIndexPath];
     // now you can use cell.textLabel.text
 
     // segueRptSelToViewHTML
@@ -249,12 +351,12 @@
         //UITableViewCell *currcell = [self.tableView cellForRowAtIndexPath:currentlyselectedIndexPath];
         // now you can use cell.textLabel.text
  
+//        gbl_fromSelRptRowString = currcell.textLabel.text;
 
         
     } // segueRptSelToViewHTML
 
-    if ([segue.identifier isEqualToString:@"segueRptSelToSelYear"]) {
-        nbn(41);
+    if ([segue.identifier isEqualToString:@"segueRptSelToSelDate3"]) {
         //MAMB09_viewHTMLViewController *myDestViewController = segue.destinationViewController;
         
         // pass forward this data to ViewHTML
@@ -264,14 +366,23 @@
         // now in gbl_fromHomeCurrentSelectionPSV
         //myDestViewController.fromHomeCurrentSelectionPSV     = self.fromHomeCurrentSelectionPSV; //  CSV for "group" or "person"
         
+//        gbl_fromSelRptRowString = currcell.textLabel.text;
+//        NSLog(@" in selReports seg to seldate3  SET   gbl_fromSelRptRowString=%@",gbl_fromSelRptRowString);
+
         //myDestViewController.selectedYear = self.selectedYear;  // user-selected yr for Calendar Year report
-        nb(49);
     } // segueRptSelToSelYear
     
     if ([segue.identifier isEqualToString:@"segueRptSelToSelPerson"]) {
-        nbn(400);
+//        gbl_fromSelRptRowString = currcell.textLabel.text;
+//        NSLog(@"gbl_fromSelRptRowString=%@",gbl_fromSelRptRowString);
 
     } // segueRptSelToSelPerson
+
+    if ([segue.identifier isEqualToString:@"segueRptSelToSelYear"]) {
+//        gbl_fromSelRptRowString = currcell.textLabel.text;
+//        NSLog(@"in segue segueRptSelToSelYear  gbl_fromSelRptRowString=%@",gbl_fromSelRptRowString);
+
+    } // segueRptSelToSelYear
     
 
 } /* prepareForSegue */
@@ -288,45 +399,88 @@
     // didSelectRowAtIndexPath
     //
 -(void) viewWillAppear:(BOOL)animated {
-    tn(); NSLog(@"in viewWillAppear  in rpt sel!");
-    // for test
-    //NSLog(@" in viewWillAppear in sel rpt tableview contrlr --------------- gbl_arrayPer=%@",gbl_arrayPer);
+    NSLog(@"in viewWillAppear  in rpt sel!");
 
-    // get the indexpath of current row
-    NSIndexPath *myIdxPath = [self.tableView indexPathForSelectedRow];
-    NSLog(@"myIdxPath.row=%ld", (long)myIdxPath.row);
-    NSLog(@"myIdxPath=%@",myIdxPath );
+    NSString *myLastReportCodeSelected;
 
-    // [tableView reloadData];
-    if(myIdxPath) {
-        [self.tableView selectRowAtIndexPath:myIdxPath animated:YES scrollPosition:UITableViewScrollPositionNone]; // puts highlight on this row
-    } else {
+    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // to access global methods in appDelegate.m
 
-//        // use remembered selection, if present
-//        NSUInteger *myLastSelectedIndex;
-//        MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // to access global methods in appDelegate.m
-//        myLastSelectedIndex = [myappDelegate lastSelTblIdxForEntity: (NSString *) personOrGroup
-//                                                      havingName: (NSString *) entityName
-//                                              inRememberCategory: (NSString *) rememberCategory ;
-//        if (myLastSelectedIndex) {
-//            NSIndexPath *myIdxPath2 = [NSIndexPath indexPathWithIndex: *myLastSelectedIndex];
-//            [self.tableView selectRowAtIndexPath:myIdxPath2
-//                                        animated:YES
-//                                  scrollPosition:UITableViewScrollPositionNone]; // puts highlight on this row
-//        }
-//
-    }
-
-    // here highlight the  remembered row  for the current  person
 // TODO   <.>
-    
+
+    // Now  highlight the  remembered last report selection  for the current  person
+
+    // get last report  3-char code
+    myLastReportCodeSelected =  [myappDelegate grabLastSelectionValueForEntity: (NSString *) gbl_fromHomeCurrentEntity     //  personOrGroup
+                                                                    havingName: (NSString *) gbl_fromHomeCurrentEntityName
+                                                          fromRememberCategory: (NSString *) @"rptsel"  ]; 
+
+    NSLog(@"myLastReportCodeSelected =%@",myLastReportCodeSelected );
+nbn(71);
+    if (myLastReportCodeSelected  &&  myLastReportCodeSelected.length != 0) {
+nbn(72);
+        // find the last report  3-char code   in   gbl_mambReports
+        //    (the index of that  equals  the index of the row in tableview to highlight)
+        BOOL foundRptArrEltWithCode;
+        foundRptArrEltWithCode = NO;
+        int foundIdx = -1;
+        for (NSString *perRptPSV in gbl_mambReports) {
+            foundIdx = foundIdx + 1;
+            if ( ! [perRptPSV hasPrefix: myLastReportCodeSelected]) continue;
+           
+            foundRptArrEltWithCode = YES;
+            break;
+        }
+//  NSLog(@"foundRptArrEltWithCode =%d",foundRptArrEltWithCode );
+//tn();kin(foundIdx);
+
+        //
+        // adjust foundidx   because of setup of gbl_mambReports   in MAMB09AppDelegate.m  -
+        // see  gbl_mambReports = // all reports in all report selection menus, "homp*" "homg*" "gbm*" or "pbm*" 
+        //
+        int myOffsetRptCodeTbl;
+        myOffsetRptCodeTbl = 0;
+        if ([myLastReportCodeSelected hasPrefix: @"homp"]) myOffsetRptCodeTbl =  0; //  see gbl_mambReports in MAMB09AppDelegate.m 
+        if ([myLastReportCodeSelected hasPrefix: @"homg"]) myOffsetRptCodeTbl =  8;
+        if ([myLastReportCodeSelected hasPrefix: @"gbm" ]) myOffsetRptCodeTbl = 19;
+        if ([myLastReportCodeSelected hasPrefix: @"pbm" ]) myOffsetRptCodeTbl = 27;
+        foundIdx = foundIdx - myOffsetRptCodeTbl ;   //  MAGIC HERE mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm !
+tn();kin(foundIdx);
+
+        if (foundRptArrEltWithCode == YES) {
+nbn(73);
+
+            // use found foundIdx to get  found  indexPath
+            NSIndexPath *foundIndexPath = [NSIndexPath indexPathForRow: foundIdx   inSection: 0];
+
+  NSLog(@"foundIndexPath=%@",foundIndexPath);
+
+
+
+      //how can I get the text of the cell here?    // TODO remove test
+      UITableViewCell *testcell = [self.tableView cellForRowAtIndexPath: foundIndexPath];
+  NSLog(@" testcell.textLabel.text=[%@]", testcell.textLabel.text);
+
+
+
+            if (foundIndexPath) {
+nbn(74);
+                [self.tableView selectRowAtIndexPath: foundIndexPath  // puts highlight on remembered row
+                                            animated: YES
+                                      scrollPosition: UITableViewScrollPositionNone];
+nbn(75);
+            }
+nbn(76);
+        }
+nbn(77);
+    } // myLastReportCodeSelected exists
+nbn(78);
 
 } // viewWillAppear
 
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    tn(); NSLog(@"in viewDidAppear  in rpt sel!");
+    NSLog(@"in viewDidAppear  in rpt sel!");
     //[super viewDidAppear];
 
 
@@ -400,13 +554,22 @@
 
 
 
+// GOTO  the Correct View for Input Params
+// or, directly to ViewHTML to see the Selected Report
+//
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath: (NSIndexPath *) indexPath
 {
-    NSLog(@"in didSelectRowAtIndexPath! in sel rpt");
-        MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // to access global methods in appDelegate.m
-    
+//tn();trn("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
+//    NSLog(@"in didSelectRowAtIndexPath! in sel rpt");
+//    NSLog(@"indexpath.row=%ld",(long)indexPath.row);
+
+    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // to access global methods in appDelegate.m
+
+
     // this is the "currently" selected row now
     NSIndexPath *currentlyselectedIndexPath = [self.tableView indexPathForSelectedRow];
+    
+
     
     // select the row in UITableView
     // This puts in the light grey "highlight" indicating selection
@@ -418,25 +581,60 @@
     // animated:YES
     //  animated: YES];
     
-    // GOTO  the Correct View for Input Params
-    // or, directly to ViewHTML to see the Selected Report
-    //
-    
-    UITableViewCell *currcell = [self.tableView cellForRowAtIndexPath:currentlyselectedIndexPath];
+    // now unused   20150223
+    //UITableViewCell *currcell = [self.tableView cellForRowAtIndexPath:currentlyselectedIndexPath];
     // NSLog(@"currcell=%@",currcell);
 
+    // not used anymore 2015023 
     // now you can use cell.textLabel.text
-    NSString *stringForCurrentlySelectedRow = currcell.textLabel.text;
+    //    NSString *stringForCurrentlySelectedRow = currcell.textLabel.text;
     // NSLog(@"currcell.textLabel.text=%@",currcell.textLabel.text);
 
 
-    if ([stringForCurrentlySelectedRow hasPrefix: @"Calendar Year"] ) {
-        NSLog(@"in dispatch  for SELECT YEAR  !");
+
+    // populate  gbl_currentMenuPlusReportCode 
+    //
+    // get the menu code + report code from gbl_mambReports   (like "hompbm")
+    do {
+//        NSString *myPrefix = gbl_currentMenuCode;  // like "homp"
+        NSString *myPrefix = gbl_currentMenuPrefixFromHome;  // like "homp"
+
+        // match the tableview index we are on 
+        // to the same index in gbl_mambReports  (but for the correct prefix)
+        int myIdxInto_gbl_mambReports = (int) indexPath.row;
+
+
+        // goto gbl_mambReports 
+        // consider  elements who have correct prefix    like "p" for person reports
+        // get str with index of  myIdxInto_gbl_mambReports into those
+        // grab field #2 of that PSV (will be report table text)
+        //
+        int idx = -1;
+        for (NSString *rptPSV in gbl_mambReports) {
+
+            if ( ! [rptPSV hasPrefix: myPrefix]) continue;
+
+            idx = idx + 1;
+            if (idx == myIdxInto_gbl_mambReports) {
+                NSCharacterSet *mySeparators = [NSCharacterSet characterSetWithCharactersInString:@"|"];
+                NSArray *myRptSelarr         = [rptPSV componentsSeparatedByCharactersInSet: mySeparators];
+                gbl_currentMenuPlusReportCode = myRptSelarr[0];  // field # 1  in like,  @"hompcy|Calendar Year ...",
+            }
+        }
+    } while (FALSE); // get the menu code + report code from gbl_mambReports   (like "hompbm")
+
+tn();trn("selRPT after ");   NSLog(@"gbl_currentMenuPlusReportCode =%@",gbl_currentMenuPlusReportCode ); tn();
+
+
+
+    //if ([stringForCurrentlySelectedRow hasPrefix: @"Calendar Year"] ) 
+    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompcy"] ) {
+NSLog(@"in dispatch  for SELECT YEAR  !");
         
         [myappDelegate saveLastSelectionForEntity: (NSString *) @"person"
                                        havingName: (NSString *) gbl_fromHomeCurrentEntityName
                          updatingRememberCategory: (NSString *) @"rptsel"
-                                       usingValue: (NSString *) @"pcy"
+                                       usingValue: (NSString *) gbl_currentMenuPlusReportCode
         ];
 
         // Because background threads are not prioritized and will wait a very long time
@@ -463,17 +661,25 @@
         //        }
         
         
-        // NSLog(@"34!");
+// NSLog(@"34!");
         // ntrn("=========================================");
     } // Calendar Year
-    
-    if ([stringForCurrentlySelectedRow hasPrefix: @"Personality"] ) {
+
+//  NSLog(@"in sel rpt gbl_currentMenuPlusReportCode =%@",gbl_currentMenuPlusReportCode );
+//  NSLog(@"=%@",);
+//  NSLog(@"=%@",);
+//  NSLog(@"=%@",);
+//  NSLog(@"=%@",);
+//
+
+    //if ([stringForCurrentlySelectedRow hasPrefix: @"Personality"] ) 
+    if ([gbl_currentMenuPlusReportCode isEqualToString: @"homppe"] ) {
         //[self performSegueWithIdentifier:@"segueRptSelToViewHTML"         sender:self];
         
         [myappDelegate saveLastSelectionForEntity: (NSString *) @"person"
                                        havingName: (NSString *) gbl_fromHomeCurrentEntityName
                          updatingRememberCategory: (NSString *) @"rptsel"
-                                       usingValue: (NSString *) @"ppe"
+                                       usingValue: (NSString *) gbl_currentMenuPlusReportCode
         ];
 
         // Because background threads are not prioritized and will wait a very long time
@@ -485,155 +691,208 @@
             [self performSegueWithIdentifier:@"segueRptSelToViewHTML" sender:self];
         });
     }
-    
-    if ([stringForCurrentlySelectedRow hasPrefix: @"Compatibility Paired"] ) {
+
+
+    //if ([stringForCurrentlySelectedRow hasPrefix: @"Compatibility Paired"] ) 
+    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompco"] ) {
         [myappDelegate saveLastSelectionForEntity: (NSString *) @"person"
                                        havingName: (NSString *) gbl_fromHomeCurrentEntityName
                          updatingRememberCategory: (NSString *) @"rptsel"
-                                       usingValue: (NSString *) @"pco"    ];
+                                       usingValue: (NSString *) gbl_currentMenuPlusReportCode
+        ];
 
-        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  <.>
-            [self performSegueWithIdentifier:@"segueRptSelToSelPerson" sender:self];
+        dispatch_async(dispatch_get_main_queue(), ^{                                 // <===  <.>
+            [self performSegueWithIdentifier:@"segueRptSelToSelPerson" sender:self]; //  SELECT A PERSON
         });
     }
 
-    if ([stringForCurrentlySelectedRow hasPrefix: @"My Best Match"] ) {
+    //if ([stringForCurrentlySelectedRow hasPrefix: @"My Best Match"] ) 
+    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"] ) {
+
+//        gbl_currentMenuCode = @"pbm";
+        gbl_currentMenuPrefixFromMatchRpt = @"pbm";
+
         [myappDelegate saveLastSelectionForEntity: (NSString *) @"person"
                                        havingName: (NSString *) gbl_fromHomeCurrentEntityName
                          updatingRememberCategory: (NSString *) @"rptsel"
-                                       usingValue: (NSString *) @"pbm"    ];
-//        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  <.>
-//            [self performSegueWithIdentifier:@"segueRptSelToSelPerson" sender:self];
-//        });
-//
+                                       usingValue: (NSString *) gbl_currentMenuPlusReportCode
+        ];
+        dispatch_async(dispatch_get_main_queue(), ^{                                 // <===  <.>
+            [self performSegueWithIdentifier:@"segueRptSelToSelPerson" sender:self]; //  for SELECT A GROUP
+        });
+
     }
-    if ([stringForCurrentlySelectedRow hasPrefix: @"What Color is Today"] ) {
+
+    //if ([stringForCurrentlySelectedRow hasPrefix: @"What Color is Today"] ) 
+    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompwc"] ) {
         [myappDelegate saveLastSelectionForEntity: (NSString *) @"person"
                                        havingName: (NSString *) gbl_fromHomeCurrentEntityName
                          updatingRememberCategory: (NSString *) @"rptsel"
-                                       usingValue: (NSString *) @"pwc"    ];
-//        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  <.>
-//            [self performSegueWithIdentifier:@"segueRptSelToSelPerson" sender:self];
-//        });
-//
+                                       usingValue: (NSString *) gbl_currentMenuPlusReportCode
+        ];
+
+        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  <.>
+            [self performSegueWithIdentifier:@"segueRptSelToSelDate3" sender:self];
+        });
+
     }
     
-    if ([stringForCurrentlySelectedRow hasPrefix: @"Best Match"] ) {
+    
+    
+    //if ([stringForCurrentlySelectedRow hasPrefix: @"Best Match"] ) 
+    if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgbm"] ) {
+        
+        gbl_currentMenuPrefixFromMatchRpt = @"gbm";
+        
         [myappDelegate saveLastSelectionForEntity: (NSString *) @"group"
                                        havingName: (NSString *) gbl_fromHomeCurrentEntityName
                          updatingRememberCategory: (NSString *) @"rptsel"
-                                       usingValue: (NSString *) @"gbm"    ];
-//        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  <.>
-//            [self performSegueWithIdentifier:@"segueRptSelToSelPerson" sender:self];
-//        });
-//
+                                       usingValue: (NSString *) gbl_currentMenuPlusReportCode
+        ];
+        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  <.>
+            [self performSegueWithIdentifier:@"segueRptSelToViewTBLRPT1" sender:self];
+        });
+
 
     }
-    if ([stringForCurrentlySelectedRow hasPrefix: @"Most"] ) {  // trait
 
-        // get rpt 3 char code
-        NSString *code3;
-        if ([stringForCurrentlySelectedRow hasPrefix: @"Most Assertive"] )     code3 = @"gma";
-        if ([stringForCurrentlySelectedRow hasPrefix: @"Most Emotional"] )     code3 = @"gme";
-        if ([stringForCurrentlySelectedRow hasPrefix: @"Most Restless"] )      code3 = @"gmr";
-        if ([stringForCurrentlySelectedRow hasPrefix: @"Most Passionate"] )    code3 = @"gmp";
-        if ([stringForCurrentlySelectedRow hasPrefix: @"Most Down-to-earth"] ) code3 = @"gmd";
-        if ([stringForCurrentlySelectedRow hasPrefix: @"Most Ups and Downs"] ) code3 = @"gmu";
 
+    if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgma"]   // "Most Assertive ..."
+        || [gbl_currentMenuPlusReportCode isEqualToString: @"homgme"]   // "Most Emotional ..."
+        || [gbl_currentMenuPlusReportCode isEqualToString: @"homgmr"]   // "Most Restless ..."
+        || [gbl_currentMenuPlusReportCode isEqualToString: @"homgmp"]   // "Most Passionate ..."
+        || [gbl_currentMenuPlusReportCode isEqualToString: @"homgmd"]   // "Most Down-to-earth"
+    ) {
         [myappDelegate saveLastSelectionForEntity: (NSString *) @"group"
                                        havingName: (NSString *) gbl_fromHomeCurrentEntityName
                          updatingRememberCategory: (NSString *) @"rptsel"
-                                       usingValue: (NSString *) code3     ];
+                                       usingValue: (NSString *) gbl_currentMenuPlusReportCode
+        ];
 
-//        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  <.>
-//            [self performSegueWithIdentifier:@"segueRptSelToSelPerson" sender:self];
-//        });
-//
+        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  <.>
+            [self performSegueWithIdentifier:@"segueRptSelToViewTBLRPT1" sender:self];
+        });
+
     }
-    if ([stringForCurrentlySelectedRow hasPrefix: @"Best Year"] ) {
-        [myappDelegate saveLastSelectionForEntity: (NSString *) @"group"
-                                       havingName: (NSString *) gbl_fromHomeCurrentEntityName
-                         updatingRememberCategory: (NSString *) @"rptsel"
-                                       usingValue: (NSString *) @"gby"    ];
-//        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  <.>
+//    if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgme"] ) {  // "Most Emotional ..."
+//        [myappDelegate saveLastSelectionForEntity: (NSString *) @"group"
+//                                       havingName: (NSString *) gbl_fromHomeCurrentEntityName
+//                         updatingRememberCategory: (NSString *) @"rptsel"
+//                                       usingValue: (NSString *) gbl_currentMenuPlusReportCode
+//        ];
+//
+////        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+////            [self performSegueWithIdentifier:@"segueRptSelToSelPerson" sender:self];
+////        });
+////
+//    }
+//    if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgmr"] ) {  // "Most Restless ..."
+//        [myappDelegate saveLastSelectionForEntity: (NSString *) @"group"
+//                                       havingName: (NSString *) gbl_fromHomeCurrentEntityName
+//                         updatingRememberCategory: (NSString *) @"rptsel"
+//                                       usingValue: (NSString *) gbl_currentMenuPlusReportCode
+//        ];
+//
+////        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+////            [self performSegueWithIdentifier:@"segueRptSelToSelPerson" sender:self];
+////        });
+////
+//    }
+//    if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgmp"] ) {  // "Most Passionate ..."
+//        [myappDelegate saveLastSelectionForEntity: (NSString *) @"group"
+//                                       havingName: (NSString *) gbl_fromHomeCurrentEntityName
+//                         updatingRememberCategory: (NSString *) @"rptsel"
+//                                       usingValue: (NSString *) gbl_currentMenuPlusReportCode
+//        ];
+//
+////        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+////            [self performSegueWithIdentifier:@"segueRptSelToSelPerson" sender:self];
+////        });
+////
+//    }
+//    if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgmd"] ) {  // "Most Down-to-earth"
+//        [myappDelegate saveLastSelectionForEntity: (NSString *) @"group"
+//                                       havingName: (NSString *) gbl_fromHomeCurrentEntityName
+//                         updatingRememberCategory: (NSString *) @"rptsel"
+//                                       usingValue: (NSString *) gbl_currentMenuPlusReportCode
+//        ];
+//
+
+
+//        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
 //            [self performSegueWithIdentifier:@"segueRptSelToSelPerson" sender:self];
 //        });
 //
+//    }
+//    if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgmu"] ) {  // "Most Ups and Downs ..."
+//        [myappDelegate saveLastSelectionForEntity: (NSString *) @"group"
+//                                       havingName: (NSString *) gbl_fromHomeCurrentEntityName
+//                         updatingRememberCategory: (NSString *) @"rptsel"
+//                                       usingValue: (NSString *) gbl_currentMenuPlusReportCode
+//        ];
+//
+////        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  <.>
+////            [self performSegueWithIdentifier:@"segueRptSelToSelPerson" sender:self];
+////        });
+////
+//    }
+
+
+
+    //if ([stringForCurrentlySelectedRow hasPrefix: @"Best Year"] ) 
+    if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgby"] ) {  
+
+        [myappDelegate saveLastSelectionForEntity: (NSString *) @"group"
+                                       havingName: (NSString *) gbl_fromHomeCurrentEntityName
+                         updatingRememberCategory: (NSString *) @"rptsel"
+                                       usingValue: (NSString *) gbl_currentMenuPlusReportCode
+        ];
+        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  <.>
+            [self performSegueWithIdentifier:@"segueRptSelToSelYear" sender:self];
+        });
+
     }
-    if ([stringForCurrentlySelectedRow hasPrefix: @"Best Day"] ) {
+    //if ([stringForCurrentlySelectedRow hasPrefix: @"Best Day"] ) 
+    if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgbd"] ) {  
         [myappDelegate saveLastSelectionForEntity: (NSString *) @"group"
                                        havingName: (NSString *) gbl_fromHomeCurrentEntityName
                          updatingRememberCategory: (NSString *) @"rptsel"
-                                       usingValue: (NSString *) @"gbd"    ];
-//        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  <.>
-//            [self performSegueWithIdentifier:@"segueRptSelToSelPerson" sender:self];
-//        });
-//
+                                       usingValue: (NSString *) gbl_currentMenuPlusReportCode
+        ];
+        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  <.>
+            [self performSegueWithIdentifier:@"segueRptSelToSelDate3" sender:self];
+        });
     }
    
+
+
     // below are report for pairs of people (picked from a group report having pairs)
-    // NO REMEMBERING WHICH REPORT WAS SELECTED
-    
-    if ([stringForCurrentlySelectedRow hasSuffix: @"Compatibility Potential"] ) {
-//        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  <.>
-//            [self performSegueWithIdentifier:@"segueRptSelToSelPerson" sender:self];
-//        });
-    }
-    if ([stringForCurrentlySelectedRow hasSuffix: @" Best Match"] ) {
-//        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  <.>
-//            [self performSegueWithIdentifier:@"segueRptSelToSelPerson" sender:self];
-//        });
+    // **********   NO REMEMBERING WHICH REPORT WAS SELECTED  for pairs ********************
+
+
+//    if ([stringForCurrentlySelectedRow hasSuffix: @"Compatibility Potential"] ) {
+////        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  <.>
+////            [self performSegueWithIdentifier:@"segueRptSelToSelPerson" sender:self];
+////        });
+//    }
+//    if ([stringForCurrentlySelectedRow hasSuffix: @" Best Match"] ) {
+////        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  <.>
+////            [self performSegueWithIdentifier:@"segueRptSelToSelPerson" sender:self];
+////        });
+////
+//    }
 //
-    }
-    if ([stringForCurrentlySelectedRow rangeOfString:@" Calendar Year"].location != NSNotFound) {
-//        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  <.>
-//            [self performSegueWithIdentifier:@"segueRptSelToSelPerson" sender:self];
-//        });
-//
-    }
 
 } // didSelectRowAtIndexPath
 
 
 @end
 
-
-    // NSLog(@"in sel Report  cellForRow!"); <.>
-//    NSArray *mambReportsPerson =
-//  @[
-//    @"Calendar Year ...",
-//    @"Personality",
-//    @"Compatibility Paired with ...",
-//    @"My Best Match in Group ...",
-//    @"What Color is Today? ...",
-//    ];
+//It looks like you'd like the picker to rest at the bottom of the view controller's main view (it's parent, I assume) and be as wide as the view. Try this in viewDidLoad:
 //
-//    NSArray *mambReportsGroup =
-//  @[
-//    @"Best Match",
-//    @"",
-//    @"Most Assertive Person",
-//    @"Most Emotional",
-//    @"Most Restless",
-//    @"Most Passionate",
-//    @"Most Down-to-earth",
-//    @"Most Ups and Downs",
-//    @"",
-//    @"Best Year ...",
-//    @"Best Day ...",
-//    ];
-//    NSArray *mambReportsPair =
-//  @[
-//    @"Compatibility Potential",
-//    @"",
-//    @"<per1> Best Match",
-//    @"<per1> Personality",
-//    @"<per1> Calendar Year ...",
-//    @"",
-//    @"<per2> Best Match",
-//    @"<per2> Personality",
-//    @"<per2> Calendar Year ...",
-//    ];
-//    
+// CGRect viewFrame = self.view.frame;
+// CGRect pickerHeight = self.picker.frame.size.height;  // assume you have an outlet called picker
+// CGRect pickerFrame = CGRectMake(0.0, viewFrame.size.height-pickerHeight, viewFrame.size.width, pickerHeight);
+// self.picker.frame = pickerFrame;
 //
 

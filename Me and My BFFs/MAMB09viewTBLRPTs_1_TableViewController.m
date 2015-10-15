@@ -1,0 +1,4683 @@
+//
+//  MAMB09viewTBLRPTs_1_TableViewController.m
+//  Me&myBFFs
+//
+//  Created by Richard Koskela on 2015-02-26.
+//  Copyright (c) 2015 Richard Koskela. All rights reserved.
+//
+
+#import "MAMB09viewTBLRPTs_1_TableViewController.h"
+#import "MAMB09_viewHTMLViewController.h"
+#import "mamblib.h"
+#import "MAMB09AppDelegate.h"   // to get globals
+
+
+@interface MAMB09viewTBLRPTs_1_TableViewController ()
+
+@end
+
+//
+//    // buffer for C string input birthinfo CSVs    (length 64)     (for ALL GROUP REPORTS)
+//    //
+//    char group_report_input_birthinfo_CSVs[gbl_maxGrpBirthinfoCSVs * gbl_maxLenBirthinfoCSV];  // [250 * fixed length of 64]
+//    int  group_report_input_birthinfo_idx;
+//
+//    // buffer for C string output report line PSVs (length 64)     (for ALL GROUP REPORTS)
+//    //
+//    char group_report_output_PSVs[gbl_maxGrpRptLines * gbl_maxLenRptLinePSV];                  // [333 * fixed length of 64]
+//    int  group_report_output_idx;
+//
+    // is this now visible throughout  MAMB09viewTBLRPTs_1_TableViewController  ?
+    //
+    char group_report_input_birthinfo_CSVs[250 * 64];  // [250 * fixed length of 64]
+    int  group_report_input_birthinfo_idx;
+    char group_report_output_PSVs[333 * 64];           // [333 * fixed length of 64]
+    int  group_report_output_idx;
+
+
+@implementation MAMB09viewTBLRPTs_1_TableViewController
+
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+
+    fopen_fpdb_for_debug();
+    NSLog(@"in TBLRPT_1 viewDidLoad!");
+    
+    
+    // Uncomment the following line to preserve selection between presentations.
+//         self.clearsSelectionOnViewWillAppear = NO;
+    
+    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+
+
+  NSLog(@"gbl_currentMenuPlusReportCode =%@",gbl_currentMenuPlusReportCode );
+  NSLog(@" 1 gbl_lastSelectedGroup=%@",gbl_lastSelectedGroup);
+
+
+    // -------------------------------------------------------------------------------------------------------------------------
+    // MAMB09viewTBLRPTs_1_TableViewController.m 
+    // -------------------------------------------------------------------------------------------------------------------------
+    //     - displays 9 RPTs  hompbm,homgbm, homgma,homgme,homgmr,homgmp,homgmd homgby,homgbd
+    //
+    //     - goes to 16 RPTs  from hompbm ==>  pbmco,pbm1pe,pbm2pe,       pbm2bm
+    //     - goes to 16 RPTs  from homgbm ==>  gbmco,gbm1pe,gbm2pe,gbm1bm,gbm2bm
+    //     - goes to 16 RPTs  from homgma ==>  gmappe
+    //     - goes to 16 RPTs  from homgme ==>  gmeppe
+    //     - goes to 16 RPTs  from homgmr ==>  gmrppe
+    //     - goes to 16 RPTs  from homgmp ==>  gmpppe
+    //     - goes to 16 RPTs  from homgmd ==>  gmdppe
+    //     - goes to 16 RPTs  from homgby ==>  gbypcy
+    //     - goes to 16 RPTs  from homgbd ==>  gbdpwc
+    //
+    // NOTE that gbl_currentMenuPlusReportCode changes when the user goes to a report from any of these 9 RPTs 
+    //      so, in viewWillAppear()  (check it out), when the user returns, we have to re-set  gbl_currentMenuPlusReportCode
+    //
+    //      this is 16+9=25 reports   FYI, the other 4 reports are  hompcy,homppe,hompco,hompwc
+    // -------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+//        if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgma"]  // Most Assertive
+//            || [gbl_currentMenuPlusReportCode       hasPrefix: @"homgme"]  // Most Emotional
+//            || [gbl_currentMenuPlusReportCode       hasPrefix: @"homgmr"]  // Most Restless
+//            || [gbl_currentMenuPlusReportCode       hasPrefix: @"homgmp"]  // Most Passionate
+//            || [gbl_currentMenuPlusReportCode       hasPrefix: @"homgmd"]  // Most Down-to-earth
+//        ) { 
+//    ////        [self.tableView setSeparatorStyle: UITableViewCellSeparatorStyleSingleLineEtched]; // keep   separator lines between cells
+//            [self.tableView setSeparatorStyle: UITableViewCellSeparatorStyleSingleLine]; // keep   separator lines between cells
+//    
+//         } else {
+//             [self.tableView setSeparatorStyle: UITableViewCellSeparatorStyleNone]; // remove separator lines between cells
+//         }
+//
+    //
+    // 20150602  decided to keep no separator and alternate light green / really light green
+    //
+    [self.tableView setSeparatorStyle: UITableViewCellSeparatorStyleNone]; // remove separator lines between cells
+    //  20150604 abandon
+
+
+
+    //self.tableView.backgroundColor = gbl_color_cHed;   // WORKS
+    self.tableView.backgroundColor = gbl_color_cBgr;   // WORKS
+
+
+    gbl_tblrpts1_ShouldAddToNavBar = 1; // init to prevent  multiple programatic adds of nav bar items
+
+
+    do {  // set PSV and NAME values
+
+        // grpall  1 rpts   g  homg*
+        // most    5 rpts   g  homg*
+        // best    2 rpts   g  homg*
+
+
+        // grpone  all *MY* BEST MATCH ... reports  PLUS all table reports AFTER THAT in navigation <-------------
+        if (   [gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"]  // grpone  My Best Match in Group ... grpone
+            || [gbl_currentMenuPlusReportCode       hasPrefix: @"pbm"   ]  // grpone  My Best Match in Group ... grpone
+        ) {
+            gbl_TBLRPTS1_PSV_personJust1  = gbl_fromHomeCurrentSelectionPSV;    // from select person on home screen
+            gbl_TBLRPTS1_NAME_personJust1 = [gbl_TBLRPTS1_PSV_personJust1 componentsSeparatedByString:@"|"][0]; // get field #1 (zero-based)
+
+
+        // grpall all BEST MATCH ... reports  PLUS all table reports AFTER THAT in navigation <-------------
+        } else if (
+               [gbl_currentMenuPlusReportCode isEqualToString: @"homgbm" ] // grpall  Best Match in Group ...
+            || [gbl_currentMenuPlusReportCode       hasPrefix: @"gbm"    ] // grpall  Best Match in Group ... 
+        ) {
+            ;  // no single person for this report
+
+        } else if ( 
+               [gbl_currentMenuPlusReportCode isEqualToString: @"homgma"]  // most
+            || [gbl_currentMenuPlusReportCode isEqualToString: @"homgme"] 
+            || [gbl_currentMenuPlusReportCode isEqualToString: @"homgmr"] 
+            || [gbl_currentMenuPlusReportCode isEqualToString: @"homgmp"] 
+            || [gbl_currentMenuPlusReportCode isEqualToString: @"homgmd"] 
+
+            || [gbl_currentMenuPlusReportCode isEqualToString: @"homgby"]  // best
+            || [gbl_currentMenuPlusReportCode isEqualToString: @"homgbd"]
+        ) {
+            gbl_TBLRPTS1_PSV_personJust1  = gbl_PSVtappedPerson_fromGRP;
+            gbl_TBLRPTS1_NAME_personJust1 = [gbl_TBLRPTS1_PSV_personJust1 componentsSeparatedByString:@"|"][0]; // get field #1 (zero-based)
+
+        } else {  // SHOULD NOT HAPPEN
+            gbl_TBLRPTS1_PSV_personA  = gbl_fromHomeCurrentSelectionPSV;
+            gbl_TBLRPTS1_NAME_personA = [gbl_TBLRPTS1_PSV_personA componentsSeparatedByString:@"|"][0]; // get field #1 (zero-based)
+
+            gbl_TBLRPTS1_PSV_personB  = gbl_fromSelSecondPersonPSV;         // from select second person screen
+            gbl_TBLRPTS1_NAME_personB = [gbl_TBLRPTS1_PSV_personB componentsSeparatedByString:@"|"][0]; // get field #1 (zero-based)
+        }
+
+    } while (false); // set PSV and NAME values
+
+
+} // end of  viewDidLoad  in TBLRPT_1
+
+
+
+- (void)didReceiveMemoryWarning {
+    //    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle: @"The App received a Memory Warning"
+                                                                   message: @"The system has determined that the \namount of available memory is very low."
+                                                            preferredStyle: UIAlertControllerStyleAlert  ];
+     
+    UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                        style: UIAlertActionStyleDefault
+                                                      handler: ^(UIAlertAction * action) {
+        NSLog(@"Ok button pressed");
+    } ];
+    [alert addAction:  okButton];
+    [self presentViewController: alert  animated: YES  completion: nil   ];
+    [super didReceiveMemoryWarning];
+} // didReceiveMemoryWarning 
+
+
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+//  NSLog(@"in numberOfSectionsInTableView");
+
+    // Return the number of sections.
+
+     //return 2;
+     return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+//NSLog(@"in numberOfRowsInSection in tblrpts 1");
+    // Return the number of rows in the section.
+
+    NSInteger retint;
+    retint = 1; // default
+
+    // MAMB09viewTBLRPTs_1_TableViewController.m  does 9 RPTs  hompbm,homgbm, homgma,homgme,homgmr,homgmp,homgmd hhomgby,homgbd
+
+//    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"]   // My Best Match in Group ...
+//    ) {
+//        retint = group_report_output_idx + 1 + 3; // + 3 for 3 bottom cells
+//    }
+//
+ 
+    // this might work for all 9 reports
+    retint = group_report_output_idx + 1 + 3; // + 3 for 3 bottom cells
+
+    return retint;
+}
+
+
+//
+//- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollview {
+//    gbl_scrollViewIsDragging = YES;
+//
+//    if( [self.tableView indexPathForSelectedRow] ) {
+////        [[self.tableView cellForRowAtIndexPath:[self.tableView indexPathForSelectedRow]] setHighlighted:YES];
+//
+//        NSIndexPath *myTmpIndexPath     = [self.tableView indexPathForSelectedRow];
+//        UITableViewCell *currcell       = [self.tableView cellForRowAtIndexPath: myTmpIndexPath]; // now you can use currcell.textLabel.text
+//        currcell.selectedBackgroundView =  gbl_myCellBgView;
+//
+//    //      cell.selectedBackgroundView =  gbl_myCellBgView;
+//    }
+//}        // http://stackoverflow.com/questions/13275405/uitableview-selected-cell-doesnt-stay-selected-when-scrolled
+//- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
+//    gbl_scrollViewIsDragging = NO;
+//
+//    if( [self.tableView indexPathForSelectedRow] ) {
+////        [[self.tableView cellForRowAtIndexPath:[self.tableView indexPathForSelectedRow]] setHighlighted:NO];
+//        NSIndexPath *myTmpIndexPath     = [self.tableView indexPathForSelectedRow];
+//        UITableViewCell *currcell       = [self.tableView cellForRowAtIndexPath: myTmpIndexPath]; // now you can use currcell.textLabel.text
+//        currcell.selectedBackgroundView =  nil;
+//    }
+//}
+//
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath: (NSIndexPath *)indexPath
+{
+
+
+//tn();  NSLog(@"in cellForRowAtIndexPath");ki((int)indexPath.row);
+    int myidx;
+    char my_tmp_str[128];
+    NSString *myCellContentsPSV;
+    NSCharacterSet *mySeparators;
+    NSArray  *tmpArray;
+    NSString *myOriginalCellText;
+    NSInteger myOriginalCellTextLen;
+
+    NSString           *myNewCellText;
+//    NSAttributedString *myNewCellAttributedText; 
+
+    NSInteger numFillSpacesInColHeaders;
+    NSInteger numCharsForRankNumsOnLeft;
+
+    numFillSpacesInColHeaders = 0;
+    numCharsForRankNumsOnLeft = 0;
+    myOriginalCellTextLen     = 0;
+
+
+    //UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:// forIndexPath:indexPath];
+    // Configure the cell...
+    
+    // create an NSString  we can use as the reuse identifier
+    static NSString *CellIdentifier = @"viewTBLRPTs_1_CellIdentifier";
+    
+
+
+
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: CellIdentifier];
+//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: nil];  // try no re-use at all
+//    UITableViewCell *cell;
+//    cell = nil;
+
+
+    // if there are no cells to be reused, create a new cell
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    }
+
+
+//    UIView *gbl_myCellBgView =[[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, [cell frame].size.width, [cell frame].size.height)];
+//    //[cellBgView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"cellBgView.png"]]];
+//    //[gbl_myCellBgView setBackgroundColor:  gbl_color_cBGforSelected ];
+//    //[gbl_myCellBgView setBackgroundColor:  [UIColor lightTextColor] ];
+//    [gbl_myCellBgView setBackgroundColor:  [UIColor whiteColor] ];
+//
+
+
+//    gbl_myCellBgView =[[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, [cell frame].size.width -20, [cell frame].size.height)];
+//    gbl_myCellBgView =[[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, cell.frame.size.width -20, cell.frame.size.height)];
+
+//    NSInteger myCellHighlightWidth = [cell frame].size.width -20; 
+//kin((long)myCellHighlightWidth);
+//    gbl_myCellBgView =[[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, myCellHighlightWidth, [cell frame].size.height)];
+
+    cell.selectedBackgroundView =  gbl_myCellBgView ;  // get my own background color for selected rows (see MAMB09AppDelegate.m)
+
+
+    // get the Background Color for this cell
+    //
+    do {
+
+        gbl_thisCellBackGroundColorName = gbl_array_cellBGcolorName[indexPath.row];   // array set in  viewDidLoad
+        if ( [gbl_thisCellBackGroundColorName isEqualToString: @"cHed"] )  gbl_thisCellBackGroundColor = gbl_color_cHed;
+        if ( [gbl_thisCellBackGroundColorName isEqualToString: @"cGr2"] )  gbl_thisCellBackGroundColor = gbl_color_cGr2;
+        if ( [gbl_thisCellBackGroundColorName isEqualToString: @"cGre"] )  gbl_thisCellBackGroundColor = gbl_color_cGre;
+        if ( [gbl_thisCellBackGroundColorName isEqualToString: @"cNeu"] )  gbl_thisCellBackGroundColor = gbl_color_cNeu;
+        if ( [gbl_thisCellBackGroundColorName isEqualToString: @"cRed"] )  gbl_thisCellBackGroundColor = gbl_color_cRed;
+        if ( [gbl_thisCellBackGroundColorName isEqualToString: @"cRe2"] )  gbl_thisCellBackGroundColor = gbl_color_cRe2;
+        if ( [gbl_thisCellBackGroundColorName isEqualToString: @"cBgr"] )  gbl_thisCellBackGroundColor = gbl_color_cBgr;
+    } while (FALSE);
+
+
+//
+//    // keeps highlighted row highlighted (see above gbl_scrollViewIsDragging  )
+//    if( gbl_scrollViewIsDragging && [[tableView indexPathForSelectedRow] isEqual:indexPath]) {
+//        [cell setHighlighted:YES animated:NO];
+//    }
+//
+
+
+// silly
+//    if (cell.selected) { // Maintain selected state
+//        [self.tableView selectRowAtIndexPath: indexPath   // puts highlight on remembered row
+//                                    animated: YES
+//                              scrollPosition: UITableViewScrollPositionNone];
+//    }
+//    else {              // Maintain deselected state
+//        [self.tableView deselectRowAtIndexPath: indexPath
+//                                      animated: NO];
+//    }
+//
+
+
+
+    UIFont *myFont = [UIFont fontWithName: @"Menlo" size: 12.0];
+    UIFont *myFontSmaller = [UIFont fontWithName: @"Menlo" size: 11.0];
+//    UIFont *myFontSmallerer = [UIFont fontWithName: @"Menlo" size: 10.0];
+
+// ALL of THIS   is for  GRPONE and GRPALL (approx 650 lines)
+//
+    if (   [gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"]  // grpone  My Best Match in Group ... grpone
+        || [gbl_currentMenuPlusReportCode       hasPrefix: @"pbm"   ]  // grpone  My Best Match in Group ... grpone
+        || [gbl_currentMenuPlusReportCode isEqualToString: @"homgbm" ] // grpall  Best Match in Group ...
+        || [gbl_currentMenuPlusReportCode       hasPrefix: @"gbm"    ] // grpall  Best Match in Group ... 
+    ) { // ALL of THIS   is for  GRPONE and GRPALL (approx 650 lines)
+
+
+        // Configure the cell...
+
+        //cell.textLabel.text = @"test TBLRPT1   cell text";
+
+//        UIFont *myFont = [UIFont fontWithName: @"Menlo" size: 12.0];
+
+        // invisible button for taking away the disclosure indicator
+        //
+//    UIButton *myInvisibleButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 28, 28)];
+        UIButton *myInvisibleButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+        [UIButton buttonWithType: UIButtonTypeCustom];
+        myInvisibleButton.backgroundColor = [UIColor clearColor];
+
+
+//tn();tr("row row row row row row row = ");NSLog(@"indexPath.row=%ld", indexPath.row);
+
+//tn();kin(group_report_output_idx);
+
+
+        // Grab cell data,  but only if indexPath.row is still in array (3 extra footer cells)
+        //
+        if (indexPath.row <= group_report_output_idx) {
+
+            myidx = (int)indexPath.row;
+
+
+            strcpy(my_tmp_str, group_report_output_PSVs  +  myidx * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+
+//ksn(my_tmp_str);
+            myCellContentsPSV     = [NSString stringWithUTF8String: my_tmp_str];  // convert c string to NSString
+//NSLog(@"myCellContentsPSV =[%@]", myCellContentsPSV );
+            mySeparators          = [NSCharacterSet characterSetWithCharactersInString:@"|"];
+            tmpArray              = [myCellContentsPSV componentsSeparatedByCharactersInSet: mySeparators];
+//        gbl_cellBGcolorName   = tmpArray[0];
+            myOriginalCellText    = tmpArray[1];
+            myOriginalCellTextLen = myOriginalCellText.length;
+
+//NSLog(@"myOriginalCellText    =%@",myOriginalCellText    );
+//NSLog(@"myOriginalCellTextLen =%ld",myOriginalCellTextLen );
+
+
+            // get the number of chars taken up by rank numbers on left (  gbl_numPairsRanked )
+            //
+//kin((int)gbl_numPairsRanked);
+            if       (gbl_numPairsRanked  <      10) numCharsForRankNumsOnLeft =    1;
+            else  if (gbl_numPairsRanked  <     100) numCharsForRankNumsOnLeft =    2;
+            else  if (gbl_numPairsRanked  <    1000) numCharsForRankNumsOnLeft =    3;
+            else  if (gbl_numPairsRanked  <   10000) numCharsForRankNumsOnLeft =    4;
+            else  if (gbl_numPairsRanked  <  100000) numCharsForRankNumsOnLeft =    5;  // max ~ 30,000
+//kin((int)numCharsForRankNumsOnLeft );
+
+        }  // end of Grab cell data,  but only if indexPath.row is still in array (3 extra footer cells)
+
+
+
+        if (indexPath.row ==  group_report_output_idx + 1)
+        {  // 1 of 3 FOOTER CELLS
+//trn("// 1 of 3 FOOTER CELLS");
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+                cell.textLabel.font          = myFontSmaller;
+//                cell.textLabel.numberOfLines = 5;
+                cell.accessoryView           = myInvisibleButton;               // no right arrow on column labels
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.textAlignment = NSTextAlignmentCenter;
+
+                cell.textLabel.text          = @"                                         \n        a GOOD RELATIONSHIP              \n        usually has 2 things             \n     1. compatibility potential          \n     2. both sides show positive         \n        personality traits               \n                                         ";
+
+                cell.textLabel.numberOfLines = 7; 
+                cell.textLabel.backgroundColor           = gbl_thisCellBackGroundColor;  // see above x
+
+            });
+            return cell;
+        }  // end of 1 of 3 FOOTER CELLS
+
+
+        else if (indexPath.row ==  group_report_output_idx + 2)
+        {  // 2 of 3 FOOTER CELLS
+//trn("// 2 of 3 FOOTER CELLS");
+
+            //        myNewCellText                = @"     Produced by iPhone App Me and my BFFs   ";
+            NSAttributedString *myNewCellAttributedText1 = [
+                [NSAttributedString alloc] initWithString: @"        Produced by iPhone App Me and my BFFs   "
+                                               attributes: @{            NSFontAttributeName : [UIFont systemFontOfSize:11.0f] }
+            ];
+
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+                cell.textLabel.font           = myFont;
+                cell.textLabel.numberOfLines  = 1; 
+                cell.accessoryView            = myInvisibleButton;               // no right arrow on column labels
+                cell.userInteractionEnabled   = NO;
+                cell.textLabel.textAlignment = NSTextAlignmentCenter;
+                cell.textLabel.attributedText = myNewCellAttributedText1;
+                cell.textLabel.backgroundColor           = gbl_thisCellBackGroundColor;  // see above x
+            });
+
+            return cell;
+        }  // end of 2 of 3 FOOTER CELLS
+
+        else if (indexPath.row ==  group_report_output_idx + 3)
+        {  // 3 of 3 FOOTER CELLS
+//trn("// 3 of 3 FOOTER CELLS");
+
+            // make same font bold
+            //
+            MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for global methods in appDelegate.m
+            UIFont *currentFont       = cell.textLabel.font;
+            UIFont *currentFontBolded = [myappDelegate boldFontWithFont: (UIFont *) currentFont];
+//  NSLog(@"currentFontBolded =%@",currentFontBolded );
+
+            //myNewCellText                = @"    This report is for entertainment purposes only.  ";
+            NSAttributedString *myNewCellAttributedText2 = [
+                [NSAttributedString alloc] initWithString:  @"       This report is for entertainment purposes only.  "
+                                               attributes: @{            NSFontAttributeName : [UIFont systemFontOfSize:11.0f],
+                                                               NSForegroundColorAttributeName: [UIColor redColor]               }
+            ];
+
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+                cell.textLabel.font           = currentFontBolded;
+                cell.textLabel.numberOfLines  = 1; 
+                cell.accessoryView            = myInvisibleButton;               // no right arrow on column labels
+                cell.userInteractionEnabled   = NO;
+                cell.textLabel.textAlignment = NSTextAlignmentCenter;
+                cell.textLabel.attributedText = myNewCellAttributedText2;
+                cell.textLabel.backgroundColor           = gbl_thisCellBackGroundColor;  // see above x
+            });
+
+            return cell;
+
+        }  // end of 3 of 3 FOOTER CELLS
+
+
+        else if (indexPath.row == 0) {  // COLUMN HEADERS   SPACER   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+//tn();trn("in row 0  SPACER");
+            // this is spacer row between 'for ... \n in Group ...'  and col headers
+            //
+
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+                cell.accessoryType           = UITableViewCellAccessoryNone;
+                cell.accessoryView           = myInvisibleButton;            // no right arrow on benchmark label
+                cell.textLabel.numberOfLines = 1; 
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.textLabel.font          = myFont;
+                cell.textLabel.text          = @" ";  // ------------------------------------------------------------
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.userInteractionEnabled  = NO;                           // no selection highlighting
+                cell.textLabel.backgroundColor           = gbl_thisCellBackGroundColor;  // see above x
+            });
+
+            return cell;
+
+        } // end of spacer row before col headers
+
+        else if (indexPath.row == 1)
+        {   // first header line    hdrhdr hdrhdr hdrhdr hdrhdr hdrhdr hdrhdr hdrhdr hdrhdr hdrhdr
+trn("in row = 1   1st hdr line");
+
+            //  BIG JOB   get number of fill chars after "Compatibility" and before "Potential"
+            //
+            NSInteger numCharsPairHdr  = @"Pair of      ".length;
+                      numCharsPairHdr  = @"Group Members".length;
+                      numCharsPairHdr  = @"Person and   ".length;
+                      numCharsPairHdr  = @"Group Member ".length;
+            NSInteger numCharsScoreHdr = @"Compatibility".length;
+                      numCharsScoreHdr = @"    Potential".length;
+
+
+            // CASE 1 of 2 
+            //   num pairs <= 99
+            //   original line <= 45  [  1   ~Brother  ~Sister2   90            ]               size=41  SHORT
+            //
+            //   line up 'C' in Compatibility with first digit in score
+            //
+            //            [     Pair of              Compatibility]
+            //            [     Group Members            Potential]
+            //
+            //            [                          90  Great    ]
+            //            [ 1   ~Brother  ~Sister2   90           ]  <--  kingpin (first person line)
+            //            [                          75  Very Good]
+            //            [12   ~Brother  ~Sister1   65           ]
+            //
+            // CASE 2 of 2
+            //   num pairs <= 9
+            //   original line  > 45   [ 1   ~Aiden 89012345  Sister1 Lastnam   92            ] size=54  LONG
+            //
+            //   benchmark labels wrap to the inside
+            //
+            //   line up 'y' in Compatibility with second digit in score
+            //
+            //            [     Pair of                 Compatibility]
+            //            [     Group Members               Potential]
+            //
+            //            [ 1   ~Aiden 89012345  Sister1 Lastnam   92] <--  kingpin
+            //            [                                 Great  90]
+            //            [                             Very Good  75]
+            //            [12   ~Brother         ~Sister1          65]
+            //
+
+  NSLog(@"LL myOriginalCellText =[%@]",myOriginalCellText );
+
+            // grab first line with a person   THAT IS-
+            // grab first line not a benchmark label
+            //
+
+
+                for (int myidx = 3; myidx <= 9; myidx++) {  // now both grpone and grpall have   line with "top space" - legacy + hdr1 + hdr2 --- start with idx 3
+
+//kin(myidx);
+                    strcpy(my_tmp_str, group_report_output_PSVs  +  myidx * (int)gbl_maxLenRptLinePSV);  
+//ks(my_tmp_str);
+
+                    if (strstr(my_tmp_str, "90  Great")     != NULL 
+                    ||  strstr(my_tmp_str, "75  Very Good") != NULL
+                    ||  strstr(my_tmp_str, "50  Average")   != NULL 
+                    ||  strstr(my_tmp_str, "25  Not Good")  != NULL 
+                    ||  strstr(my_tmp_str, "10  OMG")       != NULL ) {
+                        continue;
+                    } else {
+                        break;   // grab 1st string not a benchmark label
+                    }
+                }
+                // end of grab first line with a person/addobj
+            
+
+ksn(my_tmp_str);
+                NSString *myFirstData =  [NSString stringWithUTF8String: my_tmp_str];  // convert c string to NSString
+                NSArray  *tmpArray2   = [myFirstData componentsSeparatedByCharactersInSet: mySeparators];  // delim= '|'
+
+//  NSLog(@"myFirstData =%@",myFirstData );
+//  NSLog(@"tmpArray2   =%@",tmpArray2   );
+                NSString *myFirstPersonLine = tmpArray2[1];
+  NSLog(@"myFirstPersonLine =%@",myFirstPersonLine );
+
+                const char *tmp_c_CONST;                                                  // NSString object to C str
+                char tmp_c_first_person_buff[128];                                        // NSString object to C str
+                tmp_c_CONST = [myFirstPersonLine cStringUsingEncoding:NSUTF8StringEncoding]; // NSString object to C str
+                strcpy(tmp_c_first_person_buff, tmp_c_CONST);                             // NSString object to C str  because of const
+//tn();ksn(tmp_c_first_person_buff);
+            //
+            // end of  grab first line with a person
+
+
+            // for the rank number lines below, determine the number of left spaces to remove- gbl_numLeadingSpacesToRemove 
+            // and still keep all the rank number
+            //
+            int mycharnum;
+            mycharnum = 0; // one-based
+            for (int mm=0; mm <= (int)strlen(tmp_c_first_person_buff) -1; mm++) {
+                mycharnum = mycharnum + 1;
+                if (tmp_c_first_person_buff[mm] == '1') break;  // find index of first '1'
+            }
+            gbl_numLeadingSpacesToRemove = mycharnum - numCharsForRankNumsOnLeft; // e.g. "00001" 1on=5 rank=2 remove=3  // for LONG
+//kin((int)gbl_numLeadingSpacesToRemove );
+
+
+
+//kin((int)myOriginalCellTextLen);
+
+//  NSLog(@"gbl_numLeadingSpacesToRemove=%@",gbl_numLeadingSpacesToRemove);
+//kin((int)gbl_numLeadingSpacesToRemove);
+
+            if (myOriginalCellTextLen <= 45) 
+            { // short LINE  FIRST HEADER LINE  CALC
+                // - gbl_numLeadingSpacesToRemove   for spaces needing to be removed  
+                // - 1                              for one space on right end
+                gbl_myCellAdjustedTextLen = myOriginalCellTextLen -  1 - gbl_numLeadingSpacesToRemove;
+            } // end of short LINE  FIRST HEADER LINE  CALC
+            else {
+                // - gbl_numLeadingSpacesToRemove   for spaces needing to be removed  
+                // - 12                             for "  Very Good " wrapped to inside
+                gbl_myCellAdjustedTextLen = myOriginalCellTextLen - 12 - gbl_numLeadingSpacesToRemove;
+            }
+//kin((int)gbl_myCellAdjustedTextLen);
+
+
+            numFillSpacesInColHeaders =
+                gbl_myCellAdjustedTextLen - numCharsForRankNumsOnLeft - 3 - numCharsPairHdr - numCharsScoreHdr; // 3 spaces
+
+//kin((int)numFillSpacesInColHeaders );
+
+            gbl_myCharsForRankNumsOnLeft = [@"" stringByPaddingToLength: numCharsForRankNumsOnLeft + 3 // 3 for spaces after ranknum
+                                                             withString: @" "
+//                                                             withString: @"L"
+                                                        startingAtIndex: 0 ];
+            gbl_myFillSpacesInColHeaders = [@"" stringByPaddingToLength: numFillSpacesInColHeaders 
+                                                             withString: @" "
+//                                                             withString: @"F"
+                                                        startingAtIndex: 0 ];
+//        NSLog(@"gbl_myCharsForRankNumsOnLeft =[%@]",gbl_myCharsForRankNumsOnLeft );
+//        NSLog(@"gbl_myFillSpacesInColHeaders =[%@]",gbl_myFillSpacesInColHeaders );
+
+
+
+            // for grpone, change column headers if kingpin ( compare_everyone_with ) is not in the group
+            //
+//tn();kin((int)gbl_numPairsRanked);
+      NSLog(@"gbl_numPairsRanked =%ld",(long)gbl_numPairsRanked );
+      NSLog(@"gbl_grp_CSVs.count =%ld",(unsigned long)gbl_grp_CSVs.count );
+      NSLog(@"gbl_numPeopleInCurrentGroup=%ld",(long)gbl_numPeopleInCurrentGroup);
+//tn();tr("TWO!!!");kin(gbl_kingpinIsInGroup );
+
+            if (    gbl_numPairsRanked == gbl_numPeopleInCurrentGroup - 1        // kingpin is     in grp
+                || [gbl_currentMenuPlusReportCode isEqualToString: @"homgbm" ]   // or Best Match in Group ... grpall
+                || [gbl_currentMenuPlusReportCode       hasPrefix: @"gbm"    ]   // or Best Match in Group ... grpall
+            ) {
+                myNewCellText   = [NSString stringWithFormat:@"%@%@%@%@",   //  assign  assign  assign  assign  assign  assign assign 
+                    gbl_myCharsForRankNumsOnLeft, @"Pair of      ", gbl_myFillSpacesInColHeaders, @"Compatibility" ];
+            }
+            if (gbl_numPairsRanked == gbl_numPeopleInCurrentGroup    ) {  // kingpin is not in grp
+                myNewCellText   = [NSString stringWithFormat:@"%@%@%@%@",   //  assign  assign  assign  assign  assign  assign assign 
+                    gbl_myCharsForRankNumsOnLeft, @"Person and   ", gbl_myFillSpacesInColHeaders, @"Compatibility" ];
+            }
+      NSLog(@"myNewCellText   =%@",myNewCellText   );
+
+
+
+//            cell.accessoryType           = UITableViewCellAccessoryNone;  // setting ignored if cell.accessoryView is set (not nil)
+//            cell.userInteractionEnabled  = NO;                           // no selection highlighting
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+                cell.accessoryView                       = myInvisibleButton;            // no right arrow on benchmark label
+                cell.textLabel.textColor                 = [UIColor blackColor];
+                cell.userInteractionEnabled              = YES;      // method just returns 
+                cell.textLabel.numberOfLines             = 1; 
+                cell.textLabel.font                      = myFont;
+                cell.textLabel.adjustsFontSizeToFitWidth = YES;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.textLabel.text                      = myNewCellText;  // ------------------------------------------------------------
+                cell.textLabel.backgroundColor           = gbl_thisCellBackGroundColor;  // see above x
+            });
+      
+//  NSLog(@"HDR#1 cell.userInteractionEnabled  =%d",cell.userInteractionEnabled  );
+
+
+//trn("  // end of first header line");
+            return cell;
+        }   // end of first header line
+
+
+        else if (indexPath.row == 2)
+        {  // COLUMN HEADER  second header line  xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+//trn("  // 2nd header line");
+
+            // for grpone, change column headers if kingpin ( compare_everyone_with ) is not in the group
+            //
+            if (    gbl_numPairsRanked == gbl_numPeopleInCurrentGroup - 1        // kingpin is     in grp
+                || [gbl_currentMenuPlusReportCode isEqualToString: @"homgbm" ]   // or Best Match in Group ... grpall
+                || [gbl_currentMenuPlusReportCode       hasPrefix: @"gbm"    ]   // or Best Match in Group ... grpall
+            ) {
+                myNewCellText   = [NSString stringWithFormat:@"%@%@%@%@",
+                    gbl_myCharsForRankNumsOnLeft, @"Group Members", gbl_myFillSpacesInColHeaders, @"    Potential"  ];
+            }
+            if (gbl_numPairsRanked == gbl_numPeopleInCurrentGroup    ) {  //  NO
+                myNewCellText   = [NSString stringWithFormat:@"%@%@%@%@",
+                    gbl_myCharsForRankNumsOnLeft, @"Group Member ", gbl_myFillSpacesInColHeaders, @"    Potential"  ];
+            }
+
+
+            // put info button on Nav Bar
+            //        UIButton *myInfoButton =  [UIButton buttonWithType: UIButtonTypeInfoDark] ;
+            //            UILabel *myDisclosureIndicatorLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 25.0f, 25.0f)];
+            //            cell.accessoryView                       = myInfoButton;            // no right arrow on benchmark label
+
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+                cell.accessoryView                       = myInvisibleButton;            // no right arrow on benchmark label
+                cell.userInteractionEnabled              = YES;      // action method just returns 
+                cell.textLabel.numberOfLines             = 1; 
+                cell.textLabel.textColor                 = [UIColor blackColor];
+                cell.textLabel.font                      = myFont;
+                cell.textLabel.adjustsFontSizeToFitWidth = YES;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.textLabel.text                      = myNewCellText;  // ------------------------------------------------------------
+                cell.textLabel.backgroundColor           = gbl_thisCellBackGroundColor;  // see above x
+            });
+
+//  NSLog(@"HDR#2 cell.userInteractionEnabled  =%d",cell.userInteractionEnabled  );
+
+//trn(" end of // 2nd header line");
+            return cell;
+        }  // end of  COLUMN HEADER  second header line  xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+
+        else if (myOriginalCellTextLen <= 45)
+        {  // shorter data line
+//trn("  // shorter data line");
+
+            // short line, on right end,  remove 1 space  
+            //
+            NSString *myNewCellTextShort; 
+            myNewCellTextShort = [myOriginalCellText substringWithRange:NSMakeRange(0, myOriginalCellTextLen - 1)]; // zero-based
+//NSLog(@"myNewCellTextShort A =[%@]",myNewCellTextShort     );
+
+            // short line, on left end, 
+            // remove leading spaces which do not constitute part of space for rank number (
+            //
+            int mylen1 = (int)myNewCellTextShort.length;
+
+            myNewCellText  = [myNewCellTextShort substringWithRange:
+                NSMakeRange(gbl_numLeadingSpacesToRemove, mylen1 - gbl_numLeadingSpacesToRemove)]; // zero-based
+//NSLog(@"myNewCellTextShort B =[%@]",myNewCellTextShort     );
+
+//trn(" end of  // shorter data line");
+        }   // end shorter data line
+
+
+        else 
+        {  //  long line, shorten by putting  benchmark labels on the inside like this:
+//trn("  // long data line");
+
+            //  replace these 2:
+            // "  7   ~Aiden 89012345  ~Abigail 012345   53            "
+            // "                                         90  Great     "
+            //  with    these2:
+            // "  7   ~Aiden 89012345  ~Abigail 012345   53"
+            // "                                 Great   90"
+            //
+
+            NSInteger numLeadingSpaces;
+            NSString *myLeadingSpaces;
+
+            // 12 = "  Very Good "
+            NSString *myNewCellTextTMP = [myOriginalCellText substringWithRange:NSMakeRange(0, myOriginalCellTextLen - 12)]; // zero-based
+
+//NSLog(@"myNewCellTextTMP   3    =[%@]",myNewCellTextTMP   );
+
+//        // remove last 12 chars from all lines  ( like "  Very Good " or all spaces )
+//        // remove first 1 chars from all lines (if they have 2 leading spaces)
+//        //
+//        if ([myOriginalCellText hasPrefix: @"  "]) {
+//        }
+//        else {
+//            myNewCellText  = [myOriginalCellText substringWithRange:NSMakeRange(0, myOriginalCellTextLen - 12 - 1)]; // zero-based
+//        }
+//
+
+            // remove leading spaces which do not constitute part of space for rank number (
+            //
+            int mylen = (int)myNewCellTextTMP.length;
+            myNewCellText  = [myNewCellTextTMP substringWithRange:
+                NSMakeRange(gbl_numLeadingSpacesToRemove, mylen - gbl_numLeadingSpacesToRemove)]; // zero-based
+//              NSMakeRange(gbl_numLeadingSpacesToRemove, mylen)]; // zero-based
+//NSLog(@"myNewCellText      3B   =[%@]",myNewCellText      );
+
+
+
+//      NSLog(@"myNewCellText1 =[%@]",myNewCellText  );
+
+
+
+
+//  NSLog(@"myOriginalCellText 3    =[%@]",myOriginalCellText      );
+              if ([myOriginalCellText hasSuffix: @"90  Great     "]) {
+      //            numLeadingSpaces = myOriginalCellTextLen - 12 - 14;
+//  trn("hey");
+//  kin((int)gbl_myCellAdjustedTextLen);
+                  numLeadingSpaces = gbl_myCellAdjustedTextLen - @"    Great  90".length ;
+
+//        NSLog(@"numLeadingSpaces =%ld",(long)numLeadingSpaces );
+                  myLeadingSpaces = @"";
+//        NSLog(@"myLeadingSpaces1=[%@]",myLeadingSpaces );
+                  myLeadingSpaces = [@"" stringByPaddingToLength: numLeadingSpaces
+                                                      withString: @" "
+                                                 startingAtIndex: 0 ];
+
+//        NSLog(@"myLeadingSpaces2=[%@]",myLeadingSpaces );
+                  myNewCellText   = [NSString stringWithFormat:@"%@    Great  90", myLeadingSpaces];
+//  NSLog(@"myNewCellText      5    =[%@]",myNewCellText      );
+              }
+              if ([myOriginalCellText hasSuffix: @"75  Very Good "]) {
+                  numLeadingSpaces = gbl_myCellAdjustedTextLen - @"Very Good  75".length ;
+                  myLeadingSpaces = @"";
+                  myLeadingSpaces = [@"" stringByPaddingToLength: numLeadingSpaces
+                                                      withString: @" "
+                                                 startingAtIndex: 0 ];
+                  myNewCellText   = [NSString stringWithFormat:@"%@Very Good  75", myLeadingSpaces];
+              }
+              if ([myOriginalCellText hasSuffix: @"50  Average   "]) {
+                  numLeadingSpaces = gbl_myCellAdjustedTextLen - @"  Average  50".length ;
+                  myLeadingSpaces = @"";
+                  myLeadingSpaces = [@"" stringByPaddingToLength: numLeadingSpaces
+                                                      withString: @" "
+                                                 startingAtIndex: 0 ];
+                  myNewCellText   = [NSString stringWithFormat:@"%@  Average  50", myLeadingSpaces];
+              }
+              if ([myOriginalCellText hasSuffix: @"25  Not Good  "]) {
+                  numLeadingSpaces = gbl_myCellAdjustedTextLen - @" Not Good  25".length ;
+                  myLeadingSpaces = @"";
+                  myLeadingSpaces = [@"" stringByPaddingToLength: numLeadingSpaces
+                                                      withString: @" "
+                                                 startingAtIndex: 0 ];
+                  myNewCellText   = [NSString stringWithFormat:@"%@ Not Good  25", myLeadingSpaces];
+              }
+              if ([myOriginalCellText hasSuffix: @"10  OMG       "]) {
+                  numLeadingSpaces = gbl_myCellAdjustedTextLen - @"      OMG  10".length ;
+                  myLeadingSpaces = @"";
+                  myLeadingSpaces = [@"" stringByPaddingToLength: numLeadingSpaces
+                                                      withString: @" "
+                                                 startingAtIndex: 0 ];
+                  myNewCellText   = [NSString stringWithFormat:@"%@      OMG  10", myLeadingSpaces];
+              }
+
+//trn(" end // long data line");
+        }   // end of long line, shorten by putting  benchmark labels on the inside
+
+        
+        // make benchmark lines have invisible right arrow and disable interaction
+        //
+        int do_setup_for_benchmark_label_cell;
+        do_setup_for_benchmark_label_cell = 0;
+
+        if ([myNewCellText rangeOfString: @"90  Great"   
+                                       options: NSCaseInsensitiveSearch ].location     == NSNotFound
+         && [myNewCellText rangeOfString: @"Great  90"   
+                                       options: NSCaseInsensitiveSearch ].location     == NSNotFound) {
+           ;
+        } else { do_setup_for_benchmark_label_cell = 1; }
+        if ([myNewCellText rangeOfString: @"75  Very Good"
+                                       options: NSCaseInsensitiveSearch ].location     == NSNotFound
+         && [myNewCellText rangeOfString: @"Very Good  75"   
+                                       options: NSCaseInsensitiveSearch ].location     == NSNotFound) {
+           ;
+        } else { do_setup_for_benchmark_label_cell = 1; }
+        if ([myNewCellText rangeOfString: @"50  Average" 
+                                       options: NSCaseInsensitiveSearch ].location     == NSNotFound
+         && [myNewCellText rangeOfString: @"Average  50"   
+                                       options: NSCaseInsensitiveSearch ].location     == NSNotFound) {
+           ;
+        } else { do_setup_for_benchmark_label_cell = 1; }
+        if ([myNewCellText rangeOfString: @"25  Not Good" 
+                                       options: NSCaseInsensitiveSearch ].location     == NSNotFound
+         && [myNewCellText rangeOfString: @"Not Good  25"   
+                                       options: NSCaseInsensitiveSearch ].location     == NSNotFound) {
+           ;
+        } else { do_setup_for_benchmark_label_cell = 1; }
+        if ([myNewCellText rangeOfString: @"10  OMG"    
+                                       options: NSCaseInsensitiveSearch ].location     == NSNotFound
+         && [myNewCellText rangeOfString: @"OMG  10"   
+                                       options: NSCaseInsensitiveSearch ].location     == NSNotFound) {
+           ;
+        } else { do_setup_for_benchmark_label_cell = 1; }
+
+
+
+        if (do_setup_for_benchmark_label_cell == 1) {
+            //cell.accessoryType  is   IGNORED because accessoryView is set to (non-nil)
+
+
+            dispatch_async(dispatch_get_main_queue(), ^{            // <===  short line and long line
+                cell.textLabel.text                      = myNewCellText;  // --------------------------------------------------
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.userInteractionEnabled              = NO;                           // no selection highlighting
+                cell.accessoryView                       = myInvisibleButton;            // no right arrow on benchmark label
+                cell.accessoryType                       = UITableViewCellAccessoryDisclosureIndicator;
+
+                cell.textLabel.numberOfLines             = 1; 
+
+
+                cell.textLabel.textColor                 = [UIColor blackColor];
+                cell.textLabel.font                      = myFont;
+                cell.textLabel.adjustsFontSizeToFitWidth = YES;
+                cell.textLabel.backgroundColor           = gbl_thisCellBackGroundColor;  // see above x
+//                cell.contentView.backgroundColor           = gbl_thisCellBackGroundColor;  // see above x
+
+            });
+
+        } else {
+
+            // UILabel for the disclosure indicator, ">",  for tappable cells
+            //
+                NSString *myDisclosureIndicatorBGcolorName; 
+                NSString *myDisclosureIndicatorText; 
+                UIColor  *colorOfGroupReportArrow; 
+                UIFont   *myDisclosureIndicatorFont; 
+
+                myDisclosureIndicatorText = @">"; 
+//                myDisclosureIndicatorBGcolorName = gbl_array_cellBGcolorName[indexPath.row];   // array set in  viewDidLoad
+//        NSLog(@"myDisclosureIndicatorBGcolorName =%@",myDisclosureIndicatorBGcolorName );
+      
+                if ( [myDisclosureIndicatorBGcolorName isEqualToString: @"cRe2"] ) {
+                    colorOfGroupReportArrow   = [UIColor blackColor];                 // deepest red is pretty  dark
+                    myDisclosureIndicatorFont = [UIFont     systemFontOfSize: 16.0f]; // make not bold
+                } else {
+                    colorOfGroupReportArrow   = [UIColor  grayColor];
+                    myDisclosureIndicatorFont = [UIFont boldSystemFontOfSize: 16.0f];
+                }
+
+
+                NSAttributedString *myNewCellAttributedText3 = [
+                    [NSAttributedString alloc] initWithString: myDisclosureIndicatorText  // i.e.   @">"
+                                                   attributes: @{            NSFontAttributeName : myDisclosureIndicatorFont,
+                                                                   NSForegroundColorAttributeName: colorOfGroupReportArrow                }
+                ];
+//                                                                         NSFontAttributeName : [UIFont boldSystemFontOfSize: 16.0f],
+
+                UILabel *myDisclosureIndicatorLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 12.0f, 32.0f)];
+                myDisclosureIndicatorLabel.attributedText = myNewCellAttributedText3;
+
+
+
+//                if ( [myDisclosureIndicatorBGcolorName isEqualToString: @"cHed"] )  myDisclosureIndicatorLabel.backgroundColor = gbl_color_cHed;
+//                if ( [myDisclosureIndicatorBGcolorName isEqualToString: @"cGr2"] )  myDisclosureIndicatorLabel.backgroundColor = gbl_color_cGr2;
+//                if ( [myDisclosureIndicatorBGcolorName isEqualToString: @"cGre"] )  myDisclosureIndicatorLabel.backgroundColor = gbl_color_cGre;
+//                if ( [myDisclosureIndicatorBGcolorName isEqualToString: @"cNeu"] )  myDisclosureIndicatorLabel.backgroundColor = gbl_color_cNeu;
+//                if ( [myDisclosureIndicatorBGcolorName isEqualToString: @"cRed"] )  myDisclosureIndicatorLabel.backgroundColor = gbl_color_cRed;
+//                if ( [myDisclosureIndicatorBGcolorName isEqualToString: @"cRe2"] )  myDisclosureIndicatorLabel.backgroundColor = gbl_color_cRe2;
+//                if ( [myDisclosureIndicatorBGcolorName isEqualToString: @"cBgr"] )  myDisclosureIndicatorLabel.backgroundColor = gbl_color_cBgr;
+//
+                myDisclosureIndicatorLabel.backgroundColor = gbl_thisCellBackGroundColor;  // see above
+
+
+            //
+            // end of  UILabel for the disclosure indicator, ">",  for tappable cells
+
+
+
+            dispatch_async(dispatch_get_main_queue(), ^{            // <===  short line and long line
+                cell.textLabel.text                      = myNewCellText;  // --------------------------------------------------
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.userInteractionEnabled              = YES;                  
+
+//            cell.accessoryView                       = nil;   // use accessoryType setting   // have right arrow on column labels
+//            cell.accessoryType                       = UITableViewCellAccessoryDisclosureIndicator;
+
+                cell.accessoryView                       = myDisclosureIndicatorLabel;
+                cell.accessoryType                       = UITableViewCellAccessoryDisclosureIndicator;
+
+                cell.textLabel.numberOfLines             = 1; 
+                cell.textLabel.textColor                 = [UIColor blackColor];
+                cell.textLabel.font                      = myFont;
+                cell.textLabel.adjustsFontSizeToFitWidth = YES;
+                cell.textLabel.backgroundColor           = gbl_thisCellBackGroundColor;  // see above
+//                cell.contentView.backgroundColor           = gbl_thisCellBackGroundColor;  // see above x
+            });
+        }
+
+
+        // set cell height to 32.0   see method heightForRowAtIndexPath  below
+
+
+//  NSLog(@"cell=%@",cell);
+//int r; r = (int)indexPath.row;
+//tn();tr("MOST cell text for row===========================================");kin(r);
+//  NSLog(@"myNewCellText=[%@]",myNewCellText);
+
+        return cell;
+
+    } // ALL of THIS   is for  GRPONE and GRPALL (approx 650 lines)
+//
+// ALL of THIS   is for  GRPONE and GRPALL (approx 650 lines)
+
+
+
+// ALL of THIS   is for  MOST and BEST  group reports
+//tn();trn("// ALL of THIS   is for  MOST and BEST  group reports");
+//
+    if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgma"]  // Most Assertive
+        || [gbl_currentMenuPlusReportCode       hasPrefix: @"homgme"]  // Most Emotional
+        || [gbl_currentMenuPlusReportCode       hasPrefix: @"homgmr"]  // Most Restless
+        || [gbl_currentMenuPlusReportCode       hasPrefix: @"homgmp"]  // Most Passionate
+        || [gbl_currentMenuPlusReportCode       hasPrefix: @"homgmd"]  // Most Down-to-earth
+        || [gbl_currentMenuPlusReportCode       hasPrefix: @"homgby"]  // Best Year
+        || [gbl_currentMenuPlusReportCode       hasPrefix: @"homgbd"]  // Best Day
+    ) { //  ALL of THIS   is for  MOST and BEST  group reports
+
+        // Configure the cell...
+
+        //cell.textLabel.text = @"test TBLRPT1   cell text";
+
+
+        // invisible button for taking away the disclosure indicator
+        //
+//    UIButton *myInvisibleButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 28, 28)];
+        UIButton *myInvisibleButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+        [UIButton buttonWithType: UIButtonTypeCustom];
+        myInvisibleButton.backgroundColor = [UIColor clearColor];
+
+
+        // Grab cell data,  but only if indexPath.row is still in array (3 extra footer cells)
+        //
+        if (indexPath.row <= group_report_output_idx) {
+
+            myidx = (int)indexPath.row;
+
+
+            strcpy(my_tmp_str, group_report_output_PSVs  +  myidx * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+
+//ksn(my_tmp_str);
+            myCellContentsPSV     = [NSString stringWithUTF8String: my_tmp_str];  // convert c string to NSString
+//NSLog(@"myCellContentsPSV =[%@]", myCellContentsPSV );
+            mySeparators          = [NSCharacterSet characterSetWithCharactersInString:@"|"];
+            tmpArray              = [myCellContentsPSV componentsSeparatedByCharactersInSet: mySeparators];
+//        gbl_cellBGcolorName   = tmpArray[0];
+            myOriginalCellText    = tmpArray[1];
+            myOriginalCellTextLen = myOriginalCellText.length;
+
+//NSLog(@"myOriginalCellText    =%@",myOriginalCellText    );
+//NSLog(@"myOriginalCellTextLen =%ld",myOriginalCellTextLen );
+
+
+            // get the number of chars taken up by rank numbers on left (  gbl_numPairsRanked )
+            //
+//kin((int)gbl_numPairsRanked);
+            if       (gbl_numPairsRanked  <      10) numCharsForRankNumsOnLeft =    1;
+            else  if (gbl_numPairsRanked  <     100) numCharsForRankNumsOnLeft =    2;
+            else  if (gbl_numPairsRanked  <    1000) numCharsForRankNumsOnLeft =    3;
+            else  if (gbl_numPairsRanked  <   10000) numCharsForRankNumsOnLeft =    4;
+            else  if (gbl_numPairsRanked  <  100000) numCharsForRankNumsOnLeft =    5;  // max ~ 30,000
+//kin((int)numCharsForRankNumsOnLeft );
+
+        }  // end of Grab cell data,  but only if indexPath.row is still in array (3 extra footer cells)
+
+
+        if (indexPath.row ==  group_report_output_idx + 1)
+        {  // 1 of 3 FOOTER CELLS
+//trn("// 1 of 3 FOOTER CELLS");
+
+
+        // here we've printed the data lines in tableview, so turn off cell separator lines now   - does not work - does whole tbl
+        // [self.tableView setSeparatorStyle: UITableViewCellSeparatorStyleNone]; // remove separator lines between cells from here down
+        //[self.tableView setSeparatorColor:[UIColor myColor]];
+//        [self.tableView setSeparatorColor: gbl_color_cHed];
+//        [self.tableView setSeparatorColor:  [UIColor greenColor] ];
+
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+//                cell.textLabel.font          = myFontSmallerer;
+                cell.textLabel.font          = myFontSmaller;
+//                cell.textLabel.numberOfLines = 5;
+                cell.accessoryView           = myInvisibleButton;               // no right arrow on column labels
+                cell.userInteractionEnabled  = NO;
+
+
+                if ([gbl_currentMenuPlusReportCode hasPrefix: @"homgm"]  // best day
+                ) {
+                    NSString *myMostWhat;
+                    if      ([gbl_currentMenuPlusReportCode isEqualToString: @"homgma"]) { myMostWhat = @"Assertive"; }
+                    else if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgme"]) { myMostWhat = @"Emotional"; }
+                    else if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgmr"]) { myMostWhat = @"Restless"; }
+                    else if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgmp"]) { myMostWhat = @"Passionate"; }
+                    else if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgmd"]) { myMostWhat = @"Down-to-earth"; }
+
+//<.>
+                    cell.textLabel.text          = [NSString stringWithFormat: @"                                      \n  The score measures \"how much\"\n  of the trait %@\n  each person has.\n                                      ",
+                        myMostWhat ];
+
+                    cell.textLabel.numberOfLines = 5; 
+                    cell.textLabel.textAlignment = NSTextAlignmentCenter;
+
+
+                } else if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgbd"]  // best day
+                ) {
+                    cell.textLabel.text          = [NSString stringWithFormat: @"                                      \n  The score measures stress levels  \n  on  %@             \n  for each person in the group.    \n                                      ",
+                        gbl_lastSelectedDayFormattedForEmail ];
+
+                    cell.textLabel.numberOfLines = 5; 
+                    cell.textLabel.textAlignment = NSTextAlignmentCenter;
+
+//"                                          \n
+//x The score measures stress levels during  \n
+//x the day for each person in the group.    \n\n
+//x These are short-term influences lasting  \n
+//x just a few hours or a day or two long.   \n
+//x                                          \n"
+//
+
+//x                                   \n
+//x The score measures stress levels  \n
+//x on Mon, Jun 19, 2014              \n
+//x for each person in the group.     \n\n
+//x                                  x"
+//
+
+
+
+                } else if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgby"]  // best year
+                ) {
+                    cell.textLabel.text          = [NSString stringWithFormat: @"  The score for each person tells   \n  how favorable or how challenging  \n  the year %@ is for that person.   \n",
+                        gbl_lastSelectedYear];
+
+                    cell.textLabel.numberOfLines = 7; 
+                    cell.textLabel.textAlignment = NSTextAlignmentCenter;
+                }
+
+
+//"                                          \n
+//x The score measures stress levels during  \n
+
+//The score shows how much time the
+//person spends in the green zones and 
+//the red zones of the calendar year
+//graph over the whole year.
+//The score gives a general idea of how
+//favorable or challenging the year is.
+//
+//x                                          \n
+//x The score estimates how favorable or
+//x The score suggests how favorable or
+//x The score expresses how favorable or
+//x The score shows how favorable or
+//x The score affirms how favorable or how
+//
+//x The score reflects how long the person   \n
+//x spends in the green zones and red zones  \n
+//x in their graph for calendar year 2015.   \n
+//x The score tells how favorable or how
+//x challenging the year 2015 is overall.     
+//
+
+            });
+
+            return cell;
+        }  // end of 1 of 3 FOOTER CELLS
+
+
+        else if (indexPath.row ==  group_report_output_idx + 2)
+        {  // 2 of 3 FOOTER CELLS
+//trn("// 2 of 3 FOOTER CELLS");
+
+            //        myNewCellText                = @"     Produced by iPhone App Me and my BFFs   ";
+            NSAttributedString *myNewCellAttributedText1 = [
+                [NSAttributedString alloc] initWithString: @"        Produced by iPhone App Me and my BFFs   "
+                                               attributes: @{            NSFontAttributeName : [UIFont systemFontOfSize:11.0f] }
+            ];
+
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+                cell.textLabel.font           = myFont;
+                cell.textLabel.numberOfLines  = 1; 
+                cell.accessoryView            = myInvisibleButton;               // no right arrow on column labels
+                cell.userInteractionEnabled   = NO;
+                cell.textLabel.textAlignment = NSTextAlignmentCenter;
+                cell.textLabel.attributedText = myNewCellAttributedText1;
+            });
+
+            return cell;
+        }  // end of 2 of 3 FOOTER CELLS
+
+        else if (indexPath.row ==  group_report_output_idx + 3)
+        {  // 3 of 3 FOOTER CELLS
+//trn("// 3 of 3 FOOTER CELLS");
+
+            // make same font bold
+            //
+            MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for global methods in appDelegate.m
+            UIFont *currentFont       = cell.textLabel.font;
+            UIFont *currentFontBolded = [myappDelegate boldFontWithFont: (UIFont *) currentFont];
+//  NSLog(@"currentFontBolded =%@",currentFontBolded );
+
+            //myNewCellText                = @"    This report is for entertainment purposes only.  ";
+            NSAttributedString *myNewCellAttributedText2 = [
+                [NSAttributedString alloc] initWithString:  @"       This report is for entertainment purposes only.  "
+                                               attributes: @{            NSFontAttributeName : [UIFont systemFontOfSize:11.0f],
+                                                               NSForegroundColorAttributeName: [UIColor redColor]               }
+            ];
+
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+                cell.textLabel.font           = currentFontBolded;
+                cell.textLabel.numberOfLines  = 1; 
+                cell.accessoryView            = myInvisibleButton;               // no right arrow on column labels
+                cell.userInteractionEnabled   = NO;
+                cell.textLabel.textAlignment = NSTextAlignmentCenter;
+                cell.textLabel.attributedText = myNewCellAttributedText2;
+            });
+
+            return cell;
+
+        }  // end of 3 of 3 FOOTER CELLS
+
+        else if (indexPath.row == 0) {  // COLUMN HEADERS   SPACER   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+//tn();trn("in row 0  SPACER");
+            // this is spacer row between 'for ... \n in Group ...'  and col headers
+            //
+
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+                cell.accessoryType           = UITableViewCellAccessoryNone;
+                cell.accessoryView           = myInvisibleButton;            // no right arrow on benchmark label
+                cell.textLabel.numberOfLines = 1; 
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.textLabel.font          = myFont;
+                cell.textLabel.text          = @" ";  // ------------------------------------------------------------
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.userInteractionEnabled  = NO;                           // no selection highlighting
+            });
+
+            return cell;
+
+        } // end of spacer row before col headers
+
+        else if (indexPath.row == 1) {  // ONLY header line   (just 1)
+//tn();trn("in row 0  SPACER");
+            // this is spacer row between 'for ... \n in Group ...'  and col headers
+            //
+
+            NSString *myNewCellText_HDR; 
+            myNewCellText_HDR = [myOriginalCellText substringWithRange:NSMakeRange(0, myOriginalCellTextLen - 1)]; // zero-based
+
+            int mylen1 = (int)myNewCellText_HDR.length;
+
+            myNewCellText  = [myNewCellText_HDR substringWithRange:
+                NSMakeRange(gbl_numLeadingSpacesToRemove, mylen1 - gbl_numLeadingSpacesToRemove)]; // zero-based
+
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+                cell.accessoryView                       = myInvisibleButton;            // no right arrow on benchmark label
+                cell.textLabel.textColor                 = [UIColor blackColor];
+                cell.userInteractionEnabled              = YES;      // method just returns 
+                cell.textLabel.numberOfLines             = 1; 
+                cell.textLabel.font                      = myFont;
+                cell.textLabel.adjustsFontSizeToFitWidth = YES;
+                cell.textLabel.text                      = myNewCellText;  // ------------------------------------------------------------
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+            });
+      
+            return cell;
+
+        } // end of spacer row before col headers
+
+//        else if (indexPath.row == 2) {  // COLUMN HEADERS   SPACER   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+////tn();trn("in row 0  SPACER");
+//            // this is spacer row between 'for ... \n in Group ...'  and col headers
+//            //
+//
+//            dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+//                cell.accessoryType           = UITableViewCellAccessoryNone;
+//                cell.accessoryView           = myInvisibleButton;            // no right arrow on benchmark label
+//                cell.textLabel.numberOfLines = 1; 
+//                cell.textLabel.textColor     = [UIColor blackColor];
+//                cell.textLabel.font          = myFont;
+//                cell.textLabel.text          = @" ";  // ------------------------------------------------------------
+//                cell.userInteractionEnabled  = NO;                           // no selection highlighting
+//            });
+//
+//            return cell;
+//
+//        } // end of spacer row before col headers
+//
+
+        else {    // data line // shorter data line
+//trn("  // shorter data line");
+
+            // short line, on right end,  remove 1 space  
+            //
+            NSString *myNewCellTextShort; 
+            myNewCellTextShort = [myOriginalCellText substringWithRange:NSMakeRange(0, myOriginalCellTextLen - 1)]; // zero-based
+//NSLog(@"myNewCellTextShort A =[%@]",myNewCellTextShort     );
+
+            // short line, on left end, 
+            // remove leading spaces which do not constitute part of space for rank number (
+            //
+            int mylen1 = (int)myNewCellTextShort.length;
+
+            myNewCellText  = [myNewCellTextShort substringWithRange:
+                NSMakeRange(gbl_numLeadingSpacesToRemove, mylen1 - gbl_numLeadingSpacesToRemove)]; // zero-based
+//NSLog(@"myNewCellTextShort B =[%@]",myNewCellTextShort     );
+
+//trn(" end of  // shorter data line");
+        }   // end shorter data line
+
+
+
+            // THIS is for  MOST and BEST  group reports
+
+        // make benchmark lines have invisible right arrow and disable interaction
+        //
+        int do_setup_for_benchmark_label_cell;
+        do_setup_for_benchmark_label_cell = 0;
+
+        NSRange   range_ofBenchmarkScoreAndLabel;
+        NSMutableString *myNewCellText2 = [[NSMutableString alloc] init];
+
+        if ([myNewCellText rangeOfString: @"90  Great"   
+                                       options: NSCaseInsensitiveSearch ].location     == NSNotFound
+         && [myNewCellText rangeOfString: @"Great  90"   
+                                       options: NSCaseInsensitiveSearch ].location     == NSNotFound) {
+           ;
+        } else {
+            do_setup_for_benchmark_label_cell = 1;
+            
+            range_ofBenchmarkScoreAndLabel = [myNewCellText rangeOfString: @"90  Great    "];
+            [myNewCellText2 setString: myNewCellText];  // set mut str value to that of nsstring
+            [myNewCellText2 replaceCharactersInRange: range_ofBenchmarkScoreAndLabel
+                                          withString: @"90  Very High"];
+        }
+        if ([myNewCellText rangeOfString: @"75  Very Good"
+                                       options: NSCaseInsensitiveSearch ].location     == NSNotFound
+         && [myNewCellText rangeOfString: @"Very Good  75"   
+                                       options: NSCaseInsensitiveSearch ].location     == NSNotFound) {
+           ;
+        } else {
+            do_setup_for_benchmark_label_cell = 1;
+            
+            range_ofBenchmarkScoreAndLabel = [myNewCellText rangeOfString: @"75  Very Good"];
+            [myNewCellText2 setString: myNewCellText];  // set mut str value to that of nsstring
+            [myNewCellText2 replaceCharactersInRange: range_ofBenchmarkScoreAndLabel
+                                          withString: @"75  High     "];
+        }
+        if ([myNewCellText rangeOfString: @"50  Average" 
+                                       options: NSCaseInsensitiveSearch ].location     == NSNotFound
+         && [myNewCellText rangeOfString: @"Average  50"   
+                                       options: NSCaseInsensitiveSearch ].location     == NSNotFound) {
+           ;
+        } else {
+            do_setup_for_benchmark_label_cell = 1;
+            
+            range_ofBenchmarkScoreAndLabel = [myNewCellText rangeOfString: @"50  Average  "];
+            [myNewCellText2 setString: myNewCellText];  // set mut str value to that of nsstring
+            [myNewCellText2 replaceCharactersInRange: range_ofBenchmarkScoreAndLabel
+                                          withString: @"50  Average  "];
+        }
+        if ([myNewCellText rangeOfString: @"25  Not Good" 
+                                       options: NSCaseInsensitiveSearch ].location     == NSNotFound
+         && [myNewCellText rangeOfString: @"Not Good  25"   
+                                       options: NSCaseInsensitiveSearch ].location     == NSNotFound) {
+           ;
+        } else {
+            do_setup_for_benchmark_label_cell = 1;
+            
+            range_ofBenchmarkScoreAndLabel = [myNewCellText rangeOfString: @"25  Not Good "];
+            [myNewCellText2 setString: myNewCellText];  // set mut str value to that of nsstring
+            [myNewCellText2 replaceCharactersInRange: range_ofBenchmarkScoreAndLabel
+                                          withString: @"25  Low      "];
+        }
+        if ([myNewCellText rangeOfString: @"10  OMG"    
+                                       options: NSCaseInsensitiveSearch ].location     == NSNotFound
+         && [myNewCellText rangeOfString: @"OMG  10"   
+                                       options: NSCaseInsensitiveSearch ].location     == NSNotFound) {
+           ;
+        } else {
+            do_setup_for_benchmark_label_cell = 1;
+            
+            range_ofBenchmarkScoreAndLabel = [myNewCellText rangeOfString: @"10  OMG      "];
+            [myNewCellText2 setString: myNewCellText];  // set mut str value to that of nsstring
+            [myNewCellText2 replaceCharactersInRange: range_ofBenchmarkScoreAndLabel
+                                          withString: @"10  Very Low "];
+        }
+
+
+
+        if (do_setup_for_benchmark_label_cell == 1) {
+            //cell.accessoryType  is   IGNORED because accessoryView is set to (non-nil)
+
+
+            dispatch_async(dispatch_get_main_queue(), ^{            // <===  short line and long line
+                cell.textLabel.text                      = myNewCellText2;  // --------------------------------------------------
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.userInteractionEnabled              = NO;                           // no selection highlighting
+                cell.accessoryView                       = myInvisibleButton;            // no right arrow on benchmark label
+                cell.accessoryType                       = UITableViewCellAccessoryDisclosureIndicator;
+
+                cell.textLabel.numberOfLines             = 1; 
+
+//if (cell.backgroundColor == gbl_color_cRe2) {
+//            cell.textLabel.textColor                 = gbl_color_textRe2;
+//} else {
+//            cell.textLabel.textColor                 = [UIColor blackColor];
+//}
+//
+
+                cell.textLabel.textColor                 = [UIColor blackColor];
+                cell.textLabel.font                      = myFont;
+                cell.textLabel.adjustsFontSizeToFitWidth = YES;
+            });
+
+        } else {
+
+            // UILabel for the disclosure indicator, ">",  for tappable cells
+            //
+                NSString *myDisclosureIndicatorBGcolorName; 
+                NSString *myDisclosureIndicatorText; 
+                UIColor  *colorOfGroupReportArrow; 
+                UIFont   *myDisclosureIndicatorFont; 
+
+                myDisclosureIndicatorText = @">"; 
+                myDisclosureIndicatorBGcolorName = gbl_array_cellBGcolorName[indexPath.row];   // array set in  viewDidLoad
+//        NSLog(@"myDisclosureIndicatorBGcolorName =%@",myDisclosureIndicatorBGcolorName );
+      
+                if ( [myDisclosureIndicatorBGcolorName isEqualToString: @"cRe2"] ) {
+                    colorOfGroupReportArrow   = [UIColor blackColor];                 // deepest red is pretty  dark
+                    myDisclosureIndicatorFont = [UIFont     systemFontOfSize: 16.0f]; // make not bold
+                } else {
+                    colorOfGroupReportArrow   = [UIColor  grayColor];
+                    myDisclosureIndicatorFont = [UIFont boldSystemFontOfSize: 16.0f];
+                }
+
+
+                NSAttributedString *myNewCellAttributedText3 = [
+                    [NSAttributedString alloc] initWithString: myDisclosureIndicatorText  // i.e.   @">"
+                                                   attributes: @{            NSFontAttributeName : myDisclosureIndicatorFont,
+                                                                   NSForegroundColorAttributeName: colorOfGroupReportArrow                }
+                ];
+//                                                                         NSFontAttributeName : [UIFont boldSystemFontOfSize: 16.0f],
+
+                UILabel *myDisclosureIndicatorLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 12.0f, 32.0f)];
+                myDisclosureIndicatorLabel.attributedText = myNewCellAttributedText3;
+
+
+                if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgma"]  // Most Assertive
+                    || [gbl_currentMenuPlusReportCode       hasPrefix: @"homgme"]  // Most Emotional
+                    || [gbl_currentMenuPlusReportCode       hasPrefix: @"homgmr"]  // Most Restless
+                    || [gbl_currentMenuPlusReportCode       hasPrefix: @"homgmp"]  // Most Passionate
+                    || [gbl_currentMenuPlusReportCode       hasPrefix: @"homgmd"]  // Most Down-to-earth
+                ) { 
+                    // for "Most" is  all light green color
+//                    if (indexPath.row % 2 == 0) myDisclosureIndicatorLabel.backgroundColor = gbl_color_cPerGreen4;
+//                    if (indexPath.row % 2 == 1) myDisclosureIndicatorLabel.backgroundColor = gbl_color_cPerGreen3;
+                     myDisclosureIndicatorLabel.backgroundColor = gbl_color_cPerGreen ;  // all the same color
+                     gbl_thisCellBackGroundColor                = gbl_color_cPerGreen ;  // all the same color
+                }
+
+//                if (   [gbl_currentMenuPlusReportCode       hasPrefix: @"homgby"]  // Best Year
+//                    || [gbl_currentMenuPlusReportCode       hasPrefix: @"homgbd"]  // Best Day
+//                    || [gbl_currentMenuPlusReportCode       hasPrefix: @"homgbd"]  // Best Day
+//                )     // for "Best" use red/green color
+                 else {
+//                    if ( [myDisclosureIndicatorBGcolorName isEqualToString: @"cHed"] )  myDisclosureIndicatorLabel.backgroundColor = gbl_color_cHed;
+//                    if ( [myDisclosureIndicatorBGcolorName isEqualToString: @"cGr2"] )  myDisclosureIndicatorLabel.backgroundColor = gbl_color_cGr2;
+//                    if ( [myDisclosureIndicatorBGcolorName isEqualToString: @"cGre"] )  myDisclosureIndicatorLabel.backgroundColor = gbl_color_cGre;
+//                    if ( [myDisclosureIndicatorBGcolorName isEqualToString: @"cNeu"] )  myDisclosureIndicatorLabel.backgroundColor = gbl_color_cNeu;
+//                    if ( [myDisclosureIndicatorBGcolorName isEqualToString: @"cRed"] )  myDisclosureIndicatorLabel.backgroundColor = gbl_color_cRed;
+//                    if ( [myDisclosureIndicatorBGcolorName isEqualToString: @"cRe2"] )  myDisclosureIndicatorLabel.backgroundColor = gbl_color_cRe2;
+//                    if ( [myDisclosureIndicatorBGcolorName isEqualToString: @"cBgr"] )  myDisclosureIndicatorLabel.backgroundColor = gbl_color_cBgr;
+//
+                    myDisclosureIndicatorLabel.backgroundColor = gbl_thisCellBackGroundColor;  // see above
+                }
+            //
+            // end of  UILabel for the disclosure indicator, ">",  for tappable cells
+
+
+
+            dispatch_async(dispatch_get_main_queue(), ^{            // <===  short line and long line
+                cell.textLabel.text                      = myNewCellText;  // --------------------------------------------------
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.userInteractionEnabled              = YES;                  
+
+//            cell.accessoryView                       = nil;   // use accessoryType setting   // have right arrow on column labels
+//            cell.accessoryType                       = UITableViewCellAccessoryDisclosureIndicator;
+
+                cell.accessoryView                       = myDisclosureIndicatorLabel;
+                cell.accessoryType                       = UITableViewCellAccessoryDisclosureIndicator;
+
+                cell.textLabel.numberOfLines             = 1; 
+                cell.textLabel.textColor                 = [UIColor blackColor];
+                cell.textLabel.font                      = myFont;
+                cell.textLabel.adjustsFontSizeToFitWidth = YES;
+                cell.textLabel.backgroundColor           = gbl_thisCellBackGroundColor;  // see above
+            });
+        }
+
+//trn("// end of  tableView cellForRowAtIndexPath: (NSIndexPath *)indexPath");
+
+        // set cell height to 32.0   see method heightForRowAtIndexPath  below
+        return cell;
+
+
+    } //  ALL of THIS   is for  MOST and BEST  group reports
+//
+// ALL of THIS   is for  MOST and BEST  group reports
+
+
+    return cell;
+
+} // end of  TBLRPTs_1  cellForRowAtIndexPath: (NSIndexPath *)indexPath
+
+
+
+
+
+// how to set the tableview cell height
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath  // -------------------------
+{
+//  NSLog(@"in heightForRowAtIndexPath 1");
+    // return customTableCellHeight;
+
+    if (  [gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"] // My Best Match in Group ...
+      ||  [gbl_currentMenuPlusReportCode       hasPrefix: @"pbm"   ] // My Best Match in Group ... grpone
+      ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgbm"] //    Best Match in Group ...
+      ||  [gbl_currentMenuPlusReportCode       hasPrefix: @"gbm"   ] //    Best Match in Group ... grpall
+    ) {
+        if (indexPath.row == 0) return 14.0;  // spacer
+        if (indexPath.row == 1) return 15.0;  // col hdr 1
+        if (indexPath.row == 2) return 15.0;  // col hdr 2
+     
+        if (indexPath.row == group_report_output_idx + 1) return 15.0 * 7;  // ftr 1
+        if (indexPath.row == group_report_output_idx + 2) return 15.0 ;     // ftr 2
+        if (indexPath.row == group_report_output_idx + 3) return 20.0 ;     // ftr 3
+
+    } else if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgma"]      // group Most RPTs
+               || [gbl_currentMenuPlusReportCode isEqualToString: @"homgme"]      
+               || [gbl_currentMenuPlusReportCode isEqualToString: @"homgmr"] 
+               || [gbl_currentMenuPlusReportCode isEqualToString: @"homgmp"]
+               || [gbl_currentMenuPlusReportCode isEqualToString: @"homgmd"]
+    ) {
+        if (indexPath.row == 0) return  8.0;  // spacer
+        if (indexPath.row == 1) return 24.0;  // col hdr 1
+        if (indexPath.row == 2) return 32.0;  // col hdr 2   ??
+     
+        if (indexPath.row == group_report_output_idx + 1) return  70.0 ;  // ftr 1
+        if (indexPath.row == group_report_output_idx + 2) return  15.0 ;     // ftr 2   by
+        if (indexPath.row == group_report_output_idx + 3) return  20.0 ;     // ftr 3   entertainment
+
+    } else if (  [gbl_currentMenuPlusReportCode isEqualToString: @"homgby"]      // group Best RPT  best year
+    ) {
+        if (indexPath.row == 0) return  8.0;  // spacer
+        if (indexPath.row == 1) return 24.0;  // col hdr 1
+        if (indexPath.row == 2) return 32.0;  // col hdr 2   ??
+     
+        if (indexPath.row == group_report_output_idx + 1) return 70.0 ;  // ftr 1
+        if (indexPath.row == group_report_output_idx + 2) return 15.0 ;     // ftr 2   by
+        if (indexPath.row == group_report_output_idx + 3) return 20.0 ;     // ftr 3   entertainment
+
+    } else if (  [gbl_currentMenuPlusReportCode isEqualToString: @"homgbd"]      // group Best RPT  best day     
+    ) {
+        if (indexPath.row == 0) return  8.0;  // spacer
+        if (indexPath.row == 1) return 24.0;  // col hdr 1
+        if (indexPath.row == 2) return 32.0;  // col hdr 2   ??
+     
+//        if (indexPath.row == group_report_output_idx + 1) return 15.0 * 7;  // ftr 1
+//        if (indexPath.row == group_report_output_idx + 1) return 15.0 * 8.0;  // ftr 1
+//        if (indexPath.row == group_report_output_idx + 1) return 150.0 ;  // ftr 1
+//        if (indexPath.row == group_report_output_idx + 1) return 200.0 ;  // ftr 1
+        if (indexPath.row == group_report_output_idx + 1) return  75.0 ;  // ftr 1
+        if (indexPath.row == group_report_output_idx + 2) return  15.0 ;     // ftr 2   by
+        if (indexPath.row == group_report_output_idx + 3) return  20.0 ;     // ftr 3   entertainment
+     }
+    
+//    } else if ([gbl_currentMenuPlusReportCode hasPrefix: @"homgm"]  // best day
+//    ) {
+//        if (indexPath.row == 0) return  8.0;  // spacer
+//        if (indexPath.row == 1) return 24.0;  // col hdr 1
+//        if (indexPath.row == 2) return 32.0;  // col hdr 2   ??
+//     
+////        if (indexPath.row == group_report_output_idx + 1) return 15.0 * 7;  // ftr 1
+////        if (indexPath.row == group_report_output_idx + 1) return 15.0 * 8.0;  // ftr 1
+////        if (indexPath.row == group_report_output_idx + 1) return 150.0 ;  // ftr 1
+////        if (indexPath.row == group_report_output_idx + 1) return 200.0 ;  // ftr 1
+////
+//        if (indexPath.row == group_report_output_idx + 1) return  25.0 ;  // ftr 1
+//        if (indexPath.row == group_report_output_idx + 2) return  15.0 ;     // ftr 2   by
+//        if (indexPath.row == group_report_output_idx + 3) return  20.0 ;     // ftr 3   entertainment
+//    }
+//
+    
+    return 32.0;
+
+}  // ---------------------------------------------------------------------------------------------------------------------
+
+
+
+// how to set cell background color
+//
+// Alternate method to try later if below does not work:
+//                         http://stackoverflow.com/questions/281515/how-to-customize-the-background-color-of-a-uitableviewcell
+//
+//      The best approach I've found so far is to
+//      1. set a background view of the cell
+//      2. and clear background of cell subviews.
+//      Of course, this looks nice on tables with indexed style only, no matter with or without accessories.
+//      
+//      Here is a sample where cell's background is panted yellow:
+//      
+//      UIView* backgroundView = [ [ [ UIView alloc ] initWithFrame:CGRectZero ] autorelease ];
+//      backgroundView.backgroundColor = [ UIColor yellowColor ];
+//      cell.backgroundView = backgroundView;
+//      for ( UIView* view in cell.contentView.subviews ) 
+//      {
+//          view.backgroundColor = [ UIColor clearColor ];
+//      }
+//      
+//
+//<.>
+- (void)tableView:(UITableView *)tableView willDisplayCell: (UITableViewCell *)cell
+                                         forRowAtIndexPath: (NSIndexPath *)indexPath 
+{
+//  NSLog(@"in willDisplayCell");
+    //cell.backgroundColor = [UIColor colorWithRed:(116/255.0) green:(167/255.0) blue:(179/255.0) alpha:1.0];
+
+    NSString *thisCellBGcolorName; 
+
+    thisCellBGcolorName = gbl_array_cellBGcolorName[indexPath.row];   // array set in  viewDidLoad
+//  NSLog(@"thisCellBGcolorName =%@",thisCellBGcolorName );
+
+
+    if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgma"]  // Most Assertive
+        || [gbl_currentMenuPlusReportCode       hasPrefix: @"homgme"]  // Most Emotional
+        || [gbl_currentMenuPlusReportCode       hasPrefix: @"homgmr"]  // Most Restless
+        || [gbl_currentMenuPlusReportCode       hasPrefix: @"homgmp"]  // Most Passionate
+        || [gbl_currentMenuPlusReportCode       hasPrefix: @"homgmd"]  // Most Down-to-earth
+    ) { 
+        dispatch_async(dispatch_get_main_queue(), ^{            // <===  short line and long line
+            if ( [thisCellBGcolorName isEqualToString: @"cHed"] )  cell.backgroundColor = gbl_color_cHed;
+//            else if (indexPath.row % 2 == 0) cell.backgroundColor = gbl_color_cPerGreen4;   // for "Most" is  all light green color
+//            else if (indexPath.row % 2 == 1) cell.backgroundColor = gbl_color_cPerGreen3;   // for "Most" is  all light green color
+            else  cell.backgroundColor = gbl_color_cPerGreen;   // (same for every cell)  for "Most" is  all light green color
+        });
+    }
+
+//    if (   [gbl_currentMenuPlusReportCode       hasPrefix: @"homgby"]  // Best Year
+//        || [gbl_currentMenuPlusReportCode       hasPrefix: @"homgbd"]  // Best Day
+//    )  
+    else {
+        // doubling the bg color got rid of 1 pixel vertical line
+
+        dispatch_async(dispatch_get_main_queue(), ^{            // <===  short line and long line
+
+            if ( [thisCellBGcolorName isEqualToString: @"cHed"] )  cell.textLabel.backgroundColor = gbl_color_cHed;
+
+            if ( [thisCellBGcolorName isEqualToString: @"cGr2"] )  cell.textLabel.backgroundColor = gbl_color_cGr2;
+            if ( [thisCellBGcolorName isEqualToString: @"cGre"] )  cell.textLabel.backgroundColor = gbl_color_cGre;
+            if ( [thisCellBGcolorName isEqualToString: @"cNeu"] )  cell.textLabel.backgroundColor = gbl_color_cNeu;
+            if ( [thisCellBGcolorName isEqualToString: @"cRed"] )  cell.textLabel.backgroundColor = gbl_color_cRed;
+            if ( [thisCellBGcolorName isEqualToString: @"cRe2"] )  cell.textLabel.backgroundColor = gbl_color_cRe2;
+
+            if ( [thisCellBGcolorName isEqualToString: @"cBgr"] )  cell.textLabel.backgroundColor = gbl_color_cBgr;
+
+
+            if ( [thisCellBGcolorName isEqualToString: @"cHed"] )  cell.backgroundColor = gbl_color_cHed;
+
+            if ( [thisCellBGcolorName isEqualToString: @"cGr2"] )  cell.backgroundColor = gbl_color_cGr2;
+            if ( [thisCellBGcolorName isEqualToString: @"cGre"] )  cell.backgroundColor = gbl_color_cGre;
+            if ( [thisCellBGcolorName isEqualToString: @"cNeu"] )  cell.backgroundColor = gbl_color_cNeu;
+            if ( [thisCellBGcolorName isEqualToString: @"cRed"] )  cell.backgroundColor = gbl_color_cRed;
+            if ( [thisCellBGcolorName isEqualToString: @"cRe2"] )  cell.backgroundColor = gbl_color_cRe2;
+
+            if ( [thisCellBGcolorName isEqualToString: @"cBgr"] )  cell.backgroundColor = gbl_color_cBgr;
+
+
+            if ( [thisCellBGcolorName isEqualToString: @"cNeu"] )  cell.textLabel.backgroundColor   = gbl_color_cNeu;
+            if ( [thisCellBGcolorName isEqualToString: @"cNeu"] )  cell.backgroundColor             = gbl_color_cNeu;
+//            if ( [thisCellBGcolorName isEqualToString: @"cNeu"] )  cell.contentView.backgroundColor = gbl_color_cNeu;
+
+
+        });
+    }    // for "Best" use red/green color
+
+} // end of   willDisplayCell
+
+
+
+
+//- (void)tableView:(UITableView *)tableView willDisplayCell: (UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+//{ 
+//tn();  NSLog(@"willDisplayCell !");
+//    // get the Background Color for this cell
+//    //
+//    do {
+//
+//        gbl_thisCellBackGroundColorName = gbl_array_cellBGcolorName[indexPath.row];   // array set in  viewDidLoad
+//        if ( [gbl_thisCellBackGroundColorName isEqualToString: @"cHed"] )  gbl_thisCellBackGroundColor = gbl_color_cHed;
+//        if ( [gbl_thisCellBackGroundColorName isEqualToString: @"cGr2"] )  gbl_thisCellBackGroundColor = gbl_color_cGr2;
+//        if ( [gbl_thisCellBackGroundColorName isEqualToString: @"cGre"] )  gbl_thisCellBackGroundColor = gbl_color_cGre;
+//        if ( [gbl_thisCellBackGroundColorName isEqualToString: @"cNeu"] )  gbl_thisCellBackGroundColor = gbl_color_cNeu;
+//        if ( [gbl_thisCellBackGroundColorName isEqualToString: @"cRed"] )  gbl_thisCellBackGroundColor = gbl_color_cRed;
+//        if ( [gbl_thisCellBackGroundColorName isEqualToString: @"cRe2"] )  gbl_thisCellBackGroundColor = gbl_color_cRe2;
+//        if ( [gbl_thisCellBackGroundColorName isEqualToString: @"cBgr"] )  gbl_thisCellBackGroundColor = gbl_color_cBgr;
+//    } while (FALSE);
+//
+//    dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+//        cell.textLabel.backgroundColor           = gbl_thisCellBackGroundColor;  // see above x
+//    });
+//}
+//
+
+
+
+//- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+//    
+//    [self.tableView setBackgroundView:nil];
+//    [self.tableView setBackgroundColor: gbl_colorReportsBG];
+//    cell.backgroundColor = [UIColor clearColor];
+//    
+//}
+//
+
+
+//- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+//{
+////    if (section == 0) {
+////        return  @" For1~Elijah89012345\nin Group ~My1Family12345";
+////    }
+////        return  @"For ~Elijah\nin Group ~My2Family";
+////
+//    return @"use label view";
+//}
+//
+
+// how to set the section header cell height
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section  // --------------------------------
+{
+//  NSLog(@"in heightForHeaderInSection");
+
+
+    if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgma"]
+        || [gbl_currentMenuPlusReportCode isEqualToString: @"homgme"]
+        || [gbl_currentMenuPlusReportCode isEqualToString: @"homgmr"]
+        || [gbl_currentMenuPlusReportCode isEqualToString: @"homgmp"]
+        || [gbl_currentMenuPlusReportCode isEqualToString: @"homgmd"]
+
+        || [gbl_currentMenuPlusReportCode isEqualToString: @"homgby"]
+        || [gbl_currentMenuPlusReportCode isEqualToString: @"homgbd"]
+    ) {
+        return 0.0;
+    }
+
+//    if ([gbl_kingpinPersonName isEqualToString: @""]  ||  gbl_kingpinPersonName == nil) {  
+      if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgbm" ]        //    Best Match in Group ... grpall
+          || [gbl_currentMenuPlusReportCode       hasPrefix: @"gbm"    ]        //    Best Match in Group ... grpall
+      ) {
+          return 16.0;   //    Best Match in Group ...   1 line
+      }
+      if (   [gbl_currentMenuPlusReportCode isEqualToString: @"hompbm" ]        //    Best Match in Group ... grpall
+          || [gbl_currentMenuPlusReportCode       hasPrefix: @"pbm"    ]        //    Best Match in Group ... grpall
+      ) {
+//          return 42.0;   // MY Best Match in Group ...   2 lines
+//          return 32.0;   // MY Best Match in Group ...   2 lines
+//          return 35.0;   // MY Best Match in Group ...   2 lines
+          return 34.0;   // MY Best Match in Group ...   2 lines
+      }
+
+      return 32.0;   //    default
+    
+} 
+
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section 
+{
+//tn();
+//  NSLog(@"in viewForHeaderInSection  in tblrpts 1");
+//  NSLog(@"gbl_currentMenuPlusReportCode =%@",gbl_currentMenuPlusReportCode );
+//  NSLog(@"gbl_currentMenuPrefixFromHome=%@",gbl_currentMenuPrefixFromHome);
+//  NSLog(@"gbl_currentMenuPrefixFromMatchRpt=%@",gbl_currentMenuPrefixFromMatchRpt);
+//  NSLog(@"gbl_lastSelPersonWasA =%@",gbl_lastSelPersonWasA );
+//  NSLog(@"gbl_lastSelectedGroup=%@",gbl_lastSelectedGroup);
+//  NSLog(@"gbl_kingpinPersonName=%@",gbl_kingpinPersonName);
+//  NSLog(@"gbl_lastSelectedGroup=%@",gbl_lastSelectedGroup);
+//tn();
+//
+
+    if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgma"]
+        || [gbl_currentMenuPlusReportCode isEqualToString: @"homgme"]
+        || [gbl_currentMenuPlusReportCode isEqualToString: @"homgmr"]
+        || [gbl_currentMenuPlusReportCode isEqualToString: @"homgmp"]
+        || [gbl_currentMenuPlusReportCode isEqualToString: @"homgmd"]
+
+        || [gbl_currentMenuPlusReportCode isEqualToString: @"homgby"]
+        || [gbl_currentMenuPlusReportCode isEqualToString: @"homgbd"]
+    ) {
+        return nil;
+    }
+
+    UIView *myReturnView;
+
+    if (section == 0) {
+        UILabel *lblSection0 = [[UILabel alloc] init];
+
+
+//  NSLog(@"gbl_currentMenuPlusReportCode =%@",gbl_currentMenuPlusReportCode );
+
+        // grpall all BEST MATCH ... reports  PLUS all reports AFTER THAT in navigation <-------------
+                // gbl_PSVtappedPerson_grpall;     // gbm1pe,gbm2pe,gbm1bm,gbm2bm 
+                // gbl_PSVtappedPerson_grpone;     // pbm1pe,pbm2pe,pbm2bm       
+        //
+        if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgbm" ]        //    Best Match in Group ... grpall
+            || [gbl_currentMenuPlusReportCode       hasPrefix: @"gbm"    ]        //    Best Match in Group ... grpall
+
+        ) {
+            lblSection0.numberOfLines = 1;
+            lblSection0.font          = [UIFont boldSystemFontOfSize: 14.0];
+            lblSection0.text = [NSString stringWithFormat: @"in Group   %@", gbl_lastSelectedGroup];
+
+//             mySel2ndPer_Label.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
+//            lblSection0.layer.borderWidth = 1.0f;  // TEST VISIBLE LABEL  (works great)
+
+
+        // grpone  all *MY* BEST MATCH ... reports  PLUS all reports AFTER THAT in navigation <-------------
+        } else if (   [gbl_currentMenuPlusReportCode isEqualToString: @"hompbm" ] // My Best Match in Group ... grpone
+                   || [gbl_currentMenuPlusReportCode       hasPrefix: @"pbm"    ] // My Best Match in Group ... grpone
+
+                // gbl_PSVtappedPerson_grpone;     // pbm1pe,pbm2pe,pbm2bm       
+                // gbl_PSVtappedPerson_grpall;     // gbm1pe,gbm2pe,gbm1bm,gbm2bm 
+        ) {
+            lblSection0.numberOfLines = 2;
+            lblSection0.font          = [UIFont boldSystemFontOfSize: 14.0];
+            lblSection0.text = [NSString stringWithFormat: @"for   %@\nin Group   %@", gbl_kingpinPersonName, gbl_lastSelectedGroup];
+
+//            lblSection0.layer.borderWidth = 1.0f;  // TEST VISIBLE LABEL  (works great)
+        }
+
+        else {
+           lblSection0.text =  @" x01";  // should never happen
+        }
+
+        //        lblSection0.backgroundColor =  gbl_color_cHed;  
+        //        lblSection0.backgroundColor = gbl_color_cAplTop;
+        //        lblSection0.backgroundColor = [UIColor redColor];   for test
+        lblSection0.backgroundColor = [UIColor whiteColor];
+
+        [lblSection0 sizeToFit];
+
+        // make same font bold
+        //
+        MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for global methods in appDelegate.m
+        UIFont *currentFont       = lblSection0.font;
+        UIFont *currentFontBolded = [myappDelegate boldFontWithFont: (UIFont *) currentFont];
+        lblSection0.font          = currentFontBolded;
+
+
+        lblSection0.textAlignment = NSTextAlignmentCenter;
+        myReturnView = lblSection0;
+    }
+
+    return myReturnView;
+
+}  // end of  viewForHeaderInSection
+
+
+
+
+
+/*
+// Override to support conditional editing of the table view.
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    // Return NO if you do not want the specified item to be editable.
+    return YES;
+}
+*/
+
+/*
+// Override to support editing the table view.
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        // Delete the row from the data source
+        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
+        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+    }   
+}
+*/
+
+/*
+// Override to support rearranging the table view.
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
+}
+*/
+
+/*
+// Override to support conditional rearranging of the table view.
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+    // Return NO if you do not want the item to be re-orderable.
+    return YES;
+}
+*/
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
+
+- (BOOL)tableView:(UITableView *)tableView  shouldHighlightRowAtIndexPath: (NSIndexPath *)indexPath
+{
+    if (  [gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"] // My Best Match in Group ...
+      ||  [gbl_currentMenuPlusReportCode       hasPrefix: @"pbm"   ] // My Best Match in Group ... grpone
+      ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgbm"] //    Best Match in Group ...
+      ||  [gbl_currentMenuPlusReportCode       hasPrefix: @"gbm"   ] //    Best Match in Group ... grpall
+    ) {
+        if (indexPath.row == 0 )                            return NO;   // no selection on header1 (sp)
+        if (indexPath.row == 1 )                            return NO;   // no selection on header2
+        if (indexPath.row == 2 )                            return NO;   // no selection on header3
+        if (indexPath.row ==  group_report_output_idx + 1)  return NO;   // 1 of 3 FOOTER CELLS
+        if (indexPath.row ==  group_report_output_idx + 2)  return NO;   // 2 of 3 FOOTER CELLS
+        if (indexPath.row ==  group_report_output_idx + 3)  return NO;   // 3 of 3 FOOTER CELLS
+    }
+
+    if (  [gbl_currentMenuPlusReportCode isEqualToString: @"homgma"]      // group Most RPTs
+      ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgme"]      
+      ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgmr"] 
+      ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgmp"]
+      ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgmd"]
+      ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgby"]      // group Best RPTs
+      ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgbd"]      
+    ) {
+        if (indexPath.row == 0 )                            return NO;   // no selection on header1 (sp)
+        if (indexPath.row == 1 )                            return NO;   // no selection on header2
+//        if (indexPath.row == 2 )                            return NO;   // no selection on header3  --> no hdr 2
+        if (indexPath.row ==  group_report_output_idx + 1)  return NO;   // 1 of 3 FOOTER CELLS
+        if (indexPath.row ==  group_report_output_idx + 2)  return NO;   // 2 of 3 FOOTER CELLS
+        if (indexPath.row ==  group_report_output_idx + 3)  return NO;   // 3 of 3 FOOTER CELLS
+    }
+    
+    return YES;
+} 
+
+
+- (NSIndexPath *)tableView:(UITableView *)tableView willDeselectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+tn(); NSLog(@"in  TBLRPTS_1  willDeselectRowAtIndexPath!");
+NSLog(@"indexPath.row=%ld",(long)indexPath.row);
+
+
+//   UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+//   if ([cell isSelected]) { return nil; }
+//     return indexPath;
+
+    
+    // When the user selects a cell, you should respond by deselecting the previously selected cell (
+    // by calling the deselectRowAtIndexPath:animated: method) as well as by
+    // performing any appropriate action, such as displaying a detail view.
+    // 
+    // this is the "previously" selected row now
+    NSIndexPath *previouslyselectedIndexPath = [self.tableView indexPathForSelectedRow];
+    
+    // NSLog(@"previouslyselectedIndexPath.row=%ld", (long)previouslyselectedIndexPath.row);
+    
+    // here we are deselecting "previously" selected row
+    // and removing light grey highlight
+    [self.tableView deselectRowAtIndexPath: previouslyselectedIndexPath
+//                                  animated: NO];
+                                  animated: YES];
+    return previouslyselectedIndexPath;
+} // willDeselectRowAtIndexPath
+
+
+
+// willSelectRowAtIndexPath message is sent to the UITableView Delegate
+// after the user lifts their finger from a touch of a particular row
+// and before didSelectRowAtIndexPath.
+//
+// willSelectRowAtIndexPath allows you to either confirm that the particular row can be selected,
+// by returning the indexPath, or select a different row by providing an alternate indexPath.
+//
+// This method is only called if there is an existing selection when the user tries to select a different row.
+// The delegate is sent this method for the previously selected row.
+// You can use UITableViewCellSelectionStyleNone to disable the appearance of the cell highlight on touch-down.
+//
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    // NSLog(@"willSelectRowAtIndexPath!");
+
+// use gbl
+//    // this is the "previously" selected row now
+//    NSIndexPath *previouslyselectedIndexPath = [self.tableView indexPathForSelectedRow];
+//
+//    // here deselect "previously" selected row
+//    // and remove yellow highlight
+//    [self.tableView deselectRowAtIndexPath: previouslyselectedIndexPath
+//                                  animated: NO];
+//
+
+
+    if (  [gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"] // My Best Match in Group ...
+      ||  [gbl_currentMenuPlusReportCode       hasPrefix: @"pbm"   ] // My Best Match in Group ... grpone
+      ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgbm"] //    Best Match in Group ...
+      ||  [gbl_currentMenuPlusReportCode       hasPrefix: @"gbm"   ] //    Best Match in Group ... grpall
+    ) {
+        if (indexPath.row == 0 )                            return nil;  // no selection on header1 (sp)
+        if (indexPath.row == 1 )                            return nil;  // no selection on header2
+        if (indexPath.row == 2 )                            return nil;  // no selection on header3
+        if (indexPath.row ==  group_report_output_idx + 1)  return nil;  // 1 of 3 FOOTER CELLS
+        if (indexPath.row ==  group_report_output_idx + 2)  return nil;  // 2 of 3 FOOTER CELLS
+        if (indexPath.row ==  group_report_output_idx + 3)  return nil;  // 3 of 3 FOOTER CELLS
+    }
+    if (  [gbl_currentMenuPlusReportCode isEqualToString: @"homgma"]      // group Most RPTs
+      ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgme"]      
+      ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgmr"] 
+      ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgmp"]
+      ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgmd"]
+      ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgby"]      // group Best RPTs
+      ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgbd"]      
+    ) {
+        if (indexPath.row == 0 )                            return nil;  // no selection on header1 (sp)
+        if (indexPath.row == 1 )                            return nil;  // no selection on header2
+//        if (indexPath.row == 2 )                            return nil;  // no selection on header3  ---> no hdr 2
+        if (indexPath.row ==  group_report_output_idx + 1)  return nil;  // 1 of 3 FOOTER CELLS
+        if (indexPath.row ==  group_report_output_idx + 2)  return nil;  // 2 of 3 FOOTER CELLS
+        if (indexPath.row ==  group_report_output_idx + 3)  return nil;  // 3 of 3 FOOTER CELLS
+    }
+
+    return indexPath; // By default, allow row to be selected
+}
+
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath: (NSIndexPath *) indexPath
+{
+    NSLog(@"in didSelectRowAtIndexPath!  in TBLRPT_1 ");
+    NSLog(@"indexpath.row=%ld",(long)indexPath.row);
+
+    MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global methods in appDelegate.m
+
+    gbl_TBLRPTS1_saveSelectedIndexPath = indexPath;  // for deselecting with animation when return to TBLRPTS1
+NSLog(@"gbl_TBLRPTS1_saveSelectedIndexPath.row=%ld",(long)gbl_TBLRPTS1_saveSelectedIndexPath.row);
+    
+    if (indexPath.row == 0 ) return;   // no selection on header
+    if (indexPath.row == 1 ) return;   // no selection on header
+
+    if (indexPath.row == 2 ) {         // no selection on header
+        if (  [gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"] // My Best Match in Group ...
+          ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgbm"] //    Best Match in Group ...
+        ) {
+            return; // these have 2-line headers, so no select here
+        }
+    }
+
+
+    //    // **********   NO REMEMBERING WHICH REPORT WAS SELECTED  for a specific pair or person ********************
+    //   ONLY REMEMBER the indexPath.row in this session   NOT names between sessions
+    //
+//    gbl_selectedRownumTBLRPT_1 = indexPath.row;  // for remembering row to highlight in tblrpt1
+
+    //        [myappDelegate saveLastSelectionForEntity: (NSString *) @"person"
+    //                                       havingName: (NSString *) gbl_fromHomeCurrentEntityName
+    //                         updatingRememberCategory: (NSString *) @"rptsel"
+    //                                       usingValue: (NSString *) gbl_currentMenuPlusReportCode
+    //        ];
+    //
+
+
+
+    // this is the "currently" selected row now
+    NSIndexPath *currentlyselectedIndexPath = [self.tableView indexPathForSelectedRow];
+    // select the row in UITableView
+    // This puts in the light grey "highlight" indicating selection
+    [self.tableView selectRowAtIndexPath:currentlyselectedIndexPath
+//                                animated:NO
+                                animated: YES
+                          scrollPosition:UITableViewScrollPositionNone];
+    [self.tableView scrollToNearestSelectedRowAtScrollPosition: currentlyselectedIndexPath.row
+                                                      animated: NO];
+//    [self.tableView deselectRowAtIndexPath: previouslyselectedIndexPath
+//                                  animated: NO];
+
+
+    UITableViewCell *currcell = [self.tableView cellForRowAtIndexPath:currentlyselectedIndexPath]; // now you can use currcell.textLabel.text
+
+    if ([currcell.textLabel.text rangeOfString: @"90  Great"   
+                                       options: NSCaseInsensitiveSearch ].location     == NSNotFound
+     && [currcell.textLabel.text rangeOfString: @"Great  90"   
+                                       options: NSCaseInsensitiveSearch ].location     == NSNotFound) {
+        ;
+    } else { return; } // no selection on benchmark label row
+
+    if ([currcell.textLabel.text rangeOfString: @"75  Very Good"
+                                       options: NSCaseInsensitiveSearch ].location     == NSNotFound
+     && [currcell.textLabel.text rangeOfString: @"Very Good  75"   
+                                       options: NSCaseInsensitiveSearch ].location     == NSNotFound) {
+        ;
+    } else { return; } // no selection on benchmark label row
+
+    if ([currcell.textLabel.text rangeOfString: @"50  Average" 
+                                       options: NSCaseInsensitiveSearch ].location     == NSNotFound
+     && [currcell.textLabel.text rangeOfString: @"Average  50"   
+                                       options: NSCaseInsensitiveSearch ].location     == NSNotFound) {
+        ;
+    } else { return; } // no selection on benchmark label row
+
+    if ([currcell.textLabel.text rangeOfString: @"25  Not Good" 
+                                       options: NSCaseInsensitiveSearch ].location     == NSNotFound
+     && [currcell.textLabel.text rangeOfString: @"Not Good  25"   
+                                       options: NSCaseInsensitiveSearch ].location     == NSNotFound) {
+        ;
+    } else { return; } // no selection on benchmark label row
+
+    if ([currcell.textLabel.text rangeOfString: @"10  OMG"    
+                                       options: NSCaseInsensitiveSearch ].location     == NSNotFound
+     && [currcell.textLabel.text rangeOfString: @"OMG  10"   
+                                       options: NSCaseInsensitiveSearch ].location     == NSNotFound) {
+        ;
+    } else { return; } // no selection on benchmark label row
+
+
+    //  set names for title in sel rpt B
+    //
+
+//NSLog(@"indexpath.row=%ld",(long)indexPath.row);
+
+    gbl_selectedCellPersonAname = gbl_array_cellPersonAname[indexPath.row];  // for passing to sel rpt B title
+    gbl_selectedCellPersonBname = gbl_array_cellPersonBname[indexPath.row];  // for passing to sel rpt B title
+//  NSLog(@"gbl_selectedCellPersonAname =%@",gbl_selectedCellPersonAname );
+//  NSLog(@"gbl_selectedCellPersonBname =%@",gbl_selectedCellPersonBname );
+
+    //
+    // save PSVs for viewHTML reports
+    //
+tn();trn("// save PSVs for viewHTML reports");
+  NSLog(@"gbl_currentMenuPlusReportCode=%@",gbl_currentMenuPlusReportCode);
+    do {
+        // MAMB09viewTBLRPTs_1_TableViewController.m  does 9 RPTs  hompbm,homgbm, homgma,homgme,homgmr,homgmp,homgmd homgby,homgbd
+        //
+        //NSString *gbl_PSVtappedPerson_grpone;  // pbm1pe,pbm2pe,pbm2bm
+        //NSString *gbl_PSVtappedPerson_grpall;  // gbm1pe,gbm2pe,gbm1bm,gbm2bm
+        //NSString *gbl_PSVtappedPerson_grpmost; // gmappe,gmeppe,gmrppe,gmpppe,gmdppe
+        //NSString *gbl_PSVtappedPerson_grpbest; // gbypcy,gbdpwc
+        //NSString *gbl_PSVtappedPersonA_inPair; // pbmco,gbmco
+        //NSString *gbl_PSVtappedPersonB_inPair; // pbmco,gbmco
+        //
+
+
+        // grpone all *MY* BEST MATCH ... reports  PLUS all reports AFTER THAT in navigation <-------------
+        // grpall all BEST MATCH ... reports  PLUS all reports AFTER THAT in navigation <-------------
+        //
+        if (  [gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"] // My Best Match in Group ...
+          ||  [gbl_currentMenuPlusReportCode       hasPrefix: @"pbm"   ] // My Best Match in Group ... grpone
+          ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgbm"] //    Best Match in Group ...
+          ||  [gbl_currentMenuPlusReportCode       hasPrefix: @"gbm"   ] //    Best Match in Group ... grpall
+        ) {
+            gbl_PSVtappedPersonA_inPair = [myappDelegate getPSVforPersonName: (NSString *) gbl_selectedCellPersonAname ]; 
+            gbl_PSVtappedPersonB_inPair = [myappDelegate getPSVforPersonName: (NSString *) gbl_selectedCellPersonBname ]; 
+        }
+
+        if (  [gbl_currentMenuPlusReportCode isEqualToString: @"homgma"]      // group Most RPTs
+          ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgme"]      
+          ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgmr"] 
+          ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgmp"]
+          ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgmd"]
+          ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgby"]      // group Best RPTs
+          ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgbd"]      
+        ) {
+            gbl_PSVtappedPerson_fromGRP = [myappDelegate getPSVforPersonName: (NSString *) gbl_selectedCellPersonAname ]; 
+  NSLog(@" tblrpts 1  gbl_PSVtappedPerson_fromGRP =%@",gbl_PSVtappedPerson_fromGRP );
+        }
+    } while (false); // save PSVs for viewHTML reports
+
+
+
+  NSLog(@"gbl_PSVtappedPerson_fromGRP =%@",gbl_PSVtappedPerson_fromGRP );
+
+tn();trn("just tapped on row in TBLRPTS_1");
+  NSLog(@"gbl_PSVtappedPersonA_inPair =%@",gbl_PSVtappedPersonA_inPair );
+  NSLog(@"gbl_PSVtappedPersonB_inPair =%@",gbl_PSVtappedPersonB_inPair );
+  NSLog(@"gbl_PSVtappedPerson_fromGRP =%@",gbl_PSVtappedPerson_fromGRP );
+  NSLog(@"doing  segue   from TBLRPTS1 to   Select REPORTS B!");
+
+    if (  [gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"] // My Best Match in Group ...
+      ||  [gbl_currentMenuPlusReportCode       hasPrefix: @"pbm"   ] // My Best Match in Group ... grpone
+      ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgbm"] //    Best Match in Group ...
+      ||  [gbl_currentMenuPlusReportCode       hasPrefix: @"gbm"   ] //    Best Match in Group ... grpall
+    ) {
+        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+            [self performSegueWithIdentifier:@"segueTBLRPT1toSELRPT_B" sender:self];
+        });                                   
+    }
+
+    if (  [gbl_currentMenuPlusReportCode isEqualToString: @"homgma"]      // group Most RPTs  (tap here goes to gm?ppe in viewHTML)
+      ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgme"]      
+      ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgmr"] 
+      ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgmp"]
+      ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgmd"]
+
+      ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgby"]      // group Best RPTs  (tap here goes to gbypcy in viewHTML)
+      ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgbd"]      //                  (tap here goes to gbdpwc in viewHTML) 
+    ) {
+
+        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+            [self performSegueWithIdentifier:@"segueTBLRPT1_toViewHTML" sender:self];
+        });                                   
+    }
+
+
+} // end of didSelectRowAtIndexPath
+
+
+
+
+//How to check if a UIViewController is being dismissed/popped?
+//  To know if your UIVIewController is being dismissed or popped,
+//  you can ask your UIVIewController if it is being dismissed or being moved
+//  from it’s parent UIVIewController. 
+//
+- (void)viewWillDisappear:(BOOL)animated {
+     NSLog(@"in viewWillDisappear in TBLRPTs_1  !");
+
+  [super viewWillDisappear:animated];
+
+//  if (self.isBeingDismissed || self.isMovingFromParentViewController) {
+//
+//      // Handle the case of being dismissed or popped.
+//      //
+//      gbl_selectedRownumTBLRPT_1 = -1; // FLAG to not highlight menu row on first entering selrpts_B
+//  }
+//
+} // viewWillDisappear
+
+
+-(void) viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear: animated];
+
+    NSLog(@"in TBLRPTs 1  viewWillAppear!");
+NSLog(@"gbl_TBLRPTS1_saveSelectedIndexPath.row=%ld",(long)gbl_TBLRPTS1_saveSelectedIndexPath.row);
+
+
+
+
+    if( gbl_TBLRPTS1_saveSelectedIndexPath ) {  // THIS SIMULATES a SELECT animation followed by a DESELECT animation (it works)
+tn();nbn(100);
+//       [self.tableView   selectRowAtIndexPath: gbl_IdxPathSaved_SelPerson
+//                                     animated: YES 
+//                               scrollPosition: UITableViewScrollPositionNone];
+//
+
+//        [[self.tableView cellForRowAtIndexPath:[self.tableView indexPathForSelectedRow]] setHighlighted:YES];
+
+//  NSLog(@"1000!");
+        [[self.tableView cellForRowAtIndexPath: gbl_TBLRPTS1_saveSelectedIndexPath] setHighlighted: YES
+                                                                                          animated: YES ];
+//
+//    dispatch_async(dispatch_get_main_queue(), ^{                         
+////  NSLog(@"1001!");
+//        [NSThread sleepForTimeInterval:0.5];   // <<=====   this WORKS  1/2 second
+////  NSLog(@"1002!");
+//    });                                   
+//
+
+        dispatch_async(dispatch_get_main_queue(), ^{                         
+            usleep(500000); //   1/2 second //usleep(useconds_t useconds) microseconds
+        });                                   
+
+
+        [[self.tableView cellForRowAtIndexPath: gbl_TBLRPTS1_saveSelectedIndexPath] setHighlighted: NO
+                                                                                          animated: YES ];
+//  NSLog(@"1003!");
+//        [cell setHighlighted:YES animated:NO];
+
+//       [self.tableView deselectRowAtIndexPath: gbl_IdxPathSaved_SelPerson
+//                                     animated: YES ];
+
+        gbl_TBLRPTS1_saveSelectedIndexPath = nil;
+    }
+
+
+
+
+    // -------------------------------------------------------------------------------------------------------------------------
+    // MAMB09viewTBLRPTs_1_TableViewController.m  displays 9 RPTs  hompbm,homgbm, homgma,homgme,homgmr,homgmp,homgmd homgby,homgbd
+    //
+    // NOTE that gbl_currentMenuPlusReportCode changes when the user views a report from any of these RPTs 
+    //      so, in viewWillAppear(), when the user returns, we have to re-set  gbl_currentMenuPlusReportCode  (check it out)
+    // -------------------------------------------------------------------------------------------------------------------------
+//<.>
+    do {   // re-set gbl_currentMenuPlusReportCode, if necessary
+
+        // -------------------------------------------------------------------------------------------------------------------------
+        // MAMB09viewTBLRPTs_1_TableViewController.m 
+        // -------------------------------------------------------------------------------------------------------------------------
+        //     - displays 9 RPTs  hompbm,homgbm, homgma,homgme,homgmr,homgmp,homgmd homgby,homgbd
+        //
+        //     - goes to 16 RPTs  from hompbm ==>  pbmco,pbm1pe,pbm2pe,       pbm2bm
+        //     - goes to 16 RPTs  from homgbm ==>  gbmco,gbm1pe,gbm2pe,gbm1bm,gbm2bm
+        //     - goes to 16 RPTs  from homgma ==>  gmappe
+        //     - goes to 16 RPTs  from homgme ==>  gmeppe
+        //     - goes to 16 RPTs  from homgmr ==>  gmrppe
+        //     - goes to 16 RPTs  from homgmp ==>  gmpppe
+        //     - goes to 16 RPTs  from homgmd ==>  gmdppe
+        //     - goes to 16 RPTs  from homgby ==>  gbypcy
+        //     - goes to 16 RPTs  from homgbd ==>  gbdpwc
+        //
+        // NOTE that gbl_currentMenuPlusReportCode changes when the user goes to a report from any of these 9 RPTs 
+        //      so, in viewWillAppear(), when the user returns, we have to re-set  gbl_currentMenuPlusReportCode  (check it out)
+        //
+        //      this is 16+9=25 reports   FYI, the other 4 reports are  hompcy,homppe,hompco,hompwc
+        // -------------------------------------------------------------------------------------------------------------------------
+  NSLog(@"BEFORE RESET   gbl_currentMenuPlusReportCode =%@",gbl_currentMenuPlusReportCode );
+
+             if ([gbl_currentMenuPlusReportCode isEqualToString: @"pbmco" ]) gbl_currentMenuPlusReportCode = @"hompbm";
+        else if ([gbl_currentMenuPlusReportCode isEqualToString: @"pbm1pe"]) gbl_currentMenuPlusReportCode = @"hompbm";
+        else if ([gbl_currentMenuPlusReportCode isEqualToString: @"pbm2pe"]) gbl_currentMenuPlusReportCode = @"hompbm";
+        else if ([gbl_currentMenuPlusReportCode isEqualToString: @"pbm2bm"]) gbl_currentMenuPlusReportCode = @"hompbm";
+
+        else if ([gbl_currentMenuPlusReportCode isEqualToString: @"gbmco" ]) gbl_currentMenuPlusReportCode = @"homgbm";
+        else if ([gbl_currentMenuPlusReportCode isEqualToString: @"gbm1pe"]) gbl_currentMenuPlusReportCode = @"homgbm";
+        else if ([gbl_currentMenuPlusReportCode isEqualToString: @"gbm2pe"]) gbl_currentMenuPlusReportCode = @"homgbm";
+        else if ([gbl_currentMenuPlusReportCode isEqualToString: @"gbm1bm"]) gbl_currentMenuPlusReportCode = @"homgbm";
+        else if ([gbl_currentMenuPlusReportCode isEqualToString: @"gbm2bm"]) gbl_currentMenuPlusReportCode = @"homgbm";
+
+        else if ([gbl_currentMenuPlusReportCode isEqualToString: @"gmappe"]) gbl_currentMenuPlusReportCode = @"homgma";
+        else if ([gbl_currentMenuPlusReportCode isEqualToString: @"gmeppe"]) gbl_currentMenuPlusReportCode = @"homgme";
+        else if ([gbl_currentMenuPlusReportCode isEqualToString: @"gmrppe"]) gbl_currentMenuPlusReportCode = @"homgmr";
+        else if ([gbl_currentMenuPlusReportCode isEqualToString: @"gmpppe"]) gbl_currentMenuPlusReportCode = @"homgmp";
+        else if ([gbl_currentMenuPlusReportCode isEqualToString: @"gmdppe"]) gbl_currentMenuPlusReportCode = @"homgmd";
+
+        else if ([gbl_currentMenuPlusReportCode isEqualToString: @"gbypcy"]) gbl_currentMenuPlusReportCode = @"homgby";
+        else if ([gbl_currentMenuPlusReportCode isEqualToString: @"gbdpwc"]) gbl_currentMenuPlusReportCode = @"homgbd";
+
+
+  NSLog(@"AFTER  RESET   gbl_currentMenuPlusReportCode =%@",gbl_currentMenuPlusReportCode );
+
+    } while (FALSE);   // re-set gbl_currentMenuPlusReportCode, if necessary
+
+
+
+
+    char  yyyy_todo[16], yyyymmdd_todo[16], stringBuffForStressScore[64] ;
+    const char *yyyy_todoC;
+    const char *yyyymmdd_todoC;
+
+
+
+    //
+    // add NAVIGATION BAR right buttons, if not added already   plus nav bar title
+    //
+    NSString *myNavBarTitle;
+    if (gbl_tblrpts1_ShouldAddToNavBar == 1) { // init to prevent  multiple programatic adds of nav bar items
+
+        gbl_tblrpts1_ShouldAddToNavBar  = 0;   // do not do this again
+
+        // you have to add the info button in interface builder by hand,
+        // then you can add  Share button below with   rightBarButtonItems arrayByAddingObject: shareButton];
+        //
+        UIBarButtonItem *shareButton = [[UIBarButtonItem alloc]
+                                        initWithBarButtonSystemItem: UIBarButtonSystemItemAction
+                                        target:self
+                                        action:@selector(shareButtonAction:)];
+
+        UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 11, 44)];  // 3rd arg is horizontal length
+        UIBarButtonItem *mySpacerForTitle = [[UIBarButtonItem alloc] initWithCustomView:spaceView];
+
+
+//          ||  [gbl_currentMenuPlusReportCode isEqualToString: @"gbm1bm"]  // My Best Match in Group ...  see tblrps_2 view
+//          ||  [gbl_currentMenuPlusReportCode isEqualToString: @"gbm2bm"]  // My Best Match in Group ...  see tblrps_2 view
+//          ||  [gbl_currentMenuPlusReportCode isEqualToString: @"pbm2bm"]  // My Best Match in Group ...  see tblrps_2 view
+//        if (   [gbl_currentMenuPlusReportCode isEqualToString: @"hompbm" ]  // My Best Match in Group ...
+//            || [gbl_currentMenuPlusReportCode isEqualToString: @"homgbm" ]  //    Best Match in Group ...
+//            || [gbl_currentMenuPlusReportCode       hasPrefix: @"pbm"    ]
+//            || [gbl_currentMenuPlusReportCode       hasPrefix: @"gbm"    ]
+
+//  NSLog(@"gbl_currentMenuPlusReportCode =%@",gbl_currentMenuPlusReportCode );
+
+
+
+        // grpone all *MY* BEST MATCH ... reports  PLUS all reports AFTER THAT in navigation <-------------
+        // grpall all BEST MATCH ... reports  PLUS all reports AFTER THAT in navigation <-------------
+        //
+        if (  [gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"] // My Best Match in Group ...
+          ||  [gbl_currentMenuPlusReportCode       hasPrefix: @"pbm"   ] // My Best Match in Group ... grpone
+          ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgbm"] //    Best Match in Group ...
+          ||  [gbl_currentMenuPlusReportCode       hasPrefix: @"gbm"   ] //    Best Match in Group ... grpall
+        ) {
+                // gbl_PSVtappedPerson_grpall;     // gbm1pe,gbm2pe,gbm1bm,gbm2bm 
+                // gbl_PSVtappedPerson_grpone;     // pbm1pe,pbm2pe,pbm2bm       
+            myNavBarTitle = @"Best Match";
+
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+                self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: shareButton];
+                self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerForTitle];
+                [self.navigationController.navigationBar setTranslucent:NO];
+
+                // How to hide iOS7 UINavigationBar 1px bottom line
+                // 
+                // you can make the background a solid color by
+                // 1. setting backgroundImage to [UIImage new]
+                // 2. assigning navigationBar.backgroundColor to the color you like.
+                // (when you  do this,  translucent becomes = NO)  that's OK
+                //  http://stackoverflow.com/questions/19226965/how-to-hide-ios7-uinavigationbar-1px-bottom-line/
+                //
+                [self.navigationController.navigationBar setBackgroundImage: [UIImage new]       // 1. of 2
+                                                             forBarPosition: UIBarPositionAny
+                                                                 barMetrics: UIBarMetricsDefault];
+                //
+                [self.navigationController.navigationBar setShadowImage: [UIImage new]];   
+                //
+                self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];  // 2. of 2
+                //
+                // end of  How to hide iOS7 UINavigationBar 1px bottom line
+
+
+                [[self navigationItem] setTitle: myNavBarTitle];
+            });                                   
+
+        } else if (   [gbl_currentMenuPlusReportCode       hasPrefix: @"homgm"    ]  // "Most" reports
+                 || [gbl_currentMenuPlusReportCode       hasPrefix: @"homgb"    ]  // "Best" reports
+        ) {
+
+            if      ([gbl_currentMenuPlusReportCode isEqualToString: @"homgma"]) { myNavBarTitle = @"Most Assertive"; }
+            else if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgme"]) { myNavBarTitle = @"Most Emotional"; }
+            else if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgmr"]) { myNavBarTitle = @"Most Restless"; }
+            else if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgmp"]) { myNavBarTitle = @"Most Passionate"; }
+            else if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgmd"]) { myNavBarTitle = @"Most Down-to-earth"; }
+
+            else if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgby"]) {
+                myNavBarTitle = [NSString stringWithFormat: @"Best Year  %@", gbl_lastSelectedYear ];
+            }
+            else if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgbd"]) {
+                myNavBarTitle = [NSString stringWithFormat: @"Best Day  %@", gbl_lastSelectedDayFormattedForTitle ];
+            }
+
+            else {
+                myNavBarTitle = @"x02";  // should never happen
+            }
+
+            UILabel *myNavBarLabel      = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 480.0, 44.0)];
+            NSString *myNavBar2lineTitle;
+            myNavBarLabel.numberOfLines = 2;
+
+            if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgbd"]) myNavBarLabel.font = [UIFont boldSystemFontOfSize: 12.0];
+            else                                                            myNavBarLabel.font = [UIFont boldSystemFontOfSize: 14.0];
+
+            myNavBarLabel.textColor     = [UIColor blackColor];
+            myNavBarLabel.textAlignment = NSTextAlignmentCenter; 
+//            myNavBar2lineTitle = [NSString stringWithFormat:  @"%@\nin Group %@", myNavBarTitle, gbl_lastSelectedGroup ];
+            myNavBar2lineTitle = [NSString stringWithFormat:  @"%@\nin %@", myNavBarTitle, gbl_lastSelectedGroup ];
+            myNavBarLabel.text          = myNavBar2lineTitle;
+
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+                self.navigationItem.titleView = myNavBarLabel; // myNavBarLabel.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
+                self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: shareButton];
+                self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerForTitle];
+                [self.navigationController.navigationBar setTranslucent:NO];
+
+                // How to hide iOS7 UINavigationBar 1px bottom line
+                // 
+                // you can make the background a solid color by
+                // 1. setting backgroundImage to [UIImage new]
+                // 2. assigning navigationBar.backgroundColor to the color you like.
+                // (when you  do this,  translucent becomes = NO)  that's OK
+                //  http://stackoverflow.com/questions/19226965/how-to-hide-ios7-uinavigationbar-1px-bottom-line/
+                //
+                [self.navigationController.navigationBar setBackgroundImage: [UIImage new]       // 1. of 2
+                                                             forBarPosition: UIBarPositionAny
+                                                                 barMetrics: UIBarMetricsDefault];
+                //
+                [self.navigationController.navigationBar setShadowImage: [UIImage new]];   
+                //
+                self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];  // 2. of 2
+                //
+                // end of  How to hide iOS7 UINavigationBar 1px bottom line
+
+//                [[self navigationItem] setTitle: myNavBarTitle];
+//                self.navigationItem.titleView = myNavBarLabel; // myNavBarLabel.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
+            });                                   
+        }
+
+    } // end of add Navigation Bar right buttons
+
+
+
+
+
+// ?  ?  ?
+//StART  of GUTS of ViewDidLoad (called only once) moved to ViewWillAppear (called each time becomes visible)
+//
+//  viewDidLoad
+//  Is called exactly once, when the view controller is first loaded into memory.
+//  This is where you want to instantiate any instance variables and
+//  build any views that live for the entire lifecycle of this view controller.
+//  
+//  viewDidAppear
+//  Is called when the view is actually visible,
+//  and can be called multiple times during the lifecycle of a View Controller
+//  (example when a Modal View Controller is dismissed and the view becomes visible again)
+//
+
+    MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global methods in appDelegate.m
+    int retval;
+
+//    char csv_person_string[128];
+//    char psvName[32], psvMth[4], psvDay[4], psvYear[8], psvHour[4], psvMin[4], psvAmPm[4], psvCity[64], psvProv[64], psvCountry[64];
+    char psvLongitude[16], psvHoursDiff[8], returnPSV[64];
+    const char *my_psvc; // psv=pipe-separated values
+//    char my_psv[128];
+    
+    const char *tmp_grp_name_CONST;                                                         // NSString object to C str
+    char tmp_grp_name[128];                                                                 // NSString object to C str
+    tmp_grp_name_CONST = [gbl_lastSelectedGroup cStringUsingEncoding:NSUTF8StringEncoding]; // NSString object to C str
+    strcpy(tmp_grp_name, tmp_grp_name_CONST);                                               // NSString object to C str  because of const
+    
+
+    char person_name_for_filename[32];
+    char group_name_for_filename[32]; 
+
+    char   html_file_name_browser[2048];
+    NSString *Ohtml_file_name_browser;
+    NSString *OpathToHTML_browser;
+    char     *pathToHTML_browser;
+
+//    char   html_file_name_webview[2048];
+//    NSString *Ohtml_file_name_webview;
+//    NSString *OpathToHTML_webview;
+//    char     *pathToHTML_webview;
+
+    NSArray* tmpDirFiles;
+    
+    // all BEST MATCH ... reports  ======================================================================================
+    // all BEST MATCH ... reports  ======================================================================================
+    //
+//tn();trn("before kingpin set");
+//  NSLog(@"gbl_currentMenuPrefixFromHome=%@",gbl_currentMenuPrefixFromHome);
+//  NSLog(@"gbl_currentMenuPrefixFromMatchRpt=%@",gbl_currentMenuPrefixFromMatchRpt);
+//  NSLog(@"gbl_lastSelPersonWasA =%@",gbl_lastSelPersonWasA );
+//  NSLog(@"gbl_lastSelectedGroup=%@",gbl_lastSelectedGroup);
+//  NSLog(@"gbl_kingpinPersonName=%@",gbl_kingpinPersonName);
+//  NSLog(@"gbl_currentMenuPlusReportCode =%@",gbl_currentMenuPlusReportCode );
+//  NSLog(@"gbl_lastSelectedPerson=%@",gbl_lastSelectedPerson);
+//  NSLog(@"gbl_lastSelectedGroup=%@",gbl_lastSelectedGroup);
+//  NSLog(@"gbl_fromHomeCurrentSelectionPSV=%@",gbl_fromHomeCurrentSelectionPSV);
+//
+
+//    if (  [gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"]      // My Best Match in Group ...
+//      ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgbm"]      //    Best Match in Group ...
+////      ||  [gbl_currentMenuPlusReportCode isEqualToString: @"gbm1bm"]      // My Best Match in Group ...  see tblrps_2 view
+////      ||  [gbl_currentMenuPlusReportCode isEqualToString: @"gbm2bm"]      // My Best Match in Group ...
+////      ||  [gbl_currentMenuPlusReportCode isEqualToString: @"pbm2bm"]      // My Best Match in Group ...
+//    )
+//        // all BEST MATCH ... reports
+//
+
+            // all BEST MATCH ... reports  PLUS all reports AFTER THAT in navigation <-------------
+            //
+nbn(200);
+    if (   [gbl_currentMenuPlusReportCode isEqualToString: @"hompbm" ]  // My Best Match in Group ...
+        || [gbl_currentMenuPlusReportCode       hasPrefix: @"pbm"    ]  // My Best Match in Group ...
+        || [gbl_currentMenuPlusReportCode isEqualToString: @"homgbm" ]  //    Best Match in Group ...
+        || [gbl_currentMenuPlusReportCode       hasPrefix: @"gbm"    ]  //    Best Match in Group ...
+
+            // gbl_PSVtappedPerson_grpall;     // gbm1pe,gbm2pe,gbm1bm,gbm2bm 
+            // gbl_PSVtappedPerson_grpone;     // pbm1pe,pbm2pe,pbm2bm       
+
+    ) {   // all BEST MATCH ... reports  PLUS all reports AFTER THAT in navigation <-------------
+
+nbn(201);
+        tn();trn("in REPORT  all BEST MATCH ... reports !");
+
+        //        NSString myTitleForTableview;
+
+        NSString *myKingpinPerson;
+        NSString *myKingpinCSV_NSString;
+        const char *C_CONST_myKingpinPerson;   // for get c string
+        char        C_myKingpinPerson[64];     // for get c string
+
+        // determine the NSString CSV of the kingpin person (or @"") for this match report
+        //
+        if (   [gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"]  // My Best Match in Group ...
+            || [gbl_currentMenuPlusReportCode       hasPrefix: @"pbm"   ]  // My Best Match in Group ...
+        ) {
+           myKingpinPerson       = gbl_lastSelectedPerson;
+           myKingpinCSV_NSString = gbl_fromHomeCurrentSelectionPSV;
+        }
+        if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgbm"]  // Best Match in Group ...
+            || [gbl_currentMenuPlusReportCode       hasPrefix: @"gbm"   ]  // Best Match in Group ...
+        ) {
+           myKingpinPerson       = @"";
+           myKingpinCSV_NSString = @"";
+        }
+
+        gbl_kingpinPersonName = myKingpinPerson;
+
+//myKingpinPerson       =  @"~Ava";
+//myKingpinCSV_NSString = [myappDelegate getCSVforPersonName: (NSString *) myKingpinPerson]; 
+//NSLog(@" TEST 1  myKingpinCSV_NSString =%@",myKingpinCSV_NSString );
+//myKingpinPerson       =  @"~Avaxxxxxxxx";
+//myKingpinCSV_NSString = [myappDelegate getCSVforPersonName: (NSString *) myKingpinPerson]; 
+//NSLog(@" TEST 2  myKingpinCSV_NSString =%@",myKingpinCSV_NSString );
+//
+
+        if (myKingpinCSV_NSString == nil) {
+            NSLog(@"Could not find person record for person name=%@",myKingpinPerson);
+            NSLog(@"using ~Abigail ");
+            myKingpinCSV_NSString = [myappDelegate getCSVforPersonName: @"~Abibail"]; 
+        }
+
+        /* get C string for NSString myKingpinPerson
+        */
+
+        if ([myKingpinPerson isEqualToString: @""]  ||  myKingpinPerson == nil) {    // My Best Match in Group ...
+            strcpy(C_myKingpinPerson, "no person");
+        } else {
+            C_CONST_myKingpinPerson = myKingpinPerson.UTF8String;   // for grpone
+            strcpy(C_myKingpinPerson, C_CONST_myKingpinPerson);
+        }
+
+        
+    NSLog(@"gbl_lastSelectedPerson=%@", gbl_lastSelectedPerson);
+    NSLog(@"gbl_lastSelectedGroup =%@", gbl_lastSelectedGroup );
+
+        // build HTML file name  in TMP  Directory  (html_file_name_browser);
+        //
+        if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgbm"]  // Best Match in Group ...
+            || [gbl_currentMenuPlusReportCode       hasPrefix: @"gbm"   ]  // Best Match in Group ...
+        ) {
+            strcpy(group_name_for_filename, tmp_grp_name );  
+            scharswitch(group_name_for_filename, ' ', '_');
+            sprintf(html_file_name_browser, "%sgrpall_%s.html", PREFIX_HTML_FILENAME, group_name_for_filename);
+
+        } 
+        if (   [gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"]  // My Best Match in Group ...
+            || [gbl_currentMenuPlusReportCode       hasPrefix: @"pbm"   ]  // My Best Match in Group ...
+        ) {
+
+            strcpy(person_name_for_filename, C_myKingpinPerson);
+            scharswitch(person_name_for_filename, ' ', '_');
+
+            strcpy(group_name_for_filename, tmp_grp_name );  
+            scharswitch(group_name_for_filename, ' ', '_');
+
+            sprintf(html_file_name_browser, "%sgrpone_%s_%s.html", PREFIX_HTML_FILENAME, person_name_for_filename, group_name_for_filename);
+        }
+// sprintf(html_file_name_webview, "%sgrpone_%s_%swebview.html", PREFIX_HTML_FILENAME, person_name_for_filename, group_name_for_filename);
+        
+        
+        gbl_html_file_name_browser = [NSString stringWithUTF8String:html_file_name_browser ];   // for later sending as email attachment
+//        gbl_html_file_name_webview = [NSString stringWithUTF8String:html_file_name_webview ];   // for later viewing in webview
+
+
+        Ohtml_file_name_browser = [NSString stringWithUTF8String:html_file_name_browser ];
+        OpathToHTML_browser     = [NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_browser];
+        pathToHTML_browser      = (char *) [OpathToHTML_browser cStringUsingEncoding:NSUTF8StringEncoding];
+        
+//        Ohtml_file_name_webview = [NSString stringWithUTF8String:html_file_name_webview ];
+//        OpathToHTML_webview     = [NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_webview];
+//        pathToHTML_webview      = (char *) [OpathToHTML_webview cStringUsingEncoding:NSUTF8StringEncoding];
+//        
+//        URLtoHTML_forWebview = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_webview]];
+//
+        
+        gbl_pathToFileToBeEmailed = OpathToHTML_browser;
+        
+        // remove all "*.html" files from TMP directory before creating new one
+        //
+        tmpDirFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:NSTemporaryDirectory() error:NULL];
+        NSLog(@"tmpDirFiles.count=%lu",(unsigned long)tmpDirFiles.count);
+        for (NSString *fil in tmpDirFiles) {
+            NSLog(@"REMOVED THIS fil=%@",fil);
+            if ([fil hasSuffix: @"html"]) {
+                [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), fil] error:NULL];
+            }
+        }
+   
+        
+        tn();trn("2 HTMLs !!!!!!!!!!!!!!!!!!!!");
+//        nksn(html_file_name_browser); ksn( html_file_name_webview);
+//        nksn(pathToHTML_browser); ksn(pathToHTML_webview);
+//
+        NSLog(@"Ohtml_file_name_browser=%@",Ohtml_file_name_browser);
+        NSLog(@"OpathToHTML_browser=%@",OpathToHTML_browser);
+
+
+
+
+//  NSLog(@" 2 gbl_lastSelectedGroup=%@",gbl_lastSelectedGroup);
+
+        // get a NSString CSV for each member of the group into NSArray gbl_grp_CSVs
+        // but possibly excluding  one person who is kingpin of grpone report "MY Best Match in Group ..." 
+        //
+        gbl_kingpinIsInGroup = [myappDelegate getNSArrayOfCSVsForGroup: (NSString *)  gbl_lastSelectedGroup  // get into NSArray gbl_grp_CSVs
+                                               excludingThisPersonName: (NSString *)  myKingpinPerson        // non-empty string means grpone
+                                       puttingIntoArrayWithDescription: (NSString *)  @"gbl_grp_CSVs"        // destination array "" or "_B"
+        ];  
+
+
+
+  NSLog(@"gbl_kingpinIsInGroup =%ld",(long)gbl_kingpinIsInGroup );
+//NSLog(@"gbl_grp_CSVs =%@",gbl_grp_CSVs ); // for test see all grp CSVs
+//kin((int)gbl_grp_CSVs.count);
+
+
+            // here we can store the number of pairs ranked  in  gbl_numPairsRanked (for column header size calc)
+            //
+            if ([myKingpinPerson isEqualToString: @""]  ||  myKingpinPerson == nil) {    // Best Match in Group ...
+                gbl_numPairsRanked = ( gbl_grp_CSVs.count * (gbl_grp_CSVs.count - 1)) / 2;  // for grpall
+            } else {
+                gbl_numPairsRanked = gbl_grp_CSVs.count;   // (getNSArrayOfCSVsForGroup subtracts one if kingpin is in group)
+            }
+  NSLog(@"gbl_numPairsRanked =%ld",(long)gbl_numPairsRanked );
+
+
+        //
+        // convert  NSArray gbl_grp_CSVs  (one NSString CSV for each member of the group)
+        // into     a C array of strings for the C report function call mamb_report_person_in_group() -  my_mamb_csv_arr
+        //
+        //     char group_report_input_birthinfo_CSVs[gbl_maxGrpBirthinfoCSVs * gbl_maxLenBirthinfoCSV];  // [250 * fixed length of 64]
+        //
+        // avoid malloc by this char buffer  to hold max lines of fixed length
+        // char group_report_input_birthinfo_CSVs[gbl_maxGrpBirthinfoCSVs * gbl_maxLenBirthinfoCSV];  // [250 * fixed length of 64]
+        // int  group_report_input_birthinfo_idx;
+        //
+        char *my_mamb_csv_arr[gbl_maxGrpBirthinfoCSVs];
+        int num_input_csvs;
+        num_input_csvs = (int)gbl_grp_CSVs.count;
+        group_report_input_birthinfo_idx =  -1;  // zero-based  init
+
+        for(int i = 0; i < num_input_csvs; i++) {  
+
+          NSString *s      = gbl_grp_CSVs[i];     //get a NSString
+          const char *cstr = s.UTF8String;        //get cstring
+
+          // index of next spot in buffer
+          group_report_input_birthinfo_idx = group_report_input_birthinfo_idx + 1; 
+
+          // get ptr to next 64-byte slot in buffer
+          char *my_ptr_in_buff;
+          my_ptr_in_buff = group_report_input_birthinfo_CSVs + group_report_input_birthinfo_idx * gbl_maxLenBirthinfoCSV;
+
+          // copy cstr into that spot
+          strcpy(my_ptr_in_buff, cstr); 
+
+          // put ptr to that spot into c array of strings
+          my_mamb_csv_arr[group_report_input_birthinfo_idx] = my_ptr_in_buff;
+        }
+
+//for (int kkk=0; kkk <= num_input_csvs -1; kkk++) {
+//tn();ki(kkk);ks(my_mamb_csv_arr[kkk]); }
+//
+
+        
+
+//        /* Now call report function in grpdoc.c
+//        * 
+//        *  struct rank_report_line *out_rank_lines[MAX_IN_RANK_LINE_ARRAY];
+//        *  int out_rank_idx;  * pts to current line in out_rank_lines *
+//        */
+//        int out_rank_idx, retval;
+//        out_rank_idx = 0;
+//        retval = mamb_report_person_in_group(  /* in grpdoc.o */
+//          html_file_name,      /* html_file_name */
+//          group_name,          /* group_name */
+//          mamb_csv_arr,        /* in_csv_person_arr[] */
+//          num_in_grp,          /* num_persons_in_grp */
+//          csv_compare_everyone_with,
+//          out_rank_lines,      /* struct rank_report_line *out_rank_lines[]; */
+//          &out_rank_idx 
+//        );
+//
+//        if (retval != 0) {tn(); trn("non-zero retval from mamb_report_person_in_group()");}
+//
+//
+
+
+        // 1 different report invocation  for grpall (homgbm)
+        // 4 different report invocations for grpone (hompbm, gbm1gm, gbm2bm, pbm2bm)
+        //
+        if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgbm"]       // Best Match in Group ...  this is grpall
+            || [gbl_currentMenuPlusReportCode       hasPrefix: @"gbm"   ]       // Best Match in Group ...  this is grpall
+
+        ) { // grpall
+
+//// TODO
+
+//tn();trn("todo   GRPALL HERE pppppppppppppppppppppppppppppppppppppppppppp");
+//  NSLog(@"gbl_currentMenuPlusReportCode=%@",gbl_currentMenuPlusReportCode);
+
+
+tn();trn("calling  mamb_report_whole_group() ...");
+//ksn(pathToHTML_browser);
+//ksn(tmp_grp_name);
+//ksn(my_mamb_csv_arr[0]);
+//ksn(my_mamb_csv_arr[1]);
+//kin(num_input_csvs);
+//tn();
+//
+            retval = mamb_report_whole_group(  /* in grpdoc.o */
+              pathToHTML_browser,          // path to html_file
+              tmp_grp_name,                // group_name */
+              my_mamb_csv_arr,             // from   group_report_input_birthinfo_CSVs
+              num_input_csvs,              // num_persons_in_grp xxzz
+              "",  // instructions,  sprintf(instructions_for_top_bot, "top_this_many=|%d|bot_this_many=|%d|", top_this_many, bot_this_many);
+              "",                  /* buffer for string_for_table_only  */
+              group_report_output_PSVs,    // array of output report data
+              &group_report_output_idx     // ptr to int having last index written
+            );
+//kin(retval);
+//kin(group_report_output_idx);
+//char my_tst_str[128];
+//strcpy(my_tst_str, group_report_output_PSVs  +  0 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("group_report_output_PSVs  idx=0");ksn(my_tst_str);
+//strcpy(my_tst_str, group_report_output_PSVs  +  1 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("group_report_output_PSVs  idx=1");ksn(my_tst_str);
+//strcpy(my_tst_str, group_report_output_PSVs  +  2 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("group_report_output_PSVs  idx=2");ksn(my_tst_str);
+//strcpy(my_tst_str, group_report_output_PSVs  +  3 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("group_report_output_PSVs  idx=3");ksn(my_tst_str);
+//strcpy(my_tst_str, group_report_output_PSVs  +  4 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("group_report_output_PSVs  idx=4");ksn(my_tst_str);
+//strcpy(my_tst_str, group_report_output_PSVs  +  5 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("group_report_output_PSVs  idx=5");ksn(my_tst_str);
+//strcpy(my_tst_str, group_report_output_PSVs  +  6 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("group_report_output_PSVs  idx=6");ksn(my_tst_str);
+//strcpy(my_tst_str, group_report_output_PSVs  +  7 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("group_report_output_PSVs  idx=7");ksn(my_tst_str);
+//strcpy(my_tst_str, group_report_output_PSVs  +  8 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("group_report_output_PSVs  idx=8");ksn(my_tst_str);
+//strcpy(my_tst_str, group_report_output_PSVs  +  9 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("group_report_output_PSVs  idx=9");ksn(my_tst_str);
+//trn("in cocoa  returning from call of   mamb_report_whole_group() ...");
+//tn();
+//
+
+            if (retval != 0) {tn(); trn("non-zero retval from mamb_report_whole_group()");}
+
+        }
+
+        if (   [gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"] // *MY*  Best Match in Group ...  this is grpone
+            || [gbl_currentMenuPlusReportCode       hasPrefix: @"pbm"   ] // *MY*  Best Match in Group ...  this is grpone
+        ) { // grpone
+//                || [gbl_currentMenuPlusReportCode isEqualToString: @"pbm2bm"]
+//                || [gbl_currentMenuPlusReportCode isEqualToString: @"gbm1bm"]
+//                || [gbl_currentMenuPlusReportCode isEqualToString: @"gbm2bm"]
+
+//
+//NSString *gbl_PSVtappedPerson_grpone;  // pbm1pe,pbm2pe,pbm2bm
+//NSString *gbl_PSVtappedPerson_grpall;  // gbm1pe,gbm2pe,gbm1bm,gbm2bm
+//NSString *gbl_PSVtappedPerson_grpmost; // gmappe,gmeppe,gmrppe,gmpppe,gmdppe
+//NSString *gbl_PSVtappedPerson_grpbest; // gbypcy,gbdpwc
+//NSString *gbl_PSVtappedPersonA_inPair; // pbmco,gbmco
+//NSString *gbl_PSVtappedPersonB_inPair; // pbmco,gbmco
+//
+//
+
+            // get kingpin CSV  for C call
+                // NSString object to C
+                my_psvc = [gbl_fromHomeCurrentSelectionPSV cStringUsingEncoding:NSUTF8StringEncoding];  // psv=pipe-separated values
+                char my_psv[128];
+                strcpy(my_psv, my_psvc);
+                
+                char psvName[32], psvMth[4], psvDay[4], psvYear[8], psvHour[4], psvMin[4], psvAmPm[4], psvCity[64], psvProv[64], psvCountry[64];
+                strcpy(psvName, csv_get_field(my_psv, "|", 1));
+                strcpy(psvMth,  csv_get_field(my_psv, "|", 2));
+                strcpy(psvDay,  csv_get_field(my_psv, "|", 3));
+                strcpy(psvYear, csv_get_field(my_psv, "|", 4));
+                strcpy(psvHour, csv_get_field(my_psv, "|", 5));
+                strcpy(psvMin,  csv_get_field(my_psv, "|", 6));
+                strcpy(psvAmPm, csv_get_field(my_psv, "|", 7));
+                strcpy(psvCity, csv_get_field(my_psv, "|", 8));
+                strcpy(psvProv, csv_get_field(my_psv, "|", 9));
+                strcpy(psvCountry, csv_get_field(my_psv, "|", 10));
+                
+                // get longitude and timezone hoursDiff from Greenwich
+                // by looking up psvCity, psvProv, psvCountry
+                //
+                seq_find_exact_citPrvCountry(returnPSV, psvCity, psvProv, psvCountry);
+                
+                strcpy(psvHoursDiff,  csv_get_field(returnPSV, "|", 1));
+                strcpy(psvLongitude,  csv_get_field(returnPSV, "|", 2));
+
+                // build csv arg for report function call
+                //
+                char csv_kingpin[128];
+                sprintf(csv_kingpin, "%s,%s,%s,%s,%s,%s,%s,%s,%s",
+                        psvName,psvMth,psvDay,psvYear,psvHour,psvMin,psvAmPm,psvHoursDiff,psvLongitude);
+            // end of  get kingpin CSV  for C call
+//ksn(csv_kingpin);
+
+
+
+tn();trn("DOING person in group ... in tblrpts 111111"); ks(html_file_name_browser);
+            // Now call  grpone   report function in grpdoc.c
+            //
+            tn();trn("in TBLRPT 1  calling  mamb_report_person_in_group() ..."); 
+            retval = mamb_report_person_in_group(  /* in grpdoc.o */
+              pathToHTML_browser,          // path to html_file
+              tmp_grp_name,                // group_name */
+              my_mamb_csv_arr,             // from   group_report_input_birthinfo_CSVs
+              num_input_csvs,              // num_persons_in_grp xxzz
+              csv_kingpin,                 // csv_compare_everyone_with,
+              group_report_output_PSVs,    // array of output report data
+              &group_report_output_idx,    // ptr to int having last index written
+              (int)gbl_kingpinIsInGroup
+            );
+
+//kin(retval);
+//kin(group_report_output_idx);
+//char my_tst_str[128];
+//strcpy(my_tst_str, group_report_output_PSVs  +  0 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("grpone group_report_output_PSVs  idx=0");ksn(my_tst_str);
+//strcpy(my_tst_str, group_report_output_PSVs  +  1 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("grpone group_report_output_PSVs  idx=1");ksn(my_tst_str);
+//strcpy(my_tst_str, group_report_output_PSVs  +  2 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("grpone group_report_output_PSVs  idx=2");ksn(my_tst_str);
+//strcpy(my_tst_str, group_report_output_PSVs  +  3 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("grpone group_report_output_PSVs  idx=3");ksn(my_tst_str);
+//strcpy(my_tst_str, group_report_output_PSVs  +  4 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("grpone group_report_output_PSVs  idx=4");ksn(my_tst_str);
+//strcpy(my_tst_str, group_report_output_PSVs  +  5 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("grpone group_report_output_PSVs  idx=5");ksn(my_tst_str);
+//strcpy(my_tst_str, group_report_output_PSVs  +  6 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("grpone group_report_output_PSVs  idx=6");ksn(my_tst_str);
+//strcpy(my_tst_str, group_report_output_PSVs  +  7 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("grpone group_report_output_PSVs  idx=7");ksn(my_tst_str);
+//strcpy(my_tst_str, group_report_output_PSVs  +  8 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("grpone group_report_output_PSVs  idx=8");ksn(my_tst_str);
+//strcpy(my_tst_str, group_report_output_PSVs  +  9 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("grpone group_report_output_PSVs  idx=9");ksn(my_tst_str);
+//trn("in cocoa  returning from call of   grpone ...");
+//tn();
+//
+
+//tn();trn("in TBLRPT 1  returned from  mamb_report_person_in_group() ...");
+//ksn(pathToHTML_browser);
+//ksn(tmp_grp_name);
+//kin(num_input_csvs);
+//ksn(csv_kingpin);
+//kin(group_report_output_idx);
+//kin(retval);
+//
+            if (retval != 0) {tn(); trn("non-zero retval from mamb_report_person_in_group()");}
+
+
+
+//  [[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[d[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
+        } // grpone  NEW place
+
+
+        do {  // populate  gbl_array_cellBGcolorName gbl_array_cellPersonAname gbl_array_cellPersonBname
+//tn();trn("// populate  gbl_array_cellBGcolorName gbl_array_cellPersonAname gbl_array_cellPersonBname");
+
+            // now that we have group_report_output_PSVs, grab all BG color for all tableview cells
+            // and put into   NSArray *gbl_array_cellBGcolorName;
+            //
+            char my_buff[256];
+            NSMutableString *myCellContentsPSV;
+            NSArray  *tmpArray3;
+            NSMutableString *curr_cellBGcolorName;
+    //            NSMutableString *curr_cellPersonAname;
+    //            NSMutableString *curr_cellPersonBname;
+    //
+            NSString *curr_cellPersonAnameTMP;
+            NSString *curr_cellPersonBnameTMP;
+            NSString *curr_cellPersonAname;
+            NSString *curr_cellPersonBname;
+
+
+            NSCharacterSet  *mySeparators = [NSCharacterSet characterSetWithCharactersInString:@"|"];
+
+            [gbl_array_cellBGcolorName removeAllObjects];               // empty array for BG colors for these new cells
+            [gbl_array_cellPersonAname removeAllObjects];               // empty array for personA   for these new cells
+            [gbl_array_cellPersonBname removeAllObjects];               // empty array for personB   for these new cells
+
+            gbl_array_cellBGcolorName = [[NSMutableArray alloc] init];  // init  array for BG colors for these new cells
+            gbl_array_cellPersonAname = [[NSMutableArray alloc] init];  // init  array
+            gbl_array_cellPersonBname = [[NSMutableArray alloc] init];  // init  array 
+
+    //tn();kin(group_report_output_idx);
+
+            NSString *myHedColor = @"cHed";
+
+            for (int i=0; i <= group_report_output_idx + 3; i++) {  // group_report_output_idx = last index written
+
+                if (i == group_report_output_idx + 1) {
+                   [gbl_array_cellBGcolorName addObject: myHedColor];  //  footer line 1  // add the BG colors of the 3 footer cells
+                   continue;
+                }
+                if (i == group_report_output_idx + 2) {
+                   [gbl_array_cellBGcolorName addObject: myHedColor];  //  footer line 2
+                   continue;
+                }
+                if (i == group_report_output_idx + 3) {
+                   [gbl_array_cellBGcolorName addObject: myHedColor];  //  footer line 3
+                   continue;
+                }
+                strcpy(my_buff, group_report_output_PSVs  +  i * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW
+    //tn();ki(i);ks(my_buff);
+
+                myCellContentsPSV     = [NSMutableString stringWithUTF8String: my_buff];  // convert c string to NSString
+                tmpArray3             = [myCellContentsPSV componentsSeparatedByCharactersInSet: mySeparators];
+
+                curr_cellBGcolorName    = tmpArray3[0];
+                curr_cellPersonAnameTMP = tmpArray3[2];
+                curr_cellPersonBnameTMP = tmpArray3[3];
+
+    //tn();  NSLog(@"curr_cellPersonAnameTMP =%@",curr_cellPersonAnameTMP );
+    //  NSLog(@"curr_cellPersonBname  =%@",curr_cellPersonBname  );
+
+    //                // replace '_' from pair names with ' '    (underscore only in cell in tableview)
+    //                [curr_cellPersonAname replaceOccurrencesOfString: @"_"
+    //                                                      withString: @" "
+    //                                                         options: 0
+    //                                                           range: NSMakeRange(0, curr_cellPersonAname.length)
+    //                ];
+
+                // in pair reports (Best Match ...) blanks go to '_' to make pairs more readable when a name has a blank in it
+                curr_cellPersonAname = [curr_cellPersonAnameTMP stringByReplacingOccurrencesOfString: @"_"
+                                                                                          withString: @" "];
+                curr_cellPersonBname = [curr_cellPersonBnameTMP stringByReplacingOccurrencesOfString: @"_"
+                                                                                          withString: @" "];
+
+                [gbl_array_cellBGcolorName addObject: curr_cellBGcolorName]; 
+                [gbl_array_cellPersonAname addObject: curr_cellPersonAname];
+                [gbl_array_cellPersonBname addObject: curr_cellPersonBname];
+            }
+        } while (false);   // populate  gbl_array_cellBGcolorName gbl_array_cellPersonAname gbl_array_cellPersonBname
+
+
+//        if (retval == 0) {
+//           
+//            // show all files in temp dir
+//            NSFileManager *manager = [NSFileManager defaultManager];
+//            NSArray *fileList = [manager contentsOfDirectoryAtPath:NSTemporaryDirectory() error:nil];
+//            for (NSString *s in fileList){
+//                NSLog(@"TEMP DIR %@", s);
+//            }
+//            
+//            
+//             /* here, go and look at html report */
+//             // [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"about:blank"]]];  // ?clean for re-use
+//             
+//             self.outletWebView.scalesPageToFit = YES;
+//             
+//             // I was having the same problem. I found a property on the UIWebView
+//             // that allows you to turn off the data detectors.
+//             //
+//             self.outletWebView.dataDetectorTypes = UIDataDetectorTypeNone;
+//            
+//             // place our URL in a URL Request
+//             HTML_URLrequest = [[NSURLRequest alloc] initWithURL: URLtoHTML_forWebview];
+//             
+//             // UIWebView is part of UIKit, so you should operate on the main thread.
+//             //
+//             // old= [self.outletWebView loadRequest: HTML_URLrequest];
+//             //
+//             dispatch_async(dispatch_get_main_queue(), ^(void){
+//                 [self.outletWebView loadRequest:HTML_URLrequest];
+//             });
+//        }
+//
+
+    }  // END of   all BEST MATCH ... reports  ======================================================================================
+
+// END  of GUTS of ViewDidLoad (called only once) moved to ViewWillAppear (called each time becomes visible)
+
+nbn(299);
+
+
+        // reminder: this is in viewDidAppear
+
+// ALL  MOST and BEST  group reports
+//
+  NSLog(@"gbl_currentMenuPlusReportCode=%@",gbl_currentMenuPlusReportCode);
+    char trait_name_for_C_call[64];
+
+    if (  [gbl_currentMenuPlusReportCode isEqualToString: @"homgma"]      // group Most RPTs
+      ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgme"]      
+      ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgmr"] 
+      ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgmp"]
+      ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgmd"]
+      ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgby"]      // group Best RPTs
+      ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgbd"]      
+    ) { // ALL  MOST and BEST  group reports
+
+        NSLog(@"MOST and BEST  gbl_lastSelectedGroup =%@", gbl_lastSelectedGroup );
+
+nbn(500);
+        do { // build HTML file name  in TMP  Directory  (html_file_name_browser);
+
+            strcpy(group_name_for_filename, tmp_grp_name );  
+            scharswitch(group_name_for_filename, ' ', '_');
+
+            if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgma"] ) {
+                strcpy(trait_name_for_C_call, "assertive");
+                sprintf(html_file_name_browser, "%sgrptra_%s_assertive.html",   PREFIX_HTML_FILENAME, group_name_for_filename);
+            } 
+            if (   [gbl_currentMenuPlusReportCode       hasPrefix: @"homgme"] ) {
+                strcpy(trait_name_for_C_call, "emotional");
+                sprintf(html_file_name_browser, "%sgrptra_%s_emotional.html",   PREFIX_HTML_FILENAME, group_name_for_filename);
+            } 
+            if (   [gbl_currentMenuPlusReportCode       hasPrefix: @"homgmr"] ) {
+                strcpy(trait_name_for_C_call, "restless");
+                sprintf(html_file_name_browser, "%sgrptra_%s_restless.html",    PREFIX_HTML_FILENAME, group_name_for_filename);
+            } 
+            if (   [gbl_currentMenuPlusReportCode       hasPrefix: @"homgmp"] ) {
+                strcpy(trait_name_for_C_call, "passionate");
+                sprintf(html_file_name_browser, "%sgrptra_%s_passionate.html",  PREFIX_HTML_FILENAME, group_name_for_filename);
+            } 
+            if (   [gbl_currentMenuPlusReportCode       hasPrefix: @"homgmd"] ) {
+                strcpy(trait_name_for_C_call, "down to earth");
+                sprintf(html_file_name_browser, "%sgrptra_%s_downtoearth.html", PREFIX_HTML_FILENAME, group_name_for_filename);
+            } 
+
+            if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgby"]) {
+                strcpy(trait_name_for_C_call, "best year");
+                sprintf(html_file_name_browser, "%sgrpbyr_%s.html", PREFIX_HTML_FILENAME, group_name_for_filename);
+            }
+
+            if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgbd"]) {
+                strcpy(trait_name_for_C_call, "best day");
+                sprintf(html_file_name_browser, "%sgrpbdy_%s.html", PREFIX_HTML_FILENAME, group_name_for_filename);
+            }
+
+
+            gbl_html_file_name_browser = [NSString stringWithUTF8String: html_file_name_browser ];   // for later sending as email attachment
+  NSLog(@"gbl_html_file_name_browser =%@",gbl_html_file_name_browser );
+
+            // for webview html file name change ".html" to "webview.html"
+            //
+//              strcpy(html_file_name_webview, html_file_name_browser);
+//              NSString *mytmpNSString = [NSString stringWithUTF8String: html_file_name_webview ];
+//            gbl_html_file_name_webview =                                               // for later viewing in webview
+//                [mytmpNSString stringByReplacingOccurrencesOfString: @".html"          // for later viewing in webview
+//                                                         withString: @"webview.html"];
+
+
+            Ohtml_file_name_browser = [NSString stringWithUTF8String: html_file_name_browser ];
+            OpathToHTML_browser     = [NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_browser];
+            pathToHTML_browser      = (char *) [OpathToHTML_browser cStringUsingEncoding: NSUTF8StringEncoding];
+ksn(pathToHTML_browser);
+            
+//            Ohtml_file_name_webview = gbl_html_file_name_webview ;
+//            OpathToHTML_webview     = [NSTemporaryDirectory() stringByAppendingPathComponent:  Ohtml_file_name_webview];
+//            pathToHTML_webview      = (char *) [OpathToHTML_webview cStringUsingEncoding: NSUTF8StringEncoding];
+            
+//            URLtoHTML_forWebview = [NSURL fileURLWithPath: [NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_webview]];
+    
+            gbl_pathToFileToBeEmailed = OpathToHTML_browser;
+
+
+        tn();trn("2 HTMLs !!!!!!!!!!!!!!!!!!!!");
+//nksn(html_file_name_browser);
+//        ksn( html_file_name_webview);
+        NSLog(@"Ohtml_file_name_browser=%@",Ohtml_file_name_browser);
+        NSLog(@"OpathToHTML_browser=%@",OpathToHTML_browser);
+//nksn(pathToHTML_browser);
+
+//        NSLog(@"Ohtml_file_name_webview=%@",Ohtml_file_name_webview);
+//        NSLog(@"OpathToHTML_webview=%@",OpathToHTML_webview);
+//        ksn(pathToHTML_webview);
+
+NSLog(@"gbl_pathToFileToBeEmailed=%@",gbl_pathToFileToBeEmailed);
+
+        } while (false);  // build HTML file name  in TMP  Directory  (html_file_name_browser);
+
+            
+        
+        // remove all "*.html" files from TMP directory before creating new one
+        //
+        tmpDirFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:NSTemporaryDirectory() error:NULL];
+        NSLog(@"tmpDirFiles.count=%lu",(unsigned long)tmpDirFiles.count);
+        for (NSString *fil in tmpDirFiles) {
+            NSLog(@"REMOVED THIS fil=%@",fil);
+            if ([fil hasSuffix: @"html"]) {
+                [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), fil] error:NULL];
+            }
+        }
+
+
+        // get a NSString CSV for each member of the group into NSArray gbl_grp_CSVs
+        // but possibly excluding  one person who is kingpin of grpone report "MY Best Match in Group ..." 
+        //
+        gbl_kingpinIsInGroup = [myappDelegate getNSArrayOfCSVsForGroup: (NSString *)  gbl_lastSelectedGroup  // get into NSArray gbl_grp_CSVs
+                                               excludingThisPersonName: (NSString *)  @""   // myKingpinPerson  non-empty string means grpone
+                                       puttingIntoArrayWithDescription: (NSString *)  @"gbl_grp_CSVs"        // destination array "" or "_B"
+        ];  
+
+
+        //
+        // convert  NSArray gbl_grp_CSVs  (one NSString CSV for each member of the group)
+        // into     a C array of strings for the C report function call mamb_report_person_in_group() -  my_mamb_csv_arr
+        //
+        //     char group_report_input_birthinfo_CSVs[gbl_maxGrpBirthinfoCSVs * gbl_maxLenBirthinfoCSV];  // [250 * fixed length of 64]
+        //
+        // avoid malloc by this char buffer  to hold max lines of fixed length
+        // char group_report_input_birthinfo_CSVs[gbl_maxGrpBirthinfoCSVs * gbl_maxLenBirthinfoCSV];  // [250 * fixed length of 64]
+        // int  group_report_input_birthinfo_idx;
+        //
+        char *my_mamb_csv_arr[gbl_maxGrpBirthinfoCSVs];
+        int num_input_csvs;
+        num_input_csvs = (int)gbl_grp_CSVs.count;
+        group_report_input_birthinfo_idx =  -1;  // zero-based  init
+
+        for(int i = 0; i < num_input_csvs; i++) {  
+
+          NSString *s      = gbl_grp_CSVs[i];     //get a NSString
+          const char *cstr = s.UTF8String;        //get cstring
+
+          // index of next spot in buffer
+          group_report_input_birthinfo_idx = group_report_input_birthinfo_idx + 1; 
+
+          // get ptr to next 64-byte slot in buffer
+          char *my_ptr_in_buff;
+          my_ptr_in_buff = group_report_input_birthinfo_CSVs + group_report_input_birthinfo_idx * gbl_maxLenBirthinfoCSV;
+
+          // copy cstr into that spot
+          strcpy(my_ptr_in_buff, cstr); 
+
+          // put ptr to that spot into c array of strings
+          my_mamb_csv_arr[group_report_input_birthinfo_idx] = my_ptr_in_buff;
+        }
+
+//for (int kkk=0; kkk <= num_input_csvs -1; kkk++) {
+//tn();ki(kkk);ks(my_mamb_csv_arr[kkk]); }
+
+
+        /* Now call report function in grpdoc.c
+        * 
+        *  struct rank_report_line *out_rank_lines[MAX_IN_RANK_LINE_ARRAY];
+        *  int out_rank_idx;  * pts to current line in out_rank_lines *
+        */
+
+        /*   if (strcmp(trait_name, "assertive")     == 0)  fldnum = 1; * one-based *
+        *   if (strcmp(trait_name, "emotional")     == 0)  fldnum = 2;
+        *   if (strcmp(trait_name, "restless")      == 0)  fldnum = 3;
+        *   if (strcmp(trait_name, "down to earth") == 0)  fldnum = 4;
+        *   if (strcmp(trait_name, "passionate")    == 0)  fldnum = 5;
+        *   if (strcmp(trait_name, "ups and downs") == 0)  fldnum = 6;  XXXXXX
+        */
+
+        /* Now call report function in grpdoc.c
+        * 
+        *  grpdoc.c populates array of report line data defined here.
+        *
+        *  struct rank_report_line *out_rank_lines[MAX_IN_RANK_LINE_ARRAY];
+        *  int out_rank_idx;  * pts to current line in out_rank_lines *
+        */
+
+        if (  [gbl_currentMenuPlusReportCode isEqualToString: @"homgma"]      // group Most RPTs
+          ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgme"]      
+          ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgmr"] 
+          ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgmp"]
+          ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgmd"]
+        ) {    // ALL  MOST and BEST  group reports
+
+
+tn();trn("calling  mamb_report_trait_rank() ...");
+ksn(pathToHTML_browser);
+ksn(tmp_grp_name);
+ksn(my_mamb_csv_arr[0]);
+ksn(my_mamb_csv_arr[1]);
+kin(num_input_csvs);
+tn();
+            retval = mamb_report_trait_rank(  /* in grpdoc.o */
+              pathToHTML_browser,     /* html_file_name */
+              tmp_grp_name,           /* group_name */
+              my_mamb_csv_arr,        /* in_csv_person_arr[] */
+              num_input_csvs,         /* num_persons_in_grp */
+              trait_name_for_C_call,  /* assertive, emotional, etc 6 of them, see above  */
+              group_report_output_PSVs,    // array of output report data
+              &group_report_output_idx     // ptr to int having last index written
+            );
+
+            tn();trn("finished doing  trait rank ...");  ks(pathToHTML_browser);
+            if (retval != 0) {tn(); trn("non-zero retval from mamb_report_trait_rank()");}
+
+         }  // ALL  MOST and BEST  group reports
+
+         if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgby"] )    // group Best year rpt
+         {
+             sfill(stringBuffForStressScore, 60, ' ');
+             
+             yyyy_todoC = [gbl_lastSelectedYear cStringUsingEncoding:NSUTF8StringEncoding];
+             strcpy(yyyy_todo, yyyy_todoC);
+
+             /* Now call report function in grpdoc.c
+             * 
+             *  grpdoc.c populates array of report line data defined here.
+             */
+tn();trn("calling  mamb_report_best_year() ...");
+ksn(pathToHTML_browser);
+ksn(tmp_grp_name);
+ksn(my_mamb_csv_arr[0]);
+ksn(my_mamb_csv_arr[1]);
+kin(num_input_csvs);
+ksn(yyyy_todo);
+tn();
+             retval = mamb_report_best_year(  /* in grpdoc.o */
+               pathToHTML_browser,     /* html_file_name */
+               tmp_grp_name,           /* group_name */
+               my_mamb_csv_arr,        /* in_csv_person_arr[] */
+               num_input_csvs,         /* num_persons_in_grp */
+               yyyy_todo,           /* calendar year */
+//               out_group_report_PSVs,   /* array of output report data to pass to cocoa */
+//               &out_group_report_idx       /* ptr to int having last index written */
+               group_report_output_PSVs,    // array of output report data
+               &group_report_output_idx     // ptr to int having last index written
+             );
+
+             if (retval != 0) {tn(); trn("non-zero retval from mamb_report_best_year()");}
+
+         }    // group Best year rpt
+      
+
+         if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgbd"] )    // group Best day  rpt   
+         {
+             yyyymmdd_todoC = [gbl_lastSelectedDay cStringUsingEncoding:NSUTF8StringEncoding];
+             strcpy(yyyymmdd_todo, yyyymmdd_todoC);
+
+             /* Now call report function in grpdoc.c
+             * 
+             *  grpdoc.c populates array of report line data defined here.
+             */
+tn();trn("calling  mamb_report_best_day() ...");
+ksn(pathToHTML_browser);
+ksn(tmp_grp_name);
+ksn(my_mamb_csv_arr[0]);
+ksn(my_mamb_csv_arr[1]);
+kin(num_input_csvs);
+ksn(yyyymmdd_todo);
+tn();
+             retval = mamb_report_best_day(  /* in grpdoc.o */
+               pathToHTML_browser,     /* html_file_name */
+               tmp_grp_name,           /* group_name */
+               my_mamb_csv_arr,        /* in_csv_person_arr[] */
+               num_input_csvs,         /* num_persons_in_grp */
+               yyyymmdd_todo,           /* day to do */
+//               out_group_report_PSVs,   /* array of output report data to pass to cocoa */
+//               &out_group_report_idx       /* ptr to int having last index written */
+               group_report_output_PSVs,    // array of output report data
+               &group_report_output_idx     // ptr to int having last index written
+             );
+
+             if (retval != 0) {tn(); trn("non-zero retval from mamb_report_best_day ()");}
+
+          }    // group Best day  rpt   
+
+
+        //kin(retval);
+kin(group_report_output_idx);
+//char my_tst_str[128];
+//strcpy(my_tst_str, group_report_output_PSVs  +  0 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("group_report_output_PSVs  idx=0");ksn(my_tst_str);
+//strcpy(my_tst_str, group_report_output_PSVs  +  1 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("group_report_output_PSVs  idx=1");ksn(my_tst_str);
+//strcpy(my_tst_str, group_report_output_PSVs  +  2 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("group_report_output_PSVs  idx=2");ksn(my_tst_str);
+//strcpy(my_tst_str, group_report_output_PSVs  +  3 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("group_report_output_PSVs  idx=3");ksn(my_tst_str);
+//strcpy(my_tst_str, group_report_output_PSVs  +  4 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("group_report_output_PSVs  idx=4");ksn(my_tst_str);
+//strcpy(my_tst_str, group_report_output_PSVs  +  5 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("group_report_output_PSVs  idx=5");ksn(my_tst_str);
+//strcpy(my_tst_str, group_report_output_PSVs  +  6 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("group_report_output_PSVs  idx=6");ksn(my_tst_str);
+//strcpy(my_tst_str, group_report_output_PSVs  +  7 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("group_report_output_PSVs  idx=7");ksn(my_tst_str);
+//strcpy(my_tst_str, group_report_output_PSVs  +  8 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("group_report_output_PSVs  idx=8");ksn(my_tst_str);
+//strcpy(my_tst_str, group_report_output_PSVs  +  9 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("group_report_output_PSVs  idx=9");ksn(my_tst_str);
+//trn("returning from call of   mamb_report_trait_rank() ...");
+//tn();
+//
+
+       do { // now that we have group_report_output_PSVs, grab all BG color for all tableview cells
+            // and put into   NSArray *gbl_array_cellBGcolorName;
+            //
+//tn();trn("doing color save !!!!!!!");
+            char my_buff[256];
+            NSMutableString *myCellContentsPSV;
+            NSArray  *tmpArray3;
+            NSMutableString *curr_cellBGcolorName;
+//            NSMutableString *curr_cellPersonAname;
+//            NSMutableString *curr_cellPersonBname;
+//
+            NSString *curr_cellPersonAnameTMP;
+            NSString *curr_cellPersonBnameTMP;
+            NSString *curr_cellPersonAname;
+            NSString *curr_cellPersonBname;
+
+
+            NSCharacterSet  *mySeparators = [NSCharacterSet characterSetWithCharactersInString:@"|"];
+
+            [gbl_array_cellBGcolorName removeAllObjects];               // empty array for BG colors for these new cells
+            [gbl_array_cellPersonAname removeAllObjects];               // empty array for personA   for these new cells
+            [gbl_array_cellPersonBname removeAllObjects];               // empty array for personB   for these new cells
+
+            gbl_array_cellBGcolorName = [[NSMutableArray alloc] init];  // init  array for BG colors for these new cells
+            gbl_array_cellPersonAname = [[NSMutableArray alloc] init];  // init  array
+            gbl_array_cellPersonBname = [[NSMutableArray alloc] init];  // init  array 
+
+//tn();kin(group_report_output_idx);
+
+            NSString *myHedColor = @"cHed";
+
+            for (int i=0; i <= group_report_output_idx + 3; i++) {  // group_report_output_idx = last index written
+
+                if (i == group_report_output_idx + 1) {
+                   [gbl_array_cellBGcolorName addObject: myHedColor];  //  footer line 1  // add the BG colors of the 3 footer cells
+                   continue;
+                }
+                if (i == group_report_output_idx + 2) {
+                   [gbl_array_cellBGcolorName addObject: myHedColor];  //  footer line 2
+                   continue;
+                }
+                if (i == group_report_output_idx + 3) {
+                   [gbl_array_cellBGcolorName addObject: myHedColor];  //  footer line 3
+                   continue;
+                }
+                strcpy(my_buff, group_report_output_PSVs  +  i * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW
+tn();ki(i);ks(my_buff);
+
+                myCellContentsPSV     = [NSMutableString stringWithUTF8String: my_buff];  // convert c string to NSString
+                tmpArray3             = [myCellContentsPSV componentsSeparatedByCharactersInSet: mySeparators];
+
+                curr_cellBGcolorName = tmpArray3[0];
+                curr_cellPersonAnameTMP = tmpArray3[2];
+                curr_cellPersonBnameTMP = tmpArray3[3];
+
+//tn();  NSLog(@"curr_cellPersonAnameTMP =%@",curr_cellPersonAnameTMP );
+//  NSLog(@"curr_cellPersonBname  =%@",curr_cellPersonBname  );
+
+//                // replace '_' from pair names with ' '    (underscore only in cell in tableview)
+//                [curr_cellPersonAname replaceOccurrencesOfString: @"_"
+//                                                      withString: @" "
+//                                                         options: 0
+//                                                           range: NSMakeRange(0, curr_cellPersonAname.length)
+//                ];
+//                [curr_cellPersonBname replaceOccurrencesOfString: @"_"
+//                                                      withString: @" "
+//                                                         options: 0
+//                                                           range: NSMakeRange(0, curr_cellPersonBname.length)
+//                ];
+//
+
+                curr_cellPersonAname = [curr_cellPersonAnameTMP stringByReplacingOccurrencesOfString: @"_"
+                                                                                          withString: @" "];
+                curr_cellPersonBname = [curr_cellPersonBnameTMP stringByReplacingOccurrencesOfString: @"_"
+                                                                                          withString: @" "];
+
+
+
+                // in pair reports (Best Match ...) blanks go to '_' to make pairs more readable when a name has a blank in it
+                //
+
+
+                [gbl_array_cellBGcolorName addObject: curr_cellBGcolorName]; 
+                [gbl_array_cellPersonAname addObject: curr_cellPersonAname];
+                [gbl_array_cellPersonBname addObject: curr_cellPersonBname];
+            }
+       } while(false);   // now that we have group_report_output_PSVs, grab all BG color for all tableview cells
+
+
+
+
+    } // ALL  MOST and BEST  group reports
+//
+// ALL  MOST and BEST  group reports
+nbn(599);
+
+ 
+//    NSLog(@"in TBLRPTs 1 at end of  viewWillAppear!");
+
+} // viewWillAppear
+
+
+
+// ==============   start of email stuff  ====================  ??
+-(IBAction)infoButtonAction:(id)sender
+{
+  NSLog(@"in   infoButtonAction!  in tblrpt #1");
+
+} // end of  infoButtonAction
+
+-(IBAction)shareButtonAction:(id)sender
+{
+    MFMailComposeViewController *myMailComposeViewController;
+
+tn();    NSLog(@"in shareButtonAction!  in MAMB09viewTBLRPTs_1_TableViewController ");
+    
+    // Determine the file name and extension
+    // NSArray *filepart = [gbl_pathToFileToBeEmailed componentsSeparatedByString:@"."];
+    NSArray *fileparts = [gbl_pathToFileToBeEmailed componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"./"]];
+    
+    NSString *baseFilename = [fileparts objectAtIndex: (fileparts.count -2)] ;  // count -1 is last in array
+    NSString *extension    = [fileparts lastObject];
+    NSString *filenameForAttachment = [NSString stringWithFormat: @"%@.%@", baseFilename, extension];
+    
+    // Get the resource path and read the file using NSData
+    // NSString *filePath = [[NSBundle mainBundle] pathForResource:filename ofType:extension];
+    NSData *HTMLfileData = [NSData dataWithContentsOfFile: gbl_pathToFileToBeEmailed ];
+//NSLog(@"gbl_pathToFileToBeEmailed =%@",gbl_pathToFileToBeEmailed );
+//NSLog(@"HTMLfileData.length=%lu",(unsigned long)HTMLfileData.length);
+
+
+    NSString *emailTitle = [NSString stringWithFormat: @"%@  from Me and my BFFs", filenameForAttachment];
+
+    NSString *myEmailMessage;
+    
+    myEmailMessage = @"tester";
+    NSLog(@"myEmailMessage=%@",myEmailMessage);
+    NSLog(@"extension=%@",extension);
+
+
+//    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"])      // My Best Match in Group
+
+    // grpone  all *MY* BEST MATCH ... reports  PLUS all table reports AFTER THAT in navigation <-------------
+    if (   [gbl_currentMenuPlusReportCode isEqualToString: @"hompbm" ] // My Best Match in Group ... grpone
+        || [gbl_currentMenuPlusReportCode       hasPrefix: @"pbm"    ] // My Best Match in Group ... grpone  IS pbm2bm
+    ) {
+        NSLog(@"gbl_person_name=%@",gbl_person_name);
+        NSLog(@"myEmailMessage=%@",myEmailMessage);
+
+        myEmailMessage = [NSString stringWithFormat: @"\n\"Best Match for %@  in Group %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.",
+           gbl_lastSelectedPerson,
+           gbl_lastSelectedGroup
+        ];
+        NSLog(@"myEmailMessage=%@",myEmailMessage);
+    }
+
+
+//    if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgbm"]) {    // Best Match in Group
+
+    // grpall all BEST MATCH ... reports  PLUS all table reports AFTER THAT in navigation <-------------
+    if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgbm" ] //    Best Match in Group ... grpall
+        || [gbl_currentMenuPlusReportCode       hasPrefix: @"gbm"    ] //    Best Match in Group ... grpall  are gbm1bm + gbm2bm 
+    ) {
+        NSLog(@"gbl_person_name=%@",gbl_person_name);
+        NSLog(@"myEmailMessage=%@",myEmailMessage);
+
+        myEmailMessage = [NSString stringWithFormat: @"\n\"Best Match in Group %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.",
+           gbl_lastSelectedGroup
+        ];
+        NSLog(@"myEmailMessage=%@",myEmailMessage);
+    }
+
+    
+    //   NSArray *toRecipents = [NSArray arrayWithObject:@"ijfo@jldks.com"];
+    NSArray *toRecipients = [NSArray arrayWithObjects:@"", nil];  //  user types it in
+
+
+    // Determine the MIME type
+    NSString *mimeType;
+    if ([extension isEqualToString:@"jpg"]) {
+        mimeType = @"image/jpeg";
+    } else if ([extension isEqualToString:@"png"]) {
+        mimeType = @"image/png";
+    } else if ([extension isEqualToString:@"doc"]) {
+        mimeType = @"application/msword";
+    } else if ([extension isEqualToString:@"ppt"]) {
+        mimeType = @"application/vnd.ms-powerpoint";
+    } else if ([extension isEqualToString:@"html"]) {
+        mimeType = @"text/html";
+    } else if ([extension isEqualToString:@"pdf"]) {
+        mimeType = @"application/pdf";
+    }
+    
+    if ([MFMailComposeViewController canSendMail])
+    {
+        myMailComposeViewController = [[MFMailComposeViewController alloc] init];
+
+        NSLog(@"This device CAN send email");
+
+         myMailComposeViewController.mailComposeDelegate = self;
+        [myMailComposeViewController setSubject: emailTitle];
+        [myMailComposeViewController setMessageBody: myEmailMessage
+                                             isHTML: NO];
+        [myMailComposeViewController setToRecipients: toRecipients];
+        [myMailComposeViewController setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+        [myMailComposeViewController addAttachmentData: HTMLfileData                // Add attachment
+                                              mimeType: mimeType
+                                              fileName: filenameForAttachment];
+        
+        // Present mail view controller on screen
+        //
+        //[self presentModalViewController:myMailComposeViewController animated:YES completion:NULL];
+
+
+        dispatch_async(dispatch_get_main_queue(), ^(void){
+                [self presentViewController: myMailComposeViewController animated:YES completion:NULL];
+            }
+        );
+    }
+    else
+    {
+//        NSLog(@"This device cannot send email");
+//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Cannot send email"
+//                                                        message: @"Maybe email on this device is not set up."
+//                                                       delegate: nil
+//                                              cancelButtonTitle: @"OK"
+//                                              otherButtonTitles: nil];
+//        [alert show];
+//
+        UIAlertController* alert = [UIAlertController alertControllerWithTitle: @"Cannot send email"
+                                                                       message: @"Maybe email on this device is not set up."
+                                                                preferredStyle: UIAlertControllerStyleAlert  ];
+         
+        UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                            style: UIAlertActionStyleDefault
+                                                          handler: ^(UIAlertAction * action) {
+            NSLog(@"Ok button pressed");
+        } ];
+         
+        [alert addAction:  okButton];
+
+        [self presentViewController: alert  animated: YES  completion: nil   ];
+    }
+} // shareButtonAction
+
+
+//- (void) mailComposeController:(MFMailComposeViewController *)controller
+//           didFinishWithResult:(MFMailComposeResult)result
+//                         error:(NSError *)error
+//{
+//    if (error) {
+////        UIAlertView *myalert = [[UIAlertView alloc] initWithTitle: @"An error happened"
+////                                                          message: [error localizedDescription]
+////                                                         delegate: nil
+////                                                cancelButtonTitle: @"cancel"
+////                                                otherButtonTitles: nil, nil];
+////        [myalert show];
+////
+//        UIAlertController* alert = [UIAlertController alertControllerWithTitle: @"An error happened"
+//                                                                       message: [error localizedDescription]
+//                                                                preferredStyle: UIAlertControllerStyleAlert  ];
+//         
+//        UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+//                                                            style: UIAlertActionStyleDefault
+//                                                          handler: ^(UIAlertAction * action) {
+//            NSLog(@"Ok button pressed");
+//        } ];
+//         
+//        [alert addAction:  okButton];
+//
+//        [self presentViewController: alert  animated: YES  completion: nil   ];
+//
+//        // [self dismissViewControllerAnimated:yes completion:<#^(void)completion#>];
+//
+//        dispatch_async(dispatch_get_main_queue(), ^(void){
+//            [self dismissViewControllerAnimated: YES
+//                                     completion:NULL];
+//            }
+//        );
+//    }
+//    switch (result)
+//    {
+//        case MFMailComposeResultCancelled: {
+//            NSLog(@"Mail cancelled");
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Mail send was cancelled"
+//                                                            message: @""
+//                                                           delegate: nil
+//                                                  cancelButtonTitle: @"OK"
+//                                                  otherButtonTitles: nil];
+//            [alert show];
+//            break;
+//        }
+//        case MFMailComposeResultSaved: {
+//            NSLog(@"Mail saved");
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Mail was saved"
+//                                                            message: @""
+//                                                           delegate: nil
+//                                                  cancelButtonTitle: @"OK"
+//                                                  otherButtonTitles: nil];
+//            [alert show];
+//            break;
+//        }
+//        case MFMailComposeResultSent: {
+//            NSLog(@"Mail sent");
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Mail was sent"
+//                                                            message: @""
+//                                                           delegate: nil
+//                                                  cancelButtonTitle: @"OK"
+//                                                  otherButtonTitles: nil];
+//            [alert show];
+//            break;
+//        }
+//        case MFMailComposeResultFailed: {
+//            NSLog(@"Mail send failure: %@", [error localizedDescription]);
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Failure of mail send"
+//                                                            message: [error localizedDescription]
+//                                                           delegate: nil
+//                                                  cancelButtonTitle: @"OK"
+//                                                  otherButtonTitles: nil];
+//            [alert show];
+//            break;
+//        }
+//        default: { break; }
+//    }
+//    
+//    // Close the Mail Interface
+////    [self becomeFirstResponder];  // from http://stackoverflow.com/questions/14263690/need-help-dismissing-email-composer-screen-in-ios
+//
+//    //[self dismissModalViewControllerAnimated:YES
+//
+//    dispatch_async(dispatch_get_main_queue(), ^(void){
+//            [self dismissViewControllerAnimated:YES
+//                                     completion:NULL];
+//        }
+//    );
+//
+//} //  didFinishWithResult:(MFMailComposeResult)result
+//
+- (void) mailComposeController:(MFMailComposeViewController *)controller
+           didFinishWithResult:(MFMailComposeResult)result
+                         error:(NSError *)error
+{
+    if (error) {
+        UIAlertController* alert = [UIAlertController alertControllerWithTitle: @"An error happened"
+                                                                       message: [error localizedDescription]
+                                                                preferredStyle: UIAlertControllerStyleAlert  ];
+         
+        UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                            style: UIAlertActionStyleDefault
+                                                          handler: ^(UIAlertAction * action) {
+NSLog(@"Ok button pressed");
+        } ];
+        [alert addAction:  okButton];
+        [self presentViewController: alert  animated: YES  completion: nil   ];
+
+        // [self dismissViewControllerAnimated:yes completion:<#^(void)completion#>];
+
+        dispatch_async(dispatch_get_main_queue(), ^(void){
+            [self dismissViewControllerAnimated: YES
+                                     completion:NULL];
+            }
+        );
+    }
+    switch (result)
+    {
+        case MFMailComposeResultCancelled: {
+NSLog(@"Mail cancelled");
+            UIAlertController* alert = [UIAlertController alertControllerWithTitle: @"Mail Send was Cancelled"
+                                                                           message: @""
+                                                                    preferredStyle: UIAlertControllerStyleAlert  ];
+            UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                                style: UIAlertActionStyleDefault
+                                                              handler: ^(UIAlertAction * action) {
+NSLog(@"Ok button pressed");
+            } ];
+            [alert addAction:  okButton];
+            [self presentViewController: alert  animated: YES  completion: nil   ];
+
+            break;
+        }
+        case MFMailComposeResultSaved: {
+            NSLog(@"Mail saved");
+            UIAlertController* alert = [UIAlertController alertControllerWithTitle: @"Mail was Saved"
+                                                                           message: @""
+                                                                    preferredStyle: UIAlertControllerStyleAlert  ];
+            UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                                style: UIAlertActionStyleDefault
+                                                              handler: ^(UIAlertAction * action) {
+NSLog(@"Ok button pressed");
+            } ];
+            [alert addAction:  okButton];
+            [self presentViewController: alert  animated: YES  completion: nil   ];
+
+            break;
+        }
+        case MFMailComposeResultSent: {
+            NSLog(@"Mail sent");
+            UIAlertController* alert = [UIAlertController alertControllerWithTitle: @"Mail was Sent"
+                                                                           message: @""
+                                                                    preferredStyle: UIAlertControllerStyleAlert  ];
+            UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                                style: UIAlertActionStyleDefault
+                                                              handler: ^(UIAlertAction * action) {
+NSLog(@"Ok button pressed");
+            } ];
+            [alert addAction:  okButton];
+            [self presentViewController: alert  animated: YES  completion: nil   ];
+
+
+            break;
+        }
+        case MFMailComposeResultFailed: {
+            NSLog(@"Mail send failure: %@", [error localizedDescription]);
+            UIAlertController* alert = [UIAlertController alertControllerWithTitle: @"Failure of Mail Send"
+                                                                           message: [error localizedDescription]
+                                                                    preferredStyle: UIAlertControllerStyleAlert  ];
+             
+            UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                                style: UIAlertActionStyleDefault
+                                                              handler: ^(UIAlertAction * action) {
+NSLog(@"Ok button pressed");
+            } ];
+            [alert addAction:  okButton];
+            [self presentViewController: alert  animated: YES  completion: nil   ];
+
+            break;
+        }
+        default: { break; }
+    }
+    
+    // Close the Mail Interface
+//    [self becomeFirstResponder];  // from http://stackoverflow.com/questions/14263690/need-help-dismissing-email-composer-screen-in-ios
+
+    //[self dismissModalViewControllerAnimated:YES
+
+    dispatch_async(dispatch_get_main_queue(), ^(void){
+            [self dismissViewControllerAnimated:YES
+                                     completion:NULL];
+        }
+    );
+
+} //  didFinishWithResult:(MFMailComposeResult)result
+
+
+
+// ==============   END of email stuff  ====================
+
+
+
+//   maybe no
+// A good way to update a table view when starting up or returning from another view
+// is to add code like this to viewDidAppear:
+//- (void)viewDidAppear:(BOOL)animated {
+// NSLog(@"rootViewController: viewDidAppear");
+// [super viewDidAppear:animated];
+// [self.view reloadData]; // self.view is the table view if self is its controller
+//}
+//
+
+- (void)viewDidAppear:(BOOL)animated
+{
+//     [super viewDidAppear];
+    NSLog(@"in TBLRPTs 1  viewDidAppear!");
+
+    [super viewDidAppear:animated];
+//    [self.tableView reloadData];    // self.view is the table view if self is its controller
+
+
+    NSIndexPath *myIdxPath = [self.tableView indexPathForSelectedRow];
+    if(myIdxPath) {
+        [self.tableView selectRowAtIndexPath:myIdxPath
+                                    animated:YES
+                              scrollPosition:UITableViewScrollPositionNone];
+    }
+
+
+
+} // end of viewDidAppear
+
+
+
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+
+    NSLog(@"in TBLRPTs 1  prepareForSegue!");
+  NSLog(@"segue.identifier =%@",segue.identifier );
+
+
+  if ([segue.identifier isEqualToString: @"segueTBLRPT1_toINFO"]) {
+
+      ; // DO NOT set the next gbl_currentMenuPlusReportCode  for info in the next report
+
+  } 
+
+  if ([segue.identifier isEqualToString: @"segueTBLRPT1_toViewHTML"]) {
+
+        //
+        // set the next gbl_currentMenuPlusReportCode  for info in the next report
+        //
+
+tn();trn("// set new gbl_currentMenuPlusReportCode    for info in next report");
+  NSLog(@"leaving TBLRPTs_1 old gbl_currentMenuPlusReportCode=%@",gbl_currentMenuPlusReportCode);
+        do {
+            //             if ([gbl_currentMenuPlusReportCode isEqualToString: @"gmappe"]) gbl_currentMenuPlusReportCode = @"homgma";
+            //        else if ([gbl_currentMenuPlusReportCode isEqualToString: @"gmeppe"]) gbl_currentMenuPlusReportCode = @"homgme";
+            //        else if ([gbl_currentMenuPlusReportCode isEqualToString: @"gmrppe"]) gbl_currentMenuPlusReportCode = @"homgmr";
+            //        else if ([gbl_currentMenuPlusReportCode isEqualToString: @"gmpppe"]) gbl_currentMenuPlusReportCode = @"homgmp";
+            //        else if ([gbl_currentMenuPlusReportCode isEqualToString: @"gmdppe"]) gbl_currentMenuPlusReportCode = @"homgmd";
+            //
+            //        else if ([gbl_currentMenuPlusReportCode isEqualToString: @"gbypcy"]) gbl_currentMenuPlusReportCode = @"homgby";
+            //        else if ([gbl_currentMenuPlusReportCode isEqualToString: @"gbdpwc"]) gbl_currentMenuPlusReportCode = @"homgbd";
+            //
+                 if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgma"]) gbl_currentMenuPlusReportCode = @"gmappe";
+            else if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgme"]) gbl_currentMenuPlusReportCode = @"gmeppe";
+            else if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgmr"]) gbl_currentMenuPlusReportCode = @"gmrppe";
+            else if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgmp"]) gbl_currentMenuPlusReportCode = @"gmpppe";
+            else if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgmd"]) gbl_currentMenuPlusReportCode = @"gmdppe";
+
+            else if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgby"]) gbl_currentMenuPlusReportCode = @"gbypcy";
+            else if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgbd"]) gbl_currentMenuPlusReportCode = @"gbdpwc";
+
+        } while (false); // save PSVs for viewHTML reports
+  NSLog(@"leaving TBLRPTs_1 new gbl_currentMenuPlusReportCode=%@",gbl_currentMenuPlusReportCode);
+
+  } 
+
+}
+
+
+//
+// iPhone UITableView. How do turn on the single letter alphabetical list like the Music App?
+//
+//
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
+
+
+    if (group_report_output_idx <= gbl_numRowsToTurnOnIndexBar) return nil;
+
+
+//    return[NSArray arrayWithObjects:@"A", @"B", @"C", @"D", @"E", @"F", @"G", @"H", @"I", @"J", @"K", @"L", @"M", @"N", @"O", @"P", @"Q", @"R", @"S", @"T", @"U", @"V", @"W", @"X", @"Y", @"Z", nil];
+//    return[NSArray arrayWithObjects:@"--", @" ", @" ", @" ", @" ", @" ", @"GGG", @" ", @" ", @" ", @" ", @" ", @"-", @"N", @"O", @"P", @"Q", @"R", @"S", @"T", @"U", @"V", @"W", @"XXX", @"Y", @"Z", @"--", nil];
+
+    return[NSArray arrayWithObjects:
+            @"--",
+         @" ", @" ", @" ", @" ",  @" ", @" ",
+            @"20",
+         @" ", @" ", @" ", @" ",  @" ", @" ",
+            @"40",
+         @" ", @" ", @" ", @" ",  @" ", @" ",
+            @"60",
+         @" ", @" ", @" ", @" ",  @" ", @" ",
+            @"80",
+         @" ", @" ", @" ", @" ",  @" ", @" ",
+            @"==", nil ];
+  }
+
+- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle: (NSString *)title 
+                                                                    atIndex: (NSInteger)index  {
+
+  NSLog(@"sectionForSectionIndexTitle!");
+//    NSInteger newRow = [self indexForFirstChar:title inArray:self.yourStringArray];
+    NSInteger newRow;
+    newRow = 0;
+
+    //    if ([title isEqualToString:@"  "])    // does not work when title = "  "
+    if ([title hasPrefix:@" "]) {
+        NSArray *myVisibleRows = [tableView indexPathsForVisibleRows];
+        NSIndexPath *myTopRow  = (NSIndexPath*)[myVisibleRows objectAtIndex:0];
+        return myTopRow.row;
+    }
+
+
+//    if ([title isEqualToString:@"__"]) newRow = 0;
+    if ([title isEqualToString:@"--"]) newRow = 0;
+    if ([title isEqualToString:@"20"]) newRow = (int) ( (20.0 / 100.0) * (double)group_report_output_idx );
+    if ([title isEqualToString:@"40"]) newRow = (int) ( (40.0 / 100.0) * (double)group_report_output_idx );
+    if ([title isEqualToString:@"60"]) newRow = (int) ( (60.0 / 100.0) * (double)group_report_output_idx );
+    if ([title isEqualToString:@"80"]) newRow = (int) ( (80.0 / 100.0) * (double)group_report_output_idx );
+    if ([title isEqualToString:@"=="]) newRow =              group_report_output_idx - 1;
+  NSLog(@"newRow =%ld",(long)newRow );
+
+    NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow: newRow inSection: 0];
+
+
+    dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+        [tableView scrollToRowAtIndexPath: newIndexPath atScrollPosition: UITableViewScrollPositionTop animated: YES];
+//        [tableView scrollToRowAtIndexPath: newIndexPath atScrollPosition: UITableViewScrollPositionMiddle animated: NO];
+    });
+
+    return index;
+}
+
+
+@end
+
+
+// stuff
+
+//NSRange myrange =  [cell.textLabel.text rangeOfString:@"90  Great"];
+//  NSLog(@"myNewCellText=%@",myNewCellText);
+//  NSLog(@"NSNotFound      =%lu",(unsigned long)NSNotFound);
+//  NSLog(@"myrange.location=%lu",(unsigned long)myrange.location);
+//  NSLog(@"myrange.length=%lu",(unsigned long)myrange.length);
+//
+//BOOL contains;
+// NSCaseInsensitiveSearch - makes it case insensitive
+//  if ([cell.textLabel.text rangeOfString:@"90  Great" options:NSCaseInsensitiveSearch].location == NSNotFound) {
+//contains = NO;
+//} else {
+//contains = YES;
+//}
+//
+
+
+    // FYI  multiple lines  by wrap
+    //        [[cell textLabel] setNumberOfLines:0];
+    //        [[cell textLabel] setLineBreakMode:NSLineBreakByWordWrapping];
+    //
+
+//try gbls
+//    // vars for column headers
+//    NSString *myCharsForRankNumsOnLeft;
+//    NSString *myFillSpacesInColHeaders;
+//
+
+//            // remove space on each end
+//            myNewCellText  = [myOriginalCellText substringWithRange:NSMakeRange(1, myOriginalCellTextLen -1 - 1)]; // zero-based
+//  NSLog(@"LL myNewCellText      =[%@]",myNewCellText  );
+//
+//
+
+//            int last_char_was_a_nine, lineup_column;
+//            last_char_was_a_nine = 0;
+//            lineup_column = 0;
+//
+//            for (int i = (int)strlen(tmp_c_buff) - 1; i >= 0; i--) {   // look for " 9"  right to left
+//                if (tmp_c_buff[i] == '9') {
+//                    last_char_was_a_nine = 1;
+//                    continue;
+//                }
+//                if (tmp_c_buff[i] == ' ' &&  last_char_was_a_nine == 1) {
+//                    lineup_column = i + 1;  // lineup_column is one-based
+//                    break;
+//                }
+//                last_char_was_a_nine = 0;
+//            }
+//    kin(lineup_column);
+//
+
+//
+//        // if there are 2 spaces on the left, remove them  and remove one on right end
+//        // if there  is 1 space  on the left, leave    it  and remove one on right end
+//        //
+//NSLog(@"myOriginalCellText 2    =[%@]",myOriginalCellText      );
+//        if ([myOriginalCellText hasPrefix: @"  "]) {
+//            myNewCellText  = [myOriginalCellText substringWithRange:NSMakeRange(2, myOriginalCellTextLen -1 - 1)]; // zero-based
+//NSLog(@"myNewCellText      1    =[%@]",myNewCellText      );
+//        } 
+//        else {
+//            myNewCellText  = [myOriginalCellText substringWithRange:NSMakeRange(0, myOriginalCellTextLen -1 - 1)]; // zero-based
+//NSLog(@"myNewCellText      2    =[%@]",myNewCellText      );
+//        }
+//
+
+
+
+//    cell.textLabel.numberOfLines = 0;
+//    cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+
+    //   cell.accessoryView          = myInvisibleButton;            // no right arrow on benchmark label
+    //   cell.userInteractionEnabled = NO;                           // no selection highlighting
+    //
+
+//return NO;  // to eliminate bug  =  father/swim tap 14, then 10, 14 is bg=cHdr
+
+    // [[cell textLabel] setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size: 16.5]];
+    //
+    // Menlo Bold 
+    // Menlo Bold Italic 
+    // Menlo Italic 
+    // Menlo Regular 
+    //
+    //UIFont *myFont = [ UIFont fontWithName: @"Arial" size: 18.0 ];
+    //UIFont *myFont = [UIFont fontWithName: @"Menlo Bold" size: 12.0];
+    //UIFont *myFont = [UIFont fontWithName: @"Menlo-Bold" size: 12.0];
+//    UIFont *myFont = [UIFont fontWithName: @"Menlo" size: 12.0];
+
+//
+//    // As pointed above one way to modify an accessoryView is by adding your own UIImageView.
+//    // However, in fact you can supply any object deriving from UIView.
+//    // I would then recommend using a UILabel with an icon font (e.g. icomoon) instead of UIImageView.
+//    // UILabel and an icon font allow for flexibility in both image, color and size.
+//
+////let font = UIFont(name: "icomoon", size: 16.0)
+////let icon = "\u{e60f}"    
+////let lbl = UILabel(frame: CGRectMake(0, 0, 20, 20))
+//
+//    UILabel *myDisclosureIndicatorLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, titleView.frame.size.width, titleView.frame.size.height)];
+//
+//    UIFont *myFont = [UIFont fontWithName: @"Menlo Bold" size: 12.0];
+//
+//lbl.font = font
+//lbl.text = icon
+//cell.accessoryView = lbl
+//
+//
+//
+
+        // UILabel for the disclosure indicator
+        //
+//            UIFont *myDisclosureIndicatorFont   = [UIFont fontWithName: @"Menlo Bold" size: 12.0];
+//            UIFont *myDisclosureIndicatorFont   = [UIFont fontWithName: @"Menlo" size: 12.0];
+//            UIFont *myDisclosureIndicatorFont   = [UIFont fontWithName: @"Menlo" size: 16.0];
+//            UIFont *myDisclosureIndicatorFont   = [UIFont fontWithName: @"Menlo Bold" size: 16.0f];
+        //    UILabel *myDisclosureIndicatorLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+        //    UILabel *myDisclosureIndicatorLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 16, 32)];
+        //    myDisclosureIndicatorLabel.backgroundColor = [UIColor clearColor];
+//            myDisclosureIndicatorLabel.backgroundColor = [UIColor grayColor];
+
+//            myDisclosureIndicatorLabel.font            = myDisclosureIndicatorFont;
+//        //    myDisclosureIndicatorLabel.text            = @" > ";
+//            myDisclosureIndicatorLabel.text            = @">";
+//
+
+//                                           attributes: @{            NSFontAttributeName : myDisclosureIndicatorFont,
+
+//            [navigationBar setBackgroundImage: [UIImage imageNamed:@"NavigationBarBackground"] 
+            
+//        // does not work    This property is ignored if leftBarButtonItem is not nil 
+//        // set TITLE for NAVIGATION BAR
+//        //
+//        UIView *titleView = [[UIView alloc]initWithFrame:CGRectMake(
+//            50,
+//            0,
+//            self.navigationController.navigationBar.frame.size.width-100,
+//            self.navigationController.navigationBar.frame.size.height
+//        )K;
+//
+//        UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, titleView.frame.size.width, titleView.frame.size.height)];
+//        [titleLabel setTextAlignment:NSTextAlignmentCenter];
+//        //[titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:12.0]];
+//        [titleLabel setNumberOfLines:0];
+//
+//        //NSString *titleString = @"This is a\n multiline string";
+//        NSString *titleString = @" For ~Elijah89012345\nin Group ~My1Family12345";
+//
+//        [titleLabel setText:titleString];
+//
+//        [titleView addSubview:titleLabel];
+//
+//        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+//            //[self.navigationController.navigationItem setTitleView:titleView];
+//            [self.navigationController.navigationItem setTitleView:titleView];
+//        });
+//
+
+//        UILabel *myNavTitle = [[UILabel alloc] init];    no work
+//        myNavTitle.text =  @"Best Match";
+//            [[self navigationItem] setTitleView: myNavTitle];
+//
+
+
+// 
+////StART  of GUTS of ViewDidLoad (called only once) moved to ViewDidAppear (called each time becomes visible)
+////
+////  viewDidLoad
+////  Is called exactly once, when the view controller is first loaded into memory.
+////  This is where you want to instantiate any instance variables and
+////  build any views that live for the entire lifecycle of this view controller.
+////  
+////  viewDidAppear
+////  Is called when the view is actually visible,
+////  and can be called multiple times during the lifecycle of a View Controller
+////  (example when a Modal View Controller is dismissed and the view becomes visible again)
+////
+//
+//    MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global methods in appDelegate.m
+//    int retval;
+//
+////    char csv_person_string[128];
+////    char psvName[32], psvMth[4], psvDay[4], psvYear[8], psvHour[4], psvMin[4], psvAmPm[4], psvCity[64], psvProv[64], psvCountry[64];
+//    char psvLongitude[16], psvHoursDiff[8], returnPSV[64];
+//    const char *my_psvc; // psv=pipe-separated values
+////    char my_psv[128];
+//    
+//    const char *tmp_grp_name_CONST;                                                         // NSString object to C str
+//    char tmp_grp_name[128];                                                                 // NSString object to C str
+//    tmp_grp_name_CONST = [gbl_lastSelectedGroup cStringUsingEncoding:NSUTF8StringEncoding]; // NSString object to C str
+//    strcpy(tmp_grp_name, tmp_grp_name_CONST);                                               // NSString object to C str  because of const
+//    
+//
+//    char person_name_for_filename[32];
+//    char group_name_for_filename[32]; 
+//
+//    char   html_file_name_browser[2048];
+//    NSString *Ohtml_file_name_browser;
+//    NSString *OpathToHTML_browser;
+//    char     *pathToHTML_browser;
+//
+//    NSArray* tmpDirFiles;
+//    
+//    // all BEST MATCH ... reports  ======================================================================================
+//    // all BEST MATCH ... reports  ======================================================================================
+//    //
+//tn();trn("before kingpin set");
+//  NSLog(@"gbl_currentMenuPrefixFromHome=%@",gbl_currentMenuPrefixFromHome);
+//  NSLog(@"gbl_currentMenuPrefixFromMatchRpt=%@",gbl_currentMenuPrefixFromMatchRpt);
+//  NSLog(@"gbl_lastSelPersonWasA =%@",gbl_lastSelPersonWasA );
+//  NSLog(@"gbl_lastSelectedGroup=%@",gbl_lastSelectedGroup);
+//  NSLog(@"gbl_kingpinPersonName=%@",gbl_kingpinPersonName);
+//  NSLog(@"gbl_currentMenuPlusReportCode =%@",gbl_currentMenuPlusReportCode );
+//  NSLog(@"gbl_lastSelectedPerson=%@",gbl_lastSelectedPerson);
+//  NSLog(@"gbl_lastSelectedGroup=%@",gbl_lastSelectedGroup);
+//  NSLog(@"gbl_fromHomeCurrentSelectionPSV=%@",gbl_fromHomeCurrentSelectionPSV);
+//
+//    if (  [gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"]      // My Best Match in Group ...
+//      ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgbm"]      //    Best Match in Group ...
+////      ||  [gbl_currentMenuPlusReportCode isEqualToString: @"gbm1bm"]      // My Best Match in Group ...  see tblrps_2 view
+////      ||  [gbl_currentMenuPlusReportCode isEqualToString: @"gbm2bm"]      // My Best Match in Group ...
+////      ||  [gbl_currentMenuPlusReportCode isEqualToString: @"pbm2bm"]      // My Best Match in Group ...
+//    )
+//    {   // all BEST MATCH ... reports
+//        tn();trn("in REPORT  all BEST MATCH ... reports !");
+//
+//        //        NSString myTitleForTableview;
+//
+//        NSString *myKingpinPerson;
+//        NSString *myKingpinCSV_NSString;
+//        const char *C_CONST_myKingpinPerson;   // for get c string
+//        char        C_myKingpinPerson[64];     // for get c string
+//
+//        // determine the NSString CSV of the kingpin person (or @"") for this match report
+//        //
+//        if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"]) {    // My Best Match in Group ...
+//           myKingpinPerson       = gbl_lastSelectedPerson;
+//           myKingpinCSV_NSString = gbl_fromHomeCurrentSelectionPSV;
+//        }
+//        if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgbm"]) {    // Best Match in Group ...
+//           myKingpinPerson       = @"";
+//           myKingpinCSV_NSString = @"";
+//        }
+//
+//        //   NO  are in tblrpts_2
+//        //        if ([gbl_currentMenuPlusReportCode isEqualToString: @"gbm1bm"]) {    // My Best Match in Group ...
+//        //           myKingpinPerson       = gbl_nameOfPerson_1_OfPair;                      // TODO  gbl_nameOfPerson_1_OfPair
+//        //           myKingpinCSV_NSString = [myappDelegate getCSVforPersonName: (NSString *) myKingpinPerson]; 
+//        //        }
+//        //        if ([gbl_currentMenuPlusReportCode isEqualToString: @"gbm2bm"]) {    // My Best Match in Group ...
+//        //           myKingpinPerson       = gbl_nameOfPerson_2_OfPair;                      // TODO  gbl_nameOfPerson_2_OfPair
+//        //           myKingpinCSV_NSString = [myappDelegate getCSVforPersonName: (NSString *) myKingpinPerson]; 
+//        //        }
+//        //        if ([gbl_currentMenuPlusReportCode isEqualToString: @"pbm2bm"]) {    // My Best Match in Group ...
+//        //           myKingpinPerson       = gbl_nonKingpinPerson;                     // TODO  gbl_nameOf_NonKingpin_Person
+//        //           myKingpinCSV_NSString = [myappDelegate getCSVforPersonName: (NSString *) myKingpinPerson]; 
+//        //        }
+//        //
+//        //
+//        
+//        gbl_kingpinPersonName = myKingpinPerson;
+//
+////myKingpinPerson       =  @"~Ava";
+////myKingpinCSV_NSString = [myappDelegate getCSVforPersonName: (NSString *) myKingpinPerson]; 
+////NSLog(@" TEST 1  myKingpinCSV_NSString =%@",myKingpinCSV_NSString );
+////myKingpinPerson       =  @"~Avaxxxxxxxx";
+////myKingpinCSV_NSString = [myappDelegate getCSVforPersonName: (NSString *) myKingpinPerson]; 
+////NSLog(@" TEST 2  myKingpinCSV_NSString =%@",myKingpinCSV_NSString );
+////
+//
+//        if (myKingpinCSV_NSString == nil) {
+//            NSLog(@"Could not find person record for person name=%@",myKingpinPerson);
+//            NSLog(@"using ~Abigail ");
+//            myKingpinCSV_NSString = [myappDelegate getCSVforPersonName: @"~Abibail"]; 
+//        }
+//
+//        /* get C string for NSString myKingpinPerson
+//        */
+//
+//        if ([myKingpinPerson isEqualToString: @""]  ||  myKingpinPerson == nil) {    // My Best Match in Group ...
+//            strcpy(C_myKingpinPerson, "no person");
+//        } else {
+//            C_CONST_myKingpinPerson = myKingpinPerson.UTF8String;   // for grpone
+//            strcpy(C_myKingpinPerson, C_CONST_myKingpinPerson);
+//        }
+////
+////        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+////            [[self navigationItem] setTitle: @"Best Match"];
+////        });
+////
+////
+//
+//        
+//    NSLog(@"gbl_lastSelectedPerson=%@", gbl_lastSelectedPerson);
+//    NSLog(@"gbl_lastSelectedGroup =%@", gbl_lastSelectedGroup );
+//
+//        // build HTML file name  in TMP  Directory  (html_file_name_browser);
+//        //
+//        if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgbm"]) {    // Best Match in Group ...
+//
+//            strcpy(group_name_for_filename, tmp_grp_name );  
+//            scharswitch(group_name_for_filename, ' ', '_');
+//            sprintf(html_file_name_browser, "%sgrpall_%s.html", PREFIX_HTML_FILENAME, group_name_for_filename);
+//
+//        } else {   // MY  Best Match in Group ...  (grpone)
+//
+//            strcpy(person_name_for_filename, C_myKingpinPerson);
+//            scharswitch(person_name_for_filename, ' ', '_');
+//
+//            strcpy(group_name_for_filename, tmp_grp_name );  
+//            scharswitch(group_name_for_filename, ' ', '_');
+//
+//            sprintf(html_file_name_browser, "%sgrpone_%s_%s.html", PREFIX_HTML_FILENAME, person_name_for_filename, group_name_for_filename);
+//        }
+//// sprintf(html_file_name_webview, "%sgrpone_%s_%swebview.html", PREFIX_HTML_FILENAME, person_name_for_filename, group_name_for_filename);
+//        
+//        
+//        gbl_html_file_name_browser = [NSString stringWithUTF8String:html_file_name_browser ];   // for later sending as email attachment
+////        gbl_html_file_name_webview = [NSString stringWithUTF8String:html_file_name_webview ];   // for later viewing in webview
+//
+//
+//        Ohtml_file_name_browser = [NSString stringWithUTF8String:html_file_name_browser ];
+//        OpathToHTML_browser     = [NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_browser];
+//        pathToHTML_browser      = (char *) [OpathToHTML_browser cStringUsingEncoding:NSUTF8StringEncoding];
+//        
+////        Ohtml_file_name_webview = [NSString stringWithUTF8String:html_file_name_webview ];
+////        OpathToHTML_webview     = [NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_webview];
+////        pathToHTML_webview      = (char *) [OpathToHTML_webview cStringUsingEncoding:NSUTF8StringEncoding];
+////        
+////        URLtoHTML_forWebview = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_webview]];
+////
+//        
+//        gbl_pathToFileToBeEmailed = OpathToHTML_browser;
+//        
+//        // remove all "*.html" files from TMP directory before creating new one
+//        //
+//        tmpDirFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:NSTemporaryDirectory() error:NULL];
+//        NSLog(@"tmpDirFiles.count=%lu",(unsigned long)tmpDirFiles.count);
+//        for (NSString *fil in tmpDirFiles) {
+//            NSLog(@"REMOVED THIS fil=%@",fil);
+//            if ([fil hasSuffix: @"html"]) {
+//                [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), fil] error:NULL];
+//            }
+//        }
+//   
+//        
+//        tn();trn("2 HTMLs !!!!!!!!!!!!!!!!!!!!");
+////        nksn(html_file_name_browser); ksn( html_file_name_webview);
+////        nksn(pathToHTML_browser); ksn(pathToHTML_webview);
+////
+//        NSLog(@"Ohtml_file_name_browser=%@",Ohtml_file_name_browser);
+//        NSLog(@"OpathToHTML_browser=%@",OpathToHTML_browser);
+//
+//
+//
+//
+//
+//        // get a NSString CSV for each member of the group into NSArray gbl_grp_CSVs
+//        // but possibly excluding  one person who is kingpin of grpone report "MY Best Match in Group ..." 
+//        //
+//        gbl_kingpinIsInGroup = [myappDelegate getNSArrayOfCSVsForGroup: (NSString *) gbl_lastSelectedGroup    // get into NSArray gbl_grp_CSVs
+//                                               excludingThisPersonName: (NSString *) myKingpinPerson      ];  // non-empty string means "my best match ..."
+//
+//NSLog(@"gbl_kingpinIsInGroup =%ld",gbl_kingpinIsInGroup );
+////NSLog(@"gbl_grp_CSVs =%@",gbl_grp_CSVs ); // for test see all grp CSVs
+////kin((int)gbl_grp_CSVs.count);
+//
+//
+//            // here we can store the number of pairs ranked  in  gbl_numPairsRanked (for column header size calc)
+//            //
+//            if ([myKingpinPerson isEqualToString: @""]  ||  myKingpinPerson == nil) {    // Best Match in Group ...
+//                gbl_numPairsRanked = ( gbl_grp_CSVs.count * (gbl_grp_CSVs.count - 1)) / 2;  // for grpall
+//            } else {
+//                gbl_numPairsRanked = gbl_grp_CSVs.count;   // (getNSArrayOfCSVsForGroup subtracts one if kingpin is in group)
+//            }
+//
+////                //   - determine  if kingpin is in group
+////                //
+////                gbl_kingpinIsInGroup = 0;
+////                NSString *prefixStr = [NSString stringWithFormat: @"%@|", myKingpinPerson];
+////  NSLog(@"prefixStr =%@",prefixStr );
+////                for (NSString *element in gbl_grp_CSVs) {
+////  NSLog(@"element =%@",element );
+////                    if ([element hasPrefix: prefixStr]) {
+////                        gbl_kingpinIsInGroup = 1;
+////                        break;
+////                    }
+////                }
+////tn();tr("one");kin((int)gbl_kingpinIsInGroup );
+////                if ( gbl_kingpinIsInGroup == 0) gbl_numPairsRanked = gbl_grp_CSVs.count;
+////                if ( gbl_kingpinIsInGroup == 1) gbl_numPairsRanked = gbl_grp_CSVs.count - 1;
+////
+////kin((int)gbl_numPairsRanked);
+////
+//
+//
+//
+//        //
+//        // convert  NSArray gbl_grp_CSVs  (one NSString CSV for each member of the group)
+//        // into     a C array of strings for the C report function call mamb_report_person_in_group() -  my_mamb_csv_arr
+//        //
+//        //     char group_report_input_birthinfo_CSVs[gbl_maxGrpBirthinfoCSVs * gbl_maxLenBirthinfoCSV];  // [250 * fixed length of 64]
+//        //
+//        // avoid malloc by this char buffer  to hold max lines of fixed length
+//        // char group_report_input_birthinfo_CSVs[gbl_maxGrpBirthinfoCSVs * gbl_maxLenBirthinfoCSV];  // [250 * fixed length of 64]
+//        // int  group_report_input_birthinfo_idx;
+//        //
+//        char *my_mamb_csv_arr[gbl_maxGrpBirthinfoCSVs];
+//        int num_input_csvs;
+//        num_input_csvs = (int)gbl_grp_CSVs.count;
+//        group_report_input_birthinfo_idx =  -1;  // zero-based  init
+//
+//        for(int i = 0; i < num_input_csvs; i++) {  
+//
+//          NSString *s      = gbl_grp_CSVs[i];     //get a NSString
+//          const char *cstr = s.UTF8String;        //get cstring
+//
+//          // index of next spot in buffer
+//          group_report_input_birthinfo_idx = group_report_input_birthinfo_idx + 1; 
+//
+//          // get ptr to next 64-byte slot in buffer
+//          char *my_ptr_in_buff;
+//          my_ptr_in_buff = group_report_input_birthinfo_CSVs + group_report_input_birthinfo_idx * gbl_maxLenBirthinfoCSV;
+//
+//          // copy cstr into that spot
+//          strcpy(my_ptr_in_buff, cstr); 
+//
+//          // put ptr to that spot into c array of strings
+//          my_mamb_csv_arr[group_report_input_birthinfo_idx] = my_ptr_in_buff;
+//        }
+//
+//for (int kkk=0; kkk <= num_input_csvs -1; kkk++) {
+//tn();ki(kkk);ks(my_mamb_csv_arr[kkk]); }
+//
+//        
+//
+////        /* Now call report function in grpdoc.c
+////        * 
+////        *  struct rank_report_line *out_rank_lines[MAX_IN_RANK_LINE_ARRAY];
+////        *  int out_rank_idx;  * pts to current line in out_rank_lines *
+////        */
+////        int out_rank_idx, retval;
+////        out_rank_idx = 0;
+////        retval = mamb_report_person_in_group(  /* in grpdoc.o */
+////          html_file_name,      /* html_file_name */
+////          group_name,          /* group_name */
+////          mamb_csv_arr,        /* in_csv_person_arr[] */
+////          num_in_grp,          /* num_persons_in_grp */
+////          csv_compare_everyone_with,
+////          out_rank_lines,      /* struct rank_report_line *out_rank_lines[]; */
+////          &out_rank_idx 
+////        );
+////
+////        if (retval != 0) {tn(); trn("non-zero retval from mamb_report_person_in_group()");}
+////
+////
+//
+//
+//        // 1 different report invocation  for grpall (homgbm)
+//        // 4 different report invocations for grpone (hompbm, gbm1gm, gbm2bm, pbm2bm)
+//        //
+//        if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgbm"]) {    // Best Match in Group ...  this is grpall
+//
+//// TODO
+//
+//        } else {       // *MY*  Best Match in Group ...  this is grpone
+//
+//            // get kingpin CSV  for C call
+//                // NSString object to C
+//                my_psvc = [gbl_fromHomeCurrentSelectionPSV cStringUsingEncoding:NSUTF8StringEncoding];  // psv=pipe-separated values
+//                char my_psv[128];
+//                strcpy(my_psv, my_psvc);
+//                
+//                char psvName[32], psvMth[4], psvDay[4], psvYear[8], psvHour[4], psvMin[4], psvAmPm[4], psvCity[64], psvProv[64], psvCountry[64];
+//                strcpy(psvName, csv_get_field(my_psv, "|", 1));
+//                strcpy(psvMth,  csv_get_field(my_psv, "|", 2));
+//                strcpy(psvDay,  csv_get_field(my_psv, "|", 3));
+//                strcpy(psvYear, csv_get_field(my_psv, "|", 4));
+//                strcpy(psvHour, csv_get_field(my_psv, "|", 5));
+//                strcpy(psvMin,  csv_get_field(my_psv, "|", 6));
+//                strcpy(psvAmPm, csv_get_field(my_psv, "|", 7));
+//                strcpy(psvCity, csv_get_field(my_psv, "|", 8));
+//                strcpy(psvProv, csv_get_field(my_psv, "|", 9));
+//                strcpy(psvCountry, csv_get_field(my_psv, "|", 10));
+//                
+//                // get longitude and timezone hoursDiff from Greenwich
+//                // by looking up psvCity, psvProv, psvCountry
+//                //
+//                seq_find_exact_citPrvCountry(returnPSV, psvCity, psvProv, psvCountry);
+//                
+//                strcpy(psvHoursDiff,  csv_get_field(returnPSV, "|", 1));
+//                strcpy(psvLongitude,  csv_get_field(returnPSV, "|", 2));
+//
+//                // build csv arg for report function call
+//                //
+//                char csv_kingpin[128];
+//                sprintf(csv_kingpin, "%s,%s,%s,%s,%s,%s,%s,%s,%s",
+//                        psvName,psvMth,psvDay,psvYear,psvHour,psvMin,psvAmPm,psvHoursDiff,psvLongitude);
+//            // end of  get kingpin CSV  for C call
+//ksn(csv_kingpin);
+//
+//
+//
+//tn();trn("HERE  doing person in group ..."); ks(html_file_name_browser);
+//            // Now call  grpone   report function in grpdoc.c
+//            //
+//            tn();trn("in TBLRPT 1  calling  mamb_report_person_in_group() ..."); 
+//            retval = mamb_report_person_in_group(  /* in grpdoc.o */
+//              pathToHTML_browser,          // path to html_file
+//              tmp_grp_name,                // group_name */
+//              my_mamb_csv_arr,             // from   group_report_input_birthinfo_CSVs
+//              num_input_csvs,              // num_persons_in_grp xxzz
+//              csv_kingpin,                 // csv_compare_everyone_with,
+//              group_report_output_PSVs,    // array of output report data
+//              &group_report_output_idx,    // ptr to int having last index written
+//              (int)gbl_kingpinIsInGroup
+//            );
+//
+//tn();trn("in TBLRPT 1  returned from  mamb_report_person_in_group() ...");
+//kin(retval);
+//            if (retval != 0) {tn(); trn("non-zero retval from mamb_report_person_in_group()");}
+//
+//
+//
+//            // now that we have group_report_output_PSVs, grab all BG color for all tableview cells
+//            // and put into   NSArray *gbl_array_cellBGcolorName;
+//            //
+//            char my_buff[256];
+//            NSMutableString *myCellContentsPSV;
+//            NSArray  *tmpArray3;
+//            NSMutableString *curr_cellBGcolorName;
+////            NSMutableString *curr_cellPersonAname;
+////            NSMutableString *curr_cellPersonBname;
+////
+//            NSString *curr_cellPersonAnameTMP;
+//            NSString *curr_cellPersonBnameTMP;
+//            NSString *curr_cellPersonAname;
+//            NSString *curr_cellPersonBname;
+//
+//
+//            NSCharacterSet  *mySeparators = [NSCharacterSet characterSetWithCharactersInString:@"|"];
+//
+//            [gbl_array_cellBGcolorName removeAllObjects];               // empty array for BG colors for these new cells
+//            [gbl_array_cellPersonAname removeAllObjects];               // empty array for personA   for these new cells
+//            [gbl_array_cellPersonBname removeAllObjects];               // empty array for personB   for these new cells
+//
+//            gbl_array_cellBGcolorName = [[NSMutableArray alloc] init];  // init  array for BG colors for these new cells
+//            gbl_array_cellPersonAname = [[NSMutableArray alloc] init];  // init  array
+//            gbl_array_cellPersonBname = [[NSMutableArray alloc] init];  // init  array 
+//
+////tn();kin(group_report_output_idx);
+//
+//            NSString *myHedColor = @"cHed";
+//
+//            for (int i=0; i <= group_report_output_idx + 3; i++) {  // group_report_output_idx = last index written
+//
+//                if (i == group_report_output_idx + 1) {
+//                   [gbl_array_cellBGcolorName addObject: myHedColor];  //  footer line 1  // add the BG colors of the 3 footer cells
+//                   continue;
+//                }
+//                if (i == group_report_output_idx + 2) {
+//                   [gbl_array_cellBGcolorName addObject: myHedColor];  //  footer line 2
+//                   continue;
+//                }
+//                if (i == group_report_output_idx + 3) {
+//                   [gbl_array_cellBGcolorName addObject: myHedColor];  //  footer line 3
+//                   continue;
+//                }
+//                strcpy(my_buff, group_report_output_PSVs  +  i * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW
+////tn();ki(i);ks(my_buff);
+//
+//                myCellContentsPSV     = [NSMutableString stringWithUTF8String: my_buff];  // convert c string to NSString
+//                tmpArray3             = [myCellContentsPSV componentsSeparatedByCharactersInSet: mySeparators];
+//
+//                curr_cellBGcolorName = tmpArray3[0];
+//                curr_cellPersonAnameTMP = tmpArray3[2];
+//                curr_cellPersonBnameTMP = tmpArray3[3];
+//
+////tn();  NSLog(@"curr_cellPersonAnameTMP =%@",curr_cellPersonAnameTMP );
+////  NSLog(@"curr_cellPersonBname  =%@",curr_cellPersonBname  );
+//
+////                // replace '_' from pair names with ' '    (underscore only in cell in tableview)
+////                [curr_cellPersonAname replaceOccurrencesOfString: @"_"
+////                                                      withString: @" "
+////                                                         options: 0
+////                                                           range: NSMakeRange(0, curr_cellPersonAname.length)
+////                ];
+////                [curr_cellPersonBname replaceOccurrencesOfString: @"_"
+////                                                      withString: @" "
+////                                                         options: 0
+////                                                           range: NSMakeRange(0, curr_cellPersonBname.length)
+////                ];
+////
+//
+//                curr_cellPersonAname = [curr_cellPersonAnameTMP stringByReplacingOccurrencesOfString: @"_"
+//                                                                                          withString: @" "];
+//                curr_cellPersonBname = [curr_cellPersonBnameTMP stringByReplacingOccurrencesOfString: @"_"
+//                                                                                          withString: @" "];
+//
+//
+//
+//                // in pair reports (Best Match ...) blanks go to '_' to make pairs more readable when a name has a blank in it
+//                //
+//
+//
+//                [gbl_array_cellBGcolorName addObject: curr_cellBGcolorName]; 
+//                [gbl_array_cellPersonAname addObject: curr_cellPersonAname];
+//                [gbl_array_cellPersonBname addObject: curr_cellPersonBname];
+//            }
+//
+//        } // grpone
+//
+//
+////  NSLog(@"gbl_pathToFileToBeEmailed =%@",gbl_pathToFileToBeEmailed );
+//
+//
+//
+//
+////        if (retval == 0) {
+////           
+////            // show all files in temp dir
+////            NSFileManager *manager = [NSFileManager defaultManager];
+////            NSArray *fileList = [manager contentsOfDirectoryAtPath:NSTemporaryDirectory() error:nil];
+////            for (NSString *s in fileList){
+////                NSLog(@"TEMP DIR %@", s);
+////            }
+////            
+////            
+////             /* here, go and look at html report */
+////             // [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"about:blank"]]];  // ?clean for re-use
+////             
+////             self.outletWebView.scalesPageToFit = YES;
+////             
+////             // I was having the same problem. I found a property on the UIWebView
+////             // that allows you to turn off the data detectors.
+////             //
+////             self.outletWebView.dataDetectorTypes = UIDataDetectorTypeNone;
+////            
+////             // place our URL in a URL Request
+////             HTML_URLrequest = [[NSURLRequest alloc] initWithURL: URLtoHTML_forWebview];
+////             
+////             // UIWebView is part of UIKit, so you should operate on the main thread.
+////             //
+////             // old= [self.outletWebView loadRequest: HTML_URLrequest];
+////             //
+////             dispatch_async(dispatch_get_main_queue(), ^(void){
+////                 [self.outletWebView loadRequest:HTML_URLrequest];
+////             });
+////        }
+////
+//
+//
+//
+//
+//
+////        dispatch_async(dispatch_get_main_queue(), ^{                                // <=== 
+////            [[self navigationItem] setTitle: @"Best Match"];
+////        });
+////
+//
+//
+//
+//    }  // END of   all BEST MATCH ... reports  ======================================================================================
+//
+//
+//// best day, best year
+//
+// // TODO    
+// 
+//// END  of GUTS of ViewDidLoad (called only once) moved to ViewDidAppear (called each time becomes visible)
+// 
+//
+
+
+
+//
+//    // for B level reports - no remembering for B level pairs EXCEPT remember rownum for returning to this row from on top)
+//
+//    // Now  highlight the  remembered last row selection 
+//    // UNLESS this is entering this menu from "below"
+//    // OK to highlight if returning to this menu from "above"
+//    //
+//    if (gbl_selectedRownumTBLRPT_1 == -1)  // FLAG to not highlight menu row on first entering selrpts_B
+//
+//    {
+//        ;  // do not hightlight any row
+//
+//    } else {
+//
+//        if (self.isBeingPresented || self.isMovingToParentViewController) {   // "first time" entering from below
+//            ;  // do not hightlight any row
+//
+//        } else {
+//
+////NSLog(@"gbl_selectedRownumSelRpt_B=%ld", (long)gbl_selectedRownumSelRpt_B); // get indexpath for saved rownum 
+//            NSIndexPath *myIndexPath = [NSIndexPath indexPathForRow: gbl_selectedRownumTBLRPT_1 
+//                                                          inSection: 0 ];
+//
+//            [self.tableView selectRowAtIndexPath: myIndexPath   // puts highlight on remembered row
+//                                        animated: YES
+//                                  scrollPosition: UITableViewScrollPositionNone];
+//        }
+//     } // highlight saved row
+//
+//
+

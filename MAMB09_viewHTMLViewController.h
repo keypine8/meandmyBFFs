@@ -11,10 +11,13 @@
 
 
 @interface MAMB09_viewHTMLViewController : UIViewController <MFMailComposeViewControllerDelegate>
+//@interface MAMB09_viewHTMLViewController : UIViewController <MFMailComposeViewControllerDelegate, UIGestureRecognizerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIWebView *outletWebView;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *outlet_infoButton;
 
-// all globals
+// all globals   yyyyy  222
+
 // now in gbl_fromHomeCurrentSelectionPSV
 //@property (strong, nonatomic) NSString *fromHomeCurrentSelectionPSV;     // CSV  for per or grp or pair of people
 //@property (strong, nonatomic) NSString *fromHomeCurrentSelectionType; // like "group" or "person" or "pair"
@@ -22,7 +25,8 @@
 //
 //// @property (strong, nonatomic) NSString *fromUserSecondPerson;         // CSV  for per or grp or pair of people
 //
-//
+
+//   xxxxx
 //@property (strong, nonatomic) NSString *selectedYear;           // from selYearViewController  yyyy
 //@property (strong, nonatomic) NSString *selectedPersonFromAll;  // from selPersonFromAllViewController
 //@property (strong, nonatomic) NSString *selectedGroup;          // from selGroupViewController

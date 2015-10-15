@@ -217,13 +217,12 @@ int mamb_report_year_in_the_life(  /* called from cocoa */
 
   fopen_fpdb_for_debug();
 
-/* tn();tr("in mamb_report_year_in_the_life()"); */
-/* tn();b(88);tn();
-* ksn(html_f_file_name);
-* ksn(csv_person_string);
-* ksn(year_todo_yyyy);
-* ksn(instructions);
-*/
+ tn();tr("in mamb_report_year_in_the_life()"); 
+ksn(html_f_file_name);
+ksn(csv_person_string);
+ksn(year_todo_yyyy);
+ksn(instructions);
+
 
 
   if (strstr(instructions, "return only") == NULL) {
@@ -278,7 +277,7 @@ int mamb_report_year_in_the_life(  /* called from cocoa */
 
 /* <.> */
   } else if(strcmp(gbl_instructions,  "do day stress report and return stress score") == 0) {
-/* b(5);tn();ksn( gbl_csv_person_string); */
+b(5);tn();ksn( gbl_csv_person_string);
 
     allow_docin_puts = 0;   /* so short we can hard code html with no docin_puts */
 
@@ -392,6 +391,7 @@ int mamb_report_year_in_the_life(  /* called from cocoa */
 */
 
   } else if(strcmp(gbl_instructions,  "do day stress report and return stress score") == 0) {
+b(6);
     int itarget_mm;
     int itarget_dd;
     int itarget_yyyy;
@@ -411,7 +411,7 @@ int mamb_report_year_in_the_life(  /* called from cocoa */
       itarget_yyyy,
       gblTargetDayScore
     );
-
+kin(gblTargetDayScore);
 
     /* set up return value to mamb_report_year_in_the_life()
     */
@@ -444,6 +444,7 @@ int mamb_report_year_in_the_life(  /* called from cocoa */
     strcpy(gbl_instructions,  "");  /* init gbl */
     allow_docin_puts = 1;           /* init gbl */
     fclose_fpdb_for_debug();
+b(7);trn("small end");
     return(0);
 
   } else {
@@ -735,15 +736,20 @@ void process_input(char *csv_person_string)   /* prep for calc_chart() */
 /* ksn(day_of_birth); */
 /* ksn(year_of_birth); */
 
-  /* for year of birth, start at birthday
-  */
-  if (strcmp(year_in_the_life_todo_yyyy, year_of_birth) == 0) {
-    Fut_start_mn = atoi(mth_of_birth);
-    Fut_start_dy = atoi(day_of_birth); 
-  } else {
+// NO privacy (determine yr of birth) , always start at jan 1
+//  /* for year of birth, start at birthday
+//  */
+//  if (strcmp(year_in_the_life_todo_yyyy, year_of_birth) == 0) {
+//    Fut_start_mn = atoi(mth_of_birth);
+//    Fut_start_dy = atoi(day_of_birth); 
+//  } else {
+//    Fut_start_mn = 1;
+//    Fut_start_dy = 1; /*  old was 2 */
+//  }
+//
+
     Fut_start_mn = 1;
     Fut_start_dy = 1; /*  old was 2 */
-  }
 
 /* kin(Fut_start_mn); */
 /* kin(Fut_start_dy); */
@@ -1477,15 +1483,19 @@ void set_grh_top_and_bot()
     /*     Grh_beg_mn = 1; */
     /*     Grh_beg_dy = 1;  */
 
-    /* get month and day to start the first graph
-    */
-    if (strcmp(year_in_the_life_todo_yyyy, year_of_birth) == 0) {
-      Grh_beg_mn = atoi(mth_of_birth);
-      Grh_beg_dy = atoi(day_of_birth); 
-    } else {
+// NO  privacy  20150211  can infer birth info
+//    /* get month and day to start the first graph
+//    */
+//    if (strcmp(year_in_the_life_todo_yyyy, year_of_birth) == 0) {
+//      Grh_beg_mn = atoi(mth_of_birth);
+//      Grh_beg_dy = atoi(day_of_birth); 
+//    } else {
+//      Grh_beg_mn = 1;
+//      Grh_beg_dy = 1; /*  old was 2 */
+//    }
+//
       Grh_beg_mn = 1;
       Grh_beg_dy = 1; /*  old was 2 */
-    }
 
     Grh_beg_yr =  atoi(year_in_the_life_todo_yyyy);
 
@@ -2351,16 +2361,22 @@ void prt_grh_hdr(int grh_num)  /* grh title and 2nd line */
 /* tn(); */
 /* ksn(&lf_mar[0]); */
 /* ksn(dotfield); */
-  n = sprintf(p,
+
 /*     "\n\n%s ..<span class=\"bgy\">...%s.....................T.......................%s.....%s..... </span>\n",  */
 /*     "\n\n%s ..<span class=\"bgy\">...%s..................T.....................%s.....%s..... </span>\n",  */
 /*     "\n\n%s<span class=\"k\"> .....%s........................................%s.....%s..... </span>\n",  */
-//    "%s<span class=\"k\"> .....%s........................................%s.....%s..... </span>", // newlines out
-    "%s .....%s........................................%s.....%s..... ", // newlines out
+/*     (global_flag_which_graph == 1)? "First Half.": "Second Half"  */
+
+
+/*    "%s .....%s.......... STRESS LEVELS................%s.....%s..... ", */
+/*    "%s .....%s........................................%s.....%s..... ", */
+/*    "%s .....%s........................................%s.....%s..... ", */
+
+  n = sprintf(p,
+    "%s .....%s...........STRESS.LEVELS................%s.....%s..... ",   /* "stress levels" added 20150325 */
     &lf_mar[0],
     dotfield,
     year_in_the_life_todo_yyyy,
-/*     (global_flag_which_graph == 1)? "First Half.": "Second Half"  */
     (global_flag_which_graph == 1)? "First 6 months.": "Second 6 months"
               
   );
@@ -3516,15 +3532,21 @@ void do_day_stress_score_B(void) {
 
     /* here start lines from  fill_eph_buf() */
 
-    /* get month and day to start the first graph
-    */
-    if (strcmp(year_in_the_life_todo_yyyy, year_of_birth) == 0) {
-      Grh_beg_mn = atoi(mth_of_birth);
-      Grh_beg_dy = atoi(day_of_birth); 
-    } else {
+// NO privacy 20150211  can guess birth info
+//    /* get month and day to start the first graph
+//    */
+//    if (strcmp(year_in_the_life_todo_yyyy, year_of_birth) == 0) {
+//      Grh_beg_mn = atoi(mth_of_birth);
+//      Grh_beg_dy = atoi(day_of_birth); 
+//    } else {
+//      Grh_beg_mn = 1;
+//      Grh_beg_dy = 1; /*  old was 2 */
+//    }
+//
       Grh_beg_mn = 1;
       Grh_beg_dy = 1; /*  old was 2 */
-    }
+
+
     Grh_beg_yr =  atoi(year_in_the_life_todo_yyyy);
 
     fill_eph_buf_score_B(); /* see fill_eph_buf_by_calc();   */
@@ -3879,7 +3901,7 @@ int mamb_BIGreport_year_in_the_life(  /* called from cocoa */
 
 /*  */
   } else if(strcmp(gbl_instructions,  "do day stress report and return stress score") == 0) {
-/* b(5);tn();ksn( gbl_csv_person_string); */
+ b(5);tn();trn("BIG");ksn( gbl_csv_person_string); 
 
     allow_docin_puts = 0;   /* so short we can hard code html with no docin_puts */
 
@@ -3993,6 +4015,7 @@ int mamb_BIGreport_year_in_the_life(  /* called from cocoa */
 */
 
   } else if(strcmp(gbl_instructions,  "do day stress report and return stress score") == 0) {
+ b(6);tn();trn("BIG");ksn( gbl_csv_person_string); 
     int itarget_mm;
     int itarget_dd;
     int itarget_yyyy;
@@ -4045,6 +4068,7 @@ int mamb_BIGreport_year_in_the_life(  /* called from cocoa */
     strcpy(gbl_instructions,  "");  /* init gbl */
     allow_docin_puts = 1;           /* init gbl */
     fclose_fpdb_for_debug();
+ b(7);tn();trn("BIG end");
     return(0);
 
   } else {
@@ -4726,6 +4750,7 @@ void prt_BIGgrh_hdr(int grh_num)  /* grh title and 2nd line */
 
 
   // 20141229  for BIG, no grh header
+  //
 // 
 //   /* put name in field of dots
 //   */

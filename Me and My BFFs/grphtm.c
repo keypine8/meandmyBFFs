@@ -1,6 +1,4 @@
 
-/* grphtm.c */
-
 /* For just_2 rpt, read from input docin_lines string array
 * format and write an html output file
 * For group rpts, input is 
@@ -16,17 +14,34 @@
 
 #include "rk.h"
 #include "rkdebug_externs.h"
+#include "grphtm.h"
 /* #include "incocoa.h" */
 
 
+char gbl_just2PersonA[64];
+char gbl_just2PersonB[64];
+char gbl_aspect_code[32];
+void g_fn_browser_aspect_text(char *aspect_code);
+void g_fn_webview_aspect_text(char *aspect_code);
+void  prtRedGreenPlusMinus(int numplusminus, int is_webview_version);
+
+ 
+int  gbl_kingpin_is_in_group;   /* 0/1 no/yes  for fmt col hdr */
+char gbl_g_in_html_filename[2024];
 
 
+void prtStarsAs2lines(char *writebuf);
+//int  gbl_thisIs1stMinusLine; // 0/1 false/true
+//int  gbl_thisIsNextMinusLine; // 0/1 false/true  #2, #3, etc...
+int  gbl_countMinusLines;     // of consecutive minus lines in star lines
 
 void put_ios_top_of_just2_group_rpt(void); /* just_2 rpt */
 char gbl_person_A_first_pair[32];  // for "only html" return
 char gbl_person_B_first_pair[32];  // for "only html" return
 
+int  gbl_we_are_in_webview_version;  // 1/0 yes/no
 
+char gbl_ptofview_name[128];   // for point of view line
 
 
 /* these are in rkdebug.o */
@@ -36,13 +51,13 @@ extern void fclose_fpdb_for_debug(void);
 
 /* #define APP_NAME "Astrology by Measurement" */
 /* #define APP_NAME "Me & My BFFs" */
-#define APP_NAME "\"Me and my BFFs\""
+#define APP_NAME "Me and my BFFs"
 /* #define APP_NAME "\"My BFFs and I\"" */
 /* file extension for group sharing will be ".mamb" */
 
 
-/* #define GBL_HTML_HAS_NEWLINES 1 */
-#define GBL_HTML_HAS_NEWLINES 0
+#define GBL_HTML_HAS_NEWLINES 1 
+//#define GBL_HTML_HAS_NEWLINES 0
 
 
 int gbl_we_are_in_PRE_block; /* 1 = yes, 0 = no */
@@ -115,25 +130,47 @@ extern int mamb_report_whole_group(    /* called from cocoa */
   char *group_name,
   char *in_csv_person_arr[],  /* fmt= "Fred,3,21,1987,11,58,1,5,80.34" */
   int  num_persons_in_grp,
-  struct rank_report_line *rank_lines[],
-  int  *rank_idx,
+                                   //  struct rank_report_line *rank_lines[],
+                                   //  int  *rank_idx,
   char *instructions,
-  char *string_for_table_only  /* 1024 chars max (its 9 lines formatted) */
+  char *string_for_table_only,  /* 1024 chars max (its 9 lines formatted) */
+  char out_group_report_PSVs[],   /* array of output report data to pass to cocoa */
+  int  *out_group_report_idx       /* ptr to int having last index written */
 );
+
+
+
 extern void g_rank_line_free(
   struct rank_report_line *out_rank_lines[],  /* output param returned */
   int rank_line_last_used_idx
 );
 /* in grpdoc.c */
+//extern int  mamb_report_person_in_group(  /* in grpdoc.o */ 
+//  char *html_file_name,
+//  char *group_name,
+//  char *in_csv_person_arr[],
+//  int  num_persons_in_grp,
+//  char *compare_everyone_with,   /* fmt= "Fred,3,21,1987,11,58,1,5,80.34" */
+//  struct rank_report_line *rank_lines[],   /* array of output report data */
+//  int  *rank_idx           /* ptr to int having last index written */
+//);
+//
+
 extern int  mamb_report_person_in_group(  /* in grpdoc.o */ 
   char *html_file_name,
   char *group_name,
   char *in_csv_person_arr[],
   int  num_persons_in_grp,
   char *compare_everyone_with,   /* fmt= "Fred,3,21,1987,11,58,1,5,80.34" */
-  struct rank_report_line *rank_lines[],   /* array of output report data */
-  int  *rank_idx           /* ptr to int having last index written */
+  struct rank_report_line *out_rank_lines[],   /* array of output report data */
+  int  *out_rank_line_idx,                     /* ptr to int having last index written */
+  char out_group_report_PSVs[],   /* array of output report data to pass to cocoa */
+  int  *out_group_report_idx ,      /* ptr to int having last index written */
+  int  kingpin_is_in_group
 );
+
+
+
 /* in grpdoc.c */
 
 
@@ -144,6 +181,8 @@ void g_fn_prtlin(char *lin);
 void g_fn_prtlin_stars(char *starline);
 
 /* in mambutil.o */
+extern int binsearch_asp(char *asp_code, struct g_aspect tab[], int num_elements);
+extern void strsubg(char *s, char *replace_me, char *with_me); // on str s (max 2048) does  :s/replace_me/with_me/g
 extern int mapBenchmarkNumToPctlRank(int benchmark_num);
 extern int sfind(char s[], char c);
 extern char *scapwords(char *s);
@@ -162,6 +201,16 @@ extern void sfill(char *s, int num, int c);
 
 void do_average_trait_score_group(char *group_name, int average_trait_score);
 
+//int make_html_file_whole_group( /* produce actual html file */
+//  char *group_name,
+//  int   num_persons_in_grp,
+//  char *in_html_filename,           /* in grphtm.c */
+//  struct rank_report_line  *in_rank_lines[],
+//  int   in_rank_lines_last_idx,
+//  char *instructions,
+//  char *string_for_table_only   /* 1024 chars max (its 9 lines formatted) */
+//);
+//
 int make_html_file_whole_group( /* produce actual html file */
   char *group_name,
   int   num_persons_in_grp,
@@ -171,6 +220,8 @@ int make_html_file_whole_group( /* produce actual html file */
   char *instructions,
   char *string_for_table_only   /* 1024 chars max (its 9 lines formatted) */
 );
+
+
 
 
 
@@ -271,18 +322,33 @@ int is_first_g_docin_get;  /* 1=yes, 0=no */
 /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
 /* @@@@@@@@@@@@@@@@  person_in_group  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
 /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
+
+//int make_html_file_person_in_group( /* produce actual html file */
+//  char *group_name,
+//  int   num_persons_in_grp,
+//  char *html_file_name,                    /* in grphtm.c */
+//  struct rank_report_line  *in_rank_lines[],  /* array of report data */
+//  int   in_rank_lines_last_idx,   /* int having last index written */
+//  int avg_score_this_member)      /* for report bottom */
+//
 int make_html_file_person_in_group( /* produce actual html file */
   char *group_name,
   int   num_persons_in_grp,
   char *html_file_name,                    /* in grphtm.c */
   struct rank_report_line  *in_rank_lines[],  /* array of report data */
   int   in_rank_lines_last_idx,   /* int having last index written */
-  int avg_score_this_member)      /* for report bottom */
+  int avg_score_this_member,      /* for report bottom */
+  int  arg_kingpin_is_in_group    /* for fmt col hdr */
+)
 {
+trn("in  make_html_file_person_in_group()");
+
   strcpy(gbl_gfnameHTML, html_file_name);
 
   gbl_avg_score_this_member = avg_score_this_member; /* for report bottom */
   gbl_we_are_in_PRE_block = 0;  /* init to false */
+  gbl_kingpin_is_in_group = arg_kingpin_is_in_group;      /* for fmt col hdr */
+//kin(gbl_kingpin_is_in_group);
 
   /* try just calling whole_group html creation function
   * with "format as person_in_group"  instructions
@@ -292,18 +358,20 @@ int make_html_file_person_in_group( /* produce actual html file */
 
 /* trn("instructions for make_html_file_whole_group() = format as person_in_group"); */
 
+//trn("doing ... make_html_file_whole_group()  in  make_html_file_person_in_group()");
   strcpy(string_for_table_only, "abc");
   int retval;
   retval = make_html_file_whole_group( /* produce actual html file */
     group_name,
     num_persons_in_grp,
     html_file_name,                     /* in grphtm.c */
-    in_rank_lines,       /* array of report data */
+    in_rank_lines,            /* array of report data */
     in_rank_lines_last_idx,   /* int having last index written */
-    "format as person_in_group",  /* maybe instructions for table-only */
-    string_for_table_only /* 1024 chars max (its 9 lines formatted) */
-                          /* buf to hold html for table */
+    "format as person_in_group",  /* maybe INSTRUCTIONS for table-only */
+    string_for_table_only   /* 1024 chars max (its 9 lines formatted) */
+                            /* buf to hold html for table */
   );
+//trn("finished ... make_html_file_whole_group()  in  make_html_file_person_in_group()");
 
   if (retval != 0) {
     g_docin_free();      /* free all allocated array elements */
@@ -332,12 +400,20 @@ int make_html_file_just_2_people(      /* old main() */
  char string_for_table_only[2048], category_text[128];
  int mylen;
 
+fopen_fpdb_for_debug(); /* for test  */
+
   strcpy(gbl_gfnameHTML, in_html_filename);
+
+  strcpy(gbl_g_in_html_filename, in_html_filename);
+
+  strcpy(gbl_just2PersonA, csv_get_field(person_1_csv, ",", 1));
+  strcpy(gbl_just2PersonB, csv_get_field(person_2_csv, ",", 1));
+
   is_first_g_docin_get = 1;  /* set to true */
   gbl_we_are_in_PRE_block = 0;  /* init to false */
 
   int i;
-/* trn("in  make_html_file_just_2_people() "); */
+tn();trn("in  make_html_file_just_2_people() "); 
 
   g_global_max_docin_idx = in_docin_last_idx;
   g_global_docin_lines   = in_docin_lines;
@@ -345,13 +421,15 @@ int make_html_file_just_2_people(      /* old main() */
   /* open output HTML file
   */
   if ( (Fp_g_HTML_file = fopen(in_html_filename, "w")) == NULL ) {
-    rkabort("Error  on   grphtm.c.  fopen().");
+    rkabort("Error  on just_2 grphtm.c. html fopen().");
   }
   /* in this fn is the first g_docin_get for just_2 rpt
   */
   if (strstr(in_html_filename, "webview") != NULL) {
+    gbl_we_are_in_webview_version = 1;
     put_ios_top_of_just2_group_rpt(); /* output the css, headings etc. */
   } else {
+    gbl_we_are_in_webview_version = 0;
     put_top_of_just2_group_rpt(); /* output the css, headings etc. */
   }
 
@@ -374,36 +452,46 @@ int make_html_file_just_2_people(      /* old main() */
   */
   /* ------------------------------------------- */
 
-
   mamb_csv_arr[0] = person_1_csv;   /* fmt= "Fred,3,21,1987,11,58,1,5,80.34" */
   mamb_csv_arr[1] = person_2_csv;   /* fmt= "Fred,3,21,1987,11,58,1,5,80.34" */
 
-
-// tn();trn(" before report wholefor string"); nksn(gbl_gfnameHTML);
-// trn(" before report wholefor string"); nksn(in_html_filename);
+//tn();trn("in make_html_file_just_2_people  BEFORE  report mamb_report_whole_group  for STRING");
+//nksn(gbl_gfnameHTML);
+//trn(" before report wholefor string"); nksn(in_html_filename);
 
   sfill(string_for_table_only, 2000, ' ');
   out_rank_idx = 0;
 
+//tn();b(10);ksn(string_for_table_only);
+
+  char dummy_buf[128];  // for arg not used
+  int  dummy_int;       // for arg not used
   mamb_report_whole_group(    /* called from cocoa or just_2_people() in grphtm.c */
 //    "",              /* *html_file_name,*/
     in_html_filename,              /* *html_file_name,*/  // HAS TO be there to act as flag for /webview/browser
     "mambTempGroup", /* *group_name,*/
     mamb_csv_arr,    /* fmt= "Fred,3,21,1987,11,58,1,5,80.34" */
     2,               /* num_persons_in_grp,*/
-    out_rank_lines,  /* rank_report_line *out_rank_lines[],   output params returned (UNUSED HERE */
-                     /* (the array contents are not used here) */
-    &out_rank_idx,    /* UNUSED HERE */
+//    out_rank_lines,  /* rank_report_line *out_rank_lines[],   output params returned (UNUSED HERE */
+//                     /* (the array contents are not used here) */
+//    &out_rank_idx,    /* UNUSED HERE */
     "return only html for table in string",  /* instructions to return string only */
-/* <.> */
-    string_for_table_only               /* 1024 chars max (its 9 lines formatted) */
+    string_for_table_only,              /* 1024 chars max (its 9 lines formatted) */
+
+//    out_group_report_PSVs,   /* array of output report data to pass to cocoa */
+//    out_group_report_idx     /* ptr to int having last index written */
+    dummy_buf,   /* array of output report data to pass to cocoa */
+    &dummy_int     /* ptr to int having last index written */
   );
 
 // tn();trn(" after report wholefor string"); nksn(gbl_gfnameHTML);
 // trn(" after report wholefor string"); nksn(in_html_filename);
 
-fopen_fpdb_for_debug(); /* for test  */
 
+//tn();b(14);trn("in make_html_file_just_2_people  AFTER   report mamb_report_whole_group  for STRING");
+//nksn(gbl_gfnameHTML);
+
+//tn();b(11);ksn(string_for_table_only);
 
   /* when finished, free array elements 
   */
@@ -412,44 +500,83 @@ fopen_fpdb_for_debug(); /* for test  */
   strcpy(global_instructions, "ok to write html now"); 
 
 
-/* ksn(string_for_table_only); */
-  g_fn_prtlin(string_for_table_only); /* OUTPUT THE HTML FOR THE TABLE ========  */
+// moved below
+///* ksn(string_for_table_only); */
+//  g_fn_prtlin(string_for_table_only); /* OUTPUT THE HTML FOR THE TABLE ========  */
+//
+
 
   /* END of   TABLE with "Match Score" */
 
 
   if (strstr(in_html_filename, "webview") != NULL) {  // webview version
 
-    //g_fn_prtlin("<pre class=\"checkoutbestmatch\">");
-    g_fn_prtlin("<div class=\"checkoutbestmatch\">");
-  //  g_fn_prtlin("<pre style=\"margin-left: 10em;\">");
-    gbl_we_are_in_PRE_block = 1;  /* true */
+//  g_fn_prtlin( "<table class=aroundTop>");
+//  g_fn_prtlin( "<div>");
+//  g_fn_prtlin( "<table style=\"table-layout:fixed\" ");
+//  g_fn_prtlin( "<table style=\"width:device-width\">");
 
-   // g_fn_prtlin("<span style=\"background-color: #fcfce0;\">                                            ");
-    g_fn_prtlin("<span style=\"background-color: #fcfce0;\">                                            </span>");
+//  g_fn_prtlin("  <meta name=\"viewport\" content=\"width=device-width\" />");
+//table { table-layout:fixed }
 
-    //g_fn_prtlin("  Check out the Best Match in Group report  ");
-    g_fn_prtlin("<span style=\"background-color: #fcfce0;\">  Check out the Best Match in Group report  </span>");
+//  g_fn_prtlin( "<table>");
+//  g_fn_prtlin( "<table style=\"width:device-width\">");
+//  g_fn_prtlin( "<table style=\"width:device-height\">");
+//  g_fn_prtlin( "<table style=\"width:50%\">");
+//  g_fn_prtlin( "<table width=\"100%\">");
+//  g_fn_prtlin( "<table width=\"device-width\">");
+//  g_fn_prtlin( "<table width=\"50%\">");
+//  g_fn_prtlin( "<table>");
+//
+////  g_fn_prtlin( "<tr><td style=\"width:50%;\" >");
+//  g_fn_prtlin( "<tr><td>");
+////  g_fn_prtlin( "<tr>");
+//
+///* ksn(string_for_table_only); */
+//  g_fn_prtlin(string_for_table_only); /* OUTPUT THE HTML FOR THE TABLE ========  */
+//  g_fn_prtlin( "</td></tr>");
+////  g_fn_prtlin( "</tr>");
+//  g_fn_prtlin( "</table>");
+////  g_fn_prtlin( "</div>");
+//
+//
 
-    //g_fn_prtlin("   which uses this score to compare with    ");
-    g_fn_prtlin("<span style=\"background-color: #fcfce0;\">   which uses this score to compare with    </span>");
+//    g_fn_prtlin( "<p style=\"width:170%; font-size: 140%;\">");
+//  g_fn_prtlin( "<p style=\"            font-size: 300%;\">");
+//  g_fn_prtlin( "<p style=\"width:100%; font-size: 140%;\">");
+//  g_fn_prtlin( "<div style=\"width:150%; font-size: 200%;\">");
+//  g_fn_prtlin( "<div style=\"width:150%; font-size: 120%;\">");
+//  g_fn_prtlin( "<div style=\"width:170%; font-size: 120%;\">");
+//  g_fn_prtlin( "<div style=\"width:200%; font-size: 120%;\">");
+//  g_fn_prtlin( "<div style=\"width:170%; font-size: 120%;\">");
+//  g_fn_prtlin( "<div style=\"            font-size: 120%;\">");
+//  g_fn_prtlin( "<div style=\"width:170%; font-size: 100%;\">");
+//  g_fn_prtlin( "<div style=\"width:200%;                 \">");
+//  g_fn_prtlin( "<div style=\"            font-size: 120%;\">");
+//  g_fn_prtlin( "<p style=\"            font-size: 500%;\">");
+//  g_fn_prtlin( "</p>");
 
-    //g_fn_prtlin("      other pairs of group members          ");
-    g_fn_prtlin("<span style=\"background-color: #fcfce0;\">      other pairs of group members          </span>");
 
-    //g_fn_prtlin("                                            ");
-    g_fn_prtlin("<span style=\"background-color: #fcfce0;\">                                            </span>");
+//  g_fn_prtlin( "<table class=\"categoryTable\">");
+//  g_fn_prtlin( "<table>");
+//  g_fn_prtlin( "<tr><td>");
 
-  /*   g_fn_prtlin("                                                                     "); 
-  *   g_fn_prtlin("  Check out the group reports \"Best Match\" and \"Best Match For ...\"  ");
-  *   g_fn_prtlin("  which use this score to compare with other pairs of group members  ");
-  *   g_fn_prtlin("                                                                     ");
-  */
-    gbl_we_are_in_PRE_block = 0;  /* false */
+//  g_fn_prtlin( "<div style=\"width:166%;                 \">");
+//  g_fn_prtlin( "<div style=\"width:170%; font-size: 120%;\">");
 
-    g_fn_prtlin("</div>");   // end of checkoutbestmatch
+  g_fn_prtlin(string_for_table_only); /* OUTPUT THE HTML FOR THE TABLE ========  */
+
+//  g_fn_prtlin( "</div>");
+
+//  g_fn_prtlin( "</td></tr>");
+//  g_fn_prtlin( "</table>");
+
+    ;
 
   } else {  // browser version
+
+/* ksn(string_for_table_only); */
+  g_fn_prtlin(string_for_table_only); /* OUTPUT THE HTML FOR THE TABLE ========  */
 
 
     g_fn_prtlin("<pre>");
@@ -459,7 +586,8 @@ fopen_fpdb_for_debug(); /* for test  */
   /*   g_fn_prtlin("  Check out the Best Match report    "); */
     g_fn_prtlin("  Check out the Best Match in Group report  ");
     g_fn_prtlin("   which uses this score to compare with    ");
-    g_fn_prtlin("      other pairs of group members          ");
+//    g_fn_prtlin("      other pairs of group members          ");
+    g_fn_prtlin("           other pairs of people            ");
 
     g_fn_prtlin("                                            ");
   /*   g_fn_prtlin("                                                                     "); 
@@ -480,73 +608,51 @@ fopen_fpdb_for_debug(); /* for test  */
     if (strstr(doclin, "[beg_graph]") != NULL) break;
   }
 
-  char spanbeg[64], spanend[64];  // used in web only
+  char spanbeg[128],  spanend[128];  // used in web only
+//  char spanbeg1[128], spanend1[128];  // used in web only
+
+
+
+
 
   if (strstr(in_html_filename, "webview") != NULL) {  // webview version
 
     gbl_we_are_in_PRE_block = 1;  /* true */
 
-  /*   g_fn_prtlin("<span style=\"font-weight:bold;\">"); */
-  /*   g_fn_prtlin("                                                "); */
-    g_fn_prtlin( " <div class=\"explproportion\">");
 
-  /* <.> */
-  //  g_fn_prtlin("                                                                                  ");
-  //  g_fn_prtlin("                           These show the proportion of                           ");
-  //  g_fn_prtlin("                        <span class=\"cGre\">good aspects + </span> and <span class=\"cRed\">bad aspects - </span>                        ");
-  //  g_fn_prtlin("                                for each category                                 ");
-  //  g_fn_prtlin("                                                                                  <span>");
+// START TABLE VERSION
 
-  //  g_fn_prtlin("                                         ");
-  //  g_fn_prtlin("       These show the proportion of      ");
-  //  g_fn_prtlin("    <span class=\"cGre\">good aspects + </span> and <span class=\"cRed\">bad aspects - </span>   ");
-  //
-  //  g_fn_prtlin("            for each category            ");
-  //  g_fn_prtlin("                                         <span>");
-
-    strcpy(spanbeg, "<span style=\"background-color: #fcfce0;\"> ");
-    strcpy(spanend, "</span>");
-
-  //    "                                                                          ",
-
-    sprintf(writebuf, "%s%s%s", spanbeg,
-      "                                                             ",
-    spanend);
-    g_fn_prtlin(writebuf);
-
-    sprintf(writebuf, "%s%s%s", spanbeg,
-      "   For each category below you can see the proportion of     ",
-    spanend);
-    g_fn_prtlin(writebuf);
-
-    sprintf(writebuf, "%s%s%s", spanbeg,
-      "        <span class=\"cGre\"> good aspects  +  </span> and <span class=\"cRed\"> bad aspects  -  </span>             ",
-      spanend);
-    g_fn_prtlin(writebuf);
-
-    sprintf(writebuf, "%s%s%s", spanbeg,
-      "                                                             ",
-    spanend);
-    g_fn_prtlin(writebuf);
-
-  /* <.> */
-  g_fn_prtlin("</div><div class=\"categories\">");  // end of explproportion
+  g_fn_prtlin( "<div><br><br><br></div>");
+// "<tr><td></td><td></td><td></td><td></td></tr>"
 
 
-  /*   sprintf(mybuf, "%-82s","                     Low              Average                            High     "); */
-  /*   g_fn_prtlin(mybuf); */
-  /*   sprintf(mybuf, "%-82s","                      |                  |                                |       "); */
-  /*   g_fn_prtlin(mybuf); */
-
-  //  g_fn_prtlin("                                                                                  "); /* blanks */
-
-  //g_fn_prtlin("                       Low              Average                            High   ");
-  //g_fn_prtlin("                        |                  |                                |     ");
-
-    g_fn_prtlin("                       Low                  Average                 High          ");
-    g_fn_prtlin("                        |                      |                     |            ");
+  // this is webview version
+  g_fn_prtlin( "<div class=\"foreachcat\">");
 
 
+  // this is webview version
+//
+
+      g_fn_prtlin("<div style=\"margin-bottom: -0.5em;\">         HOW BIG                                   </div>"); // 7  
+
+    g_fn_prtlin("<div class=\"linehite_0050\">                 <span class=\"cGre\">_                            _</span>       ");
+    g_fn_prtlin("        are the  <span class=\"cGre\"> favorable   influences  +++  </span>      </div>");
+
+//    g_fn_prtlin("<div class=\"linehite_0050\">             <span class=\"cRed\">                              </span>          ");
+    g_fn_prtlin("<div class=\"linehite_0050\">                 <span class=\"cRed\">_                            _</span>       ");
+    g_fn_prtlin("        and the  <span class=\"cRed\"> challenging influences  ---  </span>      </div>");
+
+//    g_fn_prtlin("<div style=\"margin-top: -0.2em;\">                      in the 3 categories below?  </div>");
+    g_fn_prtlin("<div style=\"margin-top: -0.2em;\">         in the 3 categories below?  </div>");
+
+
+  g_fn_prtlin( "</div>");
+
+
+//  g_fn_prtlin( "<table class=\"category\" cellspacing=\"0\" celpadding=\"0\">");  // start of long category table
+  g_fn_prtlin( "<table class=\"category\" >");  // start of long category table
+
+  // this is webview version
 
   /*   sprintf(mybuf, "%-92s", "             <span class=\"cCat\">CLOSENESS </span>"); */
   /*   sprintf(mybuf, "%-92s", "             <span class=\"cCat\">CLOSENESS </span>                          "); */
@@ -554,7 +660,11 @@ fopen_fpdb_for_debug(); /* for test  */
     /* put category string in field of 92 with 13 spaces at line beg
     *  (not counting <span> characters)
     */
+//    g_fn_prtlin( "<tr><td>                                                                                  </td></tr>"); // blank line
+  // this is webview version
+
     sprintf(category_text, "%s", "CLOSENESS ");
+
   /*   put_category_label(category_text);  */
     put_category_label(category_text, (int)strlen(category_text)); 
 
@@ -566,13 +676,16 @@ fopen_fpdb_for_debug(); /* for test  */
       g_docin_get(doclin);
       if (strstr(doclin, "[beg_persn]") != NULL) break;
     }
-    for (i=0; ; i++) {   /* print star lines */
+
+    gbl_countMinusLines = 0;     // of consecutive minus lines in star lines
+    for (i=0; ; i++) {   /* print star lines - has plus lines and minus lines */
       g_docin_get(doclin);
       if (strstr(doclin, "[end_persn]") != NULL) break;
 
   /*     g_fn_prtlin(doclin); */
       scharout(doclin, '|');  /* remove pipes (for old sideline)    */
   /* tn();b(21);ks(doclin); */
+
       g_fn_prtlin_stars(doclin);  
     }
     /* finished personal stars */
@@ -589,7 +702,7 @@ fopen_fpdb_for_debug(); /* for test  */
   /*   g_fn_prtlin(" "); */
 
   //  g_fn_prtlin("                                                                                  "); /* blanks */
-    g_fn_prtlin("                                                                                  "); /* blanks */
+    g_fn_prtlin( "<tr><td>                                                                                  </td></tr>"); // blank line
   /*   g_fn_prtlin("<br>"); */
 
     /* ================================================================= */
@@ -601,39 +714,48 @@ fopen_fpdb_for_debug(); /* for test  */
       if (strstr(doclin, "[beg_aview]") != NULL) break;
     }
 
-  /*   sprintf(writebuf, "<span class=\"cCat\">FROM %s's POINT OF VIEW </span>                                                           ",arr(0));
-  *   sprintf(mybuf, "%-92s", writebuf);
-  *   g_fn_prtlin(mybuf);
-  */
-  /*   g_fn_prtlin(writebuf); */
+    // grab name for beg_aview
+    //
+    char beg_aview_name[128];
+    strcpy(beg_aview_name, csv_get_field(doclin, "|", 2));
 
+    char *s;           /* capitalizes all chars in s */
+    s = &beg_aview_name[0];
+    for (; *s; ++s) *s = toupper( (int) *s);
 
-  /*   g_fn_prtlin("<pre>"); */
-  /*   gbl_we_are_in_PRE_block = 1;  */
+//tn();
+//char xx[128];strcpy(xx, arr(0));ksn(xx);
+//ksn(person_1_csv);
 
+    // this is webview version  wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
 
-  //  g_fn_prtlin("                                                                                  "); /* blanks */
-  /*   sprintf(category_text, "FROM %s's POINT OF VIEW ", arr(0) ); */
-  /*   sprintf(category_text, */
-  /*     "FROM <span class=\"cNam2\">%s</span>'s POINT OF VIEW ", arr(0) ); */
+//    mylen = sprintf(category_text, "FROM %s's POINT OF VIEW ", arr(0) );
+//    sprintf(category_text, "FROM %s's POINT OF VIEW ", arr(0) );
+//    mylen = sprintf(category_text, "FROM %s's POINT OF VIEW ", person_1_csv );
+//    sprintf(category_text, "FROM %s's POINT OF VIEW ", person_1_csv );
 
-    mylen = sprintf(category_text, "FROM %s's POINT OF VIEW ", arr(0) );
-    sprintf(category_text,
-      "FROM %s's POINT OF VIEW ", arr(0) );
-//      "FROM <span class=\"cNam2\">%s</span>'s POINT OF VIEW ", arr(0) );
+    g_fn_prtlin( "<tr><td>                                                                                  </td></tr>"); // blank line
+    g_fn_prtlin( "<tr><td>                                                                                  </td></tr>"); // blank line
+
+    mylen = sprintf(category_text, "FROM %s's POINT OF VIEW ", beg_aview_name );
+    sprintf(category_text, "FROM %s's POINT OF VIEW ", beg_aview_name );
+
 
     put_category_label(category_text, mylen); 
 
-
+    gbl_countMinusLines = 0;     // of consecutive minus lines in star lines
     for (i=0; ; i++) {  /* print until [end_sensi] */
       g_docin_get(doclin);
       if (strstr(doclin, "[end_aview]") != NULL) break;
       scharout(doclin, '|');  /* remove pipes (for old sideline)    */
   /* tn();b(24);ks(doclin); */
+
       g_fn_prtlin_stars(doclin);  
     }
   /*   g_fn_prtlin(" "); */
-    g_fn_prtlin("                                                                                  "); /* blanks */
+//    g_fn_prtlin("                                                                                  "); /* blanks */
+//    g_fn_prtlin( "<tr><td>                                                                                  </td></tr>"); // blank line
+    g_fn_prtlin( "<tr><td>                                                       </td></tr>"); // blank line
   /*   g_fn_prtlin(""); */
 
 
@@ -644,95 +766,111 @@ fopen_fpdb_for_debug(); /* for test  */
       if (strstr(doclin, "[beg_bview]") != NULL) break;
     }
 
-  /*   sprintf(writebuf, "<span class=\"cCat\">FROM %s's POINT OF VIEW </span>",arr(1));
-  *   sprintf(mybuf, "%-92s", writebuf);
-  *   g_fn_prtlin(mybuf);
-  */
+    // grab name for beg_aview
+    //
+    char beg_bview_name[128];
+    strcpy(beg_bview_name, csv_get_field(doclin, "|", 2));
 
-
-  //  g_fn_prtlin("<pre>");
-
+    // char *s;           /* capitalizes all chars in s */
+    s = &beg_bview_name[0];
+    for (; *s; ++s) *s = toupper( (int) *s);
 
     gbl_we_are_in_PRE_block = 1; 
 
   //  g_fn_prtlin("                                                                                  "); /* blanks */
 
-  /*   sprintf(category_text, "FROM %s's POINT OF VIEW ", arr(1) ); */
-    mylen = sprintf(category_text, "FROM %s's POINT OF VIEW ", arr(1) );
-    sprintf(category_text,
-      "FROM %s's POINT OF VIEW ", arr(1) );
+//tn();
+//char yy[128];strcpy(yy, arr(1));ksn(yy);
+//ksn(person_2_csv);
+//tn();
+
+//    mylen = sprintf(category_text, "FROM %s's POINT OF VIEW ", arr(1) );
+//    sprintf(category_text, "FROM %s's POINT OF VIEW ", arr(1) );
+//    mylen = sprintf(category_text, "FROM %s's POINT OF VIEW ", person_2_csv );
+//    sprintf(category_text, "FROM %s's POINT OF VIEW ", person_2_csv );
+
+    g_fn_prtlin( "<tr><td>                                                                                  </td></tr>"); // blank line
+    mylen = sprintf(category_text, "FROM %s's POINT OF VIEW ", beg_bview_name );
+    sprintf(category_text, "FROM %s's POINT OF VIEW ", beg_bview_name );
+
 //      "FROM <span class=\"cNam2\">%s</span>'s POINT OF VIEW ", arr(1) );
     put_category_label(category_text, mylen); 
 
 
+    gbl_countMinusLines = 0;     // of consecutive minus lines in star lines
     for (i=0; ; i++) { 
       g_docin_get(doclin);
       if (strstr(doclin, "[end_bview]") != NULL) break;
       scharout(doclin, '|');  /* remove pipes (for old sideline)    */
       g_fn_prtlin_stars(doclin);  
     }
-    g_fn_prtlin("                                                                                  "); /* blanks */
-
-    /* ================================================================= */
-
-    for (i=0; ; i++) {
-      g_docin_get(doclin);
-      if (strstr(doclin, "[beg_love]") != NULL) break;
-    }
-  /*   sprintf(mybuf, "%-92s",  "<span class=\"cCat\">LOVE </span>");
-  *   g_fn_prtlin(mybuf);
-  */
-
-  /*   g_fn_prtlin("<pre>"); */
-  /*   gbl_we_are_in_PRE_block = 1;  */
-
-  //  g_fn_prtlin("                                                                                  "); /* blanks */
-    sprintf(category_text, "LOVE ");
-  /*   put_category_label(category_text);  */
-    put_category_label(category_text, (int)strlen(category_text)); 
-
-    for (i=0; ; i++) {
-      g_docin_get(doclin);
-      if (strstr(doclin, "[end_love]") != NULL) break;
-      scharout(doclin, '|');  /* remove pipes (for old sideline)    */
-      g_fn_prtlin_stars(doclin);  
-    }
-  /*   g_fn_prtlin(" "); */
-    g_fn_prtlin("                                                                                  "); /* blanks */
+//    g_fn_prtlin("                                                                                  "); /* blanks */
 
 
-    /* ================================================================= */
-  /*   g_fn_prtlin("<pre>"); */
-  /*   gbl_we_are_in_PRE_block = 1;  */
+//    /* ================================================================= */
+//
+//    for (i=0; ; i++) {
+//      g_docin_get(doclin);
+//      if (strstr(doclin, "[beg_love]") != NULL) break;
+//    }
+//  /*   sprintf(mybuf, "%-92s",  "<span class=\"cCat\">LOVE </span>");
+//  *   g_fn_prtlin(mybuf);
+//  */
+//
+//  /*   g_fn_prtlin("<pre>"); */
+//  /*   gbl_we_are_in_PRE_block = 1;  */
+//
+//  //  g_fn_prtlin("                                                                                  "); /* blanks */
+//    g_fn_prtlin( "<tr><td>                                                                                  </td></tr>"); // blank line
+//    sprintf(category_text, "LOVE ");
+//  /*   put_category_label(category_text);  */
+//    put_category_label(category_text, (int)strlen(category_text)); 
+//
+//    for (i=0; ; i++) {
+//      g_docin_get(doclin);
+//      if (strstr(doclin, "[end_love]") != NULL) break;
+//      scharout(doclin, '|');  /* remove pipes (for old sideline)    */
+//      g_fn_prtlin_stars(doclin);  
+//    }
+//  /*   g_fn_prtlin(" "); */
+////    g_fn_prtlin("                                                                                  "); /* blanks */
+//
+//
+//    /* ================================================================= */
+//  /*   g_fn_prtlin("<pre>"); */
+//  /*   gbl_we_are_in_PRE_block = 1;  */
+//
+//    for (i=0; ; i++) {
+//      g_docin_get(doclin);
+//      if (strstr(doclin, "[beg_money]") != NULL) break;
+//    }
+//  /*   g_fn_prtlin(" MONEY AND BUSINESS                                                                              "); */
+//  /*   sprintf(mybuf, "%-92s", "<span class=\"cCat\">MONEY AND BUSINESS </span>");
+//  *   g_fn_prtlin(mybuf);
+//  */
+//
+//  /*   sprintf(category_text, "MONEY AND BUSINESS "); */
+//  //  g_fn_prtlin("                                                                                  "); /* blanks */
+//    g_fn_prtlin( "<tr><td>                                                                                  </td></tr>"); // blank line
+//    sprintf(category_text, "MONEY ");
+//  /*   put_category_label(category_text);  */
+//    put_category_label(category_text, (int)strlen(category_text)); 
+//
+//    for (i=0; ; i++) { 
+//      g_docin_get(doclin);
+//      if (strstr(doclin, "[end_money]") != NULL) break;
+//      scharout(doclin, '|');  /* remove pipes (for old sideline)    */
+//      g_fn_prtlin_stars(doclin);  
+//    }
+//
+//    /* ================================================================= */
+//
 
-    for (i=0; ; i++) {
-      g_docin_get(doclin);
-      if (strstr(doclin, "[beg_money]") != NULL) break;
-    }
-  /*   g_fn_prtlin(" MONEY AND BUSINESS                                                                              "); */
-  /*   sprintf(mybuf, "%-92s", "<span class=\"cCat\">MONEY AND BUSINESS </span>");
-  *   g_fn_prtlin(mybuf);
-  */
 
-  /*   sprintf(category_text, "MONEY AND BUSINESS "); */
-  //  g_fn_prtlin("                                                                                  "); /* blanks */
-    sprintf(category_text, "MONEY ");
-  /*   put_category_label(category_text);  */
-    put_category_label(category_text, (int)strlen(category_text)); 
+//    g_fn_prtlin("                                                                                  "); /* blanks */
 
-    for (i=0; ; i++) { 
-      g_docin_get(doclin);
-      if (strstr(doclin, "[end_money]") != NULL) break;
-      scharout(doclin, '|');  /* remove pipes (for old sideline)    */
-      g_fn_prtlin_stars(doclin);  
-    }
-    g_fn_prtlin("                                                                                  "); /* blanks */
+//    g_fn_prtlin( "<tr><td>                                                                                  </td></tr>"); // blank line
 
-
-
-    /* ================================================================= */
-  /*   g_fn_prtlin("<pre>"); */
-  /*   gbl_we_are_in_PRE_block = 1;  */
 
 
     for (i=0; ; i++) {
@@ -772,10 +910,24 @@ fopen_fpdb_for_debug(); /* for test  */
       if (strstr(doclin, "[end_graph]") != NULL) break;
     }
 
+
+  g_fn_prtlin( "</table>");  // end of long category table
+
+
+//  g_fn_prtlin( "<div><br><br></div>");
+
+
   /*   g_fn_prtlin("   -  CLOSENESS is the most important category.                           "); */
 
-  /* <.> */
-    g_fn_prtlin( "</div><div class=\"explpotential\">");  // end of categories
+//    g_fn_prtlin( "</div><div class=\"explpotential\">");  // end of categories
+
+
+
+
+//    g_fn_prtlin( "<div class=\"explpotential\">");  // end of categories
+//  g_fn_prtlin( "<div>");  // end of categories
+    g_fn_prtlin( "<div class=\"foreachcat\">");  // end of categories
+//    g_fn_prtlin( "<div class=\"foreachcat2\">");  // end of categories
 
     //char spanbeg[64], spanend[64];
     strcpy(spanbeg, "<span style=\"background-color: #fcfce0;\"> ");
@@ -789,31 +941,171 @@ fopen_fpdb_for_debug(); /* for test  */
   //  g_fn_prtlin("                                                                ");
 
 
-    sprintf(writebuf, "%s%s%s", spanbeg,
-      "                                                               ", spanend);
-    g_fn_prtlin(writebuf);
-
-    sprintf(writebuf, "%s%s%s", spanbeg,
-      "  For good compatibility potential                             ", spanend);
-    g_fn_prtlin(writebuf);
-
-    sprintf(writebuf, "%s%s%s", spanbeg,
-      "  you want to have a \"High\" number of pluses and               ", spanend);
-    g_fn_prtlin(writebuf);
-
-    sprintf(writebuf, "%s%s%s", spanbeg,
-      "  you also want to see double the pluses compared to minuses.  ", spanend);
-//      "  -  you also would like to see double the pluses compared to minuses.  ", spanend);
-    g_fn_prtlin(writebuf);
-
-    sprintf(writebuf, "%s%s%s", spanbeg,
-      "                                                               ", spanend);
-    g_fn_prtlin(writebuf);
+//    sprintf(writebuf, "%s%s%s", spanbeg,
+//      "                                                               ", spanend);
+//    g_fn_prtlin(writebuf);
+//
+//    sprintf(writebuf, "%s%s%s", spanbeg,
+//      "  For good compatibility potential                             ", spanend);
+//    g_fn_prtlin(writebuf);
+//
+//    sprintf(writebuf, "%s%s%s", spanbeg,
+//      "  you want to have a \"High\" number of pluses and               ", spanend);
+//    g_fn_prtlin(writebuf);
+//
+//    sprintf(writebuf, "%s%s%s", spanbeg,
+//      "  you also want to see double the pluses compared to minuses.  ", spanend);
+//    g_fn_prtlin(writebuf);
+//
 
 
-  //g_fn_prtlin("</div></div>");  // end of explpotential
-  g_fn_prtlin("</div>");  // end of explpotential
+//    sprintf(writebuf, "%s%s%s", spanbeg,
+//      "                                              ", spanend);
+//    g_fn_prtlin(writebuf);
+//
+//    sprintf(writebuf, "%s%s%s", spanbeg,
+//      "  For good compatibility potential you want   ", spanend);
+//    g_fn_prtlin(writebuf);
+//
+//    sprintf(writebuf, "%s%s%s", spanbeg,
+//      "  a \"High\" number of pluses                   ", spanend);
+//    g_fn_prtlin(writebuf);
+//
+//    sprintf(writebuf, "%s%s%s", spanbeg,
+//      "  and double the pluses compared to minuses.  ", spanend);
+//    g_fn_prtlin(writebuf);
+//
+//
+//    sprintf(writebuf, "%s%s%s", spanbeg,
+//      "                                              ", spanend);
+//    g_fn_prtlin(writebuf);
+//
 
+
+//  g_fn_prtlin(
+//    "                  For each category below                 ");
+//
+
+//    g_fn_prtlin( "                                                          ");
+//    g_fn_prtlin( "           For good compatibility potential you want      ");
+//    g_fn_prtlin( "           a \"High\" number of pluses                      ");
+//    g_fn_prtlin( "           and double the pluses compared to minuses      ");
+//    g_fn_prtlin( "                                                          ");
+//
+//    g_fn_prtlin( "                                                          ");
+
+// this works
+//    g_fn_prtlin( "           you would like to see                          ");
+//    g_fn_prtlin( "           a \"High\" number of pluses                      ");
+//    g_fn_prtlin( "           and double the pluses compared to minuses      ");
+
+
+//    g_fn_prtlin( "           you would like to see a full line of pluses    ");
+////    g_fn_prtlin( "           a \"High\" number of pluses                      ");
+//    g_fn_prtlin( "           and double the pluses compared to minuses      ");
+////    g_fn_prtlin( ".                                                        .");
+//    g_fn_prtlin( ".                                                             .");
+//
+    // webview version
+    g_fn_prtlin( "        you would like to see a full line of pluses       ");   // these 3 lines have to be here to avoid weird right margin overflow
+    g_fn_prtlin( "        and double the pluses compared to minuses         ");
+//    g_fn_prtlin( ".                                                        .");
+//    g_fn_prtlin( ".                                                             .");
+    g_fn_prtlin( "                                                               ");
+
+
+// this works
+//      g_fn_prtlin( ".                                                        .");
+//      g_fn_prtlin( ".                                                        .");
+//      g_fn_prtlin( ".                                                        .");
+//
+  // all spaces do not work
+// this  does not work
+//      g_fn_prtlin( ".                                                        .");
+//      g_fn_prtlin( ".                                                        .");
+
+// this works
+//      g_fn_prtlin( ".                                                        .");
+//      g_fn_prtlin( ".                                                        .");
+//      g_fn_prtlin( ".                                                        .");
+//      g_fn_prtlin( ".                                                        .");
+
+
+
+
+  g_fn_prtlin("</div>");  // end of foreachcat2 or foreachcat
+//g_fn_prtlin("</div>");
+
+
+    // webview version
+
+
+//    g_fn_prtlin("<div><br><br></pre><div>");
+    g_fn_prtlin("<div><br><br><div>");
+//
+    g_fn_prtlin( "<pre class=\"expressed\">");
+    gbl_we_are_in_PRE_block = 1;  /* true */
+    g_fn_prtlin("                                                       ");
+    g_fn_prtlin("                       How Much                        ");
+    g_fn_prtlin("                of each influence below                ");
+    g_fn_prtlin("                  is fully expressed?                  ");
+
+    g_fn_prtlin("                           |                           ");
+
+//    g_fn_prtlin("<div class=\"linehite_0050\">  <span class=\"cRed\">                         </span>|<span class=\"cGre\">                         </span>  ");
+//    g_fn_prtlin("  <span class=\"cRed\">100%                   0%</span>|<span class=\"cGre\">0%                   100%</span>  </div>");
+    g_fn_prtlin("<div class=\"linehite_0050\"> |<span class=\"cRed\">                         </span>|<span class=\"cGre\">                         </span>| ");
+    g_fn_prtlin(" |<span class=\"cRed\">100%                   0%</span>|<span class=\"cGre\">0%                   100%</span>| </div>");
+
+//    g_fn_prtlin("<div class=\"linehite_0050\">   ___________________________________________________  ");
+//    g_fn_prtlin(" |<span class=\"cRed\">                         </span>|<span class=\"cGre\">                         </span>| ");
+//    g_fn_prtlin(" |<span class=\"cRed\">100%                   0%</span>|<span class=\"cGre\">0%                   100%</span>| </div>");
+//    g_fn_prtlin("<div class=\"linehite_0120\">   x ___________________________________________________ x</div>");
+
+//    g_fn_prtlin("                                                       ");
+//    g_fn_prtlin("<div class=\"linehite_0050\">  <span class=\"cRed\">                         </span> <span class=\"cGre\">                         </span>  ");
+//    g_fn_prtlin("  <span class=\"cRed\">100%                   0%</span> <span class=\"cGre\">0%                   100%</span>  </div>");
+
+
+//    g_fn_prtlin("                                                       ");
+//    g_fn_prtlin("<div class=\"linehite_0050\">  <span class=\"cRed\">                         </span>|<span class=\"cGre\">                         </span>  ");
+//    g_fn_prtlin("  <span class=\"cRed\">-------------------------</span>|<span class=\"cGre\">+++++++++++++++++++++++++</span>  <div>");
+
+
+//    g_fn_prtlin("                                                       ");
+//    g_fn_prtlin("                                                       ");
+//    g_fn_prtlin("                                                       ");
+
+    gbl_we_are_in_PRE_block = 0;  /* false */
+    g_fn_prtlin( "</pre>");   // end of expressed
+
+    g_fn_prtlin("<div><br></div>");
+
+
+    // here we start pco DETAIL paragraphs   YYYYYYYYYYY  webview version  YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY DO PARAGRAPHS HERE 
+
+    /* DO PARAGRAPHS HERE */
+
+    /* read until
+    */
+    for (i=0; ; i++) {
+      g_docin_get(doclin);
+      if (strstr(doclin, "[beg_aspects]") != NULL) break;
+    }
+
+
+    /* now read and print aspects until we hit [end_aspects] 
+    */
+    for (i=0; ; i++) {
+      g_docin_get(doclin);
+      if (strlen(doclin) == 0) continue;
+      if (strstr(doclin, "[end_aspects]") != NULL) break;
+      
+      strcpy(gbl_aspect_code, doclin);
+
+      g_fn_webview_aspect_text(gbl_aspect_code); /* output the aspect text <<<QQQQQQQQQQQQQQQQQQQQQQQQQQQQ  */
+      
+    }  /* read and print aspects until we hit [end_aspects] */
 
 
     for (i=0; ; i++) {  /* read until  */
@@ -824,62 +1116,23 @@ fopen_fpdb_for_debug(); /* for test  */
     gbl_we_are_in_PRE_block = 0;
 
 
-  } else {  // browser version
+  } // webview version
+  else
+  {  // browser version
 
 
     g_fn_prtlin("<pre>");
     gbl_we_are_in_PRE_block = 1;  /* true */
 
-  /*   g_fn_prtlin("<span style=\"font-weight:bold;\">"); */
-  /*   g_fn_prtlin("                                                "); */
-    g_fn_prtlin("                                                                                  ");
-    g_fn_prtlin("             For each category below you can see the proportion of                ");
-    g_fn_prtlin("                     <span class=\"cGre\"> good aspects  +  </span> and <span class=\"cRed\"> bad aspects  -  </span>                     ");
-    g_fn_prtlin("                                                                                  ");
 
-  /*   gbl_we_are_in_PRE_block = 0;   */
-  /*   g_fn_prtlin("</pre>"); */
+  // this is browser version
+    g_fn_prtlin("                                  How Big                                         "); // 7  
+    g_fn_prtlin("                       are the  <span class=\"cGre\"> favorable   influences  +++  </span>                    ");
+    g_fn_prtlin("                       and the  <span class=\"cRed\"> challenging influences  ---  </span>                    ");
+    g_fn_prtlin("                         in the 3 categories below?                               ");
 
 
-  /*   sprintf(mybuf, "%-92s", " "); */
-  /*   g_fn_prtlin(mybuf); */
-  /*   g_fn_prtlin(" "); */
-
-
-  /*   sprintf(mybuf, "%-92s",  "                    less important                   important                  remarkable");
-  *   g_fn_prtlin(mybuf);
-  * 
-  *   sprintf(mybuf, "%-92s", "                         |                           |                          |");
-  *   g_fn_prtlin(mybuf);
-  */
-
-  /* 
-  *   sprintf(mybuf, "%-82s",  "          less important                   important                  remarkable");
-  *   g_fn_prtlin(mybuf);
-  * 
-  *   sprintf(mybuf, "%-82s", "                |                           |                          |");
-  *   g_fn_prtlin(mybuf);
-  */
-
-
-  /*   g_fn_prtlin("<pre>"); */
-  /*   gbl_we_are_in_PRE_block = 1;  */
-
-  /*   sprintf(mybuf, "%-82s","                     Low              Average                            High     "); */
-  /*   g_fn_prtlin(mybuf); */
-  /*   sprintf(mybuf, "%-82s","                      |                  |                                |       "); */
-  /*   g_fn_prtlin(mybuf); */
-
-//    g_fn_prtlin("                                                                                  "); /* blanks */
-//    g_fn_prtlin("                       Low              Average                            High   ");
-//    g_fn_prtlin("                        |                  |                                |     ");
-
-    g_fn_prtlin("                       Low                  Average                 High          ");
-    g_fn_prtlin("                        |                      |                     |            ");
-
-
-
-
+  // this is browser version
 
   /*   sprintf(mybuf, "%-92s", "             <span class=\"cCat\">CLOSENESS </span>"); */
   /*   sprintf(mybuf, "%-92s", "             <span class=\"cCat\">CLOSENESS </span>                          "); */
@@ -888,6 +1141,8 @@ fopen_fpdb_for_debug(); /* for test  */
     *  (not counting <span> characters)
     */
     sprintf(category_text, "%s", "CLOSENESS ");
+//    sprintf(category_text, "%s", "FF CLOSENESS ");
+
   /*   put_category_label(category_text);  */
     put_category_label(category_text, (int)strlen(category_text)); 
 
@@ -911,16 +1166,6 @@ fopen_fpdb_for_debug(); /* for test  */
     /* finished personal stars */
 
 
-  /*   g_fn_prtlin(" Shows the completely natural ease of liking the other person in a comfortable way.              "); */
-  /*   sprintf(mybuf, "%-92s", "             Shows the completely natural ease of liking the other person in a comfortable way."); */
-
-    /* out aug2013
-    */
-  /*   sprintf(mybuf, "%-92s", "             Shows the natural ease of liking the other person in a comfortable way."); */
-  /*   g_fn_prtlin(mybuf); */
-
-  /*   g_fn_prtlin(" "); */
-
     g_fn_prtlin("                                                                                  "); /* blanks */
 //    g_fn_prtlin("                                                                                  "); /* blanks */
   /*   g_fn_prtlin("<br>"); */
@@ -936,21 +1181,8 @@ fopen_fpdb_for_debug(); /* for test  */
       if (strstr(doclin, "[beg_aview]") != NULL) break;
     }
 
-  /*   sprintf(writebuf, "<span class=\"cCat\">FROM %s's POINT OF VIEW </span>                                                           ",arr(0));
-  *   sprintf(mybuf, "%-92s", writebuf);
-  *   g_fn_prtlin(mybuf);
-  */
-  /*   g_fn_prtlin(writebuf); */
+   // NOTE: here we are in  browser version
 
-
-  /*   g_fn_prtlin("<pre>"); */
-  /*   gbl_we_are_in_PRE_block = 1;  */
-
-
-//    g_fn_prtlin("                                                                                  "); /* blanks */
-  /*   sprintf(category_text, "FROM %s's POINT OF VIEW ", arr(0) ); */
-  /*   sprintf(category_text, */
-  /*     "FROM <span class=\"cNam2\">%s</span>'s POINT OF VIEW ", arr(0) ); */
 
     mylen = sprintf(category_text, "FROM %s's POINT OF VIEW ", arr(0) );
     sprintf(category_text,
@@ -963,6 +1195,7 @@ fopen_fpdb_for_debug(); /* for test  */
     for (i=0; ; i++) {  /* print until [end_sensi] */
       g_docin_get(doclin);
       if (strstr(doclin, "[end_aview]") != NULL) break;
+
       scharout(doclin, '|');  /* remove pipes (for old sideline)    */
   /* tn();b(24);ks(doclin); */
       g_fn_prtlin_stars(doclin);  
@@ -1007,73 +1240,7 @@ fopen_fpdb_for_debug(); /* for test  */
     }
     g_fn_prtlin("                                                                                  "); /* blanks */
 
-  /*   gbl_we_are_in_PRE_block = 0;  */
-  /*   g_fn_prtlin("</pre>"); */
-    /* ================================================================= */
-
-    for (i=0; ; i++) {
-      g_docin_get(doclin);
-      if (strstr(doclin, "[beg_love]") != NULL) break;
-    }
-  /*   sprintf(mybuf, "%-92s",  "<span class=\"cCat\">LOVE </span>");
-  *   g_fn_prtlin(mybuf);
-  */
-
-  /*   g_fn_prtlin("<pre>"); */
-  /*   gbl_we_are_in_PRE_block = 1;  */
-
-//    g_fn_prtlin("                                                                                  "); /* blanks */
-    sprintf(category_text, "LOVE ");
-  /*   put_category_label(category_text);  */
-    put_category_label(category_text, (int)strlen(category_text)); 
-
-    for (i=0; ; i++) {
-      g_docin_get(doclin);
-      if (strstr(doclin, "[end_love]") != NULL) break;
-      scharout(doclin, '|');  /* remove pipes (for old sideline)    */
-      g_fn_prtlin_stars(doclin);  
-    }
-  /*   g_fn_prtlin(" "); */
     g_fn_prtlin("                                                                                  "); /* blanks */
-
-  /*   gbl_we_are_in_PRE_block = 0;  */
-  /*   g_fn_prtlin("</pre>"); */
-
-    /* ================================================================= */
-  /*   g_fn_prtlin("<pre>"); */
-  /*   gbl_we_are_in_PRE_block = 1;  */
-
-    for (i=0; ; i++) {
-      g_docin_get(doclin);
-      if (strstr(doclin, "[beg_money]") != NULL) break;
-    }
-  /*   g_fn_prtlin(" MONEY AND BUSINESS                                                                              "); */
-  /*   sprintf(mybuf, "%-92s", "<span class=\"cCat\">MONEY AND BUSINESS </span>");
-  *   g_fn_prtlin(mybuf);
-  */
-
-  /*   sprintf(category_text, "MONEY AND BUSINESS "); */
-//    g_fn_prtlin("                                                                                  "); /* blanks */
-    sprintf(category_text, "MONEY ");
-  /*   put_category_label(category_text);  */
-    put_category_label(category_text, (int)strlen(category_text)); 
-
-    for (i=0; ; i++) { 
-      g_docin_get(doclin);
-      if (strstr(doclin, "[end_money]") != NULL) break;
-      scharout(doclin, '|');  /* remove pipes (for old sideline)    */
-      g_fn_prtlin_stars(doclin);  
-    }
-    g_fn_prtlin("                                                                                  "); /* blanks */
-
-  /*   gbl_we_are_in_PRE_block = 0;  */
-  /*   g_fn_prtlin("</pre>"); */
-
-
-    /* ================================================================= */
-  /*   g_fn_prtlin("<pre>"); */
-  /*   gbl_we_are_in_PRE_block = 1;  */
-
 
     for (i=0; ; i++) {
       g_docin_get(doclin);
@@ -1093,18 +1260,7 @@ fopen_fpdb_for_debug(); /* for test  */
 //      scharout(doclin, '|');  /* remove pipes (for old sideline)    */
 //      g_fn_prtlin_stars(doclin);  
     }
-  /*   g_fn_prtlin(" A combination of all the different factors of compatibility for this pair.                      "); */
 
-  /* out aug2013
-  */
-  /*   sprintf(mybuf, "%-92s", "             A combination of all the different factors of compatibility for this pair."); */
-  /*   g_fn_prtlin(mybuf); */
-
-  /*   g_fn_prtlin(" "); */
-//    g_fn_prtlin("                                                                                  "); /* blanks */
-
-  /*   gbl_we_are_in_PRE_block = 0;  */
-  /*   g_fn_prtlin("</pre>"); */
     /* ================================================================= */
 
 
@@ -1115,14 +1271,67 @@ fopen_fpdb_for_debug(); /* for test  */
       if (strstr(doclin, "[end_graph]") != NULL) break;
     }
 
-  /*   g_fn_prtlin("<div>CLOSENESS is by far the most important category because it shows<br> the natural ease of liking the other person in a comfortable way.</div>"); */
-  /*   g_fn_prtlin("<div>CLOSENESS is by far the most important category because it shows<br> the natural ease of liking the other person in a comfortable way.</div>"); */
 
-    g_fn_prtlin("                                                                                  "); /* blanks */
-    g_fn_prtlin("      For good compatibility potential                                            ");
-    g_fn_prtlin("      you want to have a \"High\" number of pluses.                                 ");
-    g_fn_prtlin("      you also would like to see double the pluses compared to minuses.           ");
-    g_fn_prtlin("                                                                                  ");
+    g_fn_prtlin( "                   you would like to see a full line of pluses                    ");
+    g_fn_prtlin( "                   and double the pluses compared to minuses                      ");
+    g_fn_prtlin( "                                                                                  ");
+
+
+
+    // explain how much influence red/green for the aspect paras
+    //
+
+    // NOTE: here we are in  browser version
+
+    g_fn_prtlin("<div><br><br></div>");
+
+//    g_fn_prtlin("<pre style=\"background-color: #f7ebd1\">");
+    g_fn_prtlin("<pre style=\"background-color: #f7ebd1;\">");
+
+    gbl_we_are_in_PRE_block = 1;  /* true */
+
+    g_fn_prtlin("                                                       ");
+    g_fn_prtlin("                       How Much                        ");
+    g_fn_prtlin("                of each influence below                ");
+    g_fn_prtlin("                  is fully expressed?                  ");
+    g_fn_prtlin("                           |                           ");
+
+//  g_fn_prtlin("<div class=\"linehite_0050\">  <span class=\"cRed\">                         </span>|<span class=\"cGre\">                         </span>  ");
+//  g_fn_prtlin("  <span class=\"cRed\">100%                   0%</span>|<span class=\"cGre\">0%                   100%</span>  </div>");
+
+    g_fn_prtlin("<div class=\"linehite_0050\"> |<span class=\"cRed\">                         </span>|<span class=\"cGre\">                         </span>| ");
+    g_fn_prtlin(" |<span class=\"cRed\">100%                   0%</span>|<span class=\"cGre\">0%                   100%</span>| </div>");
+
+
+    gbl_we_are_in_PRE_block = 0;  /* false */
+    g_fn_prtlin("<br><br><br></pre>");
+
+
+    // here we start pco DETAIL paragraphs   YYYYYYYYYYYYY  browser version  YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY DO PARAGRAPHS HERE 
+//<.>
+    /* DO PARAGRAPHS HERE */
+
+    /* read until
+    */
+    for (i=0; ; i++) {
+      g_docin_get(doclin);
+      if (strstr(doclin, "[beg_aspects]") != NULL) break;
+    }
+
+
+    /* now read and print aspects until we hit [end_aspects] 
+    */
+    for (i=0; ; i++) {
+      g_docin_get(doclin);
+      if (strlen(doclin) == 0) continue;
+      if (strstr(doclin, "[end_aspects]") != NULL) break;
+      
+      strcpy(gbl_aspect_code, doclin);
+      g_fn_browser_aspect_text(gbl_aspect_code); /* output the aspect text */
+      
+    }  /* read and print aspects until we hit [end_aspects] */
+
+
 
   /*   gbl_we_are_in_PRE_block = 0; */
   /*   g_fn_prtlin("</pre>"); */
@@ -1165,10 +1374,27 @@ fopen_fpdb_for_debug(); /* for test  */
       spanend);
     g_fn_prtlin(writebuf);
 
+
+//    sprintf(writebuf, "%s%s%s", spanbeg,
+//      "     Note: a GOOD RELATIONSHIP needs 2 things:    ", // 
+//      spanend);
+//    g_fn_prtlin(writebuf);
+//
+
+//    sprintf(writebuf, "%s%s%s", spanbeg,
+//      "     a GOOD RELATIONSHIP                          ", // 
+//      spanend);
+//    g_fn_prtlin(writebuf);
+//    sprintf(writebuf, "%s%s%s", spanbeg,
+//      "     usually has 2 things                         ", // 
+//      spanend);
+//    g_fn_prtlin(writebuf);
+//
     sprintf(writebuf, "%s%s%s", spanbeg,
-      "     Note: a GOOD RELATIONSHIP needs 2 things:    ",
+      "     a GOOD RELATIONSHIP usually has 2 things     ", // 
       spanend);
     g_fn_prtlin(writebuf);
+
 
     sprintf(writebuf, "%s%s%s", spanbeg,
       "  1. compatibility potential                      ",
@@ -1176,7 +1402,7 @@ fopen_fpdb_for_debug(); /* for test  */
     g_fn_prtlin(writebuf);
 
     sprintf(writebuf, "%s%s%s", spanbeg,
-       "  2. BOTH sides show positive personality traits  ",
+       "  2. both sides show positive personality traits  ",
       spanend);
     g_fn_prtlin(writebuf);
 
@@ -1187,6 +1413,8 @@ fopen_fpdb_for_debug(); /* for test  */
 
     gbl_we_are_in_PRE_block = 0; /* 1 = yes, 0 = no */
     g_fn_prtlin("</div>");  // end of explrelationship
+
+
 
     g_fn_prtlin("<div class=\"appby\">");
     sprintf(writebuf, "produced by iPhone app %s", APP_NAME);
@@ -1201,7 +1429,9 @@ fopen_fpdb_for_debug(); /* for test  */
     g_fn_prtlin("</div>");  // end of appby
     g_fn_prtlin("<div><br><br></div>");
 
-  } else {  // browser version
+  }  // webview version ends
+  else
+  {  // start browser version
 
 
     g_fn_prtlin("<div><br><br></div>");
@@ -1214,11 +1444,21 @@ fopen_fpdb_for_debug(); /* for test  */
   *   g_fn_prtlin( "  2. willpower to show positive personality traits      "); 
   *   g_fn_prtlin( "                                                        ");
   */
+//    g_fn_prtlin( "                                                  ");
+//    g_fn_prtlin( "     Note: a GOOD RELATIONSHIP needs 2 things:    "); // 
+//    g_fn_prtlin( "  1. compatibility potential                      ");
+//    g_fn_prtlin( "  2. both sides show positive personality traits  ");
+//    g_fn_prtlin( "                                                  ");
+//
     g_fn_prtlin( "                                                  ");
-    g_fn_prtlin( "     Note: a GOOD RELATIONSHIP needs 2 things:    ");
+//    g_fn_prtlin( "     a GOOD RELATIONSHIP                          "); // 
+//    g_fn_prtlin( "     usually has 2 things                         "); // 
+    g_fn_prtlin( "     a GOOD RELATIONSHIP usually has 2 things     "); // 
+
     g_fn_prtlin( "  1. compatibility potential                      ");
     g_fn_prtlin( "  2. both sides show positive personality traits  ");
     g_fn_prtlin( "                                                  ");
+
     gbl_we_are_in_PRE_block = 0; /* 1 = yes, 0 = no */
     g_fn_prtlin("</pre>");
 
@@ -1227,9 +1467,10 @@ fopen_fpdb_for_debug(); /* for test  */
 //    g_fn_prtlin(writebuf);
 //    g_fn_prtlin("<h4><span style=\"background-color:#FFBAC7;\">&nbspThis report is for entertainment purposes only.&nbsp</span></h4>");
 
-    g_fn_prtlin("<div> <span style=\"font-size: 1.0em\"><br>produced by iPhone app \"Me and my BFFs\"</span><br><br><span style=\"font-size: 0.9em; font-weight: bold; color:#FF0000;\">This report is for entertainment purposes only.</span></div><div><br></div>");
+    g_fn_prtlin("<div> <span style=\"font-size: 1.0em\"><br>produced by iPhone app Me and my BFFs</span><br><br><span style=\"font-size: 0.9em; font-weight: bold; color:#FF0000;\">This report is for entertainment purposes only.</span></div><div><br></div>");
 
   } // browser version
+
 
 
 
@@ -1256,8 +1497,8 @@ fopen_fpdb_for_debug(); /* for test  */
 */
 void put_category_label(char *category_text, int inlen) 
 {
-/* tn();trn("CATEGORY OUTPUT"); ks(category_text); */
-/*   int len_label, num_spaces_at_end; */
+//tn();trn("CATEGORY OUTPUT"); ks(category_text);ki(inlen);
+//  int len_label, num_spaces_at_end;
   int            num_spaces_at_end;
   char sformat[32], category_with_span[256];
  
@@ -1271,11 +1512,43 @@ void put_category_label(char *category_text, int inlen)
   /* sformat is like "%13s%s%37s" where 37 is num_spaces_at_end
   */
 /*   sprintf(sformat, "%%13s%%s%%%ds",  num_spaces_at_end); */
-  sprintf(sformat, "%%2s%%s%%%ds",  num_spaces_at_end);
 
-  sprintf(writebuf, sformat, " ", category_with_span, " ");
+  char side_left[128];
+  char side_right[128];
+//  strcpy(side_left,  "<tr><td style=\"text-align: left; line-height: 1.8\">");  // 1.8 new for webview, ok on brow?
+//  strcpy(side_left,  "<tr><td style=\"text-align: left; line-height: 1.8; font-weight: bold;\">");  // 1.8 new for webview, ok on brow?
+//  strcpy(side_left,  "<tr><td style=\"text-align: left; line-height: 1.8; font-size: 1.8em;\">");  // 1.8 new for webview, ok on brow?
+
+//  strcpy(side_left,  "<tr><td style=\"text-align: left; line-height: 1.8;\">");  // 1.8 new for webview, ok on brow?
+//  strcpy(side_right, "</td></tr>");
+
+//  strcpy(side_left,  "<tr><td style=\"text-align: left; line-height: 1.8;\"><span style=\"font-size: 1.2em; font-weight: bold;\">");
+  strcpy(side_left,  "<tr><td style=\"text-align: left;                 ;\"><span style=\"font-size: 1.2em; font-weight: bold;\">");
+  strcpy(side_right, "</span></td></tr>");
+
+
+  if (strstr(gbl_g_in_html_filename, "webview") != NULL) {  // webview version
+//    sprintf(sformat, "%%s%%2s%%s%%%ds%%s",  num_spaces_at_end);
+//    sprintf(sformat, "%%s%%5s%%s%%%ds%%s",  num_spaces_at_end);
+//    sprintf(sformat, "%%s%%4s%%s%%%ds%%s",  num_spaces_at_end);
+    sprintf(sformat, "%%s%%5s%%s%%%ds%%s",  num_spaces_at_end);
+
+  } else {
+    sprintf(sformat, "%%s%%2s%%s%%%ds%%s",  num_spaces_at_end);
+  }
+
+
+  sprintf(writebuf, sformat,
+    side_left,
+    " ",
+    category_with_span,
+    " ",
+    side_right
+  );
+//tn();trn("LABEL=");ks(writebuf);
 
   g_fn_prtlin(writebuf);
+
 
 } /* end of  put_category_label(category_text)  */
 
@@ -1295,7 +1568,7 @@ int make_html_file_trait_rank( /* in grphtm.c */
   char *grp_average_trait_scores_csv
 )
 {
-  char rowcolor[16];
+  char rowcolor[128];
   int i;
 /*   char myyear[8], c; */
   char c;
@@ -1396,14 +1669,14 @@ int make_html_file_trait_rank( /* in grphtm.c */
 *     g_fn_prtlin("</pre>");
 */
 
-  } else if (   strstr(trait_name, "ups and downs") != NULL
-             || strstr(trait_name, "Ups and downs") != NULL) {
-/*     sprintf(writebuf, "  <h1>Person with Most Ups and Downs</h1>"); */
-  g_fn_prtlin("  <div><br></div>");
-    sprintf(writebuf, "  <h1><span style=\"line-height:125%%;\">Person with Biggest<br>Ups and Downs in Life</span></h1>");
-    g_fn_prtlin(writebuf);
-    sprintf(writebuf, "\n  <h2>in Group \"%s\"</h2>", group_name);
-    g_fn_prtlin(writebuf);
+//  } else if (   strstr(trait_name, "ups and downs") != NULL
+//             || strstr(trait_name, "Ups and downs") != NULL) {
+///*     sprintf(writebuf, "  <h1>Person with Most Ups and Downs</h1>"); */
+//  g_fn_prtlin("  <div><br></div>");
+//    sprintf(writebuf, "  <h1><span style=\"line-height:125%%;\">Person with Biggest<br>Ups and Downs in Life</span></h1>");
+//    g_fn_prtlin(writebuf);
+//    sprintf(writebuf, "\n  <h2>in Group \"%s\"</h2>", group_name);
+//    g_fn_prtlin(writebuf);
      
   } else if (   strstr(trait_name, "down to earth") != NULL
              || strstr(trait_name, "Down to earth") != NULL) {
@@ -1414,6 +1687,7 @@ int make_html_file_trait_rank( /* in grphtm.c */
 
     sprintf(writebuf, "\n  <h2>in Group \"%s\"</h2>", group_name);
     g_fn_prtlin(writebuf);
+
   } else {
     c = trait_name[0];
     trait_name[0] = toupper(c); /* capitalize 1st ch */
@@ -1514,7 +1788,7 @@ int make_html_file_trait_rank( /* in grphtm.c */
     *  and color appropriately
     */
 
-    if (strcmp(in_trait_lines[i]->person_name, "zzzhilite-top10") == 0) {
+    if (strcmp(in_trait_lines[i]->person_name, "~~~hilite-top10") == 0) {
 /*       g_fn_prtlin( "<tr class=\"cGr2\"><td></td><td></td><td> 373 </td><td>Very High</td></tr>"); */
 /*       g_fn_prtlin( "<tr class=\"cGr2\"><td></td><td></td><td> 90 </td><td>Very High</td></tr>"); */
 /*       g_fn_prtlin( "<tr class=\"cGr2\"><td></td><td></td><td> 90 </td><td>Great</td></tr>"); */
@@ -1526,12 +1800,17 @@ int make_html_file_trait_rank( /* in grphtm.c */
         g_fn_prtlin( "<tr class=\"cGr2\"><td></td><td></td><td> 90 </td><td>Great</td></tr>");
         continue;
       } else {
-        g_fn_prtlin( "<tr class=\"cGr2\"><td></td><td></td><td> 90 </td><td>Very High</td></tr>");
+//        g_fn_prtlin( "<tr class=\"cGr2\"><td></td><td></td><td> 90 </td><td>Very High</td></tr>");
+        if (i % 2 == 0)
+          g_fn_prtlin( "<tr class=\"cPerGreen1\"><td></td><td></td><td> 90 </td><td>Very High</td></tr>");
+        else
+          g_fn_prtlin( "<tr class=\"cPerGreen2\"><td></td><td></td><td> 90 </td><td>Very High</td></tr>");
         continue;
       }
     }
 
-    if (strcmp(in_trait_lines[i]->person_name, "zzzhilite-good") == 0) {
+//    if (strcmp(in_trait_lines[i]->person_name, "zzzhilite-good") == 0) 
+    if (strcmp(in_trait_lines[i]->person_name, "~~~hilite-good") == 0) {
 /*       g_fn_prtlin( "<tr class=\"cGre\"><td></td><td></td><td>213 </td><td>High</td></tr>"); */
 /*       g_fn_prtlin( "<tr class=\"cGre\"><td></td><td></td><td> 75 </td><td>High</td></tr>"); */
 /*       g_fn_prtlin( "<tr class=\"cGre\"><td></td><td></td><td> 75 </td><td>Good</td></tr>"); */
@@ -1540,15 +1819,29 @@ int make_html_file_trait_rank( /* in grphtm.c */
         g_fn_prtlin( "<tr class=\"cGre\"><td></td><td></td><td> 75 </td><td>Good</td></tr>");
         continue;
       } else {
-        g_fn_prtlin( "<tr class=\"cGre\"><td></td><td></td><td> 75 </td><td>High</td></tr>");
+        if (i % 2 == 0)
+          g_fn_prtlin( "<tr class=\"cPerGreen1\"><td></td><td></td><td> 75 </td><td>Good</td></tr>");
+        else
+          g_fn_prtlin( "<tr class=\"cPerGreen2\"><td></td><td></td><td> 75 </td><td>Good</td></tr>");
         continue;
       }
     }
 
-    if (strcmp(in_trait_lines[i]->person_name, "zzzhilite-trait") == 0) {
+    if (strcmp(in_trait_lines[i]->person_name, "~~~hilite-trait") == 0) {
 /*       g_fn_prtlin( "<tr class=\"cNeu\"><td></td><td></td><td> 100 </td><td>Median</td></tr>"); */
-      g_fn_prtlin( "<tr class=\"cNeu\"><td></td><td></td><td> 50 </td><td>Average</td></tr>");
-      continue;
+//      g_fn_prtlin( "<tr class=\"cNeu\"><td></td><td></td><td> 50 </td><td>Average</td></tr>");
+//      continue;
+      if (    strstr(trait_name, "Best Calendar Year") != NULL
+           || strstr(trait_name, "Best Day on")        != NULL) {
+        g_fn_prtlin( "<tr class=\"cNeu\"><td></td><td></td><td> 50 </td><td>Average</td></tr>");
+        continue;
+      } else {
+        if (i % 2 == 0)
+          g_fn_prtlin( "<tr class=\"cPerGreen1\"><td></td><td></td><td> 50 </td><td>Average</td></tr>");
+        else
+          g_fn_prtlin( "<tr class=\"cPerGreen2\"><td></td><td></td><td> 50 </td><td>Average</td></tr>");
+        continue;
+      }
     }
 
     if (strcmp(in_trait_lines[i]->person_name, "   hilite-bad") == 0) {
@@ -1561,7 +1854,10 @@ int make_html_file_trait_rank( /* in grphtm.c */
         g_fn_prtlin( "<tr class=\"cRed\"><td></td><td></td><td> 25 </td><td>Stress</td></tr>");
         continue;
       } else {
-        g_fn_prtlin( "<tr class=\"cRed\"><td></td><td></td><td> 25 </td><td>Low</td></tr>");
+        if (i % 2 == 0)
+          g_fn_prtlin( "<tr class=\"cPerGreen1\"><td></td><td></td><td> 25 </td><td>Low</td></tr>");
+        else
+          g_fn_prtlin( "<tr class=\"cPerGreen2\"><td></td><td></td><td> 25 </td><td>Low</td></tr>");
         continue;
       }
     }
@@ -1575,7 +1871,10 @@ int make_html_file_trait_rank( /* in grphtm.c */
         g_fn_prtlin( "<tr class=\"cRe2\"><td></td><td></td><td> 10 </td><td>OMG</td></tr>");
         continue;
       } else {
-        g_fn_prtlin( "<tr class=\"cRe2\"><td></td><td></td><td> 10 </td><td>Very Low</td></tr>");
+        if (i % 2 == 0)
+          g_fn_prtlin( "<tr class=\"cPerGreen1\"><td></td><td></td><td> 10 </td><td>Very Low</td></tr>");
+        else
+          g_fn_prtlin( "<tr class=\"cPerGreen2\"><td></td><td></td><td> 10 </td><td>Very Low</td></tr>");
         continue;
       }
     }
@@ -1626,14 +1925,24 @@ int make_html_file_trait_rank( /* in grphtm.c */
     /* put default ROWCOLOR
     */
 /* tn();trn("SETTING ROWCOLOR 11111");tn(); */
-    if (in_trait_lines[i]->score >= 90) strcpy(rowcolor, " class=\"cGr2\"");
-    if (in_trait_lines[i]->score <  90 &&
-        in_trait_lines[i]->score >= 75) strcpy(rowcolor, " class=\"cGre\"");
-    if (in_trait_lines[i]->score <  75 &&
-        in_trait_lines[i]->score >  25) strcpy(rowcolor, " class=\"cNeu\"");
-    if (in_trait_lines[i]->score <= 25 &&
-        in_trait_lines[i]->score >  10) strcpy(rowcolor, " class=\"cRed\"");
-    if (in_trait_lines[i]->score <= 10) strcpy(rowcolor, " class=\"cRe2\"");
+    if (    strstr(trait_name, "Best Calendar Year") != NULL
+         || strstr(trait_name, "Best Day on")        != NULL) {
+
+      if (in_trait_lines[i]->score >= 90) strcpy(rowcolor, " class=\"cGr2\"");
+      if (in_trait_lines[i]->score <  90 &&
+          in_trait_lines[i]->score >= 75) strcpy(rowcolor, " class=\"cGre\"");
+      if (in_trait_lines[i]->score <  75 &&
+          in_trait_lines[i]->score >  25) strcpy(rowcolor, " class=\"cNeu\"");
+      if (in_trait_lines[i]->score <= 25 &&
+          in_trait_lines[i]->score >  10) strcpy(rowcolor, " class=\"cRed\"");
+      if (in_trait_lines[i]->score <= 10) strcpy(rowcolor, " class=\"cRe2\"");
+    } else {
+      if (i % 2 == 0)  // alternate colors
+        strcpy(rowcolor, " class=\"cPerGreen1\"");
+      else
+        strcpy(rowcolor, " class=\"cPerGreen2\"");
+    }
+
 
 /*     sprintf(writebuf, "<tr%s><td>%d</td><td> %s</td><td>%d</td><td></td></tr>", */
 /*     sprintf(writebuf, "<tr%s><td>%d</td><td>%s</td><td>%d</td><td></td></tr>", */
@@ -1697,7 +2006,7 @@ int make_html_file_trait_rank( /* in grphtm.c */
     gbl_we_are_in_PRE_block = 1; 
     g_fn_prtlin("");
     g_fn_prtlin("  This measures short-term influences  ");
-    g_fn_prtlin("  lasting a few hours.  ");
+    g_fn_prtlin("  lasting a few hours or a day or two.  ");
     g_fn_prtlin("");
     g_fn_prtlin("  More important long term influences are  ");
     g_fn_prtlin("  in the graphical report \"Calendar Year\"  ");
@@ -1708,12 +2017,20 @@ int make_html_file_trait_rank( /* in grphtm.c */
 
 
   } else {
-
+    // trait
     g_fn_prtlin( "<pre>");
     gbl_we_are_in_PRE_block = 1;  /* true */
     g_fn_prtlin("");
-    sprintf( writebuf,"  Check out the report \"Personality\".  ");
+//    sprintf( writebuf,"  Check out the report \"Personality\".  ");
+//tn();trn("ttttttttttttttttttttttttttttttttttttttt");ksn(gbl_trait_name);
+      g_fn_prtlin("  The score measures HOW MUCH of the    ");
+//    g_fn_prtlin("  trait "down to earth" the person has  "); // longest
+    sprintf(writebuf, "  trait \"%s\" the person has. ", gbl_trait_name);
     g_fn_prtlin(writebuf);
+    g_fn_prtlin("");
+    g_fn_prtlin("  The score does NOT measure ");
+//    g_fn_prtlin("  \"good\" or \"bad\".  ");
+    g_fn_prtlin("  challenging or favorable. ");
     g_fn_prtlin("");
     gbl_we_are_in_PRE_block = 0;  /* false */
     g_fn_prtlin( "</pre>");
@@ -1759,19 +2076,35 @@ int make_html_file_trait_rank( /* in grphtm.c */
 
 
 
+//int make_html_file_whole_group( /* produce actual html file */
+//  char *group_name,
+//  int   num_persons_in_grp,
+//  char *in_html_filename,           /* in grphtm.c */
+//  struct rank_report_line  *in_rank_lines[],
+//  int   in_rank_lines_last_idx,
+//  char *instructions,      /* like "format as person_in_group" */
+//                           /* like "return only html for table in string" */
+//  char *string_for_table_only   /* 1024 chars max (its 9 lines formatted) */
+//                                /* holds  html only  OR  compat score only */
+//)
+//
 int make_html_file_whole_group( /* produce actual html file */
   char *group_name,
   int   num_persons_in_grp,
   char *in_html_filename,           /* in grphtm.c */
   struct rank_report_line  *in_rank_lines[],
   int   in_rank_lines_last_idx,
-  char *instructions,      /* like "format as person_in_group" */
-                           /* like "return only html for table in string" */
-  char *string_for_table_only)  /* 1024 chars max (its 9 lines formatted) */
+  char *instructions,
+  char *string_for_table_only   /* 1024 chars max (its 9 lines formatted) */
                                 /* holds  html only  OR  compat score only */
+)
 {
+
+trn("in make_html_file_whole_group()");
+//ksn(instructions);
+
 /*   char group_report_type[32], */
-  char rowcolor[16];
+  char rowcolor[128];
   int i;
 /*   int top_10, top_25, median, bot_25, bot_10, s; */
 /*   int is_top_10_done; */
@@ -1789,9 +2122,9 @@ int make_html_file_whole_group( /* produce actual html file */
   strcpy(gbl_gfnameHTML, in_html_filename);
 /* tn();tr("make_html_file_whole_group");ks(instructions); */
 
-  if (strstr(instructions, "return only") == NULL) {
-    trn("in make_html_file_whole_group()");
-  }  /* avoid dbmsg on non-rpt call */
+//  if (strstr(instructions, "return only") == NULL) {
+//    trn("in make_html_file_whole_group()");
+//  }  /* avoid dbmsg on non-rpt call */
 
   i_top_this_many = 99999;  /* init to no top/bot restrictions */
   i_bot_this_many = 99999;  /* init to no top/bot restrictions */
@@ -1801,7 +2134,6 @@ int make_html_file_whole_group( /* produce actual html file */
   strcpy(global_instructions, instructions);
   strcpy(gbl_format_as, instructions);
 
-/* ksn(instructions); */
 
 
 
@@ -1866,7 +2198,7 @@ int make_html_file_whole_group( /* produce actual html file */
     /* open output HTML file
     */
     if ( (Fp_g_HTML_file = fopen(in_html_filename, "w")) == NULL ) {
-      rkabort("Error  on   grphtm.c.  fopen().");
+      rkabort("Error  on grpall grphtm.c. html fopen().");
     }
   } /* check for instructions to return string only */
 
@@ -1932,8 +2264,57 @@ int make_html_file_whole_group( /* produce actual html file */
 *   g_fn_prtlin( "       <th>Score</th>");
 *   g_fn_prtlin( "       <th></th>  </tr>");
 */
-  g_fn_prtlin("  <tr> <th></th> <th>Pair of <br>Group Members</th>");
-  g_fn_prtlin("       <th colspan=\"2\">Compatibility <br>Potential&nbsp</th> </tr>");
+
+//struct rank_report_line {      /* info for html file production */
+//  int  rank_in_group;
+//  int  score;
+//  char person_A[MAX_SIZE_PERSON_NAME+1];
+//  char person_B[MAX_SIZE_PERSON_NAME+1];
+//};
+
+
+  // for grpone, change column headers if kingpin ( compare_everyone_with ) is not in the group
+  //
+
+//      int kingpin_is_in_group, num_persons_in_rank_lines;
+//      kingpin_is_in_group       = 0;   // default = NO
+//      num_persons_in_rank_lines = 0;
+//
+////tn();kin(num_persons_in_grp);tr("-----LLLLLLLLLLLLLLLLLLLLLLLL");
+//      if (strcmp(global_instructions, "format as person_in_group") == 0) {
+//        for(h=0; h <= in_rank_lines_last_idx; h++) {
+//          num_persons_in_rank_lines = num_persons_in_rank_lines + 1 ;
+////char myperA[128];
+////strcpy(myperA, in_rank_lines[h]->person_A);
+////ksn(myperA);
+//        }
+//      }
+////kin(num_persons_in_rank_lines);
+////kin(in_rank_lines_last_idx);
+////tn();
+//
+//      // this relies on concept that there is no compatibility comparison with yourself
+//      // so kingpin person being in the group has one fewer rank lines than num_persons_in_grp
+//      //
+//      if (num_persons_in_rank_lines - 5 == num_persons_in_grp + 1) kingpin_is_in_group = 0; // NO  5 is 5 benchmark label lines
+//      else                                                         kingpin_is_in_group = 1; // YES
+//
+//
+
+//tn();trn("at colhdr!");kin(gbl_kingpin_is_in_group);
+
+      if (gbl_kingpin_is_in_group == 1) {
+//nbn(1);
+          g_fn_prtlin("  <tr> <th></th> <th>Pair of <br>Group Members</th>");
+          g_fn_prtlin("       <th colspan=\"2\">Compatibility <br>Potential&nbsp</th> </tr>");
+      }
+      if (gbl_kingpin_is_in_group == 0) {
+//nbn(2);
+          g_fn_prtlin("  <tr> <th></th> <th>Person and <br>Group Member</th>");
+          g_fn_prtlin("       <th colspan=\"2\">Compatibility <br>Potential&nbsp</th> </tr>");
+      }
+  //
+
 
   /* check for instructions to return string only
   */
@@ -1941,7 +2322,6 @@ int make_html_file_whole_group( /* produce actual html file */
 // nksn(in_html_filename);
 // ksn(gbl_gfnameHTML);
   if (strcmp(instructions, "return only html for table in string") == 0) {
-
     strcpy(string_for_table_only,"");  /* init table string */
 
     if (strstr(in_html_filename, "webview") != NULL) {  // webview version
@@ -1952,53 +2332,158 @@ int make_html_file_whole_group( /* produce actual html file */
 
         sizefld = (int)strlen(gbl_person_A_first_pair) + 2 + (int)strlen(gbl_person_B_first_pair);
 
-             if (sizefld ==  3) { strcpy(myleftmargin, "7.1em;"); }
-        else if (sizefld ==  4) { strcpy(myleftmargin, "6.9em;"); }
-        else if (sizefld ==  5) { strcpy(myleftmargin, "6.7em;"); }
-        else if (sizefld ==  6) { strcpy(myleftmargin, "6.5em;"); }
-        else if (sizefld ==  7) { strcpy(myleftmargin, "6.3em;"); }
-        else if (sizefld ==  8) { strcpy(myleftmargin, "6.1em;"); }
-        else if (sizefld ==  9) { strcpy(myleftmargin, "7.0em;"); }
-        else if (sizefld == 10) { strcpy(myleftmargin, "6.75em;"); }  // bigger was 5.7
-        else if (sizefld == 11) { strcpy(myleftmargin, "6.5em;"); }
-        else if (sizefld == 12) { strcpy(myleftmargin, "6.25em;"); }
-        else if (sizefld == 13) { strcpy(myleftmargin, "6.0em;"); }
-        else if (sizefld == 14) { strcpy(myleftmargin, "5.75em;"); }
-        else if (sizefld == 15) { strcpy(myleftmargin, "5.5em;"); }
-        else if (sizefld == 16) { strcpy(myleftmargin, "5.25em;"); }
-        else if (sizefld == 17) { strcpy(myleftmargin, "5.0em;"); }
-        else if (sizefld == 18) { strcpy(myleftmargin, "4.75em;"); }
-        else if (sizefld == 19) { strcpy(myleftmargin, "4.5em;"); }
-        else if (sizefld == 20) { strcpy(myleftmargin, "4.25em;"); }
-        else if (sizefld == 21) { strcpy(myleftmargin, "4.0em;"); }
-        else if (sizefld == 22) { strcpy(myleftmargin, "3.75em;"); }
-        else if (sizefld == 23) { strcpy(myleftmargin, "3.5em;"); }
-        else if (sizefld == 24) { strcpy(myleftmargin, "3.25em;"); }
-        else if (sizefld == 25) { strcpy(myleftmargin, "3.0em;"); }
-        else if (sizefld == 26) { strcpy(myleftmargin, "2.75em;"); }
-        else if (sizefld == 27) { strcpy(myleftmargin, "2.5em;"); }
-        else if (sizefld == 28) { strcpy(myleftmargin, "2.25em;"); }
-        else if (sizefld == 29) { strcpy(myleftmargin, "2.0em;"); }
-        else if (sizefld == 30) { strcpy(myleftmargin, "1.75em;"); }
-        else if (sizefld == 31) { strcpy(myleftmargin, "1.5em;"); }
-        else if (sizefld == 32) { strcpy(myleftmargin, "1.25em;"); }
-        else                    { strcpy(myleftmargin, "1.25em;"); }
+//             if (sizefld ==  3) { strcpy(myleftmargin, "7.1em;"); }
+//        else if (sizefld ==  4) { strcpy(myleftmargin, "6.9em;"); }
+//        else if (sizefld ==  5) { strcpy(myleftmargin, "6.7em;"); }
+////        else if (sizefld ==  6) { strcpy(myleftmargin, "6.5em;"); }
+//        else if (sizefld ==  6) { strcpy(myleftmargin, "9.5em;"); }
+//        else if (sizefld ==  7) { strcpy(myleftmargin, "6.3em;"); }
+//        else if (sizefld ==  8) { strcpy(myleftmargin, "6.1em;"); }
+//        else if (sizefld ==  9) { strcpy(myleftmargin, "7.0em;"); }
+//        else if (sizefld == 10) { strcpy(myleftmargin, "6.75em;"); }  // bigger was 5.7
+//        else if (sizefld == 11) { strcpy(myleftmargin, "6.5em;"); }
+//        else if (sizefld == 12) { strcpy(myleftmargin, "6.25em;"); }
+//        else if (sizefld == 13) { strcpy(myleftmargin, "6.0em;"); }
+//        else if (sizefld == 14) { strcpy(myleftmargin, "5.75em;"); }
+//        else if (sizefld == 15) { strcpy(myleftmargin, "5.5em;"); }
+//        else if (sizefld == 16) { strcpy(myleftmargin, "5.25em;"); }
+//        else if (sizefld == 17) { strcpy(myleftmargin, "5.0em;"); }
+//        else if (sizefld == 18) { strcpy(myleftmargin, "4.75em;"); }
+//        else if (sizefld == 19) { strcpy(myleftmargin, "4.5em;"); }
+//        else if (sizefld == 20) { strcpy(myleftmargin, "4.25em;"); }
+//        else if (sizefld == 21) { strcpy(myleftmargin, "4.0em;"); }
+//        else if (sizefld == 22) { strcpy(myleftmargin, "3.75em;"); }
+//        else if (sizefld == 23) { strcpy(myleftmargin, "3.5em;"); }
+//        else if (sizefld == 24) { strcpy(myleftmargin, "3.25em;"); }
+//        else if (sizefld == 25) { strcpy(myleftmargin, "3.0em;"); }
+//        else if (sizefld == 26) { strcpy(myleftmargin, "2.75em;"); }
+//        else if (sizefld == 27) { strcpy(myleftmargin, "2.5em;"); }
+//        else if (sizefld == 28) { strcpy(myleftmargin, "2.25em;"); }
+//        else if (sizefld == 29) { strcpy(myleftmargin, "2.0em;"); }
+//        else if (sizefld == 30) { strcpy(myleftmargin, "1.75em;"); }
+//        else if (sizefld == 31) { strcpy(myleftmargin, "1.5em;"); }
+////        else if (sizefld == 32) { strcpy(myleftmargin, "1.25em;"); }
+//        else if (sizefld == 32) { strcpy(myleftmargin, "3.25em;"); }
+//        else                    { strcpy(myleftmargin, "1.25em;"); }
+//
+
+             if (sizefld ==  3) { strcpy(myleftmargin, "10.5em;"); }
+        else if (sizefld ==  4) { strcpy(myleftmargin, "10.25em;"); }
+        else if (sizefld ==  5) { strcpy(myleftmargin, "10.0em;"); }
+
+        else if (sizefld ==  6) { strcpy(myleftmargin, "9.75em;"); }
+        else if (sizefld ==  7) { strcpy(myleftmargin, "9.5em;"); }
+        else if (sizefld ==  8) { strcpy(myleftmargin, "9.25em;"); }
+        else if (sizefld ==  9) { strcpy(myleftmargin, "9.0em;"); }
+        else if (sizefld == 10) { strcpy(myleftmargin, "8.75em;"); }
+        else if (sizefld == 11) { strcpy(myleftmargin, "8.5em;"); }
+        else if (sizefld == 12) { strcpy(myleftmargin, "8.25em;"); }
+        else if (sizefld == 13) { strcpy(myleftmargin, "8.0em;"); }
+        else if (sizefld == 14) { strcpy(myleftmargin, "7.75em;"); }
+        else if (sizefld == 15) { strcpy(myleftmargin, "7.5em;"); }
+        else if (sizefld == 16) { strcpy(myleftmargin, "7.25em;"); }
+        else if (sizefld == 17) { strcpy(myleftmargin, "7.0em;"); }
+        else if (sizefld == 18) { strcpy(myleftmargin, "6.75em;"); }
+        else if (sizefld == 19) { strcpy(myleftmargin, "6.5em;"); }
+        else if (sizefld == 20) { strcpy(myleftmargin, "6.25em;"); }
+        else if (sizefld == 21) { strcpy(myleftmargin, "6.0em;"); }
+        else if (sizefld == 22) { strcpy(myleftmargin, "5.75em;"); }
+        else if (sizefld == 23) { strcpy(myleftmargin, "5.5em;"); }
+        else if (sizefld == 24) { strcpy(myleftmargin, "5.25em;"); }
+        else if (sizefld == 25) { strcpy(myleftmargin, "5.0em;"); }
+        else if (sizefld == 26) { strcpy(myleftmargin, "4.75em;"); }
+        else if (sizefld == 27) { strcpy(myleftmargin, "4.5em;"); }
+        else if (sizefld == 28) { strcpy(myleftmargin, "4.25em;"); }
+        else if (sizefld == 29) { strcpy(myleftmargin, "4.0em;"); }
+        else if (sizefld == 30) { strcpy(myleftmargin, "3.75em;"); }
+        else if (sizefld == 31) { strcpy(myleftmargin, "3.48;"); }
+
+        else if (sizefld == 32) { strcpy(myleftmargin, "3.25em;"); }
+
+        else                    { strcpy(myleftmargin, "3.25em;"); }
 
       } while (0);  // get size of margin-left
-        sprintf(writebuf, "<table style=\"margin-left: %s\">  <tr><th></th><th>Pair</th><th colspan=\"2\">Compatibility <br>Potential&nbsp</th></tr>", myleftmargin);
+
+      // NOTE: this is table at top of pco
+
+
+//        sprintf(writebuf, "<table style=\"margin-left: %s\">  <tr><th></th><th>Pair</th><th colspan=\"2\">Compatibility <br>Potential&nbsp</th></tr>", myleftmargin);
+//        strcat(string_for_table_only, writebuf);
+
+//        sprintf(writebuf, "<table style=\"width: 100%%;                  font-size: 1.4em; line-height: 140%% ;\">"               );
+//        sprintf(writebuf, "<table style=\"margin-left: %s; font-size: 1.4em; line-height: 140%% ;\">" , myleftmargin);
+//        sprintf(writebuf, "<table style=\"margin-left: auto; margin-right:auto; font-size: 1.4em; line-height: 140%% ;\">" );
+
+
+//        sprintf(writebuf, "<table style=\"width: 100%%; margin-left: %s; font-size: 1.4em; line-height: 140%% ;\">" , myleftmargin);
+//        sprintf(writebuf, "<table style=\"width: 100%%; margin-left: %s; font-size: 2.4em; line-height: 140%% ;\">" , myleftmargin);
+//        sprintf(writebuf, "<table style=\"width: 100%%; margin-left: %s; font-size: 2.0em; border: 0; border-style: none; border: none; line-height: 140%% ;\">" , myleftmargin);
+
+
+
+//        strcpy(myleftmargin, "1.0em;");  // test
+        sprintf(writebuf, "<table style=\"width: 100%%; margin-left: %s; font-size: 2.0em; line-height: 140%% ;\">" , myleftmargin);
+
+
 
         strcat(string_for_table_only, writebuf);
 
-    } else {  // browser version
+        strcat(string_for_table_only,
+//          "<tr><th></th><th colspan=\"3\"><span style=\"font-size: 1.2em; line-height: 140%%;\">Compatibility\nPotential</span></th></tr>"
+//          "<tr><th colspan=\"3\"><span style=\"font-size: 1.2em; line-height: 140%%;\">Compatibility\nPotential</span></th></tr>"
+//          "<tr><th></th><th colspan=\"3\"><span style=\"font-size: 1.2em; line-height: 200%%;\">Compatibility\nPotential</span></th></tr>"
+
+//          "<tr><th></th><th colspan=\"3\"><span style=\"font-size: 1.2em; line-height: 200%%;\">How Much<br>Potential for Compatibility</span></th></tr>"
+//          "<tr><th></th><th colspan=\"3\"><span style=\"font-size: 1.2em; font-weight: normal; line-height: 125%%;\">How Much<br>Potential for Compatibility</span></th></tr>"
+          "<tr><th></th><th colspan=\"3\"><span style=\"font-size: 1.2em; font-weight: normal; line-height: 125%;\">How Much<br>Potential for Compatibility</span></th></tr>"
+
+        );
+
+
+
+//        strcat(string_for_table_only, "<tfoot>");
+//
+//        strcat(string_for_table_only,
+////          "<tr><th colspan=\"3\"><span style=\"font-size: 0.6em; font-weight: normal; \">Check out the Best Match in Group report which uses this score to compare with the scores of other pairs of people<br></span></th></tr>"
+////          "<tr><th></th><th colspan=\"3\"><span style=\"font-size: 0.6em; font-weight: normal; \">Check out the Best Match in Group report which uses this score to compare with the scores of other pairs of people<br></span></th></tr>"
+////          "<tr><th></th><th colspan=\"3\"><span style=\"font-size: 1.0em; font-weight: normal; line-height; 90%%;\">Check out the Best Match in Group report which uses this score to compare with the scores of other pairs of people<br></span></th></tr>"
+////          "<tr><th></th><th colspan=\"3\"><span style=\"font-size: 1.0em; font-weight: normal; line-height; 50%%;\">Check out the Best Match in Group report which uses this score to compare with the scores of other pairs of people<br></span></th></tr>"
+////          "<tr><th></th><th colspan=\"3\"><span style=\"font-size: 0.8em; font-weight: normal; line-height; 0.5em;\">Check out the Best Match in Group report which uses this score to compare with the scores of other pairs of people<br></span></th></tr>"
+//          "<tr><th></th><th colspan=\"3\"><span style=\"font-size: 0.9em; font-weight: normal; line-height: 1.33; \">Check out the Best Match in Group report which uses this score to compare with the scores of other pairs of people<br></span></th></tr>"
+//        );
+//
+////        strcat(string_for_table_only, "<br><br></tfoot>");
+//        strcat(string_for_table_only, "</tfoot>");
+//
+        
+        
+// e.g.
+//  p_fn_prtlin("<table class=\"trait\" class=\"center\">");
+//  p_fn_prtlin("<tr> <th>Trait*</th> <th>Score</th> <th></th> </tr>");
+//  p_fn_prtlin("  <tfoot>");
+//  sprintf(writebuf, "    <tr><th colspan=\"3\" \"><span style=\"font-size: 0.9em; font-weight: normal; \">The score from 1 to 99 measures<br>\"how much\" of that trait<br>%s has.<br><br>The score does NOT measure<br>\"good\" or \"bad\".<br></span></th></tr>", gbl_p_person_name);
+//  p_fn_prtlin(writebuf);
+//  p_fn_prtlin("  </tfoot>");
+//
+//
+
+
+
+//  g_fn_prtlin("<div> <span style=\"font-size: 1.0em\"> <br>produced by iPhone app Me and my BFFs</span><br><br><span style=\"font-size: 0.9em; font-weight: bold; color:#FF0000;\">This report is for entertainment purposes only.</span></div><div><br></div>");
+
+
+    } // webview version
+    else
+    {  // browser version
 
       strcat(string_for_table_only,
-        "<table>  <tr><th></th><th>Pair</th><th colspan=\"2\">Compatibility <br>Potential&nbsp</th></tr>");
+//        "<table>  <tr><th></th><th>Pair</th><th colspan=\"2\">Compatibility <br>Potential&nbsp</th></tr>");
+//        "<table>  <tr><th></th><th>Pair</th><th colspan=\"2\">How Much<br>Potential for Compatibility</th></tr>");
+        "<table>  <tr><th></th><th colspan=\"3\">How Much<br>Potential for Compatibility</th></tr>");
 
     } // browser version
 
   }  /* if  "return only html for table in string" */
-
-
 
 
   
@@ -2026,97 +2511,103 @@ int make_html_file_whole_group( /* produce actual html file */
 /*       g_fn_prtlin( "<tr class=\"cGr2\"><td></td><td></td><td>90   </td><td>Great</td></tr>"); */
 
       //g_fn_prtlin( "<tr class=\"cGr2\"><td></td><td></td><td>90 </td><td>Great</td></tr>");
-      g_fn_prtlin( "<tr class=\"cGr2\"><td></td><td>90 </td><td>Great</td></tr>");
+      //g_fn_prtlin( "<tr class=\"cGr2\"><td></td><td>90 </td><td>Great</td></tr>");
+//      g_fn_prtlin( "<tr class=\"cGr2tabonly\"><td></td><td></td><td> 90 </td><td>Great</td></tr>");
+      g_fn_prtlin( "<tr class=\"cGr2\"><td></td><td></td><td> 90 </td><td>Great</td></tr>");
 
       if (strcmp(instructions, "return only html for table in string") == 0) {
-/*         strcat(string_for_table_only, "<tr class=\"cGr2\"><td></td><td> Great</td><td>373  </td></tr>"); */
-/*         strcat(string_for_table_only, */
-/* "<tr class=\"cGr2\"><td></td><td></td> <td>90 </td> <td>Great</td> </tr>"); */
-
-/*         strcat(string_for_table_only, */
-/*           "<tr class=\"cGr2\"><td></td> <td>90 </td> <td>Great</td> </tr>"); */
-        strcat(string_for_table_only,
-          "<tr class=\"cGr2\"><td></td><td></td> <td>90 </td> <td>Great</td> </tr>");
+        if (strstr(gbl_g_in_html_filename, "webview") != NULL) {  // webview version
+          strcat(string_for_table_only, "<tr class=\"cGr2tabonly\"><td></td><td></td> <td>90 </td> <td>Great</td> </tr>");
+        } else {
+          strcat(string_for_table_only, "<tr class=\"cGr2\"><td></td><td></td> <td>90 </td> <td>Great</td> </tr>");
+        }
       }
       continue;
     }
     if (strcmp(in_rank_lines[i]->person_B, "qhilite - good") == 0) {
 
-      //g_fn_prtlin( "<tr class=\"cGre\"><td></td><td></td><td>75 </td><td>Good</td></tr>");
-      g_fn_prtlin( "<tr class=\"cGre\"><td></td><td>75 </td><td>Good</td></tr>");
+      //g_fn_prtlin( "<tr class=\"cGre\"><td></td><td>75 </td><td>Good</td></tr>");
+//      g_fn_prtlin( "<tr class=\"cGre\"><td></td><td></td><td>75 </td><td>Good</td></tr>");
+//      g_fn_prtlin( "<tr class=\"cGretabonly\"><td></td><td></td><td>75 </td><td>Good</td></tr>");
+      g_fn_prtlin( "<tr class=\"cGre\"><td></td><td></td><td>75 </td><td>Good</td></tr>");
 
       if (strcmp(instructions, "return only html for table in string") == 0) {
-/*         strcat(string_for_table_only, "<tr class=\"cGre\"><td></td><td> Good</td><td>213  </td></tr>"); */
-/*         strcat(string_for_table_only, "<tr class=\"cGre\"><td></td><td></td> <td>75 </td> <td>Good</td> </tr>"); */
-/*         strcat(string_for_table_only, */
-/*           "<tr class=\"cGre\"><td></td> <td>75 </td> <td>Good</td> </tr>"); */
-        strcat(string_for_table_only,
-          "<tr class=\"cGre\"><td></td><td></td> <td>75 </td> <td>Good</td> </tr>");
+        if (strstr(gbl_g_in_html_filename, "webview") != NULL) {  // webview version
+          strcat(string_for_table_only, "<tr class=\"cGretabonly\"><td></td><td></td> <td>75 </td> <td>Good</td> </tr>");
+        } else {
+          strcat(string_for_table_only, "<tr class=\"cGre\"><td></td><td></td> <td>75 </td> <td>Good</td> </tr>");
+        }
       }
       continue;
     }
     if (strcmp(in_rank_lines[i]->person_B, "qhilite - avg") == 0) {
 
-      //g_fn_prtlin( "<tr class=\"cNeu\"><td></td><td></td><td>50 </td><td>Average</td></tr>");
-      g_fn_prtlin( "<tr class=\"cNeu\"><td></td><td>50 </td><td>Average</td></tr>");
+      //g_fn_prtlin( "<tr class=\"cNeu\"><td></td><td>50 </td><td>Average</td></tr>");
+      g_fn_prtlin( "<tr class=\"cNeu\"><td></td><td></td><td>50 </td><td>Average</td></tr>");
 
       if (strcmp(instructions, "return only html for table in string") == 0) {
-/*         strcat(string_for_table_only, "<tr class=\"cNeu\"><td></td><td> Median</td><td>100  </td></tr>"); */
-/*         strcat(string_for_table_only, "<tr class=\"cNeu\"><td></td><td></td> <td>50 </td> <td>Average</td> </tr>"); */
-/*         strcat(string_for_table_only, */
-/*           "<tr class=\"cNeu\"><td></td> <td>50 </td> <td>Average</td> </tr>"); */
-        strcat(string_for_table_only,
-          "<tr class=\"cNeu\"><td></td><td></td> <td>50 </td> <td>Average</td> </tr>");
+        if (strstr(gbl_g_in_html_filename, "webview") != NULL) {  // webview version
+          strcat(string_for_table_only, "<tr class=\"cNeutabonly\"><td></td><td></td> <td>50 </td> <td>Average</td> </tr>");
+        } else {
+          strcat(string_for_table_only, "<tr class=\"cNeu\"><td></td><td></td> <td>50 </td> <td>Average</td> </tr>");
+        }
       }
       continue;
     }
     if (strcmp(in_rank_lines[i]->person_B, "qhilite - bad") == 0) {
 /*       g_fn_prtlin( "<tr class=\"cRed\"><td></td><td></td><td>25   </td><td>Not So Good</td></tr>"); */
 
-      //g_fn_prtlin( "<tr class=\"cRed\"><td></td><td></td><td>25 </td><td>Not Good </td></tr>");
-      g_fn_prtlin( "<tr class=\"cRed\"><td></td><td>25 </td><td>Not Good </td></tr>");
+      //g_fn_prtlin( "<tr class=\"cRed\"><td></td><td>25 </td><td>Not Good </td></tr>");
+      g_fn_prtlin( "<tr class=\"cRed\"><td></td><td></td><td>25 </td><td>Not Good </td></tr>");
 
       if (strcmp(instructions, "return only html for table in string") == 0) {
-/*         strcat(string_for_table_only, "<tr class=\"cRed\"><td></td><td> Not So Good</td><td>42  </td></tr>"); */
-/*         strcat(string_for_table_only, "<tr class=\"cRed\"><td></td><td></td> <td>25 </td> <td>Not Good </td> </tr>"); */
-/*         strcat(string_for_table_only, */
-/*           "<tr class=\"cRed\"><td></td> <td>25 </td> <td>Not Good </td> </tr>"); */
-        strcat(string_for_table_only,
-          "<tr class=\"cRed\"><td></td><td></td> <td>25 </td> <td>Not Good </td> </tr>");
+        if (strstr(gbl_g_in_html_filename, "webview") != NULL) {  // webview version
+          strcat(string_for_table_only, "<tr class=\"cRedtabonly\"><td></td><td></td> <td>25 </td> <td>Not Good </td> </tr>");
+        } else {
+          strcat(string_for_table_only, "<tr class=\"cRed\"><td></td><td></td> <td>25 </td> <td>Not Good </td> </tr>");
+        }
       }
       continue;
     }
     if (strcmp(in_rank_lines[i]->person_B, "qhilite - bot10") == 0) {
 
-      //g_fn_prtlin( "<tr class=\"cRe2\"><td></td><td></td><td>10 </td><td>OMG</td></tr>");
-      g_fn_prtlin( "<tr class=\"cRe2\"><td></td><td>10 </td><td>OMG</td></tr>");
+      //g_fn_prtlin( "<tr class=\"cRe2\"><td></td><td>10 </td><td>OMG</td></tr>");
+      g_fn_prtlin( "<tr class=\"cRe2\"><td></td><td></td><td>10 </td><td>OMG</td></tr>");
 
       if (strcmp(instructions, "return only html for table in string") == 0) {
-/*         strcat(string_for_table_only, "<tr class=\"cRe2\"><td></td><td> OMG</td><td>18  </td></tr>"); */
-/*         strcat(string_for_table_only, "<tr class=\"cRe2\"><td></td><td></td> <td>18   </td> <td>OMG</td> </tr></table>"); */
-/*         strcat(string_for_table_only, "<tr class=\"cRe2\"><td></td><td></td> <td>10 </td> <td>OMG</td> </tr>"); */
-/*         strcat(string_for_table_only, */
-/*           "<tr class=\"cRe2\"><td></td> <td>10 </td> <td>OMG</td> </tr>"); */
-/*         strcat(string_for_table_only, */
-/*           "<tr class=\"cRe2\"><td></td><td></td> <td>10 </td> <td>OMG</td> </tr></table>"); */
-        strcat(string_for_table_only,
-          "<tr class=\"cRe2\"><td></td><td></td> <td>10 </td> <td>OMG</td> </tr>");
+        if (strstr(gbl_g_in_html_filename, "webview") != NULL) {  // webview version
+          strcat(string_for_table_only, "<tr class=\"cRe2tabonly\"><td></td><td></td> <td>10 </td> <td>OMG</td> </tr>");
+        } else {
+          strcat(string_for_table_only, "<tr class=\"cRe2\"><td></td><td></td> <td>10 </td> <td>OMG</td> </tr>");
+        }
       }
       continue;
     }
-/* trn("after milestone");tn(); */
+//trn("after milestone");tn();
 
     /* put default ROWCOLOR
     */
-/* trn("SETTING ROWCOLOR 33333"); */
-    if (in_rank_lines[i]->score >= 90) strcpy(rowcolor, " class=\"cGr2\"");
-    if (in_rank_lines[i]->score <  90 &&
-        in_rank_lines[i]->score >= 75) strcpy(rowcolor, " class=\"cGre\"");
-    if (in_rank_lines[i]->score <  75 &&
-        in_rank_lines[i]->score >  25) strcpy(rowcolor, " class=\"cNeu\"");
-    if (in_rank_lines[i]->score <= 25 &&
-        in_rank_lines[i]->score >  10) strcpy(rowcolor, " class=\"cRed\"");
-    if (in_rank_lines[i]->score <= 10) strcpy(rowcolor, " class=\"cRe2\"");
+    if (strstr(gbl_g_in_html_filename, "webview") != NULL) {  // webview version
+      if (in_rank_lines[i]->score >= 90) strcpy(rowcolor, " class=\"cGr2tabonly\"");
+      if (in_rank_lines[i]->score <  90 &&
+          in_rank_lines[i]->score >= 75) strcpy(rowcolor, " class=\"cGretabonly\"");
+      if (in_rank_lines[i]->score <  75 &&
+          in_rank_lines[i]->score >  25) strcpy(rowcolor, " class=\"cNeutabonly\"");
+      if (in_rank_lines[i]->score <= 25 &&
+          in_rank_lines[i]->score >  10) strcpy(rowcolor, " class=\"cRedtabonly\"");
+      if (in_rank_lines[i]->score <= 10) strcpy(rowcolor, " class=\"cRe2tabonly\"");
+
+    } else { // browser view
+      if (in_rank_lines[i]->score >= 90) strcpy(rowcolor, " class=\"cGr2\"");
+      if (in_rank_lines[i]->score <  90 &&
+          in_rank_lines[i]->score >= 75) strcpy(rowcolor, " class=\"cGre\"");
+      if (in_rank_lines[i]->score <  75 &&
+          in_rank_lines[i]->score >  25) strcpy(rowcolor, " class=\"cNeu\"");
+      if (in_rank_lines[i]->score <= 25 &&
+          in_rank_lines[i]->score >  10) strcpy(rowcolor, " class=\"cRed\"");
+      if (in_rank_lines[i]->score <= 10) strcpy(rowcolor, " class=\"cRe2\"");
+    }
+//ksn(rowcolor);
 
 
     /* Here we print the ranking table lines  UNLESS
@@ -2176,10 +2667,28 @@ int make_html_file_whole_group( /* produce actual html file */
     } else {
       sprintf(sformat3, "%%-%ds %%s", len_longest_name);
     }
-    sprintf(writebuf2,  sformat3,
-      in_rank_lines[i]->person_A,
-      in_rank_lines[i]->person_B
-    );
+      
+      
+//      sprintf(writebuf2,  sformat3,
+//              in_rank_lines[i]->person_A,
+//              in_rank_lines[i]->person_B
+//              );
+      // to avoid confusion in space-separated pair of names on the line
+      char A_no_space[32]; // in the case of side-by-side names replace spaces with '_' in each name
+      char B_no_space[32];
+      strcpy(A_no_space, in_rank_lines[i]->person_A);
+      strcpy(B_no_space, in_rank_lines[i]->person_B);
+      scharswitch(A_no_space, ' ', '_');
+      scharswitch(B_no_space, ' ', '_');
+      
+      sprintf(writebuf2,  sformat3,
+              //      in_rank_lines[i]->person_A,
+              //      in_rank_lines[i]->person_B
+              A_no_space,
+              B_no_space
+              );
+      
+      
 
 /*     sprintf(writebuf, "<tr%s><td>%d </td><td> %s</td><td>%d  </td></tr>", */
 /*     sprintf(writebuf, "<tr%s><td>%d </td><td> %s</td><td>%d   </td><td></td></tr>", */
@@ -2193,16 +2702,19 @@ int make_html_file_whole_group( /* produce actual html file */
     g_fn_prtlin(writebuf);
 
     if (strcmp(instructions, "return only html for table in string") == 0) {
-/*       strcat(string_for_table_only, writebuf); */
 
+/*       strcat(string_for_table_only, writebuf); */
       sprintf(writebuf3, "<tr%s><td></td><td> %s</td><td> %d </td><td></td></tr>",
         rowcolor,       
         writebuf2,  /* names */
         in_rank_lines[i]->score
       );
+
+//ksn(rowcolor);ksn(writebuf3);tn(); /// 333555
+//int iii; iii = strlen(string_for_table_only); kin(iii);
+//tn();
+//
       strcat(string_for_table_only, writebuf3);
-
-
     }
 
     if (strcmp(global_instructions, "return only compatibility score") == 0 ) {
@@ -2234,7 +2746,8 @@ int make_html_file_whole_group( /* produce actual html file */
   g_fn_prtlin(" ");
 
   if (strcmp(instructions, "return only html for table in string") == 0) {
-    strcat(string_for_table_only, "</table>");
+//    strcat(string_for_table_only, "</table>");
+    strcat(string_for_table_only, "<br> </table>");
   }
 
 
@@ -2293,11 +2806,20 @@ int make_html_file_whole_group( /* produce actual html file */
 /*   g_fn_prtlin( "  2. willpower to show positive personality traits   "); */
 /*   g_fn_prtlin( "                                                     "); */
 
+//  g_fn_prtlin( "                                                  ");
+//  g_fn_prtlin( "     Note: a GOOD RELATIONSHIP needs 2 things:    "); // 
+//  g_fn_prtlin( "  1. compatibility potential                      ");
+//  g_fn_prtlin( "  2. both sides show positive personality traits  ");
+//  g_fn_prtlin( "                                                  ");
+//
   g_fn_prtlin( "                                                  ");
-  g_fn_prtlin( "     Note: a GOOD RELATIONSHIP needs 2 things:    ");
+//  g_fn_prtlin( "     a GOOD RELATIONSHIP                          "); // 
+//  g_fn_prtlin( "     usually has 2 things                         "); // 
+  g_fn_prtlin( "     a GOOD RELATIONSHIP usually has 2 things     "); // 
   g_fn_prtlin( "  1. compatibility potential                      ");
-  g_fn_prtlin( "  2. BOTH sides show positive personality traits  ");
+  g_fn_prtlin( "  2. both sides show positive personality traits  ");
   g_fn_prtlin( "                                                  ");
+
 
   gbl_we_are_in_PRE_block = 0; /* 1 = yes, 0 = no */
   g_fn_prtlin("</pre>");
@@ -2308,7 +2830,7 @@ int make_html_file_whole_group( /* produce actual html file */
 //    g_fn_prtlin(writebuf);
 //  g_fn_prtlin("<h4><span style=\"background-color:#FFBAC7;\">&nbspThis report is for entertainment purposes only.&nbsp</span></h4>");
 
-  g_fn_prtlin("<div> <span style=\"font-size: 1.0em\"><br>produced by iPhone app \"Me and my BFFs\"</span><br><br><span style=\"font-size: 0.9em; font-weight: bold; color:#FF0000;\">This report is for entertainment purposes only.</span></div><div><br></div>");
+  g_fn_prtlin("<div> <span style=\"font-size: 1.0em\"><br>produced by iPhone app Me and my BFFs</span><br><br><span style=\"font-size: 0.9em; font-weight: bold; color:#FF0000;\">This report is for entertainment purposes only.</span></div><div><br></div>");
 
 
   g_fn_prtlin( "</body>");
@@ -2338,6 +2860,8 @@ int make_html_file_whole_group( /* produce actual html file */
   if (strcmp(global_instructions, "return only compatibility score") == 0 ) {
     strcpy(global_instructions, "");
   }
+
+//trn("at end of  make_html_file_whole_group()");
 
   return(0);
 
@@ -2574,6 +3098,15 @@ void put_top_of_html_group_rpt(char *group_name) {
 /*   g_fn_prtlin( "      padding: 0;"); */
 /*   g_fn_prtlin( "    }"); */
 
+
+
+  //  this is browser version 
+
+  g_fn_prtlin( "    .linehite_0050 { ");          // stars line with countMinus >= 2 + lots of other lines
+  g_fn_prtlin( "      line-height: 0.5;");
+  g_fn_prtlin( "    }");
+
+
   g_fn_prtlin( "    table {");
 /*   g_fn_prtlin( "      font-family: Andale Mono, Menlo, Monospace, Courier New;"); */
   g_fn_prtlin( "      font-family: Menlo, Andale Mono, Monospace, Courier New;");
@@ -2596,6 +3129,7 @@ void put_top_of_html_group_rpt(char *group_name) {
 
   g_fn_prtlin( "      white-space: pre;");
 /*   g_fn_prtlin( "      font-size: 80%;"); */
+
   g_fn_prtlin( "      font-size: 90%;");
 
   g_fn_prtlin( "      text-align: left;");
@@ -2679,6 +3213,7 @@ void put_top_of_html_group_rpt(char *group_name) {
 /*   g_fn_prtlin( "    .cRe2        { background-color:#fc6094; }"); */
 /*   g_fn_prtlin( "    .cRe2        { background-color:#ff3366; }"); */
 
+  // webview version
 
   /* put GREEN highlight for trait, green+red for other
   */
@@ -2702,8 +3237,22 @@ void put_top_of_html_group_rpt(char *group_name) {
     /* all same green (all good) */
 
 /*     g_fn_prtlin( "    .cGr2,.cGre,.cNeu,.cRed,.cRe2 {background-color: #a3f275;}"); */
-    g_fn_prtlin( "    .cGr2,.cGre,.cNeu,.cRed,.cRe2 {background-color: #d3ffa5;}");
+//    g_fn_prtlin( "    .cGr2,.cGre,.cNeu,.cRed,.cRe2 {background-color: #d3ffa5;}");
 
+// abandon 20150604
+//    // 20150603 introduce alternating green colors
+//    //
+//    g_fn_prtlin( "    .cPerGreen1 {background-color: #d3ffa5;}");
+//    g_fn_prtlin( "    .cPerGreen2 {background-color: #e6ffcc;}");
+
+//    g_fn_prtlin( "    .cPerGreen1 {background-color: #d3ffa5;}");  
+//    g_fn_prtlin( "    .cPerGreen2 {background-color: #d3ffa5;}"); 
+
+//    g_fn_prtlin( "    .cPerGreen1 {background-color: #ceffa0;}");  
+//    g_fn_prtlin( "    .cPerGreen2 {background-color: #dfffbb;}"); 
+
+    g_fn_prtlin( "    .cPerGreen1 {background-color: #d3ffa5;}");  // same
+    g_fn_prtlin( "    .cPerGreen2 {background-color: #d3ffa5;}"); // same
 
   } else {
 
@@ -2712,8 +3261,10 @@ void put_top_of_html_group_rpt(char *group_name) {
     g_fn_prtlin( "    .cGre        { background-color:#a8ff98; }");
 /*   g_fn_prtlin("    .cNeu        { background-color:#e1ddc3; }"); */
     g_fn_prtlin("    .cNeu        { background-color:#e5e2c7; }");
-    g_fn_prtlin( "    .cRed        { background-color:#ff98a8; }");
-    g_fn_prtlin( "    .cRe2        { background-color:#ff4477; }");
+//    g_fn_prtlin( "    .cRed        { background-color:#ff98a8; }");
+    g_fn_prtlin( "    .cRed        { background-color:#ffb5c9; }");
+//    g_fn_prtlin( "    .cRe2        { background-color:#ff4477; }");
+    g_fn_prtlin( "    .cRe2        { background-color:#ff678f; }");
   }
 
 
@@ -2729,23 +3280,18 @@ void put_top_of_html_group_rpt(char *group_name) {
     /* put in favicon */
     g_fn_prtlin("<link href=\"data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAAB0AAAAdCAYAAABWk2cPAAAD8GlDQ1BJQ0MgUHJvZmlsZQAAOI2NVd1v21QUP4lvXKQWP6Cxjg4Vi69VU1u5GxqtxgZJk6XpQhq5zdgqpMl1bhpT1za2021Vn/YCbwz4A4CyBx6QeEIaDMT2su0BtElTQRXVJKQ9dNpAaJP2gqpwrq9Tu13GuJGvfznndz7v0TVAx1ea45hJGWDe8l01n5GPn5iWO1YhCc9BJ/RAp6Z7TrpcLgIuxoVH1sNfIcHeNwfa6/9zdVappwMknkJsVz19HvFpgJSpO64PIN5G+fAp30Hc8TziHS4miFhheJbjLMMzHB8POFPqKGKWi6TXtSriJcT9MzH5bAzzHIK1I08t6hq6zHpRdu2aYdJYuk9Q/881bzZa8Xrx6fLmJo/iu4/VXnfH1BB/rmu5ScQvI77m+BkmfxXxvcZcJY14L0DymZp7pML5yTcW61PvIN6JuGr4halQvmjNlCa4bXJ5zj6qhpxrujeKPYMXEd+q00KR5yNAlWZzrF+Ie+uNsdC/MO4tTOZafhbroyXuR3Df08bLiHsQf+ja6gTPWVimZl7l/oUrjl8OcxDWLbNU5D6JRL2gxkDu16fGuC054OMhclsyXTOOFEL+kmMGs4i5kfNuQ62EnBuam8tzP+Q+tSqhz9SuqpZlvR1EfBiOJTSgYMMM7jpYsAEyqJCHDL4dcFFTAwNMlFDUUpQYiadhDmXteeWAw3HEmA2s15k1RmnP4RHuhBybdBOF7MfnICmSQ2SYjIBM3iRvkcMki9IRcnDTthyLz2Ld2fTzPjTQK+Mdg8y5nkZfFO+se9LQr3/09xZr+5GcaSufeAfAww60mAPx+q8u/bAr8rFCLrx7s+vqEkw8qb+p26n11Aruq6m1iJH6PbWGv1VIY25mkNE8PkaQhxfLIF7DZXx80HD/A3l2jLclYs061xNpWCfoB6WHJTjbH0mV35Q/lRXlC+W8cndbl9t2SfhU+Fb4UfhO+F74GWThknBZ+Em4InwjXIyd1ePnY/Psg3pb1TJNu15TMKWMtFt6ScpKL0ivSMXIn9QtDUlj0h7U7N48t3i8eC0GnMC91dX2sTivgloDTgUVeEGHLTizbf5Da9JLhkhh29QOs1luMcScmBXTIIt7xRFxSBxnuJWfuAd1I7jntkyd/pgKaIwVr3MgmDo2q8x6IdB5QH162mcX7ajtnHGN2bov71OU1+U0fqqoXLD0wX5ZM005UHmySz3qLtDqILDvIL+iH6jB9y2x83ok898GOPQX3lk3Itl0A+BrD6D7tUjWh3fis58BXDigN9yF8M5PJH4B8Gr79/F/XRm8m241mw/wvur4BGDj42bzn+Vmc+NL9L8GcMn8F1kAcXgSteGGAAAACXBIWXMAAAsTAAALEwEAmpwYAAABWWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS40LjAiPgogICA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPgogICAgICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIgogICAgICAgICAgICB4bWxuczp0aWZmPSJodHRwOi8vbnMuYWRvYmUuY29tL3RpZmYvMS4wLyI+CiAgICAgICAgIDx0aWZmOk9yaWVudGF0aW9uPjE8L3RpZmY6T3JpZW50YXRpb24+CiAgICAgIDwvcmRmOkRlc2NyaXB0aW9uPgogICA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgpMwidZAAAICElEQVRIDY1XXWxUxxX+5t679+5617v4Z+3FmJ+UopJQeADLqtOIpo5KayFVbSoa0RaqpsipVKEiWomSl6ipVEyjqkril4inIkWgpKhSQ2IoP6IK5YG0FiSAq+IqpsYUY8cYsNm/uzP9zlzfxVXVqiPNztyZM+eb75wzZ2bV2bNnNVh838f09DQuXryIc+fO4cKFCwiCANVqFVpbERH7r0WpaMoYcF0S5XIJ69evR2/vF9HT04POzuVWl6GAEtBEIqGuXr1qBgcHceXKFbs6mUyqUqkkfaqBqKy3C/plzhblQHFfdj4IlEmnDdLpFMbHi3a+oyOn9uzZb7q7P6cIavCn8+f1oUOHhIqthUJBZ7NZ21dKaanxnEMZqfE3t1LvJ5PQ+bzSLS0iH69pYL9Qlzl4cEC///55jePHj2vStxPLli2rCziOU+8LyGIwn0ozjtJptgnO5duVbiVgvJmeHle/8kqgT59O6UuXEnpoqEN3d8sGG/TRo0c0BgYGrHA+n7etgC0GXAzWRNYFAuUWsW1KPWK7ZYur3347pSfvZLQxjQs1yzalT57ssPp37/6h9mIfiqnjEgcOAa3GJKNkCfu3YxmJGpcDpHm3aNC1xcWPvpvA1i97aGqJPC6iUms1g0TCQ2vrnFU/NHQG3ujoqHyocrlsUWNwAlp7NSpluFrdpo4VrquedRyzhs5sDIDKnMEkF2/+dkI99S1P1hMx2pnsS3qeJ+qhRkZEf1LNzPzVeLOzs3Y0DEPbyk/MkIB4ICsdhR8nEtjGdqkYiUPVikEpoVBKsn0pxNW/aNzb5OB3oyFWtit8j8zTmYj17KzBm2/WuDBEMpmCR/8JjmGUSmuL6G0gwzDaNF73ffMdzvs1Y+QQlFlDoyBGUEWF6pgx/3wtRABlHnJuN6r42le9Oug774RmaChEoeCYW7eKiMiT/oJZqcoSQZomnWL/Z4Fvvl9SyudwlTBpth4/HAKKNTXbhlal5h2YoAHq+TFlvrAnQK5NWCjz4Yc17NxZsmpLJau+DioabBGWLZSf4i66Axc7yw5STQT8vEKCijFM0ZtkmmQcUZgWhjfNjTDSHj6AyVDkK9tc+twx01Ma+18Uu8AUCgq3GYliWGtbDspOokKdQfSlnmPgdHC0miPF1Vz5GOWWKLvIpQxdDIfykpHcLAOraFT2gIvskw7mGTcvv1zGe++G6OhQioCCIpnrP5mmeBSmGObIOWYdGYuT1H36/BJBXdJgUHA2ilEqoM3hroKpjBks+aZjVu3hOWK5cLCK1werSBWAeVpCxsjQiCVjn0ZUuXOPQVZsAtJ3WSlQzhi4MwrBH+06SAxW6FPeAwgpb1ZRhoCpHgfrB334NPv0L0M4L2msbHNx434NyQoXxYjs1kEtKvVmW3lMpg3WfEohKX4aJhMeixoFJDFaUB6XKs1Z43yRgN6TCp855iOVVxgd4G7215BqceDJfUFLOZJIuJB7tJRjn9qdt7QCE9NiAODV3wRY+qyDu8xJJQLMM0rnCDZP05dosnKC3//Q8Lc7+Oy7BGSgjOyvYoaAyTb6lCB/v08WRKjJTlkiWy1imqYtS9FNhN++lcLmpzzc+aQGGVIMCo97cWgFQ/NVbxKYKnI/d/HYiwkJIFzqr6DIyypLcJfsbgigq9FCwHtyvGJE6qubN51WmJgADhwI8I1tMmwwytAUC3kSmfSzGTPMKdzApxU6Xkugrc/FvY8Nrv2ggtofNDKdDhoYC8V54JTPXdKXCQajJBkxaWRD6pOkQ5ZqYsKYrVtdvPBCFH1krV49VsVKxunXx6HIzPBKU22/cM2KXR6CvIOJUyFG+6pw6fD0csck7kBlQ2XeCwzeqoT2kpiJKMZcrVs9l06en49m9u3z0dQk4zQlE0GegXKUU5ufc83azQ5av+SYJWscVHnerx2sYPKnzKUMj1SnMqlxoNlXZphG+klIm5KMpNZKxNIeFaqNjNzV9YSw1rt2pXW5HN2DtVp0F96bzeiPx9L6/gMZl3sxq+f/nNbX+nz9AfPRlUZfX2/39Q34eiwI9BHWTpeOpD5mRtuSk21lLK6e3Hcs6plnHMO3WT3SQibabE4hyyQh87dua/P7w6FS+2r2ast1OKjQd/d5t90k3VM1bQ6FPLlMn5JGpxf8uBC4iheL4T2t+PYyXnMzzwlpJ5MSPCHE3LZI9mG5c0fjzOnQ/PpXFXwwrDmm8ETBwdIpuoFHcpzX6N/KHCcIA9ukCPgJ+/GZFB0LgEilUqZY5Hno73/e0t6+Pa9HR1M0caOemcnojz5K6zfeSOqnn47MxbV6eafS2cZHZpIxqfJ8aac5kwsPNUZq3ZTxwy6TydixTZs2ae/xxzdwHdSRIzUzPFxBV1cFMzMOhoaqUURx9228pkjAjN80KsHrqonWkBtGilz9fIioe0JVQodyMiWL5UMKLa4Iaubm5lRvb6/ByZMndV9fn92F7y+3LeVsm8+TQTv4Lo6+XecRg1gmbqn+39bG49LGr8zVq1frY8eOaS/NQ7pjxw7IW+n69etYsaKFcg5KPKhzc1U8ZHbhQ5/PDNlxlE1iE1DQFuv8+GOhdRkc9CFjxGXSYdZh2bt3L9rJQp05c0bzL4UaHx83hw8fxokTJxaWWQtJX3QKzuJWxheX/zm/ceNG1d/fb9atW6f4N8XYvxXyVJH/LfPMEvx7gcuXL2NkZASTk5MSeVa5yPw/RfwoT9hcLoe1a9diw4YNtjY3N6NSkTsO+BcbeuPABIyNOwAAAABJRU5ErkJggg==\" rel=\"icon\" type=\"image/x-icon\" />");
 
-    
-    
-    // old favicon     g_fn_prtlin("<link href=\"data:image/x-icon;base64,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\" rel=\"icon\" type=\"image/x-icon\" />");
 
-    g_fn_prtlin( "</head>");
-    g_fn_prtlin( " ");
     g_fn_prtlin("\n<body>");
 
-}  /* end of  put_top_of_html_group_rpt() */
+}  /* end of  put_top_of_html_group_rpt() */  // webview version
 
 
 /* output the css, headings etc.
 */
-void put_top_of_just2_group_rpt(void)  /* just_2 rpt */
+void put_top_of_just2_group_rpt(void)  // just_2 rpt    NOTE  this is browser version
 {
   int i;
-/* tn();trn("in put_top_of_just2_group_rpt()"); */
+tn();trn("in put_top_of_just2_group_rpt()");
 
   /* 1. read until [beg_topinfo1]  (name)  (skipping [beg_program])
   */
@@ -2759,7 +3305,7 @@ void put_top_of_just2_group_rpt(void)  /* just_2 rpt */
   for (i=0; ; i++) {
     g_docin_get(doclin);
     if (strstr(doclin, "[end_topinfo1]") != NULL) break;
-    strcpy(arr(i), doclin);
+    strcpy(arr(i), doclin);               //  HERE's where arr(0) and arr(1) get populated
   }
 
 /*   at end, change to STRICT  */
@@ -2868,7 +3414,7 @@ void put_top_of_just2_group_rpt(void)  /* just_2 rpt */
 /*   g_fn_prtlin( "    H5 { font-size:  55%; font-weight: normal; line-height: 90%; text-align: center;}"); */
 /*   g_fn_prtlin( "    H5 { font-size:  70%; font-weight: normal; line-height: 30%; text-align: center;}"); */
 
-  g_fn_prtlin( "    PRE {");
+  g_fn_prtlin( "    PRE {");    // just 2
 /*   g_fn_prtlin( "      padding: 1%;"); */
   g_fn_prtlin( "      display: inline-block;");
 /*   g_fn_prtlin( "      border-style: solid;"); */
@@ -2915,6 +3461,14 @@ void put_top_of_just2_group_rpt(void)  /* just_2 rpt */
   g_fn_prtlin( "      background-color: #f7ebd1;");
   g_fn_prtlin( "    }");
 
+//  g_fn_prtlin( "    .expressed { ");
+//  g_fn_prtlin( "      margin-left: 5em;");
+//  g_fn_prtlin( "      width: 360%;");
+//  g_fn_prtlin( "      color: red;");
+//  g_fn_prtlin( "      font-size: 12em;");
+////  g_fn_prtlin( "      margin:0 auto;");
+//  g_fn_prtlin( "    }");
+//
 
 /* for table: */
 /*       border: 2px solid black; */
@@ -2936,6 +3490,29 @@ void put_top_of_just2_group_rpt(void)  /* just_2 rpt */
 *   g_fn_prtlin( "      padding: 0;");
 *   g_fn_prtlin( "    }");
 */
+
+  g_fn_prtlin( "    .browserRedGreenCenter {");
+  g_fn_prtlin( "      white-space: pre;");
+  g_fn_prtlin( "      margin-top: -3em;");
+  g_fn_prtlin( "      margin-left:auto;");
+  g_fn_prtlin( "      margin-right:auto;");
+  g_fn_prtlin( "    }");
+//  g_fn_prtlin( "    table.redGreenCenter tr {");
+//  g_fn_prtlin( "      white-space: pre;");
+//  g_fn_prtlin( "      text-align: center;");
+//  g_fn_prtlin( "      font-size: 1.5em;");
+//  g_fn_prtlin( "    }");
+
+  g_fn_prtlin( "    .browserRedGreenCenter td {");
+//  g_fn_prtlin( "      font-family: Menlo, Andale Mono, Monospace, Courier New;");
+  g_fn_prtlin( "      white-space: pre;");
+  g_fn_prtlin( "      text-align: center;");
+//  g_fn_prtlin( "      font-size: 1.5em;");
+//  g_fn_prtlin( "      font-size: 1.2em;");
+  g_fn_prtlin( "      font-size: 0.8em;");
+// g_fn_prtlin( "      color: blue;");  // for test
+  g_fn_prtlin( "    }");
+
                                /* new stuff for bottom TABLE */
   g_fn_prtlin( "    table {");
 /*   g_fn_prtlin( "      font-family: Andale Mono, Menlo, Monospace, Courier New;"); */
@@ -3020,8 +3597,10 @@ void put_top_of_just2_group_rpt(void)  /* just_2 rpt */
   g_fn_prtlin( "    .cGr2        { background-color:#66ff33; }");
 /*   g_fn_prtlin( "    .cGre        { background-color:#84ff98; }"); */
   g_fn_prtlin( "    .cGre        { background-color:#a8ff98; }");
-  g_fn_prtlin( "    .cRed        { background-color:#ff98a8; }");
-  g_fn_prtlin( "    .cRe2        { background-color:#ff4477; }");
+//  g_fn_prtlin( "    .cRed        { background-color:#ff98a8; }");
+  g_fn_prtlin( "    .cRed        { background-color:#ffb5c9; }");
+//  g_fn_prtlin( "    .cRe2        { background-color:#ff4477; }");
+  g_fn_prtlin( "    .cRe2        { background-color:#ff678f; }");
 
 
 /*   g_fn_prtlin("    .cNeu        { background-color:#e1ddc3; }"); */
@@ -3057,7 +3636,8 @@ void put_top_of_just2_group_rpt(void)  /* just_2 rpt */
   g_fn_prtlin( " ");
   g_fn_prtlin("\n<body>");
 
-  g_fn_prtlin("<h1>Compatibility Potential of </h1>");
+  // table title
+  g_fn_prtlin("<h1>Compatibility Potential of </h1>");  // these are ignored, i believe
   sprintf(writebuf,
     "<h1>%s and %s</h1>",
 //    "<h1><span class=\"cNam\">%s</span> and <span class=\"cNam\">%s</span></h1>",
@@ -3077,21 +3657,23 @@ void put_top_of_just2_group_rpt(void)  /* just_2 rpt */
 void g_docin_get(char *in_line)
 {
   
-/* if (rkdb == 1) {
-*   tr("in g_docin_get");  ksn(in_line);
-* }
-*/
+//tn();tr("in grphtm g_docin_GET");  ksn(in_line);
   if (is_first_g_docin_get == 1) g_global_read_idx = 0;
   else                           g_global_read_idx++;
+
   
   is_first_g_docin_get = 0;  /* set to false */
 
-  if (g_global_read_idx > g_global_max_docin_idx) {
+//tr("in g_docin_get");ki(g_global_read_idx);ki(g_global_max_docin_idx);
+
+  if (   g_global_read_idx > g_global_max_docin_idx) {
     g_docin_free();
     rkabort("Error. grphtm.c walked off end of docin_lines array");
   }
 
   strcpy(in_line, g_global_docin_lines[g_global_read_idx] );
+
+//tn();ksn(in_line);
 
   scharout(in_line,'\n');   /* remove newlines */
 
@@ -3101,7 +3683,7 @@ void g_docin_get(char *in_line)
 
 void g_fn_prtlin(char *lin) {
   char myEOL[8];
-
+//tn();tr("in g_fn_prtlin");ksn(lin);
 
   if (  strcmp(global_instructions, "return only html for table in string") == 0
      || strcmp(global_instructions, "return only compatibility score"     ) == 0 ) {
@@ -3145,10 +3727,15 @@ void g_fn_prtlin_stars(char *starline)
   */
   static char current_star_type[16];  /* "good" or "difficult" */
 
-//ksn(starline);
+//tn();trn("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");ksn(starline);
 
   if (sall(starline, " ") == 1) {
     return;
+  }
+
+  // set  gbl_countMinusLines = 0;  
+  if (sfind(starline, '-')) {         // line has a '-' in it
+    gbl_countMinusLines = gbl_countMinusLines + 1;
   }
 
   if (strstr(starline, "asy")      != NULL) {
@@ -3192,30 +3779,134 @@ void g_fn_prtlin_stars(char *starline)
   } else {
     return;  /* no "stars" */
   }
-
+//ksn(starline);
   mkstr(beforeStars, starline, pBegStar - 1);
   mkstr(allStars,    pBegStar, pEndStar);
   mkstr(afterStars,  pEndStar + 1, starline + strlen(starline) - 1);
+//ksn(beforeStars);
+//ksn(allStars);
+//ksn(afterStars);
 
-  sprintf(writebuf,
-    " %s<span class=\"%s\">%s</span>%s",
-    beforeStars + 12,
-    mycolor,
-    allStars,
-    afterStars
-  ); 
-  g_fn_prtlin(writebuf);  
 
-  
-/*   sprintf(writebuf,
-*     "  <span class=\"%s\">%s</span>",
-*     mycolor,
-*     starline + 13   * skip easy/difficult *
-*   ); 
-*   g_fn_prtlin(writebuf);  
-*/
+  char side_left[128];
+  char side_right[128];
+  strcpy(side_left,  "<tr><td>");
+
+  strcpy(side_right, "</td></tr>");
+
+
+  // add one space at end of line for browser version
+  //
+  if (gbl_we_are_in_webview_version == 1) {  // 1/0 yes/no //  if (strstr(in_html_filename, "webview") != NULL)   // webview version
+      sprintf(writebuf,
+        "%s&nbsp%s<span class=\"%s\">%s</span>%s%s",   //  FFFFFFFFFF
+        side_left,
+        beforeStars + 12,
+        mycolor,
+        allStars,
+        afterStars,
+        side_right
+      ); 
+//ksn(writebuf);
+
+      // weird fix   replace "qx" with one space
+      //
+      //      scharout(writebuf, 'q');  // removes all q (only one there)
+      //      scharout(writebuf, 'x');  // removes all x (only one there)
+      scharswitch(writebuf, 'q', ' '); // in s, replaces all old with new 
+      scharswitch(writebuf, 'x', ' ');
+
+//tn();tr("webview");ksn(writebuf);
+
+//      g_fn_prtlin(writebuf);  
+      prtStarsAs2lines(writebuf);
+
+  } else {  
+      // browser version
+      sprintf(writebuf,
+//      "%s %s<span class=\"%s\">%s</span>%s%s",
+        "%s %s<span class=\"%s\">%s</span>%s %s",    // <=====  note  1 sp at eol
+        side_left,
+        beforeStars + 12,
+        mycolor,
+        allStars,
+        afterStars,
+        side_right
+      ); 
+//ksn(writebuf);
+
+      // weird fix   replace "qx" with one space
+      //
+      //      scharout(writebuf, 'q');  // removes all q (only one there)
+      //      scharout(writebuf, 'x');  // removes all x (only one there)
+      scharswitch(writebuf, 'q', ' '); // in s, replaces all old with new 
+      scharswitch(writebuf, 'x', ' ');
+
+//tn();tr("browser");ksn(writebuf);
+
+//      g_fn_prtlin(writebuf);  
+      prtStarsAs2lines(writebuf);
+
+  }
 
 } /* end of g_fn_prtlin_stars() */
+
+// we want "thicker line" so add blank line with color first and css has line-height at 50% so overlap
+//
+// example input line
+//  [<tr><td>&nbsp         <span class="cGre">+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</span>  </td></tr>]
+//
+void prtStarsAs2lines(char *linetoprt)
+{
+  char myworkline1[4096], myworkline2[4096];
+
+//tn(); ki(gbl_countMinusLines);
+//ksn(linetoprt);
+
+  strcpy(myworkline1, linetoprt);               // print "blank" line            first
+  strcpy(myworkline2, linetoprt);               // print print line with "stars" second
+
+  // strsubg(char *s, char *replace_me, char *with_me) // on str s (max 2048) does  :s/replace_me/with_me/g
+  strsubg(myworkline1, "+", "&nbsp");           // on str s (max 2048) does  :s/replace_me/with_me/g
+  strsubg(myworkline1, "-", "&nbsp");           // on str s (max 2048) does  :s/replace_me/with_me/g
+
+  if (gbl_countMinusLines == 0) {
+    strsubg(myworkline1, "<tr>", "<tr class=\"linehite_0120\">");           // on str s (max 2048) does  :s/replace_me/with_me/g
+//trn("blank  0 using linehite_0120");
+  }
+  if (gbl_countMinusLines == 1) {
+    strsubg(myworkline1, "<tr>", "<tr class=\"linehite_0240\">");  
+//trn("blank  1 using linehite_0240");
+  }
+  if (gbl_countMinusLines >= 2) {
+    strsubg(myworkline1, "<tr>", "<tr class=\"linehite_0160\">"); 
+//trn("blank  2 using linehite_0160");
+  }
+
+//ksn(myworkline1);
+  g_fn_prtlin(myworkline1);  
+
+
+  strcpy( myworkline2, linetoprt);               // now print line with "stars"  (++++  or ---)
+
+  if (gbl_countMinusLines == 0) {
+    strsubg(myworkline2, "<tr>", "<tr class=\"linehite_0120\">");
+//trn("stars  0  using linehite_0120");
+  }
+  if (gbl_countMinusLines == 1) {
+    strsubg(myworkline2, "<tr>", "<tr class=\"linehite_0000\">");
+//trn("stars  1  using linehite_0000");
+  }
+  if (gbl_countMinusLines >= 2) {
+    strsubg(myworkline2, "<tr>", "<tr class=\"linehite_0050\">"); 
+//trn("stars  2  using linehite_0050");
+  }
+
+
+//ksn(myworkline2);
+  g_fn_prtlin(myworkline2);  
+  
+} // end of prtStarsAs2lines
 
 
 
@@ -3229,7 +3920,7 @@ void g_fn_prtlin_stars(char *starline)
 void put_ios_top_of_just2_group_rpt(void)  /* just_2 rpt */
 {
   int i;
-/* tn();trn("in put_top_of_just2_group_rpt()"); */
+//tn();trn("in put_ios_top_of_just2_group_rpt()");
 
   /* 1. read until [beg_topinfo1]  (name)  (skipping [beg_program])
   */
@@ -3243,7 +3934,7 @@ void put_ios_top_of_just2_group_rpt(void)  /* just_2 rpt */
   for (i=0; ; i++) {
     g_docin_get(doclin);
     if (strstr(doclin, "[end_topinfo1]") != NULL) break;
-    strcpy(arr(i), doclin);
+    strcpy(arr(i), doclin);               //  HERE's where arr(0) and arr(1) get populated
   }
 
 /*   at end, change to STRICT  */
@@ -3319,7 +4010,6 @@ void put_ios_top_of_just2_group_rpt(void)  /* just_2 rpt */
   /* HEAD   STYLE/CSS
   */
   g_fn_prtlin( "\n  <style type=\"text/css\">");
-/* <.> */
   g_fn_prtlin( "    @media print { TABLE { font-size: 50%; } }");
 
   g_fn_prtlin( "    BODY {");
@@ -3352,6 +4042,35 @@ void put_ios_top_of_just2_group_rpt(void)  /* just_2 rpt */
 /*   g_fn_prtlin( "    H4 { font-size:  85%; font-weight: bold;   line-height: 30%; text-align: center;}"); */
 /*   g_fn_prtlin( "    H5 { font-size:  55%; font-weight: normal; line-height: 90%; text-align: center;}"); */
 /*   g_fn_prtlin( "    H5 { font-size:  70%; font-weight: normal; line-height: 30%; text-align: center;}"); */
+
+  // this is just 2
+
+  g_fn_prtlin( "    .expressed { ");
+  g_fn_prtlin( "      background-color: #f7ebd1;");
+//  g_fn_prtlin( "      margin-left: 8em;");
+  g_fn_prtlin( "      width: 360%;");
+//  g_fn_prtlin( "      color: red;");
+  g_fn_prtlin( "      font-size: 2.5em;");
+  g_fn_prtlin( "      margin:0 auto;");
+  g_fn_prtlin( "    }");
+
+  g_fn_prtlin( "    .linehite_0120 { ");        // blank line with countMinus == 0 (line with pluses +++)
+  g_fn_prtlin( "      line-height: 1.2;");    // stars line with countMinus == 0 (line with pluses +++)
+  g_fn_prtlin( "    }");
+
+  g_fn_prtlin( "    .linehite_0240 { ");        // blank line with countMinus == 1
+  g_fn_prtlin( "      line-height: 2.4;");
+  g_fn_prtlin( "    }");
+  g_fn_prtlin( "    .linehite_0160 { ");        // blank line with countMinus >= 2
+  g_fn_prtlin( "      line-height: 1.6;");
+  g_fn_prtlin( "    }");
+  g_fn_prtlin( "    .linehite_0000 { ");        // stars line with countMinus == 1
+  g_fn_prtlin( "      line-height: 0.0;");
+  g_fn_prtlin( "    }");
+  g_fn_prtlin( "    .linehite_0050 { ");          // stars line with countMinus >= 2 + lots of other lines
+  g_fn_prtlin( "      line-height: 0.5;");
+  g_fn_prtlin( "    }");
+
 
   g_fn_prtlin( "    PRE {");
   g_fn_prtlin( "      display: inline;");   // NEEDED ?
@@ -3412,11 +4131,12 @@ void put_ios_top_of_just2_group_rpt(void)  /* just_2 rpt */
 
   g_fn_prtlin( "    .checkoutbestmatch {");
   //g_fn_prtlin( "      background-color: #fcfce0;");
+  g_fn_prtlin( "      margin-top: -0.8em;");
   g_fn_prtlin( "      margin-left: 5.5em;");
   g_fn_prtlin( "      text-align: left;");      // GOLD order #1
 //  g_fn_prtlin( "      width: 240%;");             // GOLD order #2  *BUT* width  AFFECTS OTHER BLOCKS
   g_fn_prtlin( "      font-size: 1.0em;");  /* gold order #3 */
-  //g_fn_prtlin( "      line-height: 130%;");  /* <.> */
+  //g_fn_prtlin( "      line-height: 130%;");  
   g_fn_prtlin( "      margin-bottom: 3em;");  // MUST BE ABOVE "white-space: pre;"
   g_fn_prtlin( "      white-space: pre ; display: block; unicode-bidi: embed");
   g_fn_prtlin( "    }");
@@ -3425,31 +4145,184 @@ void put_ios_top_of_just2_group_rpt(void)  /* just_2 rpt */
 //  g_fn_prtlin( "      background-color: #fcfce0;");
 
   g_fn_prtlin( "      padding-top: 0;");
+
   g_fn_prtlin( "      padding-bottom: 0;");
-  g_fn_prtlin( "      margin-top: 0.1em;");
+//  g_fn_prtlin( "      padding-bottom: -8.0em;");
+
+//  g_fn_prtlin( "      margin-top: 0.1em;");
+
+//  g_fn_prtlin( "      margin-top: -2.0em;");
+
   g_fn_prtlin( "      margin-left: 1em;");
   g_fn_prtlin( "      text-align: left;");      // GOLD order #1
 //  g_fn_prtlin( "      width: 240%;");             // GOLD order #2  *BUT* width  AFFECTS OTHER BLOCKS
+
   g_fn_prtlin( "      font-size: 1.0em;");  /* gold order #3 */
-  //g_fn_prtlin( "      line-height: 130%;");  /* <.> */
-  g_fn_prtlin( "      margin-bottom: 0.1em;");  // MUST BE ABOVE "white-space: pre;"
+
+//  g_fn_prtlin( "      line-height: 150%;");  
+//  g_fn_prtlin( "      line-height: 115%;");  
+//  g_fn_prtlin( "      line-height: 1.2em;");  
+//  g_fn_prtlin( "      line-height: 1.5em;"); 
+  g_fn_prtlin( "      line-height: 1.2em;"); 
+//  g_fn_prtlin( "      margin-bottom: 0.1em;");  // MUST BE ABOVE "white-space: pre;"
+  g_fn_prtlin( "      margin-bottom: -2.0em;");  // MUST BE ABOVE "white-space: pre;"
+//  g_fn_prtlin( "      white-space: pre ; width: 100%; display: block; unicode-bidi: embed");
+  g_fn_prtlin( "      white-space: pre ;              display: block; unicode-bidi: embed");
+  g_fn_prtlin( "    }");
+
+
+//  g_fn_prtlin( "    .bgwide { background-color: #f00; width: 100%; height: 100%; display: block; } ");
+//  g_fn_prtlin( "    .bgwide { background-color: #f00; width: 100%;  display: inline-block; } ");
+//  g_fn_prtlin( "    .bgwide { background-color: #f00; overflow-x: hidden; width: 333%; } ");
+
+
+//  p_fn_prtlin( "     overflow-x: hidden; ");    // webview
+//  p_fn_prtlin( "      width: 300%;");             // GOLD order #2
+
+
+//  g_fn_prtlin( "    .aroundTop {");
+////table { table-layout:fixed }
+//  g_fn_prtlin( "      table-layout:fixed  ");
+//  g_fn_prtlin( "    }");
+
+  g_fn_prtlin( "    .categoryTable {");
+//  g_fn_prtlin( "      width: 70%;");
+//  g_fn_prtlin( "      font-size: 80%;");
+  g_fn_prtlin( "      font-size: 100%;");
+  g_fn_prtlin( "      background-color: #fcfce0;");
+  g_fn_prtlin( "    }");
+
+
+  g_fn_prtlin( "    .foreachcat {");
+  g_fn_prtlin( "     overflow-x: hidden; ");    // webview
+  g_fn_prtlin( "      text-align: left;");      // GOLD order #1
+
+//  g_fn_prtlin( "      width: 360%;");             // GOLD order #2
+//  g_fn_prtlin( "      width: 300%;");             // GOLD order #2
+//  g_fn_prtlin( "      width: 350%;");             // GOLD order #2
+//  g_fn_prtlin( "      width: 340%;");             // GOLD order #2  ok
+//  g_fn_prtlin( "      width: 345%;");             // GOLD order #2
+
+//  g_fn_prtlin( "      width: 360%;");             // GOLD order #2
+//  g_fn_prtlin( "      width: 400%;");             // GOLD order #2
+  g_fn_prtlin( "      width: 370%;");             // GOLD order #2
+//<.>
+//  g_fn_prtlin( "      width: 360%;");             // GOLD order #2
+
+//  g_fn_prtlin( "      font-size: 1.7em;"); 
+//  g_fn_prtlin( "      font-size: 1.5em;"); 
+//  g_fn_prtlin( "      font-size: 1.2em;"); 
+  g_fn_prtlin( "      font-size: 1.5em;"); 
+
+  g_fn_prtlin( "      background-color: #fcfce0;");
+//  g_fn_prtlin( "      text-align: left;");      // GOLD order #1
+
+//  g_fn_prtlin( "      line-height: 1.2em;");
+//  g_fn_prtlin( "      line-height: 1.33em;");
+//  g_fn_prtlin( "      line-height: 1.6;");
+//  g_fn_prtlin( "      line-height: 1.45;");
+  g_fn_prtlin( "      line-height: 1.45em;");
+
+  g_fn_prtlin( "      white-space: pre; display: block; unicode-bidi: embed; ");
+  g_fn_prtlin( "    }");
+
+
+  g_fn_prtlin( "    .foreachcat2 {");  // not used for now  20150513
+//  g_fn_prtlin( "      margin-top: -3.0em;");  // MUST BE ABOVE "white-space: pre;"
+//  g_fn_prtlin( "      margin-right: 7.0em;");
+  g_fn_prtlin( "     overflow-x: hidden; ");    // webview
+  g_fn_prtlin( "      text-align: left;");      // GOLD order #1
+//  g_fn_prtlin( "      width: 360%;");             // GOLD order #2
+//  g_fn_prtlin( "      width: 100%;");             // GOLD order #2
+//  g_fn_prtlin( "      width: 250%;");             // GOLD order #2
+//  g_fn_prtlin( "      width: 300%;");             // GOLD order #2
+//  g_fn_prtlin( "      width: 330%;");             // GOLD order #2
+  g_fn_prtlin( "      width: 360%;");             // GOLD order #2
+//  g_fn_prtlin( "      font-size: 1.2em;"); 
+//  g_fn_prtlin( "      font-size: 0.1em;"); 
+//  g_fn_prtlin( "      font-size: 0em;"); 
+//  g_fn_prtlin( "      font-size: 1.2em;"); 
+//  g_fn_prtlin( "      font-size: 0.4em;"); 
+  g_fn_prtlin( "      background-color: #fcfce0;");
+  g_fn_prtlin( "      color: #fcfce0;");
+//  g_fn_prtlin( "      line-height: 1.45em;");
+  g_fn_prtlin( "      line-height: 0.5em;");
+  g_fn_prtlin( "      white-space: pre; display: block; unicode-bidi: embed; ");
+  g_fn_prtlin( "    }");
+
+
+  // this is just 2
+
+
+  g_fn_prtlin( "    .aspectPara {");
+  g_fn_prtlin( "      background-color: #F7ebd1;");
+ // p_fn_prtlin( "      margin-left: 2.5em;");
+  g_fn_prtlin( "      margin-left: 0.5em;");
+  g_fn_prtlin( "      margin-right: 0.5em;"); 
+  g_fn_prtlin( "      margin-top: 2em;");
+  g_fn_prtlin( "      line-height: 130%;");  
+  g_fn_prtlin( "      text-align: left;");      // GOLD order #1
+//  p_fn_prtlin( "      width: 333%;");             // GOLD order #2
+//  g_fn_prtlin( "      width: 300%;");             // GOLD order #2
+  g_fn_prtlin( "      width: 360%;");             // GOLD order #2
+  
+//  g_fn_prtlin( "      font-size: 1.25em;");  /* gold order #3 */
+//  g_fn_prtlin( "      font-size: 2.5em;");  /* gold order #3 */
+//  g_fn_prtlin( "      font-size: 1.5em;");  /* gold order #3 */
+  g_fn_prtlin( "      font-size: 2.0em;");  /* gold order #3 */
+
+//  g_fn_prtlin( "      color:green;"); // for test
   g_fn_prtlin( "      white-space: pre ; display: block; unicode-bidi: embed");
   g_fn_prtlin( "    }");
 
 
+
   g_fn_prtlin( "    .categories{");
-//  g_fn_prtlin( "      background-color: #fcfce0;");
+
+//  g_fn_prtlin( "     width: 100%; ");
+
+
+//  g_fn_prtlin( "     background-color: #f00; width: 100%;  display: inline-block;  ");
+
+//  g_fn_prtlin( "     overflow-x: hidden; ");    // webview
+
+//  g_fn_prtlin( "      width: 300%;  display: inline-block;  ");
+//  g_fn_prtlin( "      width: 300%; ");
+//  g_fn_prtlin( "      width: 250%; ");
+//  g_fn_prtlin( "      width: 400%; ");
+//  g_fn_prtlin( "      width: 340%; ");
+//  g_fn_prtlin( "      width: 320%; ");
+//  g_fn_prtlin( "      width: 270%; ");
+//  g_fn_prtlin( "      width: 380%; ");
+//  g_fn_prtlin( "      width: 360%; ");
+//  g_fn_prtlin( "      width: 350%; ");
+  g_fn_prtlin( "      background-color: #fcfce0;");
+
+
   g_fn_prtlin( "      padding-top: 0;");
-  g_fn_prtlin( "      margin-top: -1.2em;");
-  g_fn_prtlin( "      margin-left: 0.5em;");
+//  g_fn_prtlin( "      margin-top: -1.2em;");
+
+//  g_fn_prtlin( "      margin-left: 0.5em;");
+
+//  g_fn_prtlin( "      padding-bottom: -2.5em;");
+//  g_fn_prtlin( "      margin-bottom: -2.5em;");
   g_fn_prtlin( "      text-align: left;");      // GOLD order #1
 //  g_fn_prtlin( "      width: 240%;");             // GOLD order #2  *BUT* width  AFFECTS OTHER BLOCKS
 
   g_fn_prtlin( "      font-size: 0.8em;");  /* gold order #3 */
 //  g_fn_prtlin( "      font-size: 0.8em;");  /* gold order #3 */
-  //g_fn_prtlin( "      line-height: 130%;");  /* <.> */
+  //g_fn_prtlin( "      line-height: 130%;");  
+
   g_fn_prtlin( "      margin-bottom: 3em;");  // MUST BE ABOVE "white-space: pre;"
+//  g_fn_prtlin( "      margin-bottom: -2.5em;"); 
+
   g_fn_prtlin( "      white-space: pre ; display: block; unicode-bidi: embed");
+
+//  g_fn_prtlin( "     background-color: #f00; width: 300%; overflow-x: hidden;  display: block;  ");
+//  g_fn_prtlin( "     background-color: #f00; width: 200%; overflow-x: hidden;  display: block;  ");
+//  g_fn_prtlin( "     background-color: #f00; width: 160%; overflow-x: hidden;  display: inline-block;  ");
+//  g_fn_prtlin( "     background-color: #f00; width: 200%; overflow-x: hidden;                          ");
+
   g_fn_prtlin( "    }");
 
 
@@ -3459,18 +4332,41 @@ void put_ios_top_of_just2_group_rpt(void)  /* just_2 rpt */
   g_fn_prtlin( "      background-color: #f7ebd1;");
   g_fn_prtlin( "    }");
 
+
+  // this is just 2
+
+
+
   g_fn_prtlin( "    .explpotential{");
+//  g_fn_prtlin( "      width: 250%;");
 //  g_fn_prtlin( "      background-color: #fcfce0;");
   g_fn_prtlin( "      padding-top: 0;");
   g_fn_prtlin( "      padding-bottom: 0;");
-  g_fn_prtlin( "      margin-top: -4.3em;");
-  g_fn_prtlin( "      margin-left: 0.3em;");
+
+//  g_fn_prtlin( "      margin-top: -4.3em;");
+
+//  g_fn_prtlin( "      margin-left: 0.3em;");
+//  g_fn_prtlin( "      margin-left: 1.5em;");
+//  g_fn_prtlin( "      margin-left: 3.0em;");
+  g_fn_prtlin( "      margin-left: 2.3em;");
+
   g_fn_prtlin( "      text-align: left;");      // GOLD order #1
 //  g_fn_prtlin( "      width: 240%;");             // GOLD order #2  *BUT* width  AFFECTS OTHER BLOCKS
 
-  g_fn_prtlin( "      font-size: 1.0em;");  /* gold order #3 */
 //  g_fn_prtlin( "      font-size: 1.0em;");  /* gold order #3 */
-  //g_fn_prtlin( "      line-height: 130%;");  /* <.> */
+//  g_fn_prtlin( "      font-size: 3.0em;");  /* gold order #3 */
+//  g_fn_prtlin( "      font-size: 2.0em;");  /* gold order #3 */
+//  g_fn_prtlin( "      font-size: 1.5em;");  /* gold order #3 */
+//  g_fn_prtlin( "      font-size: 2.5em;");  /* gold order #3 */
+  g_fn_prtlin( "      font-size: 2.0em;");  /* gold order #3 */
+
+
+
+//  g_fn_prtlin( "      font-size: 1.0em;");  /* gold order #3 */
+  //g_fn_prtlin( "      line-height: 130%;");  
+//  g_fn_prtlin( "      margin-top: -2.0em;");  
+//  g_fn_prtlin( "      margin-top: -1.0em;");  
+  g_fn_prtlin( "      margin-top: -0.5em;");  
   g_fn_prtlin( "      margin-bottom: 0.1em;");  // MUST BE ABOVE "white-space: pre;"
   g_fn_prtlin( "      white-space: pre ; display: block; unicode-bidi: embed");
   g_fn_prtlin( "    }");
@@ -3478,42 +4374,94 @@ void put_ios_top_of_just2_group_rpt(void)  /* just_2 rpt */
 
   g_fn_prtlin( "    .explrelationship{");
 //  g_fn_prtlin( "      background-color: #fcfce0;");
+//  g_fn_prtlin( "      width: 250%;");
   g_fn_prtlin( "      padding-top: 0;");
   g_fn_prtlin( "      padding-bottom: 0;");
-  g_fn_prtlin( "      margin-top: 2em;");
-  g_fn_prtlin( "      margin-left: 3.8em;");
+//  g_fn_prtlin( "      margin-top: 2em;");
+  g_fn_prtlin( "      margin-top: 1em;");
+
+//  g_fn_prtlin( "      margin-left: 3.8em;");
+//  g_fn_prtlin( "      margin-left: 1.5em;");
+//  g_fn_prtlin( "      margin-left: 2.1em;");
+//  g_fn_prtlin( "      margin-left: 2.7em;");
+//  g_fn_prtlin( "      margin-left: 5.7em;");
+//  g_fn_prtlin( "      margin-left: 4.1em;");
+  g_fn_prtlin( "      margin-left: 3.7em;");
+
   g_fn_prtlin( "      text-align: left;");      // GOLD order #1
 //  g_fn_prtlin( "      width: 240%;");             // GOLD order #2  *BUT* width  AFFECTS OTHER BLOCKS
-  g_fn_prtlin( "      font-size: 1.0em;");  /* gold order #3 */
-  //g_fn_prtlin( "      line-height: 130%;");  /* <.> */
+
+//  g_fn_prtlin( "      font-size: 1.0em;");  /* gold order #3 */
+//  g_fn_prtlin( "      font-size: 1.4em;");  /* gold order #3 */
+//  g_fn_prtlin( "      font-size: 1.2em;");  /* gold order #3 */
+//  g_fn_prtlin( "      font-size: 1.1em;");  /* gold order #3 */
+
+//  g_fn_prtlin( "      font-size: 2.0em;");  /* gold order #3 */
+//  g_fn_prtlin( "      font-size: 1.6em;");  /* gold order #3 */
+//  g_fn_prtlin( "      font-size: 2.0em;");  /* gold order #3 */
+  g_fn_prtlin( "      font-size: 1.8em;");  /* gold order #3 */
+
+  //g_fn_prtlin( "      line-height: 130%;");  
+
   g_fn_prtlin( "      margin-bottom: 0.1em;");  // MUST BE ABOVE "white-space: pre;"
+//  g_fn_prtlin( "      margin-bottom: -2.0em;");  // MUST BE ABOVE "white-space: pre;"
+
   g_fn_prtlin( "      white-space: pre ; display: block; unicode-bidi: embed");
   g_fn_prtlin( "    }");
+
 
   g_fn_prtlin( "    .appby{");
 //  g_fn_prtlin( "      background-color: #fcfce0;");
   g_fn_prtlin( "      padding-top: 0;");
   g_fn_prtlin( "      padding-bottom: 0;");
-  g_fn_prtlin( "      margin-top: 1.5em;");
-  g_fn_prtlin( "      margin-left: 12em;");
+//  g_fn_prtlin( "      margin-top: 1.5em;");
+  g_fn_prtlin( "      margin-top: 1.0em;");
+
+//  g_fn_prtlin( "      margin-left: 12em;");
+//  g_fn_prtlin( "      margin-left: 6.5em;");
+//  g_fn_prtlin( "      margin-left: 3em;");
+//  g_fn_prtlin( "      margin-left: 4.5em;");
+//  g_fn_prtlin( "      margin-left: 8em;");
+//  g_fn_prtlin( "      margin-left: 11em;");
+  g_fn_prtlin( "      margin-left: 9.5em;");
+
   g_fn_prtlin( "      text-align: left;");      // GOLD order #1
 //  g_fn_prtlin( "      width: 240%;");             // GOLD order #2  *BUT* width  AFFECTS OTHER BLOCKS
-  g_fn_prtlin( "      font-size: 0.8em;");  /* gold order #3 */
-  //g_fn_prtlin( "      line-height: 130%;");  /* <.> */
+
+//  g_fn_prtlin( "      font-size: 0.8em;");  /* gold order #3 */
+//  g_fn_prtlin( "      font-size: 1.5em;");  /* gold order #3 */
+//  g_fn_prtlin( "      font-size: 1.0em;");  /* gold order #3 */
+  g_fn_prtlin( "      font-size: 1.5em;");  /* gold order #3 */
+
+  //g_fn_prtlin( "      line-height: 130%;");  
   g_fn_prtlin( "      margin-bottom: 0.1em;");  // MUST BE ABOVE "white-space: pre;"
   g_fn_prtlin( "      white-space: pre ; display: block; unicode-bidi: embed");
   g_fn_prtlin( "    }");
 
+
   g_fn_prtlin( "    .entertainment {");
-  g_fn_prtlin( "      margin-left: 9em;");
   g_fn_prtlin( "      text-align: left;");
+  g_fn_prtlin( "      margin-top: -1.0em;");  // MUST BE ABOVE "white-space: pre;"
+//  g_fn_prtlin( "      margin-left: 9em;");
+//  g_fn_prtlin( "      margin-left: 4em;");
+//  g_fn_prtlin( "      margin-left: 8em;");
+  g_fn_prtlin( "      margin-left: 7em;");
 //  g_fn_prtlin( "      width: 150%;");             // GOLD order #2
 //  g_fn_prtlin( "      background-color: #F7ebd1;");
-  g_fn_prtlin( "      font-size: 0.8em;");
+
+//  g_fn_prtlin( "      font-size: 0.8em;");
+//  g_fn_prtlin( "      font-size: 1.6em;");
+//  g_fn_prtlin( "      font-size: 1.1em;");
+  g_fn_prtlin( "      font-size: 1.5em;");
+  g_fn_prtlin( "      font-weight: bold;");
+
   g_fn_prtlin( "      color:#FF0000;");  // RED print
   g_fn_prtlin( "      white-space: pre ; display: block; unicode-bidi: embed");
 /*   p_fn_prtlin( "      font-size: 130%;");  */
   g_fn_prtlin( "    }");
+
+
+  // this is just 2
 
 
 /* for table: */
@@ -3550,15 +4498,53 @@ void put_ios_top_of_just2_group_rpt(void)  /* just_2 rpt */
 //   g_fn_prtlin( "      margin-right:auto;");
 //   g_fn_prtlin( "    }");
 
+   g_fn_prtlin( "    table {");  // applies to all tables ?  YES, IT DOES !  yay
+   g_fn_prtlin( "      border-collapse: collapse;");
+//   g_fn_prtlin( "      width: 350%;");
 
-  g_fn_prtlin( "    table {");
+//   g_fn_prtlin( "      width: 360%;");
+   g_fn_prtlin( "      width: 340%;");
+
+  g_fn_prtlin( "    }");
+
+
+
+  g_fn_prtlin( "    table.category {");   // webview version
 
 //  g_fn_prtlin( "      margin-left: 2em;");
-/* <.> */
-  g_fn_prtlin( "      margin-top: 0.1em;");
-  g_fn_prtlin( "      margin-bottom: 0.1em;");
+
+  g_fn_prtlin( "      width: 360%;");  // magic (matches width of .foreachcat and one other)
+  g_fn_prtlin( "      margin-top: 0em;");
+  g_fn_prtlin( "      margin-bottom: 0em;");
+  g_fn_prtlin( "     border-collapse: collapse;   ");
   g_fn_prtlin( "      border-spacing: 0;");
-  g_fn_prtlin( "      font-size: 1.3em;");
+  g_fn_prtlin( "      border: none;");
+  g_fn_prtlin( "      font-size: 1.0em;");
+  g_fn_prtlin( "      background-color: #fcfce0 ;");
+//  g_fn_prtlin( "      background-color: #fcace0 ;");  // for test
+
+//  g_fn_prtlin( "      white-space: pre; display: block; unicode-bidi: embed; ");
+//  g_fn_prtlin( "      white-space: pre;  ");
+//  g_fn_prtlin( "      text-align: left;");
+
+  g_fn_prtlin( "    }");
+
+  g_fn_prtlin( "    table.category tr {");
+//  g_fn_prtlin( "      line-height: 0.5em;");
+  g_fn_prtlin( "      margin-top: 0em;");
+  g_fn_prtlin( "      margin-bottom: 0em;");
+  g_fn_prtlin( "      border-spacing: 0;");
+  g_fn_prtlin( "      border-collapse: collapse;");
+  g_fn_prtlin( "      border-spacing: 0;");
+  g_fn_prtlin( "      padding-top: 0px; ");
+  g_fn_prtlin( "      padding-bottom: 0px; ");
+  g_fn_prtlin( "    }");
+  g_fn_prtlin( "    table.category td {");
+  g_fn_prtlin( "      border: none;");
+  g_fn_prtlin( "      border-spacing: 0;");
+  g_fn_prtlin( "      border-collapse: collapse;");
+  g_fn_prtlin( "      padding-top: 0px; ");
+  g_fn_prtlin( "      padding-bottom: 0px; ");
   g_fn_prtlin( "    }");
 
 
@@ -3568,7 +4554,10 @@ void put_ios_top_of_just2_group_rpt(void)  /* just_2 rpt */
 /*   g_fn_prtlin( "      font-family: Andale Mono, Menlo, Monospace, Courier New;"); */
   g_fn_prtlin( "      font-family: Menlo, Andale Mono, Monospace, Courier New;");
   g_fn_prtlin( "      white-space: pre;");
-  g_fn_prtlin( "      font-size: 90%;");
+
+//  g_fn_prtlin( "      font-size: 90%;");
+//<.>
+
   g_fn_prtlin( "      text-align: left;");
 
 /*   g_fn_prtlin( "      border: 1px solid black;"); */
@@ -3584,6 +4573,33 @@ void put_ios_top_of_just2_group_rpt(void)  /* just_2 rpt */
   g_fn_prtlin( "    table.center {");
   g_fn_prtlin( "      margin-left:auto;");
   g_fn_prtlin( "      margin-right:auto;");
+  g_fn_prtlin( "    }");
+  g_fn_prtlin( "    table.center td{");
+  g_fn_prtlin( "      text-align: center;");
+  g_fn_prtlin( "      font-size: 1.5em;");
+  g_fn_prtlin( "    }");
+
+  // this is just 2
+
+  g_fn_prtlin( "    table.redGreenCenter {");
+  g_fn_prtlin( "      white-space: pre;");
+  g_fn_prtlin( "      margin-top: -3em;");
+  g_fn_prtlin( "      margin-left:auto;");
+  g_fn_prtlin( "      margin-right:auto;");
+  g_fn_prtlin( "    }");
+//  g_fn_prtlin( "    table.redGreenCenter tr {");
+//  g_fn_prtlin( "      white-space: pre;");
+//  g_fn_prtlin( "      text-align: center;");
+//  g_fn_prtlin( "      font-size: 1.5em;");
+//  g_fn_prtlin( "    }");
+
+  g_fn_prtlin( "    table.redGreenCenter td {");
+//  g_fn_prtlin( "      font-family: Menlo, Andale Mono, Monospace, Courier New;");
+  g_fn_prtlin( "      white-space: pre;");
+  g_fn_prtlin( "      text-align: center;");
+//  g_fn_prtlin( "      font-size: 1.5em;");
+  g_fn_prtlin( "      font-size: 0.8em;");
+//  g_fn_prtlin( "      color: blue;");
   g_fn_prtlin( "    }");
   g_fn_prtlin( "    th {");
 
@@ -3631,14 +4647,30 @@ void put_ios_top_of_just2_group_rpt(void)  /* just_2 rpt */
 
 
   g_fn_prtlin( "    .cGr2        { background-color:#66ff33; }");
+  g_fn_prtlin( "    .cGr2tabonly { background-color:#66ff33; line-height: 175% ; padding: 0;}");
+
 /*   g_fn_prtlin( "    .cGre        { background-color:#84ff98; }"); */
   g_fn_prtlin( "    .cGre        { background-color:#a8ff98; }");
-  g_fn_prtlin( "    .cRed        { background-color:#ff98a8; }");
-  g_fn_prtlin( "    .cRe2        { background-color:#ff4477; }");
+  g_fn_prtlin( "    .cGretabonly { background-color:#a8ff98; line-height: 175% ; padding: 0;}");
+//  g_fn_prtlin( "    .cGLi        { background-color:#eaffe6; }");  // super light green 
+  g_fn_prtlin( "    .cGLi        { background-color:#daffe3; }");  // super light green   little darker
 
+//  g_fn_prtlin( "    .cRed        { background-color:#ff98a8; }");
+//  g_fn_prtlin( "    .cRedtabonly { background-color:#ff98a8; line-height: 175% ; padding: 0}");
+  g_fn_prtlin( "    .cRed        { background-color:#ffb5c9; }");
+  g_fn_prtlin( "    .cRedtabonly { background-color:#ffb5c9; line-height: 175% ; padding: 0}");
+//  g_fn_prtlin( "    .cRLi        { background-color:#ffe8ee; }");  // super light red 
+  g_fn_prtlin( "    .cRLi        { background-color:#fff0f4; }");  // super light red even lighter
+  g_fn_prtlin( "    .cBbg        { background-color:#f7ebd1; }");  // body background color
 
-/*   g_fn_prtlin("    .cNeu        { background-color:#e1ddc3; }"); */
-  g_fn_prtlin("    .cNeu        { background-color:#e5e2c7; }");
+  g_fn_prtlin( "    }");
+//  g_fn_prtlin( "    .cRe2        { background-color:#ff4477; }");
+  g_fn_prtlin( "    .cRe2        { background-color:#ff678f; }");
+//  g_fn_prtlin( "    .cRe2tabonly { background-color:#ff4477; line-height: 175% ; padding: 0; font-weight: bold; }");
+//  g_fn_prtlin( "    .cRe2tabonly { background-color:#ff4477; line-height: 175% ; padding: 0;                    }");
+  g_fn_prtlin( "    .cRe2tabonly { background-color:#ff678f; line-height: 175% ; padding: 0;                    }");
+  g_fn_prtlin( "    .cNeu        { background-color:#e5e2c7; }");
+  g_fn_prtlin( "    .cNeutabonly { background-color:#e5e2c7; line-height: 175% ; padding: 0;}");
 
   g_fn_prtlin( "    .cHed        { background-color:#fcfce0; }");
   g_fn_prtlin( "    .cNam        { color:#3f3ffa;");
@@ -3702,15 +4734,19 @@ void put_ios_top_of_just2_group_rpt(void)  /* just_2 rpt */
   else if (sizeLongestFld == 19) { strcpy(myleftmargin, "1.8em;"); }
   else                           { strcpy(myleftmargin, "1.5em;"); }
 
-  sprintf(writebuf,  "<pre style=\"margin-left: %s;\" class=\"myTitle\" >", myleftmargin); 
-  g_fn_prtlin(writebuf);
-  gbl_we_are_in_PRE_block = 1;
 
-  g_fn_prtlin(name1_and);   // name1
-  g_fn_prtlin(arr(1));      // name2
 
-  gbl_we_are_in_PRE_block = 0;
-  g_fn_prtlin("</pre>");
+//  sprintf(writebuf,  "<pre style=\"margin-left: %s;\" class=\"myTitle\" >", myleftmargin); 
+//  g_fn_prtlin(writebuf);
+//  gbl_we_are_in_PRE_block = 1;
+//
+//  g_fn_prtlin(name1_and);   // name1
+//  g_fn_prtlin(arr(1));      // name2
+//
+//  gbl_we_are_in_PRE_block = 0;
+//  g_fn_prtlin("</pre>");
+//
+  g_fn_prtlin("<div><br></div>");
 
 
 
@@ -3724,6 +4760,743 @@ void put_ios_top_of_just2_group_rpt(void)  /* just_2 rpt */
 // iiiiiiiiiiiiiiiiiiiiiiiiiiiiiii   webview / ios  html code  iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
 
 
+/* ************************************************************
+*
+* ************************************************************/
+void g_fn_browser_aspect_text(char *in_aspect_code) {
+  int nn;
+  char aspcodeToSearch[32], possessiveA[64], possessiveB[64], lastchar; 
+  char oldAspCode[32];
+  char numplusminus[32];
+
+//trn("in g_fn_browser_aspect_text()"); 
+//<.>
+
+  // get old gP_ITEM_TBL from PSV
+  //
+  strcpy(oldAspCode,   csv_get_field(in_aspect_code, "|", 1) );
+  strcpy(numplusminus, csv_get_field(in_aspect_code, "|", 2) );
+
+
+  // fix aspect code like this:  e.g.  _(in g_docin_GET)___in_line=[^(c03b02)]__
+  //                   to this:  "c03b02"
+  strcpy(aspcodeToSearch, oldAspCode);
+  scharout(aspcodeToSearch, '^');  
+  scharout(aspcodeToSearch, '(');  
+  scharout(aspcodeToSearch, ')');  
+//ksn(aspcodeToSearch);
+
+  nn = binsearch_asp(aspcodeToSearch, g_asptab, G_NKEYS_ASP);
+//kin(nn);
+
+  if (nn < 0) return;  /* do not print any aspect text at all  */
+
+  strcpy(g_my_aspect_text, g_asptab[nn].g_asp_text);
+
+  // do posessive forms of names, if necessary
+  //
+  if (strstr(g_my_aspect_text, "^^(Ap)") != NULL ) { 
+    lastchar = gbl_just2PersonA[strlen(gbl_just2PersonA) - 1];
+    if (lastchar == 's' ||  lastchar == 'z') {
+      sprintf(possessiveA, "%s\'", gbl_just2PersonA);
+      strsubg(g_my_aspect_text, "^^(Ap)", possessiveA);
+    } else {
+      sprintf(possessiveA, "%s\'s", gbl_just2PersonA);
+      strsubg(g_my_aspect_text, "^^(Ap)", possessiveA);
+    }
+  }
+  if (strstr(g_my_aspect_text, "^^(Bp)") != NULL ) { 
+    lastchar = gbl_just2PersonB[strlen(gbl_just2PersonB) - 1];
+    if (lastchar == 's' ||  lastchar == 'z') {
+      sprintf(possessiveB, "%s\'", gbl_just2PersonB);
+      strsubg(g_my_aspect_text, "^^(Bp)", possessiveB);
+    } else {
+      sprintf(possessiveB, "%s\'s", gbl_just2PersonB);
+      strsubg(g_my_aspect_text, "^^(Bp)", possessiveB);
+    }
+  }
+  if (strstr(g_my_aspect_text, "^^(A)") != NULL ) { 
+    strsubg(g_my_aspect_text, "^^(A)", gbl_just2PersonA);
+  }
+  if (strstr(g_my_aspect_text, "^^(B)") != NULL ) { 
+    strsubg(g_my_aspect_text, "^^(B)",  gbl_just2PersonB);
+  }
+
+
+  /* wrap lines at 80 chars with <br> */
+/*   put_br_every_n(my_aspect_text, 80);  */
+  put_br_every_n(g_my_aspect_text, 65);
+
+  char redgre_beg[133];
+  char redgre_end[133];
+
+  strcpy(redgre_beg, "<table class=\"center\"><tr><td><p>");
+ 
+//    strcpy(redgre_end, "</p></td></tr><br></table>");
+    strcpy(redgre_end, "</p></td></tr>");
+//  sprintf(writebuf, "  %s%s%s\n", redgre_beg, g_my_aspect_text, redgre_end);
+  sprintf(writebuf, "%s%s%s\n", redgre_beg, g_my_aspect_text, redgre_end);
+
+  g_fn_prtlin(writebuf);
+
+//<.>
+//    g_fn_prtlin("<div class=\"linehite_0050\">                 <span class=\"cRed\">_                            _</span>       ");
+//    g_fn_prtlin("        and the  <span class=\"cRed\"> challenging influences  ---  </span>      </div>");
+
+   prtRedGreenPlusMinus(atoi(numplusminus), 0); // 0 = no, not webview
+
+}  /* end of g_fn_browser_aspect_text(); */
+
+
+void  prtRedGreenPlusMinus(int numPosNeg, int arg_is_webview)
+{
+    int  maxPosOrNegSigns;
+    char grePosSigns[128], redNegSigns[128];  // 4 areas
+    char grePosBlank[128], redNegBlank[128];  // 4 areas
+    char linePosNeg[2024];
+
+    char area1_beg[128], area1_end[128];
+    char area2_beg[128], area2_end[128];
+    char area3_beg[128], area3_end[128];
+    char area4_beg[128], area4_end[128];
+
+    char redgre_beg[128], redgre_end[128];
+
+//tn();trn("in prtRedGreenPlusMinus()");
+//kin(numPosNeg);
+    maxPosOrNegSigns = 25;
+
+    if (numPosNeg  < 0) {  // DO RED   minus signs  on left
+
+//      sfill(redNegBlank ,(maxPosOrNegSigns + numPosNeg) ,' ');
+      sfill(redNegBlank ,(maxPosOrNegSigns + numPosNeg) ,'~');  // ~ = sp  change all ~ to &nbsp below
+      sfill(redNegSigns ,(numPosNeg * -1)               ,'-');
+      strcpy(grePosSigns, "");
+
+//      sfill(grePosBlank , maxPosOrNegSigns              ,' ');
+      sfill(grePosBlank , maxPosOrNegSigns              ,'~');
+//      sfill(grePosBlank , maxPosOrNegSigns - 2          ,' ');
+//      sprintf(grePosBlank, "&nbsp%s&nbsp", grePosBlank);
+
+//trn("DO RED");
+//ksn(redNegBlank);
+//ksn(redNegSigns);
+//ksn(grePosSigns);
+//ksn(grePosBlank);
+    }
+    if (numPosNeg  > 0) {  // DO GREEN plus  signs  on right
+//      sfill(redNegBlank , maxPosOrNegSigns              ,' ');
+      sfill(redNegBlank , maxPosOrNegSigns              ,'~');
+     strcpy(redNegSigns, "");
+      sfill(grePosSigns , numPosNeg                     ,'+');
+//      sfill(grePosBlank , numPosNeg                     ,' ');
+      sfill(grePosBlank ,(maxPosOrNegSigns - numPosNeg) ,'~');
+//trn("DO GRE");
+//ksn(redNegBlank);
+//ksn(redNegSigns);
+//ksn(grePosSigns);
+//ksn(grePosBlank);
+    }
+
+    // color the four areas
+//    strcpy(area1_beg, "<span style=\"background-color: #fcfce0;\">");
+//    strcpy(area2_beg, "<span style=\"background-color: #ffb5c9;\">"); 
+//    strcpy(area3_beg, "<span style=\"background-color: #a8ff98;\">");
+//    strcpy(area4_beg, "<span style=\"background-color: #fcfce0\">");
+
+
+    if (strlen(redNegSigns) == 0) strcpy(area1_beg, "<span class=\"cBbg\">");   // area 1 for redNegBlank
+    else                          strcpy(area1_beg, "<span class=\"cRLi\">");                       
+
+        //font-weight   has "bolder" and "lighter" and these numbers:
+        //100
+        //200
+        //300
+        //400    same as normal
+        //500
+        //600
+        //700    same as bold
+        //800
+        //900	Defines from thin to thick characters. 400 is the same as normal, and 700 is the same as bold	
+        //
+
+//  g_fn_prtlin( "      font-family: Menlo, Andale Mono, Monospace, Courier New; ");
+    strcpy(area2_beg, "<span class=\"cRed\" style=\"font-weight: bold;\">");    // area 2 for redNegSigns
+    strcpy(area3_beg, "<span class=\"cGre\" style=\"font-weight: normal;\">");  // area 3 for grePosSigns
+
+    if (strlen(grePosSigns) == 0) strcpy(area4_beg, "<span class=\"cBbg\">");   // area 4 for grePosBlank
+    else                          strcpy(area4_beg, "<span class=\"cGLi\">");                       
+
+
+    strcpy(area1_end, "</span>");
+    strcpy(area2_end, "</span>");
+    strcpy(area3_end, "</span>");
+    strcpy(area4_end, "</span>");
+
+
+
+    if (arg_is_webview == 1) {  // webview version
+//tn();trn("SET BEg END redgree !!  WEBVIEW version");
+    //  strcpy(redgre_beg, "<table class=\"center\"><tr><td><p>");
+    //  strcpy(redgre_end, "</p></td></tr><br></table>");
+        strcpy(redgre_beg, "<table class=\"redGreenCenter\"><tr><td>");
+        strcpy(redgre_end, "</td></tr><br></table>");
+   } else {
+//tn();trn("SET BEg END redgree !!  BROWSER version");
+     // browser version
+        strcpy(redgre_beg, "<tr class=\"browserRedGreenCenter\"><td>");
+        strcpy(redgre_end, "</td></tr></table>");
+   }
+
+//    strcpy(lineBlank, "<div class=\"linehite_0050\"> |<span class=\"cRed\">                         </span>|<span class=\"cGre\">                         </span>| ");  // spaces line
+//    sprintf(writebuf, "  %s%s%s\n", redgre_beg, lineBlank, redgre_end);
+//    g_fn_prtlin(writebuf);  // blank line
+//
+
+    sprintf(linePosNeg,  " |%s%s%s%s%s%s|%s%s%s%s%s%s| ",
+//    sprintf(linePosNeg,  " |%s%s%s%s%s%s %s%s%s%s%s%s| ",
+      area1_beg   ,
+      redNegBlank ,
+      area1_end   ,
+
+      area2_beg   ,
+      redNegSigns ,
+      area2_end   ,
+
+      area3_beg   ,
+      grePosSigns ,
+      area3_end   ,
+
+      area4_beg   ,
+      grePosBlank ,
+      area4_end   
+    );
+//ksn(linePosNeg);
+
+    strsubg(linePosNeg, "~", "&nbsp");  // replace all spaces with hard spaces
+
+//kin(strlen(linePosNeg));
+
+    sprintf(writebuf, "  %s%s%s\n", redgre_beg, linePosNeg, redgre_end);
+    g_fn_prtlin(writebuf);  // minuses or pluses line
+//ksn(writebuf);
+//    g_fn_prtlin("<div class=\"linehite_0050\"> |<span class=\"cRed\">                         </span>|<span class=\"cGre\">                         </span>| ");
+//    g_fn_prtlin(" |<span class=\"cRed\">100%                   0%</span>|<span class=\"cGre\">0%                   100%</span>| </div>");
+
+
+} // end of prtRedGreenPlusMinus
+
+
+void g_fn_webview_aspect_text(char *in_aspect_code){
+  int nn;
+  char aspcodeToSearch[32], possessiveA[64], possessiveB[64], lastchar; 
+  char oldAspCode[32];
+  char numplusminus[32];
+
+//trn("in g_fn_webview_aspect_text()"); 
+//ksn(in_aspect_code);
+
+  // get old gP_ITEM_TBL from PSV
+  //
+  strcpy(oldAspCode,   csv_get_field(in_aspect_code, "|", 1) );
+  strcpy(numplusminus, csv_get_field(in_aspect_code, "|", 2) );
+
+//ksn(numplusminus);
+
+
+  // fix aspect code like this:  e.g.  _(in g_docin_GET)___in_line=[^(c03b02)]__
+  //                   to this:  "c03b02"
+  strcpy(aspcodeToSearch, oldAspCode);
+  scharout(aspcodeToSearch, '^');  
+  scharout(aspcodeToSearch, '(');  
+  scharout(aspcodeToSearch, ')');  
+//ksn(aspcodeToSearch);
+
+  nn = binsearch_asp(aspcodeToSearch, g_asptab, G_NKEYS_ASP);
+//kin(nn);
+
+  if (nn < 0) return;  /* do not print any aspect text at all  */
+
+  strcpy(g_my_aspect_text, g_asptab[nn].g_asp_text);
+
+  // do posessive forms of names, if necessary
+  //
+  if (strstr(g_my_aspect_text, "^^(Ap)") != NULL ) { 
+    lastchar = gbl_just2PersonA[strlen(gbl_just2PersonA) - 1];
+    if (lastchar == 's' ||  lastchar == 'z') {
+      sprintf(possessiveA, "%s\'", gbl_just2PersonA);
+      strsubg(g_my_aspect_text, "^^(Ap)", possessiveA);
+    } else {
+      sprintf(possessiveA, "%s\'s", gbl_just2PersonA);
+      strsubg(g_my_aspect_text, "^^(Ap)", possessiveA);
+    }
+  }
+  if (strstr(g_my_aspect_text, "^^(Bp)") != NULL ) { 
+    lastchar = gbl_just2PersonB[strlen(gbl_just2PersonB) - 1];
+    if (lastchar == 's' ||  lastchar == 'z') {
+      sprintf(possessiveB, "%s\'", gbl_just2PersonB);
+      strsubg(g_my_aspect_text, "^^(Bp)", possessiveB);
+    } else {
+      sprintf(possessiveB, "%s\'s", gbl_just2PersonB);
+      strsubg(g_my_aspect_text, "^^(Bp)", possessiveB);
+    }
+  }
+  if (strstr(g_my_aspect_text, "^^(A)") != NULL ) { 
+    strsubg(g_my_aspect_text, "^^(A)", gbl_just2PersonA);
+  }
+  if (strstr(g_my_aspect_text, "^^(B)") != NULL ) { 
+    strsubg(g_my_aspect_text, "^^(B)",  gbl_just2PersonB);
+  }
+
+
+
+  /* wrap lines at 80 chars with <br> */
+/*   put_br_every_n(my_aspect_text, 80);  */
+/*   put_br_every_n(my_aspect_text, 65);  */
+  put_br_every_n(g_my_aspect_text, 50);          // <=====----
+
+  char redgre_beg[133];
+  char redgre_end[133];
+
+//  strcpy(redgre_beg, "<table class=\"center\"><tr><td><p>");
+//  strcpy(redgre_end, "</p></td></tr><br></table>");
+//  sprintf(writebuf, "  %s%s%s\n", redgre_beg, my_aspect_text, redgre_end);
+
+/*   strcpy(redgre_beg, "<table><tr><td><p>"); */
+/*   strcpy(redgre_end, "</p></td></tr><br></table>"); */
+/*   sprintf(writebuf, "  %s%s%s", redgre_beg, my_aspect_text, redgre_end); */
+
+  strcpy(redgre_beg, "<pre class=aspectPara>");
+  strcpy(redgre_end, "</pre>");
+  sprintf(writebuf, "  %s%s%s\n", redgre_beg, g_my_aspect_text, redgre_end);
+
+  g_fn_prtlin(writebuf);
+
+  // here we write the red/green
+//<.>
+//    g_fn_prtlin("<div class=\"linehite_0050\">                 <span class=\"cRed\">_                            _</span>       ");
+//    g_fn_prtlin("        and the  <span class=\"cRed\"> challenging influences  ---  </span>      </div>");
+
+   prtRedGreenPlusMinus(atoi(numplusminus), 1); // 1 = yes, this is  webview version
+
+} // end of  g_fn_webview_aspect_text()
+
+
+
+
 
 
 /* end of grphtm.c */
+
+// see tfoot instead of this  in table- return only table
+//
+//
+//
+//    //g_fn_prtlin("<pre class=\"checkoutbestmatch\">");
+//    g_fn_prtlin("<div class=\"checkoutbestmatch\">");
+//  //  g_fn_prtlin("<pre style=\"margin-left: 10em;\">");
+//    gbl_we_are_in_PRE_block = 1;  /* true */
+//
+//   // g_fn_prtlin("<span style=\"background-color: #fcfce0;\">                                            ");
+//    g_fn_prtlin("<span style=\"background-color: #fcfce0;\">                                            </span>");
+//
+//    //g_fn_prtlin("  Check out the Best Match in Group report  ");
+//    g_fn_prtlin("<span style=\"background-color: #fcfce0;\">  Check out the Best Match in Group report  </span>");
+//
+//    //g_fn_prtlin("   which uses this score to compare with    ");
+//    g_fn_prtlin("<span style=\"background-color: #fcfce0;\">   which uses this score to compare with    </span>");
+//
+//    //g_fn_prtlin("      other pairs of group members          ");
+////  g_fn_prtlin("<span style=\"background-color: #fcfce0;\">      other pairs of group members          </span>");
+//    g_fn_prtlin("<span style=\"background-color: #fcfce0;\">           other pairs of people            </span>");
+//
+//    //g_fn_prtlin("                                            ");
+//    g_fn_prtlin("<span style=\"background-color: #fcfce0;\">                                            </span>");
+//
+//  /*   g_fn_prtlin("                                                                     "); 
+//  *   g_fn_prtlin("  Check out the group reports \"Best Match\" and \"Best Match For ...\"  ");
+//  *   g_fn_prtlin("  which use this score to compare with other pairs of group members  ");
+//  *   g_fn_prtlin("                                                                     ");
+//  */
+//    gbl_we_are_in_PRE_block = 0;  /* false */
+//
+//    g_fn_prtlin("</div>");   // end of checkoutbestmatch
+
+//
+//  g_fn_prtlin( "                For the 3 categories below                ");
+//  g_fn_prtlin( "               you can see the proportion of              ");
+//  g_fn_prtlin(
+//    "        <span class=\"cGre\"> good aspects  +  </span>   and   <span class=\"cRed\"> bad aspects  -  </span>       ");
+//
+
+//    g_fn_prtlin("                For the 3 categories below    "); // 7  
+//    g_fn_prtlin("              you can see the proportion of   ");
+//    g_fn_prtlin("             <span class=\"cGre\"> favorable   influences  +++  </span> and      ");
+//    g_fn_prtlin("             <span class=\"cRed\"> challenging influences  ---  </span>          ");
+//    g_fn_prtlin("                                                           "); // blank line
+//
+
+//  this works
+//    g_fn_prtlin("                       How Much               "); // 7  
+//    g_fn_prtlin("        are  <span class=\"cGre\"> favorable   influences  +++  </span>          ");
+//    g_fn_prtlin("        and  <span class=\"cRed\"> challenging influences  ---  </span>          ");
+//    g_fn_prtlin("        expressed in the 3 categories below?  ");
+//
+
+//    g_fn_prtlin("                                                           "); // blank line
+
+//    g_fn_prtlin("<div style=\"margin-bottom: -0.5em;\">                            How Big                </div>"); // 7  
+//
+//    g_fn_prtlin("<div class=\"linehite_0050\">                 <span class=\"cGre\">_                            _</span>          ");
+//    g_fn_prtlin("        are the  <span class=\"cGre\"> favorable   influences  +++  </span>      </div>");
+//
+////    g_fn_prtlin("<div class=\"linehite_0050\">             <span class=\"cRed\">                              </span>          ");
+//    g_fn_prtlin("<div class=\"linehite_0050\">                 <span class=\"cRed\">_                            _</span>          ");
+//    g_fn_prtlin("        and the  <span class=\"cRed\"> challenging influences  ---  </span>      </div>");
+//
+//    g_fn_prtlin("<div style=\"margin-top: -0.2em;\">                      in the 3 categories below?  </div>");
+//
+
+//    g_fn_prtlin("<div style=\"margin-bottom: -0.5em;\">                            How Big                </div>"); // 7  
+//    g_fn_prtlin("<div style=\"margin-bottom: -0.5em;\">                            HOW BIG                </div>"); // 7  
+//      g_fn_prtlin("<div style=\"margin-bottom: -0.5em;\">                   HOW BIG                         </div>"); // 7  
+
+  /*   g_fn_prtlin("<span style=\"font-weight:bold;\">"); */
+  /*   g_fn_prtlin("                                                "); */
+//    g_fn_prtlin("                                                                                  ");
+
+
+
+//    g_fn_prtlin("             For each category below you can see the proportion of                ");
+//    g_fn_prtlin( "                 The compatibility score above is derived from                    ");
+//    g_fn_prtlin( "                 the categories below and other influences.                       ");
+//    g_fn_prtlin("                                                                                  ");
+
+//    g_fn_prtlin( "                 For each category you can see the proportion of                  ");
+//    g_fn_prtlin( "              For each category below you can see the proportion of               ");
+
+
+//  g_fn_prtlin( "            For the 3 categories below you can see the proportion of              ");
+//  g_fn_prtlin("                  <span class=\"cGre\"> good influences  +  </span> and <span class=\"cRed\"> bad influences  -  </span>                  ");
+//    g_fn_prtlin("   5        For the 3 categories below you can see the proportion of               ");
+//    g_fn_prtlin("                  <span class=\"cGre\"> favorable  influences  +  </span> and      ");
+//    g_fn_prtlin("                  <span class=\"cRed\"> chalenging influences  -  </span>          ");
+//    g_fn_prtlin("                                                                                   ");
+
+//    g_fn_prtlin("                                                                                  ");
+//    g_fn_prtlin("                      For the 3 categories below                                  "); // 5  
+//    g_fn_prtlin("                    you can see the proportion of                                 ");
+//    g_fn_prtlin("                                                                                  ");
+//    g_fn_prtlin("                   <span class=\"cGre\"> favorable   influences  +++  </span> and                              ");
+//    g_fn_prtlin("                   <span class=\"cRed\"> challenging influences  ---  </span>                                  ");
+//    g_fn_prtlin("                                                                                  ");
+//
+
+//  g_fn_prtlin("                                                                                  ");
+
+// should work
+//    g_fn_prtlin("                                  How Big                                         "); // 7  
+//
+//    g_fn_prtlin("                                <span class=\"cGre\">                              </span>                    ");
+//    g_fn_prtlin("                       are the  <span class=\"cGre\"> favorable   influences  +++  </span>                    ");
+//
+//    g_fn_prtlin("                                <span class=\"cRed\">                              </span>                    ");
+//    g_fn_prtlin("                       and the  <span class=\"cRed\"> challenging influences  ---  </span>                    ");
+//
+//    g_fn_prtlin("                         in the 3 categories below?                               ");
+//
+
+//    g_fn_prtlin("<div class=\"linehite_0050\">  <span class=\"cRed\">                         </span>|<span class=\"cGre\">                         </span>  ");
+//    g_fn_prtlin("  <span class=\"cRed\">100%                   0%</span>|<span class=\"cGre\">0%                   100%</span>  </div>");
+
+
+
+
+
+//"1                                  How Much                                      5"
+//"2                      are   favorable   influences  +++                      6"
+//"3                      and   challenging influences  ---                      7"
+//"4                      expressed in the 3 categories below                          8"
+
+  /*   gbl_we_are_in_PRE_block = 0;   */
+  /*   g_fn_prtlin("</pre>"); */
+
+
+  /*   sprintf(mybuf, "%-92s", " "); */
+  /*   g_fn_prtlin(mybuf); */
+  /*   g_fn_prtlin(" "); */
+
+
+  /*   sprintf(mybuf, "%-92s",  "                    less important                   important                  remarkable");
+  *   g_fn_prtlin(mybuf);
+  * 
+  *   sprintf(mybuf, "%-92s", "                         |                           |                          |");
+  *   g_fn_prtlin(mybuf);
+  */
+
+  /* 
+  *   sprintf(mybuf, "%-82s",  "          less important                   important                  remarkable");
+  *   g_fn_prtlin(mybuf);
+  * 
+  *   sprintf(mybuf, "%-82s", "                |                           |                          |");
+  *   g_fn_prtlin(mybuf);
+  */
+
+
+  /*   g_fn_prtlin("<pre>"); */
+  /*   gbl_we_are_in_PRE_block = 1;  */
+
+  /*   sprintf(mybuf, "%-82s","                     Low              Average                            High     "); */
+  /*   g_fn_prtlin(mybuf); */
+  /*   sprintf(mybuf, "%-82s","                      |                  |                                |       "); */
+  /*   g_fn_prtlin(mybuf); */
+
+//    g_fn_prtlin("                                                                                  "); /* blanks */
+//    g_fn_prtlin("                       Low              Average                            High   ");
+//    g_fn_prtlin("                        |                  |                                |     ");
+
+// out now 20151012
+//    g_fn_prtlin("                       Low                  Average                 High          ");
+//    g_fn_prtlin("                        |                      |                     |            ");
+
+//  g_fn_prtlin( "                        |                      |                     |            ");
+
+
+//
+//  /*   gbl_we_are_in_PRE_block = 0;  */
+//  /*   g_fn_prtlin("</pre>"); */
+//    /* ================================================================= */
+//
+//    for (i=0; ; i++) {
+//      g_docin_get(doclin);
+//      if (strstr(doclin, "[beg_love]") != NULL) break;
+//    }
+//  /*   sprintf(mybuf, "%-92s",  "<span class=\"cCat\">LOVE </span>");
+//  *   g_fn_prtlin(mybuf);
+//  */
+//
+//  /*   g_fn_prtlin("<pre>"); */
+//  /*   gbl_we_are_in_PRE_block = 1;  */
+//
+////    g_fn_prtlin("                                                                                  "); /* blanks */
+//    sprintf(category_text, "LOVE ");
+//  /*   put_category_label(category_text);  */
+//    put_category_label(category_text, (int)strlen(category_text)); 
+//
+//    for (i=0; ; i++) {
+//      g_docin_get(doclin);
+//      if (strstr(doclin, "[end_love]") != NULL) break;
+//      scharout(doclin, '|');  /* remove pipes (for old sideline)    */
+//      g_fn_prtlin_stars(doclin);  
+//    }
+//  /*   g_fn_prtlin(" "); */
+//    g_fn_prtlin("                                                                                  "); /* blanks */
+//
+//  /*   gbl_we_are_in_PRE_block = 0;  */
+//  /*   g_fn_prtlin("</pre>"); */
+//
+//    /* ================================================================= */
+//  /*   g_fn_prtlin("<pre>"); */
+//  /*   gbl_we_are_in_PRE_block = 1;  */
+//
+//    for (i=0; ; i++) {
+//      g_docin_get(doclin);
+//      if (strstr(doclin, "[beg_money]") != NULL) break;
+//    }
+//  /*   g_fn_prtlin(" MONEY AND BUSINESS                                                                              "); */
+//  /*   sprintf(mybuf, "%-92s", "<span class=\"cCat\">MONEY AND BUSINESS </span>");
+//  *   g_fn_prtlin(mybuf);
+//  */
+//
+//  /*   sprintf(category_text, "MONEY AND BUSINESS "); */
+////    g_fn_prtlin("                                                                                  "); /* blanks */
+//    sprintf(category_text, "MONEY ");
+//  /*   put_category_label(category_text);  */
+//    put_category_label(category_text, (int)strlen(category_text)); 
+//
+//    for (i=0; ; i++) { 
+//      g_docin_get(doclin);
+//      if (strstr(doclin, "[end_money]") != NULL) break;
+//      scharout(doclin, '|');  /* remove pipes (for old sideline)    */
+//      g_fn_prtlin_stars(doclin);  
+//    }
+//
+//  /*   gbl_we_are_in_PRE_block = 0;  */
+//  /*   g_fn_prtlin("</pre>"); */
+//
+//
+//    /* ================================================================= */
+//  /*   g_fn_prtlin("<pre>"); */
+//  /*   gbl_we_are_in_PRE_block = 1;  */
+//
+//
+
+
+//
+//  g_fn_prtlin( "<table class=\"category\">");  // start of long category table
+
+
+//  g_fn_prtlin( "<tr><td>                                                                                  </td></tr>"); // blank line
+//  g_fn_prtlin( "<tr><td>                3  The compatibility score above is derived from                  </td></tr>");
+//  g_fn_prtlin( "<tr><td>                    the categories below and other influences.                    </td></tr>");
+//  g_fn_prtlin( "<tr><td>                                                                                  </td></tr>"); // blank line
+//  g_fn_prtlin( "<tr><td>                  For each category you can see the proportion of                 </td></tr>");
+//  g_fn_prtlin(
+//    "<tr><td>                 <span class=\"cGre\"> good aspects  +  </span> and <span class=\"cRed\"> bad aspects  -  </span>                 E</td></tr>");
+//  g_fn_prtlin( "<tr><td>                                                                                  </td></tr>"); // blank line
+//  g_fn_prtlin( "<tr><td>                       Low                  Average                 High         x</td></tr>");
+//  g_fn_prtlin( "<tr><td>                        |                      |                     |           x</td></tr>");
+//
+
+
+//  g_fn_prtlin( "<div style=\"font-size: 1.6em; font-weight: bold; white-space: pre ; display: block; unicode-bidi: embed; \">");
+//  g_fn_prtlin( "            The compatibility score above is derived from          ");
+//  g_fn_prtlin( "             the categories below and other influences.            ");
+//  g_fn_prtlin( "                                                                   "); // blank line
+//  g_fn_prtlin( "           For each category you can see the proportion of         ");
+//  g_fn_prtlin(
+//    "          <span class=\"cGre\"> good aspects  +  </span> and <span class=\"cRed\"> bad aspects  -  </span>                E");
+//  g_fn_prtlin( "                                                                   "); // blank line
+//  g_fn_prtlin( "                                                                   "); // blank lined
+//  g_fn_prtlin( "</div>");
+//
+//
+//  g_fn_prtlin( "<table class=\"category\">");  // start of long category table
+//
+//  g_fn_prtlin( "<tr><td>                       Low                  Average                 High         x</td></tr>");
+//  g_fn_prtlin( "<tr><td>                        |                      |                     |           x</td></tr>");
+//
+
+// try 4x, bigger font
+
+//  g_fn_prtlin( "<div style=\"font-size: 1.6em; font-weight: bold; white-space: pre ; display: block; unicode-bidi: embed; \">");
+//  g_fn_prtlin( "<div style=\"font-size: 2.2em; font-weight: bold; white-space: pre ; display: block; unicode-bidi: embed; \">");
+//  g_fn_prtlin( "<div style=\"font-size: 1.8em; line-height: 160%; white-space: pre ; display: block; unicode-bidi: embed; \">");
+
+//  g_fn_prtlin( "<div style=\"font-size: 1.8em; line-height: 1.6em; white-space: pre ; display: block; unicode-bidi: embed; \">");
+
+//  g_fn_prtlin( "<tr><td>                       Low                  Average                 High          </td></tr>");
+//  g_fn_prtlin( "<tr><td>                        |                      |                     |            </td></tr>");
+
+
+//    g_fn_prtlin( "<tr><td>                       Low                  Average                 High              </td></tr>"); // for some reason this
+//    g_fn_prtlin( "<tr><td>                        |                      |                     |                </td></tr>"); // sets the line len for tbl
+//    g_fn_prtlin( "<tr><td>.                                                                                    .</td></tr>"); // for some reason this sets the line len for tbl
+
+
+//  g_fn_prtlin( "</table");  // start of long category table
+//  g_fn_prtlin( "<tr><td><span style=\"font-size: 1.6em\">                                                                        </td></tr>"); // blank line
+//  g_fn_prtlin( "<tr><td><span style=\"font-size: 1.6em\">           3  The compatibility score above is derived from             </td></tr>");
+//  g_fn_prtlin( "<tr><td><span style=\"font-size: 1.6em\">               the categories below and other influences.               </td></tr>");
+//  g_fn_prtlin( "<tr><td><span style=\"font-size: 1.6em\">                                                                        </td></tr>"); // blank line
+//  g_fn_prtlin( "<tr><td><span style=\"font-size: 1.6em\">             For each category you can see the proportion of            </td></tr>");
+//  g_fn_prtlin(
+//    "<tr><td><span style=\"font-size: 1.6em\">            <span class=\"cGre\"> good aspects  +  </span> and <span class=\"cRed\"> bad aspects  -  </span>            E</td></tr>");
+//  g_fn_prtlin( "<tr><td><span style=\"font-size: 1.0em\">                                                                        </td></tr>"); // blank line
+//  g_fn_prtlin( "</table");  // start of long category table
+//
+//
+//  g_fn_prtlin( "<table class=\"category\" style=\"font-size:1.0em\">");  // start of long category table
+//
+//  g_fn_prtlin( "<tr><td>                       Low                  Average                 High         x</td></tr>");
+//  g_fn_prtlin( "<tr><td>                        |                      |                     |           x</td></tr>");
+//
+
+
+
+//      sprintf(writebuf, "<tr><td></td><td></td><td></td><td></td></tr>");
+// END   TABLE VERSION
+
+//
+//// replaced all
+//
+////  g_fn_prtlin( " <div class=\"explproportion\">");
+////    g_fn_prtlin( " <div class=\"categories\">");  // end of explproportion
+////    g_fn_prtlin( " <div class=\"categories\" class=\"bgwide\">");  // end of explproportion
+//    g_fn_prtlin( " <div class=\"categories\">");  // end of explproportion
+//
+//
+//
+//  /*  */
+//  //  g_fn_prtlin("                                                                                  ");
+//  //  g_fn_prtlin("                           These show the proportion of                           ");
+//  //  g_fn_prtlin("                        <span class=\"cGre\">good aspects + </span> and <span class=\"cRed\">bad aspects - </span>                        ");
+//  //  g_fn_prtlin("                                for each category                                 ");
+//  //  g_fn_prtlin("                                                                                  <span>");
+//
+//  //  g_fn_prtlin("                                         ");
+//  //  g_fn_prtlin("       These show the proportion of      ");
+//  //  g_fn_prtlin("    <span class=\"cGre\">good aspects + </span> and <span class=\"cRed\">bad aspects - </span>   ");
+//  //
+//  //  g_fn_prtlin("            for each category            ");
+//  //  g_fn_prtlin("                                         <span>");
+//
+////    strcpy(spanbeg1, "<span style=\"background-color: #fcfce0; font-size: 1.4em;\"> ");
+//    strcpy(spanbeg1, "<span style=\"background-color: #fcfce0;                  \"> ");
+//    strcpy(spanend1, "</span>");
+//
+//  //    "                                                                          ",
+//
+//    sprintf(writebuf, "%s%s%s", spanbeg1,
+//    "                                                             ",
+//    spanend1);
+//    g_fn_prtlin(writebuf);
+//
+////    sprintf(writebuf, "%s%s%s", spanbeg1,
+////      "   For each category below you can see the proportion of     ",
+////    spanend1);
+////    g_fn_prtlin(writebuf);
+//
+//    sprintf(writebuf, "%s%s%s", spanbeg1,
+//    "     The compatibility score above is derived from           ",
+//    spanend1);
+//    g_fn_prtlin(writebuf);
+//
+//    sprintf(writebuf, "%s%s%s", spanbeg1,
+//    "     the categories below and other influences.              ",
+//    spanend1);
+//    g_fn_prtlin(writebuf);
+//
+//    sprintf(writebuf, "%s%s%s", spanbeg1,
+//    "                                                             ",
+//    spanend1);
+//    g_fn_prtlin(writebuf);
+//
+//    sprintf(writebuf, "%s%s%s", spanbeg1,
+//    "     For each category you can see the proportion of         ",
+//    spanend1);
+//    g_fn_prtlin(writebuf);
+//
+//
+//
+//
+//
+//    sprintf(writebuf, "%s%s%s", spanbeg1,
+//      "        <span class=\"cGre\"> good aspects  +  </span> and <span class=\"cRed\"> bad aspects  -  </span>             ",
+//      spanend1);
+//    g_fn_prtlin(writebuf);
+//
+//    sprintf(writebuf, "%s%s%s", spanbeg1,
+//      "                                                             ",
+//    spanend1);
+//    g_fn_prtlin(writebuf);
+//
+//  /*  */
+////  g_fn_prtlin("</div> <div class=\"categories\">");  // end of explproportion
+////
+//
+//
+//  /*   sprintf(mybuf, "%-82s","                     Low              Average                            High     "); */
+//  /*   g_fn_prtlin(mybuf); */
+//  /*   sprintf(mybuf, "%-82s","                      |                  |                                |       "); */
+//  /*   g_fn_prtlin(mybuf); */
+//
+//  //  g_fn_prtlin("                                                                                  "); /* blanks */
+//
+//  //g_fn_prtlin("                       Low              Average                            High   ");
+//  //g_fn_prtlin("                        |                  |                                |     ");
+//
+//    g_fn_prtlin("                       Low                  Average                 High   2      ");
+//    g_fn_prtlin("                        |                      |                     |            ");
+//
+

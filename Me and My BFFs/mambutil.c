@@ -72,7 +72,15 @@ int  bin_find_first_in_array(    /* ABANDONED seq is fast enough */
   char *find_begins_with,
   int num_elements
 );
-int bin_find_first_city(char *begins_with); /* in gbl_placetab[] */
+int bin_find_first_city1 (char *begins_with); /* in gbl_placetab[] */
+int bin_find_first_city(
+  char  *begins_with,
+  int    numCitiesToGetPicklist,
+  int   *arg_numCitiesFound,
+  char  *city_prov_coun_PSVs // ptr to beginning of fixed length PSVs
+
+); /* in gbl_placetab[] */
+
 void bracket_string_of(
   char *any_of_these,
   char *in_string,   
@@ -1377,8 +1385,9 @@ char *scapwords(char *s)
 
 
 /* strsubg    on str s (max 512) does  :s/replace_me/with_me/g
+ * strsubg    on str s (max 2048) does  :s/replace_me/with_me/g
 */
-void strsubg(char *s, char *replace_me, char *with_me)
+void strsubg(char *s, char *replace_me, char *with_me) // on str s (max 2048) does  :s/replace_me/with_me/g
 {
   char final_result[2048], wkbuf[2048], wkbuf2[2048], buf2[2048];
   char save_s[2048], done_so_far[2048];
@@ -1541,7 +1550,7 @@ int ts_upndn_2[] = {-1,1154, 962, 737, 539,  374,  1};
 /* int ts_besty[] = {-1,130,116,100, 84, 68};  */
 int ts_besty[] = {-1,120,108,100, 89, 72,  1}; 
 int ts_mysty[] = {-1,1484,1092, 759, 524, 360,  1}; 
-/* <.> */
+
 /* int ts_bestd[] = {-1, 21, 11,  0,-13,-26,-60};  */
 int ts_bestd[] = {-1,121,111,100, 87, 74,  1}; 
 
@@ -1731,7 +1740,7 @@ int mapBenchmarkNumToPctlRank(int in_score)
   *         ((double)num_stars-(double)ts[3]) / ((double)ts[2]-(double)ts[3]) )
   *     );
   */
-/* <.> */
+
 
   /* e.g. map 41 -> 18 to 25 -> 10 */
   if (in_score <  18 && in_score >   1) return calc_percentile_rank(in_score,  18,   1, 10,  1);
@@ -1840,7 +1849,7 @@ int bin_find_first_in_array(    /* ABANDONED */
 *  to find first city that "begins_with" arg.
 *  Returns index that is   lowest_hit_so_far 
 */
-int bin_find_first_city(char *city_begins_with) /* in gbl_placetab[] */
+int bin_find_first_city1 (char *city_begins_with) /* in gbl_placetab[] */
 {
   int  ii, my_num_elements, len, iresult;
   char low_city_begins_with[64];
@@ -1887,7 +1896,247 @@ int bin_find_first_city(char *city_begins_with) /* in gbl_placetab[] */
 
   return (lowest_hit_so_far);  /* could be -1 (not found) */
  
-} /* end of bin_find_first_city*/
+} /* end of bin_find_first_city1 */
+
+
+ 
+/* Uses binary  search  in gbl_placetab[] structs
+*  to find first city that "begins_with" arg.
+*  RETURN VALUE is
+*     1. index that is lowest_hit_so_far IF there are too many cities for picklist (numCitiesToGetPicklist)
+*     2. -1  IF no city  starts with arg "city_begins_with"
+*     3. -2  IF there are few enough cities to make a picklist
+*  also returns num cities found
+*  also returns array of chars holding city,prov,coun PSVs
+*/
+int bin_find_first_city(      /* in gbl_placetab[] */
+  char  *city_begins_with,
+  int    numCitiesToGetPicklist,
+  int   *arg_numCitiesFound,        // a return value
+  char  *city_prov_coun_PSVs    // a return value
+)
+{
+  int  ii, my_num_elements, len, iresult;
+  char low_city_begins_with[64];
+  char low_city_in_array[64];
+  int low, high, mid, lowest_hit_so_far, lowest_exact_hit_so_far;
+
+/* tn();trn("in  bin_find_first_city_begins_with"); */
+/* kin(my_num_elements); ksn(city_begins_with); */
+
+  /*my_num_elements = NKEYS_PLACE;*/    /* in full placetab array */
+  my_num_elements = gbl_nkeys_place;     /* in full placetab array */
+kin(my_num_elements);
+
+  low = 0;
+  high = my_num_elements - 1;
+  lowest_hit_so_far = -1;
+  lowest_exact_hit_so_far =  -1;
+
+  strcpy(low_city_begins_with, city_begins_with);
+  for(ii = 0; low_city_begins_with[ii]; ii++){  /* make city_begins_with  lower case */
+    low_city_begins_with[ii] = tolower(city_begins_with[ii]);
+  }
+  len = (int)strlen(low_city_begins_with);
+
+  while (low <= high) {
+    mid = (low+high) / 2;
+
+    strcpy(low_city_in_array, gbl_placetab[mid].my_city);             // <<<<===--- -----------------
+
+    for(ii = 0; low_city_in_array[ii]; ii++){ /* make gbl_placetab[mid].my_city lower case */
+      low_city_in_array[ii] = tolower(low_city_in_array[ii]);
+    }
+
+    iresult = strncmp(low_city_begins_with, low_city_in_array, len); /* ignores case */
+
+    if (iresult < 0) {
+      high = mid - 1;
+    } else if (iresult > 0) {
+      low = mid + 1;
+    } else {
+      /* Here we have found a good hit at index  "mid". */
+
+     lowest_hit_so_far = mid;
+     high = mid - 1;
+    }
+  }
+
+
+  if (lowest_hit_so_far == -1 ) return (lowest_hit_so_far);    // -1 = no city  starts with arg "city_begins_with"
+
+
+
+  // regardless of whether we use them, collect city|prov|coun PSVs.
+  //   if we find   > numCitiesToGetPicklist, return lowest_hit_so_far 
+  //   if we find  <= numCitiesToGetPicklist, return -2 so calling pgm knows to make picklist
+  //
+  int out_PSVindex;
+  out_PSVindex = -1;  // (0-based)
+
+//  int my_num_elements, idx, len, num_places_found, iresult;
+  char begins_with_buf[64], city_buf[64], city_buf_tolower[64], prov_buf[64], coun_buf[64];
+  int starting_index_into_cities, idx_of_prov, idx_of_coun;
+  int num_places_found;             // that match begins with typed so far
+  int num_found_match_entire_city;  // count entire city matches
+  int iresult2;                     // count entire city matches
+
+  num_places_found            = 0;  // that match begins with typed so far
+  num_found_match_entire_city = 0;  // count entire city matches
+  starting_index_into_cities  = lowest_hit_so_far;
+
+//  my_num_elements  = NKEYS_PLACE;     // in full placetab array 
+
+  strcpy(begins_with_buf, city_begins_with);
+  for(int i = 0; begins_with_buf[i]; i++){  // make begins_with_buf  lower case 
+    begins_with_buf[i] = tolower(begins_with_buf[i]);
+  }
+  len = (int)strlen(begins_with_buf);
+
+tn();trn("start saving city|prov|coun");
+  int save_idx,   dbctr;
+  save_idx = -1;  // zero-based
+  dbctr = 0; 
+  while (starting_index_into_cities + num_places_found <= my_num_elements) {
+
+    strcpy(city_buf, gbl_placetab[starting_index_into_cities + num_places_found].my_city); // <<<<===--- ------
+    idx_of_prov =    gbl_placetab[starting_index_into_cities + num_places_found].idx_prov;
+    idx_of_coun =    gbl_placetab[starting_index_into_cities + num_places_found].idx_coun;
+    strcpy(prov_buf, array_prov[idx_of_prov]);
+    strcpy(coun_buf, array_coun[idx_of_coun]);
+
+    // make current city_buf  lower case 
+
+    sfill(city_buf_tolower, 63, '\0');
+    for(int i = 0; city_buf[i]; i++){
+      city_buf_tolower[i] = tolower(city_buf[i]);
+    }
+dbctr = dbctr + 1;
+//ki(dbctr);ks(city_buf);ki(idx_of_prov);kin(idx_of_coun);
+ki(dbctr);ks(city_buf);ks(prov_buf);ksn(coun_buf);
+//ksn(city_buf_tolower);
+
+
+    iresult2 = strcmp(begins_with_buf, city_buf_tolower); /* ignores case */      // <<==-----  matches WHOLE CITY NAME
+    if (iresult2 == 0) {
+      num_found_match_entire_city = num_found_match_entire_city + 1;  // count entire city matches
+    }
+
+    iresult = strncmp(begins_with_buf, city_buf_tolower, len); /* ignores case */      // <<==-----  BEGINS WITH
+    if (iresult == 0) {
+      num_places_found = num_places_found + 1;
+
+      if (num_places_found > numCitiesToGetPicklist) {
+
+        // here we have > 25 cities matching Typed so Far
+        // CHECK if there are  any  cities whose ENTIRE NAME matches Typed so Far
+        //     if yes, return -2 to give permission to display button "Picklist >"
+        //
+        if (num_found_match_entire_city > 0) {
+
+          *arg_numCitiesFound = num_found_match_entire_city;   // <<==-----  matches WHOLE CITY NAME
+          return (-2);    // -2  IF there are  entire city matches  to make a picklist
+
+        } else {
+
+          *arg_numCitiesFound = num_places_found;              // <<==-----  matches BEGINS WITH
+          return (lowest_hit_so_far);  // too many cities starting with  "city_begins_with"  to make a picklist
+                                       // caller can display city that is  lowest_hit_so_far
+        }
+      }
+
+      // save city data here into PSV
+      //
+
+//      sprintf(gbl_my1_group_report_line, "%s|%s||", cocoa_rowcolor, person_line);
+//      strcpy(out_group_report_PSVs + *out_group_report_idx * gbl_g_max_len_group_data_PSV , gbl_my1_group_report_line); // every 128
+      char my128PSV[128];
+
+
+
+      sprintf(my128PSV, "%s|%s|%s", city_buf, prov_buf, coun_buf);
+
+      strcpy(city_prov_coun_PSVs + (num_places_found - 1)  * 128, my128PSV);  // fixed rec =  128  chars
+
+    } else {
+      break;  // here we have saved city|prov|coun PSVs until hitting a city that does not start with "city_begins_with"
+    }
+  }
+
+  *arg_numCitiesFound = num_places_found;
+
+  return (-2);    // -2  IF there are few enough cities to make a picklist
+ 
+} // end of bin_find_first_city
+
+
+
+//<.>
+///* if num cities found is <= arg max_in_places_search_results1,
+//*  puts that many structs in   gbl_search_results1[]    and
+//*  also populates gblIdxLastResultsAdded (places_result1_put() does)
+//*
+//*  Returns number found  IF  array gbl_search_results1[] was populated
+//*  otherwise returns -1
+//*/
+//int possiblyGetSearchResults1(
+//  char *city_begins_with,
+//  int  starting_index_into_cities,   /* into array struct my_place_fields gbl_placetab[] */
+//  int  max_in_places_search_results1   /* 10 */
+//)
+//{
+//  int my_num_elements, idx, len, num_places_found, iresult;
+//  char begins_with_buf[64], city_buf[64];
+//
+///* tn();trn("in  possiblyGetSearchResults1"); */
+///* kin(max_in_places_search_results1  ); */
+///* kin(starting_index_into_cities); */
+//  num_places_found = 0;
+//  my_num_elements  = NKEYS_PLACE;     /* in full placetab array */
+//
+///* kin(my_num_elements); ksn(city_begins_with); */
+//
+//  strcpy(begins_with_buf, city_begins_with);
+//  for(int i = 0; begins_with_buf[i]; i++){  /* make begins_with_buf  lower case */
+//    begins_with_buf[i] = tolower(begins_with_buf[i]);
+//  }
+//  len = (int)strlen(begins_with_buf);
+///* kin(len); */
+//  while (starting_index_into_cities + num_places_found <= my_num_elements) {
+//
+//    /* make city_buf  lower case */
+//    strcpy(city_buf, gbl_placetab[starting_index_into_cities + num_places_found].my_city);
+//    for(int i = 0; city_buf[i]; i++){
+//      city_buf[i] = tolower(city_buf[i]);
+//    }
+//
+//    iresult = strncmp(begins_with_buf, city_buf, len); /* ignores case */
+///* ksn(city_buf); */
+//    if (iresult == 0) {
+//      num_places_found = num_places_found + 1;
+///* ki(num_places_found); */
+//      if (num_places_found > max_in_places_search_results1) return (-1);
+//    } else {
+//      break;
+//    }
+//  }
+//
+///* trn("out");ki(num_places_found);tn(); */
+//  /* here num_places_found  is <=  max_in_places_search_results1)
+//  *  and we put that many into gbl_search_results1[]
+//  */
+//  for (idx=0; idx <= num_places_found -1; idx++) {
+///* ki(idx); */
+//    /* ############  collect results here  ##############
+//    */
+//    places_result1_put( gbl_placetab[starting_index_into_cities + idx] );
+//  }
+//
+//  return num_places_found;
+//} /* end of possilyGetSearchResults1() */
+//<.>
+//
+
 
 
 
@@ -2310,6 +2559,9 @@ int snone(char *s,char *set)
 //
 
 
+
+
+
 // This is called for birth data city/prov/coun already accepted by app
 // Uses idx into gbl_placetab to return a PSV of "hoursDiff|Longitude"
 // or "-1" if not found  in arg retDiffLong
@@ -2321,7 +2573,7 @@ void seq_find_exact_citPrvCountry(char *retDiffLong, char *psvCity, char *psvPro
     
     char cityInPlacetab[64], provInPlacetab[64], counInPlacetab[64],psvTimezoneDiff[16], psvLongitude[16];
     int idx_of_found_city, idx_of_prov, idx_of_coun;
-    idx_of_found_city = bin_find_first_city(psvCity);   /* in gbl_placetab[]  NOTE: is "begins with" */
+    idx_of_found_city = bin_find_first_city1(psvCity);   /* in gbl_placetab[]  NOTE: is "begins with" */
     
     if (idx_of_found_city ==  -1) {   /* not found */
         //  b(20);

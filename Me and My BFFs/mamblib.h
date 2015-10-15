@@ -24,6 +24,8 @@ extern void fclose_fpdb_for_debug(void);
 extern void mk_new_date(double *pm, double *pd, double *py, double dstep);   /* in futasp.o */
 
 /* in mambutil.o */
+extern int  day_of_week(int month, int day, int year);
+
 extern void domap(char *str_to_map, int whichnum, char *map_or_unmap);
 extern void scharswitch(char *s, char ch_old, char ch_new);
 extern void scharout(char *s,int c); 
@@ -65,7 +67,14 @@ extern void g_rank_line_free(
 // extern int gbl_num_elements_array_prov;
 // extern int gbl_numkeys_place;
 
-extern int bin_find_first_city(char *begins_with); /* in gbl_placetab[] */ /* in mambutil.o */
+extern int bin_find_first_city1(char *begins_with); /* in gbl_placetab[] */ /* in mambutil.o */
+extern int bin_find_first_city(      /* in gbl_placetab[] */
+    char  *begins_with,
+    int    numCitiesToGetPicklist,
+    int   *arg_numCitiesFound,
+    char *cityStringsToPickFrom   );
+
+
 extern struct my_place_fields  *gbl_search_results1[MAX_IN_PLACES_SEARCH_RESULTS1];
 extern int gblIdxLastResultsAdded;  /*  index of the last place written in gbl_search_results1 */
 extern int gbl_is_first_results1_put; /* 1=y, 0=n */
@@ -85,6 +94,40 @@ extern int possiblyGetSearchResults1( /* into gbl_search_results1[] */
 
 extern char *set_cell_bg_color(int in_score) ;
 extern void seq_find_exact_citPrvCountry(char *retDiffLong, char *psvCity, char *psvProv, char *psvCountry);
+
+//extern int gbl_nkeys_place;
+//extern  struct my_place_fields *gbl_placetab;
+
+struct my_place_fields {                         // this works
+  char *my_city;
+  int  idx_prov;
+  int  idx_coun;
+  char *my_long;
+  char *my_hrs_diff;
+};
+extern  struct my_place_fields gbl_placetab[];  // this works
+
+extern char *array_prov[];
+extern char *array_coun[];
+
+
+//struct my_place_fields {
+//  char *my_city;
+//  int  idx_prov;
+//  int  idx_coun;
+//  char *my_long;
+//  char *my_hrs_diff;
+//} gbl_placetab[] = {
+//char *array_prov[] = {
+//char *array_coun[] = {
+
+
+
+//extern  struct my_place_fields **gbl_placetab;
+//#define NKEYS_PLACE (sizeof gbl_placetab / sizeof(struct my_place_fields))
+//
+//extern struct my_place_fields gbl_placetab[NKEYS_PLACE];
+//} **gbl_placetab;
 
 
 /* end of PLACE functions  */
@@ -125,53 +168,81 @@ extern int mamb_report_just_2_people(      /* in grpdoc.o */
   char *person_1_csv,         /* fmt= "Fred,3,21,1987,11,58,1,5,80.34" */
   char *person_2_csv
 );
-extern int  mamb_report_person_in_group(  /* in grpdoc.o */ 
-  char *html_file_name,
-  char *group_name,
-  char *in_csv_person_arr[],
-  int  num_persons_in_grp,
-  char *csv_compare_everyone_with,  /* fmt= "Fred,3,21,1987,11,58,1,5,80.34" */
-  struct rank_report_line *rank_lines[], /* array of output report data */
-  int  *rank_idx           /* ptr to int having last index written */
+
+//extern int  mamb_report_person_in_group(  /* in grpdoc.o */
+//  char *html_file_name,
+//  char *group_name,
+//  char *in_csv_person_arr[],
+//  int  num_persons_in_grp,
+//  char *csv_compare_everyone_with,  /* fmt= "Fred,3,21,1987,11,58,1,5,80.34" */
+//  struct rank_report_line *rank_lines[], /* array of output report data */
+//  int  *rank_idx           /* ptr to int having last index written */
+//);
+//
+int  mamb_report_person_in_group(  /* in grpdoc.o */
+                                 char *html_file_name,
+                                 char *group_name,
+                                 char *in_csv_person_arr[],
+                                 int  num_persons_in_grp,
+                                 char *compare_everyone_with,   /* fmt= "Fred,3,21,1987,11,58,1,5,80.34" */
+//                                 struct rank_report_line *out_rank_lines[],   /* array of output report data */
+//                                 int  *out_rank_line_idx,                     /* ptr to int having last index written */
+                                 char out_group_report_PSVs[],   /* array of output report data to pass to cocoa */
+                                 int  *out_group_report_idx,       /* ptr to int having last index written */
+                                 int  kingpin_is_in_group   /* 0/1 no/yes */
 );
+
 extern int mamb_report_whole_group(   /* in grpdoc.o */
   char *html_file_name,
   char *group_name,
   char *in_csv_person_arr[],  /* fmt= "Fred,3,21,1987,11,58,1,5,80.34" */
   int  num_persons_in_grp,
-  struct rank_report_line *rank_lines[],      /* output param returned */
-  int  *rank_idx,                             /* output param returned */
+//  struct rank_report_line *rank_lines[],      /* output param returned */
+//  int  *rank_idx,                             /* output param returned */
   char *instructions,
-  char *string_for_table_only  /* 1024 chars max (its 9 lines formatted) */
+  char *string_for_table_only,  /* 1024 chars max (its 9 lines formatted) */
+  char out_group_report_PSVs[],   /* array of output report data to pass to cocoa */
+  int  *out_group_report_idx       /* ptr to int having last index written */
+
 );
-extern int mamb_report_trait_rank(    /* in grpdoc.c */
-  char *html_file_name,
-  char *group_name,
-  char *in_csv_person_arr[],  /* fmt= "Fred,3,21,1987,11,58,1,5,80.34" */
-  int  num_persons_in_grp,
-  char *trait_name,
-/*   struct rank_report_line *rank_lines[],  */
-/*   int  *rank_idx, */
-  struct trait_report_line *trait_lines[],   /* array of output report data */
-  int  *trait_idx            /* ptr to int having last index written */                   
+extern int mamb_report_trait_rank
+(    /* in grpdoc.c */
+ char *html_file_name,
+ char *group_name,
+ char *in_csv_person_arr[],  /* fmt= "Fred,3,21,1987,11,58,1,5,80.34" */
+ int  num_persons_in_grp,
+ char *trait_name,
+ //  struct trait_report_line *trait_lines[],   /* array of output report data */
+ //  int  *trait_idx            /* ptr to int having last index written */
+ char out_group_report_PSVs[],   /* array of output report data to pass to cocoa */
+ int  *out_group_report_idx       /* ptr to int having last index written */
+
 );
-extern int mamb_report_best_year(    /* in grpdoc.c */
-  char *html_file_name,
-  char *group_name,
-  char *in_csv_person_arr[],  /* fmt= "Fred,3,21,1987,11,58,1,5,80.34" */
-  int  num_persons_in_grp,
-  char *yyyy_todo, 
-  struct trait_report_line *trait_lines[],   /* array of output report data */
-  int  *trait_idx            /* ptr to int having last index written */                   
+extern int mamb_report_best_year
+(    /* in grpdoc.c */
+ char *html_file_name,
+ char *group_name,
+ char *in_csv_person_arr[],  /* fmt= "Fred,3,21,1987,11,58,1,5,80.34" */
+ int  num_persons_in_grp,
+ char *yyyy_todo,
+ //  struct trait_report_line *trait_lines[],   /* array of output report data */
+ //  int  *trait_idx            /* ptr to int having last index written */
+ char out_group_report_PSVs[],   /* array of output report data to pass to cocoa */
+ int  *out_group_report_idx       /* ptr to int having last index written */
+
 );
-extern int mamb_report_best_day(    /* in grpdoc.c */
-  char *html_file_name,
-  char *group_name,
-  char *in_csv_person_arr[],  /* fmt= "Fred,3,21,1987,11,58,1,5,80.34" */
-  int  num_persons_in_grp,
-  char *yyyymmdd_todo, 
-  struct trait_report_line *trait_lines[],   /* array of output report data */
-  int  *trait_idx            /* ptr to int having last index written */                   
+extern int mamb_report_best_day
+(    /* in grpdoc.c */
+ char *html_file_name,
+ char *group_name,
+ char *in_csv_person_arr[],  /* fmt= "Fred,3,21,1987,11,58,1,5,80.34" */
+ int  num_persons_in_grp,
+ char *yyyymmdd_todo,
+ //  struct trait_report_line *trait_lines[],   /* array of output report data */
+ //  int  *trait_idx            /* ptr to int having last index written */
+ char out_group_report_PSVs[],   /* array of output report data to pass to cocoa */
+ int  *out_group_report_idx       /* ptr to int having last index written */
+
 );
 
 /* end of mamblib.h */

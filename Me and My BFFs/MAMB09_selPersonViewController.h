@@ -12,6 +12,7 @@
 
 @property (strong, nonatomic) IBOutlet UITableView *outletForSelPersonTableViewController;
 
-@property (strong, nonatomic) NSMutableArray *PSVs_for_person_picklist;
+@property (strong, nonatomic) NSMutableArray *PSVs_for_person_picklist;  // now used for both person and group selection from hompco or hompbm
+@property (strong, nonatomic) NSMutableArray *PSVs_for_group_picklist;
 
 @end

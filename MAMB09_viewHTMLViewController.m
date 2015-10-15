@@ -10,22 +10,62 @@
 #import "mamblib.h"
 #import "MAMB09AppDelegate.h"   // to get globals
 
-// #import "incocoa.h"
+// #import "incocoa.h" xxxxx
+
 
 @interface MAMB09_viewHTMLViewController ()
 
 @end
 
+
 @implementation MAMB09_viewHTMLViewController
 
 
-- (void)viewDidLoad {
+- (void)viewDidLayoutSubviews {  // fill whole screen, no top/leftside gaps  in  webview  THIS WORKED
+    NSLog(@"in viewHTML viewDidLayoutSubviews!");
+    // http://stackoverflow.com/questions/18552416/uiwebview-full-screen-size
+    //webView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+    self.outletWebView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+} // end of viewDidLayoutSubviews 
+
+
+
+- (void)viewDidLoad
+{
     
     [super viewDidLoad];
     
     // Do any additional setup after loading the view.
     NSLog(@"in viewHTML viewDidLoad!");
     
+
+    gbl_viewHTML_ShouldAddToNavBar = 1; // init to prevent  multiple programatic adds of nav bar items
+
+
+
+    gbl_shouldUseDelayOnBackwardForeward = 0;   // use no delay for fast presentation on initial user viewing
+
+    // set gbl_lastSelectedDayLimit;  
+    //
+    // yyyymmdd  Maximum future lookahead is to the end of the
+    //           calendar year after the current calendar year.
+    //
+        // get the current year
+        NSCalendar *gregorian = [NSCalendar currentCalendar];          // Get the Current Date and Time
+
+    // NSDateComponents *dateComponents = [gregorian components: (NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit)
+    NSDateComponents *dateComponents = [gregorian components:(NSCalendarUnitDay| NSCalendarUnitMonth | NSCalendarUnitYear)
+                                                    fromDate: [NSDate date]];
+        gbl_currentYearInt  = [dateComponents year];
+        gbl_currentMonthInt = [dateComponents month];
+        gbl_currentDayInt   = [dateComponents day];
+        gbl_lastSelectedDayLimit = [NSString stringWithFormat: @"%4ld1231", (long)gbl_currentYearInt + 1];
+//  NSLog(@"gbl_lastSelectedDayLimit =%@",gbl_lastSelectedDayLimit );
+    //
+
+
+
+    //   char *gbl_grp_CSVs[gbl_MAX_persons + 16]; // for filling array of group member data
 
 
     char psvName[32], psvMth[4], psvDay[4], psvYear[8], psvHour[4], psvMin[4], psvAmPm[4], psvCity[64], psvProv[64], psvCountry[64];
@@ -35,10 +75,12 @@
     
     char csv_person_string[128], csv_person1_string[128], csv_person2_string[128];
     char person_name_for_filename[32], person1_name_for_filename[32], person2_name_for_filename[32];
-    char stringBuffForTraitCSV[64];
+    //   char group_name_for_filename[32];
+    char myStringBuffForTraitCSV[64];
     
-    char  yyyy_todo[16], stringBuffForStressScore[64] ;
+    char  yyyy_todo[16], yyyymmdd_todo[16], stringBuffForStressScore[64] ;
     const char *yyyy_todoC;
+    const char *yyyymmdd_todoC;
     int retval, retval2;
 
     char   html_file_name_browser[2048], html_file_name_webview[2048];
@@ -53,34 +95,159 @@
     
     fopen_fpdb_for_debug();
 
-    //NSLog(@"fromHomeCurrentSelectionPSV=%@",self.fromHomeCurrentSelectionPSV);            // PSV  for per or grp or pair of people
+    // used to select what to do
+    NSLog(@"gbl_currentMenuPlusReportCode=%@",gbl_currentMenuPlusReportCode);
+
+    // used for input PSVs
     NSLog(@"gbl_fromHomeCurrentSelectionPSV=%@",gbl_fromHomeCurrentSelectionPSV);            // PSV  for per or grp or pair of people
-    
-    NSLog(@"gbl_fromHomeCurrentSelectionType=%@",gbl_fromHomeCurrentSelectionType);    // like "group" or "person" or "pair"
-    NSLog(@"gbl_fromHomeCurrentEntity=%@",gbl_fromHomeCurrentEntity);                  // like "group" or "person"
-    
-    NSLog(@"gbl_fromSelRptRowPSV=%@", gbl_fromSelRptRowPSV);
-    NSLog(@"fromSelRpt  gbl_fromSelRptRowString=%@",gbl_fromSelRptRowString);
+    NSLog(@"gbl_fromSelSecondPersonPSV=%@",gbl_fromSelSecondPersonPSV);
+
+  NSLog(@"gbl_PSVtappedPersonA_inPair=%@",gbl_PSVtappedPersonA_inPair);
+  NSLog(@"gbl_PSVtappedPersonB_inPair=%@",gbl_PSVtappedPersonB_inPair);
+  NSLog(@"gbl_PSVtappedPerson_fromGRP=%@",gbl_PSVtappedPerson_fromGRP);
+
+
+    // GET input person PSVs    THESE ARE ALL THE 21 PLACES A PERSON IS SELECTED FOR A REPORT
+    //
+    //      this, viewHTML, does not take any group name input
+    //     (group reports are displayed in   MAMB09viewTBLRPTs_1_TableViewController.m  and  MAMB09viewTBLRPTs_2_TableViewController.m
+    //
+    if (  [gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]  // from second person select
+    ) {
+        gbl_viewHTML_PSV_personA  = gbl_fromHomeCurrentSelectionPSV;
+        gbl_viewHTML_NAME_personA = [gbl_viewHTML_PSV_personA componentsSeparatedByString:@"|"][0]; // get field #1 (zero-based)
+
+        gbl_viewHTML_PSV_personB  = gbl_fromSelSecondPersonPSV;         // from select second person screen
+        gbl_viewHTML_NAME_personB = [gbl_viewHTML_PSV_personB componentsSeparatedByString:@"|"][0]; // get field #1 (zero-based)
+
+    } else if (
+          [gbl_currentMenuPlusReportCode isEqualToString: @"hompcy"] 
+       || [gbl_currentMenuPlusReportCode isEqualToString: @"homppe"]  
+       || [gbl_currentMenuPlusReportCode isEqualToString: @"hompwc"]  
+//        || [gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"]    // "hompbm" is not handled here (TBLRPTS_1)
+    ) {
+        gbl_viewHTML_PSV_personJust1  = gbl_fromHomeCurrentSelectionPSV;    // from select person on home screen
+        gbl_viewHTML_NAME_personJust1 = [gbl_viewHTML_PSV_personJust1 componentsSeparatedByString:@"|"][0]; // get field #1 (zero-based)
+
+    } else if (
+           [gbl_currentMenuPlusReportCode isEqualToString: @"pbmco"]   // pco chosen for selected pair in grpone 
+        || [gbl_currentMenuPlusReportCode isEqualToString: @"gbmco"]   // pco chosen for selected pair in grpall 
+    ) {
+        gbl_viewHTML_PSV_personA  = gbl_PSVtappedPersonA_inPair;
+        gbl_viewHTML_NAME_personA = [gbl_viewHTML_PSV_personA componentsSeparatedByString:@"|"][0]; // get field #1 (zero-based)
+
+        gbl_viewHTML_PSV_personB  = gbl_PSVtappedPersonB_inPair;        
+        gbl_viewHTML_NAME_personB = [gbl_viewHTML_PSV_personB componentsSeparatedByString:@"|"][0]; // get field #1 (zero-based)
+
+    } else if ( 
+           [gbl_currentMenuPlusReportCode isEqualToString: @"pbm1pe"]  // from a tap in grpone, then sel rpt
+        || [gbl_currentMenuPlusReportCode isEqualToString: @"pbm2pe"]
+//        || [gbl_currentMenuPlusReportCode isEqualToString: @"pbm2bm"]    // "pbm2bm" is not handled here (TBLRPTS_2)
+        || [gbl_currentMenuPlusReportCode isEqualToString: @"gbm1pe"]  // from a tap in grpall, then sel rpt
+        || [gbl_currentMenuPlusReportCode isEqualToString: @"gbm2pe"]
+//        || [gbl_currentMenuPlusReportCode isEqualToString: @"gbm1bm"]    // "gbm1bm" is not handled here (TBLRPTS_2)
+//        || [gbl_currentMenuPlusReportCode isEqualToString: @"gbm2bm"]    // "gbm2bm" is not handled here (TBLRPTS_2)
+
+        || [gbl_currentMenuPlusReportCode isEqualToString: @"gmappe"]  // from a tap in Most xxx in group
+        || [gbl_currentMenuPlusReportCode isEqualToString: @"gmeppe"]
+        || [gbl_currentMenuPlusReportCode isEqualToString: @"gmrppe"]
+        || [gbl_currentMenuPlusReportCode isEqualToString: @"gmpppe"]
+        || [gbl_currentMenuPlusReportCode isEqualToString: @"gmdppe"]
+        || [gbl_currentMenuPlusReportCode isEqualToString: @"gbypcy"]  // from a tap in Best xxx in group
+        || [gbl_currentMenuPlusReportCode isEqualToString: @"gbdpwc"]
+
+//
+//        || [gbl_currentMenuPlusReportCode isEqualToString: @"homgma"]  // from a tap in Most xxx in group
+//        || [gbl_currentMenuPlusReportCode isEqualToString: @"homgme"]
+//        || [gbl_currentMenuPlusReportCode isEqualToString: @"homgmr"]
+//        || [gbl_currentMenuPlusReportCode isEqualToString: @"homgmp"]
+//        || [gbl_currentMenuPlusReportCode isEqualToString: @"homgmd"]
+//        || [gbl_currentMenuPlusReportCode isEqualToString: @"homgby"]  // from a tap in Best xxx in group
+//        || [gbl_currentMenuPlusReportCode isEqualToString: @"homgbd"]
+//
+
+    ) {
+        gbl_viewHTML_PSV_personJust1  = gbl_PSVtappedPerson_fromGRP;
+        gbl_viewHTML_NAME_personJust1 = [gbl_viewHTML_PSV_personJust1 componentsSeparatedByString:@"|"][0]; // get field #1 (zero-based)
+
+    } else {  // SHOULD NOT HAPPEN
+       NSLog(@"view HTML should not happen");
+    }
+  NSLog(@"gbl_viewHTML_PSV_personA=%@",gbl_viewHTML_PSV_personA);
+  NSLog(@"gbl_viewHTML_NAME_personA=%@",gbl_viewHTML_NAME_personA);
+  NSLog(@"gbl_viewHTML_PSV_personB=%@",gbl_viewHTML_PSV_personB);
+  NSLog(@"gbl_viewHTML_NAME_personB=%@",gbl_viewHTML_NAME_personB);
+  NSLog(@"gbl_viewHTML_PSV_personJust1=%@",gbl_viewHTML_PSV_personJust1);
+  NSLog(@"gbl_viewHTML_NAME_personJust1=%@",gbl_viewHTML_NAME_personJust1);
+
+
 
     // e.g.  fromHomeCurrentSelectionPSV= @"~Noah|12|19|1994|11|4|0|Los Angeles|California|United States|"
     //
     // passed to mamb_report_personality() as "evelyn,2,28,1944,7,30,1,5,79.22"  5=timezonediff 79=long
     //
     //   later:  calc_chart(pINMN,pINDY,pINYR,pINHR,pINMU,pINAP,pINTZ,pINLN,pINLT);  (pINLT always 0.0)
-    //<.>
-    if ([gbl_fromSelRptRowString hasPrefix: @"Personality"]) {  // call Personality HTML report
+    //
+    //if ([gbl_fromSelRptRowString hasPrefix: @"Personality"])    // call Personality HTML report
+
+
+    // old   if ([gbl_currentMenuPlusReportCode isEqualToString: @"homppe"])
+
+    // here we take advantage of the fact that all personality reports 
+    // have gbl_currentMenuPlusReportCode which ends in "pe"
+    //
+
+tn();
+  NSLog(@"gbl_currentMenuPlusReportCode in VIEW HTML=%@",gbl_currentMenuPlusReportCode);
+
+    if (   [gbl_currentMenuPlusReportCode hasSuffix: @"pe"] // per rpt gmappe,gmeppe,gmrppe,gmpppe,gmdppe homppe pbm1pe,pbm2pe gbm1pe,gbm2pe
+//        || [gbl_currentMenuPlusReportCode hasPrefix: @"homgm"]   // personality report  homgma,homgme,homgmr,homgmp,homgmd
+    ) {
         trn("in personality");
         
-        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  <.>
-        //     [[self navigationItem] setTitle: @"Personality of       "];
-            [[self navigationItem] setTitle: @"Personality       "];
-        });
 
-        sfill(stringBuffForTraitCSV, 60, ' ');  // not used here in per, so blanks
+
+//        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+//            [[self navigationItem] setTitle: @"Personality       "];
+//        });
+//
+
+//        // TWO-LINE NAV BAR TITLE
+//        //
+//        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+//
+//            UILabel *mySelRptB_Label      = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 480.0, 44.0)];
+//            mySelRptB_Label.numberOfLines = 2;
+//            mySelRptB_Label.font          = [UIFont boldSystemFontOfSize: 16.0];
+//            mySelRptB_Label.textColor     = [UIColor blackColor];
+//            mySelRptB_Label.textAlignment = NSTextAlignmentCenter; 
+//            mySelRptB_Label.text          = [NSString stringWithFormat:  @"Personality of\n%@", gbl_lastSelectedPerson ];
+//            // mySelRptB_Label.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
+//            self.navigationItem.titleView = mySelRptB_Label;
+//
+//            UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];  // 3rd arg is horizontal length
+//            UIBarButtonItem *mySpacerForTitle = [[UIBarButtonItem alloc] initWithCustomView: spaceView];
+//            self.navigationItem.rightBarButtonItem = mySpacerForTitle;
+//            [self.navigationController.navigationBar setTranslucent:NO];
+//
+//            //        UIButton *myInvisibleButton       = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+//            //        myInvisibleButton.backgroundColor = [UIColor clearColor];
+//            //        UIBarButtonItem *mySpacerNavItem  = [[UIBarButtonItem alloc] initWithCustomView: myInvisibleButton];
+//            //        self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerNavItem];
+//        });
+//
+
+
+
+
+
+        sfill(myStringBuffForTraitCSV, 60, ' ');  // not used here in per, so blanks
 
         // NSString object to C
         //const char *my_psvc = [self.fromHomeCurrentSelectionPSV cStringUsingEncoding:NSUTF8StringEncoding];  // psv=pipe-separated values
-        my_psvc = [gbl_fromHomeCurrentSelectionPSV cStringUsingEncoding:NSUTF8StringEncoding];  // psv=pipe-separated values 
+//        my_psvc = [gbl_fromHomeCurrentSelectionPSV cStringUsingEncoding:NSUTF8StringEncoding];  // for personality
+        my_psvc = [gbl_viewHTML_PSV_personJust1 cStringUsingEncoding:NSUTF8StringEncoding];  // for personality
+
         strcpy(my_psv, my_psvc);
         ksn(my_psv);
         
@@ -143,9 +310,9 @@
         // remove all "*.html" files from TMP directory before creating new one
         //
         tmpDirFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:NSTemporaryDirectory() error:NULL];
-        NSLog(@"tmpDirFiles.count=%lu",(unsigned long)tmpDirFiles.count);
+//        NSLog(@"tmpDirFiles.count=%lu",(unsigned long)tmpDirFiles.count);
                 for (NSString *fil in tmpDirFiles) {
-            NSLog(@"fil=%@",fil);
+//            NSLog(@"fil=%@",fil);
             if ([fil hasSuffix: @"html"]) {
                 [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), fil] error:NULL];
             }
@@ -166,7 +333,62 @@
                                 "",  /* could be "return only csv with all trait scores",  instructions */
                                 /* this instruction arg is now ignored, because arg next, */
                                 /* stringBuffForTraitCSV, is ALWAYS populated with trait scores */
-                                 stringBuffForTraitCSV);
+                                 myStringBuffForTraitCSV);
+
+
+//tn();ksn(myStringBuffForTraitCSV);tn();
+
+        // determine trait name that has the  highest score (for INFO for personality)
+        // all trait scores are in  ( stringBuffForTraitCSV=[42,85,44,21,67,34] )
+        //
+        // _myStringBuffForTraitCSV=[78,1,55,84,90,79]__
+        //
+        NSString *myNSStringTraitCSV = [NSString stringWithUTF8String: myStringBuffForTraitCSV];  // convert c string to NSString
+//  NSLog(@"myNSStringTraitCSV =%@",myNSStringTraitCSV );
+        NSArray  *arrayOfScores      = [myNSStringTraitCSV componentsSeparatedByString:@","];
+//  NSLog(@"arrayOfScores      =%@",arrayOfScores      );
+        NSInteger thisScoreINT, thisScoreIndex;
+        NSInteger highestTraitScore, highestTraitScoreIndex;
+        highestTraitScore      = 0;
+        highestTraitScoreIndex = 0;
+        thisScoreINT           = 0;
+        thisScoreIndex         = 0;
+        NSString *thisScoreSTR;
+
+        for (thisScoreSTR in arrayOfScores) {
+//  NSLog(@"thisScoreSTR =%@",thisScoreSTR );
+//  NSLog(@"thisScoreINT =%ld",(long)thisScoreINT );
+            thisScoreIndex = thisScoreIndex + 1;       // one-based
+            thisScoreINT   = [thisScoreSTR intValue];  // convert NSString to integer
+            if (thisScoreINT >  highestTraitScore) {
+                highestTraitScore      = thisScoreINT;
+                highestTraitScoreIndex = thisScoreIndex;
+//  NSLog(@"highestTraitScore      =%ld",(long)highestTraitScore      );
+//  NSLog(@"highestTraitScoreIndex =%ld",(long)highestTraitScoreIndex );
+            }
+        }
+
+        //  do_special_line(IDX_FOR_AGGRESSIVE);    1
+        //  do_special_line(IDX_FOR_SENSITIVE);     2
+        //  do_special_line(IDX_FOR_RESTLESS);      3
+        //  do_special_line(IDX_FOR_DOWN_TO_EARTH); 4
+        //  do_special_line(IDX_FOR_SEX_DRIVE);     5
+        //  do_special_line(IDX_FOR_UPS_AND_DOWNS); 6  (removed)
+        //
+        gbl_highestTraitScore = [NSString stringWithFormat:@"%ld", (long)highestTraitScore ]; // convert NSInteger to NSString 
+
+        gbl_highestTraitScoreDescription = @" ";
+        if (highestTraitScoreIndex == 1) gbl_highestTraitScoreDescription = @"Assertive";
+        if (highestTraitScoreIndex == 2) gbl_highestTraitScoreDescription = @"Emotional";
+        if (highestTraitScoreIndex == 3) gbl_highestTraitScoreDescription = @"Restless";
+        if (highestTraitScoreIndex == 4) gbl_highestTraitScoreDescription = @"Down-to-earth";
+        if (highestTraitScoreIndex == 5) gbl_highestTraitScoreDescription = @"Passionate";
+        //  if (highestTraitScoreIndex == 6) gbl_highestTraitScoreDescription = @"Ups and Downs";
+tn();ksn(myStringBuffForTraitCSV);
+  NSLog(@"gbl_highestTraitScore=%@",gbl_highestTraitScore );
+  NSLog(@"gbl_highestTraitScoreDescription=%@",gbl_highestTraitScoreDescription );
+
+
         if (retval == 0) {
            
             // show all files in temp dir
@@ -177,15 +399,21 @@
             }
             
             
-             /* here, go and look at html report */
-             // [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"about:blank"]]];  // ?clean for re-use
-             
-             self.outletWebView.scalesPageToFit = YES;
-             
-             // I was having the same problem. I found a property on the UIWebView
-             // that allows you to turn off the data detectors.
-             //
-             self.outletWebView.dataDetectorTypes = UIDataDetectorTypeNone;
+            /* here, go and look at html report */
+            // [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"about:blank"]]];  // ?clean for re-use
+            
+            self.outletWebView.scalesPageToFit = YES;
+            
+            // I was having the same problem. I found a property on the UIWebView
+            // that allows you to turn off the data detectors.
+            //
+            self.outletWebView.dataDetectorTypes = UIDataDetectorTypeNone;
+
+            // did not work // fill whole screen, no gaps   
+            //             self.outletWebView.autoresizesSubviews = YES;
+            //             self.outletWebView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+            //
+
             
              // place our URL in a URL Request
              HTML_URLrequest = [[NSURLRequest alloc] initWithURL: URLtoHTML_forWebview];
@@ -199,16 +427,20 @@
              });
         }
 
-    } // Personality
+    }  //  [gbl_currentMenuPlusReportCode hasSuffix: @"pe"] // personality report
 
     
     
-    if ([gbl_fromSelRptRowString hasPrefix: @"Calendar Year"]) {  // call Calendar Year HTML report
+    //if ([gbl_fromSelRptRowString hasPrefix: @"Calendar Year"])    // call Calendar Year HTML report
+//    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompcy"])
+    if (   [gbl_currentMenuPlusReportCode hasSuffix:       @"cy"]        // calendar year report  hompcy or gbypcy
+//        || [gbl_currentMenuPlusReportCode isEqualToString: @"homgby"]    // calendar year report
+    ) {   
         tn();trn("in calendar year!");
         
 
-        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  <.>
-        [[self navigationItem] setTitle:  @"Calendar Year    "];
+        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+            [[self navigationItem] setTitle:  @"Calendar Year    "];
         });
 
         sfill(stringBuffForStressScore, 60, ' ');
@@ -217,12 +449,13 @@
         strcpy(yyyy_todo, yyyy_todoC);
         // ksn(yyyy_todo);
         
-        // NSLog(@"in view HTML for cal yr  gbl_arrayPer=%@",gbl_arrayPer);
+// NSLog(@"in view HTML for cal yr  gbl_arrayPer=%@",gbl_arrayPer);
 
         
         // NSString object to C
-        //const char *my_psvc = [self.fromHomeCurrentSelectionPSV cStringUsingEncoding:NSUTF8StringEncoding];  // psv=pipe-separated values
-        my_psvc = [gbl_fromHomeCurrentSelectionPSV cStringUsingEncoding:NSUTF8StringEncoding];  // psv=pipe-separated values
+//        my_psvc = [gbl_fromHomeCurrentSelectionPSV cStringUsingEncoding:NSUTF8StringEncoding];  // for calendar year
+        my_psvc = [gbl_viewHTML_PSV_personJust1 cStringUsingEncoding:NSUTF8StringEncoding];  // for personality
+
         char my_psv[128];
         strcpy(my_psv, my_psvc);
         
@@ -258,8 +491,9 @@
         //
         sprintf(csv_person_string, "%s,%s,%s,%s,%s,%s,%s,%s,%s",
                 psvName,psvMth,psvDay,psvYear,psvHour,psvMin,psvAmPm,psvHoursDiff,psvLongitude);
+
         
-        // build HTML file name  TMP  Directory
+        // build HTML file name  in  TMP  Directory
         //
         strcpy(person_name_for_filename, psvName);
         scharswitch(person_name_for_filename, ' ', '_');
@@ -290,24 +524,22 @@
 
 
 
-
 // test sending webview by email
         //gbl_pathToFileToBeEmailed = OpathToHTML_browser;
         //gbl_pathToFileToBeEmailed = OpathToHTML_webview;
+
         gbl_pathToFileToBeEmailed = OpathToHTML_browser; // NSString email file named *.html  with no "webview" in it
-        //NSLog(@"gbl_pathToFileToBeEmailed=%@",gbl_pathToFileToBeEmailed);
-        //NSLog(@"OpathToHTML_browser=%@",OpathToHTML_browser);
 
-
-
+//NSLog(@"gbl_pathToFileToBeEmailed=%@",gbl_pathToFileToBeEmailed);
+//NSLog(@"OpathToHTML_browser=%@",OpathToHTML_browser);
 
         
         // remove all "*.html" files from TMP directory before creating new one
         //
         tmpDirFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:NSTemporaryDirectory() error:NULL];
-        NSLog(@"tmpDirFiles.count=%lu",(unsigned long)tmpDirFiles.count);
+//        NSLog(@"tmpDirFiles.count=%lu",(unsigned long)tmpDirFiles.count);
         for (NSString *fil in tmpDirFiles) {
-            NSLog(@"file to DELETE=%@",fil);
+//            NSLog(@"file to DELETE=%@",fil);
             if ([fil hasSuffix: @"html"]) {
                 [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), fil] error:NULL];
             }
@@ -325,6 +557,12 @@
                                                );
 
 
+//<.> beg wait for bug fix
+
+        //
+        //  SECOND CALL for BIG html 
+        //
+
         retval2 = 0;
 //         retval2 = mamb_BIGreport_year_in_the_life (    // big html for non webview
 //                                                pathToHTML_browser,
@@ -333,20 +571,80 @@
 //                                                "",          /* char *instructions,    like  "return only year stress score" */
 //                                                stringBuffForStressScore   /* char *stringBuffForStressScore */
 //                                                );
-        
-        //   copy  *webview.html to  *html  until bug is fixed 
+        //   copy  *webview.html to  *html  until bug is fixed on inner_html
         //
         NSFileManager* sharedFM2 = [NSFileManager defaultManager];
         NSError *err03;
-        //[sharedFM2 copyItemAtURL:URLToGroupLastGood toURL:URLToGroup error:&err01];
         [sharedFM2 copyItemAtURL:URLtoHTML_forWebview
                            toURL:URLtoHTML_forEmailing
                            error:&err03];
         if (err03) { NSLog(@"cp *webview.html to *.html %@", err03); }
+//<.> end wait for bug fix
 
 
 
-        // show all files in temp dir
+
+
+       do { // remove <title> in webview html file
+
+            // remove <title> in webview html file    (because using same html for webview and browser (for now) )
+            // <pre class="myTitle">2015 ~Aiden 89012f45 </pre>
+            // remove line beginning with    <pre class="myTitle">
+            // (title is now in uiwebview nav bar title)
+            //
+            NSCharacterSet *newlineCharSet = [NSCharacterSet newlineCharacterSet];
+            NSString* fileContents    = [NSString stringWithContentsOfFile: OpathToHTML_webview
+                                                                  encoding: NSUTF8StringEncoding
+                                                                     error: nil];
+            NSArray *htmllines = [fileContents componentsSeparatedByCharactersInSet: newlineCharSet];
+            NSMutableArray *htmllinesMut = [NSMutableArray arrayWithArray: htmllines ];
+
+
+            // NSMutableArray rearranges the indexes after adding or removing an object,
+            // so if we start with index 0, we'll be guaranteed an index out of bounds exception
+            // if even one object is removed during the iteration.
+            // So, we have to start from the back of the array, and
+            // only remove objects that have lower indexes than every index we've checked so far.
+            // http://stackoverflow.com/questions/19107905/removing-an-item-from-an-array-in-objective-c
+            NSInteger numlins = [htmllinesMut count];
+            NSString *currlin;
+            for (NSInteger myidx = (numlins - 1); myidx >= 0; myidx--) {
+               currlin = htmllinesMut[myidx];
+               if ([currlin hasPrefix: @"<pre class=\"myTitle\">"] ) {
+    //                [htmllinesMut removeObjectAtIndex: myidx];
+                    [htmllinesMut replaceObjectAtIndex:  myidx   withObject: @"<pre><br></pre>" ];
+                }
+            }
+
+            [gbl_sharedFM removeItemAtURL: URLtoHTML_forWebview error:&err03];
+
+            // Write array back  (overwrite original html file)
+
+            NSString *myarr2str = [htmllinesMut componentsJoinedByString:@"\n"];
+
+    //        [htmllinesMut writeToFile: OpathToHTML_webview atomically: YES];
+            [myarr2str writeToFile: OpathToHTML_webview atomically: YES
+                                                                  encoding: NSUTF8StringEncoding
+                                                                     error: nil
+            ];
+
+
+    //- (BOOL)writeToFile:(NSString *)path
+    //         atomically:(BOOL)useAuxiliaryFile
+    //           encoding:(NSStringEncoding)enc
+    //              error:(NSError **)error
+    //
+
+    //- (BOOL)writeToFile:(NSString *)path
+    //         atomically:(BOOL)useAuxiliaryFile
+    //           encoding:(NSStringEncoding)enc
+    //              error:(NSError **)error
+    //
+    //
+       } while (0); // end of remove <title> in webview html file
+
+
+        //  for test   show all files in temp dir
         NSFileManager *manager = [NSFileManager defaultManager];
         NSArray *fileList = [manager contentsOfDirectoryAtPath:NSTemporaryDirectory() error:nil];
         for (NSString *s in fileList){
@@ -384,21 +682,194 @@
                 [self.outletWebView loadRequest:HTML_URLrequest];
             });
         }
-    } // Calendar Year
+    }  // [gbl_currentMenuPlusReportCode hasSuffix: @"cy"] // calendar year report
 
-    //<.>
     
-    if ([gbl_fromSelRptRowString hasPrefix: @"Compatibility Paired with"]) {  // call Calendar Year HTML report
-        tn();trn("in Compatibility Potential!");
+
+    //if ([gbl_fromSelRptRowString hasPrefix: @"What Color"])    // call Calendar Day HTML report, now called "What Color is Today?"
+//    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompwc"]) {
+    if ([gbl_currentMenuPlusReportCode hasSuffix: @"wc"]  // what color report  hompwc or gbdpwc
+//        || [gbl_currentMenuPlusReportCode isEqualToString: @"homgbd"]    // what color report  
+    ) {
+//        tn();trn("in What Color is Today    (calendar day)!");
+        tn();trn("in What Color is This Day    (calendar day)!");
+
+
+        //  save start day stuff
+        //
+            gbl_lastSelectedDaySaved = gbl_lastSelectedDay;  // SAVE START DAY         (for "Start" button)
+
+                                                             // SAVE format  "Jun_05"  (for startDay button label)
+            NSString *my_Obj_dd   = [gbl_lastSelectedDay substringWithRange: NSMakeRange(6,2)];
+            NSString *my_Obj_mm   = [gbl_lastSelectedDay substringWithRange: NSMakeRange(4,2)];
+            //NSString *my_Obj_yyyy = [gbl_lastSelectedDay substringWithRange: NSMakeRange(0,4)];
+            NSInteger tmp_MM_int  = [my_Obj_mm intValue];  // convert NSString to integer
+            NSArray  *myArrayOf3letterMonths      = [[NSArray alloc]
+                initWithObjects:@"Jan",@"Feb",@"Mar",@"Apr",@"May",@"Jun",@"Jul",@"Aug",@"Sep",@"Oct",@"Nov",@"Dec", nil];
+
+            gbl_myStartButtonLabel = [NSString stringWithFormat: @"%@_%@",
+                                      myArrayOf3letterMonths[tmp_MM_int - 1], my_Obj_dd ];
+//            gbl_lastSelectedDayFormattedForEmail = [NSString stringWithFormat: @"%@ %@, %@",
+//                                      myArrayOf3letterMonths[tmp_MM_int - 1], my_Obj_dd, my_Obj_yyyy];
+        //
+        // end of  save start day stuff
+
+
+
+
+//        // for turning off touches during calc
+//        UITapGestureRecognizer *myTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget: self
+//                                                                                                 action: @selector(myHandleTapFrom:) ];
+//        [myToolbar addGestureRecognizer: myTapGestureRecognizer];
+//        myTapGestureRecognizer.delegate = self;
+//
+//
+
+
+
+        //sfill(stringBuffForStressScore, 60, ' ');
         
-        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  <.>
-            [[self navigationItem] setTitle: @"Compatibility Potential\011"];
+        yyyymmdd_todoC = [gbl_lastSelectedDay cStringUsingEncoding:NSUTF8StringEncoding];
+        strcpy(yyyymmdd_todo, yyyymmdd_todoC);
+        
+        // NSString object to C
+//        my_psvc = [gbl_fromHomeCurrentSelectionPSV cStringUsingEncoding:NSUTF8StringEncoding];  // for what color/calendar day
+        my_psvc = [gbl_viewHTML_PSV_personJust1 cStringUsingEncoding:NSUTF8StringEncoding];  // for personality
+
+        char my_psv[128];
+        strcpy(my_psv, my_psvc);
+
+        
+        char psvName[32], psvMth[4], psvDay[4], psvYear[8], psvHour[4], psvMin[4], psvAmPm[4], psvCity[64], psvProv[64], psvCountry[64];
+        strcpy(psvName, csv_get_field(my_psv, "|", 1));
+        strcpy(psvMth,  csv_get_field(my_psv, "|", 2));
+        strcpy(psvDay,  csv_get_field(my_psv, "|", 3));
+        strcpy(psvYear, csv_get_field(my_psv, "|", 4));
+        strcpy(psvHour, csv_get_field(my_psv, "|", 5));
+        strcpy(psvMin,  csv_get_field(my_psv, "|", 6));
+        strcpy(psvAmPm, csv_get_field(my_psv, "|", 7));
+        strcpy(psvCity, csv_get_field(my_psv, "|", 8));
+        strcpy(psvProv, csv_get_field(my_psv, "|", 9));
+        strcpy(psvCountry, csv_get_field(my_psv, "|", 10));
+        //ksn(psvMth);ks(psvDay);ks(psvYear);ks(psvHour);ks(psvMin);ks(psvAmPm);tn();
+        //ksn(psvCity);ks(psvProv);ks(psvCountry);tn();
+        
+        // get longitude and timezone hoursDiff from Greenwich
+        // by looking up psvCity, psvProv, psvCountry
+        //
+        seq_find_exact_citPrvCountry(returnPSV, psvCity, psvProv, psvCountry);
+        
+        strcpy(psvHoursDiff,  csv_get_field(returnPSV, "|", 1));
+        strcpy(psvLongitude,  csv_get_field(returnPSV, "|", 2));
+
+
+        // nav bar title using name of person
+        //
+        NSString *myNameForTitleOnNavBar = [NSString stringWithUTF8String: psvName ];  // convert c string to NSString
+        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+            [[self navigationItem] setTitle: myNameForTitleOnNavBar ];
         });
 
+
+        
+        // set gbl for email
+        gbl_person_name =  [NSString stringWithUTF8String:psvName ];
+
+        // build csv arg for report function call
+        //
+        sprintf(csv_person_string, "%s,%s,%s,%s,%s,%s,%s,%s,%s",
+                psvName,psvMth,psvDay,psvYear,psvHour,psvMin,psvAmPm,psvHoursDiff,psvLongitude);
+
+        
+
+        // build HTML file name  in  TMP  Directory    dy=day , Calendar Day (old name) new=what color is today?
+        //
+        strcpy(person_name_for_filename, psvName);
+        scharswitch(person_name_for_filename, ' ', '_');
+
+        sprintf(html_file_name_browser, "%sdy%s_%s.html",         PREFIX_HTML_FILENAME, yyyymmdd_todo, person_name_for_filename);
+        sprintf(html_file_name_webview, "%sdy%s_%s_webview.html", PREFIX_HTML_FILENAME, yyyymmdd_todo, person_name_for_filename);
+
+        
+        Ohtml_file_name_browser = [NSString stringWithUTF8String: html_file_name_browser ];
+        OpathToHTML_browser     = [NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_browser];
+        pathToHTML_browser      = (char *) [OpathToHTML_browser cStringUsingEncoding: NSUTF8StringEncoding];
+        
+        Ohtml_file_name_webview = [NSString stringWithUTF8String: html_file_name_webview ];
+        OpathToHTML_webview     = [NSTemporaryDirectory() stringByAppendingPathComponent:  Ohtml_file_name_webview];
+        pathToHTML_webview      = (char *) [OpathToHTML_webview cStringUsingEncoding: NSUTF8StringEncoding];
+
+
+        URLtoHTML_forWebview  = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_webview]];
+        URLtoHTML_forEmailing = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_browser]];
+
+        gbl_URLtoHTML_forWebview  = URLtoHTML_forWebview;
+        gbl_URLtoHTML_forEmailing = URLtoHTML_forEmailing;
+
+
+
+        // for shareButtonAction
+
+        gbl_html_file_name_browser = [NSString stringWithUTF8String: html_file_name_browser ];   // for later sending as email attachment
+
+        gbl_pathToFileToBeEmailed  = OpathToHTML_browser; // NSString email file named *.html  with no "webview" in it
+//NSLog(@"OpathToHTML_browser=%@",OpathToHTML_browser);
+        NSLog(@"in viewdidload  viewhtml gbl_pathToFileToBeEmailed=%@",gbl_pathToFileToBeEmailed);
+        
+
+
+        // method  makeAndViewHTMLforWhatColorRpt  uses these gbl
+        //
+        strcpy(gbl_Cbuf_for_csv_person         , csv_person_string);
+        strcpy(gbl_Cbuf_for_pathToHTML_webview , pathToHTML_webview);
+        gbl_URLtoHTML_forWebview = URLtoHTML_forWebview;
+        // plus   gbl_lastSelectedDay    (giving yyyymmdd)
+        //        gbl_URLtoHTML_forWebview
+        //        gbl_URLtoHTML_forEmailing
+        //
+
+//tn();trn("BEFORE calling makeAndViewHTMLforWhatColorRpt!");
+        [self makeAndViewHTMLforWhatColorRpt];
+//tn();trn("AFTER  calling makeAndViewHTMLforWhatColorRpt!");
+
+
+
+    }  // [gbl_currentMenuPlusReportCode hasSuffix: @"wc"] // what color report (calendar day)
+
+  
+    
+//    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]) { 
+    if ([gbl_currentMenuPlusReportCode hasSuffix: @"co"])  // compatibility report  (just 2)
+    {
+        tn();trn("in Compatibility Potential!");
+        
+//        // title does not fit any more with addition of i for INFO on right nav bar
+//        //        dispatch_async(dispatch_get_main_queue(), ^{                                // <=== 
+//        //            [[self navigationItem] setTitle: @"Compatibility Potential\011"];
+//        //        });
+//        //
+//        // therefore, make font smaller:
+//        //
+//        dispatch_async( dispatch_get_main_queue(), ^{                                // <=== 
+//            NSDictionary *navbarTitleTextAttributes = [ NSDictionary dictionaryWithObjectsAndKeys:
+//                [UIColor blackColor]                                 ,  NSForegroundColorAttributeName,
+//                [UIFont fontWithName:@"HelveticaNeueBold" size: 17.0],  NSFontAttributeName,
+//                nil
+//            ];
+//            [self.navigationController.navigationBar setTitleTextAttributes: navbarTitleTextAttributes];
+//
+//            [[self navigationItem] setTitle: @"Compatibility Potential"];
+//        });
+//
+
         do { // assemble person1 CSV
-            my_psvc = [gbl_fromHomeCurrentSelectionPSV cStringUsingEncoding:NSUTF8StringEncoding]; // NSString object to C
+//  NSLog(@"gbl_viewHTML_PSV_personA=%@",gbl_viewHTML_PSV_personA);
+
+//            my_psvc = [gbl_fromHomeCurrentSelectionPSV cStringUsingEncoding: NSUTF8StringEncoding]; // NSString object to C for pco/personA
+            my_psvc = [gbl_viewHTML_PSV_personA cStringUsingEncoding: NSUTF8StringEncoding]; // NSString object to C for pco/personA
+
             strcpy(my_psv, my_psvc); // because of const
-            
+//ksn(my_psv);            
             strcpy(psvName, csv_get_field(my_psv, "|", 1));
             strcpy(psvMth,  csv_get_field(my_psv, "|", 2));
             strcpy(psvDay,  csv_get_field(my_psv, "|", 3));
@@ -413,20 +884,21 @@
             strcpy(person1_name_for_filename, psvName);
             scharswitch(person1_name_for_filename, ' ', '_');
 
-            //ksn(psvMth);ks(psvDay);ks(psvYear);ks(psvHour);ks(psvMin);ks(psvAmPm);tn();
-            //ksn(psvCity);ks(psvProv);ks(psvCountry);tn();
+//ksn(psvMth);ks(psvDay);ks(psvYear);ks(psvHour);ks(psvMin);ks(psvAmPm);tn();
+//ksn(psvCity);ks(psvProv);ks(psvCountry);tn();
             
             // get longitude and timezone hoursDiff from Greenwich
             // by looking up psvCity, psvProv, psvCountry
             //
             seq_find_exact_citPrvCountry(returnPSV, psvCity, psvProv, psvCountry);
-            
+//ksn(returnPSV);            
             strcpy(psvHoursDiff,  csv_get_field(returnPSV, "|", 1));
             strcpy(psvLongitude,  csv_get_field(returnPSV, "|", 2));
-            
+//ksn(psvHoursDiff);
+//ksn(psvLongitude);
             // set gbl for email
             gbl_person_name =  [NSString stringWithUTF8String:psvName ];
-
+//  NSLog(@"gbl_person_name =%@",gbl_person_name );
             // build csv arg for report function call
             //
             sprintf(csv_person1_string, "%s,%s,%s,%s,%s,%s,%s,%s,%s",
@@ -436,7 +908,9 @@
         } while (NO);  // assemble person1 CSV   (do only once)
         
         do { // assemble person2 CSV
-            my_psvc = [gbl_fromSelRptRowPSV cStringUsingEncoding:NSUTF8StringEncoding]; // NSString object to C
+//            my_psvc = [gbl_fromSelSecondPersonPSV cStringUsingEncoding:NSUTF8StringEncoding]; // NSString object to C  for pco/personB
+            my_psvc = [gbl_viewHTML_PSV_personB cStringUsingEncoding:NSUTF8StringEncoding]; // NSString object to C  for pco/personB
+
             strcpy(my_psv, my_psvc); // because of const
             
             strcpy(psvName, csv_get_field(my_psv, "|", 1));
@@ -454,8 +928,8 @@
             scharswitch(person2_name_for_filename, ' ', '_');
             
      
-            //  ksn(psvMth);ks(psvDay);ks(psvYear);ks(psvHour);ks(psvMin);ks(psvAmPm);tn();
-            //ksn(psvCity);ks(psvProv);ks(psvCountry);tn();
+//ksn(psvMth);ks(psvDay);ks(psvYear);ks(psvHour);ks(psvMin);ks(psvAmPm);tn();
+//ksn(psvCity);ks(psvProv);ks(psvCountry);tn();
             
             // get longitude and timezone hoursDiff from Greenwich
             // by looking up psvCity, psvProv, psvCountry
@@ -512,17 +986,17 @@
         // remove all "*.html" files from TMP directory before creating new one
         //
         tmpDirFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:NSTemporaryDirectory() error:NULL];
-        NSLog(@"tmpDirFiles.count=%lu",(unsigned long)tmpDirFiles.count);
+//        NSLog(@"tmpDirFiles.count=%lu",(unsigned long)tmpDirFiles.count);
         
         for (NSString *fil in tmpDirFiles) {
-            NSLog(@"file to DELETE=%@",fil);
+//            NSLog(@"file to DELETE=%@",fil);
             if ([fil hasSuffix: @"html"]) {
                 [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), fil] error:NULL];
             }
         }
         
         
-        tn();trn("doing compatibility potential c call ");
+        tn();trn("doing compatibility potential c call   mamb_report_just_2_people");
         
         ks(html_file_name_webview);
         
@@ -532,6 +1006,8 @@
                                            csv_person1_string,
                                            csv_person2_string
                                            );
+
+        tn();trn("returning from  compatibility potential c call   mamb_report_just_2_people");
 
         //tn();trn("returned from HTML creation");
         //ksn(html_file_name);
@@ -572,7 +1048,283 @@
                 }
             );
         }
-    } // Compatibility Potential
+    }  // [gbl_currentMenuPlusReportCode hasSuffix: @"co"]  // compatibility report  (just 2)
+
+
+// put in ViewTBLRPTs_1_iewController
+//
+//    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"]) {    // My Best Match in Group ...
+//        tn();trn("in REPORT  My Best Match in Group !");
+//        
+//        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+//        //     [[self navigationItem] setTitle: @"Personality of       "];
+//            //[[self navigationItem] setTitle: @"Best Match         ."];
+//            //[[self navigationItem] setTitle: @".       Best Match       ."];
+//            //[[self navigationItem] setTitle: @".                             Best Match                             ."];
+//            //[[self navigationItem] setTitle: @"                              Best Match                             ."];
+//            //[[self navigationItem] setTitle: @"Best Match                             ."];
+//            //[[self navigationItem] setTitle: @"Best Match          ."];
+////            [[self navigationItem] setTitle: @"Best Match          ."];
+////              [[self navigationItem] setTitle: @"____________Best Match____________"];
+//              //[[self navigationItem] setTitle: @"_____Match_____"];
+//              //[[self navigationItem] setTitle: @"___Best Match___"];
+//            //  [[self navigationItem] setTitle: @".  Best Match  ."];
+////                [[self navigationItem] setTitle: @"Best  Match  For"];
+//            [[self navigationItem] setTitle: @"Best  Match"];
+//        });
+//
+////
+//        sfill(myStringBuffForTraitCSV, 60, ' ');  // not used here in per, so blanks
+//
+//        // NSString object to C
+//        //const char *my_psvc = [self.fromHomeCurrentSelectionPSV cStringUsingEncoding:NSUTF8StringEncoding];  // psv=pipe-separated values
+//        my_psvc = [gbl_fromHomeCurrentSelectionPSV cStringUsingEncoding:NSUTF8StringEncoding];  // psv=pipe-separated values 
+//        strcpy(my_psv, my_psvc);
+//        ksn(my_psv);
+//        
+//        strcpy(psvName, csv_get_field(my_psv, "|", 1));
+//        strcpy(psvMth,  csv_get_field(my_psv, "|", 2));
+//        strcpy(psvDay,  csv_get_field(my_psv, "|", 3));
+//        strcpy(psvYear, csv_get_field(my_psv, "|", 4));
+//        strcpy(psvHour, csv_get_field(my_psv, "|", 5));
+//        strcpy(psvMin,  csv_get_field(my_psv, "|", 6));
+//        strcpy(psvAmPm, csv_get_field(my_psv, "|", 7));
+//        strcpy(psvCity, csv_get_field(my_psv, "|", 8));
+//        strcpy(psvProv, csv_get_field(my_psv, "|", 9));
+//        strcpy(psvCountry, csv_get_field(my_psv, "|", 10));
+//
+//        ksn(psvMth);ks(psvDay);ks(psvYear);ks(psvHour);ks(psvMin);ks(psvAmPm);tn();
+//        ksn(psvCity);ks(psvProv);ks(psvCountry);tn();
+//        
+//        // get longitude and timezone hoursDiff from Greenwich
+//        // by looking up psvCity, psvProv, psvCountry
+//        //
+//        seq_find_exact_citPrvCountry(returnPSV, psvCity, psvProv, psvCountry);
+//        
+//        strcpy(psvHoursDiff,  csv_get_field(returnPSV, "|", 1));
+//        strcpy(psvLongitude,  csv_get_field(returnPSV, "|", 2));
+//        
+//        // set gbl for email
+//        ksn(psvName);
+//        gbl_person_name =  [NSString stringWithUTF8String:psvName ];
+//
+//        // build csv arg for report function call
+//        //
+//        sprintf(csv_person_string, "%s,%s,%s,%s,%s,%s,%s,%s,%s",
+//                psvName,psvMth,psvDay,psvYear,psvHour,psvMin,psvAmPm,psvHoursDiff,psvLongitude);
+//        ksn(csv_person_string);tn();
+//        
+//    NSLog(@"gbl_lastSelectedPerson=%@", gbl_lastSelectedPerson);
+//    NSLog(@"gbl_lastSelectedGroup =%@", gbl_lastSelectedGroup );
+//
+//        const char *tmp_grp_name_CONST;                                                       // NSString object to C str
+//        char tmp_grp_name[128];                                                             // NSString object to C str
+//        tmp_grp_name_CONST = [gbl_lastSelectedGroup cStringUsingEncoding:NSUTF8StringEncoding]; // NSString object to C str
+//        strcpy(tmp_grp_name, tmp_grp_name_CONST);                                           // NSString object to C str  // because of const
+//        
+//
+//        // build HTML file name  in TMP  Directory
+//        //
+//        strcpy(person_name_for_filename, psvName);
+//        scharswitch(person_name_for_filename, ' ', '_');
+//        strcpy(group_name_for_filename, tmp_grp_name );  
+//        scharswitch(group_name_for_filename, ' ', '_');
+//
+//        sprintf(html_file_name_browser, "%sgrpone_%s_%s.html",        PREFIX_HTML_FILENAME, person_name_for_filename, group_name_for_filename);
+//        sprintf(html_file_name_webview, "%sgrpone_%s_%swebview.html", PREFIX_HTML_FILENAME, person_name_for_filename, group_name_for_filename);
+//        
+//        
+//        gbl_html_file_name_browser = [NSString stringWithUTF8String:html_file_name_browser ];   // for later sending as email attachment
+//        gbl_html_file_name_webview = [NSString stringWithUTF8String:html_file_name_webview ];   // for later viewing in webview
+//
+//
+//        Ohtml_file_name_browser = [NSString stringWithUTF8String:html_file_name_browser ];
+//        OpathToHTML_browser     = [NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_browser];
+//        pathToHTML_browser      = (char *) [OpathToHTML_browser cStringUsingEncoding:NSUTF8StringEncoding];
+//        
+//        Ohtml_file_name_webview = [NSString stringWithUTF8String:html_file_name_webview ];
+//        OpathToHTML_webview     = [NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_webview];
+//        pathToHTML_webview      = (char *) [OpathToHTML_webview cStringUsingEncoding:NSUTF8StringEncoding];
+//        
+//        URLtoHTML_forWebview = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_webview]];
+//        
+//        gbl_pathToFileToBeEmailed = OpathToHTML_browser;
+//        
+//        // remove all "*.html" files from TMP directory before creating new one
+//        //
+//        tmpDirFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:NSTemporaryDirectory() error:NULL];
+//        NSLog(@"tmpDirFiles.count=%lu",(unsigned long)tmpDirFiles.count);
+//        for (NSString *fil in tmpDirFiles) {
+//            NSLog(@"REMOVED THIS fil=%@",fil);
+//            if ([fil hasSuffix: @"html"]) {
+//                [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), fil] error:NULL];
+//            }
+//        }
+//   
+//        
+//        tn();trn("2 HTMLs !!!!!!!!!!!!!!!!!!!!");
+//        nksn(html_file_name_browser); ksn( html_file_name_webview);
+//        nksn(pathToHTML_browser); ksn(pathToHTML_webview);
+//        NSLog(@"Ohtml_file_name_browser=%@",Ohtml_file_name_browser);
+//        NSLog(@"OpathToHTML_browser=%@",OpathToHTML_browser);
+//
+//        // get a C-string CSV for each member of the group into C array of C strings
+//        //   but excluding  one person who is subject of grpone report "MY Best Match in Group ..." 
+//        //
+//        MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
+//
+//        gbl_grp_CSVs = [myappDelegate getCarrayOfCSVsForGroup: (NSString *) gbl_lastSelectedGroup   // name has spaces
+//                                      excludingThisPersonName: (NSString *) gbl_lastSelectedPerson  // non-empty string for groupOne report
+//        ];
+//        
+////NSLog(@"gbl_grp_CSVs =%@",gbl_grp_CSVs );
+//for (int kk = 0; kk <= gbl_grp_CSVs_idx; kk++) {
+//ksn(gbl_grp_CSVs[kk]);
+//}
+//
+//
+////
+////        retval = mamb_report_personality(     /* in perdoc.o */
+////                                pathToHTML_webview,
+////                                pathToHTML_browser,
+////                                csv_person_string,
+////                                "",  /* could be "return only csv with all trait scores",  instructions */
+////                                /* this instruction arg is now ignored, because arg next, */
+////                                /* myStringBuffForTraitCSV, is ALWAYS populated with trait scores */
+////                                 myStringBuffForTraitCSV);
+////
+//
+/////* ------------------------------------------- */
+////#define CSV_ARRAY_MAX 512  
+////char *mamb_csv_arr [CSV_ARRAY_MAX];
+////int   mamb_csv_idx;
+////int   mamb_csv_idx_max;
+////void  mamb_csv_put(char *line, int length);
+////void  mamb_csv_free(void); 
+////int   is_first_mamb_csv_put;    /* 1=yes, 0=no */
+////int   is_first_mamb_csv_get;    /* 1=yes, 0=no */
+/////* ------------------------------------------- */
+////
+//
+//
+////
+////      /* get all members of group into array 
+////      *    mamb_csv_arr[mamb_csv_idx] = malloc(length + 1);
+////      */
+////
+////      rpt5_person_in_group( 
+////        group_name,
+////        mamb_csv_arr,
+////        num_in_grp,
+////        csv_compare_everyone_with
+////      );
+////
+////
+////void rpt5_person_in_group( 
+////  char *group_name,
+////  char *mamb_csv_arr[],
+////  int   num_in_grp,
+////  char *csv_compare_everyone_with )
+//// 
+////  char html_file_name[256], person_name[32];
+////  char group_buf[32];
+////  int  retval, num_pairs_in_grp;
+////
+////  num_pairs_in_grp = (num_in_grp * (num_in_grp -1)) / 2;
+////  char s_npig[8]; int size_NPIG;
+////  sprintf(s_npig, "%d", num_pairs_in_grp);
+////  size_NPIG = (int)strlen(s_npig);
+////
+////
+////  strcpy(person_name, csv_get_field(csv_compare_everyone_with, ",", 1));
+////  strcpy(group_buf, group_name);
+////  scharswitch(group_buf, ' ', '_');
+////  scharswitch(person_name, ' ', '_');
+////  sprintf(html_file_name, "%s/%sgrpone_%s_%s.html",
+////    dir_html_grpone, PREFIX_HTML_FILENAME, person_name, group_buf);
+////
+////  tn();trn("doing person in group ..."); ks(html_file_name);
+////
+////  /* Now call report function in grpdoc.c
+////  * 
+////  *  struct rank_report_line *out_rank_lines[MAX_IN_RANK_LINE_ARRAY];
+////  *  int out_rank_idx;  * pts to current line in out_rank_lines *
+////  */
+////  out_rank_idx = 0;
+////  retval = mamb_report_person_in_group(  /* in grpdoc.o */
+////    html_file_name,      /* html_file_name */
+////    group_name,          /* group_name */
+////    mamb_csv_arr,        /* in_csv_person_arr[] */
+////    num_in_grp,          /* num_persons_in_grp */
+////    csv_compare_everyone_with,
+////    out_rank_lines,      /* struct rank_report_line *out_rank_lines[]; */
+////    &out_rank_idx 
+////  );
+////
+////  if (retval != 0) {tn(); trn("non-zero retval from mamb_report_person_in_group()");}
+////
+////
+////  /* here, display data in table in cocoa
+////  */
+////
+////
+////
+////
+////
+//
+//
+//
+//
+//
+////        if (retval == 0) {
+////           
+////            // show all files in temp dir
+////            NSFileManager *manager = [NSFileManager defaultManager];
+////            NSArray *fileList = [manager contentsOfDirectoryAtPath:NSTemporaryDirectory() error:nil];
+////            for (NSString *s in fileList){
+////                NSLog(@"TEMP DIR %@", s);
+////            }
+////            
+////            
+////             /* here, go and look at html report */
+////             // [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"about:blank"]]];  // ?clean for re-use
+////             
+////             self.outletWebView.scalesPageToFit = YES;
+////             
+////             // I was having the same problem. I found a property on the UIWebView
+////             // that allows you to turn off the data detectors.
+////             //
+////             self.outletWebView.dataDetectorTypes = UIDataDetectorTypeNone;
+////            
+////             // place our URL in a URL Request
+////             HTML_URLrequest = [[NSURLRequest alloc] initWithURL: URLtoHTML_forWebview];
+////             
+////             // UIWebView is part of UIKit, so you should operate on the main thread.
+////             //
+////             // old= [self.outletWebView loadRequest: HTML_URLrequest];
+////             //
+////             dispatch_async(dispatch_get_main_queue(), ^(void){
+////                 [self.outletWebView loadRequest:HTML_URLrequest];
+////             });
+////        }
+////
+//
+//
+//
+//
+//
+////        dispatch_async(dispatch_get_main_queue(), ^{                                // <=== 
+////            [[self navigationItem] setTitle: @"Best Match"];
+////        });
+////
+//
+//
+//
+//    } //  @"hompbm"])     // My Best Match in Group ...
+//
+//
+
+
     
 //    nb(100);
 //    [self dismissViewControllerAnimated:YES   // this is share button view
@@ -581,24 +1333,190 @@
 
 } // viewDidLoad
 
-// -(void)webViewDidStartLoad:(UIWebView *)webView{
+
+
+// -(void)webViewDidStartLoad:(UIWebView *)webView
 
 // ==============   start of email stuff  ====================
 - (void) viewWillAppear: (BOOL) animated
 {
     [super viewWillAppear: animated];
-    UIBarButtonItem *shareButton = [[UIBarButtonItem alloc]
-                                    initWithBarButtonSystemItem:UIBarButtonSystemItemAction
-                                    target:self
-                                    action:@selector(shareButtonAction:)];
-    self.navigationItem.rightBarButtonItem = shareButton;
-}
+  NSLog(@"in viewWillAppear! in view HTML");
+
+
+//    [self.navigationController.navigationBar.layer removeAllAnimations];  // stop the nav bar title stutter l to r
+
+
+//    UIBarButtonItem *shareButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemAction
+//                                                                                 target: self
+//                                                                                 action: @selector(shareButtonAction:)  ];
+//
+////    self.navigationItem.rightBarButtonItem = shareButton;
+//    self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: shareButton];
+//
+////    UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 22, 44)];  // 3rd arg is length
+//    UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 11, 44)];  // 3rd arg is horizontal length
+//    UIBarButtonItem *mySpacerForTitle = [[UIBarButtonItem alloc] initWithCustomView:spaceView];
+//    //self.navigationItem.rightBarButtonItems = [NSArray arrayWithObject: mySpacerForTitle];
+//    self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerForTitle];
+//
+
+    // you have to add the info button in interface builder by hand,
+    // then you can add  Share button below with   rightBarButtonItems arrayByAddingObject: shareButton];
+    //
+    UIBarButtonItem *shareButton  = [[UIBarButtonItem alloc]
+                                    initWithBarButtonSystemItem: UIBarButtonSystemItemAction
+                                                         target: self
+                                                         action: @selector(shareButtonAction:)];
+    // label for  self.navigationItem.titleView 
+    UILabel *mySelRptB_Label      = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 480.0, 44.0)];
+
+    UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 11, 44)];  // 3rd arg is horizontal length
+    UIBarButtonItem *mySpacerForTitle = [[UIBarButtonItem alloc] initWithCustomView:spaceView];
+
+    // add Navigation Bar right buttons, if not added already-  plus title text
+    //
+    if (gbl_viewHTML_ShouldAddToNavBar == 1) { // init to prevent  multiple programatic adds of nav bar items
+        gbl_viewHTML_ShouldAddToNavBar  = 0;   // do not do this again
+
+        // set nav bar title text
+        //
+        NSString *myNavBar2lineTitle;
+//        if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompcy"])   // @"Calendar Year"
+
+//        if (   [gbl_currentMenuPlusReportCode hasSuffix: @"cy"]              // @"Calendar Year"
+        if (   [gbl_currentMenuPlusReportCode hasSuffix: @"hompcy"]              // @"Calendar Year" from home hompcy
+        ) {
+            myNavBar2lineTitle  = [NSString stringWithFormat:  @"%@\nIn Year %@", 
+//                                   gbl_lastSelectedPerson, gbl_lastSelectedYear ];
+                                   gbl_viewHTML_NAME_personJust1, gbl_lastSelectedYear ];
+        }
+//        if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgby"]    // calendar year report from best year
+        if (   [gbl_currentMenuPlusReportCode isEqualToString: @"gbypcy"]    // calendar year report from best year
+        ) {
+            myNavBar2lineTitle  = [NSString stringWithFormat:  @"Year %@\n for %@", 
+                                   gbl_lastSelectedYear, gbl_viewHTML_NAME_personJust1 ];
+        }
+
+//        if ([gbl_currentMenuPlusReportCode isEqualToString: @"homppe"]) 
+//        if ([gbl_currentMenuPlusReportCode hasSuffix: @"pe"]) {  // personality
+            if (   [gbl_currentMenuPlusReportCode hasSuffix: @"pe"] // gmappe,gmeppe,gmrppe,gmpppe,gmdppe homppe pbm1pe,pbm2pe gbm1pe,gbm2pe
+//            || [gbl_currentMenuPlusReportCode hasPrefix: @"homgm"]   // personality report  homgma,homgme,homgmr,homgmp,homgmd
+        ) {
+            //myNavBar2lineTitle  = [NSString stringWithFormat:  @"Personality of\n%@", gbl_lastSelectedPerson ];
+            myNavBar2lineTitle  = [NSString stringWithFormat:  @"%@\nPersonality", gbl_viewHTML_NAME_personJust1 ];
+        }
+//        if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompco"])   // @"Compatibility Potential"
+        if ([gbl_currentMenuPlusReportCode hasSuffix: @"co"]) {  //   @"Compatibility Potential"
+            myNavBar2lineTitle  = [NSString stringWithFormat:  @"%@\n& %@", 
+//                                   gbl_lastSelectedPerson, gbl_lastSelectedSecondPerson ];
+                                   gbl_viewHTML_NAME_personA, gbl_viewHTML_NAME_personB ];
+        }
+
+
+//        if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompwc"])   // @"what color is the  day?"
+//        if (   [gbl_currentMenuPlusReportCode hasSuffix: @"wc"]              // @"what color is the  day?"
+        if (   [gbl_currentMenuPlusReportCode isEqualToString: @"hompwc"]      // @"what color is the  day?" from home
+        ) {
+            myNavBar2lineTitle  = [NSString stringWithFormat:  @"%@\n%@", 
+//                                   gbl_lastSelectedPerson, gbl_lastSelectedDayFormattedForEmail ];
+                                   gbl_viewHTML_NAME_personJust1, gbl_lastSelectedDayFormattedForEmail ];
+        }
+//        if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgbd"]    // what color report from best year
+        if (   [gbl_currentMenuPlusReportCode isEqualToString: @"gbdpwc"]    // what color report from best year
+        ) {
+            myNavBar2lineTitle  = [NSString stringWithFormat:  @"%@\nfor %@", 
+                                   gbl_lastSelectedDayFormattedForEmail, gbl_viewHTML_NAME_personJust1];
+        }
+
+        mySelRptB_Label.numberOfLines = 2;
+//        mySelRptB_Label.font          = [UIFont boldSystemFontOfSize: 16.0];
+        mySelRptB_Label.font          = [UIFont boldSystemFontOfSize: 14.0];
+        mySelRptB_Label.textColor     = [UIColor blackColor];
+        mySelRptB_Label.textAlignment = NSTextAlignmentCenter; 
+        mySelRptB_Label.text          = myNavBar2lineTitle;
+
+        // TWO-LINE NAV BAR TITLE
+        //
+        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+            self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: shareButton];
+            self.navigationItem.titleView           = mySelRptB_Label; // mySelRptB_Label.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
+            self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerForTitle];
+        });
+
+    } // end of add Navigation Bar right buttons (once only)
+
+
+    //  old       if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]) { 
+    //                // title "Compatibility Potential" does not fit any more with addition of i for INFO on right nav bar
+    //                // therefore, make font smaller:
+    //                //
+    //                NSDictionary *navbarTitleTextAttributes = [ NSDictionary dictionaryWithObjectsAndKeys:
+    //                    [UIColor blackColor]                                 ,  NSForegroundColorAttributeName,
+    //                    [UIFont fontWithName:@"HelveticaNeueBold" size: 17.0],  NSFontAttributeName,
+    //                    nil
+    //                ];
+    //                [self.navigationController.navigationBar setTitleTextAttributes: navbarTitleTextAttributes];
+    //            }
+    //
+
+    // for hompwc  "what color is the day?",
+    // use 3 buttons in a toolbar on bottom of screen to go back/today/fore 
+    //
+//    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompwc"]) 
+//    if (   [gbl_currentMenuPlusReportCode hasSuffix: @"wc"]               // what color report
+    if (   [gbl_currentMenuPlusReportCode hasSuffix: @"hompwc"]               // what color report from home
+//        || [gbl_currentMenuPlusReportCode isEqualToString: @"homgbd"]     // what color from group Best day  rpt   
+        || [gbl_currentMenuPlusReportCode isEqualToString: @"gbdpwc"]     // what color from group Best day  rpt   
+    ) {
+    
+        UIBarButtonItem *prevDay = [[UIBarButtonItem alloc]initWithTitle: @"Backward"
+                                                                   style: UIBarButtonItemStylePlain
+                                                                //style: UIBarButtonItemStyleBordered
+                                                                  target: self
+                                                                  action: @selector(pressedPrevDay)];
+
+        // for startDay button label, use like  "Jun_05"
+        //UIBarButtonItem *startDay = [[UIBarButtonItem alloc]initWithTitle: @"Start"
+        UIBarButtonItem *startDay = [[UIBarButtonItem alloc]initWithTitle: gbl_myStartButtonLabel 
+                                                                   style: UIBarButtonItemStylePlain
+                                                                  target: self
+                                                                  action: @selector(pressedStartDay)];
+
+        UIBarButtonItem *nextDay = [[UIBarButtonItem alloc]initWithTitle: @"Forward"
+                                                                   style: UIBarButtonItemStylePlain
+                                                                  target: self
+                                                                  action: @selector(pressedNextDay)];
+
+        UIBarButtonItem *myFlexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemFlexibleSpace
+                                                                                         target: self
+                                                                                         action: nil];
+        // create a Toolbar
+        UIToolbar *myToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 44, 320, 44)];
+
+        // make array of buttons for the Toolbar
+        NSArray *myButtonArray =  [NSArray arrayWithObjects:
+            myFlexibleSpace, prevDay, myFlexibleSpace, startDay, myFlexibleSpace, nextDay, myFlexibleSpace, nil
+        ]; 
+
+        // put the array of buttons in the Toolbar
+        [myToolbar setItems: myButtonArray   animated: NO];
+
+        // put the Toolbar onto bottom of view
+        dispatch_async(dispatch_get_main_queue(), ^(void){
+            [self.view addSubview: myToolbar];
+        });
+    } // for what color report add Backward / Forward on bottom of screen
+
+} // end of   viewWillAppear
+
+
 
 -(void)shareButtonAction:(id)sender
 {
     MFMailComposeViewController *myMailComposeViewController;
 
-    NSLog(@"shareButtonAction!");
+tn();    NSLog(@"in shareButtonAction!  in viewHTML   ");
     
     // Determine the file name and extension
     // NSArray *filepart = [gbl_pathToFileToBeEmailed componentsSeparatedByString:@"."];
@@ -610,54 +1528,56 @@
     
     // Get the resource path and read the file using NSData
     // NSString *filePath = [[NSBundle mainBundle] pathForResource:filename ofType:extension];
-    NSData *HTMLfileData = [NSData dataWithContentsOfFile:gbl_pathToFileToBeEmailed ];
-    
-    NSString *emailTitle = [NSString stringWithFormat: @"%@  from \"Me and my BFFs\"", filenameForAttachment];
+    NSData *HTMLfileData = [NSData dataWithContentsOfFile: gbl_pathToFileToBeEmailed ];
+//NSLog(@"gbl_pathToFileToBeEmailed =%@",gbl_pathToFileToBeEmailed );
+//NSLog(@"HTMLfileData.length=%lu",(unsigned long)HTMLfileData.length);
+
+
+    NSString *emailTitle = [NSString stringWithFormat: @"%@  from Me and my BFFs", filenameForAttachment];
 
     NSString *myEmailMessage;
     
-    myEmailMessage = @"tester";
+    myEmailMessage = @"-----";
     NSLog(@"myEmailMessage=%@",myEmailMessage);
     NSLog(@"extension=%@",extension);
 
     NSLog(@"gbl_person_name=%@",gbl_person_name);
 
-    // NSString *myEmailMessage = @"Please see attached HTML file from Me and my BFFs,\nan iPhone App by Funnest Astrology Inc.\n\n\n\n\n--------------";
-    // NSString *myEmailMessage = @"Please see attached report created with \n iPhone App \"Me and my BFFs\".\n\n\n\n\n--------------";
-    // NSString *myEmailMessage = @"iPhone App \"Me and my BFFs\" created the attached report.\n\n\n\n\n--------------";
-    // NSString *myEmailMessage = [NSString stringWithFormat: @"iPhone App \"Me and my BFFs\" created %@.%@", baseFilename, extension];
-    // NSString *myEmailMessage = [NSString stringWithFormat: @"\n\n\n\n\n----- iPhone App \"Me and my BFFs\" created %@.%@ -----", baseFilename, extension];
 
-    if ([gbl_fromSelRptRowString hasPrefix: @"Personality"]) {  // call Personality HTML report
-ntrn("in prefix Personality");
-        NSLog(@"gbl_person_name=%@",gbl_person_name);
-        NSLog(@"myEmailMessage=%@",myEmailMessage);
+    // NOTE:  changed all "homgmX" to gmXppe
+    if ([gbl_currentMenuPlusReportCode isEqualToString: @"gmappe"]) {  // Most ... group report
+        myEmailMessage = [NSString stringWithFormat: @"\n\"Most Assertive Person in Group %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.", gbl_lastSelectedGroup ];
+    }
+    if ([gbl_currentMenuPlusReportCode isEqualToString: @"gmeppe"]) {  // Most ... group report
+        myEmailMessage = [NSString stringWithFormat: @"\n\"Most Emotional Person in Group %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.", gbl_lastSelectedGroup ];
+    }
+    if ([gbl_currentMenuPlusReportCode isEqualToString: @"gmrppe"]) {  // Most ... group report
+        myEmailMessage = [NSString stringWithFormat: @"\n\"Most Restless Person in Group %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.", gbl_lastSelectedGroup ];
+    }
+    if ([gbl_currentMenuPlusReportCode isEqualToString: @"gmpppe"]) {  // Most ... group report
+        myEmailMessage = [NSString stringWithFormat: @"\n\"Most Passionate Person in Group %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.", gbl_lastSelectedGroup ];
+    }
+    if ([gbl_currentMenuPlusReportCode isEqualToString: @"gmdppe"]) {  // Most ... group report
+        myEmailMessage = [NSString stringWithFormat: @"\n\"Most Down-to-earth Person in Group %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.", gbl_lastSelectedGroup ];
+    }
 
-        //myEmailMessage = [NSString stringWithFormat: @"\n  \"Personality of %@\"\n\n  attached HTML report was created\n  by iPhone App \"Me and my BFFs\"\n",
-        //myEmailMessage = [NSString stringWithFormat: @"\"Personality of %@\"\n\nThe attached HTML report is designed for BIG SCREENs  like Mac, iPad, PC or tablet.\n\nBy iPhone App  \"Me and my BFFs\"\n",
-        //myEmailMessage = [NSString stringWithFormat: @"\n\"Personality of %@\"\n\nThe attached HTML report is optimized for WIDE screens  like Mac, PC, iPad, tablet or landscape mode on the iPhone or other smart phone.\n\nBy iPhone App  \"Me and my BFFs\"\n",
-        //myEmailMessage = [NSString stringWithFormat: @"\n\"Personality of %@\"\n\n     (by iPhone App  \"Me and my BFFs\")\n\n",
-        myEmailMessage = [NSString stringWithFormat: @"\n\"Personality of %@\"\nis the attached report, which was done with iPhone App  \"Me and my BFFs\".",
-            gbl_person_name
-        ];
-        NSLog(@"myEmailMessage=%@",myEmailMessage);
+//    if ([gbl_currentMenuPlusReportCode hasSuffix: @"pe"]) {  // personality
+//    if (   [gbl_currentMenuPlusReportCode hasSuffix: @"pe"]      // personality report
+    if (   [gbl_currentMenuPlusReportCode hasSuffix: @"pe"] // per rpt gmappe,gmeppe,gmrppe,gmpppe,gmdppe homppe pbm1pe,pbm2pe gbm1pe,gbm2pe
+//        || [gbl_currentMenuPlusReportCode hasPrefix: @"homgm"]   // personality report  homgma,homgme,homgmr,homgmp,homgmd
+    ) {
+        myEmailMessage = [NSString stringWithFormat: @"\n\"Personality of %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.", gbl_person_name ];
     }
-    if ([gbl_fromSelRptRowString hasPrefix: @"Compatibility Paired with"]) {  // call just 2  HTML report
-ntrn("in prefix compatibility");
-        //myEmailMessage = [NSString stringWithFormat: @"\"Compatibility Potential of %@ and %@\"\n\nThe attached HTML report is optimized for WIDE screens  like Mac, PC, iPad, tablet or landscape mode on the iPhone or other smart phone.\n\nBy iPhone App  \"Me and my BFFs\"\n",
-        myEmailMessage = [NSString stringWithFormat: @"\"Compatibility Potential of %@ and %@\"\nis the attached report, which was done with iPhone App  \"Me and my BFFs\".",
-            gbl_person_name,
-            gbl_person_name2
+    if ([gbl_currentMenuPlusReportCode hasSuffix: @"co"]) {  //   @"Compatibility Potential"  hompco, pbmco, gbmco
+        myEmailMessage = [NSString stringWithFormat: @"\"Compatibility Potential of %@ and %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.", gbl_person_name, gbl_person_name2 ];
+    }
+    if ([gbl_currentMenuPlusReportCode hasSuffix: @"cy"]) {  // @"Calendar Year"              hompcy and gbypcy
+        myEmailMessage = [NSString stringWithFormat: @"\"Calendar Year %@ for %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.", gbl_lastSelectedYear, gbl_person_name
         ];
     }
-    if ([gbl_fromSelRptRowString hasPrefix: @"Calendar Year"]) {  // call Calendar Year HTML report
-ntrn("in prefix calendar year");
-        //myEmailMessage = [NSString stringWithFormat: @"\n  \"Calendar Year %@ for %@\"\n\n  attached HTML report was created\n  by iPhone App \"Me and my BFFs\"\n",
-        //myEmailMessage = [NSString stringWithFormat: @"\n  \"Calendar Year %@ for %@\"\n\n  attached HTML report is design for BIG SCREENS\n  like Mac, iPad, PC or tablet.\n  Created by iPhone App  \"Me and my BFFs\"\n",
-        //myEmailMessage = [NSString stringWithFormat: @"       \"Calendar Year %@\n       for %@\"\n\n  The attached HTML report is designed for BIG SCREENs  like Mac, iPad, PC or tablet.\n\n  By iPhone App  \"Me and my BFFs\"\n",
-        //myEmailMessage = [NSString stringWithFormat: @"\"Calendar Year %@ for %@\"\n\nThe attached HTML report is optimized for WIDE screens  like Mac, PC, iPad, tablet or landscape mode on the iPhone or other smart phone.\n\nBy iPhone App  \"Me and my BFFs\"\n",
-        myEmailMessage = [NSString stringWithFormat: @"\"Calendar Year %@ for %@\"\nis the attached report, which was done with iPhone App  \"Me and my BFFs\".",
-            gbl_lastSelectedYear,
+    if ([gbl_currentMenuPlusReportCode hasSuffix: @"wc"]) {    // @"what color is the  day?"  hompwc and gbdpwc
+        myEmailMessage = [NSString stringWithFormat: @"\"What Color is the Day? (%@) for %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.",
+            gbl_lastSelectedDayFormattedForEmail,
             gbl_person_name
         ];
     }
@@ -691,10 +1611,10 @@ ntrn("in prefix calendar year");
         NSLog(@"This device CAN send email");
 
          myMailComposeViewController.mailComposeDelegate = self;
-        [myMailComposeViewController setSubject:emailTitle];
-        [myMailComposeViewController setMessageBody:myEmailMessage
-                                             isHTML:NO];
-        [myMailComposeViewController setToRecipients:toRecipients];
+        [myMailComposeViewController setSubject: emailTitle];
+        [myMailComposeViewController setMessageBody: myEmailMessage
+                                             isHTML: NO];
+        [myMailComposeViewController setToRecipients: toRecipients];
         [myMailComposeViewController setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
         [myMailComposeViewController addAttachmentData: HTMLfileData                // Add attachment
                                               mimeType: mimeType
@@ -706,19 +1626,32 @@ ntrn("in prefix calendar year");
 
 
         dispatch_async(dispatch_get_main_queue(), ^(void){
-                [self presentViewController:myMailComposeViewController animated:YES completion:NULL];
+                [self presentViewController: myMailComposeViewController animated:YES completion:NULL];
             }
         );
     }
     else
     {
-        NSLog(@"This device cannot send email");
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Cannot send email"
-                                                        message: @"Maybe email on this device is not set up."
-                                                       delegate: nil
-                                              cancelButtonTitle: @"OK"
-                                              otherButtonTitles: nil];
-        [alert show];
+//        NSLog(@"This device cannot send email");
+//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Cannot send email"
+//                                                        message: @"Maybe email on this device is not set up."
+//                                                       delegate: nil
+//                                              cancelButtonTitle: @"OK"
+//                                              otherButtonTitles: nil];
+//        [alert show];
+        UIAlertController* alert = [UIAlertController alertControllerWithTitle: @"Cannot send email"
+                                                                       message: @"Maybe email on this device is not set up."
+                                                                preferredStyle: UIAlertControllerStyleAlert  ];
+         
+        UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                            style: UIAlertActionStyleDefault
+                                                          handler: ^(UIAlertAction * action) {
+            NSLog(@"Ok button pressed");
+        } ];
+         
+        [alert addAction:  okButton];
+
+        [self presentViewController: alert  animated: YES  completion: nil   ];
     }
 } // shareButtonAction
 
@@ -728,12 +1661,23 @@ ntrn("in prefix calendar year");
                          error:(NSError *)error
 {
     if (error) {
-        UIAlertView *myalert = [[UIAlertView alloc] initWithTitle: @"An error happened"
-                                                          message: [error localizedDescription]
-                                                         delegate: nil
-                                                cancelButtonTitle: @"cancel"
-                                                otherButtonTitles: nil, nil];
-        [myalert show];
+//        UIAlertView *myalert = [[UIAlertView alloc] initWithTitle: @"An error happened"
+//                                                          message: [error localizedDescription]
+//                                                         delegate: nil
+//                                                cancelButtonTitle: @"cancel"
+//                                                otherButtonTitles: nil, nil];
+//        [myalert show];
+        UIAlertController* alert = [UIAlertController alertControllerWithTitle: @"An error happened"
+                                                                       message: [error localizedDescription]
+                                                                preferredStyle: UIAlertControllerStyleAlert  ];
+         
+        UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                            style: UIAlertActionStyleDefault
+                                                          handler: ^(UIAlertAction * action) {
+NSLog(@"Ok button pressed");
+        } ];
+        [alert addAction:  okButton];
+        [self presentViewController: alert  animated: YES  completion: nil   ];
 
         // [self dismissViewControllerAnimated:yes completion:<#^(void)completion#>];
 
@@ -746,43 +1690,91 @@ ntrn("in prefix calendar year");
     switch (result)
     {
         case MFMailComposeResultCancelled: {
-            NSLog(@"Mail cancelled");
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Mail send was cancelled"
-                                                            message: @""
-                                                           delegate: nil
-                                                  cancelButtonTitle: @"OK"
-                                                  otherButtonTitles: nil];
-            [alert show];
+NSLog(@"Mail cancelled");
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Mail send was cancelled"
+//                                                            message: @""
+//                                                           delegate: nil
+//                                                  cancelButtonTitle: @"OK"
+//                                                  otherButtonTitles: nil];
+//            [alert show];
+//
+            UIAlertController* alert = [UIAlertController alertControllerWithTitle: @"Mail Send was Cancelled"
+                                                                           message: @""
+                                                                    preferredStyle: UIAlertControllerStyleAlert  ];
+            UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                                style: UIAlertActionStyleDefault
+                                                              handler: ^(UIAlertAction * action) {
+NSLog(@"Ok button pressed");
+            } ];
+            [alert addAction:  okButton];
+            [self presentViewController: alert  animated: YES  completion: nil   ];
+
             break;
         }
         case MFMailComposeResultSaved: {
             NSLog(@"Mail saved");
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Mail was saved"
-                                                            message: @""
-                                                           delegate: nil
-                                                  cancelButtonTitle: @"OK"
-                                                  otherButtonTitles: nil];
-            [alert show];
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Mail was saved"
+//                                                            message: @""
+//                                                           delegate: nil
+//                                                  cancelButtonTitle: @"OK"
+//                                                  otherButtonTitles: nil];
+//            [alert show];
+//
+            UIAlertController* alert = [UIAlertController alertControllerWithTitle: @"Mail was Saved"
+                                                                           message: @""
+                                                                    preferredStyle: UIAlertControllerStyleAlert  ];
+            UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                                style: UIAlertActionStyleDefault
+                                                              handler: ^(UIAlertAction * action) {
+NSLog(@"Ok button pressed");
+            } ];
+            [alert addAction:  okButton];
+            [self presentViewController: alert  animated: YES  completion: nil   ];
+
             break;
         }
         case MFMailComposeResultSent: {
             NSLog(@"Mail sent");
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Mail was sent"
-                                                            message: @""
-                                                           delegate: nil
-                                                  cancelButtonTitle: @"OK"
-                                                  otherButtonTitles: nil];
-            [alert show];
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Mail was sent"
+//                                                            message: @""
+//                                                           delegate: nil
+//                                                  cancelButtonTitle: @"OK"
+//                                                  otherButtonTitles: nil];
+//            [alert show];
+            UIAlertController* alert = [UIAlertController alertControllerWithTitle: @"Mail was Sent"
+                                                                           message: @""
+                                                                    preferredStyle: UIAlertControllerStyleAlert  ];
+            UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                                style: UIAlertActionStyleDefault
+                                                              handler: ^(UIAlertAction * action) {
+NSLog(@"Ok button pressed");
+            } ];
+            [alert addAction:  okButton];
+            [self presentViewController: alert  animated: YES  completion: nil   ];
+
+
             break;
         }
         case MFMailComposeResultFailed: {
             NSLog(@"Mail send failure: %@", [error localizedDescription]);
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Failure of mail send"
-                                                            message: [error localizedDescription]
-                                                           delegate: nil
-                                                  cancelButtonTitle: @"OK"
-                                                  otherButtonTitles: nil];
-            [alert show];
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Failure of mail send"
+//                                                            message: [error localizedDescription]
+//                                                           delegate: nil
+//                                                  cancelButtonTitle: @"OK"
+//                                                  otherButtonTitles: nil];
+//            [alert show];
+            UIAlertController* alert = [UIAlertController alertControllerWithTitle: @"Failure of Mail Send"
+                                                                           message: [error localizedDescription]
+                                                                    preferredStyle: UIAlertControllerStyleAlert  ];
+             
+            UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                                style: UIAlertActionStyleDefault
+                                                              handler: ^(UIAlertAction * action) {
+NSLog(@"Ok button pressed");
+            } ];
+            [alert addAction:  okButton];
+            [self presentViewController: alert  animated: YES  completion: nil   ];
+
             break;
         }
         default: { break; }
@@ -802,6 +1794,7 @@ ntrn("in prefix calendar year");
 } //  didFinishWithResult:(MFMailComposeResult)result
 
 // ==============   END of email stuff  ====================
+
 
 
 //
@@ -843,7 +1836,7 @@ ntrn("in prefix calendar year");
 //        
 //        [self dismissViewControllerAnimated:YES completion:NULL];
 //    }
-//    <.>
+//    
 //    NSLog(@"share action");
 //    - (void)emailExport:(NSString *)filePath
 //    {
@@ -889,7 +1882,7 @@ ntrn("in prefix calendar year");
 //            
 //            // Attach image data to the email
 //            [picker addAttachmentData:exportFileData mimeType:@"text/csv" fileName:@"MyFile.csv"];
-//        } else {
+//        } else {UISegmentedControl
 //            [picker setMessageBody:self.csvText isHTML:NO];
 //        }
 //        // Show email view  
@@ -904,15 +1897,375 @@ ntrn("in prefix calendar year");
 
 
 - (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
+    //    [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"The App received an Memory Warning"
-                                                    message: @"The system has determined that the \namount of available memory is very low."
-                                                   delegate: nil
-                                          cancelButtonTitle: @"OK"
-                                          otherButtonTitles: nil];
-    [alert show];
-}
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle: @"The App received a Memory Warning"
+                                                                   message: @"The system has determined that the \namount of available memory is very low."
+                                                            preferredStyle: UIAlertControllerStyleAlert  ];
+     
+    UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                        style: UIAlertActionStyleDefault
+                                                      handler: ^(UIAlertAction * action) {
+        NSLog(@"Ok button pressed");
+    } ];
+    [alert addAction:  okButton];
+    [self presentViewController: alert  animated: YES  completion: nil   ];
+    [super didReceiveMemoryWarning];
+} // didReceiveMemoryWarning 
+
+
+
+
+- (IBAction)pressedPrevDay
+{
+//    NSLog(@"pressedPrevDay");
+    NSInteger num_days_to_add_or_subtract = -1;
+    [self makeNew_gbl_lastSelectedDayByAdding: (NSInteger) num_days_to_add_or_subtract];
+
+//tn();trn("in pressedPrevDay  BEFORE call to  makeAndViewHTMLforWhatColorRpt");
+    [self makeAndViewHTMLforWhatColorRpt];
+//tn();trn("in pressedPrevDay  AFTER  call to  makeAndViewHTMLforWhatColorRpt");
+
+} // pressedPrevDay
+
+
+- (IBAction)pressedStartDay
+{
+//    NSLog(@"pressedStartDay");
+    NSInteger num_days_to_add_or_subtract = 999;  // 999   is magic flag to set the day to TODAY
+    [self makeNew_gbl_lastSelectedDayByAdding: (NSInteger) num_days_to_add_or_subtract];
+
+//tn();trn("in pressedStartDay  BEFORE call to  makeAndViewHTMLforWhatColorRpt");
+    [self makeAndViewHTMLforWhatColorRpt];
+//tn();trn("in pressedStartDay  AFTER  call to  makeAndViewHTMLforWhatColorRpt");
+
+} // pressedStartDay
+
+
+- (IBAction)pressedNextDay
+{
+//tn();    NSLog(@"in pressedNextDay");
+    NSInteger num_days_to_add_or_subtract = 1;
+    [self makeNew_gbl_lastSelectedDayByAdding: (NSInteger) num_days_to_add_or_subtract];
+
+    // selected day LIMIT
+    //
+    // Maximum future lookahead
+    // is to the end of 
+    // the calendar year after
+    // the current calendar year.
+    //
+//  NSLog(@"gbl_lastSelectedDay     =%@",gbl_lastSelectedDay );
+//  NSLog(@"gbl_lastSelectedDayLimit=%@",gbl_lastSelectedDayLimit);
+
+    NSComparisonResult compareResult = [gbl_lastSelectedDay compare: gbl_lastSelectedDayLimit];
+    if (compareResult == NSOrderedDescending) {   // gbl_lastSelectedDay > gbl_lastSelectedDayLimit
+
+//  NSLog(@"HIT LIMIT for FUT !!!");
+        gbl_lastSelectedDay = gbl_lastSelectedDayLimit;
+//  NSLog(@"gbl_lastSelectedDay     =%@",gbl_lastSelectedDay );
+//  NSLog(@"gbl_lastSelectedDayLimit=%@",gbl_lastSelectedDayLimit);
+
+
+        UIAlertController* alert =
+            [UIAlertController alertControllerWithTitle: @"Maximum future lookahead"
+//                                                message: @"is to the end of\nthe calendar year after\nthe current calendar year."
+                                                message: @"is to the end of the calendar year\nafter the current calendar year."
+                                         preferredStyle: UIAlertControllerStyleAlert ];
+        UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+           handler:^(UIAlertAction * action) {}];
+        [alert addAction: defaultAction];
+        [self presentViewController:alert animated: YES completion: nil];
+
+        return;
+    }
+
+//tn();trn("in pressedNextDay  BEFORE call to  makeAndViewHTMLforWhatColorRpt");
+    [self makeAndViewHTMLforWhatColorRpt];
+//tn();trn("in pressedNextDay  AFTER  call to  makeAndViewHTMLforWhatColorRpt");
+
+} // pressedNextDay
+
+
+
+
+- (IBAction)pressedInfoButton
+{
+  NSLog(@"in  pressedInfoButton!");
+} // end of  pressedInfoButton
+
+
+
+- (void) makeNew_gbl_lastSelectedDayByAdding:  (NSInteger) arg_num_days_to_add_or_subtract
+{
+    // need to add or subtract  arg num days to  gbl_lastSelectedDay   yyyymmdd
+
+//NSLog(@"arg_num_days_to_add_or_subtract=%ld",(long)arg_num_days_to_add_or_subtract);
+
+    if  (arg_num_days_to_add_or_subtract == 999) {   // 999   is magic flag to set the day to TODAY
+        gbl_lastSelectedDay =  gbl_lastSelectedDaySaved;  // USE   START DAY (for "Start button") return;
+        return;
+    }
+
+    // #ifdef PUT_BACK_COMMENTED_OUT_STUFF /****************************************/
+    // * static int mytimes; mytimes++;
+    // *   double dmn,ddy,dyr,dstep;
+    // *     dstep = (double)(Eph_rec_every_x_days);
+    // *     dmn = (double) Fut_start_mn;
+    // *     ddy = (double) Fut_start_dy;
+    // *     dyr = (double) Fut_start_yr;
+    // * if (mytimes == 2 ) mk_new_date(&dmn,&ddy,&dyr,dstep+92*2-2);
+    // * 
+    // * for (iday_num=1; iday_num <= Num_eph_grh_pts; ++iday_num) {
+    // * 
+    // * fprintf(stderr,"%s|%d|%04d|%02d|%02d|%d|\n",  fEvent_name, iday_num,
+    // *     (int)dyr,
+    // *     (int)dmn,
+    // *     (int)ddy,
+    // *     *(Grhdata_bestday + (iday_num-1) )
+    // * );
+    // * 
+    // *     mk_new_date(&dmn,&ddy,&dyr,dstep);
+    // * }
+    // #endif /* ifdef PUT_BACK_COMMENTED_OUT_STUFF ********************************/
+    //
+    //  e.g. #2
+    //  mn = (double)Grh_beg_mn;  /* calc from_date from day_num */
+    //  dy = (double)Grh_beg_dy;
+    //  yr = (double)Grh_beg_yr;
+    //  if(trn_plt == 6) day_num++;  /* this is a mystery. 6=mars */
+    //    /* ^why does this old comment say 6=mars. new: it's ok (jsunpm) */
+    //  step = (double)((day_num-1) * Eph_rec_every_x_days);
+    //  mk_new_date(&mn,&dy,&yr,step);
+    //  Rt[nat_plt].from_date.mn = (int)mn;
+    //  Rt[nat_plt].from_date.dy = (int)dy;
+    //  Rt[nat_plt].from_date.yr = (int)yr;
+    //
+
+    // 
+    NSString *my_Obj_yyyy = [gbl_lastSelectedDay substringWithRange: NSMakeRange(0,4)];
+    NSString *my_Obj_mm   = [gbl_lastSelectedDay substringWithRange: NSMakeRange(4,2)];
+    NSString *my_Obj_dd   = [gbl_lastSelectedDay substringWithRange: NSMakeRange(6,2)];
+//NSLog(@"my_Obj_yyyy =%@",my_Obj_yyyy );
+//NSLog(@"my_Obj_mm   =%@",my_Obj_mm   );
+//NSLog(@"my_Obj_dd   =%@",my_Obj_dd   );
+//
+
+    // exampl NSString to double:
+    //NSString *value = [valuelist objectAtIndex:valuerow];
+    //NSString *value2 = [valuelist2 objectAtIndex:valuerow2];
+    //double cal = [value doubleValue] + ([value2 doubleValue] * 8) + 3;
+    //NSString *message =[[NSString alloc] initWithFormat:@"%f",cal];
+    //
+
+    double mn, dy, yr, dstep;
+    yr = [my_Obj_yyyy  doubleValue];
+    mn = [my_Obj_mm    doubleValue];
+    dy = [my_Obj_dd    doubleValue];
+//NSLog(@"f yr=%f",yr);
+//NSLog(@"f mn=%f",mn);
+//NSLog(@"f dy=%f",dy);
+
+    dstep = (double)arg_num_days_to_add_or_subtract;
+//NSLog(@"f dstep=%f",dstep);
+
+    mk_new_date(&mn, &dy, &yr, dstep);
+
+//NSLog(@"new f yr=%f",yr);
+//NSLog(@"new f mn=%f",mn);
+//NSLog(@"new f dy=%f",dy);
+//NSLog(@" before gbl_lastSelectedDay    =%@",gbl_lastSelectedDay    );
+
+    gbl_lastSelectedDay = [[NSString alloc] initWithFormat:@"%04d%02d%02d", (int)yr, (int)mn, (int)dy];
+
+//NSLog(@" after  gbl_lastSelectedDay    =%@",gbl_lastSelectedDay    );
+
+} // makeNew_gbl_lastSelectedDay 
+
+
+
+
+
+// method  makeAndViewHTMLforWhatColorRpt  uses these 4 GBLs  as  INPUT
+//
+//  1. strcpy(gbl_Cbuf_for_csv_person         , csv_person_string);
+//  2. strcpy(gbl_Cbuf_for_pathToHTML_webview , pathToHTML_webview);
+//  3. gbl_URLtoHTML_forWebview = URLtoHTML_forWebview;
+//  4. plus   gbl_lastSelectedDay    (giving yyyymmdd)
+//            gbl_URLtoHTML_forWebview
+//            gbl_URLtoHTML_forEmailing
+//
+- (void) makeAndViewHTMLforWhatColorRpt
+{
+    NSArray* tmpDirFiles;
+    int      retval; // retval2;
+    char     stringBuffForStressScore[64] ;
+
+    sfill(stringBuffForStressScore, 60, ' ');
+//tn();NSLog(@"in makeAndViewHTMLforWhatColorRpt");
+
+//    // put different nav bar title depending on date
+//<.>gbl_lastSelectedDay
+//<.>
+//        // nav bar title
+//        //
+//        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+//            [[self navigationItem] setTitle:  @"What Color is Today?"];
+//        });
+//<.>
+//
+
+
+    // remove all "*.html" files from TMP directory before creating new one
+    //
+    tmpDirFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:NSTemporaryDirectory() error:NULL];
+//    NSLog(@"tmpDirFiles.count=%lu",(unsigned long)tmpDirFiles.count);
+    for (NSString *fil in tmpDirFiles) {
+//        NSLog(@"file to DELETE=%@",fil);
+        if ([fil hasSuffix: @"html"]) {
+            [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), fil] error:NULL];
+        }
+    }
+
+
+    //tn();trn("BEFORE doing 2 calendar day call ...");
+    //ks(html_file_name_browser);
+
+    //    NOTE:    calenday Day  /  What Color is Today   has o_nly 1 html repor
+    const char *arg_yyyymmdd_CONST;                                                       // NSString object to C str
+    char arg_yyyymmdd_C[128];                                                             // NSString object to C str
+    arg_yyyymmdd_CONST = [gbl_lastSelectedDay cStringUsingEncoding:NSUTF8StringEncoding]; // NSString object to C str
+    strcpy(arg_yyyymmdd_C, arg_yyyymmdd_CONST);                                           // NSString object to C str  // because of const
+//ksn(gbl_Cbuf_for_pathToHTML_webview);
+//ksn(gbl_Cbuf_for_csv_person);
+//ksn(arg_yyyymmdd_C);
+
+    retval = mamb_report_year_in_the_life (    /* in futdoc.o */
+        gbl_Cbuf_for_pathToHTML_webview,  // let's try one html file (short report)
+        gbl_Cbuf_for_csv_person,
+        arg_yyyymmdd_C,
+        "do day stress report and return stress score",  /* instructions */
+        stringBuffForStressScore   /* char *stringBuffForStressScore */
+    );
+//;trn("AFTER  doing 2 calendar day call ...");
+//
+////NSLog(@"arg pathToHTML_browser=%s",pathToHTML_browser);
+//NSLog(@"arg gbl_Cbuf_for_pathToHTML_webview=%s",gbl_Cbuf_for_pathToHTML_webview);
+//NSLog(@"arg gbl_Cbuf_for_csv_person=%s",gbl_Cbuf_for_csv_person);
+//NSLog(@"arg gbl_lastSelectedDay=%@",gbl_lastSelectedDay);
+//kin(retval);
+
+
+    //
+    //  SECOND CALL for BIG html 
+    //
+//        retval2 = mamb_BIGreport_year_in_the_life (    // big html for non webview
+//            gbl_Cbuf_for_pathToHTML_browser,
+//            gbl_Cbuf_for_csv_person_string,
+//            gbl_URLtoHTML_forWebview
+//            gbl_URLtoHTML_forEmailing
+//            gbl_lastSelectedDay,
+//            "do day stress report and return stress score",  /* instructions */
+//            stringBuffForStressScore   /* char *stringBuffForStressScore */
+//        );
+//
+//<.>
+        //
+        //   copy  *webview.html to  *html  (using the same report)
+        //
+        NSFileManager* sharedFM2 = [NSFileManager defaultManager];
+        NSError *err03;
+        [sharedFM2 copyItemAtURL: gbl_URLtoHTML_forWebview
+                           toURL: gbl_URLtoHTML_forEmailing
+                           error: &err03];
+        if (err03) { NSLog(@"err on cp *webview.html to *.html %@", err03); }
+
+
+
+        // for test,  show all files in temp dir
+        NSFileManager *manager = [NSFileManager defaultManager];
+        NSArray *fileList = [manager contentsOfDirectoryAtPath:NSTemporaryDirectory() error:nil];
+        for (NSString *s in fileList){
+            NSLog(@"TEMP DIR %@", s);
+        }
+
+//int   haveEmail    = [gbl_sharedFM fileExistsAtPath: gbl_pathToFileToBeEmailed ];
+//NSLog(@"have email file=%d",haveEmail);
+
+
+//<.>
+        // for test,  show all files in temp dir
+    
+//        // for test,  log all contents of pathToHTML_webview in temp dir
+//        NSString* mycontents = [NSString stringWithContentsOfFile: OpathToHTML_webview
+//                                                         encoding: NSUTF8StringEncoding
+//                                                            error: NULL];
+//        NSLog(@"%@",mycontents);
+//        // for test,  log all contents of pathToHTML_webview in temp dir
+//
+    
+
+
+    //if (retval == 0 && retval2 == 0) 
+    if (retval == 0) {                   // retval = mamb_report_year_in_the_life (    /* in futdoc.o */
+
+        /* here, go and look at html report */
+        
+        self.outletWebView.scalesPageToFit = YES;
+        
+        // I was having the same problem. I found a property on the UIWebView
+        // that allows you to turn off the data detectors.
+        //
+        self.outletWebView.dataDetectorTypes = UIDataDetectorTypeNone;
+
+       
+        if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] ==  NO) {// suspend handling of touch-related events
+            [[UIApplication sharedApplication] beginIgnoringInteractionEvents];     // typically call this before an animation or transitiion.
+  NSLog(@"ARE  IGnoring events");
+            }
+
+        // place our URL in a URL Request
+        NSURLRequest *HTML_URLrequestForWhatColorReport;
+
+        //        HTML_URLrequestForWhatColorReport =
+        //            [[NSURLRequest alloc] initWithURL: gbl_URLtoHTML_forWebview]; // HTML_URLrequest  is declared at top of viewHTML .m
+        //
+        // Try ignoring the cache:
+        HTML_URLrequestForWhatColorReport = [NSURLRequest requestWithURL: gbl_URLtoHTML_forWebview
+                                                             cachePolicy: NSURLRequestReloadIgnoringCacheData
+                                                         timeoutInterval: 0.0  ];
+
+        if (gbl_shouldUseDelayOnBackwardForeward == 1) {  // = 1 (0.5 sec  on what color update)
+                                                          // = 0 (no delay on first show of screen)
+            [self.view setUserInteractionEnabled: NO];                              // this works to disable user interaction for "mytime"
+
+            int64_t myDelayInSec   = 0.5 * (double)NSEC_PER_SEC;
+            dispatch_time_t mytime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)myDelayInSec);
+
+            dispatch_after(mytime, dispatch_get_main_queue(), ^{                     // do after delay of  mytime
+                [self.outletWebView loadRequest: HTML_URLrequestForWhatColorReport];
+                [self.view setUserInteractionEnabled: YES];                          // this works to disable user interaction for "mytime"
+            });
+        }
+
+        if (gbl_shouldUseDelayOnBackwardForeward == 0) {  // = 1 (0.5 sec  on what color update)
+                                                          // = 0 (no delay on first show of screen)
+
+            dispatch_async(dispatch_get_main_queue(), ^(void){  // UIWebView is part of UIKit, so you should operate on the main thread.
+                [self.outletWebView loadRequest: HTML_URLrequestForWhatColorReport];
+            });
+        }                                                          
+
+        if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] == YES) {// re-enable handling of touch-related events
+            [[UIApplication sharedApplication] endIgnoringInteractionEvents];       // typically call this after an animation or transitiion.
+  NSLog(@"STOP IGnoring events");
+  }
+
+        gbl_shouldUseDelayOnBackwardForeward = 1;   // only use no delay for fast presentation on initial user viewing
+    }
+//NSLog(@"end of makeAndViewHTMLforWhatColorRpt ");
+
+} // makeAndViewHTMLforWhatColorRpt
 
 
 #pragma mark - Navigation
@@ -928,3 +2281,149 @@ ntrn("in prefix calendar year");
 
 
 @end
+
+
+    // deselect 
+//    [self.myNextPrevSeqmentedControl setSelectedSegmentIndex:UISegmentedControlNoSegment];
+
+
+// did not work
+//     // Do any additional setup after loading the view, typically from a nib.
+//     self.myWebView = [[[UIWebView alloc] initWithFrame:CGRectMake(10, 20, 300,500)] autorelease];
+//     self.myWebView.backgroundColor = [UIColor whiteColor];
+//     self.myWebView.scalesPageToFit = YES;
+//     self.myWebView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+//     self.myWebView.delegate = self;
+//     [self.view addSubview:self.myWebView];
+//
+//     self.myWebView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+//
+//
+
+//<.>
+//    // set up navigation bar  right button  "I" for INFO
+//    //
+////        UIImage *myImage = [[UIImage imageNamed: @"ReportArrow_14.png"]
+////                         imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal ];
+//        UIBarButtonItem *_goToReportButton = [[UIBarButtonItem alloc]initWithImage: myImage
+//                                                                             style: UIBarButtonItemStylePlain 
+//                                                                            target: self 
+//                                                                            action: @selector(actionDoReport)];
+//        self.navigationItem.rightBarButtonItem = _goToReportButton;
+//
+//<.>
+//
+
+//  jumpy
+//        // http://stackoverflow.com/questions/19204799/how-to-reduce-font-size-of-navigation-bar-title-in-ios-7
+//        //UILabel *nav_titlelbl      = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.navigationItem.titleView.frame.size.width,40)];
+//        UIFont *myFont = [UIFont boldSystemFontOfSize: 14.0f];
+//
+//        //UILabel *nav_titlelbl      = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 0 ,40)];
+//        UILabel *nav_titlelbl      = [[UILabel alloc]initWithFrame:CGRectMake(0.0, 0.0, 0.0 ,40.0)];
+//        [nav_titlelbl setFont: myFont];
+//        nav_titlelbl.text          = @"Compatibility Potential";
+////        nav_titlelbl.textAlignment = NSTextAlignmentCenter;
+//
+//        dispatch_async( dispatch_get_main_queue(), ^{                                // <=== 
+//            self.navigationItem.titleView = nav_titlelbl;
+//        });
+//
+
+
+//        // SET UP  SEGMENTED CTRL IN NAV BAR   for next/prev  date
+//        //
+//        // use title in HTML instead of in Nav CTRl  big/small    media query 
+//        //
+//        // old    dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+//        //            [[self navigationItem] setTitle:  @"What Color is Today?"];
+//        //        });
+//        //
+//            // e.g.
+//            //UISegmentedControl *myNextPrev =
+//            // [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:@"Personnal", @"Department", @"Company", nil]];
+//        //
+//        UISegmentedControl *myNextPrevSeqmentedControl =
+//            [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:@"Prev", @"Next", nil]];
+//        [myNextPrevSeqmentedControl sizeToFit];
+//        self.navigationItem.titleView = myNextPrevSeqmentedControl ;
+//        [myNextPrevSeqmentedControl addTarget: self
+//                                       action: @selector(actionNextPrevSegmentedControlPressed)
+//                             forControlEvents: UIControlEventValueChanged ];
+//        //myNextPrevSeqmentedControl.selectedSegmentIndex = 1;  //  "Next" as default
+//        // for deselecting use this line [<segmentcontrl> setSelectedSegmentIndex:UISegmentedControlNoSegment]
+//        [myNextPrevSeqmentedControl setSelectedSegmentIndex:UISegmentedControlNoSegment];
+//
+
+//================================================
+//UIToolbar with buttons in the nav bar
+//try this 
+//http://stackoverflow.com/questions/6249416/adding-more-than-two-button-on-the-navigationbar
+//================================================
+//
+        //UIToolbar *tools = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 90.0f, 55.01f)];
+
+
+//used to be in viewdidload
+//// Automatically called before touchesBegan:withEvent: is called on the gesture recognizer for a new touch.
+//// return NO to prevent the gesture recognizer from seeing this touch
+////
+//- (BOOL) gestureRecognizer: (UIGestureRecognizer *)gestureRecognizer   shouldReceiveTouch: (UITouch *)touch {
+//  NSLog(@"in gestureRecognizer! ");
+//
+//  NSLog(@"gbl_shouldReceiveTouches =%ld",(long)gbl_shouldReceiveTouches );
+//    if (gbl_shouldReceiveTouches == 0) {
+//tr("returned NO   do not receive touches");
+//        return NO;
+//    } else {
+//tr("returned YES  do     receive touches");
+//        return YES;
+//    }
+//}
+//
+
+//
+//// for toolbar with  Backward / Foreward
+////
+//- (IBAction) myHandleTapFrom: (UITapGestureRecognizer *) argTapRecognizer
+//{
+//  NSLog(@"in myHandleTapFrom!");
+//    //Code to handle the gesture
+//
+//        //- (BOOL)gestureRecognizer: (UIGestureRecognizer *)gestureRecognizer   shouldReceiveTouch: (UITouch *)touch {
+//        //    if (gbl_shouldReceiveTouches == 0)  return NO;
+//        //    return YES;
+//        //}
+//        //
+//    // method  is only here because it's req'd
+//    return;    
+//}
+//
+//
+
+//        gbl_shouldReceiveTouches = 0;  // TURN OFF touches  during  half mytime
+//tn();tr("before");ki((int)gbl_shouldReceiveTouches );
+//  NSLog(@"gbl_shouldReceiveTouches=%ld",gbl_shouldReceiveTouches );
+//
+
+
+//        gbl_shouldReceiveTouches = 1;  // TURN ON  touches
+//tn();tr("after ");ki((int)gbl_shouldReceiveTouches );
+//  NSLog(@"gbl_shouldReceiveTouches=%ld",gbl_shouldReceiveTouches );
+//
+
+
+
+//        double myDelayInSeconds = 0.4;   does not work
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(myDelayInSeconds * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+
+//        // this works
+//        double myDelayInMilleSeconds = 500;
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(myDelayInMilleSeconds * NSEC_PER_MSEC)), dispatch_get_main_queue(), ^{
+//            // code to be executed after a specified delay
+//            [self.outletWebView loadRequest: HTML_URLrequestForWhatColorReport];
+//        });
+        
+        //
+//        double myDelayInSec = 0.5 * (double)NSEC_PER_SEC;
+

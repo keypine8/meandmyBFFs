@@ -37,5 +37,6 @@
 
 @property(nonatomic) NSInteger selectedSegmentIndex;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segEntityOutlet;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *outlet_infoButton;
 
 @end

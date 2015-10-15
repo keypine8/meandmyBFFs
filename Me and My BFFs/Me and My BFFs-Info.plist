@@ -30,7 +30,7 @@
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.example.${PRODUCT_NAME:rfc1034identifier}</string>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -76,8 +76,8 @@
 			<dict>
 				<key>public.filename-extension</key>
 				<string>mamb</string>
-                <key>public.mime-type</key>
-                <string>Application/Me&amp;myBFFs</string>
+				<key>public.mime-type</key>
+				<string>Application/Me&amp;myBFFs</string>
 			</dict>
 			<key>public.filename-extension</key>
 			<array>
