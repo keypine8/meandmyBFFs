@@ -447,7 +447,10 @@ nbn(100);
 //  NSLog(@"gbl_homeUseMODE =%@",gbl_homeUseMODE );
     dispatch_async(dispatch_get_main_queue(), ^{                        
 
+
         cell.textLabel.text = nameOfGrpOrPer;
+//        cell.textLabel.text = @"";   // for test TODO  create empty Launch screen shot <.>
+
         
     //    UIFont *myFont = [ UIFont fontWithName:@"Menlo" size:16];
     //    cell.textLabel.font            = myFont;
@@ -1490,6 +1493,10 @@ tn();  NSLog(@"setEditing !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 - (void) putHighlightOnCorrectRow 
 {
 nbn(357);
+
+//return; // for test empty Launch image
+
+
         NSString  *nameOfGrpOrPer;
         NSInteger idxGrpOrPer;
         NSArray *arrayGrpOrper;

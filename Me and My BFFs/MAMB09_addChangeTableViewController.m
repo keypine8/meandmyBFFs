@@ -1678,9 +1678,40 @@ NSLog(@"end of  oncityInputViewKeyboardButton!"); tn();
   NSLog(@" // 111b actually do the BACK action on when changes net out to nothing");
                 [self.navigationController popToRootViewControllerAnimated: YES]; // actually do the "Back" action
             }
-  NSLog(@"Actually do save of New Person   here");
+// TODO
 
-// missing information  name,city,date  same as prompt
+            // Actually do save of New Person   here
+
+            // check for missing information  name,city,date  same as prompt
+            if (   [gbl_DisplayName isEqualToString: @"" ]
+                || [gbl_DisplayCity isEqualToString: @"" ]
+                || [gbl_DisplayCoun isEqualToString: @"" ]
+            ) {
+                // here info is missing
+                NSString *namePrompt; NSString *cityPrompt; NSString *datePrompt;
+                namePrompt = @"";     cityPrompt = @"";     datePrompt = @"";
+                if (  [gbl_DisplayName isEqualToString: @"" ]) namePrompt = @" Name ";
+                if (  [gbl_DisplayCity isEqualToString: @"" ]) cityPrompt = @" Birth City or Town ";
+                if (  [gbl_DisplayCoun isEqualToString: @"" ]) datePrompt = @" Birth Date and Time ";
+                NSString *missingMsg =  [NSString stringWithFormat:@"Missing Information:\n%@\n%@\n%@",
+                    namePrompt, cityPrompt, datePrompt
+                ];
+                UIAlertController* alert = [UIAlertController alertControllerWithTitle: @"Can Not Save"
+                                                                               message: missingMsg
+                                                                        preferredStyle: UIAlertControllerStyleAlert  ];
+                 
+                UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                                    style: UIAlertActionStyleDefault
+                                                                  handler: ^(UIAlertAction * action) {
+                        NSLog(@"Ok button pressed");
+                    }
+                ];
+                 
+                [alert addAction:  okButton];
+
+                [self presentViewController: alert  animated: YES  completion: nil   ];
+            }
+  NSLog(@" // Actually do save of New Person   here");
 
         } else {
             // here editing changes have NOT happened
@@ -2312,8 +2343,9 @@ NSLog(@"=gbl_myCitySoFar %@",gbl_myCitySoFar );
                     UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
                                                                         style: UIAlertActionStyleDefault
                                                                       handler: ^(UIAlertAction * action) {
-                        NSLog(@"Ok button pressed");
-                    } ];
+                            NSLog(@"Ok button pressed");
+                        }
+                    ];
                      
                     [alert addAction:  okButton];
 
