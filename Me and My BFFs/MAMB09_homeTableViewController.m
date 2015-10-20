@@ -84,6 +84,8 @@
 
     self.tableView.allowsSelectionDuringEditing = YES;
 
+    [self.navigationController.navigationBar setTranslucent: NO];
+
 
     // assign height of tableview rows here
     

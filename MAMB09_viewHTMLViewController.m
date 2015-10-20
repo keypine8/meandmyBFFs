@@ -42,6 +42,23 @@
     gbl_viewHTML_ShouldAddToNavBar = 1; // init to prevent  multiple programatic adds of nav bar items
 
 
+    // When I am navigating back & forth, i see a dark shadow
+    // on the right side of navigation bar at top. 
+    // It feels rough and distracting. How can I get rid of it?
+    //
+
+  NSLog(@"self.navigationController.navigationBar.translucent=%c",self.navigationController.navigationBar.translucent);
+    self.navigationController.navigationBar.translucent = NO; 
+
+    dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+        [self.navigationController.navigationBar setTranslucent: NO];
+    });
+
+  NSLog(@"self.navigationController.navigationBar.translucent=%c",self.navigationController.navigationBar.translucent);
+    //
+    //http://stackoverflow.com/questions/22413193/dark-shadow-on-navigation-bar-during-segue-transition-after-upgrading-to-xcode-5
+
+
 
     gbl_shouldUseDelayOnBackwardForeward = 0;   // use no delay for fast presentation on initial user viewing
 
@@ -238,6 +255,15 @@ tn();
 //
 
 
+nbn(111);
+    // When I am navigating back & forth, i see a dark shadow
+    // on the right side of navigation bar at top. 
+    // It feels rough and distracting. How can I get rid of it?
+    //
+    self.navigationController.navigationBar.translucent = NO; 
+    //
+    //http://stackoverflow.com/questions/22413193/dark-shadow-on-navigation-bar-during-segue-transition-after-upgrading-to-xcode-5
+
 
 
 
@@ -424,6 +450,10 @@ tn();ksn(myStringBuffForTraitCSV);
              //
              dispatch_async(dispatch_get_main_queue(), ^(void){
                  [self.outletWebView loadRequest:HTML_URLrequest];
+
+                 // webView.delegate = self; // http://stackoverflow.com/questions/10666484/html-content-fit-in-uiwebview-without-zooming-out
+                 self.outletWebView.delegate = self; // http://stackoverflow.com/questions/10666484/html-content-fit-in-uiwebview-without-zooming-out
+
              });
         }
 
@@ -687,7 +717,7 @@ tn();ksn(myStringBuffForTraitCSV);
     
 
     //if ([gbl_fromSelRptRowString hasPrefix: @"What Color"])    // call Calendar Day HTML report, now called "What Color is Today?"
-//    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompwc"]) {
+//    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompwc"]) 
     if ([gbl_currentMenuPlusReportCode hasSuffix: @"wc"]  // what color report  hompwc or gbdpwc
 //        || [gbl_currentMenuPlusReportCode isEqualToString: @"homgbd"]    // what color report  
     ) {
@@ -838,7 +868,7 @@ tn();ksn(myStringBuffForTraitCSV);
 
   
     
-//    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]) { 
+//    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]) 
     if ([gbl_currentMenuPlusReportCode hasSuffix: @"co"])  // compatibility report  (just 2)
     {
         tn();trn("in Compatibility Potential!");
@@ -1053,7 +1083,7 @@ tn();ksn(myStringBuffForTraitCSV);
 
 // put in ViewTBLRPTs_1_iewController
 //
-//    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"]) {    // My Best Match in Group ...
+//    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"])      // My Best Match in Group ...
 //        tn();trn("in REPORT  My Best Match in Group !");
 //        
 //        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
@@ -1154,12 +1184,11 @@ tn();ksn(myStringBuffForTraitCSV);
 //        //
 //        tmpDirFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:NSTemporaryDirectory() error:NULL];
 //        NSLog(@"tmpDirFiles.count=%lu",(unsigned long)tmpDirFiles.count);
-//        for (NSString *fil in tmpDirFiles) {
+//        for (NSString *fil in tmpDirFiles) 
 //            NSLog(@"REMOVED THIS fil=%@",fil);
 //            if ([fil hasSuffix: @"html"]) {
 //                [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), fil] error:NULL];
 //            }
-//        }
 //   
 //        
 //        tn();trn("2 HTMLs !!!!!!!!!!!!!!!!!!!!");
@@ -1320,7 +1349,7 @@ tn();ksn(myStringBuffForTraitCSV);
 //
 //
 //
-//    } //  @"hompbm"])     // My Best Match in Group ...
+//      //  @"hompbm"])     // My Best Match in Group ...
 //
 //
 
@@ -1333,6 +1362,77 @@ tn();ksn(myStringBuffForTraitCSV);
 
 } // viewDidLoad
 
+
+- (void)webViewDidFinishLoad:(UIWebView *)theWebView
+{
+  NSLog(@"in webViewDidFinishLoad! in view HTML");
+
+//
+////  NSLog(@"self.navigationController.navigationBar.translucent=%c",self.navigationController.navigationBar.translucent);
+//
+//    self.navigationController.navigationBar.translucent = NO;   // webview showed up under nav bar, so this
+//
+//
+////    theWebView.scalesPageToFit = YES;
+//
+//  CGSize contentSize = theWebView.scrollView.contentSize;
+//  CGSize viewSize    = theWebView.bounds.size;
+//
+//kdn(viewSize.width);
+//kdn(contentSize.width);
+//  float rw           = viewSize.width / contentSize.width;
+//kdn(rw);tn();
+//        rw           = contentSize.width / viewSize.width ;
+//kdn(rw);tn();
+//
+////  rw = 1.0;
+//float rw;
+//  rw = 1.33;  // left chopped
+//kdn(rw);tn();
+//
+//  theWebView.scrollView.minimumZoomScale = rw;
+//  theWebView.scrollView.maximumZoomScale = rw;
+//  theWebView.scrollView.zoomScale        = rw;  
+//
+////  [[theWebView scrollView] setContentInset:UIEdgeInsetsMake(64, 0, 44, 0)];
+////  [[theWebView scrollView] setContentInset:UIEdgeInsetsMake(100, 100, 200, 200)];
+////  [[theWebView scrollView] setContentInset:UIEdgeInsetsMake(0, 200, 0, 0)];
+////  [[theWebView scrollView] setContentInset:UIEdgeInsetsMake(0, 64, 0, 0)];
+////  [[theWebView scrollView] setContentInset:UIEdgeInsetsMake(0, 128, 0, 0)];
+//
+//  [[theWebView scrollView] setContentInset:UIEdgeInsetsMake( 600.0, 128.0, 0.0, 0.0)];  // top, left,bot,right
+//
+////webView.scrollView.scrollIndicatorInsets = webView.scrollView.contentInset;
+//  theWebView.scrollView.scrollIndicatorInsets = theWebView.scrollView.contentInset;
+//
+//
+
+}
+
+//<.>
+//NSString *urlAddress = @"http://dl.dropbox.com/u/50941418/2-build.html";
+//NSURL *url = [NSURL URLWithString:urlAddress];
+//
+//NSString *html = [NSString stringWithContentsOfURL:url encoding:[NSString defaultCStringEncoding] error:nil];
+//NSRange range = [html rangeOfString:@"<body"];
+//
+//if(range.location != NSNotFound) {
+//    // Adjust style for mobile
+//    float inset = 40;
+//    NSString *style = [NSString stringWithFormat:@"<style>div {max-width: %fpx;}</style>",
+//        self.view.bounds.size.width - inset
+//    ];
+//    html = [NSString stringWithFormat:@"%@%@%@",
+//        [html substringToIndex:range.location],
+//        style,
+//        [html substringFromIndex:range.location]
+//   ];
+//}
+//
+//[webView loadHTMLString:html baseURL:url];
+//
+//<.>
+//
 
 
 // -(void)webViewDidStartLoad:(UIWebView *)webView
@@ -1399,7 +1499,7 @@ tn();ksn(myStringBuffForTraitCSV);
         }
 
 //        if ([gbl_currentMenuPlusReportCode isEqualToString: @"homppe"]) 
-//        if ([gbl_currentMenuPlusReportCode hasSuffix: @"pe"]) {  // personality
+//        if ([gbl_currentMenuPlusReportCode hasSuffix: @"pe"])    // personality
             if (   [gbl_currentMenuPlusReportCode hasSuffix: @"pe"] // gmappe,gmeppe,gmrppe,gmpppe,gmdppe homppe pbm1pe,pbm2pe gbm1pe,gbm2pe
 //            || [gbl_currentMenuPlusReportCode hasPrefix: @"homgm"]   // personality report  homgma,homgme,homgmr,homgmp,homgmd
         ) {
@@ -1561,7 +1661,7 @@ tn();    NSLog(@"in shareButtonAction!  in viewHTML   ");
         myEmailMessage = [NSString stringWithFormat: @"\n\"Most Down-to-earth Person in Group %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.", gbl_lastSelectedGroup ];
     }
 
-//    if ([gbl_currentMenuPlusReportCode hasSuffix: @"pe"]) {  // personality
+//    if ([gbl_currentMenuPlusReportCode hasSuffix: @"pe"])   // personality
 //    if (   [gbl_currentMenuPlusReportCode hasSuffix: @"pe"]      // personality report
     if (   [gbl_currentMenuPlusReportCode hasSuffix: @"pe"] // per rpt gmappe,gmeppe,gmrppe,gmpppe,gmdppe homppe pbm1pe,pbm2pe gbm1pe,gbm2pe
 //        || [gbl_currentMenuPlusReportCode hasPrefix: @"homgm"]   // personality report  homgma,homgme,homgmr,homgmp,homgmd

@@ -3375,6 +3375,8 @@ tn();trn("in put_top_of_just2_group_rpt()");
   * <meta name="viewport" content="initial-scale=2.3, user-scalable=no">
   */
   g_fn_prtlin("  <meta name=\"viewport\" content=\"width=device-width\" />");
+
+
   g_fn_prtlin("  <meta name = \"format-detection\" content = \"telephone=no\">");
 
 
@@ -4003,7 +4005,16 @@ void put_ios_top_of_just2_group_rpt(void)  /* just_2 rpt */
   * To set the initial scale and to turn off user scaling, add this to your HTML file:
   * <meta name="viewport" content="initial-scale=2.3, user-scalable=no">
   */
-  g_fn_prtlin("  <meta name=\"viewport\" content=\"width=device-width\" />");
+
+  g_fn_prtlin("  <meta name=\"viewport\" content=\"width=device-width\" />");   //  ORIG   ORIG
+
+  // THIS IS WEBVIEW VERSION
+  //
+//  g_fn_prtlin("  <meta name=\"viewport\" content=\"width=device-width, initial-scale=0.33, minimum-scale=0.33, maximum-scale=0.33 \" />");  // webview  OK <6=no
+//  g_fn_prtlin("  <meta name=\"viewport\" content=\"width=device-width initial-scale=0.56 minimum-scale=0.56; \" />");  // webview  OK <6=no
+//  g_fn_prtlin("  <meta name=\"viewport\" content=\"width=device-width, initial-scale=2.0, minimum-scale=2.0, maximum-scale=2.0\" />");  // webview  OK <6=no
+
+
   g_fn_prtlin("  <meta name = \"format-detection\" content = \"telephone=no\">");
 
 

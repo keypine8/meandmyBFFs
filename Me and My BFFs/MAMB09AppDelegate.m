@@ -33,6 +33,10 @@
     
 
     // Override point for customization after application launch.
+
+    [[UINavigationBar appearance] setTranslucent: NO ];  // set all navigation bars to opaque
+
+
     
     // to access global method in appDelegate .h and .m
     //MAMB09AppDelegate *gbl_myappDelegate=[[UIApplication sharedApplication] delegate];

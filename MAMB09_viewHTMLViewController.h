@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import <MessageUI/MessageUI.h>
 
+// @interface YourViewController : UIViewController <UIWebViewDelegate>
 
-@interface MAMB09_viewHTMLViewController : UIViewController <MFMailComposeViewControllerDelegate>
+@interface MAMB09_viewHTMLViewController : UIViewController <MFMailComposeViewControllerDelegate, UIWebViewDelegate>
 //@interface MAMB09_viewHTMLViewController : UIViewController <MFMailComposeViewControllerDelegate, UIGestureRecognizerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIWebView *outletWebView;

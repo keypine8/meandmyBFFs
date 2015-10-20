@@ -1,4 +1,4 @@
-//* perhtm.c */
+/* perhtm.c */
 
 /* read from input docin_lines string array
 * format and write an html output file
@@ -554,18 +554,93 @@ void p_fn_webview_output_top_of_html_file(void)  // =-=-=-=-=-=-=-=-=-=-=-=-=-=-
   * To set the initial scale and to turn off user scaling, add this to your HTML file:
   * <meta name="viewport" content="initial-scale=2.3, user-scalable=no">
   */
-  p_fn_prtlin("  <meta name=\"viewport\" content=\"width=device-width\" />");
+
+
+//  p_fn_prtlin("  <meta name=\"viewport\" content=\"initial-scale=1.0; \"> ");           //   browser view
+//  p_fn_prtlin("  <meta name=\"viewport\" content=\"initial-scale=0.5; \"> ");           //   browser view
+
+//  p_fn_prtlin("  <meta name=\"viewport\" content=\"initial-scale=0.44 minimum-scale=0.44; \"> ");           //   browser view  OK
+
+// p_fn_prtlin("  <meta name=\"viewport\" content=\"width=320 initial-scale=0.44 \" />");  // webview   OK
+
+//  p_fn_prtlin("  <meta name=\"viewport\" content=\"width=device-width initial-scale=0.44 minimum-scale=0.44; \" />");  // webview  OK  4s=no
+
+
+
+//  p_fn_prtlin("  <meta name=\"viewport\" content=\"width=320 initial-scale=0.44 minimum-scale=0.44 ; \" />");  // webview  OK  4s=no
+
+
+
+//  p_fn_prtlin("  <meta name=\"viewport\" content=\"width=320 ; \" />");  // webview  OK  4s=no
+
+//  p_fn_prtlin("  <meta name=\"viewport\" content=\"width=320 minimum-scale=0.44 maximum-scale=0.44 ; \" />");  // webview  5=no
+
+//  p_fn_prtlin("  <meta name=\"viewport\" content=\"width=980 initial-scale=1.0 ; \" />");  // webview  6=big
+// try no viewport
+
+
+
+
+//  p_fn_prtlin("  <meta name=\"viewport\" content=\"width=device-width  \" />");  // webview   ORIG    6s=skinny, all lesser OK
+//  p_fn_prtlin("  <meta name=\"viewport\" content=\"width=device-width initial-scale=0.44 minimum-scale=0.44; \" />");  // webview  OK  4s=no
+
+//  p_fn_prtlin("  <meta name=\"viewport\" content=\"width=device-width initial-scale=0.44 minimum-scale=0.44; \" />");  // webview  OK <6=no
+  p_fn_prtlin("  <meta name=\"viewport\" content=\"width=device-width initial-scale=0.44 minimum-scale=0.44 maximum-scale=0.44;\" />");  // webview  OK <6=no
+
+
+
+
+
+
   p_fn_prtlin("  <meta name = \"format-detection\" content = \"telephone=no\">");
 
 
   /* HEAD   STYLE/CSS
   */
   p_fn_prtlin( "\n  <style type=\"text/css\">");
+
   p_fn_prtlin( "    BODY {");
+
 
 /*  p_fn_prtlin( "      background-color: #F5 EF CF;"); */
 /*  g_fn_prtlin( "      background-color: #F5EFCF;"); */
   p_fn_prtlin( "      background-color: #F7ebd1;");
+
+
+
+  //  http://stephen.io/mediaqueries/#iPhone
+  // code for portrait, landscape ->   and (orientation : portrait) { /* STYLES GO HERE */ }
+  // iPhone 6 in portrait & landscape
+  //@media only screen 
+  //and (min-device-width : 375px) 
+  //and (max-device-width : 667px) { /* 6   STYLES GO HERE */
+  //}
+  //@media only screen 
+  //and (min-device-width : 414px) 
+  //and (max-device-width : 736px) { /* 6s  STYLES GO HERE */}
+  //  iphone 5,4,3...  min-device-width = 320
+  //
+//  p_fn_prtlin( "@media screen and (min-device-width: 350px) {  "); // CSS for iphone 6,6s, and bigger
+//  p_fn_prtlin( "  <meta name=\"viewport\" content=\"width=device-width initial-scale=0.44 minimum-scale=0.44 \" />");  // webview  for 6,6s
+//  p_fn_prtlin( "} "); // CSS for iphone 6,6s, and bigger
+
+
+
+//  p_fn_prtlin( "@media screen and (min-device-width: 350px) {  "); // CSS for iphone 6,6s, and bigger
+//  p_fn_prtlin( "@viewport{ ");
+//  p_fn_prtlin( "    width: device-width;");
+//  p_fn_prtlin( "    initial-scale: 1.0;");
+//  p_fn_prtlin( "    minimum-scale: 1.0;");
+//  p_fn_prtlin( "}");
+//  p_fn_prtlin( "}");
+//
+//  p_fn_prtlin( "@media not (screen and (min-device-width: 350px) ){  "); // CSS for iphone 5,4,3,...
+//  p_fn_prtlin( "@viewport{");
+//  p_fn_prtlin( "    width: device-width;");
+//  p_fn_prtlin( "}");
+//  p_fn_prtlin( "}");
+
+
 
 /*   p_fn_prtlin( "      font-family: Trebuchet MS, Arial, Verdana, sans-serif;"); */
   p_fn_prtlin( "      font-family: Menlo, Andale Mono, Monospace, Courier New;");
@@ -645,7 +720,7 @@ void p_fn_webview_output_top_of_html_file(void)  // =-=-=-=-=-=-=-=-=-=-=-=-=-=-
 //  f_fn_prtlin( "      text-align: center;");      // GOLD order #1
   p_fn_prtlin( "      text-align: left;");      // GOLD order #1
      // are putting spaces in code to center
-  p_fn_prtlin( "      width: 300%m;");             // GOLD order #2
+  p_fn_prtlin( "      width: 300%;");             // GOLD order #2
   p_fn_prtlin( "      font-size: 3em;");         // GOLD order #3
   p_fn_prtlin( "      font-weight: bold;"); 
   p_fn_prtlin( "      background-color: #F7ebd1;");
@@ -669,6 +744,7 @@ void p_fn_webview_output_top_of_html_file(void)  // =-=-=-=-=-=-=-=-=-=-=-=-=-=-
   p_fn_prtlin( "    PRE.scoreExpl {");
   p_fn_prtlin( "     overflow-x: hidden; ");    // webview
   p_fn_prtlin( "      width: 300%;");             // GOLD order #2
+  p_fn_prtlin( "      width: 270%;");             // GOLD order #2
 
 //  p_fn_prtlin( "      font-size: 1.8em;");  /* <.> */
 //  p_fn_prtlin( "      font-size: 1.2em;");  /* <.> */

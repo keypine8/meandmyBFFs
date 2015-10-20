@@ -41,6 +41,15 @@
 tn(); NSLog(@"in sel Reports viewDidLoad!");
 
     
+    // When I am navigating back & forth, i see a dark shadow
+    // on the right side of navigation bar at top.
+    // It feels rough and distracting. How can I get rid of it?
+    //
+    self.navigationController.navigationBar.translucent = NO;
+    //
+    // http://stackoverflow.com/questions/22413193/dark-shadow-on-navigation-bar-during-segue-transition-after-upgrading-to-xcode-5
+
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
