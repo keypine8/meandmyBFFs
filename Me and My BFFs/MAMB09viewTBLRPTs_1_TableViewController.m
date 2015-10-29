@@ -53,14 +53,16 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 
 
-  NSLog(@"gbl_currentMenuPlusReportCode =%@",gbl_currentMenuPlusReportCode );
   NSLog(@" 1 gbl_lastSelectedGroup=%@",gbl_lastSelectedGroup);
+  NSLog(@"gbl_currentMenuPlusReportCode =%@",gbl_currentMenuPlusReportCode );
+  NSLog(@"gbl_fromHomeCurrentSelectionPSV=[%@]",gbl_fromHomeCurrentSelectionPSV);
 
 
     // -------------------------------------------------------------------------------------------------------------------------
     // MAMB09viewTBLRPTs_1_TableViewController.m 
     // -------------------------------------------------------------------------------------------------------------------------
-    //     - displays 9 RPTs  hompbm,homgbm, homgma,homgme,homgmr,homgmp,homgmd homgby,homgbd
+    //     - displays  9 RPTs  hompbm,homgbm, homgma,homgme,homgmr,homgmp,homgmd homgby,homgbd
+    //     - displays 11 RPTs  hompbm,homgbm, homgma,homgme,homgmr,homgmp,homgmd homgby,homgbd ,homppe, hompco
     //
     //     - goes to 16 RPTs  from hompbm ==>  pbmco,pbm1pe,pbm2pe,       pbm2bm
     //     - goes to 16 RPTs  from homgbm ==>  gbmco,gbm1pe,gbm2pe,gbm1bm,gbm2bm
@@ -76,6 +78,7 @@
     //      so, in viewWillAppear()  (check it out), when the user returns, we have to re-set  gbl_currentMenuPlusReportCode
     //
     //      this is 16+9=25 reports   FYI, the other 4 reports are  hompcy,homppe,hompco,hompwc
+    //      this is 16+9=25 reports   FYI, the other 4 reports are  hompcy,              hompwc
     // -------------------------------------------------------------------------------------------------------------------------
 
 
@@ -120,6 +123,8 @@
         // grpone  all *MY* BEST MATCH ... reports  PLUS all table reports AFTER THAT in navigation <-------------
         if (   [gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"]  // grpone  My Best Match in Group ... grpone
             || [gbl_currentMenuPlusReportCode       hasPrefix: @"pbm"   ]  // grpone  My Best Match in Group ... grpone
+            || [gbl_currentMenuPlusReportCode       hasPrefix: @"homppe"]  // home    personality
+            || [gbl_currentMenuPlusReportCode       hasPrefix: @"hompco"]  // home    grpof2
         ) {
             gbl_TBLRPTS1_PSV_personJust1  = gbl_fromHomeCurrentSelectionPSV;    // from select person on home screen
             gbl_TBLRPTS1_NAME_personJust1 = [gbl_TBLRPTS1_PSV_personJust1 componentsSeparatedByString:@"|"][0]; // get field #1 (zero-based)
@@ -146,6 +151,7 @@
             gbl_TBLRPTS1_NAME_personJust1 = [gbl_TBLRPTS1_PSV_personJust1 componentsSeparatedByString:@"|"][0]; // get field #1 (zero-based)
 
         } else {  // SHOULD NOT HAPPEN
+  NSLog(@" } else {  // SHOULD NOT HAPPEN ");
             gbl_TBLRPTS1_PSV_personA  = gbl_fromHomeCurrentSelectionPSV;
             gbl_TBLRPTS1_NAME_personA = [gbl_TBLRPTS1_PSV_personA componentsSeparatedByString:@"|"][0]; // get field #1 (zero-based)
 
@@ -190,52 +196,26 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-//NSLog(@"in numberOfRowsInSection in tblrpts 1");
+NSLog(@"in numberOfRowsInSection in tblrpts 1");
     // Return the number of rows in the section.
 
     NSInteger retint;
     retint = 1; // default
 
-    // MAMB09viewTBLRPTs_1_TableViewController.m  does 9 RPTs  hompbm,homgbm, homgma,homgme,homgmr,homgmp,homgmd hhomgby,homgbd
+    if ( [gbl_currentMenuPlusReportCode isEqualToString: @"homppe"] ) {  //  new personality TBLRPT  report
+        retint = gbl_perDataLines.count;
 
-//    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"]   // My Best Match in Group ...
-//    ) {
-//        retint = group_report_output_idx + 1 + 3; // + 3 for 3 bottom cells
-//    }
-//
- 
-    // this might work for all 9 reports
-    retint = group_report_output_idx + 1 + 3; // + 3 for 3 bottom cells
+    } else {
+
+        // this might work for all 9 reports
+        retint = group_report_output_idx + 1 + 3; // + 3 for 3 bottom cells
+    }
+
+// TODO  need file of data for rpt
+  NSLog(@"retint=[%ld]",retint);
 
     return retint;
 }
-
-
-//
-//- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollview {
-//    gbl_scrollViewIsDragging = YES;
-//
-//    if( [self.tableView indexPathForSelectedRow] ) {
-////        [[self.tableView cellForRowAtIndexPath:[self.tableView indexPathForSelectedRow]] setHighlighted:YES];
-//
-//        NSIndexPath *myTmpIndexPath     = [self.tableView indexPathForSelectedRow];
-//        UITableViewCell *currcell       = [self.tableView cellForRowAtIndexPath: myTmpIndexPath]; // now you can use currcell.textLabel.text
-//        currcell.selectedBackgroundView =  gbl_myCellBgView;
-//
-//    //      cell.selectedBackgroundView =  gbl_myCellBgView;
-//    }
-//}        // http://stackoverflow.com/questions/13275405/uitableview-selected-cell-doesnt-stay-selected-when-scrolled
-//- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
-//    gbl_scrollViewIsDragging = NO;
-//
-//    if( [self.tableView indexPathForSelectedRow] ) {
-////        [[self.tableView cellForRowAtIndexPath:[self.tableView indexPathForSelectedRow]] setHighlighted:NO];
-//        NSIndexPath *myTmpIndexPath     = [self.tableView indexPathForSelectedRow];
-//        UITableViewCell *currcell       = [self.tableView cellForRowAtIndexPath: myTmpIndexPath]; // now you can use currcell.textLabel.text
-//        currcell.selectedBackgroundView =  nil;
-//    }
-//}
-//
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath: (NSIndexPath *)indexPath
 {
@@ -280,6 +260,228 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
+    //  int rkheight = cell.frame.size.height ;   // is = 44
+    //  kin(rkheight);
+    //
+
+
+nbn(300);
+    if ( [gbl_currentMenuPlusReportCode isEqualToString: @"homppe"] ) {  //  new personality TBLRPT  report
+bn(301);
+  NSLog(@"indexPath.row =[%ld]",indexPath.row );
+  NSLog(@"gbl_perDataLines[indexPath.row]  [%@]",gbl_perDataLines[indexPath.row]  );
+
+
+        // fixes   bg color of white on left and right
+        //    [[UIScrollView appearance] setBackgroundColor: gbl_color_cBgr ];  does not work
+        UIView *aBackgroundView = [[UIView alloc] initWithFrame:CGRectZero] ;
+        aBackgroundView.backgroundColor = gbl_color_cBgr ;
+        cell.backgroundView = aBackgroundView;
+
+
+//        UIFont *myPerFont        = [UIFont fontWithName: @"Menlo" size: 12.0];
+        UIFont *myPerFont;
+//        UIFont *perFontNormal   = [UIFont fontWithName: @"Menlo" size: 14.0];
+        UIFont *perFontNormal   = [UIFont fontWithName: @"Menlo" size: 16.0];
+        UIFont *perFontSmaller  = [UIFont fontWithName: @"Menlo" size: 12.0];
+        UIFont *perFontSmallest = [UIFont fontWithName: @"Menlo-bold" size: 11.0];
+        
+        NSCharacterSet *mySeps;
+        NSArray        *tmparr;
+        UIColor  *mybgcolor;
+        UIColor  *mytextcolor;
+        NSString *mycode;
+        NSString *mylin;
+        NSTextAlignment myalign;
+        NSInteger       mynumlines;
+        BOOL            myadjust;
+
+        mybgcolor         = [UIColor redColor];
+        myalign           = NSTextAlignmentLeft;  // default
+        mynumlines        = 1;                    // default
+        myadjust          = YES;                  // default
+        mytextcolor       = [UIColor greenColor]; // default
+
+        mySeps    = [NSCharacterSet characterSetWithCharactersInString:  @"|"];
+
+        mylin     = gbl_perDataLines[indexPath.row];  
+
+        tmparr    = [mylin componentsSeparatedByCharactersInSet: mySeps];
+        if (tmparr.count > 1) {
+            mycode    = tmparr[0];
+            mylin     = tmparr[1];
+        }
+  NSLog(@"mylin=[%@]",mylin);
+
+//gbl_color_cNeu 
+//gbl_color_cBgr 
+//gbl_color_cHed
+        if ( [mycode isEqualToString: @"fill"] ) {
+bn(3011);
+            myalign           = NSTextAlignmentCenter;
+            mynumlines        = 1;    
+            myadjust          = NO;
+            mytextcolor       = [UIColor blackColor];
+            myPerFont         = perFontNormal;
+
+            if ( [mylin isEqualToString: @"filler line #1 at top"] ) {
+bn(3012);
+                mylin             = @" ";
+                mybgcolor         = gbl_color_cBgr ;
+                gbl_heightCellPER = 8;
+            }
+            else if ( [mylin isEqualToString: @"before table head"] ) {
+                mylin             = @" ";
+                mybgcolor         = gbl_color_cHed ;
+                gbl_heightCellPER = 8;
+            }
+            else if ( [mylin isEqualToString: @"after table head"] ) {
+                mylin             = @" ";
+                mybgcolor         = gbl_color_cHed ;
+                gbl_heightCellPER = 8;
+            }
+            else if ( [mylin isEqualToString: @"before table foot"] ) {
+                mylin             = @" ";
+                mybgcolor         = gbl_color_cHed ;
+                gbl_heightCellPER = 8;
+            }
+            else if ( [mylin isEqualToString: @"after table foot"] ) {
+                mylin             = @" ";
+                mybgcolor         = gbl_color_cHed ;
+                gbl_heightCellPER = 8;
+            }
+            else if ( [mylin isEqualToString: @"before para"] ) {
+                mylin             = @" ";
+                mybgcolor         = gbl_color_cBgr ;
+                gbl_heightCellPER = 16;
+            }
+            else if ( [mylin isEqualToString: @"before willpower"] ) {
+                mylin             = @" ";
+                mybgcolor         = gbl_color_cBgr ;
+                gbl_heightCellPER = 24;
+            }
+            else if ( [mylin isEqualToString: @"in willpower at beg"] ) {
+                mylin             = @" ";
+                mybgcolor         = gbl_color_cHed ;
+                gbl_heightCellPER = 8;
+            }
+            else if ( [mylin isEqualToString: @"in willpower at end"] ) {
+                mylin             = @" ";
+                mybgcolor         = gbl_color_cHed ;
+                gbl_heightCellPER = 8;
+            }
+            else if ( [mylin isEqualToString: @"before produced by"] ) {
+                mylin             = @" ";
+                mybgcolor         = gbl_color_cBgr ;
+                gbl_heightCellPER = 16;
+            }
+            else if ( [mylin isEqualToString: @"before entertainment"] ) {
+                mylin             = @" ";
+                mybgcolor         = gbl_color_cBgr ;
+                gbl_heightCellPER = 4;
+            }
+        }
+        if ( [mycode isEqualToString: @"head"] ) {
+            myalign           = NSTextAlignmentCenter;
+            mynumlines        = 1;    
+            mybgcolor         = gbl_color_cHed ;
+//            gbl_heightCellPER = 16;
+            gbl_heightCellPER = 20;
+            myadjust          = YES;
+            mytextcolor       = [UIColor blackColor];
+            myPerFont         = perFontNormal;
+        }
+        if ( [mycode isEqualToString: @"foot"] ) {
+            myalign           = NSTextAlignmentCenter;
+            mynumlines        = 1;    
+            mybgcolor         = gbl_color_cHed ;
+//            gbl_heightCellPER = 16;
+            gbl_heightCellPER = 18;
+            myadjust          = YES;
+            mytextcolor       = [UIColor blackColor];
+            myPerFont         = perFontNormal;
+        }
+        if ( [mycode isEqualToString: @"tabl"] ) {
+            myalign           = NSTextAlignmentLeft;
+            mynumlines        = 1;    
+            mybgcolor         = gbl_color_cNeu ;
+//            gbl_heightCellPER = 24;
+            gbl_heightCellPER = 20;
+            myadjust          = YES;
+            mytextcolor       = [UIColor blackColor];
+            myPerFont         = perFontNormal;
+        }
+        if ( [mycode isEqualToString: @"para"] ) {
+            myalign           = NSTextAlignmentLeft;
+            mynumlines        = 1;    
+            mybgcolor         = gbl_color_cBgr ;
+//            gbl_heightCellPER = 16;
+//            gbl_heightCellPER = 20;
+            gbl_heightCellPER = 18;
+            myadjust          = NO;
+            mytextcolor       = [UIColor blackColor];
+            myPerFont         = perFontNormal;
+        }
+        if ( [mycode isEqualToString: @"will"] ) {
+            myalign           = NSTextAlignmentLeft;
+            mynumlines        = 1;    
+            mybgcolor         = gbl_color_cHed ;
+            gbl_heightCellPER = 16;
+            myadjust          = YES;
+            mytextcolor       = [UIColor blackColor];
+            myPerFont         = perFontNormal;
+        }
+        if ( [mycode isEqualToString: @"prod"] ) {
+            myalign           = NSTextAlignmentCenter;
+            mynumlines        = 1;    
+            mybgcolor         = gbl_color_cBgr ;
+            gbl_heightCellPER = 16;
+            myadjust          = YES;
+            mytextcolor       = [UIColor blackColor];
+            myPerFont         = perFontSmaller;
+        }
+        if ( [mycode isEqualToString: @"purp"] ) {
+            myalign           = NSTextAlignmentCenter;
+            mynumlines        = 1;    
+            mybgcolor         = gbl_color_cBgr ;
+            gbl_heightCellPER = 16;
+            myadjust          = YES;
+            mytextcolor       = [UIColor redColor];
+            myPerFont         = perFontSmallest;
+        }
+
+
+        dispatch_async(dispatch_get_main_queue(), ^{            // <===  short line and long line
+            cell.textLabel.text                      = mylin;   // --------------------------------------------------
+            cell.textLabel.adjustsFontSizeToFitWidth = myadjust;
+//            cell.textLabel.textAlignment = NSTextAlignmentLeft;
+//            cell.textLabel.textAlignment = NSTextAlignmentCenter;
+            cell.textLabel.textAlignment             = myalign;
+
+            cell.userInteractionEnabled              = NO;
+
+            cell.accessoryView                       = nil;   // use accessoryType setting   // have right arrow on column labels
+//            cell.accessoryType                       = UITableViewCellAccessoryDisclosureIndicator;
+
+//            cell.accessoryView                       = myDisclosureIndicatorLabel;
+//            cell.accessoryType                       = UITableViewCellAccessoryDisclosureIndicator;
+            cell.accessoryType                       = UITableViewCellAccessoryNone;
+
+            cell.textLabel.numberOfLines             = mynumlines; 
+            cell.textLabel.textColor                 = mytextcolor;
+            cell.textLabel.font                      = myPerFont;
+            cell.textLabel.adjustsFontSizeToFitWidth = YES;
+            cell.textLabel.backgroundColor           = mybgcolor;
+//                cell.contentView.backgroundColor           = gbl_thisCellBackGroundColor;  // see above x
+        });
+
+bn(302);
+        return cell;
+
+    }  // end of new personality TBLRPT  report
+bn(303);
+
+
 
 
 //    UIView *gbl_myCellBgView =[[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, [cell frame].size.width, [cell frame].size.height)];
@@ -337,7 +539,14 @@
 
 
 
-    UIFont *myFont = [UIFont fontWithName: @"Menlo" size: 12.0];
+
+//    UIFont *myFont = [UIFont fontWithName: @"Menlo" size: 12.0];
+//    UIFont *myFont = [UIFont fontWithName: @"Menlo" size: 20.0];
+    UIFont *myFont = [UIFont fontWithName: @"Menlo" size: 16.0];
+
+
+
+
     UIFont *myFontSmaller = [UIFont fontWithName: @"Menlo" size: 11.0];
 //    UIFont *myFontSmallerer = [UIFont fontWithName: @"Menlo" size: 10.0];
 
@@ -906,7 +1115,7 @@ ksn(my_tmp_str);
 
 
                 cell.textLabel.textColor                 = [UIColor blackColor];
-                cell.textLabel.font                      = myFont;
+                cell.textLabel.font                      = myFont; // for test font fit width
                 cell.textLabel.adjustsFontSizeToFitWidth = YES;
                 cell.textLabel.backgroundColor           = gbl_thisCellBackGroundColor;  // see above x
 //                cell.contentView.backgroundColor           = gbl_thisCellBackGroundColor;  // see above x
@@ -976,7 +1185,7 @@ ksn(my_tmp_str);
 
                 cell.textLabel.numberOfLines             = 1; 
                 cell.textLabel.textColor                 = [UIColor blackColor];
-                cell.textLabel.font                      = myFont;
+                cell.textLabel.font                      = myFont; // for test font fit width
                 cell.textLabel.adjustsFontSizeToFitWidth = YES;
                 cell.textLabel.backgroundColor           = gbl_thisCellBackGroundColor;  // see above
 //                cell.contentView.backgroundColor           = gbl_thisCellBackGroundColor;  // see above x
@@ -1515,8 +1724,20 @@ ksn(my_tmp_str);
 // how to set the tableview cell height
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath  // -------------------------
 {
-//  NSLog(@"in heightForRowAtIndexPath 1");
+  NSLog(@"in heightForRowAtIndexPath 1");
     // return customTableCellHeight;
+//    return UITableViewAutomaticDimension;
+//  NSLog(@"UITableViewAutomaticDimension=[%ld]",UITableViewAutomaticDimension);
+//kdn(UITableViewAutomaticDimension);  // is = -1
+ 
+    if ( [gbl_currentMenuPlusReportCode isEqualToString: @"homppe"]  //  new personality TBLRPT  report
+    ) {
+        return gbl_heightCellPER;  
+    }
+    if ( [gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]  //  new personality TBLRPT  report
+    ) {
+        return gbl_heightCellCOMP;  
+    }
 
     if (  [gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"] // My Best Match in Group ...
       ||  [gbl_currentMenuPlusReportCode       hasPrefix: @"pbm"   ] // My Best Match in Group ... grpone
@@ -1524,8 +1745,10 @@ ksn(my_tmp_str);
       ||  [gbl_currentMenuPlusReportCode       hasPrefix: @"gbm"   ] //    Best Match in Group ... grpall
     ) {
         if (indexPath.row == 0) return 14.0;  // spacer
-        if (indexPath.row == 1) return 15.0;  // col hdr 1
-        if (indexPath.row == 2) return 15.0;  // col hdr 2
+//        if (indexPath.row == 1) return 15.0;  // col hdr 1
+//        if (indexPath.row == 2) return 15.0;  // col hdr 2
+        if (indexPath.row == 1) return 18.0;  // col hdr 1
+        if (indexPath.row == 2) return 21.0;  // col hdr 2
      
         if (indexPath.row == group_report_output_idx + 1) return 15.0 * 7;  // ftr 1
         if (indexPath.row == group_report_output_idx + 2) return 15.0 ;     // ftr 2
@@ -1570,7 +1793,7 @@ ksn(my_tmp_str);
         if (indexPath.row == group_report_output_idx + 3) return  20.0 ;     // ftr 3   entertainment
      }
     
-//    } else if ([gbl_currentMenuPlusReportCode hasPrefix: @"homgm"]  // best day
+//      else if ([gbl_currentMenuPlusReportCode hasPrefix: @"homgm"]  // best day
 //    ) {
 //        if (indexPath.row == 0) return  8.0;  // spacer
 //        if (indexPath.row == 1) return 24.0;  // col hdr 1
@@ -1587,7 +1810,10 @@ ksn(my_tmp_str);
 //    }
 //
     
-    return 32.0;
+//    return 32.0;
+//    return 44.0;   // standard height
+//    return 38.0;
+    return 35.0; 
 
 }  // ---------------------------------------------------------------------------------------------------------------------
 
@@ -1620,6 +1846,12 @@ ksn(my_tmp_str);
 {
 //  NSLog(@"in willDisplayCell");
     //cell.backgroundColor = [UIColor colorWithRed:(116/255.0) green:(167/255.0) blue:(179/255.0) alpha:1.0];
+
+    if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homppe"]  
+        || [gbl_currentMenuPlusReportCode isEqualToString: @"homppe"]  
+    ) {
+        return;
+    }
 
     NSString *thisCellBGcolorName; 
 
@@ -1744,6 +1976,9 @@ ksn(my_tmp_str);
 
         || [gbl_currentMenuPlusReportCode isEqualToString: @"homgby"]
         || [gbl_currentMenuPlusReportCode isEqualToString: @"homgbd"]
+
+        || [gbl_currentMenuPlusReportCode isEqualToString: @"homppe"]
+        || [gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]
     ) {
         return 0.0;
     }
@@ -1789,6 +2024,9 @@ ksn(my_tmp_str);
 
         || [gbl_currentMenuPlusReportCode isEqualToString: @"homgby"]
         || [gbl_currentMenuPlusReportCode isEqualToString: @"homgbd"]
+
+        || [gbl_currentMenuPlusReportCode isEqualToString: @"homppe"]
+        || [gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]
     ) {
         return nil;
     }
@@ -1908,6 +2146,12 @@ ksn(my_tmp_str);
 
 - (BOOL)tableView:(UITableView *)tableView  shouldHighlightRowAtIndexPath: (NSIndexPath *)indexPath
 {
+    if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homppe"]
+        || [gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]
+    ) {
+        return NO;
+    }
+
     if (  [gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"] // My Best Match in Group ...
       ||  [gbl_currentMenuPlusReportCode       hasPrefix: @"pbm"   ] // My Best Match in Group ... grpone
       ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgbm"] //    Best Match in Group ...
@@ -1995,6 +2239,11 @@ NSLog(@"indexPath.row=%ld",(long)indexPath.row);
 //                                  animated: NO];
 //
 
+    if (  [gbl_currentMenuPlusReportCode isEqualToString: @"homppe"] // home + personality
+      ||  [gbl_currentMenuPlusReportCode       hasPrefix: @"hompco"] // home + grpof2[
+    ) {
+        return nil;   // these are leaf reports, no row selection
+    }
 
     if (  [gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"] // My Best Match in Group ...
       ||  [gbl_currentMenuPlusReportCode       hasPrefix: @"pbm"   ] // My Best Match in Group ... grpone
@@ -2033,6 +2282,11 @@ NSLog(@"indexPath.row=%ld",(long)indexPath.row);
     NSLog(@"in didSelectRowAtIndexPath!  in TBLRPT_1 ");
     NSLog(@"indexpath.row=%ld",(long)indexPath.row);
 
+    if (  [gbl_currentMenuPlusReportCode isEqualToString: @"homppe"] // home + personality
+      ||  [gbl_currentMenuPlusReportCode       hasPrefix: @"hompco"] // home + grpof2[
+    ) {
+        return ;   // these are leaf reports, no row selection
+    }
     MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global methods in appDelegate.m
 
     gbl_TBLRPTS1_saveSelectedIndexPath = indexPath;  // for deselecting with animation when return to TBLRPTS1
@@ -2236,11 +2490,433 @@ tn();trn("just tapped on row in TBLRPTS_1");
     NSLog(@"in TBLRPTs 1  viewWillAppear!");
 NSLog(@"gbl_TBLRPTS1_saveSelectedIndexPath.row=%ld",(long)gbl_TBLRPTS1_saveSelectedIndexPath.row);
 
+    if ( [gbl_currentMenuPlusReportCode isEqualToString: @"homppe"] )  // home + personality
+    {
+            // try to get rid of tbl position in middle on startup
+nbn(451);
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+                [self.tableView reloadData]; // self.view is the table view if self is its controller
+           });
+    }
+
+
+//<.>
+    //
+    // add NAVIGATION BAR right buttons, if not added already   plus nav bar title
+    //
+    NSString *myNavBarTitle;
+nbn(400);
+    if (gbl_tblrpts1_ShouldAddToNavBar == 1) { // init to prevent  multiple programatic adds of nav bar items
+
+nbn(401);
+        gbl_tblrpts1_ShouldAddToNavBar  = 0;   // do not do this again
+
+        // you have to add the info button in interface builder by hand,
+        // then you can add  Share button below with   rightBarButtonItems arrayByAddingObject: shareButton];
+        //
+        UIBarButtonItem *shareButton = [[UIBarButtonItem alloc]
+                                        initWithBarButtonSystemItem: UIBarButtonSystemItemAction
+                                        target:self
+                                        action:@selector(shareButtonAction:)];
+
+        UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 11, 44)];  // 3rd arg is horizontal length
+        UIBarButtonItem *mySpacerForTitle = [[UIBarButtonItem alloc] initWithCustomView:spaceView];
+
+
+//          ||  [gbl_currentMenuPlusReportCode isEqualToString: @"gbm1bm"]  // My Best Match in Group ...  see tblrps_2 view
+//          ||  [gbl_currentMenuPlusReportCode isEqualToString: @"gbm2bm"]  // My Best Match in Group ...  see tblrps_2 view
+//          ||  [gbl_currentMenuPlusReportCode isEqualToString: @"pbm2bm"]  // My Best Match in Group ...  see tblrps_2 view
+//        if (   [gbl_currentMenuPlusReportCode isEqualToString: @"hompbm" ]  // My Best Match in Group ...
+//            || [gbl_currentMenuPlusReportCode isEqualToString: @"homgbm" ]  //    Best Match in Group ...
+//            || [gbl_currentMenuPlusReportCode       hasPrefix: @"pbm"    ]
+//            || [gbl_currentMenuPlusReportCode       hasPrefix: @"gbm"    ]
+
+//  NSLog(@"gbl_currentMenuPlusReportCode =%@",gbl_currentMenuPlusReportCode );
+
+
+
+        // grpone all *MY* BEST MATCH ... reports  PLUS all reports AFTER THAT in navigation <-------------
+        // grpall all BEST MATCH ... reports  PLUS all reports AFTER THAT in navigation <-------------
+        //
+        if (  [gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"] // My Best Match in Group ...
+          ||  [gbl_currentMenuPlusReportCode       hasPrefix: @"pbm"   ] // My Best Match in Group ... grpone
+          ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgbm"] //    Best Match in Group ...
+          ||  [gbl_currentMenuPlusReportCode       hasPrefix: @"gbm"   ] //    Best Match in Group ... grpall
+        ) {
+nbn(402);
+                // gbl_PSVtappedPerson_grpall;     // gbm1pe,gbm2pe,gbm1bm,gbm2bm 
+                // gbl_PSVtappedPerson_grpone;     // pbm1pe,pbm2pe,pbm2bm       
+            myNavBarTitle = @"Best Match";
+
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+                self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: shareButton];
+                self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerForTitle];
+                [self.navigationController.navigationBar setTranslucent:NO];
+
+                // How to hide iOS7 UINavigationBar 1px bottom line
+                // 
+                // you can make the background a solid color by
+                // 1. setting backgroundImage to [UIImage new]
+                // 2. assigning navigationBar.backgroundColor to the color you like.
+                // (when you  do this,  translucent becomes = NO)  that's OK
+                //  http://stackoverflow.com/questions/19226965/how-to-hide-ios7-uinavigationbar-1px-bottom-line/
+                //
+                [self.navigationController.navigationBar setBackgroundImage: [UIImage new]       // 1. of 2
+                                                             forBarPosition: UIBarPositionAny
+                                                                 barMetrics: UIBarMetricsDefault];
+                //
+                [self.navigationController.navigationBar setShadowImage: [UIImage new]];   
+                //
+                self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];  // 2. of 2
+                //
+                // end of  How to hide iOS7 UINavigationBar 1px bottom line
+
+
+                [[self navigationItem] setTitle: myNavBarTitle];
+            });                                   
+
+        } else if (   [gbl_currentMenuPlusReportCode       hasPrefix: @"homgm"    ]  // "Most" reports
+                 || [gbl_currentMenuPlusReportCode       hasPrefix: @"homgb"    ]  // "Best" reports
+                 || [gbl_currentMenuPlusReportCode       hasPrefix: @"homppe"]
+        ) {
+nbn(403);
+
+            if      ([gbl_currentMenuPlusReportCode isEqualToString: @"homgma"]) { myNavBarTitle = @"Most Assertive"; }
+            else if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgme"]) { myNavBarTitle = @"Most Emotional"; }
+            else if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgmr"]) { myNavBarTitle = @"Most Restless"; }
+            else if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgmp"]) { myNavBarTitle = @"Most Passionate"; }
+            else if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgmd"]) { myNavBarTitle = @"Most Down-to-earth"; }
+
+            else if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgby"]) {
+                myNavBarTitle = [NSString stringWithFormat: @"Best Year  %@", gbl_lastSelectedYear ];
+            }
+            else if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgbd"]) {
+                myNavBarTitle = [NSString stringWithFormat: @"Best Day  %@", gbl_lastSelectedDayFormattedForTitle ];
+            }
+
+            else if ([gbl_currentMenuPlusReportCode       hasPrefix: @"homppe"]) {// home + personality
+nbn(404);
+                myNavBarTitle = [NSString stringWithFormat: @"Personality"];
+            }
+
+            else {
+                myNavBarTitle = @"x02";  // should never happen
+            }
+
+            UILabel *myNavBarLabel      = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 480.0, 44.0)];
+            NSString *myNavBar2lineTitle;
+            myNavBarLabel.numberOfLines = 2;
+
+            if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgbd"]) myNavBarLabel.font = [UIFont boldSystemFontOfSize: 12.0];
+            else                                                            myNavBarLabel.font = [UIFont boldSystemFontOfSize: 14.0];
+
+            myNavBarLabel.textColor     = [UIColor blackColor];
+            myNavBarLabel.textAlignment = NSTextAlignmentCenter; 
+//            myNavBar2lineTitle = [NSString stringWithFormat:  @"%@\nin Group %@", myNavBarTitle, gbl_lastSelectedGroup ];
+
+            if ([gbl_currentMenuPlusReportCode       hasPrefix: @"homppe"]) {// home + personality
+nbn(405);
+                myNavBar2lineTitle = [NSString stringWithFormat:  @"%@\n%@", myNavBarTitle, gbl_lastSelectedPerson ];
+            } else {
+                myNavBar2lineTitle = [NSString stringWithFormat:  @"%@\nin %@", myNavBarTitle, gbl_lastSelectedGroup ];
+            }
+
+            myNavBarLabel.text          = myNavBar2lineTitle;
+
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+                self.navigationItem.titleView = myNavBarLabel; // myNavBarLabel.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
+                self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: shareButton];
+                self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerForTitle];
+                [self.navigationController.navigationBar setTranslucent:NO];
+
+                // How to hide iOS7 UINavigationBar 1px bottom line
+                // 
+                // you can make the background a solid color by
+                // 1. setting backgroundImage to [UIImage new]
+                // 2. assigning navigationBar.backgroundColor to the color you like.
+                // (when you  do this,  translucent becomes = NO)  that's OK
+                //  http://stackoverflow.com/questions/19226965/how-to-hide-ios7-uinavigationbar-1px-bottom-line/
+                //
+                [self.navigationController.navigationBar setBackgroundImage: [UIImage new]       // 1. of 2
+                                                             forBarPosition: UIBarPositionAny
+                                                                 barMetrics: UIBarMetricsDefault];
+                //
+                [self.navigationController.navigationBar setShadowImage: [UIImage new]];   
+                //
+                self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];  // 2. of 2
+                //
+                // end of  How to hide iOS7 UINavigationBar 1px bottom line
+
+//                [[self navigationItem] setTitle: myNavBarTitle];
+//                self.navigationItem.titleView = myNavBarLabel; // myNavBarLabel.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
+            });                                   
+nbn(406);
+        }
+nbn(407);
+
+    } // end of add Navigation Bar right buttons
+//<.>
+
+
+
+
+
+
+    // run personality report
+    // load new personality TBLRPT  report data into array URLtoHTML_forWebview;
+    //
+    if ( [gbl_currentMenuPlusReportCode isEqualToString: @"homppe"] )  // home + personality
+    {
+
+//            // try to get rid of tbl position in middle on startup
+//nbn(351);
+//            dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+//                [self.tableView reloadData]; // self.view is the table view if self is its controller
+//           });
+
+        self.automaticallyAdjustsScrollViewInsets = NO;
+
+
+        char psvName[32], psvMth[4], psvDay[4], psvYear[8], psvHour[4], psvMin[4], psvAmPm[4], psvCity[64], psvProv[64], psvCountry[64];
+        char psvLongitude[16], psvHoursDiff[8], returnPSV[64];
+        const char *my_psvc; // psv=pipe-separated values
+        char my_psv[128];
+        
+        char csv_person_string[128], csv_person1_string[128], csv_person2_string[128];
+        char person_name_for_filename[32], person1_name_for_filename[32], person2_name_for_filename[32];
+        char myStringBuffForTraitCSV[64];
+        
+        char  yyyy_todo[16], yyyymmdd_todo[16], stringBuffForStressScore[64] ;
+        const char *yyyy_todoC;
+        const char *yyyymmdd_todoC;
+        int retval, retval2;
+
+        char   html_file_name_browser[2048], html_file_name_webview[2048];
+        NSString *Ohtml_file_name_browser, *Ohtml_file_name_webview;
+        NSString *OpathToHTML_browser,     *OpathToHTML_webview;
+        char     *pathToHTML_browser,      *pathToHTML_webview;
+        
+        NSURL *URLtoHTML_forWebview;
+        NSURL *URLtoHTML_forEmailing;
+        NSURLRequest *HTML_URLrequest;
+        NSArray* tmpDirFiles;
+    
+
+
+        sfill(myStringBuffForTraitCSV, 60, ' ');  // not used here in per, so blanks
+
+            // NSString object to C
+            //const char *my_psvc = [self.fromHomeCurrentSelectionPSV cStringUsingEncoding:NSUTF8StringEncoding];  // psv=pipe-separated values
+    //        my_psvc = [gbl_fromHomeCurrentSelectionPSV cStringUsingEncoding:NSUTF8StringEncoding];  // for personality
+    //        my_psvc = [gbl_viewHTML_PSV_personJust1 cStringUsingEncoding:NSUTF8StringEncoding];  // for personality
+            my_psvc = [gbl_fromHomeCurrentSelectionPSV cStringUsingEncoding:NSUTF8StringEncoding];  // for personality
+
+            strcpy(my_psv, my_psvc);
+            ksn(my_psv);
+            
+            strcpy(psvName, csv_get_field(my_psv, "|", 1));
+            strcpy(psvMth,  csv_get_field(my_psv, "|", 2));
+            strcpy(psvDay,  csv_get_field(my_psv, "|", 3));
+            strcpy(psvYear, csv_get_field(my_psv, "|", 4));
+            strcpy(psvHour, csv_get_field(my_psv, "|", 5));
+            strcpy(psvMin,  csv_get_field(my_psv, "|", 6));
+            strcpy(psvAmPm, csv_get_field(my_psv, "|", 7));
+            strcpy(psvCity, csv_get_field(my_psv, "|", 8));
+            strcpy(psvProv, csv_get_field(my_psv, "|", 9));
+            strcpy(psvCountry, csv_get_field(my_psv, "|", 10));
+            ksn(psvMth);ks(psvDay);ks(psvYear);ks(psvHour);ks(psvMin);ks(psvAmPm);tn();
+            ksn(psvCity);ks(psvProv);ks(psvCountry);tn();
+            
+            // get longitude and timezone hoursDiff from Greenwich
+            // by looking up psvCity, psvProv, psvCountry
+            //
+            seq_find_exact_citPrvCountry(returnPSV, psvCity, psvProv, psvCountry);
+            
+            strcpy(psvHoursDiff,  csv_get_field(returnPSV, "|", 1));
+            strcpy(psvLongitude,  csv_get_field(returnPSV, "|", 2));
+            
+            // set gbl for email
+            ksn(psvName);
+            gbl_person_name =  [NSString stringWithUTF8String:psvName ];
+
+            // build csv arg for report function call
+            //
+            sprintf(csv_person_string, "%s,%s,%s,%s,%s,%s,%s,%s,%s",
+                    psvName,psvMth,psvDay,psvYear,psvHour,psvMin,psvAmPm,psvHoursDiff,psvLongitude);
+            ksn(csv_person_string);tn();
+            
+            
+            // build HTML file name  in TMP  Directory
+            //
+            strcpy(person_name_for_filename, psvName);
+            scharswitch(person_name_for_filename, ' ', '_');
+            sprintf(html_file_name_browser, "%sper_%s.html",         PREFIX_HTML_FILENAME, person_name_for_filename);
+            sprintf(html_file_name_webview, "%sper_%s_webview.html", PREFIX_HTML_FILENAME, person_name_for_filename);
+            
+            
+            gbl_html_file_name_browser = [NSString stringWithUTF8String:html_file_name_browser ];   // for later sending as email attachment
+            gbl_html_file_name_webview = [NSString stringWithUTF8String:html_file_name_webview ];   // for later viewing in webview
+
+
+            Ohtml_file_name_browser = [NSString stringWithUTF8String:html_file_name_browser ];
+            OpathToHTML_browser     = [NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_browser];
+            pathToHTML_browser      = (char *) [OpathToHTML_browser cStringUsingEncoding:NSUTF8StringEncoding];
+            
+            Ohtml_file_name_webview = [NSString stringWithUTF8String:html_file_name_webview ];
+            OpathToHTML_webview     = [NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_webview];
+            pathToHTML_webview      = (char *) [OpathToHTML_webview cStringUsingEncoding:NSUTF8StringEncoding];
+
+  NSLog(@"Ohtml_file_name_webview=[%@]",Ohtml_file_name_webview);
+            
+            URLtoHTML_forWebview = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_webview]];
+//        gbl_URLtoHTML_forWebview            
+
+            gbl_pathToFileToBeEmailed = OpathToHTML_browser;
+            
+            // remove all "*.html" files from TMP directory before creating new one
+            //
+            tmpDirFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:NSTemporaryDirectory() error:NULL];
+    //        NSLog(@"tmpDirFiles.count=%lu",(unsigned long)tmpDirFiles.count);
+                    for (NSString *fil in tmpDirFiles) {
+    //            NSLog(@"fil=%@",fil);
+                if ([fil hasSuffix: @"html"]) {
+                    [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), fil] error:NULL];
+                }
+            }
+       
+            
+    //        tn();trn("2 HTMLs !!!!!!!!!!!!!!!!!!!!");
+    //        nksn(html_file_name_browser); ksn( html_file_name_webview);
+    //        NSLog(@"Ohtml_file_name_browser=%@",Ohtml_file_name_browser);
+    //        NSLog(@"OpathToHTML_browser=%@",OpathToHTML_browser);
+    //        nksn(pathToHTML_browser); ksn(pathToHTML_webview);
+
+            
+            retval = mamb_report_personality(     /* in perdoc.o */
+                                    pathToHTML_webview,
+                                    pathToHTML_browser,
+                                    csv_person_string,
+                                    "",  /* could be "return only csv with all trait scores",  instructions */
+                                    /* this instruction arg is now ignored, because arg next, */
+                                    /* stringBuffForTraitCSV, is ALWAYS populated with trait scores */
+                                     myStringBuffForTraitCSV);
+
+
+        //<.>
+        ////tn();ksn(myStringBuffForTraitCSV);tn();
+        //
+        //        // determine trait name that has the  highest score (for INFO for personality)
+        //        // all trait scores are in  ( stringBuffForTraitCSV=[42,85,44,21,67,34] )
+        //        //
+        //        // _myStringBuffForTraitCSV=[78,1,55,84,90,79]__
+        //        //
+        //        NSString *myNSStringTraitCSV = [NSString stringWithUTF8String: myStringBuffForTraitCSV];  // convert c string to NSString
+        ////  NSLog(@"myNSStringTraitCSV =%@",myNSStringTraitCSV );
+        //        NSArray  *arrayOfScores      = [myNSStringTraitCSV componentsSeparatedByString:@","];
+        ////  NSLog(@"arrayOfScores      =%@",arrayOfScores      );
+        //        NSInteger thisScoreINT, thisScoreIndex;
+        //        NSInteger highestTraitScore, highestTraitScoreIndex;
+        //        highestTraitScore      = 0;
+        //        highestTraitScoreIndex = 0;
+        //        thisScoreINT           = 0;
+        //        thisScoreIndex         = 0;
+        //        NSString *thisScoreSTR;
+        //
+        //        for (thisScoreSTR in arrayOfScores) {
+        ////  NSLog(@"thisScoreSTR =%@",thisScoreSTR );
+        ////  NSLog(@"thisScoreINT =%ld",(long)thisScoreINT );
+        //            thisScoreIndex = thisScoreIndex + 1;       // one-based
+        //            thisScoreINT   = [thisScoreSTR intValue];  // convert NSString to integer
+        //            if (thisScoreINT >  highestTraitScore) {
+        //                highestTraitScore      = thisScoreINT;
+        //                highestTraitScoreIndex = thisScoreIndex;
+        ////  NSLog(@"highestTraitScore      =%ld",(long)highestTraitScore      );
+        ////  NSLog(@"highestTraitScoreIndex =%ld",(long)highestTraitScoreIndex );
+        //            }
+        //        }
+        //
+        //        //  do_special_line(IDX_FOR_AGGRESSIVE);    1
+        //        //  do_special_line(IDX_FOR_SENSITIVE);     2
+        //        //  do_special_line(IDX_FOR_RESTLESS);      3
+        //        //  do_special_line(IDX_FOR_DOWN_TO_EARTH); 4
+        //        //  do_special_line(IDX_FOR_SEX_DRIVE);     5
+        //        //  do_special_line(IDX_FOR_UPS_AND_DOWNS); 6  (removed)
+        //        //
+        //        gbl_highestTraitScore = [NSString stringWithFormat:@"%ld", (long)highestTraitScore ]; // convert NSInteger to NSString 
+        //
+        //        gbl_highestTraitScoreDescription = @" ";
+        //        if (highestTraitScoreIndex == 1) gbl_highestTraitScoreDescription = @"Assertive";
+        //        if (highestTraitScoreIndex == 2) gbl_highestTraitScoreDescription = @"Emotional";
+        //        if (highestTraitScoreIndex == 3) gbl_highestTraitScoreDescription = @"Restless";
+        //        if (highestTraitScoreIndex == 4) gbl_highestTraitScoreDescription = @"Down-to-earth";
+        //        if (highestTraitScoreIndex == 5) gbl_highestTraitScoreDescription = @"Passionate";
+        //        //  if (highestTraitScoreIndex == 6) gbl_highestTraitScoreDescription = @"Ups and Downs";
+        //tn();ksn(myStringBuffForTraitCSV);
+        //  NSLog(@"gbl_highestTraitScore=%@",gbl_highestTraitScore );
+        //  NSLog(@"gbl_highestTraitScoreDescription=%@",gbl_highestTraitScoreDescription );
+        //
+        //
+        //        if (retval == 0) {
+        //           
+        //            // show all files in temp dir
+        //            NSFileManager *manager = [NSFileManager defaultManager];
+        //            NSArray *fileList = [manager contentsOfDirectoryAtPath:NSTemporaryDirectory() error:nil];
+        //            for (NSString *s in fileList){
+        //                NSLog(@"TEMP DIR %@", s);
+        //            }
+        //            
+        //            
+        //            /* here, go and look at html report */
+        //            // [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"about:blank"]]];  // ?clean for re-use
+        //            
+        //            self.outletWebView.scalesPageToFit = YES;
+        //            
+        //            // I was having the same problem. I found a property on the UIWebView
+        //            // that allows you to turn off the data detectors.
+        //            //
+        //            self.outletWebView.dataDetectorTypes = UIDataDetectorTypeNone;
+        //
+        //            // did not work // fill whole screen, no gaps   
+        //            //             self.outletWebView.autoresizesSubviews = YES;
+        //            //             self.outletWebView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+        //            //
+        //
+        //            
+        //             // place our URL in a URL Request
+        //             HTML_URLrequest = [[NSURLRequest alloc] initWithURL: URLtoHTML_forWebview];
+        //             
+        //             // UIWebView is part of UIKit, so you should operate on the main thread.
+        //             //
+        //             // old= [self.outletWebView loadRequest: HTML_URLrequest];
+        //             //
+        //             dispatch_async(dispatch_get_main_queue(), ^(void){
+        //                 [self.outletWebView loadRequest:HTML_URLrequest];
+        //
+        //                 // webView.delegate = self; // http://stackoverflow.com/questions/10666484/html-content-fit-in-uiwebview-without-zooming-out
+        //                 self.outletWebView.delegate = self; // http://stackoverflow.com/questions/10666484/html-content-fit-in-uiwebview-without-zooming-out
+        //
+        //             });
+        //        } // retval = 0
+        //
+        //<.> from viewHTML  aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+        //
+
+nbn(101);
+        // gbl_perDataLines;  // used in tblrpts_1 (read in from webview . html file)
+        NSString *perDataStr = [NSString stringWithContentsOfURL: URLtoHTML_forWebview  encoding: NSUTF8StringEncoding  error: nil];
+        gbl_perDataLines     = [perDataStr componentsSeparatedByCharactersInSet: [NSCharacterSet newlineCharacterSet]];
+  NSLog(@"gbl_perDataLines.count    =[%ld]",gbl_perDataLines.count    );
+
+// Log all data in gbl_perDataLines file array contents    for test <.>
+for (id eltTst in gbl_perDataLines) { NSLog(@"    gbl_per=%@", eltTst); }
+
+    } // end of if   [gbl_currentMenuPlusReportCode isEqualToString: @"homppe"] // home + personality
+
+
 
 
 
     if( gbl_TBLRPTS1_saveSelectedIndexPath ) {  // THIS SIMULATES a SELECT animation followed by a DESELECT animation (it works)
-tn();nbn(100);
 //       [self.tableView   selectRowAtIndexPath: gbl_IdxPathSaved_SelPerson
 //                                     animated: YES 
 //                               scrollPosition: UITableViewScrollPositionNone];
@@ -2342,142 +3018,7 @@ tn();nbn(100);
     const char *yyyymmdd_todoC;
 
 
-
-    //
-    // add NAVIGATION BAR right buttons, if not added already   plus nav bar title
-    //
-    NSString *myNavBarTitle;
-    if (gbl_tblrpts1_ShouldAddToNavBar == 1) { // init to prevent  multiple programatic adds of nav bar items
-
-        gbl_tblrpts1_ShouldAddToNavBar  = 0;   // do not do this again
-
-        // you have to add the info button in interface builder by hand,
-        // then you can add  Share button below with   rightBarButtonItems arrayByAddingObject: shareButton];
-        //
-        UIBarButtonItem *shareButton = [[UIBarButtonItem alloc]
-                                        initWithBarButtonSystemItem: UIBarButtonSystemItemAction
-                                        target:self
-                                        action:@selector(shareButtonAction:)];
-
-        UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 11, 44)];  // 3rd arg is horizontal length
-        UIBarButtonItem *mySpacerForTitle = [[UIBarButtonItem alloc] initWithCustomView:spaceView];
-
-
-//          ||  [gbl_currentMenuPlusReportCode isEqualToString: @"gbm1bm"]  // My Best Match in Group ...  see tblrps_2 view
-//          ||  [gbl_currentMenuPlusReportCode isEqualToString: @"gbm2bm"]  // My Best Match in Group ...  see tblrps_2 view
-//          ||  [gbl_currentMenuPlusReportCode isEqualToString: @"pbm2bm"]  // My Best Match in Group ...  see tblrps_2 view
-//        if (   [gbl_currentMenuPlusReportCode isEqualToString: @"hompbm" ]  // My Best Match in Group ...
-//            || [gbl_currentMenuPlusReportCode isEqualToString: @"homgbm" ]  //    Best Match in Group ...
-//            || [gbl_currentMenuPlusReportCode       hasPrefix: @"pbm"    ]
-//            || [gbl_currentMenuPlusReportCode       hasPrefix: @"gbm"    ]
-
-//  NSLog(@"gbl_currentMenuPlusReportCode =%@",gbl_currentMenuPlusReportCode );
-
-
-
-        // grpone all *MY* BEST MATCH ... reports  PLUS all reports AFTER THAT in navigation <-------------
-        // grpall all BEST MATCH ... reports  PLUS all reports AFTER THAT in navigation <-------------
-        //
-        if (  [gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"] // My Best Match in Group ...
-          ||  [gbl_currentMenuPlusReportCode       hasPrefix: @"pbm"   ] // My Best Match in Group ... grpone
-          ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgbm"] //    Best Match in Group ...
-          ||  [gbl_currentMenuPlusReportCode       hasPrefix: @"gbm"   ] //    Best Match in Group ... grpall
-        ) {
-                // gbl_PSVtappedPerson_grpall;     // gbm1pe,gbm2pe,gbm1bm,gbm2bm 
-                // gbl_PSVtappedPerson_grpone;     // pbm1pe,pbm2pe,pbm2bm       
-            myNavBarTitle = @"Best Match";
-
-            dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
-                self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: shareButton];
-                self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerForTitle];
-                [self.navigationController.navigationBar setTranslucent:NO];
-
-                // How to hide iOS7 UINavigationBar 1px bottom line
-                // 
-                // you can make the background a solid color by
-                // 1. setting backgroundImage to [UIImage new]
-                // 2. assigning navigationBar.backgroundColor to the color you like.
-                // (when you  do this,  translucent becomes = NO)  that's OK
-                //  http://stackoverflow.com/questions/19226965/how-to-hide-ios7-uinavigationbar-1px-bottom-line/
-                //
-                [self.navigationController.navigationBar setBackgroundImage: [UIImage new]       // 1. of 2
-                                                             forBarPosition: UIBarPositionAny
-                                                                 barMetrics: UIBarMetricsDefault];
-                //
-                [self.navigationController.navigationBar setShadowImage: [UIImage new]];   
-                //
-                self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];  // 2. of 2
-                //
-                // end of  How to hide iOS7 UINavigationBar 1px bottom line
-
-
-                [[self navigationItem] setTitle: myNavBarTitle];
-            });                                   
-
-        } else if (   [gbl_currentMenuPlusReportCode       hasPrefix: @"homgm"    ]  // "Most" reports
-                 || [gbl_currentMenuPlusReportCode       hasPrefix: @"homgb"    ]  // "Best" reports
-        ) {
-
-            if      ([gbl_currentMenuPlusReportCode isEqualToString: @"homgma"]) { myNavBarTitle = @"Most Assertive"; }
-            else if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgme"]) { myNavBarTitle = @"Most Emotional"; }
-            else if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgmr"]) { myNavBarTitle = @"Most Restless"; }
-            else if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgmp"]) { myNavBarTitle = @"Most Passionate"; }
-            else if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgmd"]) { myNavBarTitle = @"Most Down-to-earth"; }
-
-            else if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgby"]) {
-                myNavBarTitle = [NSString stringWithFormat: @"Best Year  %@", gbl_lastSelectedYear ];
-            }
-            else if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgbd"]) {
-                myNavBarTitle = [NSString stringWithFormat: @"Best Day  %@", gbl_lastSelectedDayFormattedForTitle ];
-            }
-
-            else {
-                myNavBarTitle = @"x02";  // should never happen
-            }
-
-            UILabel *myNavBarLabel      = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 480.0, 44.0)];
-            NSString *myNavBar2lineTitle;
-            myNavBarLabel.numberOfLines = 2;
-
-            if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgbd"]) myNavBarLabel.font = [UIFont boldSystemFontOfSize: 12.0];
-            else                                                            myNavBarLabel.font = [UIFont boldSystemFontOfSize: 14.0];
-
-            myNavBarLabel.textColor     = [UIColor blackColor];
-            myNavBarLabel.textAlignment = NSTextAlignmentCenter; 
-//            myNavBar2lineTitle = [NSString stringWithFormat:  @"%@\nin Group %@", myNavBarTitle, gbl_lastSelectedGroup ];
-            myNavBar2lineTitle = [NSString stringWithFormat:  @"%@\nin %@", myNavBarTitle, gbl_lastSelectedGroup ];
-            myNavBarLabel.text          = myNavBar2lineTitle;
-
-            dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
-                self.navigationItem.titleView = myNavBarLabel; // myNavBarLabel.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
-                self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: shareButton];
-                self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerForTitle];
-                [self.navigationController.navigationBar setTranslucent:NO];
-
-                // How to hide iOS7 UINavigationBar 1px bottom line
-                // 
-                // you can make the background a solid color by
-                // 1. setting backgroundImage to [UIImage new]
-                // 2. assigning navigationBar.backgroundColor to the color you like.
-                // (when you  do this,  translucent becomes = NO)  that's OK
-                //  http://stackoverflow.com/questions/19226965/how-to-hide-ios7-uinavigationbar-1px-bottom-line/
-                //
-                [self.navigationController.navigationBar setBackgroundImage: [UIImage new]       // 1. of 2
-                                                             forBarPosition: UIBarPositionAny
-                                                                 barMetrics: UIBarMetricsDefault];
-                //
-                [self.navigationController.navigationBar setShadowImage: [UIImage new]];   
-                //
-                self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];  // 2. of 2
-                //
-                // end of  How to hide iOS7 UINavigationBar 1px bottom line
-
-//                [[self navigationItem] setTitle: myNavBarTitle];
-//                self.navigationItem.titleView = myNavBarLabel; // myNavBarLabel.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
-            });                                   
-        }
-
-    } // end of add Navigation Bar right buttons
+//<.> old spot for add nar bar stuff
 
 
 
@@ -3841,12 +4382,50 @@ NSLog(@"Ok button pressed");
 //    [self.tableView reloadData];    // self.view is the table view if self is its controller
 
 
+// try to get rid of tbl position in middle on startup
+//nbn(320);
+//    if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homppe"]
+//        || [gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]
+//    ) {
+//nbn(321);
+//        NSIndexPath *gotoindexPath = [NSIndexPath indexPathForRow:0 inSection: 0];
+//        if(gotoindexPath) {
+//nbn(322);
+////            [self.tableView selectRowAtIndexPath:gotoindexPath
+////                                        animated:YES
+////                                  scrollPosition:UITableViewScrollPositionNone];
+//
+//            dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+//
+//                [self.tableView reloadData]; // self.view is the table view if self is its controller
+//
+////                [self.tableView scrollToRowAtIndexPath: gotoindexPath atScrollPosition: UITableViewScrollPositionTop animated: YES];
+////        //        [tableView scrollToRowAtIndexPath: newIndexPath atScrollPosition: UITableViewScrollPositionMiddle animated: NO];
+//
+////                [self.tableView selectRowAtIndexPath: gotoindexPath
+////                                            animated: YES
+////                                      scrollPosition: UITableViewScrollPositionTop  
+////                ];
+////
+////                [self.tableView scrollToRowAtIndexPath: gotoindexPath
+////                                 atScrollPosition: UITableViewScrollPositionTop
+////                                         animated: YES
+////                ];
+////
+//           });
+//        }
+//
+//        return;
+//    }
+//
+
     NSIndexPath *myIdxPath = [self.tableView indexPathForSelectedRow];
     if(myIdxPath) {
         [self.tableView selectRowAtIndexPath:myIdxPath
                                     animated:YES
                               scrollPosition:UITableViewScrollPositionNone];
     }
+    return;
 
 
 
@@ -3948,8 +4527,17 @@ tn();trn("// set new gbl_currentMenuPlusReportCode    for info in next report");
         return myTopRow.row;
     }
 
+    // no section index for these
+    if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homppe"]   // home + personality
+        || [gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]   // home + compatibility
+    ) {
+        return 0;
+    }
 
-//    if ([title isEqualToString:@"__"]) newRow = 0;
+
+    // put up 20,40,60,80  scroll bar on right
+    //
+    //    if ([title isEqualToString:@"__"]) newRow = 0;
     if ([title isEqualToString:@"--"]) newRow = 0;
     if ([title isEqualToString:@"20"]) newRow = (int) ( (20.0 / 100.0) * (double)group_report_output_idx );
     if ([title isEqualToString:@"40"]) newRow = (int) ( (40.0 / 100.0) * (double)group_report_output_idx );
@@ -4679,5 +5267,32 @@ tn();trn("// set new gbl_currentMenuPlusReportCode    for info in next report");
 //        }
 //     } // highlight saved row
 //
+//
+
+
+//
+//- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollview {
+//    gbl_scrollViewIsDragging = YES;
+//
+//    if( [self.tableView indexPathForSelectedRow] ) {
+////        [[self.tableView cellForRowAtIndexPath:[self.tableView indexPathForSelectedRow]] setHighlighted:YES];
+//
+//        NSIndexPath *myTmpIndexPath     = [self.tableView indexPathForSelectedRow];
+//        UITableViewCell *currcell       = [self.tableView cellForRowAtIndexPath: myTmpIndexPath]; // now you can use currcell.textLabel.text
+//        currcell.selectedBackgroundView =  gbl_myCellBgView;
+//
+//    //      cell.selectedBackgroundView =  gbl_myCellBgView;
+//    }
+//}        // http://stackoverflow.com/questions/13275405/uitableview-selected-cell-doesnt-stay-selected-when-scrolled
+//- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
+//    gbl_scrollViewIsDragging = NO;
+//
+//    if( [self.tableView indexPathForSelectedRow] ) {
+////        [[self.tableView cellForRowAtIndexPath:[self.tableView indexPathForSelectedRow]] setHighlighted:NO];
+//        NSIndexPath *myTmpIndexPath     = [self.tableView indexPathForSelectedRow];
+//        UITableViewCell *currcell       = [self.tableView cellForRowAtIndexPath: myTmpIndexPath]; // now you can use currcell.textLabel.text
+//        currcell.selectedBackgroundView =  nil;
+//    }
+//}
 //
 

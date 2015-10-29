@@ -1,6 +1,5 @@
 /* this is perhtm.h */
-
-char my_aspect_text[512];
+char my_aspect_text[4048];
 
 struct aspect {
   char *asp_code;

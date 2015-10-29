@@ -54,10 +54,26 @@ tn();
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 
 
+
+//<.>
+//        UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 11, 44)];  // 3rd arg is horizontal length
+//        UIBarButtonItem *mySpacerForTitle = [[UIBarButtonItem alloc] initWithCustomView:spaceView];
+//
+//            dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+//                self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: shareButton];
+//                self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerForTitle];
+//                [self.navigationController.navigationBar setTranslucent:NO];
+//<.>
+//
+
+
+    // 2-line
     // TWO-LINE NAV BAR TITLE     WARNING  this is a HOUSE OF CARDS   beware changing a thing (landscape goes to right a bit !? )
     //
 //        UIButton *myInvisibleButton             = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
-        UIButton *myInvisibleButton       = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+//        UIButton *myInvisibleButton       = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+        UIButton *myInvisibleButton       = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 88, 88)];
+
         myInvisibleButton.backgroundColor       = [UIColor clearColor];
         UIBarButtonItem *myInvisibleBtnNavItem  = [[UIBarButtonItem alloc] initWithCustomView: myInvisibleButton];
 
@@ -195,36 +211,36 @@ tn();
 //    if (  [gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"] ){   // my best match (grpone)
     if ([gbl_currentMenuPrefixFromMatchRpt isEqualToString: @"pbm"] ) {   // my best match (grpone)
         if (indexPath.row == 0) return    16.0;  // spacer small
-        if (indexPath.row == 1) return    32.0;  // compatibility potential report
+        if (indexPath.row == 1) return    44.0;  // compatibility potential report
 //        if (indexPath.row == 2) return    16.0;  // spacer row
-        if (indexPath.row == 2) return    32.0;  // spacer row
-        if (indexPath.row == 3) return    32.0;  // per 1
-        if (indexPath.row == 4) return    32.0;  // per 2
+        if (indexPath.row == 2) return    22.0;  // spacer row
+        if (indexPath.row == 3) return    44.0;  // per 1
+        if (indexPath.row == 4) return    44.0;  // per 2
 //        if (indexPath.row == 5) return    16.0;  // spacer row
-        if (indexPath.row == 5) return    32.0;  // spacer row
+        if (indexPath.row == 5) return    22.0;  // spacer row
 //        if (indexPath.row == 6) return    48.0;  // 2-row  grpone desc best match for perB
-        if (indexPath.row == 6) return    32.0;  // 1-row  grpone desc best match for perB
-        if (indexPath.row == 7) return    32.0;  // empty rows at bottom of tableview
-        return 32.0;  //default
+        if (indexPath.row == 6) return    44.0;  // 1-row  grpone desc best match for perB
+        if (indexPath.row == 7) return    44.0;  // empty rows at bottom of tableview
+        return 44.0;  //default
     }
     if ([gbl_currentMenuPrefixFromMatchRpt isEqualToString: @"gbm"] ) {   // my best match (grpall)
         if (indexPath.row == 0) return    16.0;  // spacer small
-        if (indexPath.row == 1) return    32.0;  // compatibility potential report
+        if (indexPath.row == 1) return    44.0;  // compatibility potential report
 //        if (indexPath.row == 2) return    16.0;  // spacer row
-        if (indexPath.row == 2) return    32.0;  // spacer row
-        if (indexPath.row == 3) return    32.0;  // per for A
-        if (indexPath.row == 4) return    32.0;  // per for B
+        if (indexPath.row == 2) return    22.0;  // spacer row
+        if (indexPath.row == 3) return    44.0;  // per for A
+        if (indexPath.row == 4) return    44.0;  // per for B
 //        if (indexPath.row == 5) return    16.0;  // spacer row
-        if (indexPath.row == 5) return    32.0;  // spacer row
+        if (indexPath.row == 5) return    22.0;  // spacer row
 //        if (indexPath.row == 6) return    48.0;  // 2-row  grpone desc best match for perA
-        if (indexPath.row == 6) return    32.0;  // 1-row  grpone desc best match for perA
+        if (indexPath.row == 6) return    44.0;  // 1-row  grpone desc best match for perA
 //        if (indexPath.row == 7) return    48.0;  // 2-row  grpone desc best match for perB
-        if (indexPath.row == 7) return    32.0;  // 1-row  grpone desc best match for perB
-        if (indexPath.row == 8) return    32.0;  // empty rows at bottom of tableview
-        return 32.0;  //default
+        if (indexPath.row == 7) return    44.0;  // 1-row  grpone desc best match for perB
+        if (indexPath.row == 8) return    44.0;  // empty rows at bottom of tableview
+        return 44.0;  //default
     }
 //<.>
-    return 32.0;
+    return 44.0;
 }
 // ===============================================================================================================
 
@@ -266,6 +282,8 @@ tn();
 
     // Configure the cell...
 
+
+    UIFont *myNewFont = [UIFont systemFontOfSize: 16.0];
 
     // for sel rpt B, hard code all cells (pattern above)  - too much customization (each cell but one)
 
@@ -325,6 +343,7 @@ tn();
             myNewCellText = [NSString stringWithFormat:  @"Best Match for %@", gbl_selectedCellPersonAname];
 
             dispatch_async(dispatch_get_main_queue(), ^{            // <  active
+                cell.textLabel.font                      = myNewFont ;
                 cell.textLabel.text                      = myNewCellText;  // --------------------------------------------------
                 cell.userInteractionEnabled              = YES;                  
                 cell.accessoryType                       = UITableViewCellAccessoryDisclosureIndicator;
@@ -357,6 +376,7 @@ tn();
             myNewCellText = [NSString stringWithFormat:  @"Best Match for %@", gbl_selectedCellPersonBname];
 
             dispatch_async(dispatch_get_main_queue(), ^{            // <  active
+                cell.textLabel.font                      = myNewFont ;
                 cell.textLabel.text                      = myNewCellText;  // --------------------------------------------------
                 cell.userInteractionEnabled              = YES;                  
                 cell.accessoryType                       = UITableViewCellAccessoryDisclosureIndicator;
@@ -383,7 +403,8 @@ tn();
         }
         if (indexPath.row == 1) {  
             thisCellIsActive = 1;
-            myNewCellText = [NSString stringWithFormat:  @"Compatibility Potential Report   "];
+//            myNewCellText = [NSString stringWithFormat:  @"Compatibility Potential Report   "];
+            myNewCellText = [NSString stringWithFormat:  @"Compatibility Potential "];
         }
         if (indexPath.row == 2) {   // spacer
             thisCellIsActive = 0;
@@ -423,6 +444,7 @@ tn();
             myNewCellText = [NSString stringWithFormat:  @"Best Match for %@", gbl_selectedCellPersonBname];
 
             dispatch_async(dispatch_get_main_queue(), ^{            // <  active
+                cell.textLabel.font                      = myNewFont ;
                 cell.textLabel.text                      = myNewCellText;  // --------------------------------------------------
                 cell.userInteractionEnabled              = YES;                  
                 cell.accessoryType                       = UITableViewCellAccessoryDisclosureIndicator;
@@ -461,6 +483,7 @@ tn();
 
     if (thisCellIsActive == 0) {
         dispatch_async(dispatch_get_main_queue(), ^{        
+            cell.textLabel.font                      = myNewFont ;
             cell.textLabel.text                      = myNewCellText;  // --------------------------------------------------
             cell.userInteractionEnabled              = NO;                           // no selection highlighting
             cell.accessoryView                       = myInvisibleButton;            // no right arrow on benchmark label
@@ -474,6 +497,7 @@ tn();
     }
     if (thisCellIsActive == 1) {
         dispatch_async(dispatch_get_main_queue(), ^{            // <  active
+            cell.textLabel.font                      = myNewFont ;
             cell.textLabel.text                      = myNewCellText;  // --------------------------------------------------
             cell.userInteractionEnabled              = YES;                  
 //            cell.accessoryView                       = myDisclosureIndicatorLabel;
@@ -798,8 +822,10 @@ tn(); NSLog(@"gbl_currentMenuPlusReportCode in rptsel BBB =%@",gbl_currentMenuPl
         // Also, all UI-related stuff must be done on the *main queue*. That's way you need that dispatch_async.
         //
         dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
-            [self performSegueWithIdentifier: @"segueRptSel_B_ToViewHTML" sender:self];
+//            [self performSegueWithIdentifier: @"segueRptSel_B_ToViewHTML" sender:self];
+            [self performSegueWithIdentifier:@"segueRptSelBToTBLRPT2" sender:self];   // is  now table rpt 
         });
+
 
     } // all reports HTML
 

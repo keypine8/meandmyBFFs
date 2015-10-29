@@ -125,19 +125,22 @@ tn(); NSLog(@"in sel Reports viewDidLoad!");
 //  NSLog(@"in heightForRowAtIndexPath  INFO ");
 //    if (  [gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"] ){   // my best match (grpone)
     if ([gbl_currentMenuPrefixFromHome isEqualToString: @"homp"] ) {   // home menu, person was selected
-        if (indexPath.row == 0) return    16.0;  // spacer
-        if (indexPath.row == 4) return    16.0;  // spacer
-        if (indexPath.row == 6) return    16.0;  // spacer
-        if (indexPath.row == 5) return    48.0;  // 2-row  grpone desc
-        return 32.0;  //default
+//        if (indexPath.row == 0) return    16.0;  // spacer
+        if (indexPath.row == 0) return    22.0;  // spacer
+        if (indexPath.row == 4) return    22.0;  // spacer
+        if (indexPath.row == 6) return    22.0;  // spacer
+//        if (indexPath.row == 5) return    48.0;  // 2-row  grpone desc
+        if (indexPath.row == 5) return    66.0;  // 2-row  grpone desc
+        return 44.0;  //default
     }
     if ([gbl_currentMenuPrefixFromHome isEqualToString: @"homg"] ) {   // home menu, group was selected
-        if (indexPath.row == 0) return    16.0;  // spacer
-        if (indexPath.row == 2) return    16.0;  // spacer
-        if (indexPath.row == 8) return    16.0;  // spacer
-        return 32.0;  //default
+        if (indexPath.row == 0) return    22.0;  // spacer
+        if (indexPath.row == 2) return    22.0;  // spacer
+        if (indexPath.row == 8) return    22.0;  // spacer
+        return 44.0;  //default
     }
-    return 32.0;
+//    return 32.0;
+    return 44.0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -154,6 +157,9 @@ tn(); NSLog(@"in sel Reports viewDidLoad!");
     }
 
     // Configure the cell...
+
+    UIFont *myNewFont = [UIFont systemFontOfSize: 16.0];
+
 
     //   cell.selectedBackgroundView =  gbl_myCellBgView ;  // get my own background color for selected rows (see MAMB09AppDelegate.m)
 
@@ -224,6 +230,7 @@ tn(); NSLog(@"in sel Reports viewDidLoad!");
     if (thisCellIsActive == 0) {
         dispatch_async(dispatch_get_main_queue(), ^{        
             cell.textLabel.text                      = myNewCellText;  // --------------------------------------------------
+            cell.textLabel.font                      = myNewFont ;
             cell.userInteractionEnabled              = NO;                           // no selection highlighting
             cell.accessoryView                       = myInvisibleButton;            // no right arrow on benchmark label
             cell.accessoryType                       = UITableViewCellAccessoryDisclosureIndicator;
@@ -244,6 +251,7 @@ tn(); NSLog(@"in sel Reports viewDidLoad!");
 
             dispatch_async(dispatch_get_main_queue(), ^{            // <  active
                 cell.textLabel.text                      = myNewCellText;  // --------------------------------------------------
+                cell.textLabel.font                      = myNewFont ;
                 cell.userInteractionEnabled              = YES;                  
                 cell.accessoryType                       = UITableViewCellAccessoryDisclosureIndicator;
 
@@ -256,6 +264,7 @@ tn(); NSLog(@"in sel Reports viewDidLoad!");
 
         dispatch_async(dispatch_get_main_queue(), ^{            // <  active
             cell.textLabel.text                      = myNewCellText;  // --------------------------------------------------
+            cell.textLabel.font                      = myNewFont ;
             cell.userInteractionEnabled              = YES;                  
 //            cell.accessoryView                       = myDisclosureIndicatorLabel;
             cell.accessoryType                       = UITableViewCellAccessoryDisclosureIndicator;
@@ -683,6 +692,7 @@ NSLog(@"in dispatch  for SELECT YEAR  !");
 
     //if ([stringForCurrentlySelectedRow hasPrefix: @"Personality"] ) 
     if ([gbl_currentMenuPlusReportCode isEqualToString: @"homppe"] ) {
+
         //[self performSegueWithIdentifier:@"segueRptSelToViewHTML"         sender:self];
         
         [myappDelegate saveLastSelectionForEntity: (NSString *) @"person"
@@ -697,7 +707,8 @@ NSLog(@"in dispatch  for SELECT YEAR  !");
         // Also, all UI-related stuff must be done on the *main queue*. That's way you need that dispatch_async.
         //
         dispatch_async(dispatch_get_main_queue(), ^{                                // <===  <.>
-            [self performSegueWithIdentifier:@"segueRptSelToViewHTML" sender:self];
+//            [self performSegueWithIdentifier:@"segueRptSelToViewHTML" sender:self];
+            [self performSegueWithIdentifier:@"segueRptSelToViewTBLRPT1" sender:self];  // is  now table rpt
         });
     }
 

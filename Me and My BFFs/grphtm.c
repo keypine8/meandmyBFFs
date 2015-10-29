@@ -3364,7 +3364,7 @@ tn();trn("in put_top_of_just2_group_rpt()");
   g_fn_prtlin("  <meta http-equiv=\"Content-Language\" content=\"en\" />");
 
 
-  /* Using the Viewport Meta Tag  (in iOS webView)
+  /* Using the Viewport Meta Tag   this is browser version
   * https://developer.apple.com/library/safari/documentation/AppleApplications/Reference/SafariWebContent/UsingtheViewport/UsingtheViewport.html#//apple_ref/doc/uid/TP40006509-SW25
   *
   * For example, TO SET THE VIEWPORT WIDTH TO THE WIDTH OF THE DEVICE, add this to your HTML file:
@@ -4008,8 +4008,10 @@ void put_ios_top_of_just2_group_rpt(void)  /* just_2 rpt */
 
   g_fn_prtlin("  <meta name=\"viewport\" content=\"width=device-width\" />");   //  ORIG   ORIG
 
+
   // THIS IS WEBVIEW VERSION
-  //
+
+  
 //  g_fn_prtlin("  <meta name=\"viewport\" content=\"width=device-width, initial-scale=0.33, minimum-scale=0.33, maximum-scale=0.33 \" />");  // webview  OK <6=no
 //  g_fn_prtlin("  <meta name=\"viewport\" content=\"width=device-width initial-scale=0.56 minimum-scale=0.56; \" />");  // webview  OK <6=no
 //  g_fn_prtlin("  <meta name=\"viewport\" content=\"width=device-width, initial-scale=2.0, minimum-scale=2.0, maximum-scale=2.0\" />");  // webview  OK <6=no
@@ -4023,7 +4025,9 @@ void put_ios_top_of_just2_group_rpt(void)  /* just_2 rpt */
   g_fn_prtlin( "\n  <style type=\"text/css\">");
   g_fn_prtlin( "    @media print { TABLE { font-size: 50%; } }");
 
-  g_fn_prtlin( "    BODY {");
+
+  g_fn_prtlin( "    BODY {");   // WEBVIEW grpof2
+
 /*  g_fn_prtlin( "      background-color: #F5EFCF;"); */
   g_fn_prtlin( "      background-color: #f7ebd1;");
 

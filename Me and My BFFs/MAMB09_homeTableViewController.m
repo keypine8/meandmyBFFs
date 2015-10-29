@@ -458,6 +458,8 @@ nbn(100);
     //    cell.textLabel.font            = myFont;
     // cell.textLabel.font.lineHeight = 20;
 
+        cell.textLabel.font            = [UIFont systemFontOfSize: 16.0];
+
         // set cell.accessoryType         (depends on gbl_homeUseMode - editing or not)
         // set cell.editingAccessoryType
         //
@@ -472,6 +474,15 @@ nbn(100);
     return cell;
 } // cellForRowAtIndexPath
 
+
+// how to set the tableview cell height
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath  // -------------------------
+{
+  NSLog(@"in heightForRowAtIndexPath 1");
+
+  return 44.0; // matches report height
+
+}
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     

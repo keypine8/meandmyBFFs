@@ -1106,6 +1106,53 @@ void put_br_every_n(char *instr,  int line_not_longer_than_this)
 
 }/* end of put_br_every_n() */
 
+//<.>
+//  // print lines in my_aspect_text wrapped to line_not_longer_than_this
+//  // 
+//  char *pNewWord;
+//  int len_new_word, lenbuf, line_not_longer_than_this;
+//  char mybuf[8192];
+//
+//  line_not_longer_than_this = 40;
+//  strcpy(mybuf, "");
+//
+//  sprintf(writebuf, "fill|before para");
+//  p_fn_prtlin(writebuf);
+//
+//  // NOTE here that strtok overwrites my_aspect_text to get the words,
+//  pNewWord = strtok (my_aspect_text, " ");  /* get ptr to first word */
+//
+//  while (pNewWord != NULL)  /* for all words */
+//  {
+//    lenbuf       = (int)strlen(mybuf);
+//    len_new_word = (int)strlen(pNewWord);
+//
+//    if (lenbuf + len_new_word >= line_not_longer_than_this) {
+//
+//      sprintf(writebuf, "para|%s",  mybuf);
+//      p_fn_prtlin(writebuf);
+//      
+//      strcpy(mybuf, "");                    /* init  mybuf */
+//    } /* write out since line too long */
+//
+//    sprintf(mybuf, "%s%s%s", mybuf, pNewWord, " "); /* add new word to mybuf */
+//
+//    pNewWord = strtok (NULL, " ");                  /* get ptr to next word */
+//
+//  }  /* for all words */
+//
+//  /* here no more words in aspect desc (mybuf has last line to add) */
+//  if (strlen(mybuf) != 0) {
+//
+//    mybuf[ strlen(mybuf) - 1] = '\0'; /* but remove sp at end */
+//
+//    sprintf(writebuf, "para|%s",  mybuf);
+//    p_fn_prtlin(writebuf);
+//  }
+//  //
+//  // end of print lines in my_aspect_text wrapped to line_not_longer_than_this
+//<.>
+//
 
 
 

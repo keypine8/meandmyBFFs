@@ -93,7 +93,7 @@
     char csv_person_string[128], csv_person1_string[128], csv_person2_string[128];
     char person_name_for_filename[32], person1_name_for_filename[32], person2_name_for_filename[32];
     //   char group_name_for_filename[32];
-    char myStringBuffForTraitCSV[64];
+//    char myStringBuffForTraitCSV[64];
     
     char  yyyy_todo[16], yyyymmdd_todo[16], stringBuffForStressScore[64] ;
     const char *yyyy_todoC;
@@ -144,7 +144,7 @@
 //        || [gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"]    // "hompbm" is not handled here (TBLRPTS_1)
     ) {
         gbl_viewHTML_PSV_personJust1  = gbl_fromHomeCurrentSelectionPSV;    // from select person on home screen
-        gbl_viewHTML_NAME_personJust1 = [gbl_viewHTML_PSV_personJust1 componentsSeparatedByString:@"|"][0]; // get field #1 (zero-based)
+        gbl_viewHTML_NAME_personJust1 = [gbl_viewHTML_PSV_personJust1 componentsSeparatedByString:@"|"][0]; // get 1st field (zero-based)
 
     } else if (
            [gbl_currentMenuPlusReportCode isEqualToString: @"pbmco"]   // pco chosen for selected pair in grpone 
@@ -217,248 +217,251 @@
 tn();
   NSLog(@"gbl_currentMenuPlusReportCode in VIEW HTML=%@",gbl_currentMenuPlusReportCode);
 
-    if (   [gbl_currentMenuPlusReportCode hasSuffix: @"pe"] // per rpt gmappe,gmeppe,gmrppe,gmpppe,gmdppe homppe pbm1pe,pbm2pe gbm1pe,gbm2pe
-//        || [gbl_currentMenuPlusReportCode hasPrefix: @"homgm"]   // personality report  homgma,homgme,homgmr,homgmp,homgmd
-    ) {
-        trn("in personality");
-        
 
-
-//        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
-//            [[self navigationItem] setTitle: @"Personality       "];
-//        });
+//<.>  this report (per) is now tblrpts_1
+//    if (   [gbl_currentMenuPlusReportCode hasSuffix: @"pe"] // per rpt gmappe,gmeppe,gmrppe,gmpppe,gmdppe homppe pbm1pe,pbm2pe gbm1pe,gbm2pe
+////        || [gbl_currentMenuPlusReportCode hasPrefix: @"homgm"]   // personality report  homgma,homgme,homgmr,homgmp,homgmd
+//    ) {
+//        trn("in personality");
+//        
 //
-
-//        // TWO-LINE NAV BAR TITLE
+//
+////        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+////            [[self navigationItem] setTitle: @"Personality       "];
+////        });
+////
+//
+////        // TWO-LINE NAV BAR TITLE
+////        //
+////        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+////
+////            UILabel *mySelRptB_Label      = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 480.0, 44.0)];
+////            mySelRptB_Label.numberOfLines = 2;
+////            mySelRptB_Label.font          = [UIFont boldSystemFontOfSize: 16.0];
+////            mySelRptB_Label.textColor     = [UIColor blackColor];
+////            mySelRptB_Label.textAlignment = NSTextAlignmentCenter; 
+////            mySelRptB_Label.text          = [NSString stringWithFormat:  @"Personality of\n%@", gbl_lastSelectedPerson ];
+////            // mySelRptB_Label.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
+////            self.navigationItem.titleView = mySelRptB_Label;
+////
+////            UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];  // 3rd arg is horizontal length
+////            UIBarButtonItem *mySpacerForTitle = [[UIBarButtonItem alloc] initWithCustomView: spaceView];
+////            self.navigationItem.rightBarButtonItem = mySpacerForTitle;
+////            [self.navigationController.navigationBar setTranslucent:NO];
+////
+////            //        UIButton *myInvisibleButton       = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+////            //        myInvisibleButton.backgroundColor = [UIColor clearColor];
+////            //        UIBarButtonItem *mySpacerNavItem  = [[UIBarButtonItem alloc] initWithCustomView: myInvisibleButton];
+////            //        self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerNavItem];
+////        });
+////
+//
+//
+//nbn(111);
+//    // When I am navigating back & forth, i see a dark shadow
+//    // on the right side of navigation bar at top. 
+//    // It feels rough and distracting. How can I get rid of it?
+//    //
+//    self.navigationController.navigationBar.translucent = NO; 
+//    //
+//    //http://stackoverflow.com/questions/22413193/dark-shadow-on-navigation-bar-during-segue-transition-after-upgrading-to-xcode-5
+//
+//
+//
+//
+//        sfill(myStringBuffForTraitCSV, 60, ' ');  // not used here in per, so blanks
+//
+//        // NSString object to C
+//        //const char *my_psvc = [self.fromHomeCurrentSelectionPSV cStringUsingEncoding:NSUTF8StringEncoding];  // psv=pipe-separated values
+////        my_psvc = [gbl_fromHomeCurrentSelectionPSV cStringUsingEncoding:NSUTF8StringEncoding];  // for personality
+//        my_psvc = [gbl_viewHTML_PSV_personJust1 cStringUsingEncoding:NSUTF8StringEncoding];  // for personality
+//
+//        strcpy(my_psv, my_psvc);
+//        ksn(my_psv);
+//        
+//        strcpy(psvName, csv_get_field(my_psv, "|", 1));
+//        strcpy(psvMth,  csv_get_field(my_psv, "|", 2));
+//        strcpy(psvDay,  csv_get_field(my_psv, "|", 3));
+//        strcpy(psvYear, csv_get_field(my_psv, "|", 4));
+//        strcpy(psvHour, csv_get_field(my_psv, "|", 5));
+//        strcpy(psvMin,  csv_get_field(my_psv, "|", 6));
+//        strcpy(psvAmPm, csv_get_field(my_psv, "|", 7));
+//        strcpy(psvCity, csv_get_field(my_psv, "|", 8));
+//        strcpy(psvProv, csv_get_field(my_psv, "|", 9));
+//        strcpy(psvCountry, csv_get_field(my_psv, "|", 10));
+//        ksn(psvMth);ks(psvDay);ks(psvYear);ks(psvHour);ks(psvMin);ks(psvAmPm);tn();
+//        ksn(psvCity);ks(psvProv);ks(psvCountry);tn();
+//        
+//        // get longitude and timezone hoursDiff from Greenwich
+//        // by looking up psvCity, psvProv, psvCountry
 //        //
-//        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+//        seq_find_exact_citPrvCountry(returnPSV, psvCity, psvProv, psvCountry);
+//        
+//        strcpy(psvHoursDiff,  csv_get_field(returnPSV, "|", 1));
+//        strcpy(psvLongitude,  csv_get_field(returnPSV, "|", 2));
+//        
+//        // set gbl for email
+//        ksn(psvName);
+//        gbl_person_name =  [NSString stringWithUTF8String:psvName ];
 //
-//            UILabel *mySelRptB_Label      = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 480.0, 44.0)];
-//            mySelRptB_Label.numberOfLines = 2;
-//            mySelRptB_Label.font          = [UIFont boldSystemFontOfSize: 16.0];
-//            mySelRptB_Label.textColor     = [UIColor blackColor];
-//            mySelRptB_Label.textAlignment = NSTextAlignmentCenter; 
-//            mySelRptB_Label.text          = [NSString stringWithFormat:  @"Personality of\n%@", gbl_lastSelectedPerson ];
-//            // mySelRptB_Label.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
-//            self.navigationItem.titleView = mySelRptB_Label;
+//        // build csv arg for report function call
+//        //
+//        sprintf(csv_person_string, "%s,%s,%s,%s,%s,%s,%s,%s,%s",
+//                psvName,psvMth,psvDay,psvYear,psvHour,psvMin,psvAmPm,psvHoursDiff,psvLongitude);
+//        ksn(csv_person_string);tn();
+//        
+//        
+//        // build HTML file name  in TMP  Directory
+//        //
+//        strcpy(person_name_for_filename, psvName);
+//        scharswitch(person_name_for_filename, ' ', '_');
+//        sprintf(html_file_name_browser, "%sper_%s.html",         PREFIX_HTML_FILENAME, person_name_for_filename);
+//        sprintf(html_file_name_webview, "%sper_%s_webview.html", PREFIX_HTML_FILENAME, person_name_for_filename);
+//        
+//        
+//        gbl_html_file_name_browser = [NSString stringWithUTF8String:html_file_name_browser ];   // for later sending as email attachment
+//        gbl_html_file_name_webview = [NSString stringWithUTF8String:html_file_name_webview ];   // for later viewing in webview
 //
-//            UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];  // 3rd arg is horizontal length
-//            UIBarButtonItem *mySpacerForTitle = [[UIBarButtonItem alloc] initWithCustomView: spaceView];
-//            self.navigationItem.rightBarButtonItem = mySpacerForTitle;
-//            [self.navigationController.navigationBar setTranslucent:NO];
 //
-//            //        UIButton *myInvisibleButton       = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
-//            //        myInvisibleButton.backgroundColor = [UIColor clearColor];
-//            //        UIBarButtonItem *mySpacerNavItem  = [[UIBarButtonItem alloc] initWithCustomView: myInvisibleButton];
-//            //        self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerNavItem];
-//        });
+//        Ohtml_file_name_browser = [NSString stringWithUTF8String:html_file_name_browser ];
+//        OpathToHTML_browser     = [NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_browser];
+//        pathToHTML_browser      = (char *) [OpathToHTML_browser cStringUsingEncoding:NSUTF8StringEncoding];
+//        
+//        Ohtml_file_name_webview = [NSString stringWithUTF8String:html_file_name_webview ];
+//        OpathToHTML_webview     = [NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_webview];
+//        pathToHTML_webview      = (char *) [OpathToHTML_webview cStringUsingEncoding:NSUTF8StringEncoding];
+//        
+//        URLtoHTML_forWebview = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_webview]];
+//        
+//        gbl_pathToFileToBeEmailed = OpathToHTML_browser;
+//        
+//        // remove all "*.html" files from TMP directory before creating new one
+//        //
+//        tmpDirFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:NSTemporaryDirectory() error:NULL];
+////        NSLog(@"tmpDirFiles.count=%lu",(unsigned long)tmpDirFiles.count);
+//                for (NSString *fil in tmpDirFiles) {
+////            NSLog(@"fil=%@",fil);
+//            if ([fil hasSuffix: @"html"]) {
+//                [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), fil] error:NULL];
+//            }
+//        }
+//   
+//        
+////        tn();trn("2 HTMLs !!!!!!!!!!!!!!!!!!!!");
+////        nksn(html_file_name_browser); ksn( html_file_name_webview);
+////        NSLog(@"Ohtml_file_name_browser=%@",Ohtml_file_name_browser);
+////        NSLog(@"OpathToHTML_browser=%@",OpathToHTML_browser);
+////        nksn(pathToHTML_browser); ksn(pathToHTML_webview);
 //
-
-
-nbn(111);
-    // When I am navigating back & forth, i see a dark shadow
-    // on the right side of navigation bar at top. 
-    // It feels rough and distracting. How can I get rid of it?
-    //
-    self.navigationController.navigationBar.translucent = NO; 
-    //
-    //http://stackoverflow.com/questions/22413193/dark-shadow-on-navigation-bar-during-segue-transition-after-upgrading-to-xcode-5
-
-
-
-
-        sfill(myStringBuffForTraitCSV, 60, ' ');  // not used here in per, so blanks
-
-        // NSString object to C
-        //const char *my_psvc = [self.fromHomeCurrentSelectionPSV cStringUsingEncoding:NSUTF8StringEncoding];  // psv=pipe-separated values
-//        my_psvc = [gbl_fromHomeCurrentSelectionPSV cStringUsingEncoding:NSUTF8StringEncoding];  // for personality
-        my_psvc = [gbl_viewHTML_PSV_personJust1 cStringUsingEncoding:NSUTF8StringEncoding];  // for personality
-
-        strcpy(my_psv, my_psvc);
-        ksn(my_psv);
-        
-        strcpy(psvName, csv_get_field(my_psv, "|", 1));
-        strcpy(psvMth,  csv_get_field(my_psv, "|", 2));
-        strcpy(psvDay,  csv_get_field(my_psv, "|", 3));
-        strcpy(psvYear, csv_get_field(my_psv, "|", 4));
-        strcpy(psvHour, csv_get_field(my_psv, "|", 5));
-        strcpy(psvMin,  csv_get_field(my_psv, "|", 6));
-        strcpy(psvAmPm, csv_get_field(my_psv, "|", 7));
-        strcpy(psvCity, csv_get_field(my_psv, "|", 8));
-        strcpy(psvProv, csv_get_field(my_psv, "|", 9));
-        strcpy(psvCountry, csv_get_field(my_psv, "|", 10));
-        ksn(psvMth);ks(psvDay);ks(psvYear);ks(psvHour);ks(psvMin);ks(psvAmPm);tn();
-        ksn(psvCity);ks(psvProv);ks(psvCountry);tn();
-        
-        // get longitude and timezone hoursDiff from Greenwich
-        // by looking up psvCity, psvProv, psvCountry
-        //
-        seq_find_exact_citPrvCountry(returnPSV, psvCity, psvProv, psvCountry);
-        
-        strcpy(psvHoursDiff,  csv_get_field(returnPSV, "|", 1));
-        strcpy(psvLongitude,  csv_get_field(returnPSV, "|", 2));
-        
-        // set gbl for email
-        ksn(psvName);
-        gbl_person_name =  [NSString stringWithUTF8String:psvName ];
-
-        // build csv arg for report function call
-        //
-        sprintf(csv_person_string, "%s,%s,%s,%s,%s,%s,%s,%s,%s",
-                psvName,psvMth,psvDay,psvYear,psvHour,psvMin,psvAmPm,psvHoursDiff,psvLongitude);
-        ksn(csv_person_string);tn();
-        
-        
-        // build HTML file name  in TMP  Directory
-        //
-        strcpy(person_name_for_filename, psvName);
-        scharswitch(person_name_for_filename, ' ', '_');
-        sprintf(html_file_name_browser, "%sper_%s.html",         PREFIX_HTML_FILENAME, person_name_for_filename);
-        sprintf(html_file_name_webview, "%sper_%s_webview.html", PREFIX_HTML_FILENAME, person_name_for_filename);
-        
-        
-        gbl_html_file_name_browser = [NSString stringWithUTF8String:html_file_name_browser ];   // for later sending as email attachment
-        gbl_html_file_name_webview = [NSString stringWithUTF8String:html_file_name_webview ];   // for later viewing in webview
-
-
-        Ohtml_file_name_browser = [NSString stringWithUTF8String:html_file_name_browser ];
-        OpathToHTML_browser     = [NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_browser];
-        pathToHTML_browser      = (char *) [OpathToHTML_browser cStringUsingEncoding:NSUTF8StringEncoding];
-        
-        Ohtml_file_name_webview = [NSString stringWithUTF8String:html_file_name_webview ];
-        OpathToHTML_webview     = [NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_webview];
-        pathToHTML_webview      = (char *) [OpathToHTML_webview cStringUsingEncoding:NSUTF8StringEncoding];
-        
-        URLtoHTML_forWebview = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_webview]];
-        
-        gbl_pathToFileToBeEmailed = OpathToHTML_browser;
-        
-        // remove all "*.html" files from TMP directory before creating new one
-        //
-        tmpDirFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:NSTemporaryDirectory() error:NULL];
-//        NSLog(@"tmpDirFiles.count=%lu",(unsigned long)tmpDirFiles.count);
-                for (NSString *fil in tmpDirFiles) {
-//            NSLog(@"fil=%@",fil);
-            if ([fil hasSuffix: @"html"]) {
-                [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), fil] error:NULL];
-            }
-        }
-   
-        
-//        tn();trn("2 HTMLs !!!!!!!!!!!!!!!!!!!!");
-//        nksn(html_file_name_browser); ksn( html_file_name_webview);
-//        NSLog(@"Ohtml_file_name_browser=%@",Ohtml_file_name_browser);
-//        NSLog(@"OpathToHTML_browser=%@",OpathToHTML_browser);
-//        nksn(pathToHTML_browser); ksn(pathToHTML_webview);
-
-        
-        retval = mamb_report_personality(     /* in perdoc.o */
-                                pathToHTML_webview,
-                                pathToHTML_browser,
-                                csv_person_string,
-                                "",  /* could be "return only csv with all trait scores",  instructions */
-                                /* this instruction arg is now ignored, because arg next, */
-                                /* stringBuffForTraitCSV, is ALWAYS populated with trait scores */
-                                 myStringBuffForTraitCSV);
-
-
-//tn();ksn(myStringBuffForTraitCSV);tn();
-
-        // determine trait name that has the  highest score (for INFO for personality)
-        // all trait scores are in  ( stringBuffForTraitCSV=[42,85,44,21,67,34] )
-        //
-        // _myStringBuffForTraitCSV=[78,1,55,84,90,79]__
-        //
-        NSString *myNSStringTraitCSV = [NSString stringWithUTF8String: myStringBuffForTraitCSV];  // convert c string to NSString
-//  NSLog(@"myNSStringTraitCSV =%@",myNSStringTraitCSV );
-        NSArray  *arrayOfScores      = [myNSStringTraitCSV componentsSeparatedByString:@","];
-//  NSLog(@"arrayOfScores      =%@",arrayOfScores      );
-        NSInteger thisScoreINT, thisScoreIndex;
-        NSInteger highestTraitScore, highestTraitScoreIndex;
-        highestTraitScore      = 0;
-        highestTraitScoreIndex = 0;
-        thisScoreINT           = 0;
-        thisScoreIndex         = 0;
-        NSString *thisScoreSTR;
-
-        for (thisScoreSTR in arrayOfScores) {
-//  NSLog(@"thisScoreSTR =%@",thisScoreSTR );
-//  NSLog(@"thisScoreINT =%ld",(long)thisScoreINT );
-            thisScoreIndex = thisScoreIndex + 1;       // one-based
-            thisScoreINT   = [thisScoreSTR intValue];  // convert NSString to integer
-            if (thisScoreINT >  highestTraitScore) {
-                highestTraitScore      = thisScoreINT;
-                highestTraitScoreIndex = thisScoreIndex;
-//  NSLog(@"highestTraitScore      =%ld",(long)highestTraitScore      );
-//  NSLog(@"highestTraitScoreIndex =%ld",(long)highestTraitScoreIndex );
-            }
-        }
-
-        //  do_special_line(IDX_FOR_AGGRESSIVE);    1
-        //  do_special_line(IDX_FOR_SENSITIVE);     2
-        //  do_special_line(IDX_FOR_RESTLESS);      3
-        //  do_special_line(IDX_FOR_DOWN_TO_EARTH); 4
-        //  do_special_line(IDX_FOR_SEX_DRIVE);     5
-        //  do_special_line(IDX_FOR_UPS_AND_DOWNS); 6  (removed)
-        //
-        gbl_highestTraitScore = [NSString stringWithFormat:@"%ld", (long)highestTraitScore ]; // convert NSInteger to NSString 
-
-        gbl_highestTraitScoreDescription = @" ";
-        if (highestTraitScoreIndex == 1) gbl_highestTraitScoreDescription = @"Assertive";
-        if (highestTraitScoreIndex == 2) gbl_highestTraitScoreDescription = @"Emotional";
-        if (highestTraitScoreIndex == 3) gbl_highestTraitScoreDescription = @"Restless";
-        if (highestTraitScoreIndex == 4) gbl_highestTraitScoreDescription = @"Down-to-earth";
-        if (highestTraitScoreIndex == 5) gbl_highestTraitScoreDescription = @"Passionate";
-        //  if (highestTraitScoreIndex == 6) gbl_highestTraitScoreDescription = @"Ups and Downs";
-tn();ksn(myStringBuffForTraitCSV);
-  NSLog(@"gbl_highestTraitScore=%@",gbl_highestTraitScore );
-  NSLog(@"gbl_highestTraitScoreDescription=%@",gbl_highestTraitScoreDescription );
-
-
-        if (retval == 0) {
-           
-            // show all files in temp dir
-            NSFileManager *manager = [NSFileManager defaultManager];
-            NSArray *fileList = [manager contentsOfDirectoryAtPath:NSTemporaryDirectory() error:nil];
-            for (NSString *s in fileList){
-                NSLog(@"TEMP DIR %@", s);
-            }
-            
-            
-            /* here, go and look at html report */
-            // [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"about:blank"]]];  // ?clean for re-use
-            
-            self.outletWebView.scalesPageToFit = YES;
-            
-            // I was having the same problem. I found a property on the UIWebView
-            // that allows you to turn off the data detectors.
-            //
-            self.outletWebView.dataDetectorTypes = UIDataDetectorTypeNone;
-
-            // did not work // fill whole screen, no gaps   
-            //             self.outletWebView.autoresizesSubviews = YES;
-            //             self.outletWebView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-            //
-
-            
-             // place our URL in a URL Request
-             HTML_URLrequest = [[NSURLRequest alloc] initWithURL: URLtoHTML_forWebview];
-             
-             // UIWebView is part of UIKit, so you should operate on the main thread.
-             //
-             // old= [self.outletWebView loadRequest: HTML_URLrequest];
-             //
-             dispatch_async(dispatch_get_main_queue(), ^(void){
-                 [self.outletWebView loadRequest:HTML_URLrequest];
-
-                 // webView.delegate = self; // http://stackoverflow.com/questions/10666484/html-content-fit-in-uiwebview-without-zooming-out
-                 self.outletWebView.delegate = self; // http://stackoverflow.com/questions/10666484/html-content-fit-in-uiwebview-without-zooming-out
-
-             });
-        }
-
-    }  //  [gbl_currentMenuPlusReportCode hasSuffix: @"pe"] // personality report
-
+//        
+//        retval = mamb_report_personality(     /* in perdoc.o */
+//                                pathToHTML_webview,
+//                                pathToHTML_browser,
+//                                csv_person_string,
+//                                "",  /* could be "return only csv with all trait scores",  instructions */
+//                                /* this instruction arg is now ignored, because arg next, */
+//                                /* stringBuffForTraitCSV, is ALWAYS populated with trait scores */
+//                                 myStringBuffForTraitCSV);
+//
+//
+////tn();ksn(myStringBuffForTraitCSV);tn();
+//
+//        // determine trait name that has the  highest score (for INFO for personality)
+//        // all trait scores are in  ( stringBuffForTraitCSV=[42,85,44,21,67,34] )
+//        //
+//        // _myStringBuffForTraitCSV=[78,1,55,84,90,79]__
+//        //
+//        NSString *myNSStringTraitCSV = [NSString stringWithUTF8String: myStringBuffForTraitCSV];  // convert c string to NSString
+////  NSLog(@"myNSStringTraitCSV =%@",myNSStringTraitCSV );
+//        NSArray  *arrayOfScores      = [myNSStringTraitCSV componentsSeparatedByString:@","];
+////  NSLog(@"arrayOfScores      =%@",arrayOfScores      );
+//        NSInteger thisScoreINT, thisScoreIndex;
+//        NSInteger highestTraitScore, highestTraitScoreIndex;
+//        highestTraitScore      = 0;
+//        highestTraitScoreIndex = 0;
+//        thisScoreINT           = 0;
+//        thisScoreIndex         = 0;
+//        NSString *thisScoreSTR;
+//
+//        for (thisScoreSTR in arrayOfScores) {
+////  NSLog(@"thisScoreSTR =%@",thisScoreSTR );
+////  NSLog(@"thisScoreINT =%ld",(long)thisScoreINT );
+//            thisScoreIndex = thisScoreIndex + 1;       // one-based
+//            thisScoreINT   = [thisScoreSTR intValue];  // convert NSString to integer
+//            if (thisScoreINT >  highestTraitScore) {
+//                highestTraitScore      = thisScoreINT;
+//                highestTraitScoreIndex = thisScoreIndex;
+////  NSLog(@"highestTraitScore      =%ld",(long)highestTraitScore      );
+////  NSLog(@"highestTraitScoreIndex =%ld",(long)highestTraitScoreIndex );
+//            }
+//        }
+//
+//        //  do_special_line(IDX_FOR_AGGRESSIVE);    1
+//        //  do_special_line(IDX_FOR_SENSITIVE);     2
+//        //  do_special_line(IDX_FOR_RESTLESS);      3
+//        //  do_special_line(IDX_FOR_DOWN_TO_EARTH); 4
+//        //  do_special_line(IDX_FOR_SEX_DRIVE);     5
+//        //  do_special_line(IDX_FOR_UPS_AND_DOWNS); 6  (removed)
+//        //
+//        gbl_highestTraitScore = [NSString stringWithFormat:@"%ld", (long)highestTraitScore ]; // convert NSInteger to NSString 
+//
+//        gbl_highestTraitScoreDescription = @" ";
+//        if (highestTraitScoreIndex == 1) gbl_highestTraitScoreDescription = @"Assertive";
+//        if (highestTraitScoreIndex == 2) gbl_highestTraitScoreDescription = @"Emotional";
+//        if (highestTraitScoreIndex == 3) gbl_highestTraitScoreDescription = @"Restless";
+//        if (highestTraitScoreIndex == 4) gbl_highestTraitScoreDescription = @"Down-to-earth";
+//        if (highestTraitScoreIndex == 5) gbl_highestTraitScoreDescription = @"Passionate";
+//        //  if (highestTraitScoreIndex == 6) gbl_highestTraitScoreDescription = @"Ups and Downs";
+//tn();ksn(myStringBuffForTraitCSV);
+//  NSLog(@"gbl_highestTraitScore=%@",gbl_highestTraitScore );
+//  NSLog(@"gbl_highestTraitScoreDescription=%@",gbl_highestTraitScoreDescription );
+//
+//
+//        if (retval == 0) {
+//           
+//            // show all files in temp dir
+//            NSFileManager *manager = [NSFileManager defaultManager];
+//            NSArray *fileList = [manager contentsOfDirectoryAtPath:NSTemporaryDirectory() error:nil];
+//            for (NSString *s in fileList){
+//                NSLog(@"TEMP DIR %@", s);
+//            }
+//            
+//            
+//            /* here, go and look at html report */
+//            // [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"about:blank"]]];  // ?clean for re-use
+//            
+//            self.outletWebView.scalesPageToFit = YES;
+//            
+//            // I was having the same problem. I found a property on the UIWebView
+//            // that allows you to turn off the data detectors.
+//            //
+//            self.outletWebView.dataDetectorTypes = UIDataDetectorTypeNone;
+//
+//            // did not work // fill whole screen, no gaps   
+//            //             self.outletWebView.autoresizesSubviews = YES;
+//            //             self.outletWebView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+//            //
+//
+//            
+//             // place our URL in a URL Request
+//             HTML_URLrequest = [[NSURLRequest alloc] initWithURL: URLtoHTML_forWebview];
+//             
+//             // UIWebView is part of UIKit, so you should operate on the main thread.
+//             //
+//             // old= [self.outletWebView loadRequest: HTML_URLrequest];
+//             //
+//             dispatch_async(dispatch_get_main_queue(), ^(void){
+//                 [self.outletWebView loadRequest:HTML_URLrequest];
+//
+//                 // webView.delegate = self; // http://stackoverflow.com/questions/10666484/html-content-fit-in-uiwebview-without-zooming-out
+//                 self.outletWebView.delegate = self; // http://stackoverflow.com/questions/10666484/html-content-fit-in-uiwebview-without-zooming-out
+//
+//             });
+//        }
+//
+//    }  //  [gbl_currentMenuPlusReportCode hasSuffix: @"pe"] // personality report
+//
+//<.>  this report (per) is now tblrpts_1
     
     
     //if ([gbl_fromSelRptRowString hasPrefix: @"Calendar Year"])    // call Calendar Year HTML report
@@ -1435,6 +1438,29 @@ tn();ksn(myStringBuffForTraitCSV);
 //
 
 
+//
+//- (BOOL)webView:(UIWebView*)wv
+//shouldStartLoadWithRequest:(NSURLRequest*)request
+//navigationType:(UIWebViewNavigationType)navigationType {
+//
+//NSString *tempURLString = request.URL.absoluteString;
+//
+//if([tempURLString rangeOfString:@"about:blank"].location == NSNotFound)
+//{
+//wv.scalesPageToFit = YES;
+//}
+//else
+//{
+//wv.scalesPageToFit = NO;
+//}
+//
+////[loadingIndicator startAnimating];
+//return YES;
+//}
+//
+//
+
+
 // -(void)webViewDidStartLoad:(UIWebView *)webView
 
 // ==============   start of email stuff  ====================
@@ -1592,7 +1618,13 @@ tn();ksn(myStringBuffForTraitCSV);
                                                                                          target: self
                                                                                          action: nil];
         // create a Toolbar
-        UIToolbar *myToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 44, 320, 44)];
+//        UIToolbar *myToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 44, 320, 44)];
+        UIToolbar *myToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 44, self.view.frame.size.width, 44)];
+//<.>
+//439://      gbl_myCellBgView =[[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, [cell frame].size.width -20, [cell frame].size.height)];
+//906:// CGRect pickerFrame = CGRectMake(0.0, viewFrame.size.height-pickerHeight, viewFrame.size.width, pickerHeight);
+//28:    self.outletWebView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+//<.>
 
         // make array of buttons for the Toolbar
         NSArray *myButtonArray =  [NSArray arrayWithObjects:

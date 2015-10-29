@@ -8,6 +8,7 @@
 #define GBL_HTML_HAS_NEWLINES 1
 /* #define GBL_HTML_HAS_NEWLINES 0 */
 
+int gbl_are_in_per_htm_webview;      /* 1 = yes, 0 = no */
 int gbl_we_are_in_PRE_block_content; /* 1 = yes, 0 = no */
 
 //char gbl_person_name[64];  // "p_" because same var in objC code
@@ -43,6 +44,7 @@ char gbl_instructions[128];
 
 void add_all_benchmark_lines(void);
 void write_html_for_trait_table(void);
+void write_TBLRPT_trait_data(void);            // !!!!  TBLRPT  instead of html for webview  !!!!! 
 void write_webview_html_for_trait_table(void);
 
 struct trait_table_line {
@@ -68,6 +70,7 @@ char  swork33[4048];
 
 
 /* in mambutil.o */
+extern void strsubg(char *s, char *replace_me, char *with_me);
 extern int  sfind(char s[], char c);
 extern int scharcnt(char *s, int c);
 extern int sall(char *s, char *set);
@@ -180,6 +183,7 @@ int make_per_htm_file(      // =========================================
 
   if (strstr(gbl_instructions, "make html for webview") != NULL) {
 /* tn();trn("make html for webview");ksn(in_html_filename); */
+    gbl_are_in_per_htm_webview = 1;
     retval = make_per_htm_file_webview (
       in_html_filename,
       in_docin_lines,
@@ -189,6 +193,7 @@ int make_per_htm_file(      // =========================================
   }
   if (strstr(gbl_instructions, "make html for browser") != NULL) {
 /* tn();trn("make html for browser");ksn(in_html_filename); */
+    gbl_are_in_per_htm_webview = 0;
     retval = make_per_htm_file_browser (
       in_html_filename,
       in_docin_lines,
@@ -240,11 +245,25 @@ int make_per_htm_file_webview(
 */
 /* for test */
 
+// now tblrpt1
+//  /* in this fn is the first p_docin_get
+//  */
+//  /* output the css, headings etc. */
+//  p_fn_webview_output_top_of_html_file();
+//
+//
 
-  /* in this fn is the first p_docin_get
+  // this used to be in   p_fn_webview_output_top_of_html_file();
+  // have to get name
+  //
+  /* 1. read until [beg_topinfo1]  (name)  (skipping [beg_program])
   */
-  /* output the css, headings etc. */
-  p_fn_webview_output_top_of_html_file();
+  for (i=0; ; i++) {
+    p_docin_get(doclin);
+    if (strstr(doclin, "[beg_topinfo1]") != NULL) break;
+  }
+  p_docin_get(doclin);
+  strcpy(gbl_p_person_name, doclin);
 
 
 
@@ -260,51 +279,18 @@ int make_per_htm_file_webview(
 /*   p_fn_prtlin("  <div> Stand out character traits.</div>"); */
 
   /*  old graph   do_orig_trait_graph(); */
-  p_fn_prtlin("<div> </div>");
+//  p_fn_prtlin("<div> </div>");
 
   do_benchmark_trait_graph();    /* !!!!!!!!!!!!!!!!!!!  trait table printed here !!! */
+//  do_TBLRPT_benchmark_trait_graph();    /* !!!!!!!!!!!!!!!!!!!  trait table printed here !!! */
 
 /* b(12); */
 
   /*   p_fn_prtlin("\n<h3> </h3>"); */
-  p_fn_prtlin("<div><br></div>");
+//  p_fn_prtlin("<div><br></div>");
+//
+//  p_fn_prtlin("</table>");
 
-  p_fn_prtlin("</table>");
-
-// see tfoot instead of this
-//
-//  p_fn_prtlin("<pre class=\"scoreExpl\">");
-//  gbl_we_are_in_PRE_block_content = 1; /* 1 = yes, 0 = no */
-//  p_fn_prtlin("");
-///*   p_fn_prtlin("  A score measures how high or low the influence  "); */
-//
-//
-//
-////  p_fn_prtlin(      "    A score from 1 to 99 measures how influential  ");
-//  p_fn_prtlin(      "    A score from 1 to 99 measures \"how much\"");
-//
-////  sprintf(writebuf, "  the trait is in the personality of %s.  ", gbl_person_name);
-////  sprintf(writebuf, "    the trait is in the personality of %s.  ", gbl_p_person_name);
-////  sprintf(writebuf, "    that trait is in the personality of %s.  ", gbl_p_person_name);
-//  sprintf(writebuf, "    of that trait %s has.  ", gbl_p_person_name);
-//  p_fn_prtlin(writebuf);
-//
-//
-//
-//  p_fn_prtlin("");
-///*   p_fn_prtlin("  The score does NOT measure \"good\" or \"bad\", "); */
-//
-//  //p_fn_prtlin("  The score here does NOT measure \"good\" or \"bad\",  ");
-////  p_fn_prtlin("    This score does NOT measure \"good\" or \"bad\",  ");
-//  p_fn_prtlin(      "    A score does NOT measure \"good\" or \"bad\".");
-//
-////  p_fn_prtlin("    which can be found in the paragraphs below: ");
-//  p_fn_prtlin("");
-//  gbl_we_are_in_PRE_block_content = 0; /* 1 = yes, 0 = no */
-//  p_fn_prtlin("</pre>");
-//  p_fn_prtlin("<div> </div>");
-//
-//
 
   /* DO PARAGRAPHS HERE */
 
@@ -369,7 +355,7 @@ int make_per_htm_file_webview(
 //  p_fn_prtlin("</div>");
 //
 
-  p_fn_prtlin("<div> </div>");
+//  p_fn_prtlin("<div> </div>");
 
 /*   p_fn_prtlin("<pre>"); */
 /*   gbl_we_are_in_PRE_block_content = 1; */
@@ -382,12 +368,16 @@ int make_per_htm_file_webview(
 /*   gbl_we_are_in_PRE_block_content = 0; */
 /*   p_fn_prtlin("</pre>"); */
 
-  p_fn_prtlin("<div><br></div>");
+//  p_fn_prtlin("<div><br></div>");
 
-  p_fn_prtlin("<pre class=\"willpower\"> ");
+  // put trait descriptions
+  //
+
+
+//  p_fn_prtlin("<pre class=\"willpower\"> ");
 //background-color: #fcfce0;
 
-  gbl_we_are_in_PRE_block_content = 1; 
+//  gbl_we_are_in_PRE_block_content = 1; 
 //  p_fn_prtlin( "<span style=\"background-color: #fcfce0;\">Your3intense willpower can overcome  </span>");
 /*   p_fn_prtlin( "                                       "); */
 
@@ -401,14 +391,27 @@ int make_per_htm_file_webview(
 //  p_fn_prtlin( "            ");
 //p_fn_prtlin( "     Your intense willpower can overcome    ");
 //p_fn_prtlin( "  challenging traits and magnify good ones  ");
-  p_fn_prtlin( "               Your intense willpower          ");   // webview
-  p_fn_prtlin( "          can overcome challenging traits      ");
-  p_fn_prtlin( "            and magnify favorable ones         ");
-  p_fn_prtlin( "                                               ");
 
+//  p_fn_prtlin( "               Your intense willpower          ");   // webview
+//  p_fn_prtlin( "          can overcome challenging traits      ");
+//  p_fn_prtlin( "            and magnify favorable ones         ");
+//  p_fn_prtlin( "                                               ");
+//
+  sprintf(writebuf, "fill|before willpower");
+  p_fn_prtlin(writebuf);
+  sprintf(writebuf, "fill|in willpower at beg");
+  p_fn_prtlin(writebuf);
+  sprintf(writebuf, "will|            Your intense willpower          ");   // webview
+  p_fn_prtlin(writebuf);
+  sprintf(writebuf, "will|       can overcome challenging traits      ");
+  p_fn_prtlin(writebuf);
+  sprintf(writebuf, "will|         and magnify favorable ones         ");
+  p_fn_prtlin(writebuf);
+  sprintf(writebuf, "fill|in willpower at end");
+  p_fn_prtlin(writebuf);
 
-  gbl_we_are_in_PRE_block_content = 0;  /* false */
-  p_fn_prtlin("</pre>");
+//  gbl_we_are_in_PRE_block_content = 0;  /* false */
+//  p_fn_prtlin("</pre>");
 
 
 /*   sprintf(writebuf, "<h5><br><br><br>produced by iPhone/iPad app named %s</h5>", APP_NAME); */
@@ -421,14 +424,18 @@ int make_per_htm_file_webview(
 
 
 /*   p_fn_prtlin("<span class=\"appBy\"> "); */
-  p_fn_prtlin("<pre class=\"appBy\"> ");
-  gbl_we_are_in_PRE_block_content = 1; 
-/*   sprintf(writebuf, "<pre class=\"appBy\">produced by iPhone app %s</pre>", APP_NAME); */
-  sprintf(writebuf, "produced by iPhone app %s", APP_NAME);
-  p_fn_prtlin(writebuf);
-  gbl_we_are_in_PRE_block_content = 0;  /* false */
-  p_fn_prtlin("</pre>");
+//  p_fn_prtlin("<pre class=\"appBy\"> ");
+//  gbl_we_are_in_PRE_block_content = 1; 
+///*   sprintf(writebuf, "<pre class=\"appBy\">produced by iPhone app %s</pre>", APP_NAME); */
+//  sprintf(writebuf, "produced by iPhone app %s", APP_NAME);
+//  p_fn_prtlin(writebuf);
+//  gbl_we_are_in_PRE_block_content = 0;  /* false */
+//  p_fn_prtlin("</pre>");
 
+  sprintf(writebuf, "fill|before produced by");
+  p_fn_prtlin(writebuf);
+  sprintf(writebuf, "prod|produced by iPhone app %s", APP_NAME);
+  p_fn_prtlin(writebuf);
 
 
 /*   p_fn_prtlin(""); */
@@ -437,21 +444,23 @@ int make_per_htm_file_webview(
 /*   p_fn_prtlin("<h4><span style=\"background-color:#FFBAC7;\">&nbspThis report is for entertainment purposes only.&nbsp</span></h4>"); */
 
 
-  p_fn_prtlin("<pre class=\"entertainment\">");
-  gbl_we_are_in_PRE_block_content = 1; 
-//  sprintf(writebuf, "&nbspThis report is for entertainment purposes only. &nbsp");
-  sprintf(writebuf, "This report is for entertainment purposes only.");
+//  p_fn_prtlin("<pre class=\"entertainment\">");
+//  gbl_we_are_in_PRE_block_content = 1; 
+//  sprintf(writebuf, "This report is for entertainment purposes only.");
+//  p_fn_prtlin(writebuf);
+//  gbl_we_are_in_PRE_block_content = 0;  /* false */
+//  p_fn_prtlin("</pre>");
+//  p_fn_prtlin("<div><br><br></div>");
+
+  sprintf(writebuf, "fill|before entertainment");
   p_fn_prtlin(writebuf);
-  gbl_we_are_in_PRE_block_content = 0;  /* false */
-  p_fn_prtlin("</pre>");
-  p_fn_prtlin("<div><br><br></div>");
-//  p_fn_prtlin("");
-//  p_fn_prtlin("");
+  sprintf(writebuf, "purp|This report is for entertainment purposes only.");
+  p_fn_prtlin(writebuf);
 
 
 
-  p_fn_prtlin("\n</body>\n");
-  p_fn_prtlin("</html>");
+//  p_fn_prtlin("\n</body>\n");
+//  p_fn_prtlin("</html>");
 
 
   fflush(Fp_p_HTML_file);
@@ -583,68 +592,69 @@ void p_fn_webview_output_top_of_html_file(void)  // =-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 //  p_fn_prtlin("  <meta name=\"viewport\" content=\"width=device-width  \" />");  // webview   ORIG    6s=skinny, all lesser OK
 //  p_fn_prtlin("  <meta name=\"viewport\" content=\"width=device-width initial-scale=0.44 minimum-scale=0.44; \" />");  // webview  OK  4s=no
-
 //  p_fn_prtlin("  <meta name=\"viewport\" content=\"width=device-width initial-scale=0.44 minimum-scale=0.44; \" />");  // webview  OK <6=no
-  p_fn_prtlin("  <meta name=\"viewport\" content=\"width=device-width initial-scale=0.44 minimum-scale=0.44 maximum-scale=0.44;\" />");  // webview  OK <6=no
+
+//  p_fn_prtlin("  <meta name=\"viewport\" content=\"width=device-width initial-scale=0.44 minimum-scale=0.44 maximum-scale=0.44;\" />");  // webview  OK <6=no   GOLD GOLD for 6+
 
 
+  p_fn_prtlin("  <meta name=\"viewport\" content=\"width=device-width initial-scale=0.44 minimum-scale=0.44 maximum-scale=0.44;\" />");
 
 
 
 
   p_fn_prtlin("  <meta name = \"format-detection\" content = \"telephone=no\">");
 
+//  p_fn_prtlin( "  <meta name=\"viewport\" content=\"width=device-width, initial-scale=0.44, minimum-scale=0.44 \" />");  // webview  for 6,6s
+//  p_fn_prtlin( "  <meta name=\"viewport\" content=\"width=device-width, initial-scale=0.44, minimum-scale=0.44, maximum-scale=0.44\" />");  // webview  for 6,6s
+
 
   /* HEAD   STYLE/CSS
   */
   p_fn_prtlin( "\n  <style type=\"text/css\">");
 
-  p_fn_prtlin( "    BODY {");
-
-
-/*  p_fn_prtlin( "      background-color: #F5 EF CF;"); */
-/*  g_fn_prtlin( "      background-color: #F5EFCF;"); */
-  p_fn_prtlin( "      background-color: #F7ebd1;");
-
-
-
-  //  http://stephen.io/mediaqueries/#iPhone
-  // code for portrait, landscape ->   and (orientation : portrait) { /* STYLES GO HERE */ }
-  // iPhone 6 in portrait & landscape
-  //@media only screen 
-  //and (min-device-width : 375px) 
-  //and (max-device-width : 667px) { /* 6   STYLES GO HERE */
-  //}
-  //@media only screen 
-  //and (min-device-width : 414px) 
-  //and (max-device-width : 736px) { /* 6s  STYLES GO HERE */}
-  //  iphone 5,4,3...  min-device-width = 320
-  //
+//<.>
+//
+//  //  http://stephen.io/mediaqueries/#iPhone
+//  // code for portrait, landscape ->   and (orientation : portrait) { /* STYLES GO HERE */ }
+//  // iPhone 6 in portrait & landscape
+//  //@media only screen 
+//  //and (min-device-width : 375px) 
+//  //and (max-device-width : 667px) { /* 6   STYLES GO HERE */
+//  //}
+//  //@media only screen 
+//  //and (min-device-width : 414px) 
+//  //and (max-device-width : 736px) { /* 6s  STYLES GO HERE */}
+//  //  iphone 5,4,3...  min-device-width = 320
+//  //
+////  p_fn_prtlin( "@media screen and (min-device-width: 350px) {  "); // CSS for iphone 6,6s, and bigger
+////  p_fn_prtlin( "  <meta name=\"viewport\" content=\"width=device-width initial-scale=0.44 minimum-scale=0.44 \" />");  // webview  for 6,6s
+////  p_fn_prtlin( "} "); // CSS for iphone 6,6s, and bigger
+//
+//
+//
 //  p_fn_prtlin( "@media screen and (min-device-width: 350px) {  "); // CSS for iphone 6,6s, and bigger
-//  p_fn_prtlin( "  <meta name=\"viewport\" content=\"width=device-width initial-scale=0.44 minimum-scale=0.44 \" />");  // webview  for 6,6s
-//  p_fn_prtlin( "} "); // CSS for iphone 6,6s, and bigger
-
-
-
-//  p_fn_prtlin( "@media screen and (min-device-width: 350px) {  "); // CSS for iphone 6,6s, and bigger
-//  p_fn_prtlin( "@viewport{ ");
+//
+//  p_fn_prtlin( "      background-color: #cc0000;");
+//  p_fn_prtlin( "@viewport { ");
 //  p_fn_prtlin( "    width: device-width;");
 //  p_fn_prtlin( "    initial-scale: 1.0;");
 //  p_fn_prtlin( "    minimum-scale: 1.0;");
 //  p_fn_prtlin( "}");
 //  p_fn_prtlin( "}");
 //
-//  p_fn_prtlin( "@media not (screen and (min-device-width: 350px) ){  "); // CSS for iphone 5,4,3,...
+//  p_fn_prtlin( "@media screen and not (min-device-width: 350px) ){  "); // CSS for iphone 5,4,3,...
+//  p_fn_prtlin( "      background-color: #00cc00;");
 //  p_fn_prtlin( "@viewport{");
 //  p_fn_prtlin( "    width: device-width;");
 //  p_fn_prtlin( "}");
 //  p_fn_prtlin( "}");
+//
+//<.>
 
-
-
-/*   p_fn_prtlin( "      font-family: Trebuchet MS, Arial, Verdana, sans-serif;"); */
+  p_fn_prtlin( "    BODY {");   // BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+  p_fn_prtlin( "      background-color: #F7ebd1;");
+//  p_fn_prtlin( "      background-color: #cc0000;");
   p_fn_prtlin( "      font-family: Menlo, Andale Mono, Monospace, Courier New;");
-
   p_fn_prtlin( "      font-size:   medium;");
   p_fn_prtlin( "      font-weight: normal;");
   p_fn_prtlin( "      text-align:  center;");  /* stupid, for IE */
@@ -652,7 +662,11 @@ void p_fn_webview_output_top_of_html_file(void)  // =-=-=-=-=-=-=-=-=-=-=-=-=-=-
   /*   p_fn_prtlin( "    <!-- "); */
   /*   p_fn_prtlin( "      background-image: url('mkgif1g.gif');"); */
   /*   p_fn_prtlin( "    --> "); */
-  p_fn_prtlin( "    }");
+  p_fn_prtlin( "    }");  // BODY
+
+
+
+
 
 /*   p_fn_prtlin( "    H1 { font-size: 137%; font-weight: bold;   line-height: 95%; text-align: center;}"); */
 /*   p_fn_prtlin( "    H2 { font-size: 125%;                      line-height: 25%; text-align: center;}"); */
@@ -1867,6 +1881,9 @@ void p_docin_get(char *in_line)
 
   scharout(in_line,'\n');   /* remove newlines */
 
+tn(); kin(global_read_idx);
+ksn(in_line);
+
 } /* end of p_docin_get */
 
 
@@ -1902,7 +1919,6 @@ void p_fn_browser_aspect_text(char *aspect_code) {
 
 void p_fn_webview_aspect_text(char *aspect_code){
   int nn;
-
 /* tr("in p_fn_webview_aspect_text()"); */
 
   nn = binsearch_asp(aspect_code, p_asptab, NKEYS_ASP);
@@ -1911,32 +1927,103 @@ void p_fn_webview_aspect_text(char *aspect_code){
 
   strcpy(my_aspect_text, p_asptab[nn].asp_text);
 
-
   /* wrap lines at 80 chars with <br> */
-/*   put_br_every_n(my_aspect_text, 80);  */
-/*   put_br_every_n(my_aspect_text, 65);  */
-  put_br_every_n(my_aspect_text, 50);          // <=====----
+  /*   put_br_every_n(my_aspect_text, 80);  */
+  /*   put_br_every_n(my_aspect_text, 65);  */
+//  put_br_every_n(my_aspect_text, 40);          // <=====----
 
-  char para_beg[133];
-  char para_end[133];
+tn();ksn(my_aspect_text);
 
-//  strcpy(para_beg, "<table class=\"center\"><tr><td><p>");
-//  strcpy(para_end, "</p></td></tr><br></table>");
-//  sprintf(writebuf, "  %s%s%s\n", para_beg, my_aspect_text, para_end);
+  // print lines in my_aspect_text wrapped to line_not_longer_than_this
+  // 
+  char *pNewWord;
+  int len_new_word, lenbuf, line_not_longer_than_this;
+  char mybuf[8192];
 
-/*   strcpy(para_beg, "<table><tr><td><p>"); */
-/*   strcpy(para_end, "</p></td></tr><br></table>"); */
-/*   sprintf(writebuf, "  %s%s%s", para_beg, my_aspect_text, para_end); */
+  line_not_longer_than_this = 40;
+  strcpy(mybuf, "");
 
-  strcpy(para_beg, "<pre class=aspectPara>");
-  strcpy(para_end, "</pre>");
-  sprintf(writebuf, "  %s%s%s\n", para_beg, my_aspect_text, para_end);
-
-
-
+  sprintf(writebuf, "fill|before para");
   p_fn_prtlin(writebuf);
 
+  // NOTE here that strtok overwrites my_aspect_text to get the words,
+  pNewWord = strtok (my_aspect_text, " ");  /* get ptr to first word */
+
+  while (pNewWord != NULL)  /* for all words */
+  {
+    lenbuf       = (int)strlen(mybuf);
+    len_new_word = (int)strlen(pNewWord);
+
+    if (lenbuf + len_new_word >= line_not_longer_than_this) {
+
+      while (strlen(mybuf) < line_not_longer_than_this) { // add spaces at end to fill up to line_not_longer_than_this  chars
+        sprintf(mybuf, "%s ", mybuf);  // add a space at the end
+      }
+      sprintf(writebuf, "para|  %s",  mybuf);
+      p_fn_prtlin(writebuf);
+      
+      strcpy(mybuf, "");                    /* init  mybuf */
+    } /* write out since line too long */
+
+    sprintf(mybuf, "%s%s%s", mybuf, pNewWord, " "); /* add new word to mybuf */
+
+    pNewWord = strtok (NULL, " ");                  /* get ptr to next word */
+
+  }  /* for all words */
+
+  /* here no more words in aspect desc (mybuf has last line to add) */
+  if (strlen(mybuf) != 0) {
+
+    mybuf[ strlen(mybuf) - 1] = '\0'; /* but remove sp at end */
+
+    while (strlen(mybuf) < line_not_longer_than_this) { // add spaces at end to fill up to line_not_longer_than_this  chars
+      sprintf(mybuf, "%s ", mybuf);  // add a space at the end
+    }
+    sprintf(writebuf, "para|  %s",  mybuf);
+    p_fn_prtlin(writebuf);
+  }
+  //
+  // end of print lines in my_aspect_text wrapped to line_not_longer_than_this
+
 } // end of  p_fn_webview_aspect_text()
+
+
+//
+////  // wrap: take a long input line and wrap it into multiple lines
+////  void wrap(char s[], const int wrapline)
+////  {
+//      int i, k, wraploc, lastwrap;
+//
+//      lastwrap = 0; // saves character index after most recent line wrap
+//      wraploc = 0; // used to find the location for next word wrap
+//
+//      for (i = 0; my_aspect_text[i] != '\0'; ++i, ++wraploc) {
+//
+//          if (wraploc >= wrapline) {
+//              for (k = i; k > 0; --k) {
+//                  // make sure word wrap doesn't overflow past maximum length
+//                  if (k - lastwrap <= wrapline && my_aspect_text[k] == ' ') {
+//                      my_aspect_text[k] = '\n';
+//                      lastwrap = k+1;
+//                      break;
+//                  }
+//              }
+//              // wraploc = 0;
+//              wraploc = i-lastwrap;
+//          }
+//      } // end main loop
+//
+////      for (i = 0; i < wrapline; ++i) printf(" ");
+////      printf("|\n");
+////      printf("%s\n", my_aspect_text);
+////  }
+//ksn(my_aspect_text); tn();
+//
+//      sprintf(writebuf, "para|%s",  my_aspect_text);
+//      p_fn_prtlin(writebuf);
+//
+
+
 
 
 
@@ -1945,7 +2032,7 @@ void p_fn_webview_aspect_text(char *aspect_code){
 */
 void p_fn_prtlin_stars(char *starline)
 {
-/* trn("in p_fn_prtlin_stars()"); */
+tr("in p_fn_prtlin_stars()  ");
 
   char *pBegStar;
   char *pEndStar;
@@ -1984,11 +2071,13 @@ void p_fn_prtlin_stars(char *starline)
     afterStars
   ); 
 
+ksn(writebuf);
   p_fn_prtlin(writebuf);   /* write star line here */
 
 } /* end of p_fn_prtlin_stars() */
 
 void p_fn_prtlin(char *lin) {
+tr("in p_fn_prtlin()        ");
   char myEOL[8];
 /* tn();
 * tn();
@@ -2012,13 +2101,16 @@ void p_fn_prtlin(char *lin) {
   }
 /* ksn(myEOL); */
   global_n = sprintf(global_p,"%s%s", lin, myEOL);
-/* ksn(global_p); */
+
+ksn(global_p);
   fput(global_p, global_n, Fp_p_HTML_file);
 /* b(35); */
 } 
 
 void p_fn_prtlin_aspect(char *lin) {  /* no \n at end  ( UNUSED ) */
+tr("in p_fn_prtlin_aspect() ");
   global_n = sprintf(global_p,"%s", lin);
+ksn(global_p);
   fput(global_p, global_n, Fp_p_HTML_file);
 }  
 
@@ -2315,11 +2407,102 @@ void do_benchmark_trait_graph(void) {
     (compareFunc_trait)Func_compare_trait_line_scores
   );
 
-  /* write the html for the table
-  */
-  write_html_for_trait_table();
+  //  write_html_for_trait_table(); // write the html for the table
+  //
+  if (gbl_are_in_per_htm_webview == 1) write_TBLRPT_trait_data();        /* now TBLRPT */
+  else                                 write_html_for_trait_table();
 
 } /* end of do_benchmark_trait_graph() */
+
+
+void write_TBLRPT_trait_data(void) {    /* !!!!  TBLRPT  !!!!!  trait table data output here !!! */
+
+  int i;
+//  int score_int;
+
+  sprintf(writebuf, "fill|filler line #1 at top");
+  p_fn_prtlin(writebuf);
+  sprintf(writebuf, "fill|before table head");
+  p_fn_prtlin(writebuf);
+  sprintf(writebuf, "head|How Much");
+  p_fn_prtlin(writebuf);
+  sprintf(writebuf, "head|of each trait");
+  p_fn_prtlin(writebuf);
+  sprintf(writebuf, "head|does %s have?", gbl_p_person_name);
+  p_fn_prtlin(writebuf);
+  sprintf(writebuf, "fill|after table head");
+  p_fn_prtlin(writebuf);
+
+  for (i=0; i <= 9; i++) {   // ups and downs OUT = 1 less
+
+    if (strcmp(trait_lines[i].influence, "Very High") == 0) {
+//        strcpy(writebuf, "<tr class=\"cPerGreen2\"><td></td><td> 90 </td><td>Great Deal</td></tr>");
+
+//      strcpy(writebuf, "tabl|                          90  Great Deal  ");
+      strcpy(writebuf, "tabl|                    90  Great Deal  ");
+      p_fn_prtlin(writebuf);
+      continue;
+    }
+    if (strcmp(trait_lines[i].influence, "High") == 0) {
+      strcpy(writebuf, "tabl|                    75  A Lot       ");
+      p_fn_prtlin(writebuf);
+      continue;
+    }
+    if (strcmp(trait_lines[i].influence, "Average") == 0) {
+      strcpy(writebuf, "tabl|                    50  Average     ");
+      p_fn_prtlin(writebuf);
+      continue;
+    }
+    if (strcmp(trait_lines[i].influence, "Low") == 0) {
+      strcpy(writebuf, "tabl|                    25  Little      ");
+      p_fn_prtlin(writebuf);
+      continue;
+    }
+    if (strcmp(trait_lines[i].influence, "Very Low") == 0) {
+      strcpy(writebuf, "tabl|                    10  Very Little ");
+      p_fn_prtlin(writebuf);
+      continue;
+    }
+
+    // put ROWCOLOR
+    //    score_int = atoi(trait_lines[i].score);
+    //
+    //    if (score_int >= 90) strcpy(rowcolor, " class=\"cGr2\"");
+    //    if (score_int <  90 &&
+    //        score_int >= 75) strcpy(rowcolor, " class=\"cGre\"");
+    //    if (score_int <  75 &&
+    //        score_int >= 25) strcpy(rowcolor, " class=\"cNeu\"");
+    //    if (score_int <= 25 &&
+    //        score_int >  10) strcpy(rowcolor, " class=\"cRed\"");
+    //    if (score_int <= 10) strcpy(rowcolor, " class=\"cRe2\"");
+    //
+
+//    sprintf(writebuf,  "gbl_color_cNeu|  %22s  %2s  %14s",
+//      trait_lines[i].trait,
+//      trait_lines[i].score,
+//      " "
+//    );
+//    sprintf(writebuf,  "tabl|  %22s  %2s  %14s",
+    sprintf(writebuf,  "tabl|  %16s  %2s  %14s",
+      trait_lines[i].trait,
+      trait_lines[i].score,
+      " "
+    );
+    p_fn_prtlin(writebuf);
+
+  } /* for all 11 table data lines */
+
+  sprintf(writebuf, "fill|before table foot");
+  p_fn_prtlin(writebuf);
+  sprintf(writebuf, "foot|This score does NOT measure");
+  p_fn_prtlin(writebuf);
+  sprintf(writebuf, "foot|challenging or favorable.");
+  p_fn_prtlin(writebuf);
+  sprintf(writebuf, "fill|after table foot");
+  p_fn_prtlin(writebuf);
+
+} /* end of write_TBLRPT_trait_data() */
+
 
 
 /* for the sort of array of struct trait_table_line by score and trait

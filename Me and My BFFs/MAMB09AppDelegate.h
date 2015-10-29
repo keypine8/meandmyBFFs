@@ -234,6 +234,15 @@ NSInteger gbl_maxLenRptLinePSV;      // max len of report data PSV for a cell is
 NSMutableArray *gbl_grp_CSVs;   // report call input
 NSMutableArray *gbl_grp_CSVs_B;   // report call input
 
+
+// per report stuff
+//
+NSArray *gbl_perDataLines;  // used in tblrpts_1 (read in from webview . html file)
+NSInteger gbl_heightCellPER;
+NSInteger gbl_heightCellCOMP;
+// endof per report stuff
+
+
 // group report stuff
 //
 NSString       *gbl_thisCellBackGroundColorName;
@@ -400,45 +409,47 @@ NSString *gbl_TBLRPTS1_NAME_personJust1; // for single person reports
 //        16 level2 (one tab to right)    13 + 16 = 29
 //                 WHERE DISPLAYED
 //    -----------------------------------------------------------
+//       "now" refers to pe and co going to TBLRPT
+//    -----------------------------------------------------------
 //    hompcy       ViewHTML
-//    homppe       ViewHTML
-//    hompco       ViewHTML
+//    homppe       ViewHTML     now TBLRPTs_1
+//    hompco       ViewHTML     now TBLRPTs_1
 //    hompbm       TBLRPTs_1
-//        pbmco    ViewHTML
-//        pbm1pe   ViewHTML
-//        pbm2pe   ViewHTML
+//        pbmco    ViewHTML     now TBLRPTs_2
+//        pbm1pe   ViewHTML     now TBLRPTs_2
+//        pbm2pe   ViewHTML     now TBLRPTs_2
 //        pbm2bm   TBLRPTs_2
 //    hompwc       ViewHTML
 //
 //    homgbm       TBLRPTs_1
-//        gbmco    ViewHTML
-//        gbm1pe   ViewHTML
-//        gbm2pe   ViewHTML
+//        gbmco    ViewHTML     now TBLRPTs_2
+//        gbm1pe   ViewHTML     now TBLRPTs_2
+//        gbm2pe   ViewHTML     now TBLRPTs_2
 //        gbm1bm   TBLRPTs_2
 //        gbm2bm   TBLRPTs_2
 //    homgma       TBLRPTs_1
-//        gmappe   ViewHTML
+//        gmappe   ViewHTML     now TBLRPTs_2
 //    homgme       TBLRPTs_1
-//        gmeppe   ViewHTML
+//        gmeppe   ViewHTML     now TBLRPTs_2
 //    homgmr       TBLRPTs_1
-//        gmrppe   ViewHTML
+//        gmrppe   ViewHTML     now TBLRPTs_2
 //    homgmp       TBLRPTs_1
-//        gmpppe   ViewHTML
+//        gmpppe   ViewHTML     now TBLRPTs_2
 //    homgmd       TBLRPTs_1
-//        gmdppe   ViewHTML
+//        gmdppe   ViewHTML     now TBLRPTs_2
 //    homgby       TBLRPTs_1
-//        gbypcy   ViewHTML
+//        gbypcy   ViewHTML 
 //    homgbd       TBLRPTs_1
 //        gbdpwc   ViewHTML
 //
 //    -----------------------------------------------------------
 //    29 report destinations
 //    -----------------------------------------------------------
-//                 ViewHTML  displays 17 report destinations
-//                 TBLRPTs_1 displays  9 report destinations
-//                 TBLRPTs_2 displays  3 report destinations
-//                                   ---
-//                                    29
+//                 ViewHTML  displays 17 report destinations   now  4
+//                 TBLRPTs_1 displays  9 report destinations   now 11
+//                 TBLRPTs_2 displays  3 report destinations   now 14
+//                                   ---                          ---
+//                                    29                           29
 //    -----------------------------------------------------------
 //
 //    -------------------------
@@ -774,7 +785,6 @@ char  gbl_Cbuf_for_csv_person[128];
 char  gbl_Cbuf_for_pathToHTML_webview[4048];
 NSURL *gbl_URLtoHTML_forWebview;
 NSURL *gbl_URLtoHTML_forEmailing;
-NSURL *gbl_URLtoHTML_forWebview;
 // plus   gbl_lastSelectedDay giving yyyymmdd
 NSString *gbl_lastSelectedDayFormattedForEmail;          // Thu  Feb 12, 2015
 NSString *gbl_lastSelectedDayFormattedForTitle;          //      Feb 12, 2015

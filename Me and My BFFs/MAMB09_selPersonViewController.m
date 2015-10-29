@@ -341,14 +341,17 @@
     // Configure the cell...
     if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]) {   
         cell.textLabel.text = [gbl_arrayPersonsToPickFrom   objectAtIndex:indexPath.row];
+        cell.textLabel.font = [UIFont systemFontOfSize: 16.0];
     }
 //    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"]) {   
     else {
         cell.textLabel.text = [gbl_arrayGroupsToPickFrom   objectAtIndex:indexPath.row];
+        cell.textLabel.font = [UIFont systemFontOfSize: 16.0];
     } 
 
     return cell;
 } // cellForRowAtIndexPath
+
 
 // color cell bg
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -356,7 +359,15 @@
     [self.tableView setBackgroundView:nil];
     [self.tableView setBackgroundColor: gbl_colorReportsBG];
     cell.backgroundColor = [UIColor clearColor];
-    
+}
+
+// how to set the tableview cell height
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath  // -------------------------
+{
+  NSLog(@"in heightForRowAtIndexPath 1");
+
+  return 44.0; // matches report height
+
 }
 
 
