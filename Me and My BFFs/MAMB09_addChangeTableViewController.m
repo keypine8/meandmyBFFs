@@ -121,6 +121,26 @@
 //}
 //
 
+//- (void)didRecognizeTapGesture:(UITapGestureRecognizer*)gesture
+//{
+//tn();  NSLog(@"in didRecognizeTapGesture");
+//    CGPoint point = [gesture locationInView:gesture.view];
+//
+//    if (gesture.state == UIGestureRecognizerStateEnded)
+//    {
+//nbn(20);
+////        if (CGRectContainsPoint(self.textField.frame, point))
+//        if (CGRectContainsPoint(gbl_myname.frame, point))
+//        {
+//nbn(21);
+////            [self doSomething];
+//        }
+//    }
+//nbn(22);
+//}
+//
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
 //    
@@ -181,6 +201,17 @@
 
   NSLog(@"in ADD CHANGE  viewDidLoad!");
   NSLog(@"gbl_lastSelectedPerson=[%@]",gbl_lastSelectedPerson);
+
+//
+////UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didRecognizeTapGesture:)];
+//UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:gbl_myname action:@selector(didRecognizeTapGesture:)];
+////[self.textField.superview addGestureRecognizer:tapGesture];
+////[gbl_myname.superview addGestureRecognizer:tapGesture];
+////[gbl_myname addGestureRecognizer:tapGesture];
+//[self.tableView addGestureRecognizer:tapGesture];
+//tapGesture.delegate = self;
+//
+//
 
 
     gbl_editingChangeNAMEHasOccurred = 0;  // default 0 at startup (after hitting "Edit" button on home page)
@@ -274,10 +305,33 @@ NSLog(@"currentScreenWidthHeight.height =%f",currentScreenWidthHeight.height );
     //
     // @property  (strong, nonatomic)          UIPickerView *pickerView;
     //
-    self.pickerViewDateTime            = [[UIPickerView alloc] initWithFrame:(CGRect){{0, 0}, 320, 480}];
+//    self.pickerViewDateTime            = [[UIPickerView alloc] initWithFrame:(CGRect){{0, 0}, 320, 480}];
+
+
+//        gbl_ToolbarForPersonName    = [[UIToolbar alloc] initWithFrame: CGRectMake(0, self.view.frame.size.height - 44, 320, 44)];
+
+   float heightPickerView;  // There are only three valid heights for UIPickerView (162.0, 180.0 and 216.0).
+//   heightPickerView = 216.0;
+    if (currentScreenWidthHeight.height  >= 480.0) heightPickerView = 162.0;   // 4s
+//    else                                           heightPickerView = 180.0;
+    else                                           heightPickerView = 216.0;
+
+    self.pickerViewDateTime            = [[UIPickerView alloc] initWithFrame:
+        CGRectMake (
+            0.0,                                                  // x  from top left
+            currentScreenWidthHeight.height - heightPickerView,   // y
+            currentScreenWidthHeight.width,                       // width
+            heightPickerView                                      // height
+        )
+    ];
+
+
+
     self.pickerViewDateTime.delegate   = self;
     self.pickerViewDateTime.dataSource = self;
     self.pickerViewDateTime.hidden     =  NO;
+
+
 //    self.pickerViewDateTime.inputAccessoryView =  gbl_ToolbarForBirthDate;
 //    [self.pickerViewDateTime setInputAccessoryView:  gbl_ToolbarForBirthDate ];
 
@@ -287,7 +341,17 @@ NSLog(@"currentScreenWidthHeight.height =%f",currentScreenWidthHeight.height );
 //    categoryTypePicker.tag = kCATEGORYTYPEPICKERTAG;
 //    countryTypePicker.backgroundColor = [UIColor blueColor];
 
-    self.pickerViewCity            = [[UIPickerView alloc] initWithFrame:(CGRect){{0, 0}, 320, 480}];
+//    self.pickerViewCity            = [[UIPickerView alloc] initWithFrame:(CGRect){{0, 0}, 320, 480}];
+
+    self.pickerViewCity            = [[UIPickerView alloc] initWithFrame:
+        CGRectMake (
+            0.0,                                                  // x  from top left
+            currentScreenWidthHeight.height - heightPickerView,   // y
+            currentScreenWidthHeight.width,                       // width
+            heightPickerView                                      // height
+        )
+    ];
+
     self.pickerViewCity.delegate   = self;
     self.pickerViewCity.dataSource = self;
     self.pickerViewCity.hidden     =  NO;
@@ -434,10 +498,43 @@ nbn(881);
 //        gbl_ToolbarForCityKeyboardHavingPicklist = [[UIToolbar alloc] initWithFrame:CGRectMake(160, 260 - 44, 320, 44)];
 //        gbl_ToolbarForCityKeyboardWithNoPicklist = [[UIToolbar alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 44, 320, 44)];
 
+
         gbl_ToolbarForPersonName    = [[UIToolbar alloc] initWithFrame: CGRectMake(0, self.view.frame.size.height - 44, 320, 44)];
+        gbl_ToolbarForBirthDate     = [[UIToolbar alloc] initWithFrame: CGRectMake(0, self.view.frame.size.height - 44, 320, 44)];
         gbl_ToolbarForCityPicklist  = [[UIToolbar alloc] initWithFrame: CGRectMake(0, self.view.frame.size.height - 44, 320, 44)];
         gbl_ToolbarForCityKeyboard  = [[UIToolbar alloc] initWithFrame: gbl_ToolbarForCityPicklist.bounds ];
-        gbl_ToolbarForBirthDate     = [[UIToolbar alloc] initWithFrame: CGRectMake(0, self.view.frame.size.height - 44, 320, 44)];
+
+        float heightKeyboard; 
+        heightKeyboard = 216.0; 
+        float heightKeyboardToolbar;  
+        heightKeyboardToolbar = 44.0;
+
+  NSLog(@"currentScreenWidthHeight.height=[%f]",currentScreenWidthHeight.height);
+  NSLog(@"currentScreenWidthHeight.width =[%f]",currentScreenWidthHeight.width);
+  NSLog(@"heightKeyboard                 =[%f]",heightKeyboard);
+  NSLog(@"heightKeyboardToolbar          =[%f]",heightKeyboardToolbar);
+
+//        gbl_ToolbarForPersonName    = [[UIToolbar alloc] initWithFrame:
+//            CGRectMake (
+//                0.0,                                                  // x  from top left
+//                currentScreenWidthHeight.height - heightKeyboard - heightKeyboardToolbar,   // y
+//                currentScreenWidthHeight.width,                       // width
+//                heightKeyboardToolbar                                 // height
+//            )
+//        ];
+//
+
+
+        float heightPickerToolbar;  // There are only three valid heights for UIPickerView (162.0, 180.0 and 216.0).
+        heightPickerToolbar = 44.0;
+        gbl_ToolbarForBirthDate     = [[UIToolbar alloc] initWithFrame:
+            CGRectMake (
+                0.0,                                                  // x  from top left
+                currentScreenWidthHeight.height - heightPickerView - heightPickerToolbar,   // y
+                currentScreenWidthHeight.width,                       // width
+                heightPickerToolbar                                   // height
+            )
+        ];
 
 
 //        gbl_ToolbarForCityKeyboardHavingPicklist = [[UIToolbar alloc] initWithFrame: gbl_ToolbarForCityPicklist.bounds ];
@@ -662,7 +759,9 @@ nbn(881);
 
 //nbn(357);
 //    [self doStuff_2_OnEnteringForeground];  // position highlight
+
 //nbn(358);
+//    [gbl_myname becomeFirstResponder];
 
 } // viewDidLoad
 
@@ -833,6 +932,8 @@ nbn(881);
   NSLog(@"gbl_fromHomeCurrentSelectionType=%@",gbl_fromHomeCurrentSelectionType);
 
 
+    addChangeViewJustEntered = 1;  // 1=y,0=n
+
 // do now when current field changes to "city"
 //    [ [NSRunLoop mainRunLoop] addTimer: self.timerToCheckCityPicklistTrigger  // init
 //                               forMode: NSRunLoopCommonModes
@@ -875,9 +976,44 @@ nbn(881);
         UIBarButtonItem *navSaveButton   = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemDone
                                                                                          target: self
                                                                                          action: @selector(pressedSaveDone:)];
+//        [self.navigationItem.rightBarButtonItem setStyle:UIBarButtonItemStyleDone];
         UIBarButtonItem *navCancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
                                                                                          target: self
                                                                                          action: @selector(pressedCancel:)];
+
+//        UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 33, 44)];  // 3rd arg is horizontal length
+//        spaceView.backgroundColor = [UIColor redColor];
+//        UIBarButtonItem *mySpacerForTitle = [[UIBarButtonItem alloc] initWithCustomView: spaceView];
+//
+
+//<.>
+//    UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 33, 44)];  // 3rd arg is horizontal length
+//    UIBarButtonItem *mySpacerForTitle = [[UIBarButtonItem alloc] initWithCustomView:spaceView];
+//
+//
+//    // TWO-LINE NAV BAR TITLE
+//    //
+//    dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+//        self.navigationItem.rightBarButtonItem = _goToReportButton;
+//        self.navigationItem.titleView           = mySelDate_Label; // mySelDate_Label.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
+//        self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerForTitle];
+//    });
+//
+//
+//        UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 11, 44)];  // 3rd arg is horizontal length
+//        UIBarButtonItem *mySpacerForTitle = [[UIBarButtonItem alloc] initWithCustomView:spaceView];
+//
+//
+//            dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+//                self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: shareButton];
+//                self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerForTitle];
+//                [self.navigationController.navigationBar setTranslucent:NO];
+//
+//<.>
+//
+
+
+
 //        navCancelButton.title = @"Cancel";
 //        //        navAddButton.tintColor = [UIColor blackColor];   // colors text
 
@@ -903,9 +1039,16 @@ nbn(881);
 //self.navigationController.navigationBar.topItem.backBarButtonItem = navCancelButton;
 
 
-
+// gold
             self.navigationItem.rightBarButtonItems  =
                 [self.navigationItem.rightBarButtonItems  arrayByAddingObject: navSaveButton  ]; // add SAVE   BUTTON
+
+//            self.navigationItem.rightBarButtonItems =
+//                [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerForTitle];
+
+//            self.navigationItem.rightBarButtonItems  =
+//                [self.navigationItem.rightBarButtonItems  arrayByAddingObject: navSaveButton  ]; // add SAVE   BUTTON
+
         });
 
 
@@ -944,6 +1087,26 @@ nbn(881);
                 });
             }
         }
+
+
+//
+//    // You can use
+//    // [self.navigationController.navigationBar setTitleTextAttributes:]
+//    // to set someone navigationController's appearence, while
+//    // [UINavigationBar appearance] setTitleTextAttributes:]
+//    // works for your whole App directly.(Of course you need to put it in a property position.)
+//    //
+////    [ [UINavigationBar appearance] setTitleTextAttributes:
+//    [self.navigationController.navigationBar setTitleTextAttributes:
+//        [ NSDictionary dictionaryWithObjectsAndKeys:
+////            [UIFont fontWithName:@"Helvetica-Bold" size:18.0],
+//            [UIFont fontWithName:@"systemFont" size: 24.0],
+//            NSFontAttributeName,
+//            nil
+//        ]
+//    ];
+//
+//
 
     } while (false);   // set up NAV BAR
 
@@ -1160,7 +1323,7 @@ tn();  NSLog(@"in showHide_ButtonToSeePicklist!");
 
   NSLog(@"self.outletToButtonToGetPicklist =[%@]", self.outletToButtonToGetPicklist.description );
 
-//    for (id mybarbutton in gbl_buttonArrayForKeyboard ) {
+//    for (id mybarbutton in gbl_buttonArrayForKeyboard ) 
     for ( UIBarButtonItem *mybarbutton in gbl_buttonArrayForKeyboard ) {
   NSLog(@"mybarbutton.description =[%@]", mybarbutton.description );
         if ( [ mybarbutton.description  isEqualToString: self.outletToButtonToGetPicklist.description ] ) picklistButtonIsNowOnToolbar = 1;
@@ -1767,11 +1930,34 @@ NSLog(@"end of  oncityInputViewKeyboardButton!"); tn();
 }
 
 
+//- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
+//    BOOL touchedViewIsTextfield = NO;
+// 
+//    // first check we have a cell
+//    NSIndexPath *indexPathAtHitPoint = [self indexPathForRowAtPoint:point];
+//    id cell = [tableview.cell cellForRowAtIndexPath:indexPathAtHitPoint];
+//    if (cell) {
+//        NSArray *subViews = [[cell contentView] subviews];
+//        // Cycle through subviews of the contentView
+//        for (UIView *view in subViews) {
+//            // Test if the subView is a UITextField
+//            if ([view isKindOfClass :[UITextField class]]) {
+//                // And here is the bit that aint working... where did I go wrong?
+//                touchedViewIsTextfield = [view pointInside:point withEvent:event];
+//                if (touchedViewIsTextfield) { NSLog(@";yes"); }
+//            }
+//        }
+//    }
+//    return [super hitTest:point withEvent:event];
+//}   
+//
+
+
 // textFieldShouldBeginEditing: is called just before the text field becomes active.
 // This is a good place to customize the behavior of your application.
 // In this instance, the background color of the text field changes when this method is called to indicate the text field is active.
 //
-- (BOOL)textFieldShouldBeginEditing: (UITextField *)textField{
+- (BOOL)textFieldShouldBeginEditing: (UITextField *)textField {
 tn();   NSLog(@"in textFieldShouldBeginEditing ################################################## ");
   NSLog(@"textField.tag=[%ld]",(long)textField.tag);
   NSLog(@"textField.text=[%@]",textField.text);
@@ -1833,7 +2019,8 @@ trn("END OF textFieldShouldBeginEditing (yes) ##################################
 
 // textFieldDidBeginEditing: is called when the text field becomes active.
 //
-- (void)textFieldDidBeginEditing: (UITextField *)textField{           
+- (void)textFieldDidBeginEditing: (UITextField *)textField
+{           
 tn();   NSLog(@"in textFieldDidBeginEditing ################################################## ");
   NSLog(@"textField.tag=[%ld]",(long)textField.tag);
   NSLog(@"textField.text=[%@]",textField.text);
@@ -2026,7 +2213,8 @@ trn("END OF  textFieldShouldEndEditing (yes) ###################################
 
 // textFieldDidEndEditing:     is called when the text field becomes inactive.
 //
-- (void)textFieldDidEndEditing: (UITextField *)textField{
+- (void)textFieldDidEndEditing: (UITextField *)textField
+{
 tn();   NSLog(@"in textFieldDidEndEditing ################################################## ");
   NSLog(@"textField.tag=[%ld]",(long)textField.tag);
   NSLog(@"textField.text=[%@]",textField.text);
@@ -2034,20 +2222,6 @@ tn();   NSLog(@"in textFieldDidEndEditing ######################################
   NSLog(@"gbl_myname.text1=[%@]",gbl_myname.text);
 
     [ self checkResponderStuff ];
-
-
-//
-////    if (   gbl_firstResponder_prev_was_NAME == 0
-////        && gbl_firstResponder_prev_was_DATE == 0)
-////    {
-//    if ([ gbl_firstResponder_previous isEqualToString: @"city" ]) {
-//
-//  NSLog(@"set textField.txt = gbl_myCitySoFar xxxxxxxxx 555  xxxxxxxxx ");
-//  NSLog(@"gbl_firstResponder_previous =%@",gbl_firstResponder_previous );
-//    [ self checkResponderStuff ];
-//        textField.text = gbl_myCitySoFar; // .text is "toroo" , gbl_myCitySoFar is "toro" (correct)
-//    }
-//
 
 
 //   [self.view endEditing:YES];
@@ -2158,6 +2332,8 @@ nb(3);
 //            gbl_firstResponder_previous = gbl_firstResponder_current;
 //            gbl_firstResponder_current  = gbl_fieldTap_goingto;
 //        }
+
+
   NSLog(@"--- 222 -- firstResponder Change!!  ---------------------------");
   NSLog(@"            gbl_myname.isFirstResponder=%d",gbl_myname.isFirstResponder);
   NSLog(@"gbl_mycitySearchString.isFirstResponder=%d",gbl_mycitySearchString.isFirstResponder);
@@ -2167,7 +2343,73 @@ nb(3);
   NSLog(@"gbl_firstResponder_previous  =%@",gbl_firstResponder_previous );
   NSLog(@"gbl_firstResponder_current   =%@",gbl_firstResponder_current  );
   NSLog(@"---------------------------------------------------------------");
+
     }
+
+//
+//    // make BG color of old     input field = white
+//    // make BG color of current input field = highlighted
+//    //
+//    NSArray *indexPathsToUpdate;
+//    NSIndexPath *indexPath_leaving;
+//    NSIndexPath *indexPath_goingto;
+//
+//    indexPath_leaving  = nil;
+//    indexPath_goingto  = nil;
+//    indexPathsToUpdate = nil;
+//
+//  NSLog(@"gbl_fieldTap_leaving =[%@]",gbl_fieldTap_leaving );
+// 
+//    if      (gbl_fieldTap_leaving == nil) {
+//nbn(360);
+//        ;  // do nothing
+//    } else {
+//nbn(361);
+//        if      ([gbl_fieldTap_leaving isEqualToString: @"name"]) indexPath_leaving = [NSIndexPath indexPathForRow: 1 inSection: 0];
+//        else if ([gbl_fieldTap_leaving isEqualToString: @"city"]) indexPath_leaving = [NSIndexPath indexPathForRow: 3 inSection: 0];
+//        else if ([gbl_fieldTap_leaving isEqualToString: @"date"]) indexPath_leaving = [NSIndexPath indexPathForRow: 5 inSection: 0];
+//  NSLog(@"indexPath_leaving =[%@]",indexPath_leaving );
+//
+//        if (indexPath_leaving != nil) {
+//nbn(362);
+//            indexPathsToUpdate = [NSArray arrayWithObjects: indexPath_leaving, nil];
+//            [self.tableView beginUpdates];
+//            [self.tableView reloadRowsAtIndexPaths: indexPathsToUpdate
+//                                  withRowAnimation: UITableViewRowAnimationNone ];
+//            [self.tableView endUpdates];
+//        }
+//    }
+//
+//    if      (gbl_fieldTap_goingto == nil) {
+//nbn(363);
+//        ;  // do nothing
+//    } else {
+//
+//nbn(364);
+//        if      ([gbl_fieldTap_goingto isEqualToString: @"name"]) indexPath_goingto = [NSIndexPath indexPathForRow: 1 inSection: 0];
+//        else if ([gbl_fieldTap_goingto isEqualToString: @"city"]) indexPath_goingto = [NSIndexPath indexPathForRow: 3 inSection: 0];
+//        else if ([gbl_fieldTap_goingto isEqualToString: @"date"]) indexPath_goingto = [NSIndexPath indexPathForRow: 5 inSection: 0];
+//  NSLog(@"gbl_fieldTap_goingto =[%@]",gbl_fieldTap_goingto );
+//  NSLog(@"indexPath_goingto =[%@]",indexPath_goingto );
+//
+//        if (indexPath_goingto != nil) {
+//nbn(365);
+//            indexPathsToUpdate = [NSArray arrayWithObjects: indexPath_goingto, nil];
+//            [self.tableView beginUpdates];
+//            [self.tableView reloadRowsAtIndexPaths: indexPathsToUpdate
+//                                  withRowAnimation: UITableViewRowAnimationNone ];
+//            [self.tableView endUpdates];
+//        }
+//nbn(366);
+//    }
+//nbn(367);
+//
+
+
+
+
+//    NSArray *indexPathsToUpdate = [NSArray arrayWithObjects: indexPath_leaving, indexPath_goingto, nil];
+
 } //  checkResponderStuff 
 
 
@@ -2203,7 +2445,6 @@ nb(3);
   NSLog(@"gbl_myCitySoFar=%@",gbl_myCitySoFar);
   NSLog(@"gbl_myname.text=[%@]",gbl_myname.text);
   NSLog(@"gbl_previousCharTypedWasSpace =%ld",(long)gbl_previousCharTypedWasSpace );
-//  NSLog(@"gbl_justCancelledOutOfCityPicker =%ld",gbl_justCancelledOutOfCityPicker );
 
 
         // this WORKS  for detecting when backspace was pressed:
@@ -2230,52 +2471,6 @@ nb(3);
 //
 //
 
-//<.>  TODO 
-//  NSLog(@"-- USAGE  gbl_justCancelledOutOfCityPicker --  in  shouldChangeCharactersInRange --  set gbl_intervalBetweenLast2Keystrokes");
-////    if (gbl_justCancelledOutOfCityPicker == 1)   gbl_intervalBetweenLast2Keystrokes = 0.0;
-//    if (gbl_justCancelledOutOfCityPicker == 1) {
-////        gbl_intervalBetweenLast2Keystrokes = 0.0;
-//
-//
-//
-//  gbltmpint = gbl_justCancelledOutOfCityPicker ;
-//        gbl_justCancelledOutOfCityPicker = 0;    // turn it off here
-//  NSLog(@"--onc ----- USAGE gbl_justCancelledOutOfCityPicker ---------------- old=[%ld]  new=[%ld] ---", gbltmpint, gbl_justCancelledOutOfCityPicker );
-//
-//
-//
-//    } else {
-//        ;
-////        gbl_intervalBetweenLast2Keystrokes = gbl_timeOfCurrCityKeystroke - gbl_timeOfPrevCityKeystroke;  // CALC
-//    }
-
-// qOLD
-//  NSLog(@"=====  SET INTERVAL1  ================== gbl_intervalBetweenLast2Keystrokes=%g",gbl_intervalBetweenLast2Keystrokes);
-//  NSLog(@"gbl_typedCharPrev=[%@]  gbl_typedCharCurr=[%@]",gbl_typedCharPrev, gbl_typedCharCurr);
-//  NSLog(@"gbl_timeOfPrevCityKeystroke        =%g",gbl_timeOfPrevCityKeystroke        );
-//  NSLog(@"gbl_timeOfCurrCityKeystroke        =%g",gbl_timeOfCurrCityKeystroke        );
-//  NSLog(@"myTimeNow                          =%g",myTimeNow             );
-//  NSLog(@"============================================================");
-//
-
-
-//    if (gbl_justCancelledOutOfCityPicker == 1) {
-//nbn(601);
-//tn(); NSLog(@"cancel picker  cancel picker  cancel picker  cancel picker  cancel picker  gbl_justCancelledOutOfCityPicker=[%ld]",gbl_justCancelledOutOfCityPicker);
-//        
-//  NSLog(@"set textField.txt = gbl_myCitySoFar  xxxxxxxxx 556  xxxxxxxxx ");
-//
-//        textField.text = gbl_myCitySoFar;  // note that this just had final char chopped
-//
-//  NSLog(@"gbl_myCitySoFar=%@",gbl_myCitySoFar);
-//  NSLog(@"textField.text=[%@]",textField.text);
-//
-//        gbl_justCancelledOutOfCityPicker = 0;
-//  NSLog(@"JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ  gbl_justCancelledOutOfCityPicker =%ld",(long)gbl_justCancelledOutOfCityPicker );
-//
-//    } else {
-//
-//        && [textField.text          isEqualToString: @""  ]     // here first character typed for city is SPACE
 
     if (   [arg_typedCharAsNSString isEqualToString: @" " ]
         && (
@@ -2722,7 +2917,11 @@ NSLog(@"in textFieldShouldReturn:");
 //
 //    return YES;
 //
-    return  NO;
+
+//    return  NO;
+
+    [textField resignFirstResponder];
+    return  YES;
 
 } //  textFieldShouldReturn
 
@@ -2774,11 +2973,22 @@ NSLog(@"in textFieldShouldReturn:");
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
 
+
+//    UIColor *currentBGfieldColor;
+
 //    UIFont *myFont = [UIFont fontWithName: @"Menlo" size: 12.0];
 //    UIFont *myFont         = [UIFont fontWithName: @"Menlo" size: 16.0];
-    UIFont *myFontMiddle   = [UIFont fontWithName: @"Menlo" size: 14.0];
+//    UIFont *myFontMiddle   = [UIFont fontWithName: @"Menlo" size: 14.0];
+
+    UIFont *myFontMiddle   = [UIFont fontWithName: @"Menlo" size: 18.0];
+
 //    UIFont *myFontSmaller1 = [UIFont fontWithName: @"Menlo" size: 13.0];
-    UIFont *myFontSmaller2 = [UIFont fontWithName: @"Menlo" size: 12.5];
+//    UIFont *myFontSmaller2 = [UIFont fontWithName: @"Menlo" size: 12.5];
+
+//    UIFont *myFontSmaller2 = [UIFont fontWithName: @"Menlo" size: 16.0];
+//    UIFont *myFontSmaller2 = [UIFont fontWithName: @"Menlo" size: 15.0];
+//    UIFont *myFontSmaller2 = [UIFont fontWithName: @"Menlo" size: 14.0];
+    UIFont *myFontSmaller2 = [UIFont fontWithName: @"Menlo" size: 16.0];
 
     // invisible button for taking away the disclosure indicator
     //
@@ -2797,9 +3007,18 @@ nbn(200);
      }
 
      if (indexPath.row == 1) {   //  NAME of Person or Group
-nbn(201);
-  NSLog(@"gbl_myname.text =[%@]",gbl_myname.text );
+//nbn(2011);
+//  NSLog(@"gbl_fieldTap_goingto =[%@]",gbl_fieldTap_goingto );
+  NSLog(@"name row    gbl_myname.text =[%@]",gbl_myname.text );
+
         gbl_myname.delegate = self;
+
+// arcane
+//        // set current BG editing color  depending on what field has focus
+//        //
+//        if      ([gbl_fieldTap_goingto isEqualToString: @"name"]) { currentBGfieldColor = gbl_bgColor_editFocus_YES; }
+//        else                                                      { currentBGfieldColor = gbl_bgColor_editFocus_NO ; }
+
 
         dispatch_async(dispatch_get_main_queue(), ^{        
 
@@ -2826,6 +3045,7 @@ nbn(201);
 //            gbl_myname.backgroundColor          = gbl_colorEditing;
 //            gbl_myname.backgroundColor          = [UIColor yellowColor];
             gbl_myname.backgroundColor          = gbl_colorEditingBGforInputField;
+//            gbl_myname.backgroundColor          = currentBGfieldColor;
 
 //            if (   [gbl_myname.text isEqualToString: @"" ] 
 //                ||  gbl_myname.text == nil 
@@ -2865,7 +3085,7 @@ nbn(700);
             gbl_myname.tag                      = 1;
             gbl_myname.autocapitalizationType   = UITextAutocapitalizationTypeNone;
 
-    gbl_myname.inputAccessoryView =gbl_ToolbarForPersonName ; // for person name input field
+    gbl_myname.inputAccessoryView = gbl_ToolbarForPersonName ; // for person name input field
   NSLog(@"gbl_myname.inputAccessoryView 01 SET SET SET SET SET SET SET SET SET  SET ");
 
 
@@ -2893,6 +3113,7 @@ nbn(700);
 
      if (indexPath.row == 3) {   // "LABEL" for  city,proc,coun  of Birth of Person
 nb(203);
+  NSLog(@"city row   gbl_fieldTap_goingto =[%@]",gbl_fieldTap_goingto );
 
 
 //        myTextCity = [NSString stringWithFormat:@"%@\n%@\n%@", gbl_enteredCity, gbl_enteredProv, gbl_enteredCoun ];
@@ -2918,6 +3139,11 @@ nb(203);
 //    myTextCity = myMutCity;
 //
 
+//        // set current BG editing color  depending on what field has focus
+//        //
+//        if      ([gbl_fieldTap_goingto isEqualToString: @"city"]) { currentBGfieldColor = gbl_bgColor_editFocus_YES; }
+//        else                                                      { currentBGfieldColor = gbl_bgColor_editFocus_NO ; }
+
 
 
 //        UIColor *borderColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0];
@@ -2942,6 +3168,7 @@ nb(203);
             cell.userInteractionEnabled         = YES;
             cell.selectionStyle                 = UITableViewCellSelectionStyleNone;
             cell.contentView.backgroundColor    = gbl_colorEditingBG;
+//            cell.contentView.backgroundColor    = currentBGfieldColor;
 
             gbl_mycityprovcounLabel.text             = myTextCity;
 
@@ -2968,6 +3195,7 @@ nbn(24);
 //            gbl_mycityprovcounLabel.backgroundColor  = gbl_colorEditingBG;
 //            gbl_mycityprovcounLabel.backgroundColor  = [UIColor whiteColor];
             gbl_mycityprovcounLabel.backgroundColor  =  gbl_colorEditingBGforInputField;
+//            gbl_mybirthinformation.backgroundColor          = currentBGfieldColor;
 
             // If you want the clear button to be always visible,
             // then you need to set the text field's clearButtonMode property to UITextFieldViewModeAlways. 
@@ -2989,13 +3217,15 @@ nb(204);
         });
      }
 
+
+
+
+
      if (indexPath.row == 5) {   // "LABEl" for  time of birth information
 nb(205);
-  NSLog(@"                                    DRAWING        CELL  having LABEl for  DATE/time of birth ");
+  NSLog(@"date row                            DRAWING        CELL  having LABEl for  DATE/time of birth ");
   NSLog(@"                                    gbl_lastInputFieldTapped=%@",gbl_lastInputFieldTapped);
   NSLog(@"                                    gbl_pickerToUse9        =%@",gbl_pickerToUse );
-
-
 
 
     // right here,  determine if last field tapped is gbl_mybirthinformation field, if so become firstResponder to putup date picker
@@ -3018,6 +3248,11 @@ tn();trn("DATE field was drawn  hey   hey   hey   hey   hey   hey   hey   ");
     }
 
 
+
+//        // set current BG editing color  depending on what field has focus
+//        //
+//        if      ([gbl_fieldTap_goingto isEqualToString: @"date"]) { currentBGfieldColor = gbl_bgColor_editFocus_YES; }
+//        else                                                      { currentBGfieldColor = gbl_bgColor_editFocus_NO ; }
 
 
 
@@ -3050,6 +3285,7 @@ tn();trn("DATE field was drawn  hey   hey   hey   hey   hey   hey   hey   ");
             cell.contentView.backgroundColor    = gbl_colorEditingBG;
             
             cell.userInteractionEnabled         = YES;
+//            cell.userInteractionEnabled         = NO;
             cell.selectionStyle                 = UITableViewCellSelectionStyleNone;
 
 //            gbl_mybirthinformation.placeholder              = myBirthTimeInformation;
@@ -3072,7 +3308,21 @@ tn();trn("DATE field was drawn  hey   hey   hey   hey   hey   hey   hey   ");
 
 //            gbl_mybirthinformation.backgroundColor          = gbl_colorEditing;
 //            gbl_mybirthinformation.backgroundColor          = [UIColor yellowColor];
-            gbl_mybirthinformation.backgroundColor          = gbl_colorEditingBGforInputField;
+              gbl_mybirthinformation.backgroundColor = gbl_colorEditingBGforInputField;
+
+
+//  NSLog(@"addChangeViewJustEntered =[%ld]",(long)addChangeViewJustEntered );
+//            if ( addChangeViewJustEntered == 1) {
+//                addChangeViewJustEntered               = 0;
+//                gbl_mybirthinformation.backgroundColor = gbl_colorEditingBGforInputField;
+//            } else {
+//                gbl_mybirthinformation.backgroundColor = [UIColor yellowColor];
+//            }
+//
+
+//            gbl_mybirthinformation.backgroundColor          = [UIColor yellowColor];
+
+//            gbl_mybirthinformation.backgroundColor          = currentBGfieldColor;
 //            gbl_mybirthinformation.textColor                = [UIColor blackColor];
 //            gbl_mybirthinformation.textColor                = [UIColor grayColor];
 //            gbl_mybirthinformation.font                     = myFont;
@@ -3221,23 +3471,30 @@ nbn(299);
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath  // -------------------------
 {
 //  NSLog(@"in heightForRowAtIndexPath 1");
-//     if (indexPath.row == 0) {   //  filler row 0
-//     if (indexPath.row == 1) {   //  NAME of Person or Group
-//     if (indexPath.row == 2) {   //  filler 
-//     if (indexPath.row == 3) {   // "LABEL" for  city,proc,coun  of Birth of Person
-//     if (indexPath.row == 4) {   //  filler 
-//     if (indexPath.row == 5) {   // "LABEl" for  time of birth information
-//     if (indexPath.row == 6) {   // data entry for  City of Birth of Person
+//     if (indexPath.row == 0)     //  filler row 0
+//     if (indexPath.row == 1)     //  NAME of Person or Group
+//     if (indexPath.row == 2)     //  filler 
+//     if (indexPath.row == 3)     // "LABEL" for  city,proc,coun  of Birth of Person
+//     if (indexPath.row == 4)     //  filler 
+//     if (indexPath.row == 5)     // "LABEl" for  time of birth information
+//     if (indexPath.row == 6)     // data entry for  City of Birth of Person
 //
    
    if (indexPath.row == 0) return  8;  // fill
-   if (indexPath.row == 1) return 40;  // name 
-   if (indexPath.row == 2) return 16;  // fill
-   if (indexPath.row == 3) return 60;  // "LABEL" for  city,proc,coun  of Birth of Person
-   if (indexPath.row == 4) return  8;  // fill
-   if (indexPath.row == 5) return 40;  // "LABEl" for  time of birth information
 
-   if (indexPath.row == 6) return 40;  // city seach field
+//   if (indexPath.row == 1) return 40;  // name 
+   if (indexPath.row == 1) return 50;  // name 
+
+   if (indexPath.row == 2) return 16;  // fill
+
+//   if (indexPath.row == 3) return 60;  // "LABEL" for  city,proc,coun  of Birth of Person
+   if (indexPath.row == 3) return 80;  // "LABEL" for  city,proc,coun  of Birth of Person
+   if (indexPath.row == 4) return  8;  // fill
+
+//   if (indexPath.row == 5) return 40;  // "LABEl" for  time of birth information
+   if (indexPath.row == 5) return 50;  // "LABEl" for  time of birth information
+
+   if (indexPath.row == 6) return 40;  // city seach field   ?
 
     return 32.0;
 
@@ -3265,13 +3522,12 @@ NSLog(@"indexPath.row =%ld",(long)indexPath.row );
 //    [self.tableView scrollToNearestSelectedRowAtScrollPosition: currentlyselectedIndexPath.row
 //                                                      animated: NO];
     
-//    UITableViewCell *currcell = [self.tableView cellForRowAtIndexPath:currentlyselectedIndexPath]; // was unused
     // now you can use cell.textLabel.text
 
 
 
-
     if (indexPath.row == 3 ) {  // LABEL for city,coun,prov    CITY  CITY  CITY  CITY  CITY  CITY  CITY  CITY CITY  CITY
+
 
 //        [myCityOfBirthInputField becomeFirstResponder];
 
@@ -3672,7 +3928,7 @@ kin(num_PSVs_found);
 
         // update city label field  update field in cellForRowAtIndexpath
         //
-        [ self updateCityProvCoun ]; // update city/prov/couon field  in cellForRowAtIndexpath
+        [ self updateCityProvCoun ]; // update city/prov/coun field  in cellForRowAtIndexpath
 
 // ?      gbl_searchStringTitle.title = gbl_myCitySoFar;           //  update title of keyboard "toolbar"
         [self setCitySearchStringTitleTo: gbl_myCitySoFar ];
@@ -4350,6 +4606,7 @@ NSLog(@"RETURN titleForRowRetval=%@",titleForRowRetval);
 {
 //  NSLog(@"in viewForRow !!  in PICKER ");
   NSLog(@"in viewForRow !!  in PICKER    row=%ld",(long)row);
+  NSLog(@"gbl_pickerToUse=[%@]",gbl_pickerToUse);
 
     // NSString *gbl_fieldTap_leaving; // note that name and city are captured in should/did editing, date in viewForRow uipickerview
     // NSString *gbl_fieldTap_goingto; // note that name and city are captured in should/did editing, date in viewForRow uipickerview
@@ -4384,7 +4641,9 @@ NSLog(@"RETURN titleForRowRetval=%@",titleForRowRetval);
         //    retvalUILabel.font = [UIFont systemFontOfSize: 16];
 
 //        retvalUILabel.font = [UIFont systemFontOfSize: 23];
-        retvalUILabel.font = [UIFont systemFontOfSize: 22];
+//        retvalUILabel.font = [UIFont systemFontOfSize: 22];
+//        retvalUILabel.font = [UIFont systemFontOfSize: 21];
+        retvalUILabel.font = [UIFont systemFontOfSize: 20];
 
 //        retvalUILabel.font  = [UIFont fontWithName: @"Menlo" size: 14.0];
 //        retvalUILabel.font  = [UIFont fontWithName: @"Menlo" size: 24.0];
@@ -4426,7 +4685,9 @@ NSLog(@"RETURN titleForRowRetval=%@",titleForRowRetval);
             retvalUILabel.font                      = myCityFont;
 
 //if (row == 2) {  // get max chars in line
-//retvalUILabel.text = [NSString stringWithFormat:@" 2345678 1 2345678 2 23456789 3 2 4 6 8 5 2 4 6 8  6\n %@\n %@",  gbl_enteredProv, gbl_enteredCoun ];
+//  //retvalUILabel.text = [NSString stringWithFormat:@" 2345678 1 2345678 2 23456789 3 2 4 6 8 5 2 4 6 8  6\n %@\n %@",  gbl_enteredProv, gbl_enteredCoun ];
+////myStringForView = [NSString stringWithFormat:@" 2345678 1 2345678 2 23456789 3 2 4 6 8 5 2 4 6 8  6\n %@\n %@",  gbl_enteredProv, gbl_enteredCoun ];
+//gbl_enteredCity = [NSString stringWithFormat:@" 2345678 1 2345678 2 23456789 3" ];
 //}
 
              // for picker row:  attributed text in view (uilabel)
@@ -4988,3 +5249,51 @@ trn("!!!!!!!!!  END OF  didSelectRow in some  PICKER !!   !!!!!!!!!!!!!!!!!!!!!!
 //NSString *gbl_initPromptProv;
 //NSString *gbl_initPromptCoun;
 //NSString *gbl_initPromptDate;
+
+//<.>  TODO 
+//  NSLog(@"-- USAGE  gbl_justCancelledOutOfCityPicker --  in  shouldChangeCharactersInRange --  set gbl_intervalBetweenLast2Keystrokes");
+////    if (gbl_justCancelledOutOfCityPicker == 1)   gbl_intervalBetweenLast2Keystrokes = 0.0;
+//    if (gbl_justCancelledOutOfCityPicker == 1) {
+////        gbl_intervalBetweenLast2Keystrokes = 0.0;
+//
+//
+//
+//  gbltmpint = gbl_justCancelledOutOfCityPicker ;
+//        gbl_justCancelledOutOfCityPicker = 0;    // turn it off here
+//  NSLog(@"--onc ----- USAGE gbl_justCancelledOutOfCityPicker ---------------- old=[%ld]  new=[%ld] ---", gbltmpint, gbl_justCancelledOutOfCityPicker );
+//
+//
+//
+//    } else {
+//        ;
+////        gbl_intervalBetweenLast2Keystrokes = gbl_timeOfCurrCityKeystroke - gbl_timeOfPrevCityKeystroke;  // CALC
+//    }
+
+// qOLD
+//  NSLog(@"=====  SET INTERVAL1  ================== gbl_intervalBetweenLast2Keystrokes=%g",gbl_intervalBetweenLast2Keystrokes);
+//  NSLog(@"gbl_typedCharPrev=[%@]  gbl_typedCharCurr=[%@]",gbl_typedCharPrev, gbl_typedCharCurr);
+//  NSLog(@"gbl_timeOfPrevCityKeystroke        =%g",gbl_timeOfPrevCityKeystroke        );
+//  NSLog(@"gbl_timeOfCurrCityKeystroke        =%g",gbl_timeOfCurrCityKeystroke        );
+//  NSLog(@"myTimeNow                          =%g",myTimeNow             );
+//  NSLog(@"============================================================");
+//
+
+
+//    if (gbl_justCancelledOutOfCityPicker == 1) {
+//nbn(601);
+//tn(); NSLog(@"cancel picker  cancel picker  cancel picker  cancel picker  cancel picker  gbl_justCancelledOutOfCityPicker=[%ld]",gbl_justCancelledOutOfCityPicker);
+//        
+//  NSLog(@"set textField.txt = gbl_myCitySoFar  xxxxxxxxx 556  xxxxxxxxx ");
+//
+//        textField.text = gbl_myCitySoFar;  // note that this just had final char chopped
+//
+//  NSLog(@"gbl_myCitySoFar=%@",gbl_myCitySoFar);
+//  NSLog(@"textField.text=[%@]",textField.text);
+//
+//        gbl_justCancelledOutOfCityPicker = 0;
+//  NSLog(@"JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ  gbl_justCancelledOutOfCityPicker =%ld",(long)gbl_justCancelledOutOfCityPicker );
+//
+//    } else {
+//
+//        && [textField.text          isEqualToString: @""  ]     // here first character typed for city is SPACE
+

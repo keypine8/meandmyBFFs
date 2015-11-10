@@ -1,3 +1,4 @@
+
 //
 //  MAMB09viewTBLRPTs_1_TableViewController.m
 //  Me&myBFFs
@@ -543,11 +544,7 @@ bn(303);
 //    UIFont *myFont = [UIFont fontWithName: @"Menlo" size: 12.0];
 //    UIFont *myFont = [UIFont fontWithName: @"Menlo" size: 20.0];
     UIFont *myFont = [UIFont fontWithName: @"Menlo" size: 16.0];
-
-
-
-
-    UIFont *myFontSmaller = [UIFont fontWithName: @"Menlo" size: 11.0];
+    UIFont *myFontSmaller = [UIFont fontWithName: @"Menlo" size: 12.0];
 //    UIFont *myFontSmallerer = [UIFont fontWithName: @"Menlo" size: 10.0];
 
 // ALL of THIS   is for  GRPONE and GRPALL (approx 650 lines)
@@ -617,6 +614,97 @@ bn(303);
         if (indexPath.row ==  group_report_output_idx + 1)
         {  // 1 of 3 FOOTER CELLS
 //trn("// 1 of 3 FOOTER CELLS");
+
+                // ORIG cell.textLabel.text          = @"                                         \n        a GOOD RELATIONSHIP              \n        usually has 2 things             \n     1. compatibility potential          \n     2. both sides show positive         \n        personality traits               \n                                         ";
+
+tn();nbn(333);
+            NSMutableAttributedString *myAttrString;    // for cell text
+            NSString                  *myStringNoAttr;  // for work string
+
+            // NSMutableAttributedString * string = [[NSMutableAttributedString alloc] initWithString:@"firstsecondthird"];
+            // [string addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:NSMakeRange(0,5)];
+            // [string addAttribute:NSForegroundColorAttributeName value:[UIColor greenColor] range:NSMakeRange(5,6)];
+            // [string addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:NSMakeRange(11,5)];
+
+            // You need to set the NSForegroundColorAttributeName property as well.
+            // 
+            // Here's a complete list - in the Constants section:
+            // 
+            // NSString *const NSFontAttributeName;
+            // NSString *const NSParagraphStyleAttributeName;
+            // NSString *const NSForegroundColorAttributeName;
+            // NSString *const NSBackgroundColorAttributeName;
+            // NSString *const NSLigatureAttributeName;
+            // NSString *const NSKernAttributeName;
+            // NSString *const NSStrikethroughStyleAttributeName;
+            // NSString *const NSUnderlineStyleAttributeName;
+            // NSString *const NSStrokeColorAttributeName;
+            // NSString *const NSStrokeWidthAttributeName;
+            // NSString *const NSShadowAttributeName;
+            // NSString *const NSVerticalGlyphFormAttributeName;
+            //
+
+            // "                             \
+            // n    a GOOD RELATIONSHIP      \
+            // n    usually has 2 things     \
+            // n 1. compatibility potential  \
+            // n|2. both sides show positive|\
+            // n|   personality traits      |\
+            // n                             ";
+            //
+            myAttrString   = [[NSMutableAttributedString alloc] initWithString:  @"                             \n|   a GOOD RELATIONSHIP     |\n|   usually has 2 things    |\n|1. compatibility potential |\n|2. both sides show positive|\n|   personality traits      |\n                             "
+            ];
+            myStringNoAttr = [myAttrString  string];
+
+            // find the pipes and make them invisible
+            // note: search myStringNoAttr, but make changes in myAttringString
+            //
+            ; 
+//            NSMutableAttributedString *myReplacementString = [
+//                [ NSAttributedString alloc] initWithString: @"|"
+//                                                attributes: @{ NSBackgroundColorAttributeName: gbl_color_cBgr }
+//            ];
+//            [myAttrString stringByReplacingOccurrencesOfString: @"|"  withString: targetString];
+
+            // Setup what you're searching and what you want to find
+            NSString *toFind = @"|";
+
+            // Initialise the searching range to the whole string
+            NSRange searchRange = NSMakeRange(0, [myStringNoAttr length]);
+//  NSLog(@"searchRange.location %lu%d](unsigned long)",searchRange.location );
+//  NSLog(@"searchRange.length   %lu%d](unsigned long)",searchRange.length   );
+            do {
+                // Search for next occurrence
+                NSRange searchReturnRange = [myStringNoAttr  rangeOfString: toFind  options: 0  range: searchRange];
+//  NSLog(@"searchReturnRange.location %lu%d](unsigned long)",searchReturnRange.location );
+//  NSLog(@"searchReturnRange.length   %lu%d](unsigned long)",searchReturnRange.length   );
+                if (searchReturnRange.location != NSNotFound) {
+                    // If found, searchReturnRange contains the range of the current iteration
+
+                    // NOW DO SOMETHING WITH THE STRING / RANGE
+//  for test          [ myAttrString  addAttribute: NSForegroundColorAttributeName
+//                                           value: [UIColor redColor]
+//                                           range: NSMakeRange(searchReturnRange.location, 1)
+//                    ];
+//
+                    [ myAttrString  addAttribute: NSForegroundColorAttributeName
+                                           value: gbl_color_cHed
+                                           range: NSMakeRange(searchReturnRange.location, 1)
+                    ];
+
+                    // Reset search range for next attempt to start after the current found range
+                    searchRange.location = searchReturnRange.location + searchReturnRange.length;
+                    searchRange.length = [myAttrString length] - searchRange.location;
+//  NSLog(@"searchRange.location2%lu%d](unsigned long)",searchRange.location );
+//  NSLog(@"searchRange.length  2%lu%d](unsigned long)",searchRange.length   );
+                } else {
+                    // If we didn't find it, we have no more occurrences
+                    break;
+                }
+            } while (1);
+
+
+
             dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
                 cell.textLabel.font          = myFontSmaller;
 //                cell.textLabel.numberOfLines = 5;
@@ -624,7 +712,8 @@ bn(303);
                 cell.userInteractionEnabled  = NO;
                 cell.textLabel.textAlignment = NSTextAlignmentCenter;
 
-                cell.textLabel.text          = @"                                         \n        a GOOD RELATIONSHIP              \n        usually has 2 things             \n     1. compatibility potential          \n     2. both sides show positive         \n        personality traits               \n                                         ";
+//  ORIG          cell.textLabel.text          = @"                                         \n        a GOOD RELATIONSHIP              \n        usually has 2 things             \n     1. compatibility potential          \n     2. both sides show positive         \n        personality traits               \n                                         ";
+                cell.textLabel.attributedText = myAttrString;
 
                 cell.textLabel.numberOfLines = 7; 
                 cell.textLabel.backgroundColor           = gbl_thisCellBackGroundColor;  // see above x

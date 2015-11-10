@@ -12,6 +12,7 @@ NSMutableArray *yearsToPickFrom3;  /* for pickerYearInLife */
 
 
 @interface MAMB09_addChangeTableViewController : UITableViewController <UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UIGestureRecognizerDelegate>
+
 //@interface MAMB09_addChangeTableViewController : UITableViewController <UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UIGestureRecognizerDelegate, UIAlertViewDelegate>
 
 

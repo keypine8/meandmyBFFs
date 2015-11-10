@@ -40,6 +40,8 @@ NSInteger gbltmpint; // for debug
 // EDITING stuff
 //
 
+NSInteger addChangeViewJustEntered;  // 1=y,0=n
+
 // all 4 of these have possible values  "name" or "city" or "date" or "" or nil
 //
 NSString *gbl_firstResponder_previous;
@@ -65,6 +67,8 @@ NSString *gbl_homeEditingState;  // "add" for add a new person or group, "view o
 // THE THREE  "FIELDS"  =======================================================
 
 
+UIColor *gbl_bgColor_editFocus_NO;    // white
+UIColor *gbl_bgColor_editFocus_YES;   // something else
 
 UITextField *gbl_myname;              // for add new person or group         // one of THE THREE  "FIELDS"  =====
 UITextField *gbl_mycitySearchString;  // for add new person  SEARCH STRING
@@ -164,7 +168,8 @@ NSString *gbl_currentCityPicklistIsForTypedSoFar;  // like "toron"  or "toro"
 //    } UITableViewCellAccessoryType;
 //
 NSInteger  gbl_home_cell_AccessoryType;        // in regular mode =  UITableViewCellAccessoryDisclosureIndicator
-NSInteger  gbl_home_cell_editingAccessoryType; // in editing mode =  UITableViewCellAccessoryDetailDisclosureButton
+NSInteger  gbl_home_cell_editingAccessoryType; 
+NSInteger  gbl_home_cell_editingAccessoryView; // in editing mode =  UITableViewCellAccessoryDetailDisclosureButton
 
 
 
@@ -211,6 +216,7 @@ NSInteger gbl_CITY_NOT_FOUND;     // in placetab
 
 NSInteger gbl_shouldUseDelayOnBackwardForeward;  // = 1 (0.5 sec  on what color update)
                                                  // = 0 (no delay on first show of screen)
+UIToolbar *gbl_toolbarForwBack;   // for what color
 
 NSIndexPath *gbl_IdxPathSaved_SelPerson;          // for highlight previous choice when come back to SelPerson
 NSIndexPath *gbl_TBLRPTS1_saveSelectedIndexPath;  // for deselecting with animation when return to TBLRPTS1

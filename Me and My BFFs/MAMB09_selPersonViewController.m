@@ -339,15 +339,20 @@
     //NSLog(@"cwll=%@",cell);
 
     // Configure the cell...
-    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]) {   
+    
+    UIFont *myNewFont =  [UIFont boldSystemFontOfSize: 17.0];
+
+    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]) {
         cell.textLabel.text = [gbl_arrayPersonsToPickFrom   objectAtIndex:indexPath.row];
-        cell.textLabel.font = [UIFont systemFontOfSize: 16.0];
+        //        cell.textLabel.font = [UIFont systemFontOfSize: 16.0];
+        cell.textLabel.font = myNewFont;
     }
 //    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"]) {   
     else {
         cell.textLabel.text = [gbl_arrayGroupsToPickFrom   objectAtIndex:indexPath.row];
-        cell.textLabel.font = [UIFont systemFontOfSize: 16.0];
-    } 
+        // cell.textLabel.font = [UIFont systemFontOfSize: 16.0];
+        cell.textLabel.font = myNewFont;
+    }
 
     return cell;
 } // cellForRowAtIndexPath

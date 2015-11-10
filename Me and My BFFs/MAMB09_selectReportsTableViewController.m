@@ -158,7 +158,9 @@ tn(); NSLog(@"in sel Reports viewDidLoad!");
 
     // Configure the cell...
 
-    UIFont *myNewFont = [UIFont systemFontOfSize: 16.0];
+//    UIFont *myNewFont = [UIFont systemFontOfSize: 16.0];
+//    cell.textLabel.font            = [UIFont boldSystemFontOfSize: 17.0];
+    UIFont *myNewFont =  [UIFont boldSystemFontOfSize: 17.0];
 
 
     //   cell.selectedBackgroundView =  gbl_myCellBgView ;  // get my own background color for selected rows (see MAMB09AppDelegate.m)

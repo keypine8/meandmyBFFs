@@ -98,6 +98,8 @@
 
 
     gbl_homeUseMODE = @"regular mode";  // determines home mode
+    gbl_home_cell_AccessoryType        = UITableViewCellAccessoryDisclosureIndicator; // home mode regular with tap giving report list
+    gbl_home_cell_editingAccessoryType = UITableViewCellAccessoryNone;                // home mode regular with tap giving report list
 
     gbl_fromHomeCurrentEntity        = @"person";  // set default on startup
     gbl_fromHomeCurrentSelectionType = @"person";  // set default on startup
@@ -134,6 +136,15 @@ nbn(100);
         gbl_haveSetUpHomeNavButtons = 1;
 
         self.navigationItem.leftBarButtonItems  = gbl_homeLeftItemsWithNoAddButton;
+
+//        UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 11, 44)];  // 3rd arg is horizontal length
+        UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 4, 44)];  // 3rd arg is horizontal length
+//        spaceView.backgroundColor = [UIColor redColor];  // make visible for test
+        UIBarButtonItem *mySpacerForTitle = [[UIBarButtonItem alloc] initWithCustomView: spaceView];
+
+
+        self.navigationItem.rightBarButtonItems =
+            [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerForTitle];
 
         self.navigationItem.rightBarButtonItems =   // "editButtonItem" is magic Apple functionality
             [self.navigationItem.rightBarButtonItems arrayByAddingObject: self.editButtonItem]; // ADD apple-provided EDIT BUTTON
@@ -397,7 +408,7 @@ nbn(100);
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //NSLog(@"in cellForRowAtIndexPath");
+    //  NSLog(@"in cellForRowAtIndexPath");
 
     // create an NSString  we can use as the reuse identifier
     static NSString *CellIdentifier = @"MyCell1";
@@ -445,28 +456,46 @@ nbn(100);
     nameOfGrpOrPer = _arr[0];
     //NSLog(@"nameOfGrpOrPer=%@",nameOfGrpOrPer);
 
+    // NSLog(@"gbl_home_cell_AccessoryType=[%d]",gbl_home_cell_AccessoryType);
 
 //  NSLog(@"gbl_homeUseMODE =%@",gbl_homeUseMODE );
     dispatch_async(dispatch_get_main_queue(), ^{                        
 
 
         cell.textLabel.text = nameOfGrpOrPer;
-//        cell.textLabel.text = @"";   // for test TODO  create empty Launch screen shot <.>
+//  cell.textLabel.text = @"";   // for test TODO  create empty Launch screen shot <.>
 
         
     //    UIFont *myFont = [ UIFont fontWithName:@"Menlo" size:16];
     //    cell.textLabel.font            = myFont;
     // cell.textLabel.font.lineHeight = 20;
 
-        cell.textLabel.font            = [UIFont systemFontOfSize: 16.0];
+//        cell.textLabel.font            = [UIFont systemFontOfSize: 16.0];
+        cell.textLabel.font            = [UIFont boldSystemFontOfSize: 17.0];
 
         // set cell.accessoryType         (depends on gbl_homeUseMode - editing or not)
         // set cell.editingAccessoryType
         //
+
+//        if ([gbl_homeUseMODE isEqualToString: @"regular mode"]) {
+//            cell.accessoryType        = gbl_home_cell_AccessoryType;           // home mode edit    with tap giving record details
+//            cell.editingAccessoryType = gbl_home_cell_editingAccessoryType;    // home mode edit    with tap giving record details
+//
+//            // The accessoryView property has priority over the accessoryType property.
+//            // If you set the accessoryView to nil, you'll see the accessory button again.
+//            cell.accessoryView        = nil; 
+//        }
+//        if ([gbl_homeUseMODE isEqualToString: @"edit mode"]) {
+//            cell.accessoryView        = UITableViewCellAccessoryDetailDisclosureButton;
+//        }
+//
+
         cell.accessoryType        = gbl_home_cell_AccessoryType;           // home mode edit    with tap giving record details
         cell.editingAccessoryType = gbl_home_cell_editingAccessoryType;    // home mode edit    with tap giving record details
 
-        if ([gbl_homeUseMODE isEqualToString:@"edit mode"]) cell.tintColor = [UIColor blackColor];
+//        cell.hidesAccessoryWhenEditing = YES;
+
+        if ([gbl_homeUseMODE isEqualToString: @"edit mode"]) cell.tintColor = [UIColor blackColor];
 
     });
   
@@ -478,7 +507,7 @@ nbn(100);
 // how to set the tableview cell height
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath  // -------------------------
 {
-  NSLog(@"in heightForRowAtIndexPath 1");
+    //  NSLog(@"in heightForRowAtIndexPath 1");
 
   return 44.0; // matches report height
 
@@ -1397,6 +1426,7 @@ tn();  NSLog(@"setEditing !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     if (flag == YES){ // Change views to edit mode.
 
         gbl_homeUseMODE = @"edit mode";   // determines home mode  @"edit mode" or @"regular mode"
+nbn(300);
 
 //  NSLog(@"gbl_homeLeftItemsWithAddButton=%@",gbl_homeLeftItemsWithAddButton);
 //  NSLog(@"gbl_homeLeftItemsWithNoAddButton=%@",gbl_homeLeftItemsWithNoAddButton);
@@ -1415,9 +1445,19 @@ tn();  NSLog(@"setEditing !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         // UITableViewCellAccessoryDisclosureIndicator,    tapping the cell triggers a push action
         // UITableViewCellAccessoryDetailDisclosureButton, tapping the cell allows the user to configure the cell’s contents
         //
-        gbl_home_cell_AccessoryType        = UITableViewCellAccessoryNone;
-        gbl_home_cell_editingAccessoryType = UITableViewCellAccessoryDetailDisclosureButton; // home mode edit    with tap giving record details
 
+        // GOLD:  http://stackoverflow.com/questions/18740594/in-ios7-uitableviewcellaccessorydetaildisclosurebutton-is-divided-into-two-diff
+        // This is the correct behavior.
+        // In iOS 7, 
+        // UITableViewCellAccessoryDetailDisclosureButton    you show both the "detail button" and the "disclosure indicator" 
+        // UITableViewCellAccessoryDetailButton              If you'd only like the "i" button
+        // UITableViewCellAccessoryDisclosureIndicator       if you'd only like the "disclosure indicator
+        // 
+        gbl_home_cell_AccessoryType        = UITableViewCellAccessoryNone;
+//      gbl_home_cell_editingAccessoryType = UITableViewCellAccessoryDetailDisclosureButton; // home mode edit    with tap giving record details
+        gbl_home_cell_editingAccessoryType = UITableViewCellAccessoryDetailButton; // home mode edit    with tap giving record details
+
+    
         [self.tableView reloadData];
 //tn();trn("reload to    edit mode    reload reload reload reload reload reload ");
 
@@ -1456,6 +1496,7 @@ tn();  NSLog(@"setEditing !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
  
         gbl_homeUseMODE = @"regular mode";   // determines home mode  @"edit mode" or @"regular mode"
+nbn(311);
 
         dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
             self.navigationItem.leftBarButtonItems = gbl_homeLeftItemsWithNoAddButton;
@@ -1499,6 +1540,11 @@ tn();  NSLog(@"setEditing !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
 
 
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath{
+tn();    NSLog(@"reaching accessoryButtonTappedForRowWithIndexPath:");
+//    [self performSegueWithIdentifier:@"modaltodetails" sender:[self.eventsTable cellForRowAtIndexPath:indexPath]];
+}
+
 //
 // ===  end of EDITING  ================================================================================
 
@@ -1507,7 +1553,7 @@ tn();  NSLog(@"setEditing !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 {
 nbn(357);
 
-//return; // for test empty Launch image
+// return; // for test empty Launch image
 
 
         NSString  *nameOfGrpOrPer;

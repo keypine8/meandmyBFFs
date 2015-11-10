@@ -128,13 +128,13 @@
         <scene sceneID="O5X-S4-osU">
             <objects>
                 <tableViewController id="df3-AS-qCo" customClass="MAMB09_addChangeTableViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="roA-eY-ilB">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="roA-eY-ilB">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AddChangeCellIDentifier" id="ANI-2a-yyC">
-                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="92" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ANI-2a-yyC" id="G4g-Rc-qm8">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
@@ -217,13 +217,17 @@
         <!--Navigation Controller-->
         <scene sceneID="K1K-qc-EtB">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="i8R-GB-Xla" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="i8R-GB-Xla" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="e24-Ce-BgQ">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="VvT-Bz-zTu">
+                        <rect key="frame" x="0.0" y="524" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
                     <connections>
                         <segue destination="ayc-8Y-7x0" kind="relationship" relationship="rootViewController" id="0Ia-1S-jzM"/>
                     </connections>
@@ -530,8 +534,8 @@
         <image name="rounded_MAMB09_144" width="144" height="144"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="IKV-EL-CP6"/>
-        <segue reference="0US-NI-9lF"/>
+        <segue reference="1hk-Xa-QVE"/>
         <segue reference="NDM-KU-Ztc"/>
+        <segue reference="IKV-EL-CP6"/>
     </inferredMetricsTieBreakers>
 </document>

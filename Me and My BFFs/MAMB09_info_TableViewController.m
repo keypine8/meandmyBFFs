@@ -61,11 +61,14 @@ tn(); NSLog(@"in INFO   viewDidLoad!");
   NSLog(@"gbl_TBLRPTS1_PSV_personJust1=%@",gbl_TBLRPTS1_PSV_personJust1);    // for single person reports
   NSLog(@"gbl_TBLRPTS1_NAME_personA=%@",gbl_TBLRPTS1_NAME_personA);          // of pair
   NSLog(@"gbl_TBLRPTS1_NAME_personB=%@",gbl_TBLRPTS1_NAME_personB);          // of pair
-  NSLog(@"gbl_TBLRPTS1_NAME_personJust1=%@",gbl_TBLRPTS1_NAME_personJust1);  // for single person reports
+    self.navigationController.toolbarHidden = YES;
+  NSLog(@"gbl_TBLRPTS1_NAMEx_personJust1=%@",gbl_TBLRPTS1_NAME_personJust1);  // for single person reports
 tn();
 
 //    trn("in INFO   viewDidLoad!");
     
+    //    self.navigationController.toolbar.hidden = YES;
+
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;

@@ -24,8 +24,23 @@
 - (void)viewDidLayoutSubviews {  // fill whole screen, no top/leftside gaps  in  webview  THIS WORKED
     NSLog(@"in viewHTML viewDidLayoutSubviews!");
     // http://stackoverflow.com/questions/18552416/uiwebview-full-screen-size
-    //webView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
-    self.outletWebView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+//    webView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+
+
+        self.outletWebView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);  // this worked
+
+//        // put the Toolbar onto bottom of what color view
+//        dispatch_async(dispatch_get_main_queue(), ^(void){
+//            [self.view addSubview: gbl_toolbarForwBack ];
+//        });
+
+
+//    if (  [gbl_currentMenuPlusReportCode isEqualToString: @"hompwc"]) { // what color
+//        self.outletWebView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 44.0);
+//    } else {
+//        self.outletWebView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+//    }
+
 } // end of viewDidLayoutSubviews 
 
 
@@ -846,6 +861,7 @@ tn();
         gbl_html_file_name_browser = [NSString stringWithUTF8String: html_file_name_browser ];   // for later sending as email attachment
 
         gbl_pathToFileToBeEmailed  = OpathToHTML_browser; // NSString email file named *.html  with no "webview" in it
+        gbl_pathToFileToBeEmailed_B  = OpathToHTML_browser; // NSString email file named *.html  with no "webview" in it  (SAME PATH  for  tblrpts b)
 //NSLog(@"OpathToHTML_browser=%@",OpathToHTML_browser);
         NSLog(@"in viewdidload  viewhtml gbl_pathToFileToBeEmailed=%@",gbl_pathToFileToBeEmailed);
         
@@ -1363,54 +1379,75 @@ tn();
 //                             completion:NULL];
 //    bn(101);
 
+//
+//        // put the Toolbar onto bottom of what color view
+//        dispatch_async(dispatch_get_main_queue(), ^(void){
+//            [self.view addSubview: gbl_toolbarForwBack ];
+//        });
+
+
+//        // put the Toolbar onto bottom of what color view
+//        dispatch_async(dispatch_get_main_queue(), ^(void){
+//            [self.view addSubview: gbl_toolbarForwBack ];
+//        });
+
+//nbn(28);
+//        [self.outletWebView reload];
+
 } // viewDidLoad
 
 
-- (void)webViewDidFinishLoad:(UIWebView *)theWebView
-{
-  NSLog(@"in webViewDidFinishLoad! in view HTML");
-
+//- (void)webViewDidFinishLoad:(UIWebView *)theWebView
+//{
+//  NSLog(@"in webViewDidFinishLoad! in view HTML");
 //
-////  NSLog(@"self.navigationController.navigationBar.translucent=%c",self.navigationController.navigationBar.translucent);
+//        // put the Toolbar onto bottom of what color view
+//        dispatch_async(dispatch_get_main_queue(), ^(void){
+//            [self.view addSubview: gbl_toolbarForwBack ];
+//        });
 //
-//    self.navigationController.navigationBar.translucent = NO;   // webview showed up under nav bar, so this
+////
+//////  NSLog(@"self.navigationController.navigationBar.translucent=%c",self.navigationController.navigationBar.translucent);
+////
+////    self.navigationController.navigationBar.translucent = NO;   // webview showed up under nav bar, so this
+////
+////
+//////    theWebView.scalesPageToFit = YES;
+////
+////  CGSize contentSize = theWebView.scrollView.contentSize;
+////  CGSize viewSize    = theWebView.bounds.size;
+////
+////kdn(viewSize.width);
+////kdn(contentSize.width);
+////  float rw           = viewSize.width / contentSize.width;
+////kdn(rw);tn();
+////        rw           = contentSize.width / viewSize.width ;
+////kdn(rw);tn();
+////
+//////  rw = 1.0;
+////float rw;
+////  rw = 1.33;  // left chopped
+////kdn(rw);tn();
+////
+////  theWebView.scrollView.minimumZoomScale = rw;
+////  theWebView.scrollView.maximumZoomScale = rw;
+////  theWebView.scrollView.zoomScale        = rw;  
+////
+//////  [[theWebView scrollView] setContentInset:UIEdgeInsetsMake(64, 0, 44, 0)];
+//////  [[theWebView scrollView] setContentInset:UIEdgeInsetsMake(100, 100, 200, 200)];
+//////  [[theWebView scrollView] setContentInset:UIEdgeInsetsMake(0, 200, 0, 0)];
+//////  [[theWebView scrollView] setContentInset:UIEdgeInsetsMake(0, 64, 0, 0)];
+//////  [[theWebView scrollView] setContentInset:UIEdgeInsetsMake(0, 128, 0, 0)];
+////
+////  [[theWebView scrollView] setContentInset:UIEdgeInsetsMake( 600.0, 128.0, 0.0, 0.0)];  // top, left,bot,right
+////
+//////webView.scrollView.scrollIndicatorInsets = webView.scrollView.contentInset;
+////  theWebView.scrollView.scrollIndicatorInsets = theWebView.scrollView.contentInset;
+////
+////
 //
+//}
 //
-////    theWebView.scalesPageToFit = YES;
-//
-//  CGSize contentSize = theWebView.scrollView.contentSize;
-//  CGSize viewSize    = theWebView.bounds.size;
-//
-//kdn(viewSize.width);
-//kdn(contentSize.width);
-//  float rw           = viewSize.width / contentSize.width;
-//kdn(rw);tn();
-//        rw           = contentSize.width / viewSize.width ;
-//kdn(rw);tn();
-//
-////  rw = 1.0;
-//float rw;
-//  rw = 1.33;  // left chopped
-//kdn(rw);tn();
-//
-//  theWebView.scrollView.minimumZoomScale = rw;
-//  theWebView.scrollView.maximumZoomScale = rw;
-//  theWebView.scrollView.zoomScale        = rw;  
-//
-////  [[theWebView scrollView] setContentInset:UIEdgeInsetsMake(64, 0, 44, 0)];
-////  [[theWebView scrollView] setContentInset:UIEdgeInsetsMake(100, 100, 200, 200)];
-////  [[theWebView scrollView] setContentInset:UIEdgeInsetsMake(0, 200, 0, 0)];
-////  [[theWebView scrollView] setContentInset:UIEdgeInsetsMake(0, 64, 0, 0)];
-////  [[theWebView scrollView] setContentInset:UIEdgeInsetsMake(0, 128, 0, 0)];
-//
-//  [[theWebView scrollView] setContentInset:UIEdgeInsetsMake( 600.0, 128.0, 0.0, 0.0)];  // top, left,bot,right
-//
-////webView.scrollView.scrollIndicatorInsets = webView.scrollView.contentInset;
-//  theWebView.scrollView.scrollIndicatorInsets = theWebView.scrollView.contentInset;
-//
-//
-
-}
 
 //<.>
 //NSString *urlAddress = @"http://dl.dropbox.com/u/50941418/2-build.html";
@@ -1619,7 +1656,59 @@ tn();
                                                                                          action: nil];
         // create a Toolbar
 //        UIToolbar *myToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 44, 320, 44)];
-        UIToolbar *myToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 44, self.view.frame.size.width, 44)];
+//        UIToolbar *myToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 44, self.view.frame.size.width, 44)];
+
+
+//        gbl_toolbarForwBack = [[UIToolbar alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 44, self.view.frame.size.width, 44)];
+
+    float my_screen_height;
+    float my_status_bar_height;
+    float my_nav_bar_height;
+    float my_toolbar_height;
+
+    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
+    CGSize currentScreenWidthHeight = [myappDelegate currentScreenSize];
+    my_screen_height = currentScreenWidthHeight.height;
+
+    CGSize myStatusBarSize = [[UIApplication sharedApplication] statusBarFrame].size;
+    my_status_bar_height   = MIN(myStatusBarSize.width, myStatusBarSize.height);
+
+    my_nav_bar_height    =  self.navigationController.navigationBar.frame.size.height;
+
+
+//  NSLog(@"cu33entScreenWidthHeight.width  =%f",currentScreenWidthHeight.width );
+//  NSLog(@"cu33entScreenWidthHeight.height =%f",currentScreenWidthHeight.height );
+  NSLog(@"my_screen_height                  =%f",my_screen_height );
+  NSLog(@"my_status_bar_height              =%f",my_status_bar_height   );
+  NSLog(@"my_nav_bar_height                 =%f",my_nav_bar_height    );
+  NSLog(@"my_toolbar_height                 =%f",my_toolbar_height );
+
+    my_toolbar_height = 44.0;
+
+    float y_value_of_toolbar; 
+//    y_value_of_toolbar  = currentScreenWidthHeight.height - 44.0;
+//    y_value_of_toolbar  = 400.0;
+//    y_value_of_toolbar  = 436.0;
+//    y_value_of_toolbar  = 480.0;
+//    y_value_of_toolbar  = 472.0;// too low
+//    y_value_of_toolbar  = 464.0; // very close
+//    y_value_of_toolbar  = 458.0; // too high
+//    y_value_of_toolbar  = 456.0; // too high
+//    y_value_of_toolbar  = 459.0; // too high
+//    y_value_of_toolbar  = 460.0; // very close   exact
+    y_value_of_toolbar  = my_screen_height  - my_status_bar_height  - my_nav_bar_height - my_toolbar_height;
+  NSLog(@"y_value_of_toolbar  =%f",y_value_of_toolbar  );
+
+
+    gbl_toolbarForwBack = [[UIToolbar alloc] initWithFrame:CGRectMake(
+        0.0,
+//            currentScreenWidthHeight.height - 44,
+//        100.0,
+        y_value_of_toolbar, 
+        currentScreenWidthHeight.width,
+        44.0)];
+
+
 //<.>
 //439://      gbl_myCellBgView =[[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, [cell frame].size.width -20, [cell frame].size.height)];
 //906:// CGRect pickerFrame = CGRectMake(0.0, viewFrame.size.height-pickerHeight, viewFrame.size.width, pickerHeight);
@@ -1632,12 +1721,29 @@ tn();
         ]; 
 
         // put the array of buttons in the Toolbar
-        [myToolbar setItems: myButtonArray   animated: NO];
-
-        // put the Toolbar onto bottom of view
+        [gbl_toolbarForwBack setItems: myButtonArray   animated: NO];
+nbn(29);
+        // put the Toolbar onto bottom of what color view
         dispatch_async(dispatch_get_main_queue(), ^(void){
-            [self.view addSubview: myToolbar];
+//             self.navigationController.toolbar.hidden = YES;
+            [self.view addSubview: gbl_toolbarForwBack ];
+
+//            [self.navigationController.view addSubview: gbl_toolbarForwBack ];  // this worked  but in info, it stayed  also allows too fast
+//             self.navigationController.toolbar.hidden = NO;
+//            [self.navigationController.toolbar setItems: myButtonArray ]; 
+//            self.navigationController.toolbar.items = myButtonArray; 
+//             self.navigationController.toolbar.hidden = NO
+
         });
+
+//    if (   [gbl_currentMenuPlusReportCode isEqualToString: @"hompwc"])     // @"what color is the  day?" from home
+//    {
+////        [self.navigationController  setToolbarHidden:NO];
+//nbn(71);
+//    [webView reload];
+//
+//    }
+
     } // for what color report add Backward / Forward on bottom of screen
 
 } // end of   viewWillAppear
@@ -2124,6 +2230,11 @@ NSLog(@"Ok button pressed");
 - (IBAction)pressedInfoButton
 {
   NSLog(@"in  pressedInfoButton!");
+
+//        dispatch_async(dispatch_get_main_queue(), ^(void){
+//    self.navigationController.toolbar.hidden = YES;
+//        });
+
 } // end of  pressedInfoButton
 
 

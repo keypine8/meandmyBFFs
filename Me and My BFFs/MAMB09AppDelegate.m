@@ -36,6 +36,8 @@
 
     [[UINavigationBar appearance] setTranslucent: NO ];  // set all navigation bars to opaque
 
+    // set font and size for all Nav Bars
+    //  see addchange 
 
     
     // to access global method in appDelegate .h and .m
@@ -44,7 +46,8 @@
 
     // EDITING stuff
     //
-    gbl_myname              = [[UITextField alloc] initWithFrame:CGRectMake(16, 8, 200, 30)]; // arg 1=x 2=y 3=width 4=height
+//    gbl_myname              = [[UITextField alloc] initWithFrame:CGRectMake(16, 8, 200, 30)]; // arg 1=x 2=y 3=width 4=height
+    gbl_myname              = [[UITextField alloc] initWithFrame:CGRectMake(16, 8, 200, 40)]; // arg 1=x 2=y 3=width 4=height
 
     // field for  displaying current found  city,prov,coun 
 //    gbl_mycityprovcounLabel  = [[UITextView alloc]initWithFrame: CGRectMake(16, 0, 250, 57)];
@@ -52,10 +55,14 @@
 //    gbl_mycityprovcounLabel  = [[UILabel alloc]initWithFrame: CGRectMake(16, 0, 250, 70)];
 
 //    gbl_mycityprovcounLabel  = [[UITextField alloc]initWithFrame: CGRectMake(16, 0, 250, 57)];
-    gbl_mycityprovcounLabel  = [[UILabel alloc]initWithFrame: CGRectMake(16, 0, 250, 57)];
+//    gbl_mycityprovcounLabel  = [[UILabel alloc]initWithFrame: CGRectMake(16, 0, 250, 57)];
+//    gbl_mycityprovcounLabel  = [[UILabel alloc]initWithFrame: CGRectMake(16, 0, 300, 57)];
+    gbl_mycityprovcounLabel  = [[UILabel alloc]initWithFrame: CGRectMake(16, 0, 300, 77)];
 
     // field for  displaying current picker birth date/time info
-    gbl_mybirthinformation   = [[UITextField alloc] initWithFrame:CGRectMake(16, 8, 250, 30)]; // arg 1=x 2=y 3=width 4=height
+//    gbl_mybirthinformation   = [[UITextField alloc] initWithFrame:CGRectMake(16, 8, 250, 30)]; // arg 1=x 2=y 3=width 4=height
+//    gbl_mybirthinformation   = [[UITextField alloc] initWithFrame:CGRectMake(16, 8, 265, 30)]; // arg 1=x 2=y 3=width 4=height
+    gbl_mybirthinformation   = [[UITextField alloc] initWithFrame:CGRectMake(16, 8, 265, 40)]; // arg 1=x 2=y 3=width 4=height
 
     // field for  entering city search string
 //    gbl_mycity  = [[UITextField alloc] initWithFrame:CGRectMake(16, 8, 180, 30)]; // arg 1=x 2=y 3=width 4=height
@@ -126,7 +133,32 @@
 //    gbl_colorEditing = [UIColor colorWithRed:252.0/255.0 green:196.0/255.0 blue:108.0/255.0 alpha:1.0]; // orangey for edit
 //    gbl_colorEditing = [UIColor colorWithRed:229.0/255.0 green:198.0/255.0 blue:166.0/255.0 alpha:1.0]; // browny for edit
 
-    gbl_colorEditingBGforInputField = [UIColor colorWithRed:252.0/255.0 green:252.0/255.0 blue:252.0/255.0 alpha:1.0]; // white
+    gbl_colorEditingBGforInputField = [UIColor colorWithRed:252.0/255.0 green:252.0/255.0 blue:252.0/255.0 alpha:1.0]; // whitish
+
+//    gbl_bgColor_editFocus_NO   = gbl_colorEditingBGforInputField;    // whitish
+//    gbl_bgColor_editFocus_YES  = [UIColor grayColor];
+//    gbl_bgColor_editFocus_NO   = gbl_colorEditingBGforInputField;    // whitish
+    gbl_bgColor_editFocus_NO   = gbl_color_cRe2;
+    gbl_bgColor_editFocus_YES  = gbl_color_cGr2;
+// [UIColor cyanColor];
+;   // something else
+
+//    gbl_color_cGr2  = [UIColor colorWithRed:042.0/255.0 green:255.0/255.0 blue:021.0/255.0 alpha:1.0]; // 66ff33
+//    gbl_color_cGre  = [UIColor colorWithRed:168.0/255.0 green:255.0/255.0 blue:152.0/255.0 alpha:1.0]; // a8ff98
+//    gbl_color_cPerGreen  = [UIColor colorWithRed:166.0/255.0 green:247.0/255.0 blue:255.0/255.0 alpha:1.0]; // a6f7ff // light green for personality neutral color bg
+//    gbl_color_cPerGreen  = [UIColor colorWithRed:205.0/255.0 green:251.0/255.0 blue:255.0/255.0 alpha:1.0]; // cdfbff // light green for personality neutral color bg
+//    gbl_color_cPerGreen  = [UIColor colorWithRed:225.0/255.0 green:252.0/255.0 blue:255.0/255.0 alpha:1.0]; // e1fcff // light green for personality neutral color bg
+//    gbl_color_cPerGreen  = [UIColor colorWithRed:247.0/255.0 green:235.0/255.0 blue:209.0/255.0 alpha:1.0]; // f7ebd1
+//    gbl_color_cPerGreen  = [UIColor colorWithRed:229.0/255.0 green:226.0/255.0 blue:199.0/255.0 alpha:1.0]; // e5e2c7
+//    gbl_color_cPerGreen5 = [UIColor colorWithRed:185.0/255.0 green:255.0/255.0 blue:130.0/255.0 alpha:1.0]; // b9ff82 // pretty light green for personality neutral color bg
+//
+//    gbl_color_cPerGreen4 = [UIColor colorWithRed:206.0/255.0 green:255.0/255.0 blue:160.0/255.0 alpha:1.0]; // ceffa0 // light green for personality neutral color bg
+//    gbl_color_cPerGreen3 = [UIColor colorWithRed:223.0/255.0 green:255.0/255.0 blue:187.0/255.0 alpha:1.0]; // dfffbb // lightER green for personality neutral color bg
+//
+//    gbl_color_cPerGreen2 = [UIColor colorWithRed:236.0/255.0 green:255.0/255.0 blue:211.0/255.0 alpha:1.0]; // ecffd3 // really light green for personality neutral color bg
+//    gbl_color_cPerGreen1 = [UIColor colorWithRed:246.0/255.0 green:255.0/255.0 blue:230.0/255.0 alpha:1.0]; // f6ffe6 // really,really light green for personality neutral color bg
+//
+
 
 //    gbl_myname.placeholder         = @"Name";
 //    gbl_myname.autocorrectionType  = UITextAutocorrectionTypeNo;
@@ -497,6 +529,8 @@
     // NOTE:  cHed is good for box comments
     //
     gbl_color_cBgr  = [UIColor colorWithRed:247.0/255.0 green:235.0/255.0 blue:209.0/255.0 alpha:1.0]; // f7ebd1  bg below/above all tbl cells
+// for test   gbl_color_cBgr  = [UIColor redColor];
+ 
     gbl_color_cHed  = [UIColor colorWithRed:252.0/255.0 green:252.0/255.0 blue:224.0/255.0 alpha:1.0]; // fcfce0
     gbl_color_cGr2  = [UIColor colorWithRed:042.0/255.0 green:255.0/255.0 blue:021.0/255.0 alpha:1.0]; // 66ff33
     gbl_color_cGre  = [UIColor colorWithRed:168.0/255.0 green:255.0/255.0 blue:152.0/255.0 alpha:1.0]; // a8ff98

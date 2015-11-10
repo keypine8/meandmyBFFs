@@ -318,7 +318,8 @@ nbn(601);
             URLtoHTML_forWebview = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_webview]];
 //        gbl_URLtoHTML_forWebview            
 
-            gbl_pathToFileToBeEmailed = OpathToHTML_browser;
+//            gbl_pathToFileToBeEmailed = OpathToHTML_browser;
+            gbl_pathToFileToBeEmailed_B= OpathToHTML_browser;
             
             // remove all "*.html" files from TMP directory before creating new one
             //
@@ -1043,8 +1044,8 @@ for (id eltTst in gbl_perDataLines) { NSLog(@"    gbl_per=%@", eltTst); }
 
     if ( [gbl_currentMenuPlusReportCode hasSuffix: @"pe"] ) {  //  new personality TBLRPT  report
 bn(301);
-  NSLog(@"indexPath.row =[%ld]",indexPath.row );
-  NSLog(@"gbl_perDataLines[indexPath.row]  [%@]",gbl_perDataLines[indexPath.row]  );
+//  NSLog(@"indexPath.row =[%ld]",indexPath.row );
+//  NSLog(@"gbl_perDataLines[indexPath.row]  [%@]",gbl_perDataLines[indexPath.row]  );
 
 
         // fixes   bg color of white on left and right
@@ -1086,7 +1087,7 @@ bn(301);
             mycode    = tmparr[0];
             mylin     = tmparr[1];
         }
-  NSLog(@"mylin=[%@]",mylin);
+//  NSLog(@"mylin=[%@]",mylin);
 
 //gbl_color_cNeu 
 //gbl_color_cBgr 
@@ -1262,7 +1263,8 @@ bn(303);
     cell.selectedBackgroundView =  gbl_myCellBgView ;  // get my own background color for selected rows (see MAMB09AppDelegate.m)
 
 //    UIFont *myFont = [UIFont fontWithName: @"Menlo" size: 12.0];
-    UIFont *myFont = [UIFont fontWithName: @"Menlo" size: 16.0];
+    UIFont *myFont        = [UIFont fontWithName: @"Menlo" size: 16.0];
+    UIFont *myFontSmaller = [UIFont fontWithName: @"Menlo" size: 12.0];
 
     // invisible button for taking away the disclosure indicator
     //
@@ -1315,17 +1317,64 @@ bn(303);
     if (indexPath.row ==  group_report_output_idx_B + 1)
     {  // 1 of 3 FOOTER CELLS
 
+        NSMutableAttributedString *myAttrString;    // for cell text
+        NSString                  *myStringNoAttr;  // for work string
+
+        myAttrString   = [[NSMutableAttributedString alloc] initWithString:  @"                             \n|   a GOOD RELATIONSHIP     |\n|   usually has 2 things    |\n|1. compatibility potential |\n|2. both sides show positive|\n|   personality traits      |\n                             "
+        ];
+        myStringNoAttr = [myAttrString  string];
+
+        // find the pipes and make them invisible
+        // note: search myStringNoAttr, but make changes in myAttringString
+        //
+        // Setup what you're searching and what you want to find
+        NSString *toFind = @"|";
+
+        // Initialise the searching range to the whole string
+        NSRange searchRange = NSMakeRange(0, [myStringNoAttr length]);
+//  NSLog(@"searchRange.location =[%lu]",(unsigned long)searchRange.location );
+//  NSLog(@"searchRange.length   =[%lu]",(unsigned long)searchRange.length   );
+        do {
+            // Search for next occurrence
+            NSRange searchReturnRange = [myStringNoAttr  rangeOfString: toFind  options: 0  range: searchRange];
+//  NSLog(@"searchReturnRange.location =[%lu]",(unsigned long)searchReturnRange.location );
+//  NSLog(@"searchReturnRange.length   =[%lu]",(unsigned long)searchReturnRange.length   );
+            if (searchReturnRange.location != NSNotFound) {
+                // If found, searchReturnRange contains the range of the current iteration
+
+                // NOW DO SOMETHING WITH THE STRING / RANGE
+//  for test          [ myAttrString  addAttribute: NSForegroundColorAttributeName
+//                                           value: [UIColor redColor]
+//                                           range: NSMakeRange(searchReturnRange.location, 1)
+//                    ];
+//
+                [ myAttrString  addAttribute: NSForegroundColorAttributeName
+                                       value: gbl_color_cHed
+                                       range: NSMakeRange(searchReturnRange.location, 1)
+                ];
+
+                // Reset search range for next attempt to start after the current found range
+                searchRange.location = searchReturnRange.location + searchReturnRange.length;
+                searchRange.length = [myAttrString length] - searchRange.location;
+//  NSLog(@"searchRange.location2=[%lu]",(unsigned long)searchRange.location );
+//  NSLog(@"searchRange.length  2=[%lu]",(unsigned long)searchRange.length   );
+            } else {
+                // If we didn't find it, we have no more occurrences
+                break;
+            }
+        } while (1);
+
+
+
         dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
-            cell.textLabel.font          = myFont;
+//            cell.textLabel.font          = myFont;
+            cell.textLabel.font          = myFontSmaller;
             cell.textLabel.numberOfLines = 7; 
             cell.accessoryView           = myInvisibleButton;               // no right arrow on column labels
             cell.userInteractionEnabled  = NO;
-//            cell.textLabel.text          = @"                                    \n     Note: a GOOD RELATIONSHIP           \n     must have two things:               \n     1. compatibility potential          \n     2. both sides must show             \n        positive personality traits      \n                                         ";
-//            cell.textLabel.text          = @"                                    \n     Note: a GOOD RELATIONSHIP           \n            needs two things:            \n     1. compatibility potential          \n     2. both sides show positive         \n        personality traits               \n                                         ";
-//            cell.textLabel.text          = @"                                                  \n     Note: a GOOD RELATIONSHIP needs 2 things:    \n  1. compatibility potential                      \n  2. both sides show positive personality traits  \n                                                  ";
-//            cell.textLabel.text          = @"                                    \n     Note: a GOOD RELATIONSHIP           \n        needs two things                 \n     1. compatibility potential          \n     2. both sides show positive         \n        personality traits               \n                                         ";
-            cell.textLabel.text          = @"                                    \n        a GOOD RELATIONSHIP            \n        usually has 2 things             \n     1. compatibility potential          \n     2. both sides show positive         \n        personality traits               \n                                         ";
-
+                cell.textLabel.textAlignment = NSTextAlignmentCenter;
+//            cell.textLabel.text          = @"         hey                        \n        a GOOD RELATIONSHIP            \n        usually has 2 things             \n xxx 1. compatibility potential  yyyyy   \n     2. both sides show positive         \n        personality traits               \n                                         ";
+            cell.textLabel.attributedText = myAttrString;
         });
 
         return cell;
@@ -1343,7 +1392,8 @@ bn(303);
 
         dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
             cell.textLabel.font           = myFont;
-            cell.textLabel.numberOfLines  = 1; 
+//            cell.textLabel.numberOfLines  = 1; 
+            cell.textLabel.numberOfLines  = 7; 
             cell.accessoryView            = myInvisibleButton;               // no right arrow on column labels
             cell.userInteractionEnabled   = NO;
             cell.textLabel.textAlignment = NSTextAlignmentCenter;
@@ -1890,8 +1940,8 @@ bn(303);
 // how to set the tableview cell height
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath  // -------------------------
 {
-  NSLog(@"in heightForRowAtIndexPath TBLRPT 2  ");
-  NSLog(@"gbl_heightCellPER=[%d]", (long)gbl_heightCellPER);
+//  NSLog(@"in heightForRowAtIndexPath TBLRPT 2  ");
+//  NSLog(@"gbl_heightCellPER=[%d]", (int)gbl_heightCellPER);
 
 
     if ( [gbl_currentMenuPlusReportCode hasSuffix: @"pe"]  //  new personality TBLRPT  report
@@ -2288,19 +2338,23 @@ nbn(600);
     MFMailComposeViewController *myMailComposeViewController;
 
 tn();    NSLog(@"in shareButtonAction!  in MAMB09viewTBLRPTs_2_TableViewController ");
-     
+  NSLog(@"gbl_currentMenuPrefixFromMatchRpt=[%@]",gbl_currentMenuPrefixFromMatchRpt);
+  NSLog(@"gbl_currentMenuPlusReportCode    =[%@]",gbl_currentMenuPlusReportCode);
+
     // Determine the file name and extension
     // NSArray *filepart = [gbl_pathToFileToBeEmailed_B componentsSeparatedByString:@"."];
+    // 
+  NSLog(@"gbl_pathToFileToBeEmailed_B =%@",gbl_pathToFileToBeEmailed_B );
     NSArray *fileparts = [gbl_pathToFileToBeEmailed_B componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"./"]];
     
     NSString *baseFilename = [fileparts objectAtIndex: (fileparts.count -2)] ;  // count -1 is last in array
     NSString *extension    = [fileparts lastObject];
     NSString *filenameForAttachment = [NSString stringWithFormat: @"%@.%@", baseFilename, extension];
     
+
     // Get the resource path and read the file using NSData
     // NSString *filePath = [[NSBundle mainBundle] pathForResource:filename ofType:extension];
     NSData *HTMLfileData = [NSData dataWithContentsOfFile: gbl_pathToFileToBeEmailed_B ];
-//NSLog(@"gbl_pathToFileToBeEmailed_B =%@",gbl_pathToFileToBeEmailed_B );
 //NSLog(@"HTMLfileData.length=%lu",(unsigned long)HTMLfileData.length);
 
 
@@ -2308,12 +2362,14 @@ tn();    NSLog(@"in shareButtonAction!  in MAMB09viewTBLRPTs_2_TableViewControll
 
     NSString *myEmailMessage;
     
-    myEmailMessage = @"tester";
-    NSLog(@"myEmailMessage=%@",myEmailMessage);
-    NSLog(@"extension=%@",extension);
 
+    if ([gbl_currentMenuPlusReportCode hasSuffix: @"pe"]) {    // personality from level 2
+        myEmailMessage = [NSString stringWithFormat: @"\n\"Personality for %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.",
+            gbl_person_name
+        ];
+    }
 
-    if ([gbl_currentMenuPrefixFromMatchRpt isEqualToString: @"pbm"]) {    // My Best Match in Group
+    else if ([gbl_currentMenuPrefixFromMatchRpt isEqualToString: @"pbm"]) {    // My Best Match in Group
         NSLog(@"gbl_person_name=%@",gbl_person_name);
         NSLog(@"myEmailMessage=%@",myEmailMessage);
 
@@ -2323,7 +2379,8 @@ tn();    NSLog(@"in shareButtonAction!  in MAMB09viewTBLRPTs_2_TableViewControll
         ];
         NSLog(@"myEmailMessage=%@",myEmailMessage);
     }
-    if ([gbl_currentMenuPrefixFromMatchRpt isEqualToString: @"gbm"]) {    // Best Match in Group
+
+    else if ([gbl_currentMenuPrefixFromMatchRpt isEqualToString: @"gbm"]) {    // Best Match in Group
         NSLog(@"gbl_person_name=%@",gbl_person_name);
         NSLog(@"myEmailMessage=%@",myEmailMessage);
 
@@ -2331,6 +2388,10 @@ tn();    NSLog(@"in shareButtonAction!  in MAMB09viewTBLRPTs_2_TableViewControll
            gbl_lastSelectedGroup
         ];
         NSLog(@"myEmailMessage=%@",myEmailMessage);
+
+    } else {
+        // should not happen
+        myEmailMessage = @"x06 should not happen";
     }
 
     

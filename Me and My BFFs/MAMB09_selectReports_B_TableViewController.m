@@ -283,7 +283,8 @@ tn();
     // Configure the cell...
 
 
-    UIFont *myNewFont = [UIFont systemFontOfSize: 16.0];
+    //    UIFont *myNewFont = [UIFont systemFontOfSize: 16.0];
+    UIFont *myNewFont =  [UIFont boldSystemFontOfSize: 17.0];
 
     // for sel rpt B, hard code all cells (pattern above)  - too much customization (each cell but one)
 
