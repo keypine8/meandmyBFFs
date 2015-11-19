@@ -165,6 +165,11 @@ nbn(601);
 
         } //  per
 
+        if ([gbl_currentMenuPlusReportCode       hasSuffix: @"co"]) {       // + personality
+            myNavBarTitle = @"Compatibility Potential"; // TODO put the 2 names
+        }
+
+
 
   NSLog(@"myNavBarTitle =[%@]",myNavBarTitle );
 

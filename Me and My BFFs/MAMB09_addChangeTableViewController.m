@@ -4091,6 +4091,8 @@ nbn(555);
 
     [super viewWillDisappear:animated];
 
+//    segEntityOutlet.backgroundColor = [UIColor whiteColor];
+
 // now doing this when field changes
 //  NSLog(@"INVALIDATING  timerToCheckCityPicklistTrigger");
 //    [ gbl_timerToCheckCityPicklistTrigger invalidate ];

@@ -683,7 +683,8 @@ tn();    NSLog(@"in didSelectRowAtIndexPath!  in SelectPerson !!!!!!!!!!!!");
         ];
 
         dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
-            [self performSegueWithIdentifier:@"seguePerSelToViewHTML" sender:self];
+//            [self performSegueWithIdentifier:@"seguePerSelToViewHTML" sender:self];
+            [self performSegueWithIdentifier:@"segueGrpSelToViewTBLRPT1" sender:self];
         });
     }
 

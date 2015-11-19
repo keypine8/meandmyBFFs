@@ -2498,6 +2498,8 @@ void write_TBLRPT_trait_data(void) {    /* !!!!  TBLRPT  !!!!!  trait table data
   p_fn_prtlin(writebuf);
   sprintf(writebuf, "foot|challenging or favorable.");
   p_fn_prtlin(writebuf);
+  sprintf(writebuf, "foot|All the traits are favorable.");
+  p_fn_prtlin(writebuf);
   sprintf(writebuf, "fill|after table foot");
   p_fn_prtlin(writebuf);
 

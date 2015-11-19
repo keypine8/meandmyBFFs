@@ -18,6 +18,9 @@
 /* #include "incocoa.h" */
 
 
+int gbl_db_code;
+char gbl_are_in_just2[128];  // = "we are in make_html_file_just_2_people"  or not
+
 char gbl_just2PersonA[64];
 char gbl_just2PersonB[64];
 char gbl_aspect_code[32];
@@ -389,7 +392,7 @@ trn("in  make_html_file_person_in_group()");
 /* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
 
 int make_html_file_just_2_people(      /* old main() */
-  char *in_html_filename,  // browser html or webivew html
+  char *in_html_filename,  // browser html or webview html
   char *in_docin_lines[],
   int   in_docin_last_idx,
   char *person_1_csv,        /* fmt= "Fred,3,21,1987,11,58,1,5,80.34" */
@@ -402,8 +405,8 @@ int make_html_file_just_2_people(      /* old main() */
 
 fopen_fpdb_for_debug(); /* for test  */
 
+  strcpy(gbl_are_in_just2, "we are in make_html_file_just_2_people"); 
   strcpy(gbl_gfnameHTML, in_html_filename);
-
   strcpy(gbl_g_in_html_filename, in_html_filename);
 
   strcpy(gbl_just2PersonA, csv_get_field(person_1_csv, ",", 1));
@@ -466,6 +469,7 @@ tn();trn("in  make_html_file_just_2_people() ");
 
   char dummy_buf[128];  // for arg not used
   int  dummy_int;       // for arg not used
+  strcpy(gbl_are_in_just2, "we are NOT in make_html_file_just_2_people"); 
   mamb_report_whole_group(    /* called from cocoa or just_2_people() in grphtm.c */
 //    "",              /* *html_file_name,*/
     in_html_filename,              /* *html_file_name,*/  // HAS TO be there to act as flag for /webview/browser
@@ -483,6 +487,7 @@ tn();trn("in  make_html_file_just_2_people() ");
     dummy_buf,   /* array of output report data to pass to cocoa */
     &dummy_int     /* ptr to int having last index written */
   );
+  strcpy(gbl_are_in_just2, "we are in make_html_file_just_2_people"); 
 
 // tn();trn(" after report wholefor string"); nksn(gbl_gfnameHTML);
 // trn(" after report wholefor string"); nksn(in_html_filename);
@@ -491,87 +496,131 @@ tn();trn("in  make_html_file_just_2_people() ");
 //tn();b(14);trn("in make_html_file_just_2_people  AFTER   report mamb_report_whole_group  for STRING");
 //nksn(gbl_gfnameHTML);
 
-//tn();b(11);ksn(string_for_table_only);
 
-  /* when finished, free array elements 
-  */
-  g_rank_line_free(out_rank_lines, out_rank_idx);
+//  OUTPUT THE HTML FOR THE TABLE =====  or not  ================================================================  
 
-  strcpy(global_instructions, "ok to write html now"); 
+  if (strstr(in_html_filename, "webview") != NULL)
+  {  // webview version
+
+gbl_db_code = 1;
+
+    sprintf(writebuf, "fill|filler line #1 at top");
+    g_fn_prtlin(writebuf);
+//    sprintf(writebuf, "fill|before table head");
+//    g_fn_prtlin(writebuf);
+//    sprintf(writebuf, "head|How Much");
+//    g_fn_prtlin(writebuf);
+
+//    sprintf(writebuf, "head|before hdr lines");
+//    g_fn_prtlin(writebuf);
+
+    sprintf(writebuf, "head|Compatibility");    // right justify in cocoa
+    g_fn_prtlin(writebuf);
+    sprintf(writebuf, "head|    Potential");
+    g_fn_prtlin(writebuf);
+
+//    sprintf(writebuf, "head|after hdr lines"); 
+//    g_fn_prtlin(writebuf);
+
+//    sprintf(writebuf, "fill|after table head");
+//    g_fn_prtlin(writebuf);
 
 
-// moved below
-///* ksn(string_for_table_only); */
-//  g_fn_prtlin(string_for_table_only); /* OUTPUT THE HTML FOR THE TABLE ========  */
+trn("xxx");
+    for (i = 0; i <= 5; i++)   /* for all table data lines */
+    {  // MAGIC  6 lines
+
+//      if (   out_rank_lines[i] == NULL
+//          || strlen(out_rank_lines[i]->person_B) == 0
+//      ) 
+//        break;
+//tn();ki(i);ki(out_rank_lines[i]->rank_in_group);kin(out_rank_lines[i]->score);
+//ks(out_rank_lines[i]->person_A);ksn(out_rank_lines[i]->person_B);
+
+
+      if (strstr(out_rank_lines[i]->person_B, " - top10") != NULL) {
+//        strcpy(writebuf, "tabl|                    90  Great       ");
+        strcpy(writebuf, "tabl|label@90");
+        g_fn_prtlin(writebuf);
+        continue;
+      }
+      if (strstr(out_rank_lines[i]->person_B, " - good" ) != NULL) {
+//        strcpy(writebuf, "tabl|                    75  Good        ");
+        strcpy(writebuf, "tabl|label@75");
+        g_fn_prtlin(writebuf);
+        continue;
+      }
+      if (strstr(out_rank_lines[i]->person_B, " - avg"  ) != NULL) {
+//        strcpy(writebuf, "tabl|                    50  Average     ");
+        strcpy(writebuf, "tabl|label@50");
+        g_fn_prtlin(writebuf);
+        continue;
+      }
+      if (strstr(out_rank_lines[i]->person_B, " - bad"   ) != NULL) {
+//        strcpy(writebuf, "tabl|                    25  Not Good    ");
+        strcpy(writebuf, "tabl|label@25");
+        g_fn_prtlin(writebuf);
+        continue;
+      }
+      if (strstr(out_rank_lines[i]->person_B, " - bot10")  != NULL) {
+//        strcpy(writebuf, "tabl|                    10  OMG         ");
+        strcpy(writebuf, "tabl|label@10");
+        g_fn_prtlin(writebuf);
+        continue;
+      }
+
+//      sprintf(writebuf,  "tabl|  %15s  %15s%2s%2d",
+//        out_rank_lines[i]->person_A,
+//        out_rank_lines[i]->person_B,
+//        " ",
+//        out_rank_lines[i]->score
+//      );
 //
+      sprintf(writebuf,  "tabl|pair@%2d@%s@%s",
+        out_rank_lines[i]->score,
+        out_rank_lines[i]->person_A,
+        out_rank_lines[i]->person_B
+      );
+      g_fn_prtlin(writebuf);
 
-
-  /* END of   TABLE with "Match Score" */
-
-
-  if (strstr(in_html_filename, "webview") != NULL) {  // webview version
-
-//  g_fn_prtlin( "<table class=aroundTop>");
-//  g_fn_prtlin( "<div>");
-//  g_fn_prtlin( "<table style=\"table-layout:fixed\" ");
-//  g_fn_prtlin( "<table style=\"width:device-width\">");
-
-//  g_fn_prtlin("  <meta name=\"viewport\" content=\"width=device-width\" />");
-//table { table-layout:fixed }
-
-//  g_fn_prtlin( "<table>");
-//  g_fn_prtlin( "<table style=\"width:device-width\">");
-//  g_fn_prtlin( "<table style=\"width:device-height\">");
-//  g_fn_prtlin( "<table style=\"width:50%\">");
-//  g_fn_prtlin( "<table width=\"100%\">");
-//  g_fn_prtlin( "<table width=\"device-width\">");
-//  g_fn_prtlin( "<table width=\"50%\">");
-//  g_fn_prtlin( "<table>");
+// view all in out_rank_lines
 //
-////  g_fn_prtlin( "<tr><td style=\"width:50%;\" >");
-//  g_fn_prtlin( "<tr><td>");
-////  g_fn_prtlin( "<tr>");
+//struct rank_report_line {
+//  int  rank_in_group;
+//  int  score;
+//  char person_A[MAX_SIZE_PERSON_NAME+1];
+//  char person_B[MAX_SIZE_PERSON_NAME+1];
+///*  char hex_color[8]; */  /* like "66ff33" */
+//};
+//struct rank_report_line *out_rank_lines[MAX_IN_RANK_LINE_ARRAY];
+//int out_rank_idx;  /* pts to current line in out_rank_lines */
 //
-///* ksn(string_for_table_only); */
-//  g_fn_prtlin(string_for_table_only); /* OUTPUT THE HTML FOR THE TABLE ========  */
-//  g_fn_prtlin( "</td></tr>");
-////  g_fn_prtlin( "</tr>");
-//  g_fn_prtlin( "</table>");
-////  g_fn_prtlin( "</div>");
+//for (i = 0; i <= 5; i++) {  // MAGIC  6 lines
+//tn();ki(out_rank_lines[i]->rank_in_group);kin(out_rank_lines[i]->score);
+//ks(out_rank_lines[i]->person_A);ksn(out_rank_lines[i]->person_B);
+//}
+//   output:
+//_out_rank_lines[i]->rank_in_group=[0]___out_rank_lines[i]->score=[90]__
+//_out_rank_lines[i]->person_A=[~~~~~~~~~~~~~~~]___out_rank_lines[i]->person_B=[qhilite - top10]__
 //
+//_out_rank_lines[i]->rank_in_group=[0]___out_rank_lines[i]->score=[75]__
+//_out_rank_lines[i]->person_A=[~~~~~~~~~~~~~~~]___out_rank_lines[i]->person_B=[qhilite - good]__
 //
-
-//    g_fn_prtlin( "<p style=\"width:170%; font-size: 140%;\">");
-//  g_fn_prtlin( "<p style=\"            font-size: 300%;\">");
-//  g_fn_prtlin( "<p style=\"width:100%; font-size: 140%;\">");
-//  g_fn_prtlin( "<div style=\"width:150%; font-size: 200%;\">");
-//  g_fn_prtlin( "<div style=\"width:150%; font-size: 120%;\">");
-//  g_fn_prtlin( "<div style=\"width:170%; font-size: 120%;\">");
-//  g_fn_prtlin( "<div style=\"width:200%; font-size: 120%;\">");
-//  g_fn_prtlin( "<div style=\"width:170%; font-size: 120%;\">");
-//  g_fn_prtlin( "<div style=\"            font-size: 120%;\">");
-//  g_fn_prtlin( "<div style=\"width:170%; font-size: 100%;\">");
-//  g_fn_prtlin( "<div style=\"width:200%;                 \">");
-//  g_fn_prtlin( "<div style=\"            font-size: 120%;\">");
-//  g_fn_prtlin( "<p style=\"            font-size: 500%;\">");
-//  g_fn_prtlin( "</p>");
+//_out_rank_lines[i]->rank_in_group=[0]___out_rank_lines[i]->score=[50]__
+//_out_rank_lines[i]->person_A=[~~~~~~~~~~~~~~~]___out_rank_lines[i]->person_B=[qhilite - avg]__
+//
+//_out_rank_lines[i]->rank_in_group=[1]___out_rank_lines[i]->score=[26]__
+//_out_rank_lines[i]->person_A=[~Emma]___out_rank_lines[i]->person_B=[~Anya]__
+//
+//_out_rank_lines[i]->rank_in_group=[0]___out_rank_lines[i]->score=[25]__
+//_out_rank_lines[i]->person_A=[               ]___out_rank_lines[i]->person_B=[qhilite - bad]__
+//
+//_out_rank_lines[i]->rank_in_group=[0]___out_rank_lines[i]->score=[10]__
+//_out_rank_lines[i]->person_A=[               ]___out_rank_lines[i]->person_B=[qhilite - bot10]__
+//
+  } /* for all table data lines */
 
 
-//  g_fn_prtlin( "<table class=\"categoryTable\">");
-//  g_fn_prtlin( "<table>");
-//  g_fn_prtlin( "<tr><td>");
-
-//  g_fn_prtlin( "<div style=\"width:166%;                 \">");
-//  g_fn_prtlin( "<div style=\"width:170%; font-size: 120%;\">");
-
-  g_fn_prtlin(string_for_table_only); /* OUTPUT THE HTML FOR THE TABLE ========  */
-
-//  g_fn_prtlin( "</div>");
-
-//  g_fn_prtlin( "</td></tr>");
-//  g_fn_prtlin( "</table>");
-
-    ;
 
   } else {  // browser version
 
@@ -598,7 +647,22 @@ tn();trn("in  make_html_file_just_2_people() ");
     gbl_we_are_in_PRE_block = 0;  /* false */
     g_fn_prtlin("<br><br><br></pre>");
 
+
+
   } // browser version
+
+    /* when finished, free array elements 
+    */
+    g_rank_line_free(out_rank_lines, out_rank_idx);
+
+    strcpy(global_instructions, "ok to write html now"); 
+
+  //  g_fn_prtlin(string_for_table_only); /*  END   OF    OUTPUT THE HTML FOR THE TABLE ===========================  */
+
+
+//gbl_db_code = 0;
+
+
 
 
   /*  read until [beg_graph]
@@ -620,33 +684,26 @@ tn();trn("in  make_html_file_just_2_people() ");
     gbl_we_are_in_PRE_block = 1;  /* true */
 
 
-// START TABLE VERSION
+// START TABLE VERSION    (legacy)
 
-  g_fn_prtlin( "<div><br><br><br></div>");
-// "<tr><td></td><td></td><td></td><td></td></tr>"
+    // this is webview version
+    //
 
+    sprintf(writebuf, "fill|filler before how big");
+    g_fn_prtlin(writebuf);
+    sprintf(writebuf, "fill|before how big header");
+    g_fn_prtlin(writebuf);
+    sprintf(writebuf, "howbighdr|HOW BIG");
+    g_fn_prtlin(writebuf);
+    sprintf(writebuf, "howbighdr|are the   favorable influences    +++++  ");
+    g_fn_prtlin(writebuf);
+    sprintf(writebuf, "howbighdr|and the   chalenging influences   -----  ");
+    g_fn_prtlin(writebuf);
+    sprintf(writebuf, "howbighdr|in the 3 categories below");
+    g_fn_prtlin(writebuf);
+    sprintf(writebuf, "fill|after how big header");
+    g_fn_prtlin(writebuf);
 
-  // this is webview version
-  g_fn_prtlin( "<div class=\"foreachcat\">");
-
-
-  // this is webview version
-//
-
-      g_fn_prtlin("<div style=\"margin-bottom: -0.5em;\">         HOW BIG                                   </div>"); // 7  
-
-    g_fn_prtlin("<div class=\"linehite_0050\">                 <span class=\"cGre\">_                            _</span>       ");
-    g_fn_prtlin("        are the  <span class=\"cGre\"> favorable   influences  +++  </span>      </div>");
-
-//    g_fn_prtlin("<div class=\"linehite_0050\">             <span class=\"cRed\">                              </span>          ");
-    g_fn_prtlin("<div class=\"linehite_0050\">                 <span class=\"cRed\">_                            _</span>       ");
-    g_fn_prtlin("        and the  <span class=\"cRed\"> challenging influences  ---  </span>      </div>");
-
-//    g_fn_prtlin("<div style=\"margin-top: -0.2em;\">                      in the 3 categories below?  </div>");
-    g_fn_prtlin("<div style=\"margin-top: -0.2em;\">         in the 3 categories below?  </div>");
-
-
-  g_fn_prtlin( "</div>");
 
 
 //  g_fn_prtlin( "<table class=\"category\" cellspacing=\"0\" celpadding=\"0\">");  // start of long category table
@@ -665,13 +722,10 @@ tn();trn("in  make_html_file_just_2_people() ");
 
     sprintf(category_text, "%s", "CLOSENESS ");
 
-  /*   put_category_label(category_text);  */
     put_category_label(category_text, (int)strlen(category_text)); 
 
-  /*   g_fn_prtlin("  <span class="cCat">CLOSENESS </span>                                                                      "); */
-
     /* ================================================================= */
-    /*  read until [beg_persn]   */
+    //  read until [beg_persn]     // this is PERSONAL CLOSENESS STARS
     for (i=0; ; i++) {
       g_docin_get(doclin);
       if (strstr(doclin, "[beg_persn]") != NULL) break;
@@ -682,32 +736,19 @@ tn();trn("in  make_html_file_just_2_people() ");
       g_docin_get(doclin);
       if (strstr(doclin, "[end_persn]") != NULL) break;
 
-  /*     g_fn_prtlin(doclin); */
       scharout(doclin, '|');  /* remove pipes (for old sideline)    */
-  /* tn();b(21);ks(doclin); */
 
-      g_fn_prtlin_stars(doclin);  
+      sprintf(writebuf, "stars|%s", doclin);
+      g_fn_prtlin(writebuf);
+
+//      g_fn_prtlin_stars(doclin);   prob do not need for tableview rpt
     }
     /* finished personal stars */
 
-
-  /*   g_fn_prtlin(" Shows the completely natural ease of liking the other person in a comfortable way.              "); */
-  /*   sprintf(mybuf, "%-92s", "             Shows the completely natural ease of liking the other person in a comfortable way."); */
-
-    /* out aug2013
-    */
-  /*   sprintf(mybuf, "%-92s", "             Shows the natural ease of liking the other person in a comfortable way."); */
-  /*   g_fn_prtlin(mybuf); */
-
-  /*   g_fn_prtlin(" "); */
-
-  //  g_fn_prtlin("                                                                                  "); /* blanks */
-    g_fn_prtlin( "<tr><td>                                                                                  </td></tr>"); // blank line
-  /*   g_fn_prtlin("<br>"); */
-
+    sprintf(writebuf, "fill|after personal stars");
+    g_fn_prtlin(writebuf);
     /* ================================================================= */
 
-    /* ================================================================= */
 
     for (i=0; ; i++) {
       g_docin_get(doclin);
@@ -723,24 +764,12 @@ tn();trn("in  make_html_file_just_2_people() ");
     s = &beg_aview_name[0];
     for (; *s; ++s) *s = toupper( (int) *s);
 
-//tn();
-//char xx[128];strcpy(xx, arr(0));ksn(xx);
-//ksn(person_1_csv);
 
     // this is webview version  wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
 
-//    mylen = sprintf(category_text, "FROM %s's POINT OF VIEW ", arr(0) );
-//    sprintf(category_text, "FROM %s's POINT OF VIEW ", arr(0) );
-//    mylen = sprintf(category_text, "FROM %s's POINT OF VIEW ", person_1_csv );
-//    sprintf(category_text, "FROM %s's POINT OF VIEW ", person_1_csv );
-
-    g_fn_prtlin( "<tr><td>                                                                                  </td></tr>"); // blank line
-    g_fn_prtlin( "<tr><td>                                                                                  </td></tr>"); // blank line
 
     mylen = sprintf(category_text, "FROM %s's POINT OF VIEW ", beg_aview_name );
     sprintf(category_text, "FROM %s's POINT OF VIEW ", beg_aview_name );
-
-
     put_category_label(category_text, mylen); 
 
     gbl_countMinusLines = 0;     // of consecutive minus lines in star lines
@@ -748,17 +777,15 @@ tn();trn("in  make_html_file_just_2_people() ");
       g_docin_get(doclin);
       if (strstr(doclin, "[end_aview]") != NULL) break;
       scharout(doclin, '|');  /* remove pipes (for old sideline)    */
-  /* tn();b(24);ks(doclin); */
 
-      g_fn_prtlin_stars(doclin);  
+      sprintf(writebuf, "stars|%s", doclin);
+      g_fn_prtlin(writebuf);
+
+//      g_fn_prtlin_stars(doclin);  
     }
-  /*   g_fn_prtlin(" "); */
-//    g_fn_prtlin("                                                                                  "); /* blanks */
-//    g_fn_prtlin( "<tr><td>                                                                                  </td></tr>"); // blank line
-    g_fn_prtlin( "<tr><td>                                                       </td></tr>"); // blank line
-  /*   g_fn_prtlin(""); */
 
-
+    sprintf(writebuf, "fill|after personA ptofview");
+    g_fn_prtlin(writebuf);
     /* ================================================================= */
 
     for (i=0; ; i++) {
@@ -766,7 +793,7 @@ tn();trn("in  make_html_file_just_2_people() ");
       if (strstr(doclin, "[beg_bview]") != NULL) break;
     }
 
-    // grab name for beg_aview
+    // grab name for beg_bview
     //
     char beg_bview_name[128];
     strcpy(beg_bview_name, csv_get_field(doclin, "|", 2));
@@ -775,115 +802,30 @@ tn();trn("in  make_html_file_just_2_people() ");
     s = &beg_bview_name[0];
     for (; *s; ++s) *s = toupper( (int) *s);
 
-    gbl_we_are_in_PRE_block = 1; 
-
-  //  g_fn_prtlin("                                                                                  "); /* blanks */
-
-//tn();
-//char yy[128];strcpy(yy, arr(1));ksn(yy);
-//ksn(person_2_csv);
-//tn();
-
-//    mylen = sprintf(category_text, "FROM %s's POINT OF VIEW ", arr(1) );
-//    sprintf(category_text, "FROM %s's POINT OF VIEW ", arr(1) );
-//    mylen = sprintf(category_text, "FROM %s's POINT OF VIEW ", person_2_csv );
-//    sprintf(category_text, "FROM %s's POINT OF VIEW ", person_2_csv );
-
-    g_fn_prtlin( "<tr><td>                                                                                  </td></tr>"); // blank line
     mylen = sprintf(category_text, "FROM %s's POINT OF VIEW ", beg_bview_name );
     sprintf(category_text, "FROM %s's POINT OF VIEW ", beg_bview_name );
-
-//      "FROM <span class=\"cNam2\">%s</span>'s POINT OF VIEW ", arr(1) );
     put_category_label(category_text, mylen); 
-
 
     gbl_countMinusLines = 0;     // of consecutive minus lines in star lines
     for (i=0; ; i++) { 
       g_docin_get(doclin);
       if (strstr(doclin, "[end_bview]") != NULL) break;
       scharout(doclin, '|');  /* remove pipes (for old sideline)    */
-      g_fn_prtlin_stars(doclin);  
+
+      sprintf(writebuf, "stars|%s", doclin);
+      g_fn_prtlin(writebuf);
+
+//      g_fn_prtlin_stars(doclin);  
     }
-//    g_fn_prtlin("                                                                                  "); /* blanks */
 
-
-//    /* ================================================================= */
-//
-//    for (i=0; ; i++) {
-//      g_docin_get(doclin);
-//      if (strstr(doclin, "[beg_love]") != NULL) break;
-//    }
-//  /*   sprintf(mybuf, "%-92s",  "<span class=\"cCat\">LOVE </span>");
-//  *   g_fn_prtlin(mybuf);
-//  */
-//
-//  /*   g_fn_prtlin("<pre>"); */
-//  /*   gbl_we_are_in_PRE_block = 1;  */
-//
-//  //  g_fn_prtlin("                                                                                  "); /* blanks */
-//    g_fn_prtlin( "<tr><td>                                                                                  </td></tr>"); // blank line
-//    sprintf(category_text, "LOVE ");
-//  /*   put_category_label(category_text);  */
-//    put_category_label(category_text, (int)strlen(category_text)); 
-//
-//    for (i=0; ; i++) {
-//      g_docin_get(doclin);
-//      if (strstr(doclin, "[end_love]") != NULL) break;
-//      scharout(doclin, '|');  /* remove pipes (for old sideline)    */
-//      g_fn_prtlin_stars(doclin);  
-//    }
-//  /*   g_fn_prtlin(" "); */
-////    g_fn_prtlin("                                                                                  "); /* blanks */
-//
-//
-//    /* ================================================================= */
-//  /*   g_fn_prtlin("<pre>"); */
-//  /*   gbl_we_are_in_PRE_block = 1;  */
-//
-//    for (i=0; ; i++) {
-//      g_docin_get(doclin);
-//      if (strstr(doclin, "[beg_money]") != NULL) break;
-//    }
-//  /*   g_fn_prtlin(" MONEY AND BUSINESS                                                                              "); */
-//  /*   sprintf(mybuf, "%-92s", "<span class=\"cCat\">MONEY AND BUSINESS </span>");
-//  *   g_fn_prtlin(mybuf);
-//  */
-//
-//  /*   sprintf(category_text, "MONEY AND BUSINESS "); */
-//  //  g_fn_prtlin("                                                                                  "); /* blanks */
-//    g_fn_prtlin( "<tr><td>                                                                                  </td></tr>"); // blank line
-//    sprintf(category_text, "MONEY ");
-//  /*   put_category_label(category_text);  */
-//    put_category_label(category_text, (int)strlen(category_text)); 
-//
-//    for (i=0; ; i++) { 
-//      g_docin_get(doclin);
-//      if (strstr(doclin, "[end_money]") != NULL) break;
-//      scharout(doclin, '|');  /* remove pipes (for old sideline)    */
-//      g_fn_prtlin_stars(doclin);  
-//    }
-//
-//    /* ================================================================= */
-//
-
-
-//    g_fn_prtlin("                                                                                  "); /* blanks */
-
-//    g_fn_prtlin( "<tr><td>                                                                                  </td></tr>"); // blank line
-
-
+    sprintf(writebuf, "fill|after personB ptofview");
+    g_fn_prtlin(writebuf);
+    /* ================================================================= */
 
     for (i=0; ; i++) {
       g_docin_get(doclin);
       if (strstr(doclin, "[beg_ovral]") != NULL) break;
     }
-  /*   sprintf(mybuf, "%-92s", "<span class=\"cCat\">OVERALL COMPATIBILITY </span>");
-  *   g_fn_prtlin(mybuf);
-  */
-  //  g_fn_prtlin("                                                                                  "); /* blanks */
-
-
-
 //    sprintf(category_text, "OVERALL COMPATIBILITY ");
 //    put_category_label(category_text, (int)strlen(category_text)); 
 
@@ -892,13 +834,9 @@ tn();trn("in  make_html_file_just_2_people() ");
       if (strstr(doclin, "[end_ovral]") != NULL) break;
   /*     g_fn_prtlin(doclin); */
       scharout(doclin, '|');  /* remove pipes (for old sideline)    */
-
 //      g_fn_prtlin_stars(doclin);  
-
     }
-  /*   g_fn_prtlin(" A combination of all the different factors of compatibility for this pair.                      "); */
-
-  //  g_fn_prtlin("                                                                                  "); /* blanks */
+    /*   g_fn_prtlin(" A combination of all the different factors of compatibility for this pair.                      "); */
 
     /* ================================================================= */
 
@@ -911,176 +849,39 @@ tn();trn("in  make_html_file_just_2_people() ");
     }
 
 
-  g_fn_prtlin( "</table>");  // end of long category table
-
-
-//  g_fn_prtlin( "<div><br><br></div>");
-
-
-  /*   g_fn_prtlin("   -  CLOSENESS is the most important category.                           "); */
-
-//    g_fn_prtlin( "</div><div class=\"explpotential\">");  // end of categories
-
-
-
-
-//    g_fn_prtlin( "<div class=\"explpotential\">");  // end of categories
-//  g_fn_prtlin( "<div>");  // end of categories
-    g_fn_prtlin( "<div class=\"foreachcat\">");  // end of categories
-//    g_fn_prtlin( "<div class=\"foreachcat2\">");  // end of categories
-
-    //char spanbeg[64], spanend[64];
-    strcpy(spanbeg, "<span style=\"background-color: #fcfce0;\"> ");
-    strcpy(spanend, "</span>");
-
-
-  //  g_fn_prtlin("                                                                ");
-  //  g_fn_prtlin("    For good compatibility potential                            "); 
-  //  g_fn_prtlin(" -  you want to have a \"High\" number of pluses.                 ");
-  //  g_fn_prtlin(" -  you also want to see double the pluses compared to minuses. ");
-  //  g_fn_prtlin("                                                                ");
-
-
-//    sprintf(writebuf, "%s%s%s", spanbeg,
-//      "                                                               ", spanend);
-//    g_fn_prtlin(writebuf);
-//
-//    sprintf(writebuf, "%s%s%s", spanbeg,
-//      "  For good compatibility potential                             ", spanend);
-//    g_fn_prtlin(writebuf);
-//
-//    sprintf(writebuf, "%s%s%s", spanbeg,
-//      "  you want to have a \"High\" number of pluses and               ", spanend);
-//    g_fn_prtlin(writebuf);
-//
-//    sprintf(writebuf, "%s%s%s", spanbeg,
-//      "  you also want to see double the pluses compared to minuses.  ", spanend);
-//    g_fn_prtlin(writebuf);
-//
-
-
-//    sprintf(writebuf, "%s%s%s", spanbeg,
-//      "                                              ", spanend);
-//    g_fn_prtlin(writebuf);
-//
-//    sprintf(writebuf, "%s%s%s", spanbeg,
-//      "  For good compatibility potential you want   ", spanend);
-//    g_fn_prtlin(writebuf);
-//
-//    sprintf(writebuf, "%s%s%s", spanbeg,
-//      "  a \"High\" number of pluses                   ", spanend);
-//    g_fn_prtlin(writebuf);
-//
-//    sprintf(writebuf, "%s%s%s", spanbeg,
-//      "  and double the pluses compared to minuses.  ", spanend);
-//    g_fn_prtlin(writebuf);
-//
-//
-//    sprintf(writebuf, "%s%s%s", spanbeg,
-//      "                                              ", spanend);
-//    g_fn_prtlin(writebuf);
-//
-
-
-//  g_fn_prtlin(
-//    "                  For each category below                 ");
-//
-
-//    g_fn_prtlin( "                                                          ");
-//    g_fn_prtlin( "           For good compatibility potential you want      ");
-//    g_fn_prtlin( "           a \"High\" number of pluses                      ");
-//    g_fn_prtlin( "           and double the pluses compared to minuses      ");
-//    g_fn_prtlin( "                                                          ");
-//
-//    g_fn_prtlin( "                                                          ");
-
-// this works
-//    g_fn_prtlin( "           you would like to see                          ");
-//    g_fn_prtlin( "           a \"High\" number of pluses                      ");
-//    g_fn_prtlin( "           and double the pluses compared to minuses      ");
-
-
-//    g_fn_prtlin( "           you would like to see a full line of pluses    ");
-////    g_fn_prtlin( "           a \"High\" number of pluses                      ");
-//    g_fn_prtlin( "           and double the pluses compared to minuses      ");
-////    g_fn_prtlin( ".                                                        .");
-//    g_fn_prtlin( ".                                                             .");
-//
-    // webview version
-    g_fn_prtlin( "        you would like to see a full line of pluses       ");   // these 3 lines have to be here to avoid weird right margin overflow
-    g_fn_prtlin( "        and double the pluses compared to minuses         ");
-//    g_fn_prtlin( ".                                                        .");
-//    g_fn_prtlin( ".                                                             .");
-    g_fn_prtlin( "                                                               ");
-
-
-// this works
-//      g_fn_prtlin( ".                                                        .");
-//      g_fn_prtlin( ".                                                        .");
-//      g_fn_prtlin( ".                                                        .");
-//
-  // all spaces do not work
-// this  does not work
-//      g_fn_prtlin( ".                                                        .");
-//      g_fn_prtlin( ".                                                        .");
-
-// this works
-//      g_fn_prtlin( ".                                                        .");
-//      g_fn_prtlin( ".                                                        .");
-//      g_fn_prtlin( ".                                                        .");
-//      g_fn_prtlin( ".                                                        .");
-
-
-
-
-  g_fn_prtlin("</div>");  // end of foreachcat2 or foreachcat
-//g_fn_prtlin("</div>");
-
+    sprintf(writebuf, "howbigftr|good indicators are a full line of pluses");
+    g_fn_prtlin(writebuf);
+    sprintf(writebuf, "howbigftr|and double the pluses compared to minues ");
+    g_fn_prtlin(writebuf);
+    sprintf(writebuf, "fill|after howbigftr");
+    g_fn_prtlin(writebuf);
+    sprintf(writebuf, "fill|filler after how big");
+    g_fn_prtlin(writebuf);
 
     // webview version
 
-
-//    g_fn_prtlin("<div><br><br></pre><div>");
-    g_fn_prtlin("<div><br><br><div>");
+//g_fn_prtlin( "        you would like to see a full line of pluses       ");// these 3 lines have to be here to avoid weird right margin overflow
+//g_fn_prtlin( "        and double the pluses compared to minuses         ");
+//g_fn_prtlin( "                                                               ");
 //
-    g_fn_prtlin( "<pre class=\"expressed\">");
-    gbl_we_are_in_PRE_block = 1;  /* true */
-    g_fn_prtlin("                                                       ");
-    g_fn_prtlin("                       How Much                        ");
-    g_fn_prtlin("                of each influence below                ");
-    g_fn_prtlin("                  is fully expressed?                  ");
 
-    g_fn_prtlin("                           |                           ");
+    // webview version
 
-//    g_fn_prtlin("<div class=\"linehite_0050\">  <span class=\"cRed\">                         </span>|<span class=\"cGre\">                         </span>  ");
-//    g_fn_prtlin("  <span class=\"cRed\">100%                   0%</span>|<span class=\"cGre\">0%                   100%</span>  </div>");
-    g_fn_prtlin("<div class=\"linehite_0050\"> |<span class=\"cRed\">                         </span>|<span class=\"cGre\">                         </span>| ");
-    g_fn_prtlin(" |<span class=\"cRed\">100%                   0%</span>|<span class=\"cGre\">0%                   100%</span>| </div>");
+    sprintf(writebuf, "fill|filler before paras");
+    g_fn_prtlin(writebuf);
 
-//    g_fn_prtlin("<div class=\"linehite_0050\">   ___________________________________________________  ");
-//    g_fn_prtlin(" |<span class=\"cRed\">                         </span>|<span class=\"cGre\">                         </span>| ");
-//    g_fn_prtlin(" |<span class=\"cRed\">100%                   0%</span>|<span class=\"cGre\">0%                   100%</span>| </div>");
-//    g_fn_prtlin("<div class=\"linehite_0120\">   x ___________________________________________________ x</div>");
+//    sprintf(writebuf, "fill|before paras header");
+//    g_fn_prtlin(writebuf);
+//    sprintf(writebuf, "parashdr|What Percentage");
+//    g_fn_prtlin(writebuf);
+//    sprintf(writebuf, "parashdr|of each influence below");
+//    g_fn_prtlin(writebuf);
+//    sprintf(writebuf, "parashdr|is fully expressed");
+//    g_fn_prtlin(writebuf);
+//    g_fn_prtlin(writebuf);
+//    sprintf(writebuf, "fill|after paras header");
 
-//    g_fn_prtlin("                                                       ");
-//    g_fn_prtlin("<div class=\"linehite_0050\">  <span class=\"cRed\">                         </span> <span class=\"cGre\">                         </span>  ");
-//    g_fn_prtlin("  <span class=\"cRed\">100%                   0%</span> <span class=\"cGre\">0%                   100%</span>  </div>");
-
-
-//    g_fn_prtlin("                                                       ");
-//    g_fn_prtlin("<div class=\"linehite_0050\">  <span class=\"cRed\">                         </span>|<span class=\"cGre\">                         </span>  ");
-//    g_fn_prtlin("  <span class=\"cRed\">-------------------------</span>|<span class=\"cGre\">+++++++++++++++++++++++++</span>  <div>");
-
-
-//    g_fn_prtlin("                                                       ");
-//    g_fn_prtlin("                                                       ");
-//    g_fn_prtlin("                                                       ");
-
-    gbl_we_are_in_PRE_block = 0;  /* false */
-    g_fn_prtlin( "</pre>");   // end of expressed
-
-    g_fn_prtlin("<div><br></div>");
-
+// TODO  OR put 0% -> 100%  in Info screen
 
     // here we start pco DETAIL paragraphs   YYYYYYYYYYY  webview version  YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY DO PARAGRAPHS HERE 
 
@@ -1103,7 +904,7 @@ tn();trn("in  make_html_file_just_2_people() ");
       
       strcpy(gbl_aspect_code, doclin);
 
-      g_fn_webview_aspect_text(gbl_aspect_code); /* output the aspect text <<<QQQQQQQQQQQQQQQQQQQQQQQQQQQQ  */
+      g_fn_webview_aspect_text(gbl_aspect_code); /* output the aspect text <<<QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ  */
       
     }  /* read and print aspects until we hit [end_aspects] */
 
@@ -1113,12 +914,11 @@ tn();trn("in  make_html_file_just_2_people() ");
       if (strstr(doclin, "[end_program]") != NULL) break;
     }
 
-    gbl_we_are_in_PRE_block = 0;
+  } // webview version  ----------------------------------------------------------------------------------------
 
 
-  } // webview version
   else
-  {  // browser version
+  {  // browser version  ----------------------------------------------------------------------------------------
 
 
     g_fn_prtlin("<pre>");
@@ -1308,7 +1108,6 @@ tn();trn("in  make_html_file_just_2_people() ");
 
 
     // here we start pco DETAIL paragraphs   YYYYYYYYYYYYY  browser version  YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY DO PARAGRAPHS HERE 
-//<.>
     /* DO PARAGRAPHS HERE */
 
     /* read until
@@ -1350,21 +1149,8 @@ tn();trn("in  make_html_file_just_2_people() ");
 
 
 
-  if (strstr(in_html_filename, "webview") != NULL) {  // webview version
-
-    g_fn_prtlin("<div class=\"explrelationship\">");
-    gbl_we_are_in_PRE_block = 1; /* 1 = yes, 0 = no */
-  /*   g_fn_prtlin( "                                                        ");
-  *   g_fn_prtlin( "     Note: a GOOD RELATIONSHIP needs 2 things:          ");
-  *   g_fn_prtlin( "  1. compatibility potential (the \"Match Score\" above)  ");
-  *   g_fn_prtlin( "  2. willpower to show positive personality traits      "); 
-  *   g_fn_prtlin( "                                                        ");
-  */
-  //  g_fn_prtlin( "                                                  ");
-  //  g_fn_prtlin( "     Note: a GOOD RELATIONSHIP needs 2 things:    ");
-  //  g_fn_prtlin( "  1. compatibility potential                      ");
-  //  g_fn_prtlin( "  2. BOTH sides show positive personality traits  ");
-  //  g_fn_prtlin( "                                                  ");
+  if (strstr(in_html_filename, "webview") != NULL)
+  {  // webview version
 
     strcpy(spanbeg, "<span style=\"background-color: #fcfce0;\"> ");
     strcpy(spanend, "</span>");
@@ -1375,21 +1161,6 @@ tn();trn("in  make_html_file_just_2_people() ");
     g_fn_prtlin(writebuf);
 
 
-//    sprintf(writebuf, "%s%s%s", spanbeg,
-//      "     Note: a GOOD RELATIONSHIP needs 2 things:    ", // 
-//      spanend);
-//    g_fn_prtlin(writebuf);
-//
-
-//    sprintf(writebuf, "%s%s%s", spanbeg,
-//      "     a GOOD RELATIONSHIP                          ", // 
-//      spanend);
-//    g_fn_prtlin(writebuf);
-//    sprintf(writebuf, "%s%s%s", spanbeg,
-//      "     usually has 2 things                         ", // 
-//      spanend);
-//    g_fn_prtlin(writebuf);
-//
     sprintf(writebuf, "%s%s%s", spanbeg,
       "     a GOOD RELATIONSHIP usually has 2 things     ", // 
       spanend);
@@ -1429,10 +1200,31 @@ tn();trn("in  make_html_file_just_2_people() ");
     g_fn_prtlin("</div>");  // end of appby
     g_fn_prtlin("<div><br><br></div>");
 
-  }  // webview version ends
-  else
-  {  // start browser version
 
+    sprintf(writebuf, "fill|before goodrelationship");
+    g_fn_prtlin(writebuf);
+    sprintf(writebuf, "fill|in goodrelationship at beg");
+    g_fn_prtlin(writebuf);
+
+    sprintf(writebuf, "goodrelationship|details in cocoa");
+    g_fn_prtlin(writebuf);
+
+    sprintf(writebuf, "fill|in goodrelationship at end");
+    g_fn_prtlin(writebuf);
+    sprintf(writebuf, "fill|before produced by");
+    g_fn_prtlin(writebuf);
+    sprintf(writebuf, "prod|produced by iPhone app %s", APP_NAME);
+    g_fn_prtlin(writebuf);
+    sprintf(writebuf, "fill|before entertainment");
+    g_fn_prtlin(writebuf);
+    sprintf(writebuf, "purp|This report is for entertainment purposes only.");
+    g_fn_prtlin(writebuf);
+
+  }  // webview version ends   ----------------------------------------------------------------
+
+
+  else
+  {  // start browser version   ----------------------------------------------------------------
 
     g_fn_prtlin("<div><br><br></div>");
 
@@ -1469,13 +1261,11 @@ tn();trn("in  make_html_file_just_2_people() ");
 
     g_fn_prtlin("<div> <span style=\"font-size: 1.0em\"><br>produced by iPhone app Me and my BFFs</span><br><br><span style=\"font-size: 0.9em; font-weight: bold; color:#FF0000;\">This report is for entertainment purposes only.</span></div><div><br></div>");
 
-  } // browser version
+    g_fn_prtlin("\n</body>\n");
+    g_fn_prtlin("</html>");
 
+  } // browser version  -----------------------------------------------------------------
 
-
-
-  g_fn_prtlin("\n</body>\n");
-  g_fn_prtlin("</html>");
 
 
   fflush(Fp_g_HTML_file);
@@ -1489,6 +1279,7 @@ tn();trn("in  make_html_file_just_2_people() ");
     ;
   };
   return(0);
+
 
 } /* end of make_html_file_just_2_people() */ 
 
@@ -1531,21 +1322,27 @@ void put_category_label(char *category_text, int inlen)
 //    sprintf(sformat, "%%s%%2s%%s%%%ds%%s",  num_spaces_at_end);
 //    sprintf(sformat, "%%s%%5s%%s%%%ds%%s",  num_spaces_at_end);
 //    sprintf(sformat, "%%s%%4s%%s%%%ds%%s",  num_spaces_at_end);
-    sprintf(sformat, "%%s%%5s%%s%%%ds%%s",  num_spaces_at_end);
+//    sprintf(sformat, "%%s%%5s%%s%%%ds%%s",  num_spaces_at_end);
+//    sprintf(sformat, "catlabel|%%s%%5s%%s%%%ds%%s",  num_spaces_at_end);
+//    sprintf(sformat, "catlabel|%%%ds",  num_spaces_at_end);
+    sprintf(sformat, "catlabel|%%s");
+    sprintf(writebuf, sformat,
+      category_text
+    );
 
   } else {
     sprintf(sformat, "%%s%%2s%%s%%%ds%%s",  num_spaces_at_end);
+    sprintf(writebuf, sformat,
+      side_left,
+      " ",
+      category_with_span,
+      " ",
+      side_right
+    );
+//tn();trn("LABEL=");ks(writebuf);
   }
 
 
-  sprintf(writebuf, sformat,
-    side_left,
-    " ",
-    category_with_span,
-    " ",
-    side_right
-  );
-//tn();trn("LABEL=");ks(writebuf);
 
   g_fn_prtlin(writebuf);
 
@@ -3685,14 +3482,26 @@ void g_docin_get(char *in_line)
 
 void g_fn_prtlin(char *lin) {
   char myEOL[8];
-//tn();tr("in g_fn_prtlin");ksn(lin);
+//tn();tr("in g_fn_prtlin");ksn(lin); 
 
-  if (  strcmp(global_instructions, "return only html for table in string") == 0
-     || strcmp(global_instructions, "return only compatibility score"     ) == 0 ) {
+//  if (strstr(gbl_g_in_html_filename, "webview") != NULL) {tn();tr("in g_fn_prtlin");ksn(lin); }
+  if (gbl_db_code == 1) {tn();tr("gbl_db_code=1");ksn(lin); }
+
+
+  // EXCEPTION: for new tblrpts pco, actually output the lines
+  //
+  if (   strcmp(gbl_are_in_just2, "we are in make_html_file_just_2_people") == 0
+      && strstr(gbl_g_in_html_filename, "webview") != NULL   
+  ) {
+    ; // for webview version of grpof2, go and print
+
+
+  } else if (   strcmp(global_instructions, "return only html for table in string") == 0
+             || strcmp(global_instructions, "return only compatibility score"     ) == 0
+  ) {
 
     return;  /* do not write anything */
-
-  } else {
+  }
 
 
 // int dbsw;
@@ -3711,7 +3520,6 @@ void g_fn_prtlin(char *lin) {
     /* g_global_n = sprintf(g_global_p,"%s\n", lin); */
     g_global_n = sprintf(g_global_p,"%s%s", lin, myEOL);
     fput(g_global_p, g_global_n, Fp_g_HTML_file);
-  }
 } 
 
 
@@ -3924,848 +3732,851 @@ void put_ios_top_of_just2_group_rpt(void)  /* just_2 rpt */
   int i;
 //tn();trn("in put_ios_top_of_just2_group_rpt()");
 
-  /* 1. read until [beg_topinfo1]  (name)  (skipping [beg_program])
-  */
-  for (i=0; ; i++) {
-    g_docin_get(doclin);
-    if (strstr(doclin, "[beg_topinfo1]") != NULL) break;
-  }
-  /* then save lines until graph until [end_topinfo1] 
-  * then put out html 
-  */
-  for (i=0; ; i++) {
-    g_docin_get(doclin);
-    if (strstr(doclin, "[end_topinfo1]") != NULL) break;
-    strcpy(arr(i), doclin);               //  HERE's where arr(0) and arr(1) get populated
-  }
-
-/*   at end, change to STRICT  */
-  g_fn_prtlin( "<!doctype html public \"-//w3c//dtd html 4.01 transitional//en\" ");
-  g_fn_prtlin( "  \"http://www.w3.org/TR/html4/loose.dtd\">");
-
-  g_fn_prtlin( "<html>");
-  g_fn_prtlin( "\n<head>");
+return;  // now rpt is tblrpt
 
 
-
-
-  /* HTML HEAD <TITLE>  this appears in browser tab and tooltip when hover
-  */
-
-
-/*   sprintf(writebuf, "  <title>%s+%s Compatibility, produced by iPhone app %s.</title>",arr(0),arr(1), APP_NAME); */
-/*   g_fn_prtlin(writebuf); */
-
-
-  /* if HTML filename, gbl_ffnameHTML, has any slashes, grab the basename
-  */
-  char myBaseName[256], *myptr;
-  if (sfind(gbl_gfnameHTML, '/')) {
-    myptr = strrchr(gbl_gfnameHTML, '/');
-    strcpy(myBaseName, myptr + 1);
-  } else {
-    strcpy(myBaseName, gbl_gfnameHTML);
-  }
-  sprintf(writebuf, "  <title>%s</title>", myBaseName);
-  g_fn_prtlin(writebuf);
-  
-
-
-  /* HEAD  META
-  */
-  sprintf(writebuf, "  <meta name=\"description\" content=\"Report of compatibility of 2 people produced by iPhone app %s\"> ", APP_NAME);
-  g_fn_prtlin(writebuf);
-
-
-/*   g_fn_prtlin( "  <meta http-equiv=\"Content-Type\" content=\"text/html\"; charset=\"iso-8859-1\">");  */
-  g_fn_prtlin( "  <meta http-equiv=\"Content-Type\" content=\"text/html\"; charset=\"UTF-8\">"); 
-/*   g_fn_prtlin( "  <meta name=\"Author\" content=\"Author goes here\">"); */
-
-
-/*   g_fn_prtlin( "  <meta name=\"keywords\" content=\"group,group member,compatibility,year in the life,astrology,future,personality,GMCR\"> "); */
-/*   g_fn_prtlin( "  <meta name=\"keywords\" content=\"BFF,astrology,compatibility,group,best,match,calendar,year,stress,personality\"> "); */
-/*   g_fn_prtlin( "  <meta name=\"keywords\" content=\"measure,group,member,best,match,calendar,year,passionate,personality\"> "); */
-/*   g_fn_prtlin( "  <meta name=\"keywords\" content=\"women,woman,female,BFF,compatibility,group,best,match,personality,stress,calendar,year\"> "); */ /* 86 chars */ 
-  g_fn_prtlin( "  <meta name=\"keywords\" content=\"women,woman,female,BFF,me,compatibility,group,best,match,personality,stress,calendar,year\"> ");  /* 89 chars */
-
-  /* get rid of CHROME translate "this page is in Galician" 
-  * do you want to translate?
-  */
-  g_fn_prtlin("  <meta name=\"google\" content=\"notranslate\">");
-  g_fn_prtlin("  <meta http-equiv=\"Content-Language\" content=\"en\" />");
-
-
-  /* Using the Viewport Meta Tag  (in iOS webView)
-  * https://developer.apple.com/library/safari/documentation/AppleApplications/Reference/SafariWebContent/UsingtheViewport/UsingtheViewport.html#//apple_ref/doc/uid/TP40006509-SW25
-  *
-  * For example, TO SET THE VIEWPORT WIDTH TO THE WIDTH OF THE DEVICE, add this to your HTML file:
-  * <meta name="viewport" content="width=device-width"> 
-  * To set the initial scale to 1.0, add this to your HTML file:
-  * <meta name="viewport" content="initial-scale=1.0"> 
-  * To set the initial scale and to turn off user scaling, add this to your HTML file:
-  * <meta name="viewport" content="initial-scale=2.3, user-scalable=no">
-  */
-
-  g_fn_prtlin("  <meta name=\"viewport\" content=\"width=device-width\" />");   //  ORIG   ORIG
-
-
-  // THIS IS WEBVIEW VERSION
-
-  
-//  g_fn_prtlin("  <meta name=\"viewport\" content=\"width=device-width, initial-scale=0.33, minimum-scale=0.33, maximum-scale=0.33 \" />");  // webview  OK <6=no
-//  g_fn_prtlin("  <meta name=\"viewport\" content=\"width=device-width initial-scale=0.56 minimum-scale=0.56; \" />");  // webview  OK <6=no
-//  g_fn_prtlin("  <meta name=\"viewport\" content=\"width=device-width, initial-scale=2.0, minimum-scale=2.0, maximum-scale=2.0\" />");  // webview  OK <6=no
-
-
-  g_fn_prtlin("  <meta name = \"format-detection\" content = \"telephone=no\">");
-
-
-  /* HEAD   STYLE/CSS
-  */
-  g_fn_prtlin( "\n  <style type=\"text/css\">");
-  g_fn_prtlin( "    @media print { TABLE { font-size: 50%; } }");
-
-
-  g_fn_prtlin( "    BODY {");   // WEBVIEW grpof2
-
-/*  g_fn_prtlin( "      background-color: #F5EFCF;"); */
-  g_fn_prtlin( "      background-color: #f7ebd1;");
-
-/*   g_fn_prtlin( "      font-family: Trebuchet MS, Arial, Verdana, sans-serif;"); */
-  g_fn_prtlin( "      font-family: Menlo, Andale Mono, Monospace, Courier New;");
-
-  g_fn_prtlin( "      font-size:   medium;");
-  g_fn_prtlin( "      font-weight: normal;");
-  g_fn_prtlin( "      text-align:  center;");
-/*   g_fn_prtlin( "    <!-- "); */
-/*   g_fn_prtlin( "      background-image: url('mkgif1g.gif');"); */
-/*   g_fn_prtlin( "    --> "); */
-  g_fn_prtlin( "    }");
-
-/*   g_fn_prtlin( "    H1 { font-size: 137%; font-weight: bold;   line-height: 95%; text-align: center;}"); */
-/*   g_fn_prtlin( "    H2 { font-size: 137%; font-weight: bold;   line-height: 25%; text-align: center;}"); */
-/*   g_fn_prtlin( "    H3 { font-size: 110%; font-weight: normal; line-height: 30%; text-align: center;}"); */
-/*   g_fn_prtlin( "    H1 { font-size: 137%; font-weight: bold;   line-height: 15%; text-align: center;}"); */
-  g_fn_prtlin( "    H1 { font-size: 137%; font-weight: bold;   line-height: 100%; text-align: center;}");
-  g_fn_prtlin( "    H2 { font-size: 120%; font-weight: bold;   line-height: 95%; text-align: center;}");
-  g_fn_prtlin( "    H3 { font-size: 110%; font-weight: normal; line-height: 95%; text-align: center;}");
-
-  g_fn_prtlin( "    H4 { font-size:  75%; font-weight: bold;   line-height: 30%; text-align: center;}");
-  g_fn_prtlin( "    H5 { font-size:  70%; font-weight: normal; line-height: 30%; text-align: center;}");
-
-
-/*   g_fn_prtlin( "    H4 { font-size:  85%; font-weight: bold;   line-height: 30%; text-align: center;}"); */
-/*   g_fn_prtlin( "    H5 { font-size:  55%; font-weight: normal; line-height: 90%; text-align: center;}"); */
-/*   g_fn_prtlin( "    H5 { font-size:  70%; font-weight: normal; line-height: 30%; text-align: center;}"); */
-
-  // this is just 2
-
-  g_fn_prtlin( "    .expressed { ");
-  g_fn_prtlin( "      background-color: #f7ebd1;");
-//  g_fn_prtlin( "      margin-left: 8em;");
-  g_fn_prtlin( "      width: 360%;");
-//  g_fn_prtlin( "      color: red;");
-  g_fn_prtlin( "      font-size: 2.5em;");
-  g_fn_prtlin( "      margin:0 auto;");
-  g_fn_prtlin( "    }");
-
-  g_fn_prtlin( "    .linehite_0120 { ");        // blank line with countMinus == 0 (line with pluses +++)
-  g_fn_prtlin( "      line-height: 1.2;");    // stars line with countMinus == 0 (line with pluses +++)
-  g_fn_prtlin( "    }");
-
-  g_fn_prtlin( "    .linehite_0240 { ");        // blank line with countMinus == 1
-  g_fn_prtlin( "      line-height: 2.4;");
-  g_fn_prtlin( "    }");
-  g_fn_prtlin( "    .linehite_0160 { ");        // blank line with countMinus >= 2
-  g_fn_prtlin( "      line-height: 1.6;");
-  g_fn_prtlin( "    }");
-  g_fn_prtlin( "    .linehite_0000 { ");        // stars line with countMinus == 1
-  g_fn_prtlin( "      line-height: 0.0;");
-  g_fn_prtlin( "    }");
-  g_fn_prtlin( "    .linehite_0050 { ");          // stars line with countMinus >= 2 + lots of other lines
-  g_fn_prtlin( "      line-height: 0.5;");
-  g_fn_prtlin( "    }");
-
-
-  g_fn_prtlin( "    PRE {");
-  g_fn_prtlin( "      display: inline;");   // NEEDED ?
-  g_fn_prtlin( "      background-color: #fcfce0;");
-//  g_fn_prtlin( "      font-size: 0.6em;");         // GOLD order #3
-  g_fn_prtlin( "    }");
-/*   g_fn_prtlin( "      padding: 1%;"); */
-//  g_fn_prtlin( "      display: inline-block;");
-/*   g_fn_prtlin( "      border-style: solid;"); */
-
-/*   g_fn_prtlin( "      border-color: black;"); */
-/*   g_fn_prtlin( "      border-width: 2px;"); */
-/*   g_fn_prtlin( "      border-color: #e4dfae;"); */
-/*   g_fn_prtlin( "      border-width: 5px;"); */
-
-/*   g_fn_prtlin( "      display: inline-block;"); */
-
-/*   g_fn_prtlin( "      border: none;"); */
-/*   g_fn_prtlin( "      border-collapse: collapse;"); */
-/*   g_fn_prtlin( "      border-spacing: 0;"); */
-/*       border-collapse: collapse; */
-/*   g_fn_prtlin( "      font-family: Andale Mono, Monospace, Courier New;"); */
-/*   g_fn_prtlin( "      font-weight: normal;"); */
-/*   g_fn_prtlin( "      font-size:   65%;"); */
-/*   g_fn_prtlin( "      font-size:   75%;"); */
-/*   g_fn_prtlin( "      line-height: 70%;"); */
-/*   g_fn_prtlin( "      line-height: 100%;"); */
-//  g_fn_prtlin( "      margin:0 auto;");
-
-/*   g_fn_prtlin( "      padding-left: 5%;"); */
-/*   g_fn_prtlin( "      padding-right:5%;"); */
-/*   g_fn_prtlin( "      text-align: center;"); */
-/*   g_fn_prtlin( "    P { "); */
-/*   g_fn_prtlin( "      font-family: Andale Mono, Menlo, Monospace, Courier New;"); */
-/*   g_fn_prtlin( "      width: auto;"); */
-/*   g_fn_prtlin( "      font-size:   80%;"); */
-/*   g_fn_prtlin( "      margin-top: 0;"); */
-/*   g_fn_prtlin( "      margin-bottom: 0;"); */
-/*   g_fn_prtlin( "      margin-left: auto;"); */
-/*   g_fn_prtlin( "      margin-right:auto;"); */
-/*   g_fn_prtlin( "      text-align: left;"); */
-/*   g_fn_prtlin( "    }"); */
-
-  g_fn_prtlin( "    .myTitle {");
-  g_fn_prtlin( "      margin-top: 0.2em;");
-//  g_fn_prtlin( "      margin-bottom: 1.2em;");
-  g_fn_prtlin( "      margin-bottom: 0.2em;");
-//  g_fn_prtlin( "      margin-left: 2em;");
-//  f_fn_prtlin( "      text-align: center;");      // GOLD order #1
-  g_fn_prtlin( "      text-align: left;");      // GOLD order #1
-     // are putting spaces in code to center
-//  g_fn_prtlin( "      width: 300%m;");             // GOLD order #2
-  g_fn_prtlin( "      font-size: 3.0em;");         // GOLD order #3
-  g_fn_prtlin( "      font-weight: bold;"); 
-  g_fn_prtlin( "      background-color: #F7ebd1;");
-  g_fn_prtlin( "      white-space: pre ; display: block; unicode-bidi: embed");
-  g_fn_prtlin( "    }");
-
-  g_fn_prtlin( "    .checkoutbestmatch {");
-  //g_fn_prtlin( "      background-color: #fcfce0;");
-  g_fn_prtlin( "      margin-top: -0.8em;");
-  g_fn_prtlin( "      margin-left: 5.5em;");
-  g_fn_prtlin( "      text-align: left;");      // GOLD order #1
-//  g_fn_prtlin( "      width: 240%;");             // GOLD order #2  *BUT* width  AFFECTS OTHER BLOCKS
-  g_fn_prtlin( "      font-size: 1.0em;");  /* gold order #3 */
-  //g_fn_prtlin( "      line-height: 130%;");  
-  g_fn_prtlin( "      margin-bottom: 3em;");  // MUST BE ABOVE "white-space: pre;"
-  g_fn_prtlin( "      white-space: pre ; display: block; unicode-bidi: embed");
-  g_fn_prtlin( "    }");
-
-  g_fn_prtlin( "    .explproportion{");
-//  g_fn_prtlin( "      background-color: #fcfce0;");
-
-  g_fn_prtlin( "      padding-top: 0;");
-
-  g_fn_prtlin( "      padding-bottom: 0;");
-//  g_fn_prtlin( "      padding-bottom: -8.0em;");
-
-//  g_fn_prtlin( "      margin-top: 0.1em;");
-
-//  g_fn_prtlin( "      margin-top: -2.0em;");
-
-  g_fn_prtlin( "      margin-left: 1em;");
-  g_fn_prtlin( "      text-align: left;");      // GOLD order #1
-//  g_fn_prtlin( "      width: 240%;");             // GOLD order #2  *BUT* width  AFFECTS OTHER BLOCKS
-
-  g_fn_prtlin( "      font-size: 1.0em;");  /* gold order #3 */
-
-//  g_fn_prtlin( "      line-height: 150%;");  
-//  g_fn_prtlin( "      line-height: 115%;");  
-//  g_fn_prtlin( "      line-height: 1.2em;");  
-//  g_fn_prtlin( "      line-height: 1.5em;"); 
-  g_fn_prtlin( "      line-height: 1.2em;"); 
-//  g_fn_prtlin( "      margin-bottom: 0.1em;");  // MUST BE ABOVE "white-space: pre;"
-  g_fn_prtlin( "      margin-bottom: -2.0em;");  // MUST BE ABOVE "white-space: pre;"
-//  g_fn_prtlin( "      white-space: pre ; width: 100%; display: block; unicode-bidi: embed");
-  g_fn_prtlin( "      white-space: pre ;              display: block; unicode-bidi: embed");
-  g_fn_prtlin( "    }");
-
-
-//  g_fn_prtlin( "    .bgwide { background-color: #f00; width: 100%; height: 100%; display: block; } ");
-//  g_fn_prtlin( "    .bgwide { background-color: #f00; width: 100%;  display: inline-block; } ");
-//  g_fn_prtlin( "    .bgwide { background-color: #f00; overflow-x: hidden; width: 333%; } ");
-
-
-//  p_fn_prtlin( "     overflow-x: hidden; ");    // webview
-//  p_fn_prtlin( "      width: 300%;");             // GOLD order #2
-
-
-//  g_fn_prtlin( "    .aroundTop {");
-////table { table-layout:fixed }
-//  g_fn_prtlin( "      table-layout:fixed  ");
+// now rpt is tblrpt
+//
+//  /* 1. read until [beg_topinfo1]  (name)  (skipping [beg_program])
+//  */
+//  for (i=0; ; i++) {
+//    g_docin_get(doclin);
+//    if (strstr(doclin, "[beg_topinfo1]") != NULL) break;
+//  }
+//  /* then save lines until graph until [end_topinfo1] 
+//  * then put out html 
+//  */
+//  for (i=0; ; i++) {
+//    g_docin_get(doclin);
+//    if (strstr(doclin, "[end_topinfo1]") != NULL) break;
+//    strcpy(arr(i), doclin);               //  HERE's where arr(0) and arr(1) get populated
+//  }
+//
+///*   at end, change to STRICT  */
+//  g_fn_prtlin( "<!doctype html public \"-//w3c//dtd html 4.01 transitional//en\" ");
+//  g_fn_prtlin( "  \"http://www.w3.org/TR/html4/loose.dtd\">");
+//
+//  g_fn_prtlin( "<html>");
+//  g_fn_prtlin( "\n<head>");
+//
+//
+//
+//
+//  /* HTML HEAD <TITLE>  this appears in browser tab and tooltip when hover
+//  */
+//
+//
+///*   sprintf(writebuf, "  <title>%s+%s Compatibility, produced by iPhone app %s.</title>",arr(0),arr(1), APP_NAME); */
+///*   g_fn_prtlin(writebuf); */
+//
+//
+//  /* if HTML filename, gbl_ffnameHTML, has any slashes, grab the basename
+//  */
+//  char myBaseName[256], *myptr;
+//  if (sfind(gbl_gfnameHTML, '/')) {
+//    myptr = strrchr(gbl_gfnameHTML, '/');
+//    strcpy(myBaseName, myptr + 1);
+//  } else {
+//    strcpy(myBaseName, gbl_gfnameHTML);
+//  }
+//  sprintf(writebuf, "  <title>%s</title>", myBaseName);
+//  g_fn_prtlin(writebuf);
+//  
+//
+//
+//  /* HEAD  META
+//  */
+//  sprintf(writebuf, "  <meta name=\"description\" content=\"Report of compatibility of 2 people produced by iPhone app %s\"> ", APP_NAME);
+//  g_fn_prtlin(writebuf);
+//
+//
+///*   g_fn_prtlin( "  <meta http-equiv=\"Content-Type\" content=\"text/html\"; charset=\"iso-8859-1\">");  */
+//  g_fn_prtlin( "  <meta http-equiv=\"Content-Type\" content=\"text/html\"; charset=\"UTF-8\">"); 
+///*   g_fn_prtlin( "  <meta name=\"Author\" content=\"Author goes here\">"); */
+//
+//
+///*   g_fn_prtlin( "  <meta name=\"keywords\" content=\"group,group member,compatibility,year in the life,astrology,future,personality,GMCR\"> "); */
+///*   g_fn_prtlin( "  <meta name=\"keywords\" content=\"BFF,astrology,compatibility,group,best,match,calendar,year,stress,personality\"> "); */
+///*   g_fn_prtlin( "  <meta name=\"keywords\" content=\"measure,group,member,best,match,calendar,year,passionate,personality\"> "); */
+///*   g_fn_prtlin( "  <meta name=\"keywords\" content=\"women,woman,female,BFF,compatibility,group,best,match,personality,stress,calendar,year\"> "); */ /* 86 chars */ 
+//  g_fn_prtlin( "  <meta name=\"keywords\" content=\"women,woman,female,BFF,me,compatibility,group,best,match,personality,stress,calendar,year\"> ");  /* 89 chars */
+//
+//  /* get rid of CHROME translate "this page is in Galician" 
+//  * do you want to translate?
+//  */
+//  g_fn_prtlin("  <meta name=\"google\" content=\"notranslate\">");
+//  g_fn_prtlin("  <meta http-equiv=\"Content-Language\" content=\"en\" />");
+//
+//
+//  /* Using the Viewport Meta Tag  (in iOS webView)
+//  * https://developer.apple.com/library/safari/documentation/AppleApplications/Reference/SafariWebContent/UsingtheViewport/UsingtheViewport.html#//apple_ref/doc/uid/TP40006509-SW25
+//  *
+//  * For example, TO SET THE VIEWPORT WIDTH TO THE WIDTH OF THE DEVICE, add this to your HTML file:
+//  * <meta name="viewport" content="width=device-width"> 
+//  * To set the initial scale to 1.0, add this to your HTML file:
+//  * <meta name="viewport" content="initial-scale=1.0"> 
+//  * To set the initial scale and to turn off user scaling, add this to your HTML file:
+//  * <meta name="viewport" content="initial-scale=2.3, user-scalable=no">
+//  */
+//
+//  g_fn_prtlin("  <meta name=\"viewport\" content=\"width=device-width\" />");   //  ORIG   ORIG
+//
+//
+//  // THIS IS WEBVIEW VERSION
+//
+//  
+////  g_fn_prtlin("  <meta name=\"viewport\" content=\"width=device-width, initial-scale=0.33, minimum-scale=0.33, maximum-scale=0.33 \" />");  // webview  OK <6=no
+////  g_fn_prtlin("  <meta name=\"viewport\" content=\"width=device-width initial-scale=0.56 minimum-scale=0.56; \" />");  // webview  OK <6=no
+////  g_fn_prtlin("  <meta name=\"viewport\" content=\"width=device-width, initial-scale=2.0, minimum-scale=2.0, maximum-scale=2.0\" />");  // webview  OK <6=no
+//
+//
+//  g_fn_prtlin("  <meta name = \"format-detection\" content = \"telephone=no\">");
+//
+//
+//  /* HEAD   STYLE/CSS
+//  */
+//  g_fn_prtlin( "\n  <style type=\"text/css\">");
+//  g_fn_prtlin( "    @media print { TABLE { font-size: 50%; } }");
+//
+//
+//  g_fn_prtlin( "    BODY {");   // WEBVIEW grpof2
+//
+///*  g_fn_prtlin( "      background-color: #F5EFCF;"); */
+//  g_fn_prtlin( "      background-color: #f7ebd1;");
+//
+///*   g_fn_prtlin( "      font-family: Trebuchet MS, Arial, Verdana, sans-serif;"); */
+//  g_fn_prtlin( "      font-family: Menlo, Andale Mono, Monospace, Courier New;");
+//
+//  g_fn_prtlin( "      font-size:   medium;");
+//  g_fn_prtlin( "      font-weight: normal;");
+//  g_fn_prtlin( "      text-align:  center;");
+///*   g_fn_prtlin( "    <!-- "); */
+///*   g_fn_prtlin( "      background-image: url('mkgif1g.gif');"); */
+///*   g_fn_prtlin( "    --> "); */
 //  g_fn_prtlin( "    }");
-
-  g_fn_prtlin( "    .categoryTable {");
-//  g_fn_prtlin( "      width: 70%;");
-//  g_fn_prtlin( "      font-size: 80%;");
-  g_fn_prtlin( "      font-size: 100%;");
-  g_fn_prtlin( "      background-color: #fcfce0;");
-  g_fn_prtlin( "    }");
-
-
-  g_fn_prtlin( "    .foreachcat {");
-  g_fn_prtlin( "     overflow-x: hidden; ");    // webview
-  g_fn_prtlin( "      text-align: left;");      // GOLD order #1
-
-//  g_fn_prtlin( "      width: 360%;");             // GOLD order #2
-//  g_fn_prtlin( "      width: 300%;");             // GOLD order #2
-//  g_fn_prtlin( "      width: 350%;");             // GOLD order #2
-//  g_fn_prtlin( "      width: 340%;");             // GOLD order #2  ok
-//  g_fn_prtlin( "      width: 345%;");             // GOLD order #2
-
-//  g_fn_prtlin( "      width: 360%;");             // GOLD order #2
-//  g_fn_prtlin( "      width: 400%;");             // GOLD order #2
-  g_fn_prtlin( "      width: 370%;");             // GOLD order #2
-//<.>
-//  g_fn_prtlin( "      width: 360%;");             // GOLD order #2
-
-//  g_fn_prtlin( "      font-size: 1.7em;"); 
-//  g_fn_prtlin( "      font-size: 1.5em;"); 
-//  g_fn_prtlin( "      font-size: 1.2em;"); 
-  g_fn_prtlin( "      font-size: 1.5em;"); 
-
-  g_fn_prtlin( "      background-color: #fcfce0;");
-//  g_fn_prtlin( "      text-align: left;");      // GOLD order #1
-
-//  g_fn_prtlin( "      line-height: 1.2em;");
-//  g_fn_prtlin( "      line-height: 1.33em;");
+//
+///*   g_fn_prtlin( "    H1 { font-size: 137%; font-weight: bold;   line-height: 95%; text-align: center;}"); */
+///*   g_fn_prtlin( "    H2 { font-size: 137%; font-weight: bold;   line-height: 25%; text-align: center;}"); */
+///*   g_fn_prtlin( "    H3 { font-size: 110%; font-weight: normal; line-height: 30%; text-align: center;}"); */
+///*   g_fn_prtlin( "    H1 { font-size: 137%; font-weight: bold;   line-height: 15%; text-align: center;}"); */
+//  g_fn_prtlin( "    H1 { font-size: 137%; font-weight: bold;   line-height: 100%; text-align: center;}");
+//  g_fn_prtlin( "    H2 { font-size: 120%; font-weight: bold;   line-height: 95%; text-align: center;}");
+//  g_fn_prtlin( "    H3 { font-size: 110%; font-weight: normal; line-height: 95%; text-align: center;}");
+//
+//  g_fn_prtlin( "    H4 { font-size:  75%; font-weight: bold;   line-height: 30%; text-align: center;}");
+//  g_fn_prtlin( "    H5 { font-size:  70%; font-weight: normal; line-height: 30%; text-align: center;}");
+//
+//
+///*   g_fn_prtlin( "    H4 { font-size:  85%; font-weight: bold;   line-height: 30%; text-align: center;}"); */
+///*   g_fn_prtlin( "    H5 { font-size:  55%; font-weight: normal; line-height: 90%; text-align: center;}"); */
+///*   g_fn_prtlin( "    H5 { font-size:  70%; font-weight: normal; line-height: 30%; text-align: center;}"); */
+//
+//  // this is just 2
+//
+//  g_fn_prtlin( "    .expressed { ");
+//  g_fn_prtlin( "      background-color: #f7ebd1;");
+////  g_fn_prtlin( "      margin-left: 8em;");
+//  g_fn_prtlin( "      width: 360%;");
+////  g_fn_prtlin( "      color: red;");
+//  g_fn_prtlin( "      font-size: 2.5em;");
+//  g_fn_prtlin( "      margin:0 auto;");
+//  g_fn_prtlin( "    }");
+//
+//  g_fn_prtlin( "    .linehite_0120 { ");        // blank line with countMinus == 0 (line with pluses +++)
+//  g_fn_prtlin( "      line-height: 1.2;");    // stars line with countMinus == 0 (line with pluses +++)
+//  g_fn_prtlin( "    }");
+//
+//  g_fn_prtlin( "    .linehite_0240 { ");        // blank line with countMinus == 1
+//  g_fn_prtlin( "      line-height: 2.4;");
+//  g_fn_prtlin( "    }");
+//  g_fn_prtlin( "    .linehite_0160 { ");        // blank line with countMinus >= 2
 //  g_fn_prtlin( "      line-height: 1.6;");
-//  g_fn_prtlin( "      line-height: 1.45;");
-  g_fn_prtlin( "      line-height: 1.45em;");
-
-  g_fn_prtlin( "      white-space: pre; display: block; unicode-bidi: embed; ");
-  g_fn_prtlin( "    }");
-
-
-  g_fn_prtlin( "    .foreachcat2 {");  // not used for now  20150513
-//  g_fn_prtlin( "      margin-top: -3.0em;");  // MUST BE ABOVE "white-space: pre;"
-//  g_fn_prtlin( "      margin-right: 7.0em;");
-  g_fn_prtlin( "     overflow-x: hidden; ");    // webview
-  g_fn_prtlin( "      text-align: left;");      // GOLD order #1
-//  g_fn_prtlin( "      width: 360%;");             // GOLD order #2
-//  g_fn_prtlin( "      width: 100%;");             // GOLD order #2
-//  g_fn_prtlin( "      width: 250%;");             // GOLD order #2
-//  g_fn_prtlin( "      width: 300%;");             // GOLD order #2
-//  g_fn_prtlin( "      width: 330%;");             // GOLD order #2
-  g_fn_prtlin( "      width: 360%;");             // GOLD order #2
-//  g_fn_prtlin( "      font-size: 1.2em;"); 
-//  g_fn_prtlin( "      font-size: 0.1em;"); 
-//  g_fn_prtlin( "      font-size: 0em;"); 
-//  g_fn_prtlin( "      font-size: 1.2em;"); 
-//  g_fn_prtlin( "      font-size: 0.4em;"); 
-  g_fn_prtlin( "      background-color: #fcfce0;");
-  g_fn_prtlin( "      color: #fcfce0;");
-//  g_fn_prtlin( "      line-height: 1.45em;");
-  g_fn_prtlin( "      line-height: 0.5em;");
-  g_fn_prtlin( "      white-space: pre; display: block; unicode-bidi: embed; ");
-  g_fn_prtlin( "    }");
-
-
-  // this is just 2
-
-
-  g_fn_prtlin( "    .aspectPara {");
-  g_fn_prtlin( "      background-color: #F7ebd1;");
- // p_fn_prtlin( "      margin-left: 2.5em;");
-  g_fn_prtlin( "      margin-left: 0.5em;");
-  g_fn_prtlin( "      margin-right: 0.5em;"); 
-  g_fn_prtlin( "      margin-top: 2em;");
-  g_fn_prtlin( "      line-height: 130%;");  
-  g_fn_prtlin( "      text-align: left;");      // GOLD order #1
-//  p_fn_prtlin( "      width: 333%;");             // GOLD order #2
-//  g_fn_prtlin( "      width: 300%;");             // GOLD order #2
-  g_fn_prtlin( "      width: 360%;");             // GOLD order #2
-  
-//  g_fn_prtlin( "      font-size: 1.25em;");  /* gold order #3 */
-//  g_fn_prtlin( "      font-size: 2.5em;");  /* gold order #3 */
-//  g_fn_prtlin( "      font-size: 1.5em;");  /* gold order #3 */
-  g_fn_prtlin( "      font-size: 2.0em;");  /* gold order #3 */
-
-//  g_fn_prtlin( "      color:green;"); // for test
-  g_fn_prtlin( "      white-space: pre ; display: block; unicode-bidi: embed");
-  g_fn_prtlin( "    }");
-
-
-
-  g_fn_prtlin( "    .categories{");
-
-//  g_fn_prtlin( "     width: 100%; ");
-
-
-//  g_fn_prtlin( "     background-color: #f00; width: 100%;  display: inline-block;  ");
-
-//  g_fn_prtlin( "     overflow-x: hidden; ");    // webview
-
-//  g_fn_prtlin( "      width: 300%;  display: inline-block;  ");
-//  g_fn_prtlin( "      width: 300%; ");
-//  g_fn_prtlin( "      width: 250%; ");
-//  g_fn_prtlin( "      width: 400%; ");
-//  g_fn_prtlin( "      width: 340%; ");
-//  g_fn_prtlin( "      width: 320%; ");
-//  g_fn_prtlin( "      width: 270%; ");
-//  g_fn_prtlin( "      width: 380%; ");
-//  g_fn_prtlin( "      width: 360%; ");
-//  g_fn_prtlin( "      width: 350%; ");
-  g_fn_prtlin( "      background-color: #fcfce0;");
-
-
-  g_fn_prtlin( "      padding-top: 0;");
-//  g_fn_prtlin( "      margin-top: -1.2em;");
-
-//  g_fn_prtlin( "      margin-left: 0.5em;");
-
-//  g_fn_prtlin( "      padding-bottom: -2.5em;");
-//  g_fn_prtlin( "      margin-bottom: -2.5em;");
-  g_fn_prtlin( "      text-align: left;");      // GOLD order #1
-//  g_fn_prtlin( "      width: 240%;");             // GOLD order #2  *BUT* width  AFFECTS OTHER BLOCKS
-
-  g_fn_prtlin( "      font-size: 0.8em;");  /* gold order #3 */
-//  g_fn_prtlin( "      font-size: 0.8em;");  /* gold order #3 */
-  //g_fn_prtlin( "      line-height: 130%;");  
-
-  g_fn_prtlin( "      margin-bottom: 3em;");  // MUST BE ABOVE "white-space: pre;"
-//  g_fn_prtlin( "      margin-bottom: -2.5em;"); 
-
-  g_fn_prtlin( "      white-space: pre ; display: block; unicode-bidi: embed");
-
-//  g_fn_prtlin( "     background-color: #f00; width: 300%; overflow-x: hidden;  display: block;  ");
-//  g_fn_prtlin( "     background-color: #f00; width: 200%; overflow-x: hidden;  display: block;  ");
-//  g_fn_prtlin( "     background-color: #f00; width: 160%; overflow-x: hidden;  display: inline-block;  ");
-//  g_fn_prtlin( "     background-color: #f00; width: 200%; overflow-x: hidden;                          ");
-
-  g_fn_prtlin( "    }");
-
-
-  g_fn_prtlin( "    P { ");
-  g_fn_prtlin( "      display: inline;");
-  g_fn_prtlin( "      margin:0 auto;");
-  g_fn_prtlin( "      background-color: #f7ebd1;");
-  g_fn_prtlin( "    }");
-
-
-  // this is just 2
-
-
-
-  g_fn_prtlin( "    .explpotential{");
-//  g_fn_prtlin( "      width: 250%;");
+//  g_fn_prtlin( "    }");
+//  g_fn_prtlin( "    .linehite_0000 { ");        // stars line with countMinus == 1
+//  g_fn_prtlin( "      line-height: 0.0;");
+//  g_fn_prtlin( "    }");
+//  g_fn_prtlin( "    .linehite_0050 { ");          // stars line with countMinus >= 2 + lots of other lines
+//  g_fn_prtlin( "      line-height: 0.5;");
+//  g_fn_prtlin( "    }");
+//
+//
+//  g_fn_prtlin( "    PRE {");
+//  g_fn_prtlin( "      display: inline;");   // NEEDED ?
 //  g_fn_prtlin( "      background-color: #fcfce0;");
-  g_fn_prtlin( "      padding-top: 0;");
-  g_fn_prtlin( "      padding-bottom: 0;");
-
-//  g_fn_prtlin( "      margin-top: -4.3em;");
-
-//  g_fn_prtlin( "      margin-left: 0.3em;");
-//  g_fn_prtlin( "      margin-left: 1.5em;");
-//  g_fn_prtlin( "      margin-left: 3.0em;");
-  g_fn_prtlin( "      margin-left: 2.3em;");
-
-  g_fn_prtlin( "      text-align: left;");      // GOLD order #1
-//  g_fn_prtlin( "      width: 240%;");             // GOLD order #2  *BUT* width  AFFECTS OTHER BLOCKS
-
-//  g_fn_prtlin( "      font-size: 1.0em;");  /* gold order #3 */
-//  g_fn_prtlin( "      font-size: 3.0em;");  /* gold order #3 */
-//  g_fn_prtlin( "      font-size: 2.0em;");  /* gold order #3 */
-//  g_fn_prtlin( "      font-size: 1.5em;");  /* gold order #3 */
-//  g_fn_prtlin( "      font-size: 2.5em;");  /* gold order #3 */
-  g_fn_prtlin( "      font-size: 2.0em;");  /* gold order #3 */
-
-
-
-//  g_fn_prtlin( "      font-size: 1.0em;");  /* gold order #3 */
-  //g_fn_prtlin( "      line-height: 130%;");  
-//  g_fn_prtlin( "      margin-top: -2.0em;");  
-//  g_fn_prtlin( "      margin-top: -1.0em;");  
-  g_fn_prtlin( "      margin-top: -0.5em;");  
-  g_fn_prtlin( "      margin-bottom: 0.1em;");  // MUST BE ABOVE "white-space: pre;"
-  g_fn_prtlin( "      white-space: pre ; display: block; unicode-bidi: embed");
-  g_fn_prtlin( "    }");
-
-
-  g_fn_prtlin( "    .explrelationship{");
-//  g_fn_prtlin( "      background-color: #fcfce0;");
-//  g_fn_prtlin( "      width: 250%;");
-  g_fn_prtlin( "      padding-top: 0;");
-  g_fn_prtlin( "      padding-bottom: 0;");
-//  g_fn_prtlin( "      margin-top: 2em;");
-  g_fn_prtlin( "      margin-top: 1em;");
-
-//  g_fn_prtlin( "      margin-left: 3.8em;");
-//  g_fn_prtlin( "      margin-left: 1.5em;");
-//  g_fn_prtlin( "      margin-left: 2.1em;");
-//  g_fn_prtlin( "      margin-left: 2.7em;");
-//  g_fn_prtlin( "      margin-left: 5.7em;");
-//  g_fn_prtlin( "      margin-left: 4.1em;");
-  g_fn_prtlin( "      margin-left: 3.7em;");
-
-  g_fn_prtlin( "      text-align: left;");      // GOLD order #1
-//  g_fn_prtlin( "      width: 240%;");             // GOLD order #2  *BUT* width  AFFECTS OTHER BLOCKS
-
-//  g_fn_prtlin( "      font-size: 1.0em;");  /* gold order #3 */
-//  g_fn_prtlin( "      font-size: 1.4em;");  /* gold order #3 */
-//  g_fn_prtlin( "      font-size: 1.2em;");  /* gold order #3 */
-//  g_fn_prtlin( "      font-size: 1.1em;");  /* gold order #3 */
-
-//  g_fn_prtlin( "      font-size: 2.0em;");  /* gold order #3 */
-//  g_fn_prtlin( "      font-size: 1.6em;");  /* gold order #3 */
-//  g_fn_prtlin( "      font-size: 2.0em;");  /* gold order #3 */
-  g_fn_prtlin( "      font-size: 1.8em;");  /* gold order #3 */
-
-  //g_fn_prtlin( "      line-height: 130%;");  
-
-  g_fn_prtlin( "      margin-bottom: 0.1em;");  // MUST BE ABOVE "white-space: pre;"
-//  g_fn_prtlin( "      margin-bottom: -2.0em;");  // MUST BE ABOVE "white-space: pre;"
-
-  g_fn_prtlin( "      white-space: pre ; display: block; unicode-bidi: embed");
-  g_fn_prtlin( "    }");
-
-
-  g_fn_prtlin( "    .appby{");
-//  g_fn_prtlin( "      background-color: #fcfce0;");
-  g_fn_prtlin( "      padding-top: 0;");
-  g_fn_prtlin( "      padding-bottom: 0;");
-//  g_fn_prtlin( "      margin-top: 1.5em;");
-  g_fn_prtlin( "      margin-top: 1.0em;");
-
-//  g_fn_prtlin( "      margin-left: 12em;");
-//  g_fn_prtlin( "      margin-left: 6.5em;");
-//  g_fn_prtlin( "      margin-left: 3em;");
-//  g_fn_prtlin( "      margin-left: 4.5em;");
-//  g_fn_prtlin( "      margin-left: 8em;");
-//  g_fn_prtlin( "      margin-left: 11em;");
-  g_fn_prtlin( "      margin-left: 9.5em;");
-
-  g_fn_prtlin( "      text-align: left;");      // GOLD order #1
-//  g_fn_prtlin( "      width: 240%;");             // GOLD order #2  *BUT* width  AFFECTS OTHER BLOCKS
-
-//  g_fn_prtlin( "      font-size: 0.8em;");  /* gold order #3 */
-//  g_fn_prtlin( "      font-size: 1.5em;");  /* gold order #3 */
-//  g_fn_prtlin( "      font-size: 1.0em;");  /* gold order #3 */
-  g_fn_prtlin( "      font-size: 1.5em;");  /* gold order #3 */
-
-  //g_fn_prtlin( "      line-height: 130%;");  
-  g_fn_prtlin( "      margin-bottom: 0.1em;");  // MUST BE ABOVE "white-space: pre;"
-  g_fn_prtlin( "      white-space: pre ; display: block; unicode-bidi: embed");
-  g_fn_prtlin( "    }");
-
-
-  g_fn_prtlin( "    .entertainment {");
-  g_fn_prtlin( "      text-align: left;");
-  g_fn_prtlin( "      margin-top: -1.0em;");  // MUST BE ABOVE "white-space: pre;"
-//  g_fn_prtlin( "      margin-left: 9em;");
-//  g_fn_prtlin( "      margin-left: 4em;");
-//  g_fn_prtlin( "      margin-left: 8em;");
-  g_fn_prtlin( "      margin-left: 7em;");
-//  g_fn_prtlin( "      width: 150%;");             // GOLD order #2
+////  g_fn_prtlin( "      font-size: 0.6em;");         // GOLD order #3
+//  g_fn_prtlin( "    }");
+///*   g_fn_prtlin( "      padding: 1%;"); */
+////  g_fn_prtlin( "      display: inline-block;");
+///*   g_fn_prtlin( "      border-style: solid;"); */
+//
+///*   g_fn_prtlin( "      border-color: black;"); */
+///*   g_fn_prtlin( "      border-width: 2px;"); */
+///*   g_fn_prtlin( "      border-color: #e4dfae;"); */
+///*   g_fn_prtlin( "      border-width: 5px;"); */
+//
+///*   g_fn_prtlin( "      display: inline-block;"); */
+//
+///*   g_fn_prtlin( "      border: none;"); */
+///*   g_fn_prtlin( "      border-collapse: collapse;"); */
+///*   g_fn_prtlin( "      border-spacing: 0;"); */
+///*       border-collapse: collapse; */
+///*   g_fn_prtlin( "      font-family: Andale Mono, Monospace, Courier New;"); */
+///*   g_fn_prtlin( "      font-weight: normal;"); */
+///*   g_fn_prtlin( "      font-size:   65%;"); */
+///*   g_fn_prtlin( "      font-size:   75%;"); */
+///*   g_fn_prtlin( "      line-height: 70%;"); */
+///*   g_fn_prtlin( "      line-height: 100%;"); */
+////  g_fn_prtlin( "      margin:0 auto;");
+//
+///*   g_fn_prtlin( "      padding-left: 5%;"); */
+///*   g_fn_prtlin( "      padding-right:5%;"); */
+///*   g_fn_prtlin( "      text-align: center;"); */
+///*   g_fn_prtlin( "    P { "); */
+///*   g_fn_prtlin( "      font-family: Andale Mono, Menlo, Monospace, Courier New;"); */
+///*   g_fn_prtlin( "      width: auto;"); */
+///*   g_fn_prtlin( "      font-size:   80%;"); */
+///*   g_fn_prtlin( "      margin-top: 0;"); */
+///*   g_fn_prtlin( "      margin-bottom: 0;"); */
+///*   g_fn_prtlin( "      margin-left: auto;"); */
+///*   g_fn_prtlin( "      margin-right:auto;"); */
+///*   g_fn_prtlin( "      text-align: left;"); */
+///*   g_fn_prtlin( "    }"); */
+//
+//  g_fn_prtlin( "    .myTitle {");
+//  g_fn_prtlin( "      margin-top: 0.2em;");
+////  g_fn_prtlin( "      margin-bottom: 1.2em;");
+//  g_fn_prtlin( "      margin-bottom: 0.2em;");
+////  g_fn_prtlin( "      margin-left: 2em;");
+////  f_fn_prtlin( "      text-align: center;");      // GOLD order #1
+//  g_fn_prtlin( "      text-align: left;");      // GOLD order #1
+//     // are putting spaces in code to center
+////  g_fn_prtlin( "      width: 300%m;");             // GOLD order #2
+//  g_fn_prtlin( "      font-size: 3.0em;");         // GOLD order #3
+//  g_fn_prtlin( "      font-weight: bold;"); 
 //  g_fn_prtlin( "      background-color: #F7ebd1;");
-
-//  g_fn_prtlin( "      font-size: 0.8em;");
-//  g_fn_prtlin( "      font-size: 1.6em;");
-//  g_fn_prtlin( "      font-size: 1.1em;");
-  g_fn_prtlin( "      font-size: 1.5em;");
-  g_fn_prtlin( "      font-weight: bold;");
-
-  g_fn_prtlin( "      color:#FF0000;");  // RED print
-  g_fn_prtlin( "      white-space: pre ; display: block; unicode-bidi: embed");
-/*   p_fn_prtlin( "      font-size: 130%;");  */
-  g_fn_prtlin( "    }");
-
-
-  // this is just 2
-
-
-/* for table: */
-/*       border: 2px solid black; */
-/*       cellspacing: 0; */
-/*       border-top: 0; */
-/*       border-bottom: 0; */
-
-/* TABLE TABLE TABLE TABLE TABLE TABLE TABLE TABLE */
-/*   g_fn_prtlin( "    table {");
-*   g_fn_prtlin( "      border-collapse: collapse;");
-*   g_fn_prtlin( "      border-spacing: 0;");
-*   g_fn_prtlin( "    }");
-*   g_fn_prtlin( "    table.center {");
-*   g_fn_prtlin( "      margin-left:auto;");
-*   g_fn_prtlin( "      margin-right:auto;");
-*   g_fn_prtlin( "    }");
-*   g_fn_prtlin( "    TD {");
-*   g_fn_prtlin( "      white-space: nowrap;");
-*   g_fn_prtlin( "      padding: 0;");
-*   g_fn_prtlin( "    }");
-*/
-                               /* new stuff for bottom TABLE */
-//   g_fn_prtlin( "    table {");
-// /*   g_fn_prtlin( "      font-family: Andale Mono, Menlo, Monospace, Courier New;"); */
-//   g_fn_prtlin( "      font-family: Menlo, Andale Mono, Monospace, Courier New;");
-//   g_fn_prtlin( "      text-align: left;");
-// /*   g_fn_prtlin( "      border: 1px solid black;"); */
-//   g_fn_prtlin( "      border-collapse: collapse;");
-//   g_fn_prtlin( "      border-spacing: 0;");
-// /*   g_fn_prtlin( "      padding-right:2%;"); */
-// /*   g_fn_prtlin( "      padding-left:2%;"); */
-//   g_fn_prtlin( "      margin-left: auto;");
-//   g_fn_prtlin( "      margin-right:auto;");
-//   g_fn_prtlin( "    }");
-
-   g_fn_prtlin( "    table {");  // applies to all tables ?  YES, IT DOES !  yay
-   g_fn_prtlin( "      border-collapse: collapse;");
-//   g_fn_prtlin( "      width: 350%;");
-
-//   g_fn_prtlin( "      width: 360%;");
-   g_fn_prtlin( "      width: 340%;");
-
-  g_fn_prtlin( "    }");
-
-
-
-  g_fn_prtlin( "    table.category {");   // webview version
-
-//  g_fn_prtlin( "      margin-left: 2em;");
-
-  g_fn_prtlin( "      width: 360%;");  // magic (matches width of .foreachcat and one other)
-  g_fn_prtlin( "      margin-top: 0em;");
-  g_fn_prtlin( "      margin-bottom: 0em;");
-  g_fn_prtlin( "     border-collapse: collapse;   ");
-  g_fn_prtlin( "      border-spacing: 0;");
-  g_fn_prtlin( "      border: none;");
-  g_fn_prtlin( "      font-size: 1.0em;");
-  g_fn_prtlin( "      background-color: #fcfce0 ;");
-//  g_fn_prtlin( "      background-color: #fcace0 ;");  // for test
-
+//  g_fn_prtlin( "      white-space: pre ; display: block; unicode-bidi: embed");
+//  g_fn_prtlin( "    }");
+//
+//  g_fn_prtlin( "    .checkoutbestmatch {");
+//  //g_fn_prtlin( "      background-color: #fcfce0;");
+//  g_fn_prtlin( "      margin-top: -0.8em;");
+//  g_fn_prtlin( "      margin-left: 5.5em;");
+//  g_fn_prtlin( "      text-align: left;");      // GOLD order #1
+////  g_fn_prtlin( "      width: 240%;");             // GOLD order #2  *BUT* width  AFFECTS OTHER BLOCKS
+//  g_fn_prtlin( "      font-size: 1.0em;");  /* gold order #3 */
+//  //g_fn_prtlin( "      line-height: 130%;");  
+//  g_fn_prtlin( "      margin-bottom: 3em;");  // MUST BE ABOVE "white-space: pre;"
+//  g_fn_prtlin( "      white-space: pre ; display: block; unicode-bidi: embed");
+//  g_fn_prtlin( "    }");
+//
+//  g_fn_prtlin( "    .explproportion{");
+////  g_fn_prtlin( "      background-color: #fcfce0;");
+//
+//  g_fn_prtlin( "      padding-top: 0;");
+//
+//  g_fn_prtlin( "      padding-bottom: 0;");
+////  g_fn_prtlin( "      padding-bottom: -8.0em;");
+//
+////  g_fn_prtlin( "      margin-top: 0.1em;");
+//
+////  g_fn_prtlin( "      margin-top: -2.0em;");
+//
+//  g_fn_prtlin( "      margin-left: 1em;");
+//  g_fn_prtlin( "      text-align: left;");      // GOLD order #1
+////  g_fn_prtlin( "      width: 240%;");             // GOLD order #2  *BUT* width  AFFECTS OTHER BLOCKS
+//
+//  g_fn_prtlin( "      font-size: 1.0em;");  /* gold order #3 */
+//
+////  g_fn_prtlin( "      line-height: 150%;");  
+////  g_fn_prtlin( "      line-height: 115%;");  
+////  g_fn_prtlin( "      line-height: 1.2em;");  
+////  g_fn_prtlin( "      line-height: 1.5em;"); 
+//  g_fn_prtlin( "      line-height: 1.2em;"); 
+////  g_fn_prtlin( "      margin-bottom: 0.1em;");  // MUST BE ABOVE "white-space: pre;"
+//  g_fn_prtlin( "      margin-bottom: -2.0em;");  // MUST BE ABOVE "white-space: pre;"
+////  g_fn_prtlin( "      white-space: pre ; width: 100%; display: block; unicode-bidi: embed");
+//  g_fn_prtlin( "      white-space: pre ;              display: block; unicode-bidi: embed");
+//  g_fn_prtlin( "    }");
+//
+//
+////  g_fn_prtlin( "    .bgwide { background-color: #f00; width: 100%; height: 100%; display: block; } ");
+////  g_fn_prtlin( "    .bgwide { background-color: #f00; width: 100%;  display: inline-block; } ");
+////  g_fn_prtlin( "    .bgwide { background-color: #f00; overflow-x: hidden; width: 333%; } ");
+//
+//
+////  p_fn_prtlin( "     overflow-x: hidden; ");    // webview
+////  p_fn_prtlin( "      width: 300%;");             // GOLD order #2
+//
+//
+////  g_fn_prtlin( "    .aroundTop {");
+//////table { table-layout:fixed }
+////  g_fn_prtlin( "      table-layout:fixed  ");
+////  g_fn_prtlin( "    }");
+//
+//  g_fn_prtlin( "    .categoryTable {");
+////  g_fn_prtlin( "      width: 70%;");
+////  g_fn_prtlin( "      font-size: 80%;");
+//  g_fn_prtlin( "      font-size: 100%;");
+//  g_fn_prtlin( "      background-color: #fcfce0;");
+//  g_fn_prtlin( "    }");
+//
+//
+//  g_fn_prtlin( "    .foreachcat {");
+//  g_fn_prtlin( "     overflow-x: hidden; ");    // webview
+//  g_fn_prtlin( "      text-align: left;");      // GOLD order #1
+//
+////  g_fn_prtlin( "      width: 360%;");             // GOLD order #2
+////  g_fn_prtlin( "      width: 300%;");             // GOLD order #2
+////  g_fn_prtlin( "      width: 350%;");             // GOLD order #2
+////  g_fn_prtlin( "      width: 340%;");             // GOLD order #2  ok
+////  g_fn_prtlin( "      width: 345%;");             // GOLD order #2
+//
+////  g_fn_prtlin( "      width: 360%;");             // GOLD order #2
+////  g_fn_prtlin( "      width: 400%;");             // GOLD order #2
+//  g_fn_prtlin( "      width: 370%;");             // GOLD order #2
+////  g_fn_prtlin( "      width: 360%;");             // GOLD order #2
+//
+////  g_fn_prtlin( "      font-size: 1.7em;"); 
+////  g_fn_prtlin( "      font-size: 1.5em;"); 
+////  g_fn_prtlin( "      font-size: 1.2em;"); 
+//  g_fn_prtlin( "      font-size: 1.5em;"); 
+//
+//  g_fn_prtlin( "      background-color: #fcfce0;");
+////  g_fn_prtlin( "      text-align: left;");      // GOLD order #1
+//
+////  g_fn_prtlin( "      line-height: 1.2em;");
+////  g_fn_prtlin( "      line-height: 1.33em;");
+////  g_fn_prtlin( "      line-height: 1.6;");
+////  g_fn_prtlin( "      line-height: 1.45;");
+//  g_fn_prtlin( "      line-height: 1.45em;");
+//
 //  g_fn_prtlin( "      white-space: pre; display: block; unicode-bidi: embed; ");
-//  g_fn_prtlin( "      white-space: pre;  ");
-//  g_fn_prtlin( "      text-align: left;");
-
-  g_fn_prtlin( "    }");
-
-  g_fn_prtlin( "    table.category tr {");
+//  g_fn_prtlin( "    }");
+//
+//
+//  g_fn_prtlin( "    .foreachcat2 {");  // not used for now  20150513
+////  g_fn_prtlin( "      margin-top: -3.0em;");  // MUST BE ABOVE "white-space: pre;"
+////  g_fn_prtlin( "      margin-right: 7.0em;");
+//  g_fn_prtlin( "     overflow-x: hidden; ");    // webview
+//  g_fn_prtlin( "      text-align: left;");      // GOLD order #1
+////  g_fn_prtlin( "      width: 360%;");             // GOLD order #2
+////  g_fn_prtlin( "      width: 100%;");             // GOLD order #2
+////  g_fn_prtlin( "      width: 250%;");             // GOLD order #2
+////  g_fn_prtlin( "      width: 300%;");             // GOLD order #2
+////  g_fn_prtlin( "      width: 330%;");             // GOLD order #2
+//  g_fn_prtlin( "      width: 360%;");             // GOLD order #2
+////  g_fn_prtlin( "      font-size: 1.2em;"); 
+////  g_fn_prtlin( "      font-size: 0.1em;"); 
+////  g_fn_prtlin( "      font-size: 0em;"); 
+////  g_fn_prtlin( "      font-size: 1.2em;"); 
+////  g_fn_prtlin( "      font-size: 0.4em;"); 
+//  g_fn_prtlin( "      background-color: #fcfce0;");
+//  g_fn_prtlin( "      color: #fcfce0;");
+////  g_fn_prtlin( "      line-height: 1.45em;");
 //  g_fn_prtlin( "      line-height: 0.5em;");
-  g_fn_prtlin( "      margin-top: 0em;");
-  g_fn_prtlin( "      margin-bottom: 0em;");
-  g_fn_prtlin( "      border-spacing: 0;");
-  g_fn_prtlin( "      border-collapse: collapse;");
-  g_fn_prtlin( "      border-spacing: 0;");
-  g_fn_prtlin( "      padding-top: 0px; ");
-  g_fn_prtlin( "      padding-bottom: 0px; ");
-  g_fn_prtlin( "    }");
-  g_fn_prtlin( "    table.category td {");
-  g_fn_prtlin( "      border: none;");
-  g_fn_prtlin( "      border-spacing: 0;");
-  g_fn_prtlin( "      border-collapse: collapse;");
-  g_fn_prtlin( "      padding-top: 0px; ");
-  g_fn_prtlin( "      padding-bottom: 0px; ");
-  g_fn_prtlin( "    }");
-
-
-
-
-  g_fn_prtlin( "    td {");
-/*   g_fn_prtlin( "      font-family: Andale Mono, Menlo, Monospace, Courier New;"); */
-  g_fn_prtlin( "      font-family: Menlo, Andale Mono, Monospace, Courier New;");
-  g_fn_prtlin( "      white-space: pre;");
-
-//  g_fn_prtlin( "      font-size: 90%;");
-//<.>
-
-  g_fn_prtlin( "      text-align: left;");
-
-/*   g_fn_prtlin( "      border: 1px solid black;"); */
-  g_fn_prtlin( "      border-collapse: collapse;");
-  g_fn_prtlin( "      border-spacing: 0;");
-
-/*   g_fn_prtlin( "      padding-left: 10px; "); */
-/*   g_fn_prtlin( "      padding-right: 10px; "); */
-  g_fn_prtlin( "      padding-left: 5px; ");
-  g_fn_prtlin( "      padding-right: 5px; ");
-
-  g_fn_prtlin( "    }");
-  g_fn_prtlin( "    table.center {");
-  g_fn_prtlin( "      margin-left:auto;");
-  g_fn_prtlin( "      margin-right:auto;");
-  g_fn_prtlin( "    }");
-  g_fn_prtlin( "    table.center td{");
-  g_fn_prtlin( "      text-align: center;");
-  g_fn_prtlin( "      font-size: 1.5em;");
-  g_fn_prtlin( "    }");
-
-  // this is just 2
-
-  g_fn_prtlin( "    table.redGreenCenter {");
-  g_fn_prtlin( "      white-space: pre;");
-  g_fn_prtlin( "      margin-top: -3em;");
-  g_fn_prtlin( "      margin-left:auto;");
-  g_fn_prtlin( "      margin-right:auto;");
-  g_fn_prtlin( "    }");
-//  g_fn_prtlin( "    table.redGreenCenter tr {");
+//  g_fn_prtlin( "      white-space: pre; display: block; unicode-bidi: embed; ");
+//  g_fn_prtlin( "    }");
+//
+//
+//  // this is just 2
+//
+//
+//  g_fn_prtlin( "    .aspectPara {");
+//  g_fn_prtlin( "      background-color: #F7ebd1;");
+// // p_fn_prtlin( "      margin-left: 2.5em;");
+//  g_fn_prtlin( "      margin-left: 0.5em;");
+//  g_fn_prtlin( "      margin-right: 0.5em;"); 
+//  g_fn_prtlin( "      margin-top: 2em;");
+//  g_fn_prtlin( "      line-height: 130%;");  
+//  g_fn_prtlin( "      text-align: left;");      // GOLD order #1
+////  p_fn_prtlin( "      width: 333%;");             // GOLD order #2
+////  g_fn_prtlin( "      width: 300%;");             // GOLD order #2
+//  g_fn_prtlin( "      width: 360%;");             // GOLD order #2
+//  
+////  g_fn_prtlin( "      font-size: 1.25em;");  /* gold order #3 */
+////  g_fn_prtlin( "      font-size: 2.5em;");  /* gold order #3 */
+////  g_fn_prtlin( "      font-size: 1.5em;");  /* gold order #3 */
+//  g_fn_prtlin( "      font-size: 2.0em;");  /* gold order #3 */
+//
+////  g_fn_prtlin( "      color:green;"); // for test
+//  g_fn_prtlin( "      white-space: pre ; display: block; unicode-bidi: embed");
+//  g_fn_prtlin( "    }");
+//
+//
+//
+//  g_fn_prtlin( "    .categories{");
+//
+////  g_fn_prtlin( "     width: 100%; ");
+//
+//
+////  g_fn_prtlin( "     background-color: #f00; width: 100%;  display: inline-block;  ");
+//
+////  g_fn_prtlin( "     overflow-x: hidden; ");    // webview
+//
+////  g_fn_prtlin( "      width: 300%;  display: inline-block;  ");
+////  g_fn_prtlin( "      width: 300%; ");
+////  g_fn_prtlin( "      width: 250%; ");
+////  g_fn_prtlin( "      width: 400%; ");
+////  g_fn_prtlin( "      width: 340%; ");
+////  g_fn_prtlin( "      width: 320%; ");
+////  g_fn_prtlin( "      width: 270%; ");
+////  g_fn_prtlin( "      width: 380%; ");
+////  g_fn_prtlin( "      width: 360%; ");
+////  g_fn_prtlin( "      width: 350%; ");
+//  g_fn_prtlin( "      background-color: #fcfce0;");
+//
+//
+//  g_fn_prtlin( "      padding-top: 0;");
+////  g_fn_prtlin( "      margin-top: -1.2em;");
+//
+////  g_fn_prtlin( "      margin-left: 0.5em;");
+//
+////  g_fn_prtlin( "      padding-bottom: -2.5em;");
+////  g_fn_prtlin( "      margin-bottom: -2.5em;");
+//  g_fn_prtlin( "      text-align: left;");      // GOLD order #1
+////  g_fn_prtlin( "      width: 240%;");             // GOLD order #2  *BUT* width  AFFECTS OTHER BLOCKS
+//
+//  g_fn_prtlin( "      font-size: 0.8em;");  /* gold order #3 */
+////  g_fn_prtlin( "      font-size: 0.8em;");  /* gold order #3 */
+//  //g_fn_prtlin( "      line-height: 130%;");  
+//
+//  g_fn_prtlin( "      margin-bottom: 3em;");  // MUST BE ABOVE "white-space: pre;"
+////  g_fn_prtlin( "      margin-bottom: -2.5em;"); 
+//
+//  g_fn_prtlin( "      white-space: pre ; display: block; unicode-bidi: embed");
+//
+////  g_fn_prtlin( "     background-color: #f00; width: 300%; overflow-x: hidden;  display: block;  ");
+////  g_fn_prtlin( "     background-color: #f00; width: 200%; overflow-x: hidden;  display: block;  ");
+////  g_fn_prtlin( "     background-color: #f00; width: 160%; overflow-x: hidden;  display: inline-block;  ");
+////  g_fn_prtlin( "     background-color: #f00; width: 200%; overflow-x: hidden;                          ");
+//
+//  g_fn_prtlin( "    }");
+//
+//
+//  g_fn_prtlin( "    P { ");
+//  g_fn_prtlin( "      display: inline;");
+//  g_fn_prtlin( "      margin:0 auto;");
+//  g_fn_prtlin( "      background-color: #f7ebd1;");
+//  g_fn_prtlin( "    }");
+//
+//
+//  // this is just 2
+//
+//
+//
+//  g_fn_prtlin( "    .explpotential{");
+////  g_fn_prtlin( "      width: 250%;");
+////  g_fn_prtlin( "      background-color: #fcfce0;");
+//  g_fn_prtlin( "      padding-top: 0;");
+//  g_fn_prtlin( "      padding-bottom: 0;");
+//
+////  g_fn_prtlin( "      margin-top: -4.3em;");
+//
+////  g_fn_prtlin( "      margin-left: 0.3em;");
+////  g_fn_prtlin( "      margin-left: 1.5em;");
+////  g_fn_prtlin( "      margin-left: 3.0em;");
+//  g_fn_prtlin( "      margin-left: 2.3em;");
+//
+//  g_fn_prtlin( "      text-align: left;");      // GOLD order #1
+////  g_fn_prtlin( "      width: 240%;");             // GOLD order #2  *BUT* width  AFFECTS OTHER BLOCKS
+//
+////  g_fn_prtlin( "      font-size: 1.0em;");  /* gold order #3 */
+////  g_fn_prtlin( "      font-size: 3.0em;");  /* gold order #3 */
+////  g_fn_prtlin( "      font-size: 2.0em;");  /* gold order #3 */
+////  g_fn_prtlin( "      font-size: 1.5em;");  /* gold order #3 */
+////  g_fn_prtlin( "      font-size: 2.5em;");  /* gold order #3 */
+//  g_fn_prtlin( "      font-size: 2.0em;");  /* gold order #3 */
+//
+//
+//
+////  g_fn_prtlin( "      font-size: 1.0em;");  /* gold order #3 */
+//  //g_fn_prtlin( "      line-height: 130%;");  
+////  g_fn_prtlin( "      margin-top: -2.0em;");  
+////  g_fn_prtlin( "      margin-top: -1.0em;");  
+//  g_fn_prtlin( "      margin-top: -0.5em;");  
+//  g_fn_prtlin( "      margin-bottom: 0.1em;");  // MUST BE ABOVE "white-space: pre;"
+//  g_fn_prtlin( "      white-space: pre ; display: block; unicode-bidi: embed");
+//  g_fn_prtlin( "    }");
+//
+//
+//  g_fn_prtlin( "    .explrelationship{");
+////  g_fn_prtlin( "      background-color: #fcfce0;");
+////  g_fn_prtlin( "      width: 250%;");
+//  g_fn_prtlin( "      padding-top: 0;");
+//  g_fn_prtlin( "      padding-bottom: 0;");
+////  g_fn_prtlin( "      margin-top: 2em;");
+//  g_fn_prtlin( "      margin-top: 1em;");
+//
+////  g_fn_prtlin( "      margin-left: 3.8em;");
+////  g_fn_prtlin( "      margin-left: 1.5em;");
+////  g_fn_prtlin( "      margin-left: 2.1em;");
+////  g_fn_prtlin( "      margin-left: 2.7em;");
+////  g_fn_prtlin( "      margin-left: 5.7em;");
+////  g_fn_prtlin( "      margin-left: 4.1em;");
+//  g_fn_prtlin( "      margin-left: 3.7em;");
+//
+//  g_fn_prtlin( "      text-align: left;");      // GOLD order #1
+////  g_fn_prtlin( "      width: 240%;");             // GOLD order #2  *BUT* width  AFFECTS OTHER BLOCKS
+//
+////  g_fn_prtlin( "      font-size: 1.0em;");  /* gold order #3 */
+////  g_fn_prtlin( "      font-size: 1.4em;");  /* gold order #3 */
+////  g_fn_prtlin( "      font-size: 1.2em;");  /* gold order #3 */
+////  g_fn_prtlin( "      font-size: 1.1em;");  /* gold order #3 */
+//
+////  g_fn_prtlin( "      font-size: 2.0em;");  /* gold order #3 */
+////  g_fn_prtlin( "      font-size: 1.6em;");  /* gold order #3 */
+////  g_fn_prtlin( "      font-size: 2.0em;");  /* gold order #3 */
+//  g_fn_prtlin( "      font-size: 1.8em;");  /* gold order #3 */
+//
+//  //g_fn_prtlin( "      line-height: 130%;");  
+//
+//  g_fn_prtlin( "      margin-bottom: 0.1em;");  // MUST BE ABOVE "white-space: pre;"
+////  g_fn_prtlin( "      margin-bottom: -2.0em;");  // MUST BE ABOVE "white-space: pre;"
+//
+//  g_fn_prtlin( "      white-space: pre ; display: block; unicode-bidi: embed");
+//  g_fn_prtlin( "    }");
+//
+//
+//  g_fn_prtlin( "    .appby{");
+////  g_fn_prtlin( "      background-color: #fcfce0;");
+//  g_fn_prtlin( "      padding-top: 0;");
+//  g_fn_prtlin( "      padding-bottom: 0;");
+////  g_fn_prtlin( "      margin-top: 1.5em;");
+//  g_fn_prtlin( "      margin-top: 1.0em;");
+//
+////  g_fn_prtlin( "      margin-left: 12em;");
+////  g_fn_prtlin( "      margin-left: 6.5em;");
+////  g_fn_prtlin( "      margin-left: 3em;");
+////  g_fn_prtlin( "      margin-left: 4.5em;");
+////  g_fn_prtlin( "      margin-left: 8em;");
+////  g_fn_prtlin( "      margin-left: 11em;");
+//  g_fn_prtlin( "      margin-left: 9.5em;");
+//
+//  g_fn_prtlin( "      text-align: left;");      // GOLD order #1
+////  g_fn_prtlin( "      width: 240%;");             // GOLD order #2  *BUT* width  AFFECTS OTHER BLOCKS
+//
+////  g_fn_prtlin( "      font-size: 0.8em;");  /* gold order #3 */
+////  g_fn_prtlin( "      font-size: 1.5em;");  /* gold order #3 */
+////  g_fn_prtlin( "      font-size: 1.0em;");  /* gold order #3 */
+//  g_fn_prtlin( "      font-size: 1.5em;");  /* gold order #3 */
+//
+//  //g_fn_prtlin( "      line-height: 130%;");  
+//  g_fn_prtlin( "      margin-bottom: 0.1em;");  // MUST BE ABOVE "white-space: pre;"
+//  g_fn_prtlin( "      white-space: pre ; display: block; unicode-bidi: embed");
+//  g_fn_prtlin( "    }");
+//
+//
+//  g_fn_prtlin( "    .entertainment {");
+//  g_fn_prtlin( "      text-align: left;");
+//  g_fn_prtlin( "      margin-top: -1.0em;");  // MUST BE ABOVE "white-space: pre;"
+////  g_fn_prtlin( "      margin-left: 9em;");
+////  g_fn_prtlin( "      margin-left: 4em;");
+////  g_fn_prtlin( "      margin-left: 8em;");
+//  g_fn_prtlin( "      margin-left: 7em;");
+////  g_fn_prtlin( "      width: 150%;");             // GOLD order #2
+////  g_fn_prtlin( "      background-color: #F7ebd1;");
+//
+////  g_fn_prtlin( "      font-size: 0.8em;");
+////  g_fn_prtlin( "      font-size: 1.6em;");
+////  g_fn_prtlin( "      font-size: 1.1em;");
+//  g_fn_prtlin( "      font-size: 1.5em;");
+//  g_fn_prtlin( "      font-weight: bold;");
+//
+//  g_fn_prtlin( "      color:#FF0000;");  // RED print
+//  g_fn_prtlin( "      white-space: pre ; display: block; unicode-bidi: embed");
+///*   p_fn_prtlin( "      font-size: 130%;");  */
+//  g_fn_prtlin( "    }");
+//
+//
+//  // this is just 2
+//
+//
+///* for table: */
+///*       border: 2px solid black; */
+///*       cellspacing: 0; */
+///*       border-top: 0; */
+///*       border-bottom: 0; */
+//
+///* TABLE TABLE TABLE TABLE TABLE TABLE TABLE TABLE */
+///*   g_fn_prtlin( "    table {");
+//*   g_fn_prtlin( "      border-collapse: collapse;");
+//*   g_fn_prtlin( "      border-spacing: 0;");
+//*   g_fn_prtlin( "    }");
+//*   g_fn_prtlin( "    table.center {");
+//*   g_fn_prtlin( "      margin-left:auto;");
+//*   g_fn_prtlin( "      margin-right:auto;");
+//*   g_fn_prtlin( "    }");
+//*   g_fn_prtlin( "    TD {");
+//*   g_fn_prtlin( "      white-space: nowrap;");
+//*   g_fn_prtlin( "      padding: 0;");
+//*   g_fn_prtlin( "    }");
+//*/
+//                               /* new stuff for bottom TABLE */
+////   g_fn_prtlin( "    table {");
+//// /*   g_fn_prtlin( "      font-family: Andale Mono, Menlo, Monospace, Courier New;"); */
+////   g_fn_prtlin( "      font-family: Menlo, Andale Mono, Monospace, Courier New;");
+////   g_fn_prtlin( "      text-align: left;");
+//// /*   g_fn_prtlin( "      border: 1px solid black;"); */
+////   g_fn_prtlin( "      border-collapse: collapse;");
+////   g_fn_prtlin( "      border-spacing: 0;");
+//// /*   g_fn_prtlin( "      padding-right:2%;"); */
+//// /*   g_fn_prtlin( "      padding-left:2%;"); */
+////   g_fn_prtlin( "      margin-left: auto;");
+////   g_fn_prtlin( "      margin-right:auto;");
+////   g_fn_prtlin( "    }");
+//
+//   g_fn_prtlin( "    table {");  // applies to all tables ?  YES, IT DOES !  yay
+//   g_fn_prtlin( "      border-collapse: collapse;");
+////   g_fn_prtlin( "      width: 350%;");
+//
+////   g_fn_prtlin( "      width: 360%;");
+//   g_fn_prtlin( "      width: 340%;");
+//
+//  g_fn_prtlin( "    }");
+//
+//
+//
+//  g_fn_prtlin( "    table.category {");   // webview version
+//
+////  g_fn_prtlin( "      margin-left: 2em;");
+//
+//  g_fn_prtlin( "      width: 360%;");  // magic (matches width of .foreachcat and one other)
+//  g_fn_prtlin( "      margin-top: 0em;");
+//  g_fn_prtlin( "      margin-bottom: 0em;");
+//  g_fn_prtlin( "     border-collapse: collapse;   ");
+//  g_fn_prtlin( "      border-spacing: 0;");
+//  g_fn_prtlin( "      border: none;");
+//  g_fn_prtlin( "      font-size: 1.0em;");
+//  g_fn_prtlin( "      background-color: #fcfce0 ;");
+////  g_fn_prtlin( "      background-color: #fcace0 ;");  // for test
+//
+////  g_fn_prtlin( "      white-space: pre; display: block; unicode-bidi: embed; ");
+////  g_fn_prtlin( "      white-space: pre;  ");
+////  g_fn_prtlin( "      text-align: left;");
+//
+//  g_fn_prtlin( "    }");
+//
+//  g_fn_prtlin( "    table.category tr {");
+////  g_fn_prtlin( "      line-height: 0.5em;");
+//  g_fn_prtlin( "      margin-top: 0em;");
+//  g_fn_prtlin( "      margin-bottom: 0em;");
+//  g_fn_prtlin( "      border-spacing: 0;");
+//  g_fn_prtlin( "      border-collapse: collapse;");
+//  g_fn_prtlin( "      border-spacing: 0;");
+//  g_fn_prtlin( "      padding-top: 0px; ");
+//  g_fn_prtlin( "      padding-bottom: 0px; ");
+//  g_fn_prtlin( "    }");
+//  g_fn_prtlin( "    table.category td {");
+//  g_fn_prtlin( "      border: none;");
+//  g_fn_prtlin( "      border-spacing: 0;");
+//  g_fn_prtlin( "      border-collapse: collapse;");
+//  g_fn_prtlin( "      padding-top: 0px; ");
+//  g_fn_prtlin( "      padding-bottom: 0px; ");
+//  g_fn_prtlin( "    }");
+//
+//
+//
+//
+//  g_fn_prtlin( "    td {");
+///*   g_fn_prtlin( "      font-family: Andale Mono, Menlo, Monospace, Courier New;"); */
+//  g_fn_prtlin( "      font-family: Menlo, Andale Mono, Monospace, Courier New;");
 //  g_fn_prtlin( "      white-space: pre;");
+//
+////  g_fn_prtlin( "      font-size: 90%;");
+//
+//  g_fn_prtlin( "      text-align: left;");
+//
+///*   g_fn_prtlin( "      border: 1px solid black;"); */
+//  g_fn_prtlin( "      border-collapse: collapse;");
+//  g_fn_prtlin( "      border-spacing: 0;");
+//
+///*   g_fn_prtlin( "      padding-left: 10px; "); */
+///*   g_fn_prtlin( "      padding-right: 10px; "); */
+//  g_fn_prtlin( "      padding-left: 5px; ");
+//  g_fn_prtlin( "      padding-right: 5px; ");
+//
+//  g_fn_prtlin( "    }");
+//  g_fn_prtlin( "    table.center {");
+//  g_fn_prtlin( "      margin-left:auto;");
+//  g_fn_prtlin( "      margin-right:auto;");
+//  g_fn_prtlin( "    }");
+//  g_fn_prtlin( "    table.center td{");
 //  g_fn_prtlin( "      text-align: center;");
 //  g_fn_prtlin( "      font-size: 1.5em;");
 //  g_fn_prtlin( "    }");
-
-  g_fn_prtlin( "    table.redGreenCenter td {");
+//
+//  // this is just 2
+//
+//  g_fn_prtlin( "    table.redGreenCenter {");
+//  g_fn_prtlin( "      white-space: pre;");
+//  g_fn_prtlin( "      margin-top: -3em;");
+//  g_fn_prtlin( "      margin-left:auto;");
+//  g_fn_prtlin( "      margin-right:auto;");
+//  g_fn_prtlin( "    }");
+////  g_fn_prtlin( "    table.redGreenCenter tr {");
+////  g_fn_prtlin( "      white-space: pre;");
+////  g_fn_prtlin( "      text-align: center;");
+////  g_fn_prtlin( "      font-size: 1.5em;");
+////  g_fn_prtlin( "    }");
+//
+//  g_fn_prtlin( "    table.redGreenCenter td {");
+////  g_fn_prtlin( "      font-family: Menlo, Andale Mono, Monospace, Courier New;");
+//  g_fn_prtlin( "      white-space: pre;");
+//  g_fn_prtlin( "      text-align: center;");
+////  g_fn_prtlin( "      font-size: 1.5em;");
+//  g_fn_prtlin( "      font-size: 0.8em;");
+////  g_fn_prtlin( "      color: blue;");
+//  g_fn_prtlin( "    }");
+//  g_fn_prtlin( "    th {");
+//
+//  g_fn_prtlin( "      padding: 5px; ");
+//  g_fn_prtlin( "      vertical-align:bottom;");
+//
+///*   g_fn_prtlin( "      font-family: Trebuchet MS, Arial, Verdana, sans-serif;"); */
 //  g_fn_prtlin( "      font-family: Menlo, Andale Mono, Monospace, Courier New;");
-  g_fn_prtlin( "      white-space: pre;");
-  g_fn_prtlin( "      text-align: center;");
-//  g_fn_prtlin( "      font-size: 1.5em;");
-  g_fn_prtlin( "      font-size: 0.8em;");
-//  g_fn_prtlin( "      color: blue;");
-  g_fn_prtlin( "    }");
-  g_fn_prtlin( "    th {");
-
-  g_fn_prtlin( "      padding: 5px; ");
-  g_fn_prtlin( "      vertical-align:bottom;");
-
-/*   g_fn_prtlin( "      font-family: Trebuchet MS, Arial, Verdana, sans-serif;"); */
-  g_fn_prtlin( "      font-family: Menlo, Andale Mono, Monospace, Courier New;");
-  g_fn_prtlin( "      font-size: 90%;");
-/*   g_fn_prtlin( "      padding-left: 10px; "); */
-/*   g_fn_prtlin( "      padding-right: 10px; "); */
-
-/*   g_fn_prtlin( "      background-color: #e1fdc3 ;"); */
-     g_fn_prtlin( "      background-color: #fcfce0 ;");
-
-/*   g_fn_prtlin( "      border: 1px solid black;"); */
-  g_fn_prtlin( "      border-spacing: 0;");
-
-  g_fn_prtlin( "      text-align: center;");
-  g_fn_prtlin( "    }");
-  g_fn_prtlin( "    table td  { text-align: right; }");
-  g_fn_prtlin( "    table td+td { text-align: left; }");
-
-/*   g_fn_prtlin( "    table td+td+td { text-align: right; }"); */
-  g_fn_prtlin( "    table td+td+td { text-align: right; ");
-/*   g_fn_prtlin( "      padding-right:3%;"); */
-  g_fn_prtlin( "    }");
-
-  g_fn_prtlin( "    table td+td+td+td { text-align: left; }");
-
-  g_fn_prtlin( "    .row4        { background-color:#f8f0c0; }");
-
-/*   p_fn_prtlin( "    .cGr2        { background-color:#d0fda0; }"); */
-/*   g_fn_prtlin( "    .cGr2        { background-color:#8bfd87; }"); */
-/*   g_fn_prtlin( "    .cGr2        { background-color:#66ff33; }"); */
-
-/*   p_fn_prtlin( "    .cGre        { background-color:#e1fdc3; }"); */
-/*   g_fn_prtlin( "    .cGre        { background-color:#ccffb9; }"); */
-/*   p_fn_prtlin( "    .cRed        { background-color:#ffd9d9; }"); */
-/*   g_fn_prtlin( "    .cRed        { background-color:#ffcccc; }"); */
-/*   p_fn_prtlin( "    .cRe2        { background-color:#fcb9b9; }"); */
-/*   g_fn_prtlin( "    .cRe2        { background-color:#fc8888; }"); */
-/*   g_fn_prtlin( "    .cRe2        { background-color:#fc6094; }"); */
-/*   g_fn_prtlin( "    .cRe2        { background-color:#ff3366; }"); */
-
-
-  g_fn_prtlin( "    .cGr2        { background-color:#66ff33; }");
-  g_fn_prtlin( "    .cGr2tabonly { background-color:#66ff33; line-height: 175% ; padding: 0;}");
-
-/*   g_fn_prtlin( "    .cGre        { background-color:#84ff98; }"); */
-  g_fn_prtlin( "    .cGre        { background-color:#a8ff98; }");
-  g_fn_prtlin( "    .cGretabonly { background-color:#a8ff98; line-height: 175% ; padding: 0;}");
-//  g_fn_prtlin( "    .cGLi        { background-color:#eaffe6; }");  // super light green 
-  g_fn_prtlin( "    .cGLi        { background-color:#daffe3; }");  // super light green   little darker
-
-//  g_fn_prtlin( "    .cRed        { background-color:#ff98a8; }");
-//  g_fn_prtlin( "    .cRedtabonly { background-color:#ff98a8; line-height: 175% ; padding: 0}");
-  g_fn_prtlin( "    .cRed        { background-color:#ffb5c9; }");
-  g_fn_prtlin( "    .cRedtabonly { background-color:#ffb5c9; line-height: 175% ; padding: 0}");
-//  g_fn_prtlin( "    .cRLi        { background-color:#ffe8ee; }");  // super light red 
-  g_fn_prtlin( "    .cRLi        { background-color:#fff0f4; }");  // super light red even lighter
-  g_fn_prtlin( "    .cBbg        { background-color:#f7ebd1; }");  // body background color
-
-  g_fn_prtlin( "    }");
-//  g_fn_prtlin( "    .cRe2        { background-color:#ff4477; }");
-  g_fn_prtlin( "    .cRe2        { background-color:#ff678f; }");
-//  g_fn_prtlin( "    .cRe2tabonly { background-color:#ff4477; line-height: 175% ; padding: 0; font-weight: bold; }");
-//  g_fn_prtlin( "    .cRe2tabonly { background-color:#ff4477; line-height: 175% ; padding: 0;                    }");
-  g_fn_prtlin( "    .cRe2tabonly { background-color:#ff678f; line-height: 175% ; padding: 0;                    }");
-  g_fn_prtlin( "    .cNeu        { background-color:#e5e2c7; }");
-  g_fn_prtlin( "    .cNeutabonly { background-color:#e5e2c7; line-height: 175% ; padding: 0;}");
-
-  g_fn_prtlin( "    .cHed        { background-color:#fcfce0; }");
-  g_fn_prtlin( "    .cNam        { color:#3f3ffa;");
-  g_fn_prtlin( "                   background-color: #F7ebd1;");
-  g_fn_prtlin( "                   font-size: 133%;");
-  g_fn_prtlin( "    }");
-  g_fn_prtlin( "    .cNam2       { color:#3f3ffa; }");
-  g_fn_prtlin( "    .cCat        { background-color:#fdfbe1; }");
-/* TABLE TABLE TABLE TABLE TABLE TABLE TABLE TABLE */
-
-  g_fn_prtlin( "  </style>");
-
-/*   g_fn_prtlin( "    <!-- "); */
-/*   g_fn_prtlin( "    PRE {line-height: 68%}; "); */
-/*   g_p_fn_prtlin( "    P {margin-left:10%; margin-right:10%}"); */
-/*   g_p_fn_prtlin( "    --> "); */
-
-    
-    /* put in favicon */
-    g_fn_prtlin("<link href=\"data:image/x-icon;base64,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\" rel=\"icon\" type=\"image/x-icon\" />");
-
-    
-    
-    
-/* put in favicon */
-    // old favicon    g_fn_prtlin("<link href=\"data:image/x-icon;base64,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\" rel=\"icon\" type=\"image/x-icon\" />");
-
-  g_fn_prtlin( "</head>");
-  g_fn_prtlin( " ");
-  g_fn_prtlin("\n<body>");
-
-/*   g_fn_prtlin( "<body background=\"file:///mkgif1g.gif\">"); */
-/*   g_fn_prtlin( "<body background=\"file:///C/USR/RK/html/mkgif1g.gif\">"); */
-
- 
-  int sizeLongestFld;
-  char myleftmargin[32], name1_and[32];
-
-  sizeLongestFld = sprintf(name1_and, "%s  and", arr(0)); // name1 always has "  and"
-  if ((int)strlen(arr(1)) > sizeLongestFld) sizeLongestFld = (int)strlen(arr(1));
-
-  // then max 15 char name, then 4 char " and"     both centered in 19 char field
-  // extra sp on left
-
-  // centre "name1  and" in a fld of max 19 (15 + 4)
-  //
-       if (sizeLongestFld ==  5) { strcpy(myleftmargin, "5.3em;"); }
-  else if (sizeLongestFld ==  6) { strcpy(myleftmargin, "5.0em;"); }
-  else if (sizeLongestFld ==  7) { strcpy(myleftmargin, "4.8em;"); }
-  else if (sizeLongestFld ==  8) { strcpy(myleftmargin, "4.5em;"); }
-  else if (sizeLongestFld ==  9) { strcpy(myleftmargin, "4.3em;"); }
-  else if (sizeLongestFld == 10) { strcpy(myleftmargin, "4.0em;"); }
-  else if (sizeLongestFld == 11) { strcpy(myleftmargin, "3.8em;"); }
-  else if (sizeLongestFld == 12) { strcpy(myleftmargin, "3.5em;"); }
-  else if (sizeLongestFld == 13) { strcpy(myleftmargin, "3.3em;"); }
-  else if (sizeLongestFld == 14) { strcpy(myleftmargin, "3.0em;"); }
-  else if (sizeLongestFld == 15) { strcpy(myleftmargin, "2.8em;"); }
-  else if (sizeLongestFld == 16) { strcpy(myleftmargin, "2.5em;"); }
-  else if (sizeLongestFld == 17) { strcpy(myleftmargin, "2.3em;"); }
-  else if (sizeLongestFld == 18) { strcpy(myleftmargin, "2.0em;"); }
-  else if (sizeLongestFld == 19) { strcpy(myleftmargin, "1.8em;"); }
-  else                           { strcpy(myleftmargin, "1.5em;"); }
-
-
-
-//  sprintf(writebuf,  "<pre style=\"margin-left: %s;\" class=\"myTitle\" >", myleftmargin); 
-//  g_fn_prtlin(writebuf);
-//  gbl_we_are_in_PRE_block = 1;
+//  g_fn_prtlin( "      font-size: 90%;");
+///*   g_fn_prtlin( "      padding-left: 10px; "); */
+///*   g_fn_prtlin( "      padding-right: 10px; "); */
 //
-//  g_fn_prtlin(name1_and);   // name1
-//  g_fn_prtlin(arr(1));      // name2
+///*   g_fn_prtlin( "      background-color: #e1fdc3 ;"); */
+//     g_fn_prtlin( "      background-color: #fcfce0 ;");
 //
-//  gbl_we_are_in_PRE_block = 0;
-//  g_fn_prtlin("</pre>");
+///*   g_fn_prtlin( "      border: 1px solid black;"); */
+//  g_fn_prtlin( "      border-spacing: 0;");
 //
-  g_fn_prtlin("<div><br></div>");
+//  g_fn_prtlin( "      text-align: center;");
+//  g_fn_prtlin( "    }");
+//  g_fn_prtlin( "    table td  { text-align: right; }");
+//  g_fn_prtlin( "    table td+td { text-align: left; }");
+//
+///*   g_fn_prtlin( "    table td+td+td { text-align: right; }"); */
+//  g_fn_prtlin( "    table td+td+td { text-align: right; ");
+///*   g_fn_prtlin( "      padding-right:3%;"); */
+//  g_fn_prtlin( "    }");
+//
+//  g_fn_prtlin( "    table td+td+td+td { text-align: left; }");
+//
+//  g_fn_prtlin( "    .row4        { background-color:#f8f0c0; }");
+//
+///*   p_fn_prtlin( "    .cGr2        { background-color:#d0fda0; }"); */
+///*   g_fn_prtlin( "    .cGr2        { background-color:#8bfd87; }"); */
+///*   g_fn_prtlin( "    .cGr2        { background-color:#66ff33; }"); */
+//
+///*   p_fn_prtlin( "    .cGre        { background-color:#e1fdc3; }"); */
+///*   g_fn_prtlin( "    .cGre        { background-color:#ccffb9; }"); */
+///*   p_fn_prtlin( "    .cRed        { background-color:#ffd9d9; }"); */
+///*   g_fn_prtlin( "    .cRed        { background-color:#ffcccc; }"); */
+///*   p_fn_prtlin( "    .cRe2        { background-color:#fcb9b9; }"); */
+///*   g_fn_prtlin( "    .cRe2        { background-color:#fc8888; }"); */
+///*   g_fn_prtlin( "    .cRe2        { background-color:#fc6094; }"); */
+///*   g_fn_prtlin( "    .cRe2        { background-color:#ff3366; }"); */
+//
+//
+//  g_fn_prtlin( "    .cGr2        { background-color:#66ff33; }");
+//  g_fn_prtlin( "    .cGr2tabonly { background-color:#66ff33; line-height: 175% ; padding: 0;}");
+//
+///*   g_fn_prtlin( "    .cGre        { background-color:#84ff98; }"); */
+//  g_fn_prtlin( "    .cGre        { background-color:#a8ff98; }");
+//  g_fn_prtlin( "    .cGretabonly { background-color:#a8ff98; line-height: 175% ; padding: 0;}");
+////  g_fn_prtlin( "    .cGLi        { background-color:#eaffe6; }");  // super light green 
+//  g_fn_prtlin( "    .cGLi        { background-color:#daffe3; }");  // super light green   little darker
+//
+////  g_fn_prtlin( "    .cRed        { background-color:#ff98a8; }");
+////  g_fn_prtlin( "    .cRedtabonly { background-color:#ff98a8; line-height: 175% ; padding: 0}");
+//  g_fn_prtlin( "    .cRed        { background-color:#ffb5c9; }");
+//  g_fn_prtlin( "    .cRedtabonly { background-color:#ffb5c9; line-height: 175% ; padding: 0}");
+////  g_fn_prtlin( "    .cRLi        { background-color:#ffe8ee; }");  // super light red 
+//  g_fn_prtlin( "    .cRLi        { background-color:#fff0f4; }");  // super light red even lighter
+//  g_fn_prtlin( "    .cBbg        { background-color:#f7ebd1; }");  // body background color
+//
+//  g_fn_prtlin( "    }");
+////  g_fn_prtlin( "    .cRe2        { background-color:#ff4477; }");
+//  g_fn_prtlin( "    .cRe2        { background-color:#ff678f; }");
+////  g_fn_prtlin( "    .cRe2tabonly { background-color:#ff4477; line-height: 175% ; padding: 0; font-weight: bold; }");
+////  g_fn_prtlin( "    .cRe2tabonly { background-color:#ff4477; line-height: 175% ; padding: 0;                    }");
+//  g_fn_prtlin( "    .cRe2tabonly { background-color:#ff678f; line-height: 175% ; padding: 0;                    }");
+//  g_fn_prtlin( "    .cNeu        { background-color:#e5e2c7; }");
+//  g_fn_prtlin( "    .cNeutabonly { background-color:#e5e2c7; line-height: 175% ; padding: 0;}");
+//
+//  g_fn_prtlin( "    .cHed        { background-color:#fcfce0; }");
+//  g_fn_prtlin( "    .cNam        { color:#3f3ffa;");
+//  g_fn_prtlin( "                   background-color: #F7ebd1;");
+//  g_fn_prtlin( "                   font-size: 133%;");
+//  g_fn_prtlin( "    }");
+//  g_fn_prtlin( "    .cNam2       { color:#3f3ffa; }");
+//  g_fn_prtlin( "    .cCat        { background-color:#fdfbe1; }");
+///* TABLE TABLE TABLE TABLE TABLE TABLE TABLE TABLE */
+//
+//  g_fn_prtlin( "  </style>");
+//
+///*   g_fn_prtlin( "    <!-- "); */
+///*   g_fn_prtlin( "    PRE {line-height: 68%}; "); */
+///*   g_p_fn_prtlin( "    P {margin-left:10%; margin-right:10%}"); */
+///*   g_p_fn_prtlin( "    --> "); */
+//
+//    
+//    /* put in favicon */
+//    g_fn_prtlin("<link href=\"data:image/x-icon;base64,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\" rel=\"icon\" type=\"image/x-icon\" />");
+//
+//    
+//    
+//    
+///* put in favicon */
+//    // old favicon    g_fn_prtlin("<link href=\"data:image/x-icon;base64,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\" rel=\"icon\" type=\"image/x-icon\" />");
+//
+//  g_fn_prtlin( "</head>");
+//  g_fn_prtlin( " ");
+//  g_fn_prtlin("\n<body>");
+//
+///*   g_fn_prtlin( "<body background=\"file:///mkgif1g.gif\">"); */
+///*   g_fn_prtlin( "<body background=\"file:///C/USR/RK/html/mkgif1g.gif\">"); */
+//
+// 
+//  int sizeLongestFld;
+//  char myleftmargin[32], name1_and[32];
+//
+//  sizeLongestFld = sprintf(name1_and, "%s  and", arr(0)); // name1 always has "  and"
+//  if ((int)strlen(arr(1)) > sizeLongestFld) sizeLongestFld = (int)strlen(arr(1));
+//
+//  // then max 15 char name, then 4 char " and"     both centered in 19 char field
+//  // extra sp on left
+//
+//  // centre "name1  and" in a fld of max 19 (15 + 4)
+//  //
+//       if (sizeLongestFld ==  5) { strcpy(myleftmargin, "5.3em;"); }
+//  else if (sizeLongestFld ==  6) { strcpy(myleftmargin, "5.0em;"); }
+//  else if (sizeLongestFld ==  7) { strcpy(myleftmargin, "4.8em;"); }
+//  else if (sizeLongestFld ==  8) { strcpy(myleftmargin, "4.5em;"); }
+//  else if (sizeLongestFld ==  9) { strcpy(myleftmargin, "4.3em;"); }
+//  else if (sizeLongestFld == 10) { strcpy(myleftmargin, "4.0em;"); }
+//  else if (sizeLongestFld == 11) { strcpy(myleftmargin, "3.8em;"); }
+//  else if (sizeLongestFld == 12) { strcpy(myleftmargin, "3.5em;"); }
+//  else if (sizeLongestFld == 13) { strcpy(myleftmargin, "3.3em;"); }
+//  else if (sizeLongestFld == 14) { strcpy(myleftmargin, "3.0em;"); }
+//  else if (sizeLongestFld == 15) { strcpy(myleftmargin, "2.8em;"); }
+//  else if (sizeLongestFld == 16) { strcpy(myleftmargin, "2.5em;"); }
+//  else if (sizeLongestFld == 17) { strcpy(myleftmargin, "2.3em;"); }
+//  else if (sizeLongestFld == 18) { strcpy(myleftmargin, "2.0em;"); }
+//  else if (sizeLongestFld == 19) { strcpy(myleftmargin, "1.8em;"); }
+//  else                           { strcpy(myleftmargin, "1.5em;"); }
+//
+//
+//
+////  sprintf(writebuf,  "<pre style=\"margin-left: %s;\" class=\"myTitle\" >", myleftmargin); 
+////  g_fn_prtlin(writebuf);
+////  gbl_we_are_in_PRE_block = 1;
+////
+////  g_fn_prtlin(name1_and);   // name1
+////  g_fn_prtlin(arr(1));      // name2
+////
+////  gbl_we_are_in_PRE_block = 0;
+////  g_fn_prtlin("</pre>");
+////
+//  g_fn_prtlin("<div><br></div>");
+//
+//
+// now rpt is tblrpt
 
-
-
-  // g_fn_prtlin(" ");
 
 }  // end of  put_ios_top_of_just2_group_rpt(void)  /* just_2 rpt */
 
@@ -4785,7 +4596,6 @@ void g_fn_browser_aspect_text(char *in_aspect_code) {
   char numplusminus[32];
 
 //trn("in g_fn_browser_aspect_text()"); 
-//<.>
 
   // get old gP_ITEM_TBL from PSV
   //
@@ -4854,7 +4664,6 @@ void g_fn_browser_aspect_text(char *in_aspect_code) {
 
   g_fn_prtlin(writebuf);
 
-//<.>
 //    g_fn_prtlin("<div class=\"linehite_0050\">                 <span class=\"cRed\">_                            _</span>       ");
 //    g_fn_prtlin("        and the  <span class=\"cRed\"> challenging influences  ---  </span>      </div>");
 
@@ -5016,19 +4825,14 @@ void g_fn_webview_aspect_text(char *in_aspect_code){
   strcpy(oldAspCode,   csv_get_field(in_aspect_code, "|", 1) );
   strcpy(numplusminus, csv_get_field(in_aspect_code, "|", 2) );
 
-//ksn(numplusminus);
-
-
   // fix aspect code like this:  e.g.  _(in g_docin_GET)___in_line=[^(c03b02)]__
   //                   to this:  "c03b02"
   strcpy(aspcodeToSearch, oldAspCode);
   scharout(aspcodeToSearch, '^');  
   scharout(aspcodeToSearch, '(');  
   scharout(aspcodeToSearch, ')');  
-//ksn(aspcodeToSearch);
 
-  nn = binsearch_asp(aspcodeToSearch, g_asptab, G_NKEYS_ASP);
-//kin(nn);
+  nn = binsearch_asp(aspcodeToSearch, g_asptab, G_NKEYS_ASP);   // +++++++++++++++++++++++++++++++++++++
 
   if (nn < 0) return;  /* do not print any aspect text at all  */
 
@@ -5064,35 +4868,20 @@ void g_fn_webview_aspect_text(char *in_aspect_code){
   }
 
 
-
   /* wrap lines at 80 chars with <br> */
-/*   put_br_every_n(my_aspect_text, 80);  */
-/*   put_br_every_n(my_aspect_text, 65);  */
+  /*   put_br_every_n(my_aspect_text, 80);  */
+  /*   put_br_every_n(my_aspect_text, 65);  */
   put_br_every_n(g_my_aspect_text, 50);          // <=====----
 
-  char redgre_beg[133];
-  char redgre_end[133];
-
-//  strcpy(redgre_beg, "<table class=\"center\"><tr><td><p>");
-//  strcpy(redgre_end, "</p></td></tr><br></table>");
-//  sprintf(writebuf, "  %s%s%s\n", redgre_beg, my_aspect_text, redgre_end);
-
-/*   strcpy(redgre_beg, "<table><tr><td><p>"); */
-/*   strcpy(redgre_end, "</p></td></tr><br></table>"); */
-/*   sprintf(writebuf, "  %s%s%s", redgre_beg, my_aspect_text, redgre_end); */
-
-  strcpy(redgre_beg, "<pre class=aspectPara>");
-  strcpy(redgre_end, "</pre>");
-  sprintf(writebuf, "  %s%s%s\n", redgre_beg, g_my_aspect_text, redgre_end);
-
+  sprintf(writebuf, "para|%s\n",  g_my_aspect_text );
   g_fn_prtlin(writebuf);
 
-  // here we write the red/green
-//<.>
-//    g_fn_prtlin("<div class=\"linehite_0050\">                 <span class=\"cRed\">_                            _</span>       ");
-//    g_fn_prtlin("        and the  <span class=\"cRed\"> challenging influences  ---  </span>      </div>");
-
-   prtRedGreenPlusMinus(atoi(numplusminus), 1); // 1 = yes, this is  webview version
+  //  do red/green line in cocoa now (in tblrpts)
+  sprintf(writebuf, "redgreenline|%s\n",  numplusminus);
+  g_fn_prtlin(writebuf);
+  //
+  //  // here we write the red/green
+  //  prtRedGreenPlusMinus(atoi(numplusminus), 1); // 1 = yes, this is  webview version
 
 } // end of  g_fn_webview_aspect_text()
 
@@ -5514,4 +5303,65 @@ void g_fn_webview_aspect_text(char *in_aspect_code){
 //    g_fn_prtlin("                       Low                  Average                 High   2      ");
 //    g_fn_prtlin("                        |                      |                     |            ");
 //
+
+
+//    /* ================================================================= */
+//
+//    for (i=0; ; i++) {
+//      g_docin_get(doclin);
+//      if (strstr(doclin, "[beg_love]") != NULL) break;
+//    }
+//  /*   sprintf(mybuf, "%-92s",  "<span class=\"cCat\">LOVE </span>");
+//  *   g_fn_prtlin(mybuf);
+//  */
+//
+//  /*   g_fn_prtlin("<pre>"); */
+//  /*   gbl_we_are_in_PRE_block = 1;  */
+//
+//  //  g_fn_prtlin("                                                                                  "); /* blanks */
+//    g_fn_prtlin( "<tr><td>                                                                                  </td></tr>"); // blank line
+//    sprintf(category_text, "LOVE ");
+//  /*   put_category_label(category_text);  */
+//    put_category_label(category_text, (int)strlen(category_text)); 
+//
+//    for (i=0; ; i++) {
+//      g_docin_get(doclin);
+//      if (strstr(doclin, "[end_love]") != NULL) break;
+//      scharout(doclin, '|');  /* remove pipes (for old sideline)    */
+//      g_fn_prtlin_stars(doclin);  
+//    }
+//  /*   g_fn_prtlin(" "); */
+////    g_fn_prtlin("                                                                                  "); /* blanks */
+//
+//
+//    /* ================================================================= */
+//  /*   g_fn_prtlin("<pre>"); */
+//  /*   gbl_we_are_in_PRE_block = 1;  */
+//
+//    for (i=0; ; i++) {
+//      g_docin_get(doclin);
+//      if (strstr(doclin, "[beg_money]") != NULL) break;
+//    }
+//  /*   g_fn_prtlin(" MONEY AND BUSINESS                                                                              "); */
+//  /*   sprintf(mybuf, "%-92s", "<span class=\"cCat\">MONEY AND BUSINESS </span>");
+//  *   g_fn_prtlin(mybuf);
+//  */
+//
+//  /*   sprintf(category_text, "MONEY AND BUSINESS "); */
+//  //  g_fn_prtlin("                                                                                  "); /* blanks */
+//    g_fn_prtlin( "<tr><td>                                                                                  </td></tr>"); // blank line
+//    sprintf(category_text, "MONEY ");
+//  /*   put_category_label(category_text);  */
+//    put_category_label(category_text, (int)strlen(category_text)); 
+//
+//    for (i=0; ; i++) { 
+//      g_docin_get(doclin);
+//      if (strstr(doclin, "[end_money]") != NULL) break;
+//      scharout(doclin, '|');  /* remove pipes (for old sideline)    */
+//      g_fn_prtlin_stars(doclin);  
+//    }
+//
+//    /* ================================================================= */
+//
+
 

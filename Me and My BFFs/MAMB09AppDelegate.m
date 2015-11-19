@@ -185,7 +185,8 @@
 
 
     // SET GBL DATA  HERE        ----------------------------------------------------------
-    
+
+    gbl_ThresholdshortTblLineLen = 17;  // nameA  + nameB more than this , then move benchmark label
     
     gbl_MAX_persons         = 250;   // max in app and max in group
     gbl_MAX_lengthOfName    =  15;   // 15 (applies to Person and Group both)

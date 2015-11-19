@@ -37,6 +37,17 @@
 NSString *gbltmpstr; // for debug
 NSInteger gbltmpint; // for debug
 
+NSString  *gbl_pairScore   ;
+NSString  *gbl_pairPersonA ;
+NSString  *gbl_pairPersonB ;
+NSInteger  gbl_topTableWidth ;
+NSInteger  gbl_topTableNamesWidth;
+NSString  *gbl_topTablePairLine ;
+
+CGFloat   gbl_heightForCompTable;
+NSInteger gbl_areInCompatibilityTable;  // 1=y,0=n
+NSInteger gbl_ThresholdshortTblLineLen;
+
 // EDITING stuff
 //
 
@@ -241,9 +252,10 @@ NSMutableArray *gbl_grp_CSVs;   // report call input
 NSMutableArray *gbl_grp_CSVs_B;   // report call input
 
 
-// per report stuff
+// per and comp report stuff  (new uitableview versions)
 //
-NSArray *gbl_perDataLines;  // used in tblrpts_1 (read in from webview . html file)
+NSArray *gbl_perDataLines;   // used in tblrpts_1 (read in from webview . html file)
+NSArray *gbl_compDataLines;  // used in tblrpts_1 (read in from webview . html file)
 NSInteger gbl_heightCellPER;
 NSInteger gbl_heightCellCOMP;
 // endof per report stuff

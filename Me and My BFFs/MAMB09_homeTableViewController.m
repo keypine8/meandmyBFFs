@@ -1115,6 +1115,13 @@ NSLog(@"in viewDidAppear()  in HOME");
     // HIDE BOTTOM TOOLBAR (used for edit mode - tap edit button)
     //
     self.navigationController.toolbarHidden = YES;  // ensure that the bottom of screen toolbar is NOT visible 
+//    self.segEntityOutlet.backgroundColor = gbl_colorEditingBG;
+//    self.segEntityOutlet.backgroundColor = [UIColor clearColor];
+//    self.segEntityOutlet.backgroundColor = [UIColor whiteColor];
+//    self.segEntityOutlet.backgroundColor = [UIColor redColor];
+
+//    if (self.tableView.editing == YES) self.segEntityOutlet.backgroundColor =  gbl_colorEditingBG;
+//    if (self.tableView.editing ==  NO) self.segEntityOutlet.backgroundColor =  [UIColor whiteColor];
 
 }
 
@@ -1441,6 +1448,10 @@ nbn(300);
         self.view.backgroundColor     = gbl_colorEditingBG;
 
         gbl_colorHomeBG               = gbl_colorEditingBG;  // temporary color for editing 
+
+//        self.segmentedControl.backgroundColor = gbl_colorEditingBG;     // [UIColor cb_Grey3Color];
+//        self.segEntityOutlet.backgroundColor = gbl_colorEditingBG;     
+
 
         // UITableViewCellAccessoryDisclosureIndicator,    tapping the cell triggers a push action
         // UITableViewCellAccessoryDetailDisclosureButton, tapping the cell allows the user to configure the cell’s contents
