@@ -214,7 +214,7 @@ struct aspect {
   {"p05b07", "Your actions are frequently frustrated.  This can lead to very uneven effort in a project- working hard for awhile but then doing nothing.  You are switching from an overly repressive to an overly energetic state."},
   {"p05b08", "You can have explosive flare-ups of temper.  Patience and humility are needed, for you tend to want your own way at all costs.  Dangerous thrill-seeking can be a problem."},
   {"p05b09", "While sometimes your actions are uncertain, you have a magnetism which gives you natural ability as a leader."},
-  {"p05b10", "You are very forceful and must work hard to avoid violence.  Boxing, karate or judo are good sports for you."},
+  {"p05b10", "You are very forceful and must work hard to avoid trouble.  Boxing, karate or judo are good sports for you."},
   {"p05c06", "You have an abundance of enthusiasm so when you start out on a project there's no stopping you."},
   {"p05c07", "Your energy output can vary greatly as though you were driving with the breaks on.  This could make you accident-prone."},
   {"p05c08", "Your actions can be impulsive and erratic.  You love excitement and seek it out in things like car racing."},

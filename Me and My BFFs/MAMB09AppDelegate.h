@@ -37,6 +37,19 @@
 NSString *gbltmpstr; // for debug
 NSInteger gbltmpint; // for debug
 
+
+NSMutableAttributedString *gbl_attrStrWrk_11 ;  //  tread on eggshells
+NSMutableAttributedString *gbl_attrStrWrk_12 ;  //  tread on eggshells
+NSMutableAttributedString *gbl_attrStrWrk_13 ;  //  tread on eggshells
+NSMutableAttributedString *gbl_attrStrWrk_14 ;  //  tread on eggshells
+NSMutableAttributedString *gbl_attrStrWrk_15 ;  //  tread on eggshells
+
+CGFloat   gbl_heightForScreen;  // 6+  = 736.0 x 414  and 6s+  (self.view.bounds.size.width) and height
+                                // 6s  = 667.0 x 375  and 6
+                                // 5s  = 568.0 x 320  and 5 
+                                // 4s  = 480.0 x 320 
+
+
 NSString  *gbl_pairScore   ;
 NSString  *gbl_pairPersonA ;
 NSString  *gbl_pairPersonB ;

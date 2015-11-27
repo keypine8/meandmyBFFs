@@ -1,6 +1,7 @@
 /* this is grphtm.h */
 
-char g_my_aspect_text[512];
+// char g_my_aspect_text[512];
+char g_my_aspect_text[4048];
 
 struct g_aspect {
   char *g_asp_code;
@@ -40,7 +41,7 @@ struct g_aspect {
   {"c02b02",  "There are emotional problems where each one cannot understand the other's feelings."},
   {"c02b03",  "There are problems in communicating about everyday matters.  Also a lot of time can be wasted in discussing unimportant things."},
   {"c02b04",  "There are various emotional misunderstandings between you. You can put too much emphasis on material things."},
-  {"c02b05",  "There is an unfortunate situation where ^^(Bp) overly forceful actions will hurt ^^(A) and ^^(Ap) emotional weakness is painfully evident in comparison with ^^(B)."},
+  {"c02b05",  "There is an unfortunate situation where ^^(Bp) overly forceful actions can cause trouble and ^^(Ap) emotional weakness is painfully evident in comparison with ^^(B)."},
   {"c02b06",  "There can be family difficulties over religion.  In business, there needs to be a more practical approach."},
   {"c02b07",  "^^(Bp) moods can often be negative and great effort is needed to snap out of it.  The relationship often has numerous heavy burdens around it, especially around the home."},
   {"c02b08",  "^^(B) can have sudden big changes in mood and be impractical. ^^(B) will consider ^^(A) to be far too conservative."},
@@ -127,7 +128,7 @@ struct g_aspect {
   {"c04g09",  "You have a strong emotional understanding.  A partnership in creative projects can do well."},
   {"c04g10",  "In a romantic relationship you have an intense attraction.  This is also a good indicator for business partnerships also."},
   {"c05b01",  "Impulsive behavior and temper flare-ups can cause a lot of trouble, especially from ^^(A)."},
-  {"c05b02",  "There is an unfortunate situation where ^^(Ap) overly forceful actions will hurt ^^(B) and ^^(Bp) emotional weakness is painfully evident in comparison with ^^(A)."},
+  {"c05b02",  "There is an unfortunate situation where ^^(Ap) overly forceful actions will cause trouble and ^^(Bp) emotional weakness is painfully evident in comparison with ^^(A)."},
   {"c05b03",  "You will have plenty of arguments and sharp-tongued attacks.   ^^(B) will look on ^^(A) as too harsh and argumentative, while ^^(A) will look on ^^(B) as all talk and no action."},
   {"c05b04",  "There can be extremely strong passions between you so lasting harmony, while possible, is unlikely.  This is a  very difficult indicator."},
   {"c05b05",  "Your attitudes to action and business are fundamentally different.  Temperamental outbursts and trying to boss each other around leads to trouble."},
@@ -135,7 +136,7 @@ struct g_aspect {
   {"c05b07",  "Business relationships are quite poor.  While ^^(A) wants to charge ahead, ^^(B) wants to be cautious."},
   {"c05b08",  "Rash unpredictable outbursts are likely.  ^^(A) is too assertive and ^^(B) is too unsteady.  Co-operation is very difficult. Patience and humility are needed, for you both want your own way at all costs.  Dangerous thrill-seeking can be a problem."},
   {"c05b09",  "^^(A) sees ^^(B) as being vague or even deceptive, while ^^(B) sees ^^(A) as rash and insensitive.  The result is that ^^(A) has angry outbursts and ^^(B) avoids the issue and acts evasively with ulterior motives."},
-  {"c05b10",  "You have a powerful, intense relationship.  Both of you are very forceful and must work hard to avoid violence.  Boxing, karate or judo are good sports for you because they let you work off the excess energy with no harm."},
+  {"c05b10",  "You have a powerful, intense relationship.  Both of you are very forceful and must work hard to avoid trouble.  Boxing, karate or judo are good sports for you because they let you work off the excess energy with no harm."},
   {"c05c01",  "Your relationship has high energy but ^^(Ap) self-assertion  can cause some conflicts."},
   {"c05c02",  "^^(B) sees ^^(A) as too crude and assertive while ^^(A) sees  ^^(B) as too sensitive and moody."},
   {"c05c03",  "There's a great deal of communication between you- both good and bad."},
@@ -220,7 +221,7 @@ struct g_aspect {
   {"c10b02",  "^^(A) is likely to try and dominate ^^(B)- especially in the home environment."},
   {"c10b03",  "^^(A) will try to dominate ^^(Bp) thinking and even be dictatorial."},
   {"c10b04",  "A romantic relationship can be very intense and passionate.   Unfortunately, financial gain could play a role.  Jealousy and possessiveness are present.  Business relationships will have big trouble involving the disposition of the money."},
-  {"c10b05",  "You have a powerful, intense relationship.  Both of you are very forceful and must work hard to avoid violence.  Boxing, karate or judo are good sports for you because they let you work off the excess energy with no harm."},
+  {"c10b05",  "You have a powerful, intense relationship.  Both of you are very forceful and must work hard to avoid trouble.  Boxing, karate or judo are good sports for you because they let you work off the excess energy with no harm."},
   {"c10c01",  "There could be a clash of wills.  ^^(A) could try to transform ^^(B).  It will take some doing to respect each other's freedom."},
   {"c10c02",  "The great power of ^^(A) can threaten ^^(Bp) sensitivity."},
   {"c10c03",  "There could be a tendency for ^^(A) to dominate the decisions of ^^(B).  In any case there is a strong mental bond."},

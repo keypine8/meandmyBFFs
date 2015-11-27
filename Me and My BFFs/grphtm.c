@@ -17,6 +17,7 @@
 #include "grphtm.h"
 /* #include "incocoa.h" */
 
+int get_how_many(char *in_doclin);
 
 int gbl_db_code;
 char gbl_are_in_just2[128];  // = "we are in make_html_file_just_2_people"  or not
@@ -514,9 +515,18 @@ gbl_db_code = 1;
 //    sprintf(writebuf, "head|before hdr lines");
 //    g_fn_prtlin(writebuf);
 
+    sprintf(writebuf, "head|space above hdr line"); 
+    g_fn_prtlin(writebuf);
     sprintf(writebuf, "head|Compatibility");    // right justify in cocoa
     g_fn_prtlin(writebuf);
+//    sprintf(writebuf, "head|space below hdr line"); 
+//    g_fn_prtlin(writebuf);
+
+    sprintf(writebuf, "head|space above hdr line"); 
+    g_fn_prtlin(writebuf);
     sprintf(writebuf, "head|    Potential");
+    g_fn_prtlin(writebuf);
+    sprintf(writebuf, "head|space below hdr line");
     g_fn_prtlin(writebuf);
 
 //    sprintf(writebuf, "head|after hdr lines"); 
@@ -526,7 +536,7 @@ gbl_db_code = 1;
 //    g_fn_prtlin(writebuf);
 
 
-trn("xxx");
+//trn("xxx");
     for (i = 0; i <= 5; i++)   /* for all table data lines */
     {  // MAGIC  6 lines
 
@@ -540,31 +550,51 @@ trn("xxx");
 
       if (strstr(out_rank_lines[i]->person_B, " - top10") != NULL) {
 //        strcpy(writebuf, "tabl|                    90  Great       ");
-        strcpy(writebuf, "tabl|label@90");
+        sprintf(writebuf, "tabl|label@90@space above"); 
+        g_fn_prtlin(writebuf);
+        strcpy(writebuf, "tabl|label@90@filler");
+        g_fn_prtlin(writebuf);
+        sprintf(writebuf, "tabl|label@90@space below"); 
         g_fn_prtlin(writebuf);
         continue;
       }
       if (strstr(out_rank_lines[i]->person_B, " - good" ) != NULL) {
 //        strcpy(writebuf, "tabl|                    75  Good        ");
-        strcpy(writebuf, "tabl|label@75");
+        sprintf(writebuf, "tabl|label@75@space above"); 
+        g_fn_prtlin(writebuf);
+        strcpy(writebuf, "tabl|label@75@filler");
+        g_fn_prtlin(writebuf);
+        sprintf(writebuf, "tabl|label@75@space below"); 
         g_fn_prtlin(writebuf);
         continue;
       }
       if (strstr(out_rank_lines[i]->person_B, " - avg"  ) != NULL) {
 //        strcpy(writebuf, "tabl|                    50  Average     ");
-        strcpy(writebuf, "tabl|label@50");
+        sprintf(writebuf, "tabl|label@50@space above"); 
+        g_fn_prtlin(writebuf);
+        strcpy(writebuf, "tabl|label@50@filler");
+        g_fn_prtlin(writebuf);
+        sprintf(writebuf, "tabl|label@50@space below"); 
         g_fn_prtlin(writebuf);
         continue;
       }
       if (strstr(out_rank_lines[i]->person_B, " - bad"   ) != NULL) {
 //        strcpy(writebuf, "tabl|                    25  Not Good    ");
-        strcpy(writebuf, "tabl|label@25");
+        sprintf(writebuf, "tabl|label@25@space above"); 
+        g_fn_prtlin(writebuf);
+        strcpy(writebuf, "tabl|label@25@filler");
+        g_fn_prtlin(writebuf);
+        sprintf(writebuf, "tabl|label@25@space below"); 
         g_fn_prtlin(writebuf);
         continue;
       }
       if (strstr(out_rank_lines[i]->person_B, " - bot10")  != NULL) {
 //        strcpy(writebuf, "tabl|                    10  OMG         ");
-        strcpy(writebuf, "tabl|label@10");
+        sprintf(writebuf, "tabl|label@10@space above"); 
+        g_fn_prtlin(writebuf);
+        strcpy(writebuf, "tabl|label@10@filler");
+        g_fn_prtlin(writebuf);
+        sprintf(writebuf, "tabl|label@10@space below"); 
         g_fn_prtlin(writebuf);
         continue;
       }
@@ -576,10 +606,19 @@ trn("xxx");
 //        out_rank_lines[i]->score
 //      );
 //
+//      sprintf(writebuf, "tabl|pair@space above@@"); 
+      sprintf(writebuf,  "tabl|pair@%2d@space above@x",
+        out_rank_lines[i]->score
+      );
+      g_fn_prtlin(writebuf);
       sprintf(writebuf,  "tabl|pair@%2d@%s@%s",
         out_rank_lines[i]->score,
         out_rank_lines[i]->person_A,
         out_rank_lines[i]->person_B
+      );
+      g_fn_prtlin(writebuf);
+      sprintf(writebuf,  "tabl|pair@%2d@space below@x",
+        out_rank_lines[i]->score
       );
       g_fn_prtlin(writebuf);
 
@@ -693,13 +732,14 @@ trn("xxx");
     g_fn_prtlin(writebuf);
     sprintf(writebuf, "fill|before how big header");
     g_fn_prtlin(writebuf);
-    sprintf(writebuf, "howbighdr|HOW BIG");
+    sprintf(writebuf, "howbighdr|   HOW BIG");
     g_fn_prtlin(writebuf);
-    sprintf(writebuf, "howbighdr|are the   favorable influences    +++++  ");
+    sprintf(writebuf, "howbighdr|   are the  favorable   influences  +++  ");
     g_fn_prtlin(writebuf);
-    sprintf(writebuf, "howbighdr|and the   chalenging influences   -----  ");
+    sprintf(writebuf, "howbighdr|   and the  challenging influences  ---  ");
+//    sprintf(writebuf, "howbighdr| and the   challenging influences  qqqqq  ");
     g_fn_prtlin(writebuf);
-    sprintf(writebuf, "howbighdr|in the 3 categories below");
+    sprintf(writebuf, "howbighdr|   in the 3 categories below");
     g_fn_prtlin(writebuf);
     sprintf(writebuf, "fill|after how big header");
     g_fn_prtlin(writebuf);
@@ -707,7 +747,7 @@ trn("xxx");
 
 
 //  g_fn_prtlin( "<table class=\"category\" cellspacing=\"0\" celpadding=\"0\">");  // start of long category table
-  g_fn_prtlin( "<table class=\"category\" >");  // start of long category table
+//  g_fn_prtlin( "<table class=\"category\" >");  // start of long category table
 
   // this is webview version
 
@@ -720,7 +760,7 @@ trn("xxx");
 //    g_fn_prtlin( "<tr><td>                                                                                  </td></tr>"); // blank line
   // this is webview version
 
-    sprintf(category_text, "%s", "CLOSENESS ");
+    sprintf(category_text, "%s", " 1. CLOSENESS ");
 
     put_category_label(category_text, (int)strlen(category_text)); 
 
@@ -736,9 +776,11 @@ trn("xxx");
       g_docin_get(doclin);
       if (strstr(doclin, "[end_persn]") != NULL) break;
 
+tn();tr("closeness doclin=");ksn(doclin);
       scharout(doclin, '|');  /* remove pipes (for old sideline)    */
 
-      sprintf(writebuf, "stars|%s", doclin);
+//      sprintf(writebuf, "stars|%s", doclin);
+      sprintf(writebuf, "stars|%d", get_how_many(doclin));
       g_fn_prtlin(writebuf);
 
 //      g_fn_prtlin_stars(doclin);   prob do not need for tableview rpt
@@ -768,8 +810,8 @@ trn("xxx");
     // this is webview version  wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
 
 
-    mylen = sprintf(category_text, "FROM %s's POINT OF VIEW ", beg_aview_name );
-    sprintf(category_text, "FROM %s's POINT OF VIEW ", beg_aview_name );
+    mylen = sprintf(category_text, " 2. FROM %s's POINT OF VIEW ", beg_aview_name );
+//    sprintf(category_text, " FROM %s's POINT OF VIEW ", beg_aview_name );
     put_category_label(category_text, mylen); 
 
     gbl_countMinusLines = 0;     // of consecutive minus lines in star lines
@@ -778,8 +820,10 @@ trn("xxx");
       if (strstr(doclin, "[end_aview]") != NULL) break;
       scharout(doclin, '|');  /* remove pipes (for old sideline)    */
 
-      sprintf(writebuf, "stars|%s", doclin);
+//      sprintf(writebuf, "stars|%s", doclin);
+      sprintf(writebuf, "stars|%d", get_how_many(doclin));
       g_fn_prtlin(writebuf);
+      
 
 //      g_fn_prtlin_stars(doclin);  
     }
@@ -802,8 +846,8 @@ trn("xxx");
     s = &beg_bview_name[0];
     for (; *s; ++s) *s = toupper( (int) *s);
 
-    mylen = sprintf(category_text, "FROM %s's POINT OF VIEW ", beg_bview_name );
-    sprintf(category_text, "FROM %s's POINT OF VIEW ", beg_bview_name );
+    mylen = sprintf(category_text, " 3. FROM %s's POINT OF VIEW ", beg_bview_name );
+//    sprintf(category_text, " FROM %s's POINT OF VIEW ", beg_bview_name );
     put_category_label(category_text, mylen); 
 
     gbl_countMinusLines = 0;     // of consecutive minus lines in star lines
@@ -812,7 +856,8 @@ trn("xxx");
       if (strstr(doclin, "[end_bview]") != NULL) break;
       scharout(doclin, '|');  /* remove pipes (for old sideline)    */
 
-      sprintf(writebuf, "stars|%s", doclin);
+//      sprintf(writebuf, "stars|%s", doclin);
+      sprintf(writebuf, "stars|%d", get_how_many(doclin));
       g_fn_prtlin(writebuf);
 
 //      g_fn_prtlin_stars(doclin);  
@@ -849,9 +894,9 @@ trn("xxx");
     }
 
 
-    sprintf(writebuf, "howbigftr|good indicators are a full line of pluses");
+    sprintf(writebuf, "howbigftr|   Good indicators are a full line of +++ ");
     g_fn_prtlin(writebuf);
-    sprintf(writebuf, "howbigftr|and double the pluses compared to minues ");
+    sprintf(writebuf, "howbigftr|   and double the +++ compared to  --- ");
     g_fn_prtlin(writebuf);
     sprintf(writebuf, "fill|after howbigftr");
     g_fn_prtlin(writebuf);
@@ -1152,53 +1197,55 @@ trn("xxx");
   if (strstr(in_html_filename, "webview") != NULL)
   {  // webview version
 
-    strcpy(spanbeg, "<span style=\"background-color: #fcfce0;\"> ");
-    strcpy(spanend, "</span>");
-
-    sprintf(writebuf, "%s%s%s", spanbeg,
-      "                                                  ",
-      spanend);
-    g_fn_prtlin(writebuf);
-
-
-    sprintf(writebuf, "%s%s%s", spanbeg,
-      "     a GOOD RELATIONSHIP usually has 2 things     ", // 
-      spanend);
-    g_fn_prtlin(writebuf);
-
-
-    sprintf(writebuf, "%s%s%s", spanbeg,
-      "  1. compatibility potential                      ",
-      spanend);
-    g_fn_prtlin(writebuf);
-
-    sprintf(writebuf, "%s%s%s", spanbeg,
-       "  2. both sides show positive personality traits  ",
-      spanend);
-    g_fn_prtlin(writebuf);
-
-    sprintf(writebuf, "%s%s%s", spanbeg,
-       "                                                  ",
-      spanend);
-    g_fn_prtlin(writebuf);
-
-    gbl_we_are_in_PRE_block = 0; /* 1 = yes, 0 = no */
-    g_fn_prtlin("</div>");  // end of explrelationship
-
-
-
-    g_fn_prtlin("<div class=\"appby\">");
-    sprintf(writebuf, "produced by iPhone app %s", APP_NAME);
-    g_fn_prtlin(writebuf);
-    g_fn_prtlin("</div>");  // end of appby
-
-    //g_fn_prtlin("<h4><span style=\"background-color:#FFBAC7;\">&nbspThis report is for entertainment purposes only.&nbsp</span></h4>");
-
-    g_fn_prtlin("<div class=\"entertainment\">");
-    //g_fn_prtlin("<span style=\"background-color:#FFBAC7;\">&nbspThis report is for entertainment purposes only.&nbsp</span>");
-    g_fn_prtlin("This report is for entertainment purposes only.");
-    g_fn_prtlin("</div>");  // end of appby
-    g_fn_prtlin("<div><br><br></div>");
+//
+//    strcpy(spanbeg, "<span style=\"background-color: #fcfce0;\"> ");
+//    strcpy(spanend, "</span>");
+//
+//    sprintf(writebuf, "%s%s%s", spanbeg,
+//      "                                                  ",
+//      spanend);
+//    g_fn_prtlin(writebuf);
+//
+//
+//    sprintf(writebuf, "%s%s%s", spanbeg,
+//      "     a GOOD RELATIONSHIP usually has 2 things     ", // 
+//      spanend);
+//    g_fn_prtlin(writebuf);
+//
+//
+//    sprintf(writebuf, "%s%s%s", spanbeg,
+//      "  1. compatibility potential                      ",
+//      spanend);
+//    g_fn_prtlin(writebuf);
+//
+//    sprintf(writebuf, "%s%s%s", spanbeg,
+//       "  2. both sides show positive personality traits  ",
+//      spanend);
+//    g_fn_prtlin(writebuf);
+//
+//    sprintf(writebuf, "%s%s%s", spanbeg,
+//       "                                                  ",
+//      spanend);
+//    g_fn_prtlin(writebuf);
+//
+//    gbl_we_are_in_PRE_block = 0; /* 1 = yes, 0 = no */
+//    g_fn_prtlin("</div>");  // end of explrelationship
+//
+//
+//
+//    g_fn_prtlin("<div class=\"appby\">");
+//    sprintf(writebuf, "produced by iPhone app %s", APP_NAME);
+//    g_fn_prtlin(writebuf);
+//    g_fn_prtlin("</div>");  // end of appby
+//
+//    //g_fn_prtlin("<h4><span style=\"background-color:#FFBAC7;\">&nbspThis report is for entertainment purposes only.&nbsp</span></h4>");
+//
+//    g_fn_prtlin("<div class=\"entertainment\">");
+//    //g_fn_prtlin("<span style=\"background-color:#FFBAC7;\">&nbspThis report is for entertainment purposes only.&nbsp</span>");
+//    g_fn_prtlin("This report is for entertainment purposes only.");
+//    g_fn_prtlin("</div>");  // end of appby
+//    g_fn_prtlin("<div><br><br></div>");
+//
 
 
     sprintf(writebuf, "fill|before goodrelationship");
@@ -1282,6 +1329,38 @@ trn("xxx");
 
 
 } /* end of make_html_file_just_2_people() */ 
+
+
+
+// input is like:
+//        // lin=[stars|        easy ++++++++++++++++++++++++++++++                                                 ]__
+//        // lin=[stars|   difficult ----------                                                                     ]__
+// return positive number of '+' or negative number of '-
+//
+int get_how_many(char *in_doclin)
+{
+ksn(in_doclin);
+  char mys[512];
+  char *mysp;
+  int i,j,cnt;
+  i = 0;
+  j = 0;
+                //  for (i=0; in_doclin[i]; in_doclin[i] == '+' ? i++ : *in_doclin++);
+  cnt = 0;;
+  for (i=0; in_doclin[i] != '\0'; i++) {
+     if (in_doclin[i] == '+') cnt = cnt + 1;
+  }
+  if (cnt != 0) return cnt;
+
+  cnt = 0;;
+  for (i=0; in_doclin[i] != '\0'; i++) {
+     if (in_doclin[i] == '-') cnt = cnt + 1;
+  }
+  if (cnt != 0) return (cnt * -1) ;
+
+  return 1;  // 0 if not + or -
+} // end of  get_how_many(char *in_doclin)
+
 
 
 /* put label in field of 82, 2sp at end and beg
@@ -4811,13 +4890,89 @@ void  prtRedGreenPlusMinus(int numPosNeg, int arg_is_webview)
 } // end of prtRedGreenPlusMinus
 
 
+//void g_fn_webview_aspect_text(char *in_aspect_code){
+//  int nn;
+//  char aspcodeToSearch[32], possessiveA[64], possessiveB[64], lastchar; 
+//  char oldAspCode[32];
+//  char numplusminus[32];
+//
+////trn("in g_fn_webview_aspect_text()"); 
+////ksn(in_aspect_code);
+//
+//  // get old gP_ITEM_TBL from PSV
+//  //
+//  strcpy(oldAspCode,   csv_get_field(in_aspect_code, "|", 1) );
+//  strcpy(numplusminus, csv_get_field(in_aspect_code, "|", 2) );
+//
+//  // fix aspect code like this:  e.g.  _(in g_docin_GET)___in_line=[^(c03b02)]__
+//  //                   to this:  "c03b02"
+//  strcpy(aspcodeToSearch, oldAspCode);
+//  scharout(aspcodeToSearch, '^');  
+//  scharout(aspcodeToSearch, '(');  
+//  scharout(aspcodeToSearch, ')');  
+//
+//  nn = binsearch_asp(aspcodeToSearch, g_asptab, G_NKEYS_ASP);   // +++++++++++++++++++++++++++++++++++++
+//
+//  if (nn < 0) return;  /* do not print any aspect text at all  */
+//
+//  strcpy(g_my_aspect_text, g_asptab[nn].g_asp_text);
+//
+//  // do posessive forms of names, if necessary
+//  //
+//  if (strstr(g_my_aspect_text, "^^(Ap)") != NULL ) { 
+//    lastchar = gbl_just2PersonA[strlen(gbl_just2PersonA) - 1];
+//    if (lastchar == 's' ||  lastchar == 'z') {
+//      sprintf(possessiveA, "%s\'", gbl_just2PersonA);
+//      strsubg(g_my_aspect_text, "^^(Ap)", possessiveA);
+//    } else {
+//      sprintf(possessiveA, "%s\'s", gbl_just2PersonA);
+//      strsubg(g_my_aspect_text, "^^(Ap)", possessiveA);
+//    }
+//  }
+//  if (strstr(g_my_aspect_text, "^^(Bp)") != NULL ) { 
+//    lastchar = gbl_just2PersonB[strlen(gbl_just2PersonB) - 1];
+//    if (lastchar == 's' ||  lastchar == 'z') {
+//      sprintf(possessiveB, "%s\'", gbl_just2PersonB);
+//      strsubg(g_my_aspect_text, "^^(Bp)", possessiveB);
+//    } else {
+//      sprintf(possessiveB, "%s\'s", gbl_just2PersonB);
+//      strsubg(g_my_aspect_text, "^^(Bp)", possessiveB);
+//    }
+//  }
+//  if (strstr(g_my_aspect_text, "^^(A)") != NULL ) { 
+//    strsubg(g_my_aspect_text, "^^(A)", gbl_just2PersonA);
+//  }
+//  if (strstr(g_my_aspect_text, "^^(B)") != NULL ) { 
+//    strsubg(g_my_aspect_text, "^^(B)",  gbl_just2PersonB);
+//  }
+//
+//
+//  /* wrap lines at 80 chars with <br> */
+//  /*   put_br_every_n(my_aspect_text, 80);  */
+//  /*   put_br_every_n(my_aspect_text, 65);  */
+//  put_br_every_n(g_my_aspect_text, 50);          // <=====----
+//
+//  sprintf(writebuf, "para|%s\n",  g_my_aspect_text );
+//  g_fn_prtlin(writebuf);
+//
+//  //  do red/green line in cocoa now (in tblrpts)
+//  sprintf(writebuf, "redgreenline|%s\n",  numplusminus);
+//  g_fn_prtlin(writebuf);
+//  //
+//  //  // here we write the red/green
+//  //  prtRedGreenPlusMinus(atoi(numplusminus), 1); // 1 = yes, this is  webview version
+//
+//} // end of  g_fn_webview_aspect_text()
+//
+
+// NEW VERSION   (tblrpt  in cocoa)
 void g_fn_webview_aspect_text(char *in_aspect_code){
   int nn;
   char aspcodeToSearch[32], possessiveA[64], possessiveB[64], lastchar; 
   char oldAspCode[32];
   char numplusminus[32];
 
-//trn("in g_fn_webview_aspect_text()"); 
+//trn("in g_fn_webview_aspect_text() NEW VERSION   (tblrpt  in cocoa) "); 
 //ksn(in_aspect_code);
 
   // get old gP_ITEM_TBL from PSV
@@ -4871,10 +5026,63 @@ void g_fn_webview_aspect_text(char *in_aspect_code){
   /* wrap lines at 80 chars with <br> */
   /*   put_br_every_n(my_aspect_text, 80);  */
   /*   put_br_every_n(my_aspect_text, 65);  */
-  put_br_every_n(g_my_aspect_text, 50);          // <=====----
+//  put_br_every_n(g_my_aspect_text, 50);          // <=====----
 
-  sprintf(writebuf, "para|%s\n",  g_my_aspect_text );
+
+  // print lines in g_my_aspect_text wrapped to line_not_longer_than_this
+  // 
+  char *pNewWord;
+  int len_new_word, lenbuf, line_not_longer_than_this;
+  char mybuf[8192];
+
+  line_not_longer_than_this = 40;
+  strcpy(mybuf, "");
+
+  sprintf(writebuf, "fill|before para");
   g_fn_prtlin(writebuf);
+
+  // NOTE here that strtok overwrites g_my_aspect_text to get the words,
+  pNewWord = strtok (g_my_aspect_text, " ");  /* get ptr to first word */
+
+  while (pNewWord != NULL)  /* for all words */
+  {
+    lenbuf       = (int)strlen(mybuf);
+    len_new_word = (int)strlen(pNewWord);
+
+    if (lenbuf + len_new_word >= line_not_longer_than_this) {
+
+      while (strlen(mybuf) < line_not_longer_than_this) { // add spaces at end to fill up to line_not_longer_than_this  chars
+        sprintf(mybuf, "%s ", mybuf);  // add a space at the end
+      }
+      sprintf(writebuf, "para|  %s",  mybuf);
+      g_fn_prtlin(writebuf);
+      
+      strcpy(mybuf, "");                    /* init  mybuf */
+    } /* write out since line too long */
+
+    sprintf(mybuf, "%s%s%s", mybuf, pNewWord, " "); /* add new word to mybuf */
+
+    pNewWord = strtok (NULL, " ");                  /* get ptr to next word */
+
+  }  /* for all words */
+
+  /* here no more words in aspect desc (mybuf has last line to add) */
+  if (strlen(mybuf) != 0) {
+
+    mybuf[ strlen(mybuf) - 1] = '\0'; /* but remove sp at end */
+
+    while (strlen(mybuf) < line_not_longer_than_this) { // add spaces at end to fill up to line_not_longer_than_this  chars
+      sprintf(mybuf, "%s ", mybuf);  // add a space at the end
+    }
+    sprintf(writebuf, "para|  %s",  mybuf);
+    g_fn_prtlin(writebuf);
+  }
+  //
+  // end of print lines in g_my_aspect_text wrapped to line_not_longer_than_this
+
+
+//  sprintf(writebuf, "para|%s\n",  g_my_aspect_text );  // see above
+//  g_fn_prtlin(writebuf);
 
   //  do red/green line in cocoa now (in tblrpts)
   sprintf(writebuf, "redgreenline|%s\n",  numplusminus);
@@ -4884,8 +5092,6 @@ void g_fn_webview_aspect_text(char *in_aspect_code){
   //  prtRedGreenPlusMinus(atoi(numplusminus), 1); // 1 = yes, this is  webview version
 
 } // end of  g_fn_webview_aspect_text()
-
-
 
 
 

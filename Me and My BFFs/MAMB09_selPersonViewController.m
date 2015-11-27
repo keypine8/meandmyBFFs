@@ -369,7 +369,7 @@
 // how to set the tableview cell height
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath  // -------------------------
 {
-  NSLog(@"in heightForRowAtIndexPath 1");
+//  NSLog(@"in heightForRowAtIndexPath 1");
 
   return 44.0; // matches report height
 
