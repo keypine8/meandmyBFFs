@@ -64,6 +64,9 @@ NSInteger gbl_ThresholdshortTblLineLen;
 // EDITING stuff
 //
 
+UIImage *gbl_YellowBG ;
+UIImage *gbl_BlueBG ;
+
 NSInteger addChangeViewJustEntered;  // 1=y,0=n
 
 // all 4 of these have possible values  "name" or "city" or "date" or "" or nil
@@ -77,8 +80,8 @@ NSString *gbl_fieldTap_goingto; // note that name and city are captured in shoul
 // cell.accessoryType = UITableViewCellAccessoryDisclosurebutton;    // home mode edit    with tap giving record details 
 // cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator; // home mode regular with tap giving report list
 //
-NSString *gbl_homeUseMODE;  // determines home mode  @"edit mode" or @"regular mode"
-NSString *gbl_homeEditingState;  // "add" for add a new person or group, "view or change" for tapped person or group
+NSString *gbl_homeUseMODE;       // = "edit mode" or "regular mode"
+NSString *gbl_homeEditingState;  // if gbl_homeUseMODE = "edit mode" then either "add" or "view or change"   for tapped person or group
 
 
 
@@ -593,6 +596,7 @@ UIColor *gbl_colorHomeBG;
 UIColor *gbl_colorHomeBG_save;  // in order to put back after editing mode color
 UIColor *gbl_colorEditButton_save;  // in order to put back after editing mode color
 UIColor *gbl_colorEditingBG;
+UIColor *gbl_colorEditingBG_current;  // is now yellow or blue for add a record screen  (addChange view)
 UIColor *gbl_colorEditingBGforInputField;
 
 UIColor *gbl_colorReportsBG;

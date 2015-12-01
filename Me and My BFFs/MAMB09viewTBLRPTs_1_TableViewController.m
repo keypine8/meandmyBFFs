@@ -374,7 +374,7 @@ bn(3012);
             else if ( [mylin isEqualToString: @"before para"] ) {
                 mylin             = @" ";
                 mybgcolor         = gbl_color_cBgr ;
-                gbl_heightCellPER = 16;
+                gbl_heightCellPER = 2;;
             }
             else if ( [mylin isEqualToString: @"before willpower"] ) {
                 mylin             = @" ";
@@ -678,7 +678,7 @@ bn(6012);
             else if ( [mylin isEqualToString: @"before how big header"] ) {
                 mylin             = @" ";
                 mybgcolor         = gbl_color_cHed ;
-                gbl_heightCellCOMP = 8;
+                gbl_heightCellCOMP = 3;
             }
 
             // lin=[fill|after how big header]__
@@ -691,9 +691,10 @@ bn(6012);
             // 
             else if ( [mylin isEqualToString: @"after how big header"] ) {
                 mylin             = @" ";
-                mybgcolor         = gbl_color_cHed ;
-                mybgcolor         = gbl_color_cNeu ;
-                gbl_heightCellCOMP = 16;
+//                mybgcolor         = gbl_color_cHed ;
+//                mybgcolor         = gbl_color_cNeu ;
+                mybgcolor         = gbl_color_cBgr ;
+                gbl_heightCellCOMP = 2;
             }
             else if (   [mylin isEqualToString: @"after personal stars"]
                      || [mylin isEqualToString: @"after personA ptofview"]
@@ -703,7 +704,7 @@ bn(6012);
                 mybgcolor         = gbl_color_cBgr ;
                 gbl_heightCellCOMP =  8;
             }
-            else if (   [mylin isEqualTkoString: @"after personB ptofview"]
+            else if (   [mylin isEqualToString: @"after personB ptofview"]
             ) {
                 mylin             = @" ";
 //                mybgcolor         = gbl_color_cHed ;
@@ -713,46 +714,55 @@ bn(6012);
             else if ( [mylin isEqualToString: @"after howbigftr"] ) {
                 mylin             = @" ";
                 mybgcolor         = gbl_color_cHed ;
-                mybgcolor         = gbl_color_cRed ;
-                gbl_heightCellCOMP =  8;
+                gbl_heightCellCOMP =  4;
             }
             else if ( [mylin isEqualToString: @"filler after how big"] ) {
                 mylin             = @" ";
                 mybgcolor         = gbl_color_cBgr ;
-                mybgcolor         = gbl_color_cRe2 ;
-                gbl_heightCellCOMP = 16;
+                gbl_heightCellCOMP = 8;
             }
             else if ( [mylin isEqualToString: @"filler before paras"] ) {
                 mylin             = @" ";
-                mybgcolor         = gbl_color_cGr2 ;
-                gbl_heightCellCOMP = 16;
+                mybgcolor         = gbl_color_cBgr ;
+                gbl_heightCellCOMP = 2;
             }
 
 
             else if ( [mylin isEqualToString: @"before para"] ) {
                 mylin             = @" ";
                 mybgcolor         = gbl_color_cBgr ;
-                gbl_heightCellCOMP = 24;
+//                gbl_heightCellCOMP = 16;
+                gbl_heightCellCOMP = 12;
             }
-            else if ( [mylin isEqualToString: @"before willpower"] ) {
+
+            // lin=[fill|before goodrelationship]__
+            // lin=[fill|in goodrelationship at beg]__
+            // lin=[fill|in goodrelationship at end]__
+            //
+            else if ( [mylin isEqualToString: @"before goodrelationship"] ) {
+                mylin             = @" ";
+                mybgcolor         = gbl_color_cGre ;
+                mybgcolor         = gbl_color_cBgr ;
+                gbl_heightCellCOMP = 12;
+            }
+            else if ( [mylin isEqualToString: @"in goodrelationship at beg"] ) {
                 mylin             = @" ";
                 mybgcolor         = gbl_color_cBgr ;
-                gbl_heightCellCOMP = 24;
+//                mybgcolor         = gbl_color_cNeu ;
+                gbl_heightCellCOMP = 12;
             }
-            else if ( [mylin isEqualToString: @"in willpower at beg"] ) {
+            else if ( [mylin isEqualToString: @"in goodrelationship at end"] ) {
                 mylin             = @" ";
                 mybgcolor         = gbl_color_cHed ;
-                gbl_heightCellCOMP = 8;
+//                mybgcolor         = gbl_color_cRed ;
+                gbl_heightCellCOMP = 4;
             }
-            else if ( [mylin isEqualToString: @"in willpower at end"] ) {
-                mylin             = @" ";
-                mybgcolor         = gbl_color_cHed ;
-                gbl_heightCellCOMP = 8;
-            }
+
+
             else if ( [mylin isEqualToString: @"before produced by"] ) {
                 mylin             = @" ";
                 mybgcolor         = gbl_color_cBgr ;
-                gbl_heightCellCOMP = 16;
+                gbl_heightCellCOMP = 12;
             }
             else if ( [mylin isEqualToString: @"before entertainment"] ) {
                 mylin             = @" ";
@@ -771,7 +781,7 @@ bn(6012);
         // lin=[head|Compatibility]__
         // lin=[head|space above hdr line]__
         // lin=[head|    Potential]__
-        // lin=[head|space below hdr line]__
+//        // lin=[head|space below hdr line]__
 
         // lin=[tabl|label@90@space above]__
         // lin=[tabl|label@90@filler]__
@@ -959,11 +969,12 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
             dispatch_async(dispatch_get_main_queue(), ^{                                // <===  comp  table header
 //                cell.textLabel.text                      = mylin;  // plain text not used
 //                cell.textLabel.attributedText            = myAttrString;  // order matters- pipes appear if this line is here
-                cell.textLabel.adjustsFontSizeToFitWidth = myadjust;
+//                cell.textLabel.adjustsFontSizeToFitWidth = myadjust;
+//                cell.textLabel.adjustsFontSizeToFitWidth = NO;
                 cell.textLabel.textAlignment             = NSTextAlignmentCenter;
                 cell.userInteractionEnabled              = NO;
-//              cell.accessoryView                       = nil;   // use accessoryType setting   // have right arrow on column labels
-                cell.accessoryView                       = myInvisibleButton;               // no right arrow on column labels
+              cell.accessoryView                       = nil;   // use accessoryType setting   // have right arrow on column labels
+//                cell.accessoryView                       = myInvisibleButton;               // no right arrow on column labels
                 cell.accessoryType                       = UITableViewCellAccessoryNone;
                 cell.textLabel.numberOfLines             = 1; 
                 cell.textLabel.textColor                 = [UIColor blackColor];
@@ -1056,6 +1067,8 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
                 //
                 if (gbl_pairPersonA.length + gbl_pairPersonB.length <= gbl_ThresholdshortTblLineLen) { // SHORT line here
                     // SHORT line here
+
+  NSLog(@"1line is short");
                     if( [myscore isEqualToString: @"90"] ) {
                         mybgcolorfortableline = gbl_color_cGr2;
 
@@ -1140,8 +1153,11 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
                     ];
                     gbl_heightCellCOMP = 18;
 
+  NSLog(@"[mylin s length]=[%ld]",[mylin length]);
+
 
                 } else { // LONG  line here
+  NSLog(@"2line is long ");
 
                     // if( [myscore isEqualToString: @"90"] ) { mybgcolorfortableline = gbl_color_cGr2; gbltmpstr = @"   Great  90 ";}
                     // if( [myscore isEqualToString: @"75"] ) { mybgcolorfortableline = gbl_color_cGre; gbltmpstr = @"    Good  75 ";}
@@ -1220,14 +1236,14 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
                         }
                     }
                     mylin = [NSString stringWithFormat:@"|%@%@|",
-//                        [@"" stringByPaddingToLength: gbl_topTableNamesWidth - 11 withString: @" " startingAtIndex: 0], // 11 is "  Not Good "
-                        [@"" stringByPaddingToLength: gbl_topTableNamesWidth + 1 - 11 withString: @" " startingAtIndex: 0], // 11 is "  Not Good "
+                        [@"" stringByPaddingToLength: gbl_topTableNamesWidth + 1 - 11 withString: @" " startingAtIndex: 0], // 11="  Not Good "
                         gbltmpstr
                     ];
                     gbl_heightCellCOMP = 18;
 
                 } // end   LONG  line here
 
+  NSLog(@"[mylin l length]=[%ld]",[mylin length]);
             } // if ( [mycode2 isEqualToString: @"label"] )
 
 
@@ -1240,13 +1256,14 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
                 //
                 if( [myspace hasPrefix: @"space "] ) {
                     if (gbl_pairPersonA.length + gbl_pairPersonB.length <= gbl_ThresholdshortTblLineLen) { // SHORT line here
-
+  NSLog(@"3line is short ");
                         mylin = [NSString stringWithFormat:@"|%@%@|",
                             [@"" stringByPaddingToLength: gbl_topTableNamesWidth       withString: @" " startingAtIndex: 0],
                             gbltmpstr
                         ];
 
                     } else { // LONG line here
+  NSLog(@"4line is long ");
                         mylin = [NSString stringWithFormat:@"|%@%@|",
                             [@"" stringByPaddingToLength: gbl_topTableNamesWidth + 1 - 11 withString: @" " startingAtIndex: 0], // 11 is "  Not Good "
                             gbltmpstr
@@ -1254,19 +1271,47 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
                     }
 
                 } else {
+  NSLog(@"else ");
                     mylin = gbl_topTablePairLine;
                 }
+  NSLog(@"[mylin space length]=[%ld]",[mylin length]);
+  NSLog(@"mylin=[%@]",mylin);
+  NSLog(@"gbltmpstr=[%@]",gbltmpstr);
 
 
                 if ( [myspace isEqualToString: @"space above"] ) {
-                    gbltmpstr              = @"             ";
+                     gbltmpstr              = @"             ";
+                    // gbltmpstr is set above
                     gbl_heightForCompTable =  2.0;
+//                    gbl_heightForCompTable =  20.0;  for test
+  NSLog(@"mylin a =[%@]",mylin);
                 }
                 if ( [myspace isEqualToString: @"space below"] ) {
-                    gbltmpstr              = @"             ";
+                     gbltmpstr              = @"             ";
+                    // gbltmpstr is set above
                     gbl_heightForCompTable =  3.0;
+//                    gbl_heightForCompTable =  20.0;  for test
+  NSLog(@"mylin b =[%@]",mylin);
                 } 
 
+                if (   [myspace isEqualToString: @"space above"]
+                    || [myspace isEqualToString: @"space below"]
+                ) {
+                    if (gbl_pairPersonA.length + gbl_pairPersonB.length <= gbl_ThresholdshortTblLineLen) { // SHORT line here
+  NSLog(@"10line is short ");
+                        mylin = [NSString stringWithFormat:@"|%@%@|",
+                            [@"" stringByPaddingToLength: gbl_topTableNamesWidth       withString: @" " startingAtIndex: 0],
+                            gbltmpstr
+                        ];
+
+                    } else { // LONG line here
+  NSLog(@"11Iline is long ");
+                        mylin = [NSString stringWithFormat:@"|%@%@|",
+                            [@"" stringByPaddingToLength: gbl_topTableNamesWidth + 1 - 11 withString: @" " startingAtIndex: 0], // 11 is "  Not Good "
+                            gbltmpstr
+                        ];
+                    }
+                }
 
 
                 int sco;
@@ -1374,15 +1419,18 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
             CGRect rect;
 
             dispatch_async(dispatch_get_main_queue(), ^{               // <===  comp pair
-                cell.textLabel.font                      = myCompFont;
-                cell.accessoryView                       = myInvisibleButton;               // no right arrow on column labels
-                cell.userInteractionEnabled              = NO;
+//                cell.accessoryView                       = myInvisibleButton;               // no right arrow on column labels
+                // do not set text
                 cell.textLabel.textAlignment             = NSTextAlignmentCenter;
-                cell.textLabel.attributedText            = myAttrString;
+                cell.userInteractionEnabled              = NO;
+                cell.accessoryView                       = nil;   // use accessoryType setting   // have right arrow on column labels
+                cell.accessoryType                       = UITableViewCellAccessoryNone;
                 cell.textLabel.numberOfLines             = 1; 
-                cell.textLabel.backgroundColor           = mybgcolor;
+                cell.textLabel.textColor       = mytextcolor;
+                cell.textLabel.font                      = myCompFont;
                 cell.textLabel.adjustsFontSizeToFitWidth = myadjust;
-//                cell.textLabel.textColor       = mytextcolor;
+                cell.textLabel.backgroundColor           = mybgcolor;
+                cell.textLabel.attributedText            = myAttrString;
 
             });
             //<.> gold below, but above workd
@@ -1944,8 +1992,8 @@ tn();tr("ritem wid=");kin( ceilf(self.view.bounds.size.width) - (ceilf(rect1.siz
             [cell.contentView addSubview: label2];
             [cell.contentView addSubview: label3];
 //            cell.textLabel.text                      = mylin; 
-            cell.textLabel.text                      = nil; 
-            cell.textLabel.adjustsFontSizeToFitWidth = myadjust;
+            cell.textLabel.text                      = nil;   // this prevents  text bleed
+//            cell.textLabel.adjustsFontSizeToFitWidth = myadjust;
             cell.textLabel.textAlignment             = myalign;
             cell.userInteractionEnabled              = NO;
             cell.accessoryView                       = nil;   // use accessoryType setting   // have right arrow on column labels
@@ -1955,6 +2003,7 @@ tn();tr("ritem wid=");kin( ceilf(self.view.bounds.size.width) - (ceilf(rect1.siz
             cell.textLabel.font                      = compFont_12;
             cell.textLabel.adjustsFontSizeToFitWidth = NO;
             cell.textLabel.backgroundColor           = mybgcolor;
+//            cell.textLabel.attributedText            = myAttrString;  // order matters- pipes DO NOT appear if this line is here
         });
         //<.> gold below
         //            dispatch_async(dispatch_get_main_queue(), ^{            // <===  comp fall thru
@@ -1989,18 +2038,20 @@ bn(802);
         // lin=[fill|after howbigftr]__
         // lin=[fill|filler after how big]__
         // lin=[fill|filler before paras]__
-        // lin=[para|There are problems in communicating about <span style="visibility: hidden">oremqips</span><br>everyday matters. Also a lot of time can be <span style="visibility: hidden">oremqi</span><br>wasted in discussing unimportant things.<span style="visibility: hidden">oremqipsum</span>
+        // lin=[fill|before para]__
+        // lin=[para|  There is a very good indication between ]__
+        // lin=[para|  ~Olivia's sun and Mother Lastna's moon  ]__
+        // lin=[para|  which is an excellent indicator of      ]__
+        // lin=[para|  compatibility.                          ]__
+        // lin=[redgreenline|13
         // ]__
-        // lin=[redgreenline|-25
+        // lin=[fill|before para]__
+        // lin=[para|  You could have a psychic link between   ]__
+        // lin=[para|  you. Mother Lastna can bring creative   ]__
+        // lin=[para|  imagination to ~Olivia.                 ]__
+        // lin=[redgreenline|22
         // ]__
-        // lin=[para|You enjoy similar viewpoints and have very <span style="visibility: hidden">oremqip</span><br>similar interests and love to talk about them.<span style="visibility: hidden">orem</span>
-        // ]__
-        // lin=[redgreenline|25
-        // ]__
-        // lin=[para|Your relationship is generally happy and <span style="visibility: hidden">oremqipsu</span><br>cheerful. You communicate well, especially about <span style="visibility: hidden">o</span><br>creative activities.<span style="visibility: hidden">oremqipsumqcalorqsitqametqcons</span>
-        // ]__
-        // lin=[redgreenline|25
-        // ]__
+        //
         // lin=[fill|before goodrelationship]__
         //
         if ( [mycode isEqualToString: @"para"] ) {
@@ -2028,81 +2079,120 @@ bn(802);
         //
         // _(end of mamb_report_just_2_people())__
         //
-        if ( [mycode isEqualToString: @"goodrelationship"] ) {  // the text of this is in here, not in input
+//<.>
+//<.>
+//        if ( [mycode isEqualToString: @"will"] ) {
+//            myalign           = NSTextAlignmentLeft;
+//            mynumlines        = 1;    
+//            mybgcolor         = gbl_color_cHed ;
+//            gbl_heightCellPER = 16;
+//            myadjust          = YES;
+//            mytextcolor       = [UIColor blackColor];
+//            myPerFont         = perFont_16;
+//        }
+//<.>
+//<.>
+//
+        if ( [mycode isEqualToString: @"goodrelationship"] )
+        {  // the text of this is in here, not in input
+
             gbl_areInCompatibilityTable = 0;
+
+  NSLog(@" if ( [mycode isEqualToString: goodrelationship] )   // the text of this is in here, not in input ");
 
             myalign           = NSTextAlignmentLeft;
             mynumlines        = 1;    
             mybgcolor         = gbl_color_cHed ;
-            gbl_heightCellCOMP = 16;
+            gbl_heightCellPER = 16;
             myadjust          = YES;
             mytextcolor       = [UIColor blackColor];
-            myCompFont         = compFont_16;
-
-            // NOTE: this is copied from per
-
-            //        {  // 1 of 3 FOOTER CELLS       goodrelationship
-            //                // ORIG cell.textLabel.text          = @"                                         \n        a GOOD RELATIONSHIP              \n        usually has 2 things             \n     1. compatibility potential          \n     2. both sides show positive         \n        personality traits               \n                                         ";
-            //
-
-            NSMutableAttributedString *myAttrString;    // for cell text
-            NSString                  *myStringNoAttr;  // for work string
-
-            myAttrString   = [[NSMutableAttributedString alloc] initWithString:  @"                             \n|   a GOOD RELATIONSHIP     |\n|   usually has 2 things    |\n|1. compatibility potential |\n|2. both sides show positive|\n|   personality traits      |\n                             "
-            ];
-            myStringNoAttr = [myAttrString  string];
-
-            // find the pipes and make them invisible
-            // note: search myStringNoAttr, but make changes in myAttringString
-            //
-            // Setup what you're searching and what you want to find
-            NSString *toFind = @"|";
-            //
-            // Initialise the searching range to the whole string
-            NSRange searchRange = NSMakeRange(0, [myStringNoAttr length]);
-            do {
-                // Search for next occurrence
-                NSRange searchReturnRange = [myStringNoAttr  rangeOfString: toFind  options: 0  range: searchRange];
-                if (searchReturnRange.location != NSNotFound) {
-                    // If found, searchReturnRange contains the range of the current iteration
-
-                    [ myAttrString  addAttribute: NSForegroundColorAttributeName
-                                           value: gbl_color_cHed
-                                           range: NSMakeRange(searchReturnRange.location, 1)
-                    ];
-
-                    // Reset search range for next attempt to start after the current found range
-                    searchRange.location = searchReturnRange.location + searchReturnRange.length;
-                    searchRange.length = [myAttrString length] - searchRange.location;
-
-                } else {
-                    // If we didn't find it, we have no more occurrences
-                    break;
-                }
-            } while (1);
-
-            UIButton *myInvisibleButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
-            [UIButton buttonWithType: UIButtonTypeCustom];
-            myInvisibleButton.backgroundColor = [UIColor clearColor];
-
-            dispatch_async(dispatch_get_main_queue(), ^{                                // comp <===  good relationship
-                cell.textLabel.font            = compFont_12;
-                // cell.textLabel.numberOfLines = 5;
-                cell.accessoryView             = myInvisibleButton;               // no right arrow on column labels
-                cell.userInteractionEnabled    = NO;
-                cell.textLabel.textAlignment   = NSTextAlignmentCenter;
-                cell.textLabel.textColor       = mytextcolor;
-                cell.textLabel.attributedText  = myAttrString;
-//                cell.textLabel.numberOfLines   = 7; 
-                cell.textLabel.numberOfLines   = 1; 
-                cell.textLabel.backgroundColor = gbl_thisCellBackGroundColor;
-
-            });
-            return cell;   //     special case cell      special case       special case       special case      special case   
-
-        // }  // end of 1 of 3 FOOTER CELLS
-
+            myCompFont         = compFont_12;
+            gbl_heightCellCOMP = 18;
         }
+
+//            myalign           = NSTextAlignmentLeft;
+//            mynumlines        = 1;    
+//            mybgcolor         = gbl_color_cHed ;
+//            gbl_heightCellCOMP = 16;
+//            myadjust          = YES;
+//            mytextcolor       = [UIColor blackColor];
+//            myCompFont         = compFont_12;
+//
+//                                                                         // ARE IN   new compatibility TBLRPT  report
+//
+//            // NOTE: this is copied from per
+//
+//
+//            NSMutableAttributedString *myAttrString;    // for cell text
+//            NSString                  *myStringNoAttr;  // for work string
+//            NSString                  *myStringNoAttr2;  // for work string
+//
+////            myAttrString   = [[NSMutableAttributedString alloc] initWithString:  @"                             \n|   a GOOD RELATIONSHIP     |\n|   usually has 2 things    |\n|1. compatibility potential |\n|2. both sides show positive|\n|   personality traits      |\n                             "
+////            ];
+////            myStringNoAttr = [myAttrString  string];
+////  NSLog(@"myStringNoAttr =[%@]",myStringNoAttr );
+////
+//            // find the pipes and make them invisible
+////            // note: search myStringNoAttr, but make changes in myAttringString
+////            //
+////            // Setup what you're searching and what you want to find
+////            NSString *toFind = @"|";
+////            //
+////            // Initialise the searching range to the whole string
+////            NSRange searchRange = NSMakeRange(0, [myStringNoAttr length]);
+////            do {
+////                // Search for next occurrence
+////                NSRange searchReturnRange = [myStringNoAttr  rangeOfString: toFind  options: 0  range: searchRange];
+////                if (searchReturnRange.location != NSNotFound) {
+////                    // If found, searchReturnRange contains the range of the current iteration
+////
+////                    [ myAttrString  addAttribute: NSForegroundColorAttributeName
+////                                           value: gbl_color_cHed
+////                                           range: NSMakeRange(searchReturnRange.location, 1)
+////                    ];
+////
+////                    // Reset search range for next attempt to start after the current found range
+////                    searchRange.location = searchReturnRange.location + searchReturnRange.length;
+////                    searchRange.length = [myAttrString length] - searchRange.location;
+////
+////                } else {
+////                    // If we didn't find it, we have no more occurrences
+////                    break;
+////                }
+////            } while (1);
+////
+//
+//            // find the pipes and make them invisible
+//            myStringNoAttr2 = [myStringNoAttr stringByReplacingOccurrencesOfString: @"|"  withString: @" "];
+//  NSLog(@"myStringNoAttr aftg =[%@]",myStringNoAttr );
+//
+//            mylin = myStringNoAttr;
+//
+//            UIButton *myInvisibleButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+//            [UIButton buttonWithType: UIButtonTypeCustom];
+//            myInvisibleButton.backgroundColor = [UIColor clearColor];
+//
+//            dispatch_async(dispatch_get_main_queue(), ^{                                // comp <===  good relationship
+////                cell.textLabel.attributedText            = myAttrString;
+//                cell.textLabel.text                      = myStringNoAttr2;
+//                cell.textLabel.textAlignment             = NSTextAlignmentCenter;
+//                cell.userInteractionEnabled              = NO;
+//                //cell.accessoryView                       = myInvisibleButton;               // no right arrow on column labels
+//                cell.accessoryView                       = nil;   // use accessoryType setting   // have right arrow on column labels
+//                cell.accessoryType                       = UITableViewCellAccessoryNone;
+//                cell.textLabel.numberOfLines             = 5; 
+//                // cell.textLabel.numberOfLines = 5;
+////                cell.textLabel.numberOfLines   = 7; 
+//                cell.textLabel.textColor                 = mytextcolor;
+//                cell.textLabel.font                      = compFont_12;
+//                cell.textLabel.adjustsFontSizeToFitWidth = myadjust;
+//                cell.textLabel.backgroundColor           = gbl_color_cHed;
+//
+//            });
+//        return cell;   //     special case cell      special case       special case       special case      special case   
+//
+
+
         if ( [mycode isEqualToString: @"prod"] ) {
             gbl_areInCompatibilityTable = 0;
             myalign           = NSTextAlignmentCenter;
@@ -2127,7 +2217,7 @@ bn(802);
 
         dispatch_async(dispatch_get_main_queue(), ^{            // <===  comp fall thru
             cell.textLabel.text                      = mylin;   // --------------------------------------------------
-            cell.textLabel.adjustsFontSizeToFitWidth = myadjust;
+//            cell.textLabel.adjustsFontSizeToFitWidth = myadjust;
 //            cell.textLabel.textAlignment = NSTextAlignmentLeft;
 //            cell.textLabel.textAlignment = NSTextAlignmentCenter;
             cell.textLabel.textAlignment             = myalign;
@@ -2139,6 +2229,7 @@ bn(802);
             cell.textLabel.font                      = myCompFont;
             cell.textLabel.adjustsFontSizeToFitWidth = NO;
             cell.textLabel.backgroundColor           = mybgcolor;
+//            cell.textLabel.attributedText            = nil;  // order matters- pipes DO NOT appear if this line is here
         });
 
 //bn(602);
@@ -2271,7 +2362,7 @@ bn(603);
 
 
 
-        if (indexPath.row ==  group_report_output_idx + 1)
+        if (indexPath.row ==  group_report_output_idx + 1)    // THIS   is for  GRPONE and GRPALL (approx 650 lines)
         {  // 1 of 3 FOOTER CELLS       goodrelationship
 //trn("// 1 of 3 FOOTER CELLS");
 
@@ -3481,6 +3572,8 @@ ksn(my_tmp_str);
  
     if ( [gbl_currentMenuPlusReportCode isEqualToString: @"homppe"]  //  new personality TBLRPT  report
     ) {
+
+  NSLog(@"gbl_heightCellPER=[%f]",gbl_heightCellPER);
         return gbl_heightCellPER;  
     }
     if ( [gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]  //  new personality TBLRPT  report
@@ -4652,7 +4745,6 @@ for (id eltTst in gbl_perDataLines) { NSLog(@"    gbl_per=%@", eltTst); }
 
 //    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]) 
 //    if ([gbl_currentMenuPlusReportCode hasSuffix: @"co"])  // compatibility report  (just 2)
-//    {
         tn();trn("in Compatibility Potential!");
         
 
@@ -7470,4 +7562,5 @@ tn();trn("// set new gbl_currentMenuPlusReportCode    for info in next report");
 //            // [string addAttribute:NSForegroundColorAttributeName value:[UIColor greenColor] range:NSMakeRange(5,6)];
 //            // [string addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:NSMakeRange(11,5)];
 //<.>
+
 

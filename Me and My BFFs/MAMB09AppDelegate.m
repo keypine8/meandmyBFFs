@@ -46,6 +46,18 @@
 
     // EDITING stuff
     //
+
+    gbl_YellowBG = [UIImage  imageNamed: @"bg_yellow_1x1b.png" 
+                               inBundle: nil
+          compatibleWithTraitCollection: nil
+    ];
+    gbl_BlueBG   = [UIImage  imageNamed: @"bg_blue_1x1a.png" 
+                               inBundle: nil
+          compatibleWithTraitCollection: nil
+    ];
+
+
+
 //    gbl_myname              = [[UITextField alloc] initWithFrame:CGRectMake(16, 8, 200, 30)]; // arg 1=x 2=y 3=width 4=height
     gbl_myname              = [[UITextField alloc] initWithFrame:CGRectMake(16, 8, 200, 40)]; // arg 1=x 2=y 3=width 4=height
 

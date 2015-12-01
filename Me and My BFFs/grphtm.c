@@ -526,8 +526,8 @@ gbl_db_code = 1;
     g_fn_prtlin(writebuf);
     sprintf(writebuf, "head|    Potential");
     g_fn_prtlin(writebuf);
-    sprintf(writebuf, "head|space below hdr line");
-    g_fn_prtlin(writebuf);
+//    sprintf(writebuf, "head|space below hdr line");
+//    g_fn_prtlin(writebuf);
 
 //    sprintf(writebuf, "head|after hdr lines"); 
 //    g_fn_prtlin(writebuf);
@@ -732,7 +732,7 @@ gbl_db_code = 1;
     g_fn_prtlin(writebuf);
     sprintf(writebuf, "fill|before how big header");
     g_fn_prtlin(writebuf);
-    sprintf(writebuf, "howbighdr|   HOW BIG");
+    sprintf(writebuf, "howbighdr|   How Big");
     g_fn_prtlin(writebuf);
     sprintf(writebuf, "howbighdr|   are the  favorable   influences  +++  ");
     g_fn_prtlin(writebuf);
@@ -758,6 +758,8 @@ gbl_db_code = 1;
     *  (not counting <span> characters)
     */
 //    g_fn_prtlin( "<tr><td>                                                                                  </td></tr>"); // blank line
+
+
   // this is webview version
 
     sprintf(category_text, "%s", " 1. CLOSENESS ");
@@ -915,18 +917,26 @@ tn();tr("closeness doclin=");ksn(doclin);
     sprintf(writebuf, "fill|filler before paras");
     g_fn_prtlin(writebuf);
 
-//    sprintf(writebuf, "fill|before paras header");
-//    g_fn_prtlin(writebuf);
-//    sprintf(writebuf, "parashdr|What Percentage");
-//    g_fn_prtlin(writebuf);
-//    sprintf(writebuf, "parashdr|of each influence below");
-//    g_fn_prtlin(writebuf);
-//    sprintf(writebuf, "parashdr|is fully expressed");
-//    g_fn_prtlin(writebuf);
-//    g_fn_prtlin(writebuf);
-//    sprintf(writebuf, "fill|after paras header");
+//    g_fn_prtlin("                                                       ");
+//    g_fn_prtlin("                       How Much                        ");
+//    g_fn_prtlin("                of each influence below                ");
+//    g_fn_prtlin("                  is fully expressed?                  ");
+//    g_fn_prtlin("                           |                           ");
+//
+//    What Percentage
+//
+//    How Much
+//    of each influence below
+//    is fully expressed
+//    . (green) favorable                |100%
+//    . (red  ) challenging              |100%
+//
+//    How Strong is each influence below
+//    0%                                100%|
+//    0%                                100%|
+//
+// TODO  OR put 0% -> 100%  in Info screen    20151201  decide to leave out
 
-// TODO  OR put 0% -> 100%  in Info screen
 
     // here we start pco DETAIL paragraphs   YYYYYYYYYYY  webview version  YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY DO PARAGRAPHS HERE 
 
@@ -1253,8 +1263,21 @@ tn();tr("closeness doclin=");ksn(doclin);
     sprintf(writebuf, "fill|in goodrelationship at beg");
     g_fn_prtlin(writebuf);
 
-    sprintf(writebuf, "goodrelationship|details in cocoa");
-    g_fn_prtlin(writebuf);
+//    sprintf(writebuf, "goodrelationship|details in cocoa");
+//    g_fn_prtlin(writebuf);
+
+//    sprintf(writebuf, "will|            Your intense willpower          ");   // webview
+      sprintf(writebuf, "goodrelationship|             A Good Relationship            ");
+      g_fn_prtlin(writebuf);
+      sprintf(writebuf, "goodrelationship|             usually has 2 things           ");
+      g_fn_prtlin(writebuf);
+      sprintf(writebuf, "goodrelationship|           1. compatibility potential       ");
+      g_fn_prtlin(writebuf);
+      sprintf(writebuf, "goodrelationship|           2. both sides show positive      ");
+      g_fn_prtlin(writebuf);
+      sprintf(writebuf, "goodrelationship|              personality traits            ");
+      g_fn_prtlin(writebuf);
+
 
     sprintf(writebuf, "fill|in goodrelationship at end");
     g_fn_prtlin(writebuf);
@@ -5084,12 +5107,17 @@ void g_fn_webview_aspect_text(char *in_aspect_code){
 //  sprintf(writebuf, "para|%s\n",  g_my_aspect_text );  // see above
 //  g_fn_prtlin(writebuf);
 
-  //  do red/green line in cocoa now (in tblrpts)
-  sprintf(writebuf, "redgreenline|%s\n",  numplusminus);
-  g_fn_prtlin(writebuf);
-  //
-  //  // here we write the red/green
-  //  prtRedGreenPlusMinus(atoi(numplusminus), 1); // 1 = yes, this is  webview version
+
+    //
+    //// 20151201  DECIDE TO LEAVE OUT
+    //// TODO  OR put 0% -> 100%  in Info screen    20151201  decide to leave out
+    //  //  do red/green line in cocoa now (in tblrpts)
+    //  sprintf(writebuf, "redgreenline|%s\n",  numplusminus);
+    //  g_fn_prtlin(writebuf);
+    //  //
+    //  //  // here we write the red/green
+    //  //  prtRedGreenPlusMinus(atoi(numplusminus), 1); // 1 = yes, this is  webview version
+    //
 
 } // end of  g_fn_webview_aspect_text()
 

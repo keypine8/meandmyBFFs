@@ -448,12 +448,12 @@ nbn(881);
         //                self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];  // 2. of 2
         //
 
-        UIImage *myYellowBG = [UIImage  imageNamed: @"bg_yellow_1x1b.png" 
 //        UIImage *myYellowBG = [UIImage  imageNamed: @"bg_yellow_1x1c.png" 
-                                          inBundle: nil
-                     compatibleWithTraitCollection: nil
-        ];
-        [self.outletToButtonToGetPicklist setBackgroundImage: myYellowBG
+//        UIImage *gbl_YellowBG = [UIImage  imageNamed: @"bg_yellow_1x1b.png"
+//                                          inBundle: nil
+//                     compatibleWithTraitCollection: nil
+//        ];
+        [self.outletToButtonToGetPicklist setBackgroundImage: gbl_YellowBG
                                                     forState: normal
                                                   barMetrics: UIBarMetricsDefault 
         ];
@@ -927,7 +927,8 @@ nbn(881);
     [super viewWillAppear: animated];
   NSLog(@"in viewWillAppear! in ADD CHANGE");
 
-  NSLog(@"gbl_homeEditingState=%@",gbl_homeEditingState);
+  NSLog(@"gbl_homeUseMODE     =[%@]",gbl_homeUseMODE );
+  NSLog(@"gbl_homeEditingState=[%@]",gbl_homeEditingState);
   NSLog(@"gbl_fromHomeCurrentEntity=%@",gbl_fromHomeCurrentEntity);
   NSLog(@"gbl_fromHomeCurrentSelectionType=%@",gbl_fromHomeCurrentSelectionType);
 
@@ -956,7 +957,19 @@ nbn(881);
 
 
     gbl_previousCharTypedWasSpace = 0;                 // for no multiple consecutive spaces
-    self.view.backgroundColor     = gbl_colorEditingBG;  // set yellow bg for editing screens
+
+
+
+
+        if (   [gbl_homeUseMODE      isEqualToString: @"regular mode" ]
+            && [gbl_homeEditingState isEqualToString: @"add" ]
+        ) {
+            self.view.backgroundColor     = gbl_colorHomeBG;     // blue
+            gbl_colorEditingBG_current    = gbl_colorHomeBG;     // is now yellow or blue for add a record screen  (addChange view)
+        } else {
+            self.view.backgroundColor     = gbl_colorEditingBG;  // set yellow bg for editing screens
+            gbl_colorEditingBG_current    = gbl_colorEditingBG;   // is now yellow or blue for add a record screen  (addChange view)
+        }
 
 
     do {  // set up NAV BAR
@@ -2994,15 +3007,15 @@ NSLog(@"in textFieldShouldReturn:");
     //
     UIButton *myInvisibleButton       = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
     [UIButton buttonWithType: UIButtonTypeCustom];
-    myInvisibleButton.backgroundColor = gbl_colorEditingBG;  //   [UIColor clearColor];
+    myInvisibleButton.backgroundColor = gbl_colorEditingBG_current;  //   [UIColor clearColor];
 
    
      if (indexPath.row == 0) {   //  filler row 0
 nbn(200);
         dispatch_async(dispatch_get_main_queue(), ^{        
-            cell.contentView.backgroundColor    = gbl_colorEditingBG;
+            cell.contentView.backgroundColor    = gbl_colorEditingBG_current;
             cell.selectionStyle                 = UITableViewCellSelectionStyleNone;
-            cell.contentView.backgroundColor    = gbl_colorEditingBG;
+            cell.contentView.backgroundColor    = gbl_colorEditingBG_current;
         });
      }
 
@@ -3023,7 +3036,7 @@ nbn(200);
         dispatch_async(dispatch_get_main_queue(), ^{        
 
 //            cell.textLabel.backgroundColor           = gbl_colorEditing;
-            cell.contentView.backgroundColor    = gbl_colorEditingBG;
+            cell.contentView.backgroundColor    = gbl_colorEditingBG_current;
             cell.selectionStyle                 = UITableViewCellSelectionStyleNone;
 
 //            gbl_myname.placeholder              = @"Name";
@@ -3100,9 +3113,9 @@ nbn(700);
 //     if (indexPath.row == 2) {   //  filler 
 //nbn(202);
 //        dispatch_async(dispatch_get_main_queue(), ^{        
-//            cell.contentView.backgroundColor    = gbl_colorEditingBG;
+//            cell.contentView.backgroundColor    = gbl_colorEditingBG_current;
 //            cell.selectionStyle                 = UITableViewCellSelectionStyleNone;
-//            cell.contentView.backgroundColor    = gbl_colorEditingBG;
+//            cell.contentView.backgroundColor    = gbl_colorEditingBG_current;
 //        });
 //     }
 //
@@ -3167,7 +3180,7 @@ nb(203);
 
             cell.userInteractionEnabled         = YES;
             cell.selectionStyle                 = UITableViewCellSelectionStyleNone;
-            cell.contentView.backgroundColor    = gbl_colorEditingBG;
+            cell.contentView.backgroundColor    = gbl_colorEditingBG_current;
 //            cell.contentView.backgroundColor    = currentBGfieldColor;
 
             gbl_mycityprovcounLabel.text             = myTextCity;
@@ -3211,9 +3224,9 @@ nbn(24);
      if (indexPath.row == 4) {   //  filler 
 nb(204);
         dispatch_async(dispatch_get_main_queue(), ^{        
-            cell.contentView.backgroundColor    = gbl_colorEditingBG;
+            cell.contentView.backgroundColor    = gbl_colorEditingBG_current;
             cell.selectionStyle                 = UITableViewCellSelectionStyleNone;
-            cell.contentView.backgroundColor    = gbl_colorEditingBG;
+            cell.contentView.backgroundColor    = gbl_colorEditingBG_current;
         });
      }
 
@@ -3282,7 +3295,7 @@ tn();trn("DATE field was drawn  hey   hey   hey   hey   hey   hey   hey   ");
         dispatch_async(dispatch_get_main_queue(), ^{        
 
 //            cell.textLabel.backgroundColor           = gbl_colorEditing;
-            cell.contentView.backgroundColor    = gbl_colorEditingBG;
+            cell.contentView.backgroundColor    = gbl_colorEditingBG_current;
             
             cell.userInteractionEnabled         = YES;
 //            cell.userInteractionEnabled         = NO;
@@ -3378,7 +3391,7 @@ nbn(206);
         dispatch_async(dispatch_get_main_queue(), ^{            // <===  short line and long line
 
 //            cell.textLabel.backgroundColor           = gbl_colorEditing;
-            cell.contentView.backgroundColor    = gbl_colorEditingBG;
+            cell.contentView.backgroundColor    = gbl_colorEditingBG_current;
             cell.selectionStyle                 = UITableViewCellSelectionStyleNone;
 
 
@@ -4731,7 +4744,7 @@ NSLog(@"RETURN titleForRowRetval=%@",titleForRowRetval);
             // set value of  attributed string
             [ myAttributedTextLabel addAttribute: NSBackgroundColorAttributeName 
 //                                           value: [UIColor yellowColor]
-                                           value: gbl_colorEditingBG
+                                           value: gbl_colorEditingBG_current
                                            range: NSMakeRange(1, gbl_myCitySoFar.length)  // offset, length
             ];
 

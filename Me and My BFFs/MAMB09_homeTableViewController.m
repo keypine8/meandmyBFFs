@@ -97,7 +97,14 @@
   NSLog(@"gbl_currentMenuPlusReportCode =%@",gbl_currentMenuPlusReportCode );
 
 
-    gbl_homeUseMODE = @"regular mode";  // determines home mode
+  NSLog(@"EDIT BUTTON 1   gbl_homeUseMODE = @regular mode; ");
+  NSLog(@"gbl_homeUseMODE 1   =[%@]",gbl_homeUseMODE );
+
+    gbl_homeUseMODE = @"regular mode";  // determines home mode  "edit mode" or "regular mode"
+  NSLog(@"gbl_homeUseMODE 2   =[%@]",gbl_homeUseMODE );
+  NSLog(@"gbl_homeEditingState=[%@]",gbl_homeEditingState);
+    // gbl_homeEditingState;  // if gbl_homeUseMODE = "edit mode" then either "add" or "view or change"   for tapped person or group
+
     gbl_home_cell_AccessoryType        = UITableViewCellAccessoryDisclosureIndicator; // home mode regular with tap giving report list
     gbl_home_cell_editingAccessoryType = UITableViewCellAccessoryNone;                // home mode regular with tap giving report list
 
@@ -122,6 +129,8 @@
     //
     if (gbl_haveSetUpHomeNavButtons == 0) {
 nbn(100);
+        gbl_haveSetUpHomeNavButtons = 1;
+
         UIBarButtonItem *navAddButton  = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemAdd
                                                                                     target: self
                                                                                     action: @selector(navAddButtonAction:)];
@@ -130,25 +139,93 @@ nbn(100);
         self.navigationItem.leftBarButtonItems  = [self.navigationItem.leftBarButtonItems  arrayByAddingObject: navAddButton]; // ADD ADD BUTTON
         gbl_homeLeftItemsWithAddButton = [NSMutableArray arrayWithArray: self.navigationItem.leftBarButtonItems ];
 
-        gbl_homeLeftItemsWithNoAddButton = [NSMutableArray arrayWithArray: gbl_homeLeftItemsWithAddButton ]; // make COPY
-        [ gbl_homeLeftItemsWithNoAddButton removeObjectAtIndex: 1 ];                 // remove add button from array copy
 
-        gbl_haveSetUpHomeNavButtons = 1;
 
-        self.navigationItem.leftBarButtonItems  = gbl_homeLeftItemsWithNoAddButton;
+//        gbl_homeLeftItemsWithNoAddButton = [NSMutableArray arrayWithArray: gbl_homeLeftItemsWithAddButton ]; // make COPY
+//        [ gbl_homeLeftItemsWithNoAddButton removeObjectAtIndex: 1 ];                 // remove add button from array copy
+
+
+        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+
+            // try with always add button
+            // self.navigationItem.leftBarButtonItems  = gbl_homeLeftItemsWithNoAddButton;
+            self.navigationItem.leftBarButtonItems     = gbl_homeLeftItemsWithAddButton;
 
 //        UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 11, 44)];  // 3rd arg is horizontal length
-        UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 4, 44)];  // 3rd arg is horizontal length
+            UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 4, 44)];  // 3rd arg is horizontal length
+//        UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 15, 44)];  // 3rd arg is horizontal length
 //        spaceView.backgroundColor = [UIColor redColor];  // make visible for test
-        UIBarButtonItem *mySpacerForTitle = [[UIBarButtonItem alloc] initWithCustomView: spaceView];
+            UIBarButtonItem *mySpacerForTitle = [[UIBarButtonItem alloc] initWithCustomView: spaceView];
+
+  NSLog(@"EDIT BUTTON 1   set title  edit tab");
+            self.editButtonItem.title = @"Edit\t";  // pretty good
+        // [myButton.titleLabel setTextAlignment: NSTextAlignmentCenter];
+//        [self.editButtonItem.titleLabel setTextAlignment: NSTextAlignmentCenter];
 
 
-        self.navigationItem.rightBarButtonItems =
-            [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerForTitle];
 
-        self.navigationItem.rightBarButtonItems =   // "editButtonItem" is magic Apple functionality
-            [self.navigationItem.rightBarButtonItems arrayByAddingObject: self.editButtonItem]; // ADD apple-provided EDIT BUTTON
-    }
+
+//        self.navigationItem.rightBarButtonItems =
+//            [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerForTitle];
+
+          self.navigationItem.rightBarButtonItems =   // "editButtonItem" is magic Apple functionality
+              [self.navigationItem.rightBarButtonItems arrayByAddingObject: self.editButtonItem]; //editButtonItem=ADD apple-provided EDIT BUTTON
+
+//        self.navigationItem.rightBarButtonItems =
+//            [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerForTitle];
+
+//        self.editButtonItem.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
+//self.label.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
+
+
+
+//        self.editButtonItem.backgroundColor = [UIColor yellowColor];
+//       [self.editButtonItem setBackgroundColor:  [UIColor yellowColor] ];
+//        self.editButtonItem.tintColor = [UIColor yellowColor];  // is textColor
+
+        //  - (void)setBackgroundImage:(UIImage *)backgroundImage
+        //                    forState:(UIControlState)state
+        //                  barMetrics:(UIBarMetrics)barMetrics
+//        self.editButtonItem.color = [UIColor yellowColor];  // is textColor
+
+//                [self.navigationController.navigationBar setBackgroundImage: [UIImage new]       // 1. of 2
+//                                                             forBarPosition: UIBarPositionAny
+//                                                                 barMetrics: UIBarMetricsDefault];
+//                //
+//                [self.navigationController.navigationBar setShadowImage: [UIImage new]];   
+//                //
+//                self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];  // 2. of 2
+
+        //   UIControlStateNormal               = 0,
+        //   UIControlStateHighlighted          = 1 << 0,
+        //   UIControlStateDisabled             = 1 << 1,
+        //   UIControlStateSelected             = 1 << 2,
+        //   UIControlStateFocused              = 1 << 3,
+        //   UIControlStateApplication          = 0x00FF0000,
+        //   UIControlStateReserved             = 0xFF000000 
+
+//        UIImage *myYellowBG = [UIImage  imageNamed: @"bg_yellow_1x1b.png" 
+//                                          inBundle: nil
+//                     compatibleWithTraitCollection: nil
+//        ];
+
+//        [self.editButtonItem  setBackgroundImage: gbl_YellowBG ] ;  // view startup default color
+//        [ [self.editButtonItem appearance]  setBackgroundImage: gbl_YellowBG ] ;  // view startup default color
+//          self.editButtonItem.backgroundImage = gbl_YellowBG  ;  // view startup default color
+
+
+  NSLog(@"EDIT BUTTON 1   set yellow          ");
+            [self.editButtonItem setBackgroundImage: gbl_YellowBG          // edit mode bg color for button
+                                           forState: UIControlStateNormal  
+                                         barMetrics: UIBarMetricsDefault
+            ];
+
+//            self.navigationItem.leftBarButtonItems = gbl_homeLeftItemsWithAddButton;
+        });
+    } // end of   set up the two nav bar arrays, one with + button for add a record, one without
+
+
+
 
 
 
@@ -772,6 +849,11 @@ nbn(101);
   NSLog(@"in   navAddButtonAction!  in HOME");
 
     gbl_homeEditingState = @"add";  // "add" for add a new person or group, "view or change" for tapped person or group
+
+
+//    if ( self.editing == NO ) {
+//        [self setEditing: YES   animated: YES ];
+//    }
 
     dispatch_async(dispatch_get_main_queue(), ^{                                 // <===  <.>
         [self performSegueWithIdentifier:@"segueHomeToAddChange" sender:self]; //  
@@ -1432,14 +1514,30 @@ tn();  NSLog(@"setEditing !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
     if (flag == YES){ // Change views to edit mode.
 
+
+  NSLog(@"EDIT BUTTON 2    ");
+  NSLog(@"gbl_homeUseMODE 1   =[%@]",gbl_homeUseMODE );
+
         gbl_homeUseMODE = @"edit mode";   // determines home mode  @"edit mode" or @"regular mode"
+  NSLog(@"gbl_homeUseMODE 2   =[%@]",gbl_homeUseMODE );
+  NSLog(@"gbl_homeEditingState=[%@]",gbl_homeEditingState);
 nbn(300);
 
 //  NSLog(@"gbl_homeLeftItemsWithAddButton=%@",gbl_homeLeftItemsWithAddButton);
 //  NSLog(@"gbl_homeLeftItemsWithNoAddButton=%@",gbl_homeLeftItemsWithNoAddButton);
+  NSLog(@"EDIT BUTTON 2   set blue   BG color");
         dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
-            self.navigationItem.leftBarButtonItems = gbl_homeLeftItemsWithAddButton;
+
+            [self.editButtonItem setBackgroundImage: gbl_BlueBG          // regular report mode bg color for button
+                                           forState: UIControlStateNormal  
+                                         barMetrics: UIBarMetricsDefault
+            ];
+
+//            self.navigationItem.leftBarButtonItems = gbl_homeLeftItemsWithAddButton;
+  NSLog(@"EDIT BUTTON 2   set title  done tab");
+            self.editButtonItem.title = @"Done\t";  // pretty good
         });
+
 
 
 //    self.navigationController.navigationBar.barTintColor =  gbl_colorEditing;  does whole nav bar
@@ -1505,13 +1603,34 @@ nbn(300);
 
     else { // Save the changes if needed and change the views to noneditable.
 
- 
+  NSLog(@"EDIT BUTTON 3 ");
+  NSLog(@"gbl_homeUseMODE 1   =[%@]",gbl_homeUseMODE );
+
         gbl_homeUseMODE = @"regular mode";   // determines home mode  @"edit mode" or @"regular mode"
+  NSLog(@"gbl_homeUseMODE 2   =[%@]",gbl_homeUseMODE );
+  NSLog(@"gbl_homeEditingState=[%@]",gbl_homeEditingState);
 nbn(311);
 
+
+  NSLog(@"EDIT BUTTON 3   set yellow   BG color");
         dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
-            self.navigationItem.leftBarButtonItems = gbl_homeLeftItemsWithNoAddButton;
+
+            [self.editButtonItem setBackgroundImage: gbl_YellowBG          // regular report mode bg color for button
+                                           forState: UIControlStateNormal  
+                                         barMetrics: UIBarMetricsDefault
+            ];
+
+//            self.navigationItem.leftBarButtonItems = gbl_homeLeftItemsWithAddButton;
+  NSLog(@"EDIT BUTTON 3   set title  edit tab");
+            self.editButtonItem.title = @"Edit\t";  // pretty good
         });
+
+ 
+
+        // try with add button always
+//        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+//            self.navigationItem.leftBarButtonItems = gbl_homeLeftItemsWithNoAddButton;
+//        });
 
         gbl_colorHomeBG                = gbl_colorHomeBG_save;  // in order to put back after editing mode color
         self.tableView.backgroundColor = gbl_colorHomeBG;       // WORKS
