@@ -696,9 +696,9 @@ bn(6012);
             else if ( [mylin isEqualToString: @"after how big header"] ) {
                 mylin             = @" ";
 //                mybgcolor         = gbl_color_cHed ;
-//                mybgcolor         = gbl_color_cNeu ;
-                mybgcolor         = gbl_color_cBgr ;
-                gbl_heightCellCOMP = 2;
+                mybgcolor         = gbl_color_cNeu ;
+//                mybgcolor         = gbl_color_cBgr ;
+                gbl_heightCellCOMP = 8;
             }
             else if (   [mylin isEqualToString: @"after personal stars"]
                      || [mylin isEqualToString: @"after personA ptofview"]
@@ -715,7 +715,7 @@ bn(6012);
 //                mybgcolor         = gbl_color_cHed ;
 //                mybgcolor         = gbl_color_cBgr ;
                 mybgcolor         = gbl_color_cNeu ;
-                gbl_heightCellCOMP =  3;
+                gbl_heightCellCOMP =  8;
             }
             else if ( [mylin isEqualToString: @"after howbigftr"] ) {
                 mylin             = @" ";
@@ -1754,7 +1754,8 @@ nbn(20); trn(" in howbighdr");
 
             // add label for left left margin   -----  about 2 chars----------------------------------------========================
             //
-            CGRect rect0 = [@"12" boundingRectWithSize: CGSizeMake(300, 10000)
+//            CGRect rect0 = [@"123" boundingRectWithSize: CGSizeMake(300, 10000)
+            CGRect rect0 = [@"+++" boundingRectWithSize: CGSizeMake(300, 10000)
                                                        options: NSStringDrawingUsesLineFragmentOrigin
                                                     attributes: @{ NSFontAttributeName: compFont_12 }
                                                        context: nil
@@ -1770,8 +1771,8 @@ nbn(20); trn(" in howbighdr");
             UILabel* label0 = [[UILabel alloc] initWithFrame: lFrame0];
             label0.text            = @"  "; // spaces
             label0.font            = compFont_12;
-//            label0.backgroundColor = gbl_color_cBgr;
-            label0.backgroundColor = [UIColor redColor];
+            label0.backgroundColor = gbl_color_cBgr;
+//            label0.backgroundColor = [UIColor orangeColor];
             //            label0.layer.borderColor = [UIColor redColor].CGColor;
             label0.numberOfLines   = 0;
             label0.textAlignment   = NSTextAlignmentLeft;
@@ -1785,7 +1786,7 @@ tn();tr("leftl wid=");kin( ceilf(rect0.size.width));
             //
 //            CGRect rect1 = [@"    " boundingRectWithSize: CGSizeMake(300, 10000)
 //            CGRect rect1 = [@"++++" boundingRectWithSize: CGSizeMake(300, 10000)
-            CGRect rect1 = [@"34567890" boundingRectWithSize: CGSizeMake(300, 10000)
+            CGRect rect1 = [@"4567890" boundingRectWithSize: CGSizeMake(300, 10000)
 //                                               options: NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
 //                                                 options: NSStringDrawingUsesDeviceMetrics 
 //                                                 options: NSStringDrawingUsesDeviceMetrics | NSStringDrawingUsesLineFragmentOrigin 
@@ -1818,7 +1819,7 @@ tn();tr("leftm wid=");kin( ceilf(rect1.size.width));
             //            CGSize adjustedSize = CGSizeMake(ceilf(expectedLabelSize.width), ceilf(expectedLabelSize.height));
             //
             CGRect lFrame1 = CGRectMake(  // arg 1=x 2=y 3=width 4=height
-                0,
+                ceilf(rect0.size.width),   // allow for left left margin width
                 0,
 //                expectedLabelSize.width + 10.0,
                 ceilf(rect1.size.width),
@@ -1835,6 +1836,7 @@ tn();tr("leftm wid=");kin( ceilf(rect1.size.width));
             label1.font            = compFont_12;
 //            label1.textColor       = gbl_color_cBgr;
 //            label1.backgroundColor = gbl_color_cBgr;
+//            label1.backgroundColor = [UIColor cyanColor];
             label1.backgroundColor = gbl_color_cNeu;
             label1.numberOfLines   = 0;
             label1.textAlignment = NSTextAlignmentLeft;
@@ -1866,12 +1868,12 @@ tn();tr("leftm wid=");kin( ceilf(rect1.size.width));
 //                expectedLabelSize.width + 10.0,
 //                ceilf(rect2.size.width),
 //           widthAvailable = ceilf(self.view.bounds.size.width) - (ceilf(rect1.size.width) + ceilf(rect2.size.width)),
-                ceilf(self.view.bounds.size.width) - ceilf(rect1.size.width) - 20.0, // whole width minus left margin
+                ceilf(self.view.bounds.size.width) - ceilf(rect0.size.width) - ceilf(rect1.size.width) - 18.0, // whole width minus left margin
                 ceilf(rect2.size.height)
 //                ceilf(rect2.size.height) + 10.0 // + 10 = uilabel border width * 2
             );
 //tn();tr("stars wid=");kin( ceilf(rect2.size.width));
-tn();tr("stars wid=");kin( ceilf(self.view.bounds.size.width) - ceilf(rect1.size.width) -20.0 );
+tn();tr("stars wid=");kin( ceilf(self.view.bounds.size.width) - ceilf(rect0.size.width) - ceilf(rect1.size.width) -18.0 );
      tr("stars hei=");kin( ceilf(rect2.size.height));
 
             gbl_heightCellCOMP = ceilf(rect2.size.height);  // set it here - consecutive star lines should touch
@@ -1898,28 +1900,38 @@ tn();tr("stars wid=");kin( ceilf(self.view.bounds.size.width) - ceilf(rect1.size
 
 
 
+//            // get rect for a line containing max num of stars
+//            //
+//            NSString *maxSizeStarLine;
+//            maxSizeStarLine = [@"" stringByPaddingToLength: 40 //  40 is  MAGIC  77 -> 40
+//                                                withString: @"+"
+//                                           startingAtIndex: 0 ];
+//            CGRect rect3 = [maxSizeStarLine boundingRectWithSize: CGSizeMake(300, 10000)
+//                                                         options: NSStringDrawingUsesLineFragmentOrigin
+//                                                      attributes: @{ NSFontAttributeName: compFont_12 }
+//                                                         context: nil
+//            ];
+//
+
+            // add label for after stars ---------------------------------------------------------------------------------------
+            //
 
 
             // add label for right margin  ---------------------------------------------------------------------
-            // self.view.bounds.size.width   =[414.000000]
-            //
             // the x  argument offset is left marg + max size of 77 chars
             //
-            NSString *maxSizeStarLine;
-            maxSizeStarLine = [@"" stringByPaddingToLength: 40 //  40 is  MAGIC  77 -> 40
-                                                withString: @"+"
-                                           startingAtIndex: 0 ];
-            CGRect rect3 = [maxSizeStarLine boundingRectWithSize: CGSizeMake(300, 10000)
-                                                         options: NSStringDrawingUsesLineFragmentOrigin
-                                                      attributes: @{ NSFontAttributeName: compFont_12 }
-                                                         context: nil
-            ];
+            CGFloat fudgeAddonRightMargin = 5.0f;
 
             CGRect lFrame3 = CGRectMake(  // arg 1=x 2=y 3=width 4=height
 //                ceilf(rect1.size.width) + ceilf(rect2.size.width),
-                ceilf(rect1.size.width) + ceilf(rect3.size.width),   // left marg + max siz star line
+//                ceilf(rect0.size.width) + ceilf(rect1.size.width) + ceilf(rect3.size.width),   // left marg(2) + max siz star line
+                ceilf(rect1.size.width) + ceilf(rect3.size.width),   // left marg(2) + max siz star line
                 0,
-                ceilf(self.view.bounds.size.width) - (ceilf(rect1.size.width) + ceilf(rect2.size.width)),
+//                ceilf(self.view.bounds.size.width) - (  ceilf(rect0.size.width) + ceilf(rect1.size.width) + ceilf(rect2.size.width)  ),
+//                ceilf(self.view.bounds.size.width) - (  ceilf(rect1.size.width) + ceilf(rect2.size.width)  ),
+                ceilf(self.view.bounds.size.width) - (  ceilf(rect1.size.width) + ceilf(rect3.size.width) + ceilf(rect0.size.width )  ) 
+                    +  fudgeAddonRightMargin ,
+                  // above: use rect0 for both  left left margin  and  right right margin
                 ceilf(rect2.size.height)
             );
 tn();tr("ritem wid=");kin( ceilf(self.view.bounds.size.width) - (ceilf(rect1.size.width) + ceilf(rect2.size.width)) ),
@@ -1931,10 +1943,12 @@ tn();tr("ritem wid=");kin( ceilf(self.view.bounds.size.width) - (ceilf(rect1.siz
 //            label3.text            = @"1234567890|234";  // get 2...
 //            label3.text            = @"1234567|";  // get
 //            label3.text            = rStringShorter;
-            label3.text            = @"|";  // get
+//            label3.text            = @"|";  // get
+            label3.text            = @" ";  // get
             label3.font            = compFont_12;
 //            label3.backgroundColor = gbl_color_cBgr;
             label3.backgroundColor = gbl_color_cNeu;
+//            label3.backgroundColor = [UIColor blueColor];
             label3.numberOfLines   = 0;
             label3.textAlignment = NSTextAlignmentLeft;
             label3.maskView                = nil;  // MUST be here to avoid old images being put in  on cell  re-draw

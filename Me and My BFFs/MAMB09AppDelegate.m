@@ -129,6 +129,28 @@
      gbl_initPromptCoun = @"Country";
      gbl_initPromptDate = @"Birth Date and Time";
 
+
+
+        // Creating a UIColor with Preset Component Values [UIColor redColor]
+        //    blackColor
+        //    darkGrayColor
+        //    lightGrayColor
+        //    whiteColor
+        //    grayColor
+        //    redColor
+        //    greenColor
+        //    blueColor
+        //    cyanColor
+        //    yellowColor
+        //    magentaColor
+        //    orangeColor
+        //    purpleColor
+        //    brownColor
+        //    clearColor
+        //
+
+
+
      gbl_colorPlaceHolderPrompt = [UIColor colorWithRed:064.0/255.0 green:064.0/255.0 blue:064.0/255.0 alpha:1.0]; // gray
 
 
