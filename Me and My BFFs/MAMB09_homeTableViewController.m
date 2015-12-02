@@ -158,9 +158,78 @@ nbn(100);
             UIBarButtonItem *mySpacerForTitle = [[UIBarButtonItem alloc] initWithCustomView: spaceView];
 
   NSLog(@"EDIT BUTTON 1   set title  edit tab");
-            self.editButtonItem.title = @"Edit\t";  // pretty good
+//            self.editButtonItem.title = @"Ed2t\t";  // pretty good
+            self.editButtonItem.title = @"Edit";  // ok with no tab
+//            self.editButtonItem.title = @"\tEdit\t";  // pretty good
+//            self.editButtonItem.title = @"\sEdit\s";  // pretty good
+//            self.editButtonItem.title = @"\sEdit\s";  // pretty good  // fits all on 4s
+//            self.editButtonItem.title = @"Editsss";  // pretty good  // too big by 1
+//            self.editButtonItem.title = @"Edit";  // right adjusted
+
         // [myButton.titleLabel setTextAlignment: NSTextAlignmentCenter];
 //        [self.editButtonItem.titleLabel setTextAlignment: NSTextAlignmentCenter];
+
+              // try this:
+              //
+              // barButtonItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor clearColor],NSForegroundColorAttributeName, nil] forState:UIControlStateNormal];
+//            UIFont *font1 = [UIFont fontWithName:@"HelveticaNeue-Medium" size: 14.0f]; // right adj
+//           UIFont *font1 = [UIFont fontWithName:@"HelveticaNeue-Medium" size: 16.0f]; // too big
+//           UIFont *font1 = [UIFont fontWithName:@"HelveticaNeue-Medium" size: 15.0f]; // right adj
+//            UIFont *font1 = [UIFont fontWithName:@"HelveticaNeue-Light" size: 18.0f];
+//            UIFont *font1 = [UIFont fontWithName:@"HelveticaNeue-Light" size: 14.0f];
+//            UIFont *font1 = [UIFont fontWithName:@"HelveticaNeue-Light" size: 16.0f]; // right adjust
+//            UIFont *font1 = [UIFont fontWithName:@"HelveticaNeue-Light" size: 17.0f]; // too  big
+//            UIFont *font1 = [UIFont fontWithName:@"Helvetica-Light" size: 17.0f]; // too big
+//            UIFont *font1 = [UIFont fontWithName:@"Helvetica-Light" size: 16.0f]; // right adjust
+//            UIFont *font1 = [UIFont fontWithName:@"Helvetica" size: 16.0f];  // right adj
+//            UIFont *font1 = [UIFont fontWithName:@"Helvetica" size: 18.0f];  // too big
+//            UIFont *font1 = [UIFont fontWithName:@"Helvetica" size: 17.0f];  // too big
+//            [self.editButtonItem setTitleTextAttributes:
+//                                                         [NSDictionary dictionaryWithObjectsAndKeys:
+//                                                             gbl_colorEditingBG, NSBackgroundColorAttributeName,
+//                                                                          font1, NSFontAttributeName,
+//                                                             nil
+//                                                         ]
+//                                               forState: UIControlStateNormal
+//            ];
+
+
+            // [[UIBarButtonItem appearance] setTitlePositionAdjustment: UIOffsetMake(0.0f, 5.0f)  forBarMetrics: UIBarMetricsDefault];
+//            [self.editButtonItem setTitlePositionAdjustment: UIOffsetMake(-6.0f, 0.0f)  forBarMetrics: UIBarMetricsDefault];
+//            [self.editButtonItem setTitlePositionAdjustment: UIOffsetMake(-16.0f, 0.0f)  forBarMetrics: UIBarMetricsDefault]; // just right
+            [self.editButtonItem setTitlePositionAdjustment: UIOffsetMake(-16.0f, 0.0f)  forBarMetrics: UIBarMetricsDefault]; // 
+            
+
+
+
+
+
+//
+//NSMutableParagraphStyle *style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+//[style setAlignment:NSTextAlignmentCenter];
+////[style setLineBreakMode:NSLineBreakByWordWrapping];
+//UIFont *font1 = [UIFont fontWithName:@"HelveticaNeue-Medium" size:20.0f];
+////UIFont *font2 = [UIFont fontWithName:@"HelveticaNeue-Light"  size:20.0f];
+//NSDictionary *dict1 = @{
+////        NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle),
+//                  NSFontAttributeName: font1,
+//        NSParagraphStyleAttributeName: style
+//    }; // Added line
+////NSDictionary *dict2 = @{NSUnderlineStyleAttributeName:@(NSUnderlineStyleNone),
+////                        NSFontAttributeName:font2,
+////                        NSParagraphStyleAttributeName:style}; // Added line
+//
+//NSMutableAttributedString *attString = [[NSMutableAttributedString alloc] init];
+////[attString appendAttributedString:[[NSAttributedString alloc] initWithString:@"LINE 1\n"    attributes:dict1]];
+//[attString appendAttributedString:[[NSAttributedString alloc] initWithString:@"Edit"    attributes:dict1]];
+////[attString appendAttributedString:[[NSAttributedString alloc] initWithString:@"line 2"      attributes:dict2]];
+////[self.resolveButton setAttributedTitle:attString forState:UIControlStateNormal];
+//[self.editButtonItem setAttributedTitle: attString   forState: UIControlStateNormal];  // nno such selector
+////[[self.resolveButton titleLabel] setNumberOfLines:0];
+////[[self.resolveButton titleLabel] setLineBreakMode:NSLineBreakByWordWrapping];
+//
+//
+
 
 
 
@@ -168,8 +237,12 @@ nbn(100);
 //        self.navigationItem.rightBarButtonItems =
 //            [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerForTitle];
 
+
+
           self.navigationItem.rightBarButtonItems =   // "editButtonItem" is magic Apple functionality
               [self.navigationItem.rightBarButtonItems arrayByAddingObject: self.editButtonItem]; //editButtonItem=ADD apple-provided EDIT BUTTON
+
+
 
 //        self.navigationItem.rightBarButtonItems =
 //            [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerForTitle];
@@ -221,7 +294,10 @@ nbn(100);
             ];
 
 //            self.navigationItem.leftBarButtonItems = gbl_homeLeftItemsWithAddButton;
-        });
+
+
+        }); // end of  dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+
     } // end of   set up the two nav bar arrays, one with + button for add a record, one without
 
 
@@ -1535,7 +1611,10 @@ nbn(300);
 
 //            self.navigationItem.leftBarButtonItems = gbl_homeLeftItemsWithAddButton;
   NSLog(@"EDIT BUTTON 2   set title  done tab");
-            self.editButtonItem.title = @"Done\t";  // pretty good
+            // self.editButtonItem.title = @"Done\t";  // pretty good
+            self.editButtonItem.title = @"Done";  // ok with no tab
+            [self.editButtonItem setTitlePositionAdjustment: UIOffsetMake(-8.0f, 0.0f)  forBarMetrics: UIBarMetricsDefault]; // 
+
         });
 
 
@@ -1622,7 +1701,9 @@ nbn(311);
 
 //            self.navigationItem.leftBarButtonItems = gbl_homeLeftItemsWithAddButton;
   NSLog(@"EDIT BUTTON 3   set title  edit tab");
-            self.editButtonItem.title = @"Edit\t";  // pretty good
+//            self.editButtonItem.title = @"Edit\t";  // pretty good
+            self.editButtonItem.title = @"Edit";  // ok with no tab
+            [self.editButtonItem setTitlePositionAdjustment: UIOffsetMake(-12.0f, 0.0f)  forBarMetrics: UIBarMetricsDefault]; // 
         });
 
  

@@ -304,6 +304,7 @@ bn(301);
 //        UIFont *myPerFont        = [UIFont fontWithName: @"Menlo" size: 12.0];
         UIFont *myPerFont;
         UIFont *perFont_16  = [UIFont fontWithName: @"Menlo" size: 16.0];
+        UIFont *perFont_14  = [UIFont fontWithName: @"Menlo" size: 14.0];
         UIFont *perFont_12  = [UIFont fontWithName: @"Menlo" size: 12.0];
         UIFont *perFont_11b = [UIFont fontWithName: @"Menlo-bold" size: 11.0];
         
@@ -374,7 +375,7 @@ bn(3012);
             else if ( [mylin isEqualToString: @"before para"] ) {
                 mylin             = @" ";
                 mybgcolor         = gbl_color_cBgr ;
-                gbl_heightCellPER = 2;;
+                gbl_heightCellPER = 12;;
             }
             else if ( [mylin isEqualToString: @"before willpower"] ) {
                 mylin             = @" ";
@@ -407,20 +408,23 @@ bn(3012);
             mynumlines        = 1;    
             mybgcolor         = gbl_color_cHed ;
 //            gbl_heightCellPER = 16;
-            gbl_heightCellPER = 20;
+//            gbl_heightCellPER = 20;
+            gbl_heightCellPER = 16;
             myadjust          = YES;
             mytextcolor       = [UIColor blackColor];
-            myPerFont         = perFont_16;
+//            myPerFont         = perFont_16;
+            myPerFont         = perFont_14;
         }
         if ( [mycode isEqualToString: @"foot"] ) {
             myalign           = NSTextAlignmentCenter;
             mynumlines        = 1;    
             mybgcolor         = gbl_color_cHed ;
 //            gbl_heightCellPER = 16;
-            gbl_heightCellPER = 18;
+            gbl_heightCellPER = 16;
             myadjust          = YES;
             mytextcolor       = [UIColor blackColor];
-            myPerFont         = perFont_16;
+//            myPerFont         = perFont_16;
+            myPerFont         = perFont_14;
         }
         if ( [mycode isEqualToString: @"tabl"] ) {
             myalign           = NSTextAlignmentLeft;
@@ -701,15 +705,17 @@ bn(6012);
             ) {
                 mylin             = @" ";
 //                mybgcolor         = gbl_color_cHed ;
-                mybgcolor         = gbl_color_cBgr ;
+//                mybgcolor         = gbl_color_cBgr ;
+                mybgcolor         = gbl_color_cNeu ;
                 gbl_heightCellCOMP =  8;
             }
             else if (   [mylin isEqualToString: @"after personB ptofview"]
             ) {
                 mylin             = @" ";
 //                mybgcolor         = gbl_color_cHed ;
-                mybgcolor         = gbl_color_cBgr ;
-                gbl_heightCellCOMP =  2;
+//                mybgcolor         = gbl_color_cBgr ;
+                mybgcolor         = gbl_color_cNeu ;
+                gbl_heightCellCOMP =  3;
             }
             else if ( [mylin isEqualToString: @"after howbigftr"] ) {
                 mylin             = @" ";
@@ -1661,7 +1667,8 @@ nbn(20); trn(" in howbighdr");
             myalign           = NSTextAlignmentLeft;
             mynumlines        = 1;    
 //            mybgcolor         = gbl_color_cHed ;
-            mybgcolor         = gbl_color_cBgr ;
+//            mybgcolor         = gbl_color_cBgr ;
+            mybgcolor         = gbl_color_cNeu ;
             gbl_heightCellCOMP = 18;
             myadjust          = NO;
             mytextcolor       = [UIColor blackColor];
@@ -1745,12 +1752,40 @@ nbn(20); trn(" in howbighdr");
 //@Pedroinpeace You would use boundingRectWithSize:options:attributes:context: instead, passing in CGSizeMake(250.0f, CGFLOAT_MAX) in most cases. – Incyc Dec 18 '13 at 16:07 
 //<.>
 
+            // add label for left left margin   -----  about 2 chars----------------------------------------========================
+            //
+            CGRect rect0 = [@"12" boundingRectWithSize: CGSizeMake(300, 10000)
+                                                       options: NSStringDrawingUsesLineFragmentOrigin
+                                                    attributes: @{ NSFontAttributeName: compFont_12 }
+                                                       context: nil
+            ];
+            CGRect lFrame0 = CGRectMake(  // arg 1=x 2=y 3=width 4=height
+                0,
+                0,
+//                expectedLabelSize.width + 10.0,
+                ceilf(rect0.size.width),
+                ceilf(rect0.size.height)
+            );
 
-            // add label for left margin   -----------------------------------------------------------------
+            UILabel* label0 = [[UILabel alloc] initWithFrame: lFrame0];
+            label0.text            = @"  "; // spaces
+            label0.font            = compFont_12;
+//            label0.backgroundColor = gbl_color_cBgr;
+            label0.backgroundColor = [UIColor redColor];
+            //            label0.layer.borderColor = [UIColor redColor].CGColor;
+            label0.numberOfLines   = 0;
+            label0.textAlignment   = NSTextAlignmentLeft;
+            label0.maskView        = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+tn();tr("leftl wid=");kin( ceilf(rect0.size.width));
+     tr("leftl hei=");kin( ceilf(rect0.size.height));
+
+
+
+            // add label for left margin   ---------------------------------------------------------------========================
             //
 //            CGRect rect1 = [@"    " boundingRectWithSize: CGSizeMake(300, 10000)
 //            CGRect rect1 = [@"++++" boundingRectWithSize: CGSizeMake(300, 10000)
-            CGRect rect1 = [@"1234567890" boundingRectWithSize: CGSizeMake(300, 10000)
+            CGRect rect1 = [@"34567890" boundingRectWithSize: CGSizeMake(300, 10000)
 //                                               options: NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
 //                                                 options: NSStringDrawingUsesDeviceMetrics 
 //                                                 options: NSStringDrawingUsesDeviceMetrics | NSStringDrawingUsesLineFragmentOrigin 
@@ -1763,11 +1798,11 @@ nbn(20); trn(" in howbighdr");
             ];
 tn();tr("leftm wid=");kin( ceilf(rect1.size.width));
      tr("leftm hei=");kin( ceilf(rect1.size.height));
-  NSLog(@"compFont_14.lineHeight=[%f]",compFont_12.lineHeight);
-  NSLog(@"compFont_14.ascender  =[%f]",compFont_12.ascender);
-  NSLog(@"compFont_14.descender =[%f]",compFont_12.descender);
-  NSLog(@"compFont_14.capHeight =[%f]",compFont_12.capHeight);
-  NSLog(@"compFont_14.xHeight   =[%f]",compFont_12.xHeight);
+  NSLog(@"compFont_12.lineHeight=[%f]",compFont_12.lineHeight);
+  NSLog(@"compFont_12.ascender  =[%f]",compFont_12.ascender);
+  NSLog(@"compFont_12.descender =[%f]",compFont_12.descender);
+  NSLog(@"compFont_12.capHeight =[%f]",compFont_12.capHeight);
+  NSLog(@"compFont_12.xHeight   =[%f]",compFont_12.xHeight);
 
 
             //NSFont *font = [NSFont fontWithName:@"Times New Roman" size:96.0];
@@ -1775,15 +1810,13 @@ tn();tr("leftm wid=");kin( ceilf(rect1.size.width));
             //NSLayoutManager *lm = [[NSLayoutManager alloc] init];
             //NSLog(@"%f", [lm defaultLineHeightForFont:font]); // this is 111.0
             //
-//            NSLayoutManager *lm = [[NSLayoutManager alloc] init];
-//NSLog(@"layout manager font height=[%f]", [lm defaultLineHeightForFont:  compFont_14 ] );
+                //            NSLayoutManager *lm = [[NSLayoutManager alloc] init];
+                //NSLog(@"layout manager font height=[%f]", [lm defaultLineHeightForFont:  compFont_14 ] );
 
 
-
-
-//            // Values are fractional -- you should take the ceilf to get equivalent values
-//            CGSize adjustedSize = CGSizeMake(ceilf(expectedLabelSize.width), ceilf(expectedLabelSize.height));
-
+            //            // Values are fractional -- you should take the ceilf to get equivalent values
+            //            CGSize adjustedSize = CGSizeMake(ceilf(expectedLabelSize.width), ceilf(expectedLabelSize.height));
+            //
             CGRect lFrame1 = CGRectMake(  // arg 1=x 2=y 3=width 4=height
                 0,
                 0,
@@ -1795,12 +1828,14 @@ tn();tr("leftm wid=");kin( ceilf(rect1.size.width));
             UILabel* label1 = [[UILabel alloc] initWithFrame: lFrame1];
 //            label1.text            = @"    "; // spaces
 //            label1.text            = @"    |"; // spaces
-            label1.text            = @"          "; // spaces
+//            label1.text            = @"          "; // spaces
+            label1.text            = @"        "; // spaces
 //            label1.text            = @"oiwjefoijf"; // spaces
 //            label1.text            = @""; // spaces
             label1.font            = compFont_12;
-            label1.backgroundColor = gbl_color_cBgr;
 //            label1.textColor       = gbl_color_cBgr;
+//            label1.backgroundColor = gbl_color_cBgr;
+            label1.backgroundColor = gbl_color_cNeu;
             label1.numberOfLines   = 0;
             label1.textAlignment = NSTextAlignmentLeft;
             label1.maskView                = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
@@ -1812,6 +1847,9 @@ tn();tr("leftm wid=");kin( ceilf(rect1.size.width));
 //            [cell.contentView addSubview: label1];
 
 
+
+            // add label for stars ---------------------------------------------------------------------------------------
+            //
             CGRect rect2 = [mylin boundingRectWithSize: CGSizeMake(300, 10000)
 //                                               options: NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
 //                                                 options: NSStringDrawingUsesDeviceMetrics | NSStringDrawingUsesLineFragmentOrigin  | NSStringDrawingUsesFontLeading
@@ -1821,8 +1859,6 @@ tn();tr("leftm wid=");kin( ceilf(rect1.size.width));
             ];
 
 
-            // add label for stars ---------------------------------------------------------------------------------------
-            //
             CGRect lFrame2 = CGRectMake(  // arg 1=x 2=y 3=width 4=height
 //                0,
                 ceilf(rect1.size.width),
@@ -1891,66 +1927,14 @@ tn();tr("ritem wid=");kin( ceilf(self.view.bounds.size.width) - (ceilf(rect1.siz
 
             UILabel* label3 = [[UILabel alloc] initWithFrame: lFrame3];
 
-//            // here, for the label text, calculate how big a string fits
-//            //  e.g.   "    |"
-//            //  e.g.   "             |"
-//            //  e.g.   "                       |"
-//            //
-//  NSLog(@"compFont_14.lineHeight=[%f]",compFont_12.lineHeight);
-//           //  CGSize stringSize = [aString sizeWithAttributes:@{NSFontAttributeName:font}]; – RasTheDestroyer Sep 18 '14 at 0:26
-//           NSString *rString;
-//           NSString *rStringShorter;
-//           CGFloat stringWidth;
-//           CGFloat widthAvailable;
-//
-//           rString        = @"";
-//           rStringShorter = @"";
-//
-//           widthAvailable = ceilf(self.view.bounds.size.width) - (ceilf(rect1.size.width) + ceilf(rect2.size.width)),
-//
-//           // make widthAvailable smaller by 2 chars (bigger r margin);
-//           stringWidth = [@"xx" sizeWithAttributes: @{NSFontAttributeName: myFont_12}].width;
-//           widthAvailable = widthAvailable - stringWidth;
-//           if (widthAvailable < stringWidth) {
-//               ;  // do not add a pipe for right margin for stars
-//           } else {
-//
-//               rString = @"|";
-//               while (1) {
-//                   stringWidth = [rString sizeWithAttributes: @{NSFontAttributeName: myFont_12}].width;
-//                   if (stringWidth > widthAvailable) {
-//                       break;
-//                   } else {
-//                       // prepend another space onto   "  |"
-//                       rString = [NSString stringWithFormat:@"y%@", rString];
-//                   }
-//               }
-//               // here rString is too long
-//               //
-//               if (        [rString isEqualToString: @"|"] ) {
-//                   rString = @"";
-//               } else if ( [rString isEqualToString: @" |"] ) {
-//                   rString = @"|";
-//               } else {
-//                   // remove 2 of the leading spaces
-//                   rStringShorter = [rString substringWithRange: NSMakeRange(2, [rString length]-2)];
-//               }
-//           }
-//
-//  NSLog(@"sString       =[%@]",rString);
-//  NSLog(@"sStringShorter=[%@]",rStringShorter);
-
-
-//  NSLog(@"stringWidth =[%f]",stringWidth );
-
-
 
 //            label3.text            = @"1234567890|234";  // get 2...
 //            label3.text            = @"1234567|";  // get
 //            label3.text            = rStringShorter;
             label3.text            = @"|";  // get
             label3.font            = compFont_12;
-            label3.backgroundColor = gbl_color_cBgr;
+//            label3.backgroundColor = gbl_color_cBgr;
+            label3.backgroundColor = gbl_color_cNeu;
             label3.numberOfLines   = 0;
             label3.textAlignment = NSTextAlignmentLeft;
             label3.maskView                = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
@@ -1958,10 +1942,6 @@ tn();tr("ritem wid=");kin( ceilf(self.view.bounds.size.width) - (ceilf(rect1.siz
 //            [cell.contentView addSubview: label3];
 
 
-
-
-
-        // contentView set above  [cell.contentView addSubview: label3];
         dispatch_async(dispatch_get_main_queue(), ^{            // <=== comp  stars
 // old
 ////            cell.textLabel.text                      = mylin; 
@@ -1988,9 +1968,11 @@ tn();tr("ritem wid=");kin( ceilf(self.view.bounds.size.width) - (ceilf(rect1.siz
 //
 
 // new
+            [cell.contentView addSubview: label0];
             [cell.contentView addSubview: label1];
             [cell.contentView addSubview: label2];
             [cell.contentView addSubview: label3];
+//            [cell.contentView addSubview: label4];
 //            cell.textLabel.text                      = mylin; 
             cell.textLabel.text                      = nil;   // this prevents  text bleed
 //            cell.textLabel.adjustsFontSizeToFitWidth = myadjust;
@@ -2005,23 +1987,6 @@ tn();tr("ritem wid=");kin( ceilf(self.view.bounds.size.width) - (ceilf(rect1.siz
             cell.textLabel.backgroundColor           = mybgcolor;
 //            cell.textLabel.attributedText            = myAttrString;  // order matters- pipes DO NOT appear if this line is here
         });
-        //<.> gold below
-        //            dispatch_async(dispatch_get_main_queue(), ^{            // <===  comp fall thru
-        //                cell.textLabel.text                      = mylin;   // --------------------------------------------------
-        //                cell.textLabel.adjustsFontSizeToFitWidth = myadjust;
-        //                cell.textLabel.textAlignment             = myalign;
-        //                cell.userInteractionEnabled              = NO;
-        //                cell.accessoryView                       = nil;   // use accessoryType setting   // have right arrow on column labels
-        //                cell.accessoryType                       = UITableViewCellAccessoryNone;
-        //                cell.textLabel.numberOfLines             = 1; 
-        //                cell.textLabel.textColor                 = mytextcolor;
-        //                cell.textLabel.font                      = myCompFont;
-        //                cell.textLabel.adjustsFontSizeToFitWidth = NO;
-        //                cell.textLabel.backgroundColor           = mybgcolor;
-        //            });
-        //<.>
-        //
-
 bn(802);
         return cell;
 
@@ -7563,4 +7528,57 @@ tn();trn("// set new gbl_currentMenuPlusReportCode    for info in next report");
 //            // [string addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:NSMakeRange(11,5)];
 //<.>
 
+
+
+//            // here, for the label text, calculate how big a string fits
+//            //  e.g.   "    |"
+//            //  e.g.   "             |"
+//            //  e.g.   "                       |"
+//            //
+//  NSLog(@"compFont_14.lineHeight=[%f]",compFont_12.lineHeight);
+//           //  CGSize stringSize = [aString sizeWithAttributes:@{NSFontAttributeName:font}]; – RasTheDestroyer Sep 18 '14 at 0:26
+//           NSString *rString;
+//           NSString *rStringShorter;
+//           CGFloat stringWidth;
+//           CGFloat widthAvailable;
+//
+//           rString        = @"";
+//           rStringShorter = @"";
+//
+//           widthAvailable = ceilf(self.view.bounds.size.width) - (ceilf(rect1.size.width) + ceilf(rect2.size.width)),
+//
+//           // make widthAvailable smaller by 2 chars (bigger r margin);
+//           stringWidth = [@"xx" sizeWithAttributes: @{NSFontAttributeName: myFont_12}].width;
+//           widthAvailable = widthAvailable - stringWidth;
+//           if (widthAvailable < stringWidth) {
+//               ;  // do not add a pipe for right margin for stars
+//           } else {
+//
+//               rString = @"|";
+//               while (1) {
+//                   stringWidth = [rString sizeWithAttributes: @{NSFontAttributeName: myFont_12}].width;
+//                   if (stringWidth > widthAvailable) {
+//                       break;
+//                   } else {
+//                       // prepend another space onto   "  |"
+//                       rString = [NSString stringWithFormat:@"y%@", rString];
+//                   }
+//               }
+//               // here rString is too long
+//               //
+//               if (        [rString isEqualToString: @"|"] ) {
+//                   rString = @"";
+//               } else if ( [rString isEqualToString: @" |"] ) {
+//                   rString = @"|";
+//               } else {
+//                   // remove 2 of the leading spaces
+//                   rStringShorter = [rString substringWithRange: NSMakeRange(2, [rString length]-2)];
+//               }
+//           }
+//
+//  NSLog(@"sString       =[%@]",rString);
+//  NSLog(@"sStringShorter=[%@]",rStringShorter);
+
+
+//  NSLog(@"stringWidth =[%f]",stringWidth );
 
