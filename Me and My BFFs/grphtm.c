@@ -896,7 +896,9 @@ tn();tr("closeness doclin=");ksn(doclin);
     }
 
 
-    sprintf(writebuf, "howbigftr|   Good indicators are a full line of +++ ");
+//    sprintf(writebuf, "howbigftr|   Good indicators are a full line of +++ ");
+//    sprintf(writebuf, "howbigftr|   Good indicator is a full line of +++ ");
+    sprintf(writebuf, "howbigftr|   Good signs are a full line of +++ ");
     g_fn_prtlin(writebuf);
     sprintf(writebuf, "howbigftr|   and double the +++ compared to  --- ");
     g_fn_prtlin(writebuf);

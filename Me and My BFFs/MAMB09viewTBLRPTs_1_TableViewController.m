@@ -517,6 +517,12 @@ bn(302);
 //nbn(600);
     if ( [gbl_currentMenuPlusReportCode isEqualToString: @"hompco"] )
     { 
+//       gbl_compIsInHowBig = 0;   // DEFAULT setting
+
+            UIButton *myInvisibleButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+            [UIButton buttonWithType: UIButtonTypeCustom];
+            myInvisibleButton.backgroundColor = [UIColor clearColor];
+
 //bn(601);
 //  NSLog(@"indexPath.row =[%ld]",indexPath.row );
 //  NSLog(@"gbl_compDataLines[indexPath.row]  [%@]",gbl_compDataLines[indexPath.row]  );
@@ -593,7 +599,7 @@ bn(302);
             compFont_16  = [UIFont fontWithName: @"Menlo" size: 13.0];
             compFont_14  = [UIFont fontWithName: @"Menlo" size: 11.0];
             compFont_12  = [UIFont fontWithName: @"Menlo" size:  9.0];
-            compFont_11b = [UIFont fontWithName: @"Menlo-bold" size:  10.0];
+            compFont_11b = [UIFont fontWithName: @"Menlo-bold" size:  9.0];
         }
 
         
@@ -673,7 +679,8 @@ bn(6012);
 //            }
             else if ( [mylin isEqualToString: @"after table foot"] ) {
                 mylin             = @" ";
-                mybgcolor         = gbl_color_cNeu ;
+//                mybgcolor         = gbl_color_cNeu ;
+                mybgcolor         = gbl_color_cHed ;
                 gbl_heightCellCOMP = 8;
             }
             else if ( [mylin isEqualToString: @"filler before how big"] ) {
@@ -682,9 +689,10 @@ bn(6012);
                 gbl_heightCellCOMP = 24;
             }
             else if ( [mylin isEqualToString: @"before how big header"] ) {
+//                gbl_compIsInHowBig = 1;
                 mylin             = @" ";
-//                mybgcolor         = gbl_color_cHed ;
-                mybgcolor         = gbl_color_cNeu ;
+                mybgcolor         = gbl_color_cHed ;
+//                mybgcolor         = gbl_color_cNeu ;
                 gbl_heightCellCOMP = 3;
             }
 
@@ -698,8 +706,8 @@ bn(6012);
             // 
             else if ( [mylin isEqualToString: @"after how big header"] ) {
                 mylin             = @" ";
-//                mybgcolor         = gbl_color_cHed ;
-                mybgcolor         = gbl_color_cNeu ;
+                mybgcolor         = gbl_color_cHed ;
+//                mybgcolor         = gbl_color_cNeu ;
 //                mybgcolor         = gbl_color_cBgr ;
                 gbl_heightCellCOMP = 8;
             }
@@ -707,22 +715,23 @@ bn(6012);
                      || [mylin isEqualToString: @"after personA ptofview"]
             ) {
                 mylin             = @" ";
-//                mybgcolor         = gbl_color_cHed ;
+                mybgcolor         = gbl_color_cHed ;
 //                mybgcolor         = gbl_color_cBgr ;
-                mybgcolor         = gbl_color_cNeu ;
+//                mybgcolor         = gbl_color_cNeu ;
                 gbl_heightCellCOMP =  8;
             }
             else if (   [mylin isEqualToString: @"after personB ptofview"]
             ) {
                 mylin             = @" ";
-//                mybgcolor         = gbl_color_cHed ;
+                mybgcolor         = gbl_color_cHed ;
 //                mybgcolor         = gbl_color_cBgr ;
-                mybgcolor         = gbl_color_cNeu ;
+//                mybgcolor         = gbl_color_cNeu ;
                 gbl_heightCellCOMP =  8;
             }
             else if ( [mylin isEqualToString: @"after howbigftr"] ) {
                 mylin             = @" ";
-                mybgcolor         = gbl_color_cNeu ;
+//                mybgcolor         = gbl_color_cNeu ;
+                mybgcolor         = gbl_color_cHed ;
                 gbl_heightCellCOMP =  4;
             }
             else if ( [mylin isEqualToString: @"filler after how big"] ) {
@@ -972,9 +981,10 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
 
   NSLog(@"myAttrString =[%@]",[myAttrString string]);
 
-            UIButton *myInvisibleButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
-            [UIButton buttonWithType: UIButtonTypeCustom];
-            myInvisibleButton.backgroundColor = [UIColor clearColor];
+
+//            UIButton *myInvisibleButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+//            [UIButton buttonWithType: UIButtonTypeCustom];
+//            myInvisibleButton.backgroundColor = [UIColor clearColor];
 
             dispatch_async(dispatch_get_main_queue(), ^{                                // <===  comp  table header
 //                cell.textLabel.text                      = mylin;  // plain text not used
@@ -983,7 +993,8 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
 //                cell.textLabel.adjustsFontSizeToFitWidth = NO;
                 cell.textLabel.textAlignment             = NSTextAlignmentCenter;
                 cell.userInteractionEnabled              = NO;
-              cell.accessoryView                       = nil;   // use accessoryType setting   // have right arrow on column labels
+//              cell.accessoryView                       = nil;   // use accessoryType setting   // have right arrow on column labels
+                cell.accessoryView                       = myInvisibleButton;               // no right arrow on column labels
 //                cell.accessoryView                       = myInvisibleButton;               // no right arrow on column labels
                 cell.accessoryType                       = UITableViewCellAccessoryNone;
                 cell.textLabel.numberOfLines             = 1; 
@@ -992,6 +1003,8 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
                 cell.textLabel.adjustsFontSizeToFitWidth = NO;
                 cell.textLabel.backgroundColor           = mybgcolor;
                 cell.textLabel.attributedText            = myAttrString;  // order matters- pipes DO NOT appear if this line is here
+                cell.imageView.image                     = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView                      = nil ;
             });
 
             CGRect rect = [ myAttrString boundingRectWithSize: CGSizeMake(300, 10000)
@@ -1429,11 +1442,11 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
             CGRect rect;
 
             dispatch_async(dispatch_get_main_queue(), ^{               // <===  comp pair
-//                cell.accessoryView                       = myInvisibleButton;               // no right arrow on column labels
                 // do not set text
                 cell.textLabel.textAlignment             = NSTextAlignmentCenter;
                 cell.userInteractionEnabled              = NO;
-                cell.accessoryView                       = nil;   // use accessoryType setting   // have right arrow on column labels
+//                cell.accessoryView                       = nil;   // use accessoryType setting   // have right arrow on column labels
+                cell.accessoryView                       = myInvisibleButton;               // no right arrow on column labels
                 cell.accessoryType                       = UITableViewCellAccessoryNone;
                 cell.textLabel.numberOfLines             = 1; 
                 cell.textLabel.textColor       = mytextcolor;
@@ -1441,6 +1454,8 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
                 cell.textLabel.adjustsFontSizeToFitWidth = myadjust;
                 cell.textLabel.backgroundColor           = mybgcolor;
                 cell.textLabel.attributedText            = myAttrString;
+                cell.imageView.image                     = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView                      = nil ;
 
             });
             //<.> gold below, but above workd
@@ -1523,8 +1538,8 @@ kdn(gbl_heightForCompTable );
 
             myalign           = NSTextAlignmentLeft;
             mynumlines        = 1;    
-//            mybgcolor         = gbl_color_cHed ;
-            mybgcolor         = gbl_color_cNeu ;
+            mybgcolor         = gbl_color_cHed ;
+//            mybgcolor         = gbl_color_cNeu ;
             gbl_heightCellCOMP = 18;
             myadjust          = NO;
             mytextcolor       = [UIColor blackColor];
@@ -1659,8 +1674,8 @@ nbn(20); trn(" in howbighdr");
 
             myalign           = NSTextAlignmentLeft;
             mynumlines        = 1;    
-//            mybgcolor         = gbl_color_cHed ;
-            mybgcolor         = gbl_color_cNeu ;
+            mybgcolor         = gbl_color_cHed ;
+//            mybgcolor         = gbl_color_cNeu ;
             gbl_heightCellCOMP = 18;
             myadjust          = NO;
             mytextcolor       = [UIColor blackColor];
@@ -1672,9 +1687,9 @@ nbn(20); trn(" in howbighdr");
 
             myalign           = NSTextAlignmentLeft;
             mynumlines        = 1;    
-//            mybgcolor         = gbl_color_cHed ;
+            mybgcolor         = gbl_color_cHed ;
 //            mybgcolor         = gbl_color_cBgr ;
-            mybgcolor         = gbl_color_cNeu ;
+//            mybgcolor         = gbl_color_cNeu ;
             gbl_heightCellCOMP = 18;
             myadjust          = NO;
             mytextcolor       = [UIColor blackColor];
@@ -1684,6 +1699,8 @@ nbn(20); trn(" in howbighdr");
 
         if ( [mycode isEqualToString: @"stars"] )  // start stars
         {   // start stars
+
+
             gbl_areInCompatibilityTable = 0;
 
             UIColor *myRedGreenColor;
@@ -1759,6 +1776,11 @@ nbn(20); trn(" in howbighdr");
             myalign           = NSTextAlignmentLeft;
             mynumlines        = 1;    
 //            gbl_heightCellCOMP = 18;
+//            gbl_heightCellCOMP = 15;  // get pipes to join
+//            gbl_heightCellCOMP = 10;  // get pipes to join
+//            gbl_heightCellCOMP = 13;  // get pipes to join
+//            gbl_heightCellCOMP = 12;  // get pipes to join
+            gbl_heightCellCOMP = 11;  // get pipes to join
             myadjust          = NO;
 //            myCompFont         = compFont_14;
             myCompFont         = compFont_12;
@@ -1778,98 +1800,102 @@ nbn(20); trn(" in howbighdr");
 //@Pedroinpeace You would use boundingRectWithSize:options:attributes:context: instead, passing in CGSizeMake(250.0f, CGFLOAT_MAX) in most cases. – Incyc Dec 18 '13 at 16:07 
 //<.>
 
-            // add label for left left margin   -----  about 2 chars----------------------------------------========================
-            //
-//            CGRect rect0 = [@"123" boundingRectWithSize: CGSizeMake(300, 10000)
-            CGRect rect0 = [@"+++" boundingRectWithSize: CGSizeMake(300, 10000)
-                                                       options: NSStringDrawingUsesLineFragmentOrigin
-                                                    attributes: @{ NSFontAttributeName: compFont_12 }
-                                                       context: nil
-            ];
-            CGRect lFrame0 = CGRectMake(  // arg 1=x 2=y 3=width 4=height
-                0,
-                0,
-//                expectedLabelSize.width + 10.0,
-                ceilf(rect0.size.width),
-                ceilf(rect0.size.height)
-            );
+     
+//          CGRect rect0 = CGRectZero;
+//          CGRect rect1 = CGRectZero;
+//          CGRect rect21 = CGRectZero;
 
-            UILabel* label0 = [[UILabel alloc] initWithFrame: lFrame0];
-            label0.text            = @"  "; // spaces
-            label0.font            = compFont_12;
-            label0.backgroundColor = gbl_color_cBgr;
-//            label0.backgroundColor = [UIColor orangeColor];
-            //            label0.layer.borderColor = [UIColor redColor].CGColor;
-            label0.numberOfLines   = 0;
-            label0.textAlignment   = NSTextAlignmentLeft;
-            label0.maskView        = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
-tn();tr("leftl wid=");kin( ceilf(rect0.size.width));
-     tr("leftl hei=");kin( ceilf(rect0.size.height));
+//            // add label for left left margin   -----  about 2 chars----------------------------------------========================
+//            //
+////            CGRect rect0 = [@"123" boundingRectWithSize: CGSizeMake(300, 10000)
+//            CGRect rect0 = [@"+++" boundingRectWithSize: CGSizeMake(300, 10000)
+//                                                       options: NSStringDrawingUsesLineFragmentOrigin
+//                                                    attributes: @{ NSFontAttributeName: compFont_12 }
+//                                                       context: nil
+//            ];
+//            CGRect lFrame0 = CGRectMake(  // arg 1=x 2=y 3=width 4=height
+//                0,
+//                0,
+////                expectedLabelSize.width + 10.0,
+//                ceilf(rect0.size.width),
+//                ceilf(rect0.size.height)
+//            );
+//
+//            UILabel* label0 = [[UILabel alloc] initWithFrame: lFrame0];
+//            label0.text            = @"  "; // spaces
+//            label0.font            = compFont_12;
+//            label0.backgroundColor = gbl_color_cBgr;
+////            label0.backgroundColor = [UIColor orangeColor];
+//            //            label0.layer.borderColor = [UIColor redColor].CGColor;
+//            label0.numberOfLines   = 0;
+//            label0.textAlignment   = NSTextAlignmentLeft;
+//            label0.maskView        = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+//tn();tr("leftl wid=");kin( ceilf(rect0.size.width));
+//     tr("leftl hei=");kin( ceilf(rect0.size.height));
+//
+//
 
-
-
-            // add label for left margin   ---------------------------------------------------------------========================
-            //
-            //       options: NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
-            //       options: NSStringDrawingUsesDeviceMetrics 
-            CGRect rect1 = [@"4567890" boundingRectWithSize: CGSizeMake(300, 10000)
-                                                    options: NSStringDrawingUsesLineFragmentOrigin
-                                                 attributes: @{ NSFontAttributeName: compFont_12 }
-                                                    context: nil
-            ];
-tn();tr("leftm wid=");kin( ceilf(rect1.size.width));
-     tr("leftm hei=");kin( ceilf(rect1.size.height));
-
-            //  NSLog(@"compFont_12.lineHeight=[%f]",compFont_12.lineHeight);
-            //  NSLog(@"compFont_12.ascender  =[%f]",compFont_12.ascender);
-            //  NSLog(@"compFont_12.descender =[%f]",compFont_12.descender);
-            //  NSLog(@"compFont_12.capHeight =[%f]",compFont_12.capHeight);
-            //  NSLog(@"compFont_12.xHeight   =[%f]",compFont_12.xHeight);
-
-
-            //NSFont *font = [NSFont fontWithName:@"Times New Roman" size:96.0];
-            //The line height of this font, if I would use it in an NSTextView is 111.0.
-            //NSLayoutManager *lm = [[NSLayoutManager alloc] init];
-            //NSLog(@"%f", [lm defaultLineHeightForFont:font]); // this is 111.0
-            //
-                //            NSLayoutManager *lm = [[NSLayoutManager alloc] init];
-                //NSLog(@"layout manager font height=[%f]", [lm defaultLineHeightForFont:  compFont_14 ] );
-
-
-            //            // Values are fractional -- you should take the ceilf to get equivalent values
-            //            CGSize adjustedSize = CGSizeMake(ceilf(expectedLabelSize.width), ceilf(expectedLabelSize.height));
-            //
-
-            CGRect lFrame1 = CGRectMake(  // arg 1=x 2=y 3=width 4=height
-                ceilf(rect0.size.width),   // allow for left left margin width
-                0,
-//                expectedLabelSize.width + 10.0,
-                ceilf(rect1.size.width),
-                ceilf(rect1.size.height)
-            );
-
-            UILabel* label1 = [[UILabel alloc] initWithFrame: lFrame1];
-//            label1.text            = @"    "; // spaces
-//            label1.text            = @"    |"; // spaces
-//            label1.text            = @"          "; // spaces
-            label1.text            = @"        "; // spaces
-//            label1.text            = @"oiwjefoijf"; // spaces
-//            label1.text            = @""; // spaces
-            label1.font            = compFont_12;
-//            label1.textColor       = gbl_color_cBgr;
-//            label1.backgroundColor = gbl_color_cBgr;
-//            label1.backgroundColor = [UIColor cyanColor];
-            label1.backgroundColor = gbl_color_cNeu;
-            label1.numberOfLines   = 0;
-            label1.textAlignment = NSTextAlignmentLeft;
-            label1.maskView                = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
-
-            //            // for test, mk label visibile
-            //            label1.layer.borderWidth = 1.0;
-            //            label1.layer.borderColor = [UIColor redColor].CGColor;
-
-//            [cell.contentView addSubview: label1];
-
+//
+//            // add label for left margin   ---------------------------------------------------------------========================
+//            //
+//            //       options: NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+//            //       options: NSStringDrawingUsesDeviceMetrics 
+//            CGRect rect1 = [@"4567890" boundingRectWithSize: CGSizeMake(300, 10000)
+//                                                    options: NSStringDrawingUsesLineFragmentOrigin
+//                                                 attributes: @{ NSFontAttributeName: compFont_12 }
+//                                                    context: nil
+//            ];
+//tn();tr("leftm wid=");kin( ceilf(rect1.size.width));
+//     tr("leftm hei=");kin( ceilf(rect1.size.height));
+//
+//            //  NSLog(@"compFont_12.lineHeight=[%f]",compFont_12.lineHeight);
+//            //  NSLog(@"compFont_12.ascender  =[%f]",compFont_12.ascender);
+//            //  NSLog(@"compFont_12.descender =[%f]",compFont_12.descender);
+//            //  NSLog(@"compFont_12.capHeight =[%f]",compFont_12.capHeight);
+//            //  NSLog(@"compFont_12.xHeight   =[%f]",compFont_12.xHeight);
+//
+//
+//            //NSFont *font = [NSFont fontWithName:@"Times New Roman" size:96.0];
+//            //The line height of this font, if I would use it in an NSTextView is 111.0.
+//            //NSLayoutManager *lm = [[NSLayoutManager alloc] init];
+//            //NSLog(@"%f", [lm defaultLineHeightForFont:font]); // this is 111.0
+//            //
+//                //            NSLayoutManager *lm = [[NSLayoutManager alloc] init];
+//                //NSLog(@"layout manager font height=[%f]", [lm defaultLineHeightForFont:  compFont_14 ] );
+//
+//
+//            //            // Values are fractional -- you should take the ceilf to get equivalent values
+//            //            CGSize adjustedSize = CGSizeMake(ceilf(expectedLabelSize.width), ceilf(expectedLabelSize.height));
+//            //
+//
+//            CGRect lFrame1 = CGRectMake(  // arg 1=x 2=y 3=width 4=height
+//                ceilf(rect0.size.width),   // allow for left left margin width
+//                0,
+////                expectedLabelSize.width + 10.0,
+//                ceilf(rect1.size.width),
+//                ceilf(rect1.size.height)
+//            );
+//
+//            UILabel* label1 = [[UILabel alloc] initWithFrame: lFrame1];
+////            label1.text            = @"    "; // spaces
+////            label1.text            = @"    |"; // spaces
+////            label1.text            = @"          "; // spaces
+//            label1.text            = @"        "; // spaces
+////            label1.text            = @"oiwjefoijf"; // spaces
+////            label1.text            = @""; // spaces
+//            label1.font            = compFont_12;
+////            label1.textColor       = gbl_color_cBgr;
+////            label1.backgroundColor = gbl_color_cBgr;
+////            label1.backgroundColor = [UIColor cyanColor];
+//            label1.backgroundColor = gbl_color_cNeu;
+//            label1.numberOfLines   = 0;
+//            label1.textAlignment = NSTextAlignmentLeft;
+//            label1.maskView                = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+//
+//            //            // for test, mk label visibile
+//            //            label1.layer.borderWidth = 1.0;
+//            //            label1.layer.borderColor = [UIColor redColor].CGColor;
+//
 
 
             // add label for stars ---------------------------------------------------------------------------------------
@@ -1884,156 +1910,166 @@ tn();tr("leftm wid=");kin( ceilf(rect1.size.width));
 //                                               context: nil
 //            ];
 
-            CGRect rect2 = [gbl_starsNSString boundingRectWithSize: CGSizeMake(300, 10000)
-                                                           options: NSStringDrawingUsesLineFragmentOrigin
-                                                        attributes: @{ NSFontAttributeName: compFont_12 }
-                                                           context: nil
-            ];
 
 
-            CGRect lFrame2 = CGRectMake(  // arg 1=x 2=y 3=width 4=height
+
+//<.>
+//            CGRect rect2 = [gbl_starsNSString boundingRectWithSize: CGSizeMake(300, 10000)
+//                                                           options: NSStringDrawingUsesLineFragmentOrigin
+//                                                        attributes: @{ NSFontAttributeName: compFont_12 }
+//                                                           context: nil
+//            ];
+//
+//
+//            CGRect lFrame2 = CGRectMake(  // arg 1=x 2=y 3=width 4=height
+////                0,
+////                ceilf(rect1.size.width),
+//                30,
 //                0,
-                ceilf(rect1.size.width),
-                0,
-//                expectedLabelSize.width + 10.0,
+////                expectedLabelSize.width + 10.0,
+////                ceilf(rect2.size.width),
+////           widthAvailable = ceilf(self.view.bounds.size.width) - (ceilf(rect1.size.width) + ceilf(rect2.size.width)),
+////                ceilf(self.view.bounds.size.width) - ceilf(rect0.size.width) - ceilf(rect1.size.width) - 18.0, // whole width minus left margin
+////                ceilf(self.view.bounds.size.width) - ceilf(rect0.size.width) - ceilf(rect1.size.width)       , // whole width minus left margin
+//
 //                ceilf(rect2.size.width),
-//           widthAvailable = ceilf(self.view.bounds.size.width) - (ceilf(rect1.size.width) + ceilf(rect2.size.width)),
-//                ceilf(self.view.bounds.size.width) - ceilf(rect0.size.width) - ceilf(rect1.size.width) - 18.0, // whole width minus left margin
-//                ceilf(self.view.bounds.size.width) - ceilf(rect0.size.width) - ceilf(rect1.size.width)       , // whole width minus left margin
+//                ceilf(rect2.size.height)
+////                ceilf(rect2.size.height) + 10.0 // + 10 = uilabel border width * 2
+//            );
+////tn();tr("stars wid=");kin( ceilf(rect2.size.width));
+////tn();tr("stars wid=");kin( ceilf(self.view.bounds.size.width) - ceilf(rect0.size.width) - ceilf(rect1.size.width) -18.0 );
+//tn();tr("stars wid=");kin( ceilf(self.view.bounds.size.width) - ceilf(rect0.size.width) - ceilf(rect1.size.width)       );
+//     tr("stars hei=");kin( ceilf(rect2.size.height));
+//
+//            gbl_heightCellCOMP = ceilf(rect2.size.height);  // set it here - consecutive star lines should touch
+////            gbl_heightCellCOMP = gbl_heightCellCOMP + 10; // + 10 = uilabel border width * 2
+//
+//            UILabel* label2 = [[UILabel alloc] initWithFrame: lFrame2];
+//
+//            label2.text            = mylin;
+//            label2.font            = compFont_12;
+//            label2.backgroundColor = myRedGreenColor;
+//            label2.numberOfLines   = 0;
+//            label2.textAlignment = NSTextAlignmentLeft;
+//            label2.maskView                = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+//
+////            label2.layer.borderWidth = 3.0;
+//            label2.layer.borderWidth = 1.0;
+////            label2.layer.borderColor = [UIColor redColor].CGColor;
+//            label2.layer.borderColor =  myRedGreenColor.CGColor ;
+//
+//            [label2 sizeToFit];
+//
+////            [cell.contentView addSubview: label2];
+//  NSLog(@"label2.text            =[%@]",label2.text            );
+//
+//
 
-                ceilf(rect2.size.width),
-                ceilf(rect2.size.height)
-//                ceilf(rect2.size.height) + 10.0 // + 10 = uilabel border width * 2
-            );
-//tn();tr("stars wid=");kin( ceilf(rect2.size.width));
-//tn();tr("stars wid=");kin( ceilf(self.view.bounds.size.width) - ceilf(rect0.size.width) - ceilf(rect1.size.width) -18.0 );
-tn();tr("stars wid=");kin( ceilf(self.view.bounds.size.width) - ceilf(rect0.size.width) - ceilf(rect1.size.width)       );
-     tr("stars hei=");kin( ceilf(rect2.size.height));
+//
+//            // get rect for a line containing max num of stars
+//            //
+//            NSString *starLineOfMaxSize;
+//            starLineOfMaxSize = [@"" stringByPaddingToLength: 40 //  40 is  MAGIC  77 -> 40
+//                                                  withString: @"+"
+//                                             startingAtIndex: 0 ];
+//
+//            CGRect rect3 = [starLineOfMaxSize boundingRectWithSize: CGSizeMake(300, 10000)
+//                                                           options: NSStringDrawingUsesLineFragmentOrigin
+//                                                        attributes: @{ NSFontAttributeName: compFont_12 }
+//                                                           context: nil
+//            ];
+//
 
-            gbl_heightCellCOMP = ceilf(rect2.size.height);  // set it here - consecutive star lines should touch
-//            gbl_heightCellCOMP = gbl_heightCellCOMP + 10; // + 10 = uilabel border width * 2
-
-            UILabel* label2 = [[UILabel alloc] initWithFrame: lFrame2];
-
-            label2.text            = mylin;
-            label2.font            = compFont_12;
-            label2.backgroundColor = myRedGreenColor;
-            label2.numberOfLines   = 0;
-            label2.textAlignment = NSTextAlignmentLeft;
-            label2.maskView                = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
-
-//            label2.layer.borderWidth = 3.0;
-            label2.layer.borderWidth = 1.0;
-//            label2.layer.borderColor = [UIColor redColor].CGColor;
-            label2.layer.borderColor =  myRedGreenColor.CGColor ;
-
-            [label2 sizeToFit];
-
-//            [cell.contentView addSubview: label2];
-  NSLog(@"label2.text            =[%@]",label2.text            );
-
-
-
-            // get rect for a line containing max num of stars
-            //
-            NSString *starLineOfMaxSize;
-            starLineOfMaxSize = [@"" stringByPaddingToLength: 40 //  40 is  MAGIC  77 -> 40
-                                                  withString: @"+"
-                                             startingAtIndex: 0 ];
-
-            CGRect rect3 = [starLineOfMaxSize boundingRectWithSize: CGSizeMake(300, 10000)
-                                                           options: NSStringDrawingUsesLineFragmentOrigin
-                                                        attributes: @{ NSFontAttributeName: compFont_12 }
-                                                           context: nil
-            ];
-
-
-            // add white label for after stars ---------------------------------------------------------------------------------
-            //
+//
+//            // add white label for after stars ---------------------------------------------------------------------------------
+//            //
+////            CGRect lFrame21 = CGRectMake(  // arg 1=x 2=y 3=width 4=height
+////                //ceilf(rect0.size.width) + ceilf(rect1.size.width) + ceilf(rect2.size.width),   // left marg(2) + siz of stars
+////                ceilf(rect1.size.width) + ceilf(rect2.size.width),   // left marg(2) + siz of stars
+////                0,
+////                ceilf(rect3.size.width) - ceilf(rect2.size.width ), // size of line with max stars - size of line with actual stars 
+////                ceilf(rect2.size.height)
+////            );
+//            CGRect rect21 = [gbl_starsWhiteSpaces boundingRectWithSize: CGSizeMake(300, 10000)
+//                                                              options: NSStringDrawingUsesLineFragmentOrigin
+//                                                           attributes: @{ NSFontAttributeName: compFont_12 }
+//                                                              context: nil
+//            ];
+//
 //            CGRect lFrame21 = CGRectMake(  // arg 1=x 2=y 3=width 4=height
-//                //ceilf(rect0.size.width) + ceilf(rect1.size.width) + ceilf(rect2.size.width),   // left marg(2) + siz of stars
-//                ceilf(rect1.size.width) + ceilf(rect2.size.width),   // left marg(2) + siz of stars
+//                 // ceilf(rect0.size.width) +   // allow for left left margin   WHY ??? exclude this, but it works
+//                    ceilf(rect1.size.width) +   // and  left margin and 
+//                    ceilf(rect2.size.width)     // and  stars width
+//         + 30.0
+//                ,
 //                0,
-//                ceilf(rect3.size.width) - ceilf(rect2.size.width ), // size of line with max stars - size of line with actual stars 
+//                ceilf(rect21.size.width),
+//                ceilf(rect21.size.height)
+//            );
+//
+//
+//            UILabel* label21 = [[UILabel alloc] initWithFrame: lFrame21];
+//            label21.text            = @" ";
+//            label21.font            = compFont_12;
+//            label21.backgroundColor = [UIColor whiteColor];
+//            label21.numberOfLines   = 0;
+//            label21.textAlignment   = NSTextAlignmentLeft;
+//            label21.maskView        = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+//
+
+
+
+//
+//            // add label for right margin  ---------------------------------------------------------------------
+//            // the x  argument offset is left marg + max size of 77 chars
+//            //
+//            CGFloat fudgeAddonRightMargin = 5.0f;
+//
+//            CGRect lFrame3 = CGRectMake(  // arg 1=x 2=y 3=width 4=height
+////                ceilf(rect1.size.width) + ceilf(rect2.size.width),
+////                ceilf(rect0.size.width) + ceilf(rect1.size.width) + ceilf(rect3.size.width),   // left marg(2) + max siz star line
+////                ceilf(rect1.size.width) + ceilf(rect3.size.width),   // left marg(2) + max siz star line
+//                 // ceilf(rect0.size.width) +   // allow for left left margin   WHY ??? exclude this, but it works
+//            
+//             // ceilf(rect0.size.width) +   // allow for left left margin   WHY ??? exclude this, but it works
+//                ceilf(rect1.size.width) +
+//                ceilf(rect2.size.width) + ceilf(rect21.size.width),
+//                0,
+////                ceilf(self.view.bounds.size.width) - (  ceilf(rect0.size.width) + ceilf(rect1.size.width) + ceilf(rect2.size.width)  ),
+////                ceilf(self.view.bounds.size.width) - (  ceilf(rect1.size.width) + ceilf(rect2.size.width)  ),
+////                ceilf(self.view.bounds.size.width) -
+////                    (  ceilf(rect1.size.width) + ceilf(rect3.size.width) + ceilf(rect0.size.width )  ) 
+////                    +  fudgeAddonRightMargin ,
+//                ceilf(self.view.bounds.size.width) -
+//                    (  ceilf(rect0.size.width) +
+//                       ceilf(rect1.size.width) +
+//                       ceilf(rect2.size.width) +
+//                       ceilf(rect21.size.width ) 
+//                    ) 
+////                +  fudgeAddonRightMargin
+//                ,
 //                ceilf(rect2.size.height)
 //            );
-            CGRect rect21 = [gbl_starsWhiteSpaces boundingRectWithSize: CGSizeMake(300, 10000)
-                                                              options: NSStringDrawingUsesLineFragmentOrigin
-                                                           attributes: @{ NSFontAttributeName: compFont_12 }
-                                                              context: nil
-            ];
-
-            CGRect lFrame21 = CGRectMake(  // arg 1=x 2=y 3=width 4=height
-                 // ceilf(rect0.size.width) +   // allow for left left margin   WHY ??? exclude this, but it works
-                    ceilf(rect1.size.width) +   // and  left margin and 
-                    ceilf(rect2.size.width)     // and  stars width
-                ,
-                0,
-                ceilf(rect21.size.width),
-                ceilf(rect21.size.height)
-            );
-
-
-            UILabel* label21 = [[UILabel alloc] initWithFrame: lFrame21];
-            label21.text            = @" ";
-            label21.font            = compFont_12;
-            label21.backgroundColor = [UIColor whiteColor];
-            label21.numberOfLines   = 0;
-            label21.textAlignment   = NSTextAlignmentLeft;
-            label21.maskView        = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
-
-
-
-
-            // add label for right margin  ---------------------------------------------------------------------
-            // the x  argument offset is left marg + max size of 77 chars
-            //
-            CGFloat fudgeAddonRightMargin = 5.0f;
-
-            CGRect lFrame3 = CGRectMake(  // arg 1=x 2=y 3=width 4=height
-//                ceilf(rect1.size.width) + ceilf(rect2.size.width),
-//                ceilf(rect0.size.width) + ceilf(rect1.size.width) + ceilf(rect3.size.width),   // left marg(2) + max siz star line
-//                ceilf(rect1.size.width) + ceilf(rect3.size.width),   // left marg(2) + max siz star line
-                 // ceilf(rect0.size.width) +   // allow for left left margin   WHY ??? exclude this, but it works
-            
-             // ceilf(rect0.size.width) +   // allow for left left margin   WHY ??? exclude this, but it works
-                ceilf(rect1.size.width) +
-                ceilf(rect2.size.width) + ceilf(rect21.size.width),
-                0,
-//                ceilf(self.view.bounds.size.width) - (  ceilf(rect0.size.width) + ceilf(rect1.size.width) + ceilf(rect2.size.width)  ),
-//                ceilf(self.view.bounds.size.width) - (  ceilf(rect1.size.width) + ceilf(rect2.size.width)  ),
-//                ceilf(self.view.bounds.size.width) -
-//                    (  ceilf(rect1.size.width) + ceilf(rect3.size.width) + ceilf(rect0.size.width )  ) 
-//                    +  fudgeAddonRightMargin ,
-                ceilf(self.view.bounds.size.width) -
-                    (  ceilf(rect0.size.width) +
-                       ceilf(rect1.size.width) +
-                       ceilf(rect2.size.width) +
-                       ceilf(rect21.size.width ) 
-                    ) 
-//                +  fudgeAddonRightMargin
-                ,
-                ceilf(rect2.size.height)
-            );
-//tn();tr("ritem wid=");kin( ceilf(rect2.size.width));
-     tr("ritem hei=");kin( ceilf(rect2.size.height));
-
-            UILabel* label3 = [[UILabel alloc] initWithFrame: lFrame3];
-
-
-//            label3.text            = @"1234567890|234";  // get 2...
-//            label3.text            = @"1234567|";  // get
-//            label3.text            = rStringShorter;
-//            label3.text            = @"|";  // get
-            label3.text            = @" ";  // get
-            label3.font            = compFont_12;
-//            label3.backgroundColor = gbl_color_cBgr;
-            label3.backgroundColor = gbl_color_cNeu;
-//            label3.backgroundColor = [UIColor blueColor];
-            label3.numberOfLines   = 0;
-            label3.textAlignment = NSTextAlignmentLeft;
-            label3.maskView                = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
-
+////tn();tr("ritem wid=");kin( ceilf(rect2.size.width));
+//     tr("ritem hei=");kin( ceilf(rect2.size.height));
+//
+//            UILabel* label3 = [[UILabel alloc] initWithFrame: lFrame3];
+//
+//
+////            label3.text            = @"1234567890|234";  // get 2...
+////            label3.text            = @"1234567|";  // get
+////            label3.text            = rStringShorter;
+////            label3.text            = @"|";  // get
+//            label3.text            = @" ";  // get
+//            label3.font            = compFont_12;
+////            label3.backgroundColor = gbl_color_cBgr;
+//            label3.backgroundColor = gbl_color_cNeu;
+////            label3.backgroundColor = [UIColor blueColor];
+//            label3.numberOfLines   = 0;
+//            label3.textAlignment = NSTextAlignmentLeft;
+//            label3.maskView                = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+//
+//
 
 
 //
@@ -2070,18 +2106,27 @@ tn();tr("stars wid=");kin( ceilf(self.view.bounds.size.width) - ceilf(rect0.size
 
 
 
-  NSLog(@"width left left          =[%f]", ceilf(rect0.size.width));
-  NSLog(@"width left margin        =[%f]", ceilf(rect1.size.width));
-  NSLog(@"width stars only         =[%f]", ceilf(rect2.size.width));
-  NSLog(@"width white space        =[%f]", ceilf(rect21.size.width));
-//  NSLog(@"widthRightMargin         =[%f]",widthRightMargin);
-  NSLog(@"total                    =[%f]",
-             ceilf(rect0.size.width) +
-             ceilf(rect1.size.width) +
-             ceilf(rect3.size.width) );
-  NSLog(@"starLineOfMaxSize width  =[%f]", ceilf(rect3.size.width));
-//widthRightMargin);
-  NSLog(@"   screen width          =[%f]",ceilf(self.view.bounds.size.width) );
+//  NSLog(@"width left left          =[%f]", ceilf(rect0.size.width));
+//  NSLog(@"width left margin        =[%f]", ceilf(rect1.size.width));
+//  NSLog(@"width stars only         =[%f]", ceilf(rect2.size.width));
+//  NSLog(@"width white space        =[%f]", ceilf(rect21.size.width));
+////  NSLog(@"widthRightMargin         =[%f]",widthRightMargin);
+//  NSLog(@"total                    =[%f]",
+//             ceilf(rect0.size.width) +
+//             ceilf(rect1.size.width) +
+//             ceilf(rect3.size.width) );
+//  NSLog(@"starLineOfMaxSize width  =[%f]", ceilf(rect3.size.width));
+////widthRightMargin);
+//  NSLog(@"   screen width          =[%f]",ceilf(self.view.bounds.size.width) );
+//
+
+        gbltmpstr = mylin;  // add 5 leading spaces
+//        mylin = [NSString stringWithFormat:@"     |%@%@|",  
+//        mylin = [NSString stringWithFormat:@"     %@%@",  
+        mylin = [NSString stringWithFormat:@"     %@%@|",  
+            gbltmpstr,
+            [@"" stringByPaddingToLength: 40 - [gbltmpstr length]  withString: @" " startingAtIndex: 0]
+        ];
 
 
 
@@ -2111,26 +2156,30 @@ tn();tr("stars wid=");kin( ceilf(self.view.bounds.size.width) - ceilf(rect0.size
 //
 
 // new
-            [cell.contentView addSubview: label0];
-            [cell.contentView addSubview: label1];
-            [cell.contentView addSubview: label2];
-            [cell.contentView addSubview: label21];  // white space after stars
-            [cell.contentView addSubview: label3];
-//            [cell.contentView addSubview: label4];
-//            cell.textLabel.text                      = mylin; 
-            cell.textLabel.text                      = nil;   // this prevents  text bleed
+//            [cell.contentView addSubview: label0];
+//            [cell.contentView addSubview: label1];
+//            [cell.contentView addSubview: label2];
+//            [cell.contentView addSubview: label21];  // white space after stars
+//            [cell.contentView addSubview: label3];
+
+            cell.textLabel.text                      = mylin; 
+//            cell.textLabel.text                      = nil;   // this prevents  text bleed
 //            cell.textLabel.adjustsFontSizeToFitWidth = myadjust;
             cell.textLabel.textAlignment             = myalign;
             cell.userInteractionEnabled              = NO;
-            cell.accessoryView                       = nil;   // use accessoryType setting   // have right arrow on column labels
+//            cell.accessoryView                       = nil;   // use accessoryType setting   // have right arrow on column labels
+            cell.accessoryView                       = myInvisibleButton;               // no right arrow on column labels
             cell.accessoryType                       = UITableViewCellAccessoryNone;
 //            cell.textLabel.numberOfLines             = 1; 
             cell.textLabel.numberOfLines             = 0; 
             cell.textLabel.textColor                 = mytextcolor;
             cell.textLabel.font                      = compFont_12;
             cell.textLabel.adjustsFontSizeToFitWidth = NO;
-            cell.textLabel.backgroundColor           = mybgcolor;
+//            cell.textLabel.backgroundColor           = mybgcolor;
+            cell.textLabel.backgroundColor           = myRedGreenColor;
 //            cell.textLabel.attributedText            = myAttrString;  // order matters- pipes DO NOT appear if this line is here
+            cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+            cell.backgroundView          = nil ;
         });
 bn(802);
         return cell;
@@ -2213,12 +2262,13 @@ bn(802);
             myalign           = NSTextAlignmentLeft;
             mynumlines        = 1;    
             mybgcolor         = gbl_color_cHed ;
-            gbl_heightCellPER = 16;
 //            myadjust          = YES;
             myadjust          = NO;
             mytextcolor       = [UIColor blackColor];
             myCompFont         = compFont_12;
-            gbl_heightCellCOMP = 18;
+//            gbl_heightCellCOMP = 18;
+//            gbl_heightCellCOMP = 12;
+            gbl_heightCellCOMP = 15;
         }
 
 //            myalign           = NSTextAlignmentLeft;
@@ -2328,7 +2378,10 @@ bn(802);
 //            myadjust          = YES;
             myadjust          = NO;
             mytextcolor       = [UIColor redColor];
-            myCompFont         = compFont_11b;
+
+//            if (self.view.bounds.size.height  <= 320 ) myCompFont = compFont_10b;
+//            else                                       myCompFont = compFont_11b;
+            myCompFont = compFont_11b;
         }
 
 
@@ -2339,7 +2392,8 @@ bn(802);
 //            cell.textLabel.textAlignment = NSTextAlignmentCenter;
             cell.textLabel.textAlignment             = myalign;
             cell.userInteractionEnabled              = NO;
-            cell.accessoryView                       = nil;   // use accessoryType setting   // have right arrow on column labels
+//            cell.accessoryView                       = nil;   // use accessoryType setting   // have right arrow on column labels
+                cell.accessoryView                       = myInvisibleButton;               // no right arrow on column labels
             cell.accessoryType                       = UITableViewCellAccessoryNone;
             cell.textLabel.numberOfLines             = 1; 
             cell.textLabel.textColor                 = mytextcolor;
@@ -2347,6 +2401,8 @@ bn(802);
             cell.textLabel.adjustsFontSizeToFitWidth = NO;
             cell.textLabel.backgroundColor           = mybgcolor;
 //            cell.textLabel.attributedText            = nil;  // order matters- pipes DO NOT appear if this line is here
+            cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+            cell.backgroundView          = nil ;
         });
 
 //bn(602);
@@ -3853,13 +3909,12 @@ kdn(gbl_heightForCompTable );
     }
     if (   [gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]  
     ) {
-        if (gbl_compIsInHowBig == 1)
-//            cell.backgroundColor = gbl_color_cNeu;
-            cell.backgroundColor = [UIColor cyanColor];
-        } else {
-            cell.backgroundColor = gbl_color_cBgr;
-        }
-
+//        if (gbl_compIsInHowBig == 1) {
+////            cell.backgroundColor = gbl_color_cNeu;
+//            cell.backgroundColor = [UIColor cyanColor];
+//        } else {
+//        }
+        cell.backgroundColor = gbl_color_cBgr;
     }
 
     NSString *thisCellBGcolorName; 
