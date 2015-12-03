@@ -1687,8 +1687,11 @@ nbn(20); trn(" in howbighdr");
             gbl_areInCompatibilityTable = 0;
 
             UIColor *myRedGreenColor;
+
             // convert num stars to int
+            //
             NSInteger n = [mylin integerValue];   // max is 77
+
   NSLog(@"=n[%ld]",(long)n);
 
             if (n > 0) {   // put plus signs
@@ -1696,6 +1699,8 @@ nbn(20); trn(" in howbighdr");
                 n = (n * 40) / 77; // convert 1 -> 77 to 1 -> 40
 //                n = (n * 50) / 77; // convert 1 -> 77 to 1 -> 50
                 if (n < 1.0) n = 1;
+                gbl_starsNSInteger = n;
+
   NSLog(@"=n[%ld]",(long)n);
 
                 NSString *myPlusSigns = 
@@ -1704,6 +1709,7 @@ nbn(20); trn(" in howbighdr");
                                  startingAtIndex: 0
                     ]
                 ;
+                gbl_starsNSString = myPlusSigns;
 //                mylin             = myPlusSigns;            
 //                mylin = [NSString stringWithFormat:@"    %@", myPlusSigns ];
                 mylin = [NSString stringWithFormat:@"%@", myPlusSigns ];
@@ -1714,6 +1720,7 @@ nbn(20); trn(" in howbighdr");
                 n = (n * -1 * 40) / 77; // convert -1 -> -77 to 1 -> 40
 //                n = (n * -1 * 50) / 77; // convert -1 -> -77 to 1 -> 50
                 if (n < 1.0) n = 1;
+                gbl_starsNSInteger = n;
   NSLog(@"=n[%ld]",(long)n);
 
                 NSString *myMinusSigns = 
@@ -1722,6 +1729,7 @@ nbn(20); trn(" in howbighdr");
                                  startingAtIndex: 0
                     ]
                 ;
+                gbl_starsNSString = myMinusSigns;
 //                mylin             = myPlusSigns;            
 //                mylin = [NSString stringWithFormat:@"    %@", myMinusSigns ];
                 mylin = [NSString stringWithFormat:@"%@", myMinusSigns ];
@@ -1731,7 +1739,19 @@ nbn(20); trn(" in howbighdr");
                 mylin     = @"x";
                 myRedGreenColor = gbl_color_cHed ;
             }
-  NSLog(@"mylin before print[%@]",mylin);
+
+            gbl_starsWhiteSpaces = 
+                [@"" stringByPaddingToLength: 40 - gbl_starsNSInteger
+                                  withString: @" "
+                             startingAtIndex: 0
+                ]
+            ;
+
+  NSLog(@"mylin before print             =[%@]",       mylin);
+  NSLog(@"gbl_starsNSInteger             =[%ld]",(long)gbl_starsNSInteger);
+  NSLog(@"gbl_starsNSString              =[%@]",       gbl_starsNSString);
+  NSLog(@"gbl_starsWhiteSpaces           =[%@]",       gbl_starsWhiteSpaces );
+
 
 
             mytextcolor       = [UIColor blackColor];
@@ -1790,26 +1810,21 @@ tn();tr("leftl wid=");kin( ceilf(rect0.size.width));
 
             // add label for left margin   ---------------------------------------------------------------========================
             //
-//            CGRect rect1 = [@"    " boundingRectWithSize: CGSizeMake(300, 10000)
-//            CGRect rect1 = [@"++++" boundingRectWithSize: CGSizeMake(300, 10000)
+            //       options: NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+            //       options: NSStringDrawingUsesDeviceMetrics 
             CGRect rect1 = [@"4567890" boundingRectWithSize: CGSizeMake(300, 10000)
-//                                               options: NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
-//                                                 options: NSStringDrawingUsesDeviceMetrics 
-//                                                 options: NSStringDrawingUsesDeviceMetrics | NSStringDrawingUsesLineFragmentOrigin 
-//                                                 options: NSStringDrawingUsesDeviceMetrics 
-
-                                                 options: NSStringDrawingUsesLineFragmentOrigin
-//                                               options: NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
-                                            attributes: @{ NSFontAttributeName: compFont_12 }
-                                               context: nil
+                                                    options: NSStringDrawingUsesLineFragmentOrigin
+                                                 attributes: @{ NSFontAttributeName: compFont_12 }
+                                                    context: nil
             ];
 tn();tr("leftm wid=");kin( ceilf(rect1.size.width));
      tr("leftm hei=");kin( ceilf(rect1.size.height));
-  NSLog(@"compFont_12.lineHeight=[%f]",compFont_12.lineHeight);
-  NSLog(@"compFont_12.ascender  =[%f]",compFont_12.ascender);
-  NSLog(@"compFont_12.descender =[%f]",compFont_12.descender);
-  NSLog(@"compFont_12.capHeight =[%f]",compFont_12.capHeight);
-  NSLog(@"compFont_12.xHeight   =[%f]",compFont_12.xHeight);
+
+            //  NSLog(@"compFont_12.lineHeight=[%f]",compFont_12.lineHeight);
+            //  NSLog(@"compFont_12.ascender  =[%f]",compFont_12.ascender);
+            //  NSLog(@"compFont_12.descender =[%f]",compFont_12.descender);
+            //  NSLog(@"compFont_12.capHeight =[%f]",compFont_12.capHeight);
+            //  NSLog(@"compFont_12.xHeight   =[%f]",compFont_12.xHeight);
 
 
             //NSFont *font = [NSFont fontWithName:@"Times New Roman" size:96.0];
@@ -1824,6 +1839,7 @@ tn();tr("leftm wid=");kin( ceilf(rect1.size.width));
             //            // Values are fractional -- you should take the ceilf to get equivalent values
             //            CGSize adjustedSize = CGSizeMake(ceilf(expectedLabelSize.width), ceilf(expectedLabelSize.height));
             //
+
             CGRect lFrame1 = CGRectMake(  // arg 1=x 2=y 3=width 4=height
                 ceilf(rect0.size.width),   // allow for left left margin width
                 0,
@@ -1858,12 +1874,20 @@ tn();tr("leftm wid=");kin( ceilf(rect1.size.width));
 
             // add label for stars ---------------------------------------------------------------------------------------
             //
-            CGRect rect2 = [mylin boundingRectWithSize: CGSizeMake(300, 10000)
-//                                               options: NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
-//                                                 options: NSStringDrawingUsesDeviceMetrics | NSStringDrawingUsesLineFragmentOrigin  | NSStringDrawingUsesFontLeading
-                                                 options: NSStringDrawingUsesLineFragmentOrigin
-                                            attributes: @{ NSFontAttributeName: compFont_12 }
-                                               context: nil
+
+//old
+//            CGRect rect2 = [mylin boundingRectWithSize: CGSizeMake(300, 10000)
+////                                               options: NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+////                                                 options: NSStringDrawingUsesDeviceMetrics | NSStringDrawingUsesLineFragmentOrigin  | NSStringDrawingUsesFontLeading
+//                                                 options: NSStringDrawingUsesLineFragmentOrigin
+//                                            attributes: @{ NSFontAttributeName: compFont_12 }
+//                                               context: nil
+//            ];
+
+            CGRect rect2 = [gbl_starsNSString boundingRectWithSize: CGSizeMake(300, 10000)
+                                                           options: NSStringDrawingUsesLineFragmentOrigin
+                                                        attributes: @{ NSFontAttributeName: compFont_12 }
+                                                           context: nil
             ];
 
 
@@ -1874,12 +1898,16 @@ tn();tr("leftm wid=");kin( ceilf(rect1.size.width));
 //                expectedLabelSize.width + 10.0,
 //                ceilf(rect2.size.width),
 //           widthAvailable = ceilf(self.view.bounds.size.width) - (ceilf(rect1.size.width) + ceilf(rect2.size.width)),
-                ceilf(self.view.bounds.size.width) - ceilf(rect0.size.width) - ceilf(rect1.size.width) - 18.0, // whole width minus left margin
+//                ceilf(self.view.bounds.size.width) - ceilf(rect0.size.width) - ceilf(rect1.size.width) - 18.0, // whole width minus left margin
+//                ceilf(self.view.bounds.size.width) - ceilf(rect0.size.width) - ceilf(rect1.size.width)       , // whole width minus left margin
+
+                ceilf(rect2.size.width),
                 ceilf(rect2.size.height)
 //                ceilf(rect2.size.height) + 10.0 // + 10 = uilabel border width * 2
             );
 //tn();tr("stars wid=");kin( ceilf(rect2.size.width));
-tn();tr("stars wid=");kin( ceilf(self.view.bounds.size.width) - ceilf(rect0.size.width) - ceilf(rect1.size.width) -18.0 );
+//tn();tr("stars wid=");kin( ceilf(self.view.bounds.size.width) - ceilf(rect0.size.width) - ceilf(rect1.size.width) -18.0 );
+tn();tr("stars wid=");kin( ceilf(self.view.bounds.size.width) - ceilf(rect0.size.width) - ceilf(rect1.size.width)       );
      tr("stars hei=");kin( ceilf(rect2.size.height));
 
             gbl_heightCellCOMP = ceilf(rect2.size.height);  // set it here - consecutive star lines should touch
@@ -1908,26 +1936,44 @@ tn();tr("stars wid=");kin( ceilf(self.view.bounds.size.width) - ceilf(rect0.size
 
             // get rect for a line containing max num of stars
             //
-            NSString *maxSizeStarLine;
-            maxSizeStarLine = [@"" stringByPaddingToLength: 40 //  40 is  MAGIC  77 -> 40
-                                                withString: @"+"
-                                           startingAtIndex: 0 ];
-            CGRect rect3 = [maxSizeStarLine boundingRectWithSize: CGSizeMake(300, 10000)
-                                                         options: NSStringDrawingUsesLineFragmentOrigin
-                                                      attributes: @{ NSFontAttributeName: compFont_12 }
-                                                         context: nil
+            NSString *starLineOfMaxSize;
+            starLineOfMaxSize = [@"" stringByPaddingToLength: 40 //  40 is  MAGIC  77 -> 40
+                                                  withString: @"+"
+                                             startingAtIndex: 0 ];
+
+            CGRect rect3 = [starLineOfMaxSize boundingRectWithSize: CGSizeMake(300, 10000)
+                                                           options: NSStringDrawingUsesLineFragmentOrigin
+                                                        attributes: @{ NSFontAttributeName: compFont_12 }
+                                                           context: nil
             ];
 
 
             // add white label for after stars ---------------------------------------------------------------------------------
             //
+//            CGRect lFrame21 = CGRectMake(  // arg 1=x 2=y 3=width 4=height
+//                //ceilf(rect0.size.width) + ceilf(rect1.size.width) + ceilf(rect2.size.width),   // left marg(2) + siz of stars
+//                ceilf(rect1.size.width) + ceilf(rect2.size.width),   // left marg(2) + siz of stars
+//                0,
+//                ceilf(rect3.size.width) - ceilf(rect2.size.width ), // size of line with max stars - size of line with actual stars 
+//                ceilf(rect2.size.height)
+//            );
+            CGRect rect21 = [gbl_starsWhiteSpaces boundingRectWithSize: CGSizeMake(300, 10000)
+                                                              options: NSStringDrawingUsesLineFragmentOrigin
+                                                           attributes: @{ NSFontAttributeName: compFont_12 }
+                                                              context: nil
+            ];
+
             CGRect lFrame21 = CGRectMake(  // arg 1=x 2=y 3=width 4=height
-                //ceilf(rect0.size.width) + ceilf(rect1.size.width) + ceilf(rect2.size.width),   // left marg(2) + siz of stars
-                ceilf(rect1.size.width) + ceilf(rect2.size.width),   // left marg(2) + siz of stars
+                 // ceilf(rect0.size.width) +   // allow for left left margin   WHY ??? exclude this, but it works
+                    ceilf(rect1.size.width) +   // and  left margin and 
+                    ceilf(rect2.size.width)     // and  stars width
+                ,
                 0,
-                ceilf(rect3.size.width) - ceilf(rect2.size.width ), // size of line with max stars - size of line with actual stars 
-                ceilf(rect2.size.height)
+                ceilf(rect21.size.width),
+                ceilf(rect21.size.height)
             );
+
+
             UILabel* label21 = [[UILabel alloc] initWithFrame: lFrame21];
             label21.text            = @" ";
             label21.font            = compFont_12;
@@ -1947,16 +1993,29 @@ tn();tr("stars wid=");kin( ceilf(self.view.bounds.size.width) - ceilf(rect0.size
             CGRect lFrame3 = CGRectMake(  // arg 1=x 2=y 3=width 4=height
 //                ceilf(rect1.size.width) + ceilf(rect2.size.width),
 //                ceilf(rect0.size.width) + ceilf(rect1.size.width) + ceilf(rect3.size.width),   // left marg(2) + max siz star line
-                ceilf(rect1.size.width) + ceilf(rect3.size.width),   // left marg(2) + max siz star line
+//                ceilf(rect1.size.width) + ceilf(rect3.size.width),   // left marg(2) + max siz star line
+                 // ceilf(rect0.size.width) +   // allow for left left margin   WHY ??? exclude this, but it works
+            
+             // ceilf(rect0.size.width) +   // allow for left left margin   WHY ??? exclude this, but it works
+                ceilf(rect1.size.width) +
+                ceilf(rect2.size.width) + ceilf(rect21.size.width),
                 0,
 //                ceilf(self.view.bounds.size.width) - (  ceilf(rect0.size.width) + ceilf(rect1.size.width) + ceilf(rect2.size.width)  ),
 //                ceilf(self.view.bounds.size.width) - (  ceilf(rect1.size.width) + ceilf(rect2.size.width)  ),
-                ceilf(self.view.bounds.size.width) - (  ceilf(rect1.size.width) + ceilf(rect3.size.width) + ceilf(rect0.size.width )  ) 
-                    +  fudgeAddonRightMargin ,
-                  // above: use rect0 for both  left left margin  and  right right margin
+//                ceilf(self.view.bounds.size.width) -
+//                    (  ceilf(rect1.size.width) + ceilf(rect3.size.width) + ceilf(rect0.size.width )  ) 
+//                    +  fudgeAddonRightMargin ,
+                ceilf(self.view.bounds.size.width) -
+                    (  ceilf(rect0.size.width) +
+                       ceilf(rect1.size.width) +
+                       ceilf(rect2.size.width) +
+                       ceilf(rect21.size.width ) 
+                    ) 
+//                +  fudgeAddonRightMargin
+                ,
                 ceilf(rect2.size.height)
             );
-tn();tr("ritem wid=");kin( ceilf(self.view.bounds.size.width) - (ceilf(rect1.size.width) + ceilf(rect2.size.width)) ),
+//tn();tr("ritem wid=");kin( ceilf(rect2.size.width));
      tr("ritem hei=");kin( ceilf(rect2.size.height));
 
             UILabel* label3 = [[UILabel alloc] initWithFrame: lFrame3];
@@ -1975,49 +2034,54 @@ tn();tr("ritem wid=");kin( ceilf(self.view.bounds.size.width) - (ceilf(rect1.siz
             label3.textAlignment = NSTextAlignmentLeft;
             label3.maskView                = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
 
-//            [cell.contentView addSubview: label3];
 
 
-            // add label for right right margin  ---------  to "fill" the line     (avoid bleeding)  -----------------
-            //
-            CGFloat widthRightMargin;
-            widthRightMargin = (
-                     ceilf(self.view.bounds.size.width) - (  ceilf(rect1.size.width) + ceilf(rect3.size.width) + ceilf(rect0.size.width )  ) 
-                    +  fudgeAddonRightMargin
-            );
+//
+//            // add label for right right margin  ===========  to "fill" the line     (avoid bleeding)  -----------------=================
+//            //
+//            CGFloat widthRightMargin;
+//            widthRightMargin = (
+//                     ceilf(self.view.bounds.size.width) - (  ceilf(rect1.size.width) + ceilf(rect3.size.width) + ceilf(rect0.size.width )  ) 
+//                    +  fudgeAddonRightMargin
+//            );
+//
+//            CGRect lFrame4 = CGRectMake(  // arg 1=x 2=y 3=width 4=height
+//                ceilf(rect0.size.width) + ceilf(rect1.size.width) + ceilf(rect3.size.width)     // left marg(2) + max siz star line + right marg
+//                    + widthRightMargin 
+//                ,
+//                0.0,
+//                4.0,
+////                ceilf(self.view.bounds.size.width) - (  ceilf(rect1.size.width) + ceilf(rect3.size.width) + ceilf(rect0.size.width )  ) 
+////                    +  fudgeAddonRightMargin ,
+//
+//
+//                ceilf(rect2.size.height)
+//            );
+//            UILabel* label4 = [[UILabel alloc] initWithFrame: lFrame4];
+//            label4.text            = @" ";
+//            label4.font            = compFont_12;
+////            label4.backgroundColor = gbl_color_cBgr;
+//            label4.backgroundColor = [UIColor purpleColor];
+//            label4.numberOfLines   = 0;
+//            label4.textAlignment   = NSTextAlignmentLeft;
+//            label4.maskView        = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+//
+//
+
+
 
   NSLog(@"width left left          =[%f]", ceilf(rect0.size.width));
   NSLog(@"width left margin        =[%f]", ceilf(rect1.size.width));
-  NSLog(@"width all stars + white  =[%f]", ceilf(rect3.size.width));
-  NSLog(@"widthRightMargin         =[%f]",widthRightMargin);
+  NSLog(@"width stars only         =[%f]", ceilf(rect2.size.width));
+  NSLog(@"width white space        =[%f]", ceilf(rect21.size.width));
+//  NSLog(@"widthRightMargin         =[%f]",widthRightMargin);
   NSLog(@"total                    =[%f]",
- ceilf(rect0.size.width) +
- ceilf(rect1.size.width) +
- ceilf(rect3.size.width) +
-widthRightMargin);
+             ceilf(rect0.size.width) +
+             ceilf(rect1.size.width) +
+             ceilf(rect3.size.width) );
+  NSLog(@"starLineOfMaxSize width  =[%f]", ceilf(rect3.size.width));
+//widthRightMargin);
   NSLog(@"   screen width          =[%f]",ceilf(self.view.bounds.size.width) );
-
-            CGRect lFrame4 = CGRectMake(  // arg 1=x 2=y 3=width 4=height
-                ceilf(rect0.size.width) + ceilf(rect1.size.width) + ceilf(rect3.size.width)     // left marg(2) + max siz star line + right marg
-                    + widthRightMargin 
-                ,
-                0.0,
-                4.0,
-//                ceilf(self.view.bounds.size.width) - (  ceilf(rect1.size.width) + ceilf(rect3.size.width) + ceilf(rect0.size.width )  ) 
-//                    +  fudgeAddonRightMargin ,
-
-
-                ceilf(rect2.size.height)
-            );
-            UILabel* label4 = [[UILabel alloc] initWithFrame: lFrame4];
-            label4.text            = @" ";
-            label4.font            = compFont_12;
-//            label4.backgroundColor = gbl_color_cBgr;
-            label4.backgroundColor = [UIColor purpleColor];
-            label4.numberOfLines   = 0;
-            label4.textAlignment   = NSTextAlignmentLeft;
-            label4.maskView        = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
-
 
 
 
@@ -2052,7 +2116,7 @@ widthRightMargin);
             [cell.contentView addSubview: label2];
             [cell.contentView addSubview: label21];  // white space after stars
             [cell.contentView addSubview: label3];
-            [cell.contentView addSubview: label4];
+//            [cell.contentView addSubview: label4];
 //            cell.textLabel.text                      = mylin; 
             cell.textLabel.text                      = nil;   // this prevents  text bleed
 //            cell.textLabel.adjustsFontSizeToFitWidth = myadjust;
@@ -2060,7 +2124,8 @@ widthRightMargin);
             cell.userInteractionEnabled              = NO;
             cell.accessoryView                       = nil;   // use accessoryType setting   // have right arrow on column labels
             cell.accessoryType                       = UITableViewCellAccessoryNone;
-            cell.textLabel.numberOfLines             = 1; 
+//            cell.textLabel.numberOfLines             = 1; 
+            cell.textLabel.numberOfLines             = 0; 
             cell.textLabel.textColor                 = mytextcolor;
             cell.textLabel.font                      = compFont_12;
             cell.textLabel.adjustsFontSizeToFitWidth = NO;
@@ -3783,9 +3848,18 @@ kdn(gbl_heightForCompTable );
     //cell.backgroundColor = [UIColor colorWithRed:(116/255.0) green:(167/255.0) blue:(179/255.0) alpha:1.0];
 
     if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homppe"]  
-        || [gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]  
     ) {
         return;
+    }
+    if (   [gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]  
+    ) {
+        if (gbl_compIsInHowBig == 1)
+//            cell.backgroundColor = gbl_color_cNeu;
+            cell.backgroundColor = [UIColor cyanColor];
+        } else {
+            cell.backgroundColor = gbl_color_cBgr;
+        }
+
     }
 
     NSString *thisCellBGcolorName; 

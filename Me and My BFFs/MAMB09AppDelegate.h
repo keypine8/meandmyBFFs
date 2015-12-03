@@ -37,6 +37,10 @@
 NSString *gbltmpstr; // for debug
 NSInteger gbltmpint; // for debug
 
+NSInteger gbl_starsNSInteger;
+NSString *gbl_starsNSString;
+NSString *gbl_starsWhiteSpaces;
+NSInteger gbl_compIsInHowBig;   // for setting how big section to color Neu
 
 NSMutableAttributedString *gbl_attrStrWrk_11 ;  //  tread on eggshells
 NSMutableAttributedString *gbl_attrStrWrk_12 ;  //  tread on eggshells
