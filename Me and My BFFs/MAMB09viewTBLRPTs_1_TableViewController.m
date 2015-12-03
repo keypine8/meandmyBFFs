@@ -248,10 +248,11 @@ tn();  NSLog(@"in cellForRowAtIndexPath in tblrpts 1 ");ki((int)indexPath.row);
 //    UIFont *myFont = [UIFont fontWithName: @"Menlo" size: 12.0];
 //    UIFont *myFont = [UIFont fontWithName: @"Menlo" size: 20.0];
 //    UIFont *myFont = [UIFont fontWithName: @"Menlo" size: 16.0];
+
     UIFont *myFont_16  = [UIFont fontWithName: @"Menlo" size: 16.0];
-    UIFont *myFont_14  = [UIFont fontWithName: @"Menlo" size: 14.0];
+//    UIFont *myFont_14  = [UIFont fontWithName: @"Menlo" size: 14.0];
     UIFont *myFont_12  = [UIFont fontWithName: @"Menlo" size: 12.0];
-    UIFont *myFont_11b = [UIFont fontWithName: @"Menlo-bold" size: 11.0];
+//    UIFont *myFont_11b = [UIFont fontWithName: @"Menlo-bold" size: 11.0];
 
 
     NSInteger numFillSpacesInColHeaders;
@@ -605,16 +606,16 @@ bn(302);
         NSString *mycode2;
         NSString *myscore;
         NSString *myspace;
-        NSString *mypersonA;
-        NSString *mypersonB;
+//        NSString *mypersonA;
+//        NSString *mypersonB;
         NSString *mylin;
         NSString *mywrk;
-        NSString *mylin3;
+//        NSString *mylin3;
         NSTextAlignment myalign;
         NSInteger       mynumlines;
         BOOL            myadjust;
 
-        UIColor *mybgcolortouse;
+//        UIColor *mybgcolortouse;
 
         mybgcolor         = [UIColor redColor];
         myalign           = NSTextAlignmentLeft;  // default
@@ -652,11 +653,12 @@ bn(6011);
 bn(6012);
                 mylin             = @" ";
                 mybgcolor         = gbl_color_cBgr ;
-                gbl_heightCellCOMP = 16;
+                gbl_heightCellCOMP = 18;
             }
             else if ( [mylin isEqualToString: @"before table head"] ) {
                 mylin             = @" ";
-                mybgcolor         = gbl_color_cHed ;
+//                mybgcolor         = gbl_color_cHed ;
+                mybgcolor         = gbl_color_cNeu ;
                 gbl_heightCellCOMP = 8;
             }
             else if ( [mylin isEqualToString: @"after table head"] ) {
@@ -664,14 +666,14 @@ bn(6012);
                 mybgcolor         = gbl_color_cHed ;
                 gbl_heightCellCOMP = 8;
             }
-            else if ( [mylin isEqualToString: @"before table foot"] ) {
-                mylin             = @" ";
-                mybgcolor         = gbl_color_cHed ;
-                gbl_heightCellCOMP = 8;
-            }
+//            else if ( [mylin isEqualToString: @"before table foot"] ) {
+//                mylin             = @" ";
+//                mybgcolor         = gbl_color_cHed ;
+//                gbl_heightCellCOMP = 8;
+//            }
             else if ( [mylin isEqualToString: @"after table foot"] ) {
                 mylin             = @" ";
-                mybgcolor         = gbl_color_cHed ;
+                mybgcolor         = gbl_color_cNeu ;
                 gbl_heightCellCOMP = 8;
             }
             else if ( [mylin isEqualToString: @"filler before how big"] ) {
@@ -681,7 +683,8 @@ bn(6012);
             }
             else if ( [mylin isEqualToString: @"before how big header"] ) {
                 mylin             = @" ";
-                mybgcolor         = gbl_color_cHed ;
+//                mybgcolor         = gbl_color_cHed ;
+                mybgcolor         = gbl_color_cNeu ;
                 gbl_heightCellCOMP = 3;
             }
 
@@ -719,7 +722,7 @@ bn(6012);
             }
             else if ( [mylin isEqualToString: @"after howbigftr"] ) {
                 mylin             = @" ";
-                mybgcolor         = gbl_color_cHed ;
+                mybgcolor         = gbl_color_cNeu ;
                 gbl_heightCellCOMP =  4;
             }
             else if ( [mylin isEqualToString: @"filler after how big"] ) {
@@ -747,8 +750,8 @@ bn(6012);
             //
             else if ( [mylin isEqualToString: @"before goodrelationship"] ) {
                 mylin             = @" ";
-                mybgcolor         = gbl_color_cGre ;
                 mybgcolor         = gbl_color_cBgr ;
+//                mybgcolor         = [UIColor blueColor];
                 gbl_heightCellCOMP = 12;
             }
             else if ( [mylin isEqualToString: @"in goodrelationship at beg"] ) {
@@ -761,6 +764,7 @@ bn(6012);
                 mylin             = @" ";
                 mybgcolor         = gbl_color_cHed ;
 //                mybgcolor         = gbl_color_cRed ;
+//                mybgcolor         = [UIColor blackColor];
                 gbl_heightCellCOMP = 4;
             }
 
@@ -891,8 +895,8 @@ nbn(50);
 
             // NOTE: this is copied from "tabl|"
             NSMutableAttributedString *myAttrString;    // for cell text
-            NSMutableAttributedString *myAttrSpace;     // for cell text
-            NSString                  *myStringNoAttr;  // for work string
+//            NSMutableAttributedString *myAttrSpace;     // for cell text
+//            NSString                  *myStringNoAttr;  // for work string
 
 
 //            myAttrString  = [[NSMutableAttributedString alloc] initWithString: mylin ];
@@ -1336,8 +1340,8 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
 
             // NOTE: this is copied from "tabl|"
             NSMutableAttributedString *myAttrString;    // for cell text
-            NSMutableAttributedString *myAttrSpace;     // for cell text
-            NSString                  *myStringNoAttr;  // for work string
+//            NSMutableAttributedString *myAttrSpace;     // for cell text
+//            NSString                  *myStringNoAttr;  // for work string
 
 
 //            myAttrString  = [[NSMutableAttributedString alloc] initWithString: mylin ];
@@ -1519,7 +1523,8 @@ kdn(gbl_heightForCompTable );
 
             myalign           = NSTextAlignmentLeft;
             mynumlines        = 1;    
-            mybgcolor         = gbl_color_cHed ;
+//            mybgcolor         = gbl_color_cHed ;
+            mybgcolor         = gbl_color_cNeu ;
             gbl_heightCellCOMP = 18;
             myadjust          = NO;
             mytextcolor       = [UIColor blackColor];
@@ -1654,7 +1659,8 @@ nbn(20); trn(" in howbighdr");
 
             myalign           = NSTextAlignmentLeft;
             mynumlines        = 1;    
-            mybgcolor         = gbl_color_cHed ;
+//            mybgcolor         = gbl_color_cHed ;
+            mybgcolor         = gbl_color_cNeu ;
             gbl_heightCellCOMP = 18;
             myadjust          = NO;
             mytextcolor       = [UIColor blackColor];
@@ -1900,21 +1906,37 @@ tn();tr("stars wid=");kin( ceilf(self.view.bounds.size.width) - ceilf(rect0.size
 
 
 
-//            // get rect for a line containing max num of stars
-//            //
-//            NSString *maxSizeStarLine;
-//            maxSizeStarLine = [@"" stringByPaddingToLength: 40 //  40 is  MAGIC  77 -> 40
-//                                                withString: @"+"
-//                                           startingAtIndex: 0 ];
-//            CGRect rect3 = [maxSizeStarLine boundingRectWithSize: CGSizeMake(300, 10000)
-//                                                         options: NSStringDrawingUsesLineFragmentOrigin
-//                                                      attributes: @{ NSFontAttributeName: compFont_12 }
-//                                                         context: nil
-//            ];
-//
-
-            // add label for after stars ---------------------------------------------------------------------------------------
+            // get rect for a line containing max num of stars
             //
+            NSString *maxSizeStarLine;
+            maxSizeStarLine = [@"" stringByPaddingToLength: 40 //  40 is  MAGIC  77 -> 40
+                                                withString: @"+"
+                                           startingAtIndex: 0 ];
+            CGRect rect3 = [maxSizeStarLine boundingRectWithSize: CGSizeMake(300, 10000)
+                                                         options: NSStringDrawingUsesLineFragmentOrigin
+                                                      attributes: @{ NSFontAttributeName: compFont_12 }
+                                                         context: nil
+            ];
+
+
+            // add white label for after stars ---------------------------------------------------------------------------------
+            //
+            CGRect lFrame21 = CGRectMake(  // arg 1=x 2=y 3=width 4=height
+                //ceilf(rect0.size.width) + ceilf(rect1.size.width) + ceilf(rect2.size.width),   // left marg(2) + siz of stars
+                ceilf(rect1.size.width) + ceilf(rect2.size.width),   // left marg(2) + siz of stars
+                0,
+                ceilf(rect3.size.width) - ceilf(rect2.size.width ), // size of line with max stars - size of line with actual stars 
+                ceilf(rect2.size.height)
+            );
+            UILabel* label21 = [[UILabel alloc] initWithFrame: lFrame21];
+            label21.text            = @" ";
+            label21.font            = compFont_12;
+            label21.backgroundColor = [UIColor whiteColor];
+            label21.numberOfLines   = 0;
+            label21.textAlignment   = NSTextAlignmentLeft;
+            label21.maskView        = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+
+
 
 
             // add label for right margin  ---------------------------------------------------------------------
@@ -1956,6 +1978,49 @@ tn();tr("ritem wid=");kin( ceilf(self.view.bounds.size.width) - (ceilf(rect1.siz
 //            [cell.contentView addSubview: label3];
 
 
+            // add label for right right margin  ---------  to "fill" the line     (avoid bleeding)  -----------------
+            //
+            CGFloat widthRightMargin;
+            widthRightMargin = (
+                     ceilf(self.view.bounds.size.width) - (  ceilf(rect1.size.width) + ceilf(rect3.size.width) + ceilf(rect0.size.width )  ) 
+                    +  fudgeAddonRightMargin
+            );
+
+  NSLog(@"width left left          =[%f]", ceilf(rect0.size.width));
+  NSLog(@"width left margin        =[%f]", ceilf(rect1.size.width));
+  NSLog(@"width all stars + white  =[%f]", ceilf(rect3.size.width));
+  NSLog(@"widthRightMargin         =[%f]",widthRightMargin);
+  NSLog(@"total                    =[%f]",
+ ceilf(rect0.size.width) +
+ ceilf(rect1.size.width) +
+ ceilf(rect3.size.width) +
+widthRightMargin);
+  NSLog(@"   screen width          =[%f]",ceilf(self.view.bounds.size.width) );
+
+            CGRect lFrame4 = CGRectMake(  // arg 1=x 2=y 3=width 4=height
+                ceilf(rect0.size.width) + ceilf(rect1.size.width) + ceilf(rect3.size.width)     // left marg(2) + max siz star line + right marg
+                    + widthRightMargin 
+                ,
+                0.0,
+                4.0,
+//                ceilf(self.view.bounds.size.width) - (  ceilf(rect1.size.width) + ceilf(rect3.size.width) + ceilf(rect0.size.width )  ) 
+//                    +  fudgeAddonRightMargin ,
+
+
+                ceilf(rect2.size.height)
+            );
+            UILabel* label4 = [[UILabel alloc] initWithFrame: lFrame4];
+            label4.text            = @" ";
+            label4.font            = compFont_12;
+//            label4.backgroundColor = gbl_color_cBgr;
+            label4.backgroundColor = [UIColor purpleColor];
+            label4.numberOfLines   = 0;
+            label4.textAlignment   = NSTextAlignmentLeft;
+            label4.maskView        = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+
+
+
+
         dispatch_async(dispatch_get_main_queue(), ^{            // <=== comp  stars
 // old
 ////            cell.textLabel.text                      = mylin; 
@@ -1985,8 +2050,9 @@ tn();tr("ritem wid=");kin( ceilf(self.view.bounds.size.width) - (ceilf(rect1.siz
             [cell.contentView addSubview: label0];
             [cell.contentView addSubview: label1];
             [cell.contentView addSubview: label2];
+            [cell.contentView addSubview: label21];  // white space after stars
             [cell.contentView addSubview: label3];
-//            [cell.contentView addSubview: label4];
+            [cell.contentView addSubview: label4];
 //            cell.textLabel.text                      = mylin; 
             cell.textLabel.text                      = nil;   // this prevents  text bleed
 //            cell.textLabel.adjustsFontSizeToFitWidth = myadjust;
@@ -2083,7 +2149,8 @@ bn(802);
             mynumlines        = 1;    
             mybgcolor         = gbl_color_cHed ;
             gbl_heightCellPER = 16;
-            myadjust          = YES;
+//            myadjust          = YES;
+            myadjust          = NO;
             mytextcolor       = [UIColor blackColor];
             myCompFont         = compFont_12;
             gbl_heightCellCOMP = 18;
@@ -2177,8 +2244,11 @@ bn(802);
             myalign           = NSTextAlignmentCenter;
             mynumlines        = 1;    
             mybgcolor         = gbl_color_cBgr ;
-            gbl_heightCellCOMP = 16;
-            myadjust          = YES;
+//            mybgcolor         = [UIColor yellowColor];
+//            gbl_heightCellCOMP = 16;
+            gbl_heightCellCOMP = 18;
+//            myadjust          = YES;
+            myadjust          = NO;
             mytextcolor       = [UIColor blackColor];
             myCompFont         = compFont_12;
         }
@@ -2187,8 +2257,11 @@ bn(802);
             myalign           = NSTextAlignmentCenter;
             mynumlines        = 1;    
             mybgcolor         = gbl_color_cBgr ;
-            gbl_heightCellCOMP = 16;
-            myadjust          = YES;
+//            mybgcolor         = [UIColor lightGrayColor];
+//            gbl_heightCellCOMP = 16;
+            gbl_heightCellCOMP = 18;
+//            myadjust          = YES;
+            myadjust          = NO;
             mytextcolor       = [UIColor redColor];
             myCompFont         = compFont_11b;
         }
@@ -3552,7 +3625,7 @@ ksn(my_tmp_str);
     if ( [gbl_currentMenuPlusReportCode isEqualToString: @"homppe"]  //  new personality TBLRPT  report
     ) {
 
-  NSLog(@"gbl_heightCellPER=[%f]",gbl_heightCellPER);
+  NSLog(@"gbl_heightCellPER=[%ld]",(long)gbl_heightCellPER);
         return gbl_heightCellPER;  
     }
     if ( [gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]  //  new personality TBLRPT  report
@@ -4581,14 +4654,15 @@ nbn(407);
         const char *my_psvc; // psv=pipe-separated values
         char my_psv[128];
         
-        char csv_person_string[128], csv_person1_string[128], csv_person2_string[128];
-        char person_name_for_filename[32], person1_name_for_filename[32], person2_name_for_filename[32];
+        char csv_person_string[128]; // csv_person1_string[128]; // csv_person2_string[128];
+        char person_name_for_filename[32]; // person1_name_for_filename[32], person2_name_for_filename[32];
         char myStringBuffForTraitCSV[64];
         
-        char  yyyy_todo[16], yyyymmdd_todo[16], stringBuffForStressScore[64] ;
-        const char *yyyy_todoC;
-        const char *yyyymmdd_todoC;
-        int retval, retval2;
+//        char  yyyy_todo[16];
+//        char   yyyymmdd_todo[16], stringBuffForStressScore[64] ;
+//        const char *yyyy_todoC;
+//        const char *yyyymmdd_todoC;
+        int retval; // retval2;
 
         char   html_file_name_browser[2048], html_file_name_webview[2048];
         NSString *Ohtml_file_name_browser, *Ohtml_file_name_webview;
@@ -4596,8 +4670,8 @@ nbn(407);
         char     *pathToHTML_browser,      *pathToHTML_webview;
         
         NSURL *URLtoHTML_forWebview;
-        NSURL *URLtoHTML_forEmailing;
-        NSURLRequest *HTML_URLrequest;
+//        NSURL *URLtoHTML_forEmailing;
+//        NSURLRequest *HTML_URLrequest;
         NSArray* tmpDirFiles;
     
 
@@ -4732,14 +4806,16 @@ for (id eltTst in gbl_perDataLines) { NSLog(@"    gbl_per=%@", eltTst); }
         const char *my_psvc; // psv=pipe-separated values
         char my_psv[128];
         
-        char csv_person_string[128], csv_person1_string[128], csv_person2_string[128];
-        char person_name_for_filename[32], person1_name_for_filename[32], person2_name_for_filename[32];
-        char myStringBuffForTraitCSV[64];
+//        char csv_person_string[128];
+        char  csv_person1_string[128], csv_person2_string[128];
+//        char person_name_for_filename[32];
+        char  person1_name_for_filename[32], person2_name_for_filename[32];
+//        char myStringBuffForTraitCSV[64];
         
-        char  yyyy_todo[16], yyyymmdd_todo[16], stringBuffForStressScore[64] ;
-        const char *yyyy_todoC;
-        const char *yyyymmdd_todoC;
-        int retval, retval2;
+//        char  yyyy_todo[16], yyyymmdd_todo[16], stringBuffForStressScore[64] ;
+//        const char *yyyy_todoC;
+//        const char *yyyymmdd_todoC;
+        int retval; // retval2;
 
         char   html_file_name_browser[2048], html_file_name_webview[2048];
         NSString *Ohtml_file_name_browser, *Ohtml_file_name_webview;
@@ -4747,8 +4823,8 @@ for (id eltTst in gbl_perDataLines) { NSLog(@"    gbl_per=%@", eltTst); }
         char     *pathToHTML_browser,      *pathToHTML_webview;
         
         NSURL *URLtoHTML_forWebview;
-        NSURL *URLtoHTML_forEmailing;
-        NSURLRequest *HTML_URLrequest;
+//        NSURL *URLtoHTML_forEmailing;    ?????????????
+//        NSURLRequest *HTML_URLrequest;
         NSArray* tmpDirFiles;
     
         do { // assemble person1 CSV

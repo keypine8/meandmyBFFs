@@ -100,13 +100,13 @@
     //   char *gbl_grp_CSVs[gbl_MAX_persons + 16]; // for filling array of group member data
 
 
-    char psvName[32], psvMth[4], psvDay[4], psvYear[8], psvHour[4], psvMin[4], psvAmPm[4], psvCity[64], psvProv[64], psvCountry[64];
+//  char psvName[32], psvMth[4], psvDay[4], psvYear[8], psvHour[4], psvMin[4], psvAmPm[4], psvCity[64], psvProv[64], psvCountry[64];
     char psvLongitude[16], psvHoursDiff[8], returnPSV[64];
     const char *my_psvc; // psv=pipe-separated values
-    char my_psv[128];
+//    char my_psv[128];
     
-    char csv_person_string[128], csv_person1_string[128], csv_person2_string[128];
-    char person_name_for_filename[32], person1_name_for_filename[32], person2_name_for_filename[32];
+    char csv_person_string[128]; // csv_person1_string[128], csv_person2_string[128];
+    char person_name_for_filename[32]; // person1_name_for_filename[32], person2_name_for_filename[32];
     //   char group_name_for_filename[32];
 //    char myStringBuffForTraitCSV[64];
     

@@ -711,7 +711,7 @@ gbl_db_code = 1;
     if (strstr(doclin, "[beg_graph]") != NULL) break;
   }
 
-  char spanbeg[128],  spanend[128];  // used in web only
+//  char spanbeg[128],  spanend[128];  // used in web only
 //  char spanbeg1[128], spanend1[128];  // used in web only
 
 
@@ -1363,8 +1363,8 @@ tn();tr("closeness doclin=");ksn(doclin);
 int get_how_many(char *in_doclin)
 {
 ksn(in_doclin);
-  char mys[512];
-  char *mysp;
+//  char mys[512];
+//  char *mysp;
   int i,j,cnt;
   i = 0;
   j = 0;
@@ -3831,7 +3831,7 @@ void prtStarsAs2lines(char *linetoprt)
 */
 void put_ios_top_of_just2_group_rpt(void)  /* just_2 rpt */
 {
-  int i;
+//  int i;
 //tn();trn("in put_ios_top_of_just2_group_rpt()");
 
 return;  // now rpt is tblrpt
