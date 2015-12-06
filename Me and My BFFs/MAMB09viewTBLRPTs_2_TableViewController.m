@@ -43,12 +43,20 @@ tn(); NSLog(@"in TBLRPTS 2   viewDidLoad!");
   NSLog(@"gbl_PSVtappedPerson_fromGRP=%@",gbl_PSVtappedPerson_fromGRP);      // any of the above 14 RPTs
   NSLog(@"gbl_PSVtappedPersonA_inPair=%@",gbl_PSVtappedPersonA_inPair);      // hompbm,homgbm,pbmco,gbmco
   NSLog(@"gbl_PSVtappedPersonB_inPair=%@",gbl_PSVtappedPersonB_inPair);      // same
+
   NSLog(@"gbl_TBLRPTS1_PSV_personA=%@",gbl_TBLRPTS1_PSV_personA);            // of pair
   NSLog(@"gbl_TBLRPTS1_PSV_personB=%@",gbl_TBLRPTS1_PSV_personB);            // of pair
   NSLog(@"gbl_TBLRPTS1_PSV_personJust1=%@",gbl_TBLRPTS1_PSV_personJust1);    // for single person reports
   NSLog(@"gbl_TBLRPTS1_NAME_personA=%@",gbl_TBLRPTS1_NAME_personA);          // of pair
   NSLog(@"gbl_TBLRPTS1_NAME_personB=%@",gbl_TBLRPTS1_NAME_personB);          // of pair
   NSLog(@"gbl_TBLRPTS1_NAME_personJust1=%@",gbl_TBLRPTS1_NAME_personJust1);  // for single person reports
+
+  NSLog(@"gbl_TBLRPTS2_PSV_personA=%@",gbl_TBLRPTS2_PSV_personA);            // of pair
+  NSLog(@"gbl_TBLRPTS2_PSV_personB=%@",gbl_TBLRPTS2_PSV_personB);            // of pair
+  NSLog(@"gbl_TBLRPTS2_PSV_personJust1=%@",gbl_TBLRPTS2_PSV_personJust1);    // for single person reports
+  NSLog(@"gbl_TBLRPTS2_NAME_personA=%@",gbl_TBLRPTS2_NAME_personA);          // of pair
+  NSLog(@"gbl_TBLRPTS2_NAME_personB=%@",gbl_TBLRPTS2_NAME_personB);          // of pair
+  NSLog(@"gbl_TBLRPTS2_NAME_personJust1=%@",gbl_TBLRPTS2_NAME_personJust1);  // for single person reports
 tn();
     
     
@@ -120,8 +128,8 @@ nbn(601);
             NSString *myNavBar2lineTitle;
             myNavBarLabel.numberOfLines = 2;
 
-//            myNavBarLabel.font = [UIFont boldSystemFontOfSize: 12.0];
             myNavBarLabel.font = [UIFont boldSystemFontOfSize: 14.0];
+//            myNavBarLabel.font = [UIFont boldSystemFontOfSize: 12.0];
 
             myNavBarLabel.textColor     = [UIColor blackColor];
             myNavBarLabel.textAlignment = NSTextAlignmentCenter; 
@@ -165,9 +173,66 @@ nbn(601);
 
         } //  per
 
-        if ([gbl_currentMenuPlusReportCode       hasSuffix: @"co"]) {       // + personality
-            myNavBarTitle = @"Compatibility Potential"; // TODO put the 2 names
-        }
+        if ([gbl_currentMenuPlusReportCode       hasSuffix: @"co"]) {       // grpof2
+            // myNavBarTitle = @"Compatibility Potential"; // TODO put the 2 names in title
+
+            // e.g.
+            // gbl_PSVtappedPersonA_inPair=~Liz|3|13|1991|4|10|1|Los Angeles|California|United States||
+            // gbl_PSVtappedPersonB_inPair=~Grandma|8|17|1939|8|5|0|Los Angeles|California|United States||
+            //
+            gbl_TBLRPTS2_PSV_personA = gbl_PSVtappedPersonA_inPair;
+            gbl_TBLRPTS2_PSV_personB = gbl_PSVtappedPersonB_inPair;
+            gbl_TBLRPTS2_NAME_personA = [gbl_TBLRPTS2_PSV_personA  componentsSeparatedByString:@"|"][0]; // get fld1 (name) 0-based 
+            gbl_TBLRPTS2_NAME_personB = [gbl_TBLRPTS2_PSV_personB  componentsSeparatedByString:@"|"][0]; // get fld1 (name) 0-based
+
+            // 2-LINE TITLE for comp  in LABEL  myNavBarLabel      
+            //
+            UILabel *myNavBarLabel      = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 480.0, 44.0)];
+            NSString *myNavBar2lineTitle;
+            myNavBarLabel.numberOfLines = 2;
+
+            myNavBarLabel.font = [UIFont boldSystemFontOfSize: 14.0];
+
+            myNavBarLabel.textColor     = [UIColor blackColor];
+            myNavBarLabel.textAlignment = NSTextAlignmentCenter; 
+
+            myNavBar2lineTitle          = [NSString stringWithFormat:  @"%@\n%@",
+                gbl_TBLRPTS2_NAME_personA, 
+                gbl_TBLRPTS2_NAME_personB
+            ]; 
+            myNavBarLabel.text          = myNavBar2lineTitle;
+
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+                self.navigationItem.titleView = myNavBarLabel; // myNavBarLabel.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
+// in tblrpts 2, share button is there already from tblrpts 1, i guess
+//                self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: shareButton];
+                self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerForTitle];
+                [self.navigationController.navigationBar setTranslucent:NO];
+
+                // How to hide iOS7 UINavigationBar 1px bottom line
+                // 
+                // you can make the background a solid color by
+                // 1. setting backgroundImage to [UIImage new]
+                // 2. assigning navigationBar.backgroundColor to the color you like.
+                // (when you  do this,  translucent becomes = NO)  that's OK
+                //  http://stackoverflow.com/questions/19226965/how-to-hide-ios7-uinavigationbar-1px-bottom-line/
+                //
+                [self.navigationController.navigationBar setBackgroundImage: [UIImage new]       // 1. of 2
+                                                             forBarPosition: UIBarPositionAny
+                                                                 barMetrics: UIBarMetricsDefault];
+                //
+                [self.navigationController.navigationBar setShadowImage: [UIImage new]];   
+                //
+                self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];  // 2. of 2
+                //
+                // end of  How to hide iOS7 UINavigationBar 1px bottom line
+
+//                [[self navigationItem] setTitle: myNavBarTitle];
+//                self.navigationItem.titleView = myNavBarLabel; // myNavBarLabel.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
+            });                                   
+            //
+            // 2-LINE TITLE for comp
+        }  // comp 
 
 
 
@@ -210,7 +275,6 @@ nbn(601);
 
 
 
-// TODO
     // run personality report
     // load new personality TBLRPT  report data into array URLtoHTML_forWebview;
     //
@@ -354,119 +418,284 @@ nbn(601);
                                     /* stringBuffForTraitCSV, is ALWAYS populated with trait scores */
                                      myStringBuffForTraitCSV);
 
-
-        //<.>
-        ////tn();ksn(myStringBuffForTraitCSV);tn();
-        //
-        //        // determine trait name that has the  highest score (for INFO for personality)
-        //        // all trait scores are in  ( stringBuffForTraitCSV=[42,85,44,21,67,34] )
-        //        //
-        //        // _myStringBuffForTraitCSV=[78,1,55,84,90,79]__
-        //        //
-        //        NSString *myNSStringTraitCSV = [NSString stringWithUTF8String: myStringBuffForTraitCSV];  // convert c string to NSString
-        ////  NSLog(@"myNSStringTraitCSV =%@",myNSStringTraitCSV );
-        //        NSArray  *arrayOfScores      = [myNSStringTraitCSV componentsSeparatedByString:@","];
-        ////  NSLog(@"arrayOfScores      =%@",arrayOfScores      );
-        //        NSInteger thisScoreINT, thisScoreIndex;
-        //        NSInteger highestTraitScore, highestTraitScoreIndex;
-        //        highestTraitScore      = 0;
-        //        highestTraitScoreIndex = 0;
-        //        thisScoreINT           = 0;
-        //        thisScoreIndex         = 0;
-        //        NSString *thisScoreSTR;
-        //
-        //        for (thisScoreSTR in arrayOfScores) {
-        ////  NSLog(@"thisScoreSTR =%@",thisScoreSTR );
-        ////  NSLog(@"thisScoreINT =%ld",(long)thisScoreINT );
-        //            thisScoreIndex = thisScoreIndex + 1;       // one-based
-        //            thisScoreINT   = [thisScoreSTR intValue];  // convert NSString to integer
-        //            if (thisScoreINT >  highestTraitScore) {
-        //                highestTraitScore      = thisScoreINT;
-        //                highestTraitScoreIndex = thisScoreIndex;
-        ////  NSLog(@"highestTraitScore      =%ld",(long)highestTraitScore      );
-        ////  NSLog(@"highestTraitScoreIndex =%ld",(long)highestTraitScoreIndex );
-        //            }
-        //        }
-        //
-        //        //  do_special_line(IDX_FOR_AGGRESSIVE);    1
-        //        //  do_special_line(IDX_FOR_SENSITIVE);     2
-        //        //  do_special_line(IDX_FOR_RESTLESS);      3
-        //        //  do_special_line(IDX_FOR_DOWN_TO_EARTH); 4
-        //        //  do_special_line(IDX_FOR_SEX_DRIVE);     5
-        //        //  do_special_line(IDX_FOR_UPS_AND_DOWNS); 6  (removed)
-        //        //
-        //        gbl_highestTraitScore = [NSString stringWithFormat:@"%ld", (long)highestTraitScore ]; // convert NSInteger to NSString 
-        //
-        //        gbl_highestTraitScoreDescription = @" ";
-        //        if (highestTraitScoreIndex == 1) gbl_highestTraitScoreDescription = @"Assertive";
-        //        if (highestTraitScoreIndex == 2) gbl_highestTraitScoreDescription = @"Emotional";
-        //        if (highestTraitScoreIndex == 3) gbl_highestTraitScoreDescription = @"Restless";
-        //        if (highestTraitScoreIndex == 4) gbl_highestTraitScoreDescription = @"Down-to-earth";
-        //        if (highestTraitScoreIndex == 5) gbl_highestTraitScoreDescription = @"Passionate";
-        //        //  if (highestTraitScoreIndex == 6) gbl_highestTraitScoreDescription = @"Ups and Downs";
-        //tn();ksn(myStringBuffForTraitCSV);
-        //  NSLog(@"gbl_highestTraitScore=%@",gbl_highestTraitScore );
-        //  NSLog(@"gbl_highestTraitScoreDescription=%@",gbl_highestTraitScoreDescription );
-        //
-        //
-        //        if (retval == 0) {
-        //           
-        //            // show all files in temp dir
-        //            NSFileManager *manager = [NSFileManager defaultManager];
-        //            NSArray *fileList = [manager contentsOfDirectoryAtPath:NSTemporaryDirectory() error:nil];
-        //            for (NSString *s in fileList){
-        //                NSLog(@"TEMP DIR %@", s);
-        //            }
-        //            
-        //            
-        //            /* here, go and look at html report */
-        //            // [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"about:blank"]]];  // ?clean for re-use
-        //            
-        //            self.outletWebView.scalesPageToFit = YES;
-        //            
-        //            // I was having the same problem. I found a property on the UIWebView
-        //            // that allows you to turn off the data detectors.
-        //            //
-        //            self.outletWebView.dataDetectorTypes = UIDataDetectorTypeNone;
-        //
-        //            // did not work // fill whole screen, no gaps   
-        //            //             self.outletWebView.autoresizesSubviews = YES;
-        //            //             self.outletWebView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-        //            //
-        //
-        //            
-        //             // place our URL in a URL Request
-        //             HTML_URLrequest = [[NSURLRequest alloc] initWithURL: URLtoHTML_forWebview];
-        //             
-        //             // UIWebView is part of UIKit, so you should operate on the main thread.
-        //             //
-        //             // old= [self.outletWebView loadRequest: HTML_URLrequest];
-        //             //
-        //             dispatch_async(dispatch_get_main_queue(), ^(void){
-        //                 [self.outletWebView loadRequest:HTML_URLrequest];
-        //
-        //                 // webView.delegate = self; // http://stackoverflow.com/questions/10666484/html-content-fit-in-uiwebview-without-zooming-out
-        //                 self.outletWebView.delegate = self; // http://stackoverflow.com/questions/10666484/html-content-fit-in-uiwebview-without-zooming-out
-        //
-        //             });
-        //        } // retval = 0
-        //
-        //<.> from viewHTML  aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-        //
-
+           
 nbn(101);
         // gbl_perDataLines;  // used in tblrpts_1 (read in from webview . html file)
         NSString *perDataStr = [NSString stringWithContentsOfURL: URLtoHTML_forWebview  encoding: NSUTF8StringEncoding  error: nil];
         gbl_perDataLines     = [perDataStr componentsSeparatedByCharactersInSet: [NSCharacterSet newlineCharacterSet]];
   NSLog(@"gbl_perDataLines.count    =[%ld]",gbl_perDataLines.count    );
 
-// Log all data in gbl_perDataLines file array contents    for test <.>
+// Log all data in gbl_perDataLines file array contents    for test 
 for (id eltTst in gbl_perDataLines) { NSLog(@"    gbl_per=%@", eltTst); }
 
         return;
 
 
     } // end of if   [gbl_currentMenuPlusReportCode isEqualToString: @"homppe"] // home + personality
+
+
+// TODO
+    // 1. run compatibility report
+    // 2. load new grpof2 TBLRPT  report data into array URLtoHTML_forWebview;
+    //
+    if ( [gbl_currentMenuPlusReportCode hasSuffix: @"co"] )  //  compatibility   grpof2
+    {
+  NSLog(@" RUNNING  compatibility   grpof2 ");
+
+        tn();trn("in Compatibility Potential!");
+        
+
+        char psvName[32], psvMth[4], psvDay[4], psvYear[8], psvHour[4], psvMin[4], psvAmPm[4], psvCity[64], psvProv[64], psvCountry[64];
+        char psvLongitude[16], psvHoursDiff[8], returnPSV[64];
+        const char *my_psvc; // psv=pipe-separated values
+        char my_psv[128];
+        
+//        char csv_person_string[128];
+        char  csv_person1_string[128], csv_person2_string[128];
+//        char person_name_for_filename[32];
+        char  person1_name_for_filename[32], person2_name_for_filename[32];
+//        char myStringBuffForTraitCSV[64];
+        
+//        char  yyyy_todo[16], yyyymmdd_todo[16], stringBuffForStressScore[64] ;
+//        const char *yyyy_todoC;
+//        const char *yyyymmdd_todoC;
+        int retval; // retval2;
+
+        char   html_file_name_browser[2048], html_file_name_webview[2048];
+        NSString *Ohtml_file_name_browser, *Ohtml_file_name_webview;
+        NSString *OpathToHTML_browser,     *OpathToHTML_webview;
+        char     *pathToHTML_browser,      *pathToHTML_webview;
+        
+        NSURL *URLtoHTML_forWebview;
+//        NSURL *URLtoHTML_forEmailing;    ?????????????
+//        NSURLRequest *HTML_URLrequest;
+        NSArray* tmpDirFiles;
+    
+        do { // assemble person1 CSV
+
+
+            my_psvc = [gbl_TBLRPTS2_PSV_personA cStringUsingEncoding: NSUTF8StringEncoding]; // NSString object to C for pco/personA
+
+            strcpy(my_psv, my_psvc); // because of const
+//ksn(my_psv);            
+            strcpy(psvName, csv_get_field(my_psv, "|", 1));
+            strcpy(psvMth,  csv_get_field(my_psv, "|", 2));
+            strcpy(psvDay,  csv_get_field(my_psv, "|", 3));
+            strcpy(psvYear, csv_get_field(my_psv, "|", 4));
+            strcpy(psvHour, csv_get_field(my_psv, "|", 5));
+            strcpy(psvMin,  csv_get_field(my_psv, "|", 6));
+            strcpy(psvAmPm, csv_get_field(my_psv, "|", 7));
+            strcpy(psvCity, csv_get_field(my_psv, "|", 8));
+            strcpy(psvProv, csv_get_field(my_psv, "|", 9));
+            strcpy(psvCountry, csv_get_field(my_psv, "|", 10));
+            
+            strcpy(person1_name_for_filename, psvName);
+            scharswitch(person1_name_for_filename, ' ', '_');
+
+//ksn(psvMth);ks(psvDay);ks(psvYear);ks(psvHour);ks(psvMin);ks(psvAmPm);tn();
+//ksn(psvCity);ks(psvProv);ks(psvCountry);tn();
+            
+            // get longitude and timezone hoursDiff from Greenwich
+            // by looking up psvCity, psvProv, psvCountry
+            //
+            seq_find_exact_citPrvCountry(returnPSV, psvCity, psvProv, psvCountry);
+//ksn(returnPSV);            
+            strcpy(psvHoursDiff,  csv_get_field(returnPSV, "|", 1));
+            strcpy(psvLongitude,  csv_get_field(returnPSV, "|", 2));
+//ksn(psvHoursDiff);
+//ksn(psvLongitude);
+            // set gbl for email
+            gbl_person_name =  [NSString stringWithUTF8String:psvName ];
+//  NSLog(@"gbl_person_name =%@",gbl_person_name );
+            // build csv arg for report function call
+            //
+            sprintf(csv_person1_string, "%s,%s,%s,%s,%s,%s,%s,%s,%s",
+                    psvName,psvMth,psvDay,psvYear,psvHour,psvMin,psvAmPm,psvHoursDiff,psvLongitude);
+            ksn(csv_person1_string);tn();
+
+        } while (NO);  // assemble person1 CSV   (do only once)
+        
+        do { // assemble person2 CSV
+//            my_psvc = [gbl_fromSelSecondPersonPSV cStringUsingEncoding:NSUTF8StringEncoding]; // NSString object to C  for pco/personB
+//            my_psvc = [gbl_viewHTML_PSV_personB cStringUsingEncoding:NSUTF8StringEncoding]; // NSString object to C  for pco/personB
+            my_psvc = [gbl_TBLRPTS2_PSV_personB cStringUsingEncoding: NSUTF8StringEncoding]; // NSString object to C for pco/personA
+
+            strcpy(my_psv, my_psvc); // because of const
+            
+            strcpy(psvName, csv_get_field(my_psv, "|", 1));
+            strcpy(psvMth,  csv_get_field(my_psv, "|", 2));
+            strcpy(psvDay,  csv_get_field(my_psv, "|", 3));
+            strcpy(psvYear, csv_get_field(my_psv, "|", 4));
+            strcpy(psvHour, csv_get_field(my_psv, "|", 5));
+            strcpy(psvMin,  csv_get_field(my_psv, "|", 6));
+            strcpy(psvAmPm, csv_get_field(my_psv, "|", 7));
+            strcpy(psvCity, csv_get_field(my_psv, "|", 8));
+            strcpy(psvProv, csv_get_field(my_psv, "|", 9));
+            strcpy(psvCountry, csv_get_field(my_psv, "|", 10));
+            
+            strcpy(person2_name_for_filename, psvName);
+            scharswitch(person2_name_for_filename, ' ', '_');
+            
+     
+//ksn(psvMth);ks(psvDay);ks(psvYear);ks(psvHour);ks(psvMin);ks(psvAmPm);tn();
+//ksn(psvCity);ks(psvProv);ks(psvCountry);tn();
+            
+            // get longitude and timezone hoursDiff from Greenwich
+            // by looking up psvCity, psvProv, psvCountry
+            //
+            seq_find_exact_citPrvCountry(returnPSV, psvCity, psvProv, psvCountry);
+            
+            strcpy(psvHoursDiff,  csv_get_field(returnPSV, "|", 1));
+            strcpy(psvLongitude,  csv_get_field(returnPSV, "|", 2));
+            
+            // set gbl for email
+            gbl_person_name2 =  [NSString stringWithUTF8String:psvName ];
+
+            // build csv arg for report function call
+            //
+            sprintf(csv_person2_string, "%s,%s,%s,%s,%s,%s,%s,%s,%s",
+                    psvName,psvMth,psvDay,psvYear,psvHour,psvMin,psvAmPm,psvHoursDiff,psvLongitude);
+            ksn(csv_person2_string);tn();
+            
+        } while (NO);  // assemble person2 CSV   (do only once)
+
+        // build HTML file name, path name, an URL in  TMP  Directory
+        //
+        sprintf(html_file_name_browser,
+                "%sgrpof2_%s_%s.html", PREFIX_HTML_FILENAME, person1_name_for_filename, person2_name_for_filename);
+        sprintf(html_file_name_webview,
+                "%sgrpof2_%s_%s_webview.html", PREFIX_HTML_FILENAME, person1_name_for_filename, person2_name_for_filename);
+
+//        Ohtml_file_name = [NSString stringWithUTF8String:html_file_name ];
+//        OpathToHTML = [NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name];
+//        pathToHTML = (char *) [OpathToHTML cStringUsingEncoding:NSUTF8StringEncoding];
+//        /* for use in WebView */
+//        URLtoHTML_forWebview = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name]];
+        
+    
+        
+        gbl_html_file_name_browser = [NSString stringWithUTF8String:html_file_name_browser ];   // for later sending as email attachment
+        
+        Ohtml_file_name_browser = [NSString stringWithUTF8String:html_file_name_browser];
+        OpathToHTML_browser     = [NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_browser];
+        pathToHTML_browser      = (char *) [OpathToHTML_browser cStringUsingEncoding:NSUTF8StringEncoding];
+        
+        Ohtml_file_name_webview = [NSString stringWithUTF8String:html_file_name_webview ];
+        OpathToHTML_webview     = [NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_webview];
+        pathToHTML_webview      = (char *) [OpathToHTML_webview cStringUsingEncoding:NSUTF8StringEncoding];
+    
+        URLtoHTML_forWebview = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_webview]];
+        
+        //URLtoHTML_forWebview = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_browser]];  // for test
+        //ksn(pathToHTML_browser);
+        
+        gbl_pathToFileToBeEmailed = OpathToHTML_browser;
+
+
+        // remove all "*.html" files from TMP directory before creating new one
+        //
+        tmpDirFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:NSTemporaryDirectory() error:NULL];
+//        NSLog(@"tmpDirFiles.count=%lu",(unsigned long)tmpDirFiles.count);
+        
+        for (NSString *fil in tmpDirFiles) {
+//            NSLog(@"file to DELETE=%@",fil);
+            if ([fil hasSuffix: @"html"]) {
+                [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), fil] error:NULL];
+            }
+        }
+        
+        
+        tn();trn("doing compatibility potential c call   mamb_report_just_2_people");
+        
+        ks(html_file_name_webview);
+        
+
+
+        retval = mamb_report_just_2_people(
+                                           pathToHTML_browser,
+                                           pathToHTML_webview,
+                                           csv_person1_string,
+                                           csv_person2_string
+                                           );
+
+
+
+        tn();trn("returning from  compatibility potential c call   mamb_report_just_2_people");
+
+
+
+        // 2. load new grpof2 TBLRPT  report data into array URLtoHTML_forWebview;
+
+        // set gbl_perDataLines;  // used in tblrpts_1 (read in from webview . html file)
+        //
+        // URLtoHTML_forWebview  (a ".html" file) actually has data lines to be used for uitableview version
+        //
+        NSString *compDataStr = [NSString stringWithContentsOfURL: URLtoHTML_forWebview  encoding: NSUTF8StringEncoding  error: nil];
+        gbl_compDataLines     = [compDataStr componentsSeparatedByCharactersInSet: [NSCharacterSet newlineCharacterSet]];
+  NSLog(@"gbl_compDataLines.count    =[%ld]",gbl_compDataLines.count    );
+
+// Log all data in gbl_compDataLines file array contents    for test <.>
+for (id eltTst in gbl_compDataLines) { NSLog(@"    gbl_comp=%@", eltTst); }
+
+
+        // for CALCULATING the WIDTH of the Compatibility Potential table at the top
+        // we need the size of the 2 names
+        //
+        // find the line    lin=[tabl|pair@26@~Emma@~Anya]
+        //
+        // max table line len is like:  |~Emma..~Anya..99.Not.Good|
+        //   nam1 + 2 + nam2 + 11            5 2    5 2         11 
+        //
+        NSArray *tmpArray3;
+        for (int iii = 0; iii <= gbl_compDataLines.count - 1; iii++) {
+
+            if ([gbl_compDataLines[iii] hasPrefix: @"tabl|pair"]) {
+                // _lin=[tabl|pair@space above@@]__
+                // _lin=[tabl|pair@26@~Emma@~Anya]__
+                // _lin=[tabl|pair@space below@@]__
+                tmpArray3 = [gbl_compDataLines[iii] componentsSeparatedByCharactersInSet: 
+                    [NSCharacterSet characterSetWithCharactersInString:@"@"]
+                ];
+                if (tmpArray3.count == 4) {
+                    gbl_pairScore   = tmpArray3[1];
+                    gbl_pairPersonA = tmpArray3[2];
+                    gbl_pairPersonB = tmpArray3[3];
+
+                    if ( [gbl_pairPersonA hasPrefix: @"space "]) continue;
+
+                    gbl_topTableWidth = 1 + gbl_pairPersonA.length + 2 + gbl_pairPersonB.length + 2 + 11 + 1;  // 1= space
+                    gbl_topTableNamesWidth = 1 + gbl_pairPersonA.length + 2 + gbl_pairPersonB.length + 2;  // 1= space
+
+                    //    there are long and short lines depending on the 2 name lengths
+                    //
+                    if (gbl_pairPersonA.length + gbl_pairPersonB.length > gbl_ThresholdshortTblLineLen) {
+                        gbl_topTablePairLine = [NSString stringWithFormat:  @"| %@  %@  %@ |", // NO 11 spaces at end
+                            gbl_pairPersonA,
+                            gbl_pairPersonB,
+                            gbl_pairScore
+                        ];
+                    } else {
+                        gbl_topTablePairLine = [NSString stringWithFormat:  @"| %@  %@  %@           |", // 11 spaces at end
+                            gbl_pairPersonA,
+                            gbl_pairPersonB,
+                            gbl_pairScore
+                        ];
+                    }
+                }
+                break;
+            }
+        }
+  NSLog(@"gbl_pairScore        =[%@]",gbl_pairScore   );
+  NSLog(@"gbl_pairPersonA      =[%@]",gbl_pairPersonA );
+  NSLog(@"gbl_pairPersonB      =[%@]",gbl_pairPersonB );
+  NSLog(@"gbl_topTableWidth    =[%ld]",(long)gbl_topTableWidth );
+  NSLog(@"gbl_topTablePairLine =[%@]",gbl_topTablePairLine );
+
+
+        return;
+
+
+    } // end of new compatibility   grpof2   in tblrpts_2
 
 
 
@@ -994,9 +1223,13 @@ for (id eltTst in gbl_perDataLines) { NSLog(@"    gbl_per=%@", eltTst); }
     //#warning Incomplete method implementation.
     // Return the number of rows in the section.
     
-    if ( [gbl_currentMenuPlusReportCode hasSuffix: @"pe"] ) {  //  new personality TBLRPT  report
+    if (        [gbl_currentMenuPlusReportCode hasSuffix: @"pe"] )  { //  new personality TBLRPT  report
 
         return  gbl_perDataLines.count;
+
+    } else if ( [gbl_currentMenuPlusReportCode hasSuffix: @"co"] ) { //  grpof2
+
+        return  gbl_compDataLines.count;
 
     } else {
         return (group_report_output_idx_B + 1 + 3); // + 3 for 3 bottom cells
@@ -1047,7 +1280,8 @@ for (id eltTst in gbl_perDataLines) { NSLog(@"    gbl_per=%@", eltTst); }
 
 
 
-    if ( [gbl_currentMenuPlusReportCode hasSuffix: @"pe"] ) {  //  new personality TBLRPT  report
+    if ( [gbl_currentMenuPlusReportCode hasSuffix: @"pe"] )
+    {  //  new personality TBLRPT  report
 bn(301);
 //  NSLog(@"indexPath.row =[%ld]",indexPath.row );
 //  NSLog(@"gbl_perDataLines[indexPath.row]  [%@]",gbl_perDataLines[indexPath.row]  );
@@ -1261,6 +1495,1919 @@ bn(302);
 
     }  // end of new personality TBLRPT  report
 bn(303);
+
+
+
+
+    //  new compatibility TBLRPT  report   $$$$$$$ in cellforrowataindexpath $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+    //
+//nbn(600);
+    // if ( [gbl_currentMenuPlusReportCode isEqualToString: @"hompco"] )
+    if ( [gbl_currentMenuPlusReportCode hasSuffix: @"co"] )
+    { 
+//       gbl_compIsInHowBig = 0;   // DEFAULT setting
+
+            UIButton *myInvisibleButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+            [UIButton buttonWithType: UIButtonTypeCustom];
+            myInvisibleButton.backgroundColor = [UIColor clearColor];
+
+//bn(601);
+//  NSLog(@"indexPath.row =[%ld]",indexPath.row );
+//  NSLog(@"gbl_compDataLines[indexPath.row]  [%@]",gbl_compDataLines[indexPath.row]  );
+
+    // Set the UIScrollView's frame to be the tableViewCell's bounds (or frame, I never remember off the top of my head):
+     //scrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
+//     self.tableView = [[UIScrollView alloc] initWithFrame:self.bounds];
+//     self.tableView = [[UIScrollView alloc] initWithFrame: cell.bounds];
+//And setting [scrollView setAutoresizingMask:UIViewAutoresizingFlexibleHeight]; will allow scrollView to resize when its container resizes and also allows its contents to be resized.
+//     [self.tableView setAutoresizingMask:UIViewAutoresizingFlexibleHeight];
+//     [cell setAutoresizingMask:UIViewAutoresizingFlexibleHeight];
+
+
+        // fixes   bg color of white on left and right
+        //    [[UIScrollView appearance] setBackgroundColor: gbl_color_cBgr ];  does not work
+        UIView *aBackgroundView = [[UIView alloc] initWithFrame:CGRectZero] ;
+        aBackgroundView.backgroundColor = gbl_color_cBgr ;
+        cell.backgroundView = aBackgroundView;
+
+
+        UIFont *myCompFont;
+
+        UIFont *compFont_16 ;
+        UIFont *compFont_14 ;
+        UIFont *compFont_12 ;
+        UIFont *compFont_11b;
+
+        // CGFloat   gbl_heightForScreen;  // 6+  = 736.0 x 414  and 6s+  (self.view.bounds.size.width) and height
+        //                                 // 6s  = 667.0 x 375  and 6
+        //                                 // 5s  = 568.0 x 320  and 5 
+        //                                 // 4s  = 480.0 x 320  and 5 
+        //
+        //  NSLog(@"self.view.bounds.size.height  =[%f]",self.view.bounds.size.height  );
+        if (   self.view.bounds.size.width >= 414.0        // 6+ and 6s+  and bigger
+        ) {
+//            compFont_16  = [UIFont fontWithName: @"Menlo" size: 16.0];
+//            compFont_14  = [UIFont fontWithName: @"Menlo" size: 14.0];
+//            compFont_12  = [UIFont fontWithName: @"Menlo" size: 12.0];
+//            compFont_11b = [UIFont fontWithName: @"Menlo-bold" size: 11.0];
+
+
+            compFont_16  = [UIFont fontWithName: @"Menlo" size: 16.0];
+
+            compFont_14  = [UIFont fontWithName: @"Menlo" size: 14.0];
+//            compFont_14  = [UIFont fontWithName: @"Menlo" size: 10.0];
+//              compFont_14  = [UIFont fontWithName: @"Menlo" size: 13.0]; // too big still
+//              compFont_14  = [UIFont fontWithName: @"Menlo" size: 12.5]; // too big still
+//            compFont_14  = [UIFont fontWithName: @"Menlo" size: 12.0];
+
+            compFont_12  = [UIFont fontWithName: @"Menlo" size: 12.0];
+//            compFont_12  = [UIFont fontWithName: @"Menlo" size: 11.0];
+//            compFont_12  = [UIFont fontWithName: @"Menlo" size:  9.0];
+//            compFont_12  = [UIFont fontWithName: @"Menlo" size: 14.0];
+//            compFont_12  = [UIFont fontWithName: @"Menlo" size: 13.0];
+//            compFont_12  = [UIFont fontWithName: @"Menlo" size: 15.0];
+
+            compFont_11b = [UIFont fontWithName: @"Menlo-bold" size: 11.0];
+
+        }
+        else if (   self.view.bounds.size.width  < 414.0    // 6 and 6s
+                 && self.view.bounds.size.width  > 320.0
+        ) {
+            compFont_16  = [UIFont fontWithName: @"Menlo" size: 14.0];
+            compFont_14  = [UIFont fontWithName: @"Menlo" size: 12.0];
+            compFont_12  = [UIFont fontWithName: @"Menlo" size: 10.0];
+            compFont_11b = [UIFont fontWithName: @"Menlo-bold" size: 10.0];
+        }
+        else if (   self.view.bounds.size.width <= 320.0   //  5s and 5 and 4s and smaller
+        ) {
+//            compFont_16  = [UIFont fontWithName: @"Menlo" size: 12.0];
+//            compFont_14  = [UIFont fontWithName: @"Menlo" size: 10.0];
+//            compFont_12  = [UIFont fontWithName: @"Menlo" size:  8.0];
+//            compFont_11b = [UIFont fontWithName: @"Menlo-bold" size:  10.0];
+            compFont_16  = [UIFont fontWithName: @"Menlo" size: 13.0];
+            compFont_14  = [UIFont fontWithName: @"Menlo" size: 11.0];
+            compFont_12  = [UIFont fontWithName: @"Menlo" size:  9.0];
+            compFont_11b = [UIFont fontWithName: @"Menlo-bold" size:  9.0];
+        }
+
+        
+        NSCharacterSet *mySeps;
+        NSArray        *tmparr;
+        UIColor  *mybgcolor;
+        UIColor  *mybgcolorfortableline;
+        UIColor  *mytextcolor;
+        NSString *mycode;
+        NSString *mycode2;
+        NSString *myscore;
+        NSString *myspace;
+//        NSString *mypersonA;
+//        NSString *mypersonB;
+        NSString *mylin;
+        NSString *mywrk;
+//        NSString *mylin3;
+        NSTextAlignment myalign;
+        NSInteger       mynumlines;
+        BOOL            myadjust;
+
+//        UIColor *mybgcolortouse;
+
+        mybgcolor         = [UIColor redColor];
+        myalign           = NSTextAlignmentLeft;  // default
+        mynumlines        = 1;                    // default
+        myadjust          = YES;                  // default
+        mytextcolor       = [UIColor greenColor]; // default
+
+        mySeps    = [NSCharacterSet characterSetWithCharactersInString:  @"|"];
+
+ tn();
+  NSLog(@"mywrk=[%@]",mywrk);
+        mywrk     = gbl_compDataLines[indexPath.row];  
+
+        tmparr    = [mywrk  componentsSeparatedByCharactersInSet: mySeps];
+        if (tmparr.count > 1) {
+            mycode    = tmparr[0];
+            mylin     = tmparr[1];
+        }
+ NSLog(@"mycode=[%@]",mycode);
+ NSLog(@"mylin=[%@]",mylin);
+
+//gbl_color_cNeu 
+//gbl_color_cBgr 
+//gbl_color_cHed
+        if ( [mycode isEqualToString: @"fill"] ) {
+            gbl_areInCompatibilityTable = 0;
+bn(6011);
+            myalign           = NSTextAlignmentCenter;
+            mynumlines        = 1;    
+            myadjust          = NO;
+            mytextcolor       = [UIColor blackColor];
+            myCompFont         = compFont_16;
+
+            if ( [mylin isEqualToString: @"filler line #1 at top"] ) {
+bn(6012);
+                mylin             = @" ";
+                mybgcolor         = gbl_color_cBgr ;
+                gbl_heightCellCOMP = 18;
+            }
+            else if ( [mylin isEqualToString: @"before table head"] ) {
+                mylin             = @" ";
+//                mybgcolor         = gbl_color_cHed ;
+                mybgcolor         = gbl_color_cNeu ;
+                gbl_heightCellCOMP = 8;
+            }
+            else if ( [mylin isEqualToString: @"after table head"] ) {
+                mylin             = @" ";
+                mybgcolor         = gbl_color_cHed ;
+                gbl_heightCellCOMP = 8;
+            }
+//            else if ( [mylin isEqualToString: @"before table foot"] ) {
+//                mylin             = @" ";
+//                mybgcolor         = gbl_color_cHed ;
+//                gbl_heightCellCOMP = 8;
+//            }
+            else if ( [mylin isEqualToString: @"after table foot"] ) {
+                mylin             = @" ";
+//                mybgcolor         = gbl_color_cNeu ;
+                mybgcolor         = gbl_color_cHed ;
+                gbl_heightCellCOMP = 8;
+            }
+            else if ( [mylin isEqualToString: @"filler before how big"] ) {
+                mylin             = @" ";
+                mybgcolor         = gbl_color_cBgr ;
+                gbl_heightCellCOMP = 24;
+            }
+            else if ( [mylin isEqualToString: @"before how big header"] ) {
+//                gbl_compIsInHowBig = 1;
+                mylin             = @" ";
+                mybgcolor         = gbl_color_cHed ;
+//                mybgcolor         = gbl_color_cNeu ;
+                gbl_heightCellCOMP = 3;
+            }
+
+            // lin=[fill|after how big header]__
+            // lin=[fill|after personal stars]__
+            // lin=[fill|after personA ptofview]__
+            // lin=[fill|after personB ptofview]__
+            // lin=[fill|after howbigftr]__
+            // lin=[fill|filler after how big]__
+            // lin=[fill|filler before paras]__
+            // 
+            else if ( [mylin isEqualToString: @"after how big header"] ) {
+                mylin             = @" ";
+                mybgcolor         = gbl_color_cHed ;
+//                mybgcolor         = gbl_color_cNeu ;
+//                mybgcolor         = gbl_color_cBgr ;
+                gbl_heightCellCOMP = 8;
+            }
+            else if (   [mylin isEqualToString: @"after personal stars"]
+                     || [mylin isEqualToString: @"after personA ptofview"]
+            ) {
+                mylin             = @" ";
+                mybgcolor         = gbl_color_cHed ;
+//                mybgcolor         = gbl_color_cBgr ;
+//                mybgcolor         = gbl_color_cNeu ;
+                gbl_heightCellCOMP =  8;
+            }
+            else if (   [mylin isEqualToString: @"after personB ptofview"]
+            ) {
+                mylin             = @" ";
+                mybgcolor         = gbl_color_cHed ;
+//                mybgcolor         = gbl_color_cBgr ;
+//                mybgcolor         = gbl_color_cNeu ;
+                gbl_heightCellCOMP =  8;
+            }
+            else if ( [mylin isEqualToString: @"after howbigftr"] ) {
+                mylin             = @" ";
+//                mybgcolor         = gbl_color_cNeu ;
+                mybgcolor         = gbl_color_cHed ;
+                gbl_heightCellCOMP =  4;
+            }
+            else if ( [mylin isEqualToString: @"filler after how big"] ) {
+                mylin             = @" ";
+                mybgcolor         = gbl_color_cBgr ;
+                gbl_heightCellCOMP = 8;
+            }
+            else if ( [mylin isEqualToString: @"filler before paras"] ) {
+                mylin             = @" ";
+                mybgcolor         = gbl_color_cBgr ;
+                gbl_heightCellCOMP = 2;
+            }
+
+
+            else if ( [mylin isEqualToString: @"before para"] ) {
+                mylin             = @" ";
+                mybgcolor         = gbl_color_cBgr ;
+//                gbl_heightCellCOMP = 16;
+                gbl_heightCellCOMP = 12;
+            }
+
+            // lin=[fill|before goodrelationship]__
+            // lin=[fill|in goodrelationship at beg]__
+            // lin=[fill|in goodrelationship at end]__
+            //
+            else if ( [mylin isEqualToString: @"before goodrelationship"] ) {
+                mylin             = @" ";
+                mybgcolor         = gbl_color_cBgr ;
+//                mybgcolor         = [UIColor blueColor];
+                gbl_heightCellCOMP = 12;
+            }
+            else if ( [mylin isEqualToString: @"in goodrelationship at beg"] ) {
+                mylin             = @" ";
+                mybgcolor         = gbl_color_cBgr ;
+//                mybgcolor         = gbl_color_cNeu ;
+                gbl_heightCellCOMP = 12;
+            }
+            else if ( [mylin isEqualToString: @"in goodrelationship at end"] ) {
+                mylin             = @" ";
+                mybgcolor         = gbl_color_cHed ;
+//                mybgcolor         = gbl_color_cRed ;
+//                mybgcolor         = [UIColor blackColor];
+                gbl_heightCellCOMP = 4;
+            }
+
+
+            else if ( [mylin isEqualToString: @"before produced by"] ) {
+                mylin             = @" ";
+                mybgcolor         = gbl_color_cBgr ;
+                gbl_heightCellCOMP = 12;
+            }
+            else if ( [mylin isEqualToString: @"before entertainment"] ) {
+                mylin             = @" ";
+                mybgcolor         = gbl_color_cBgr ;
+                gbl_heightCellCOMP = 4;
+            }
+        }
+        //
+         //  new compatibility TBLRPT  report   $$$$$$$$$$$$$$$$$$$$$$$$
+        //
+
+        // input for table  at the top of rpt
+        //
+        // lin=[fill|filler line #1 at top]__
+        // lin=[head|space above hdr line]__
+        // lin=[head|Compatibility]__
+        // lin=[head|space above hdr line]__
+        // lin=[head|    Potential]__
+//        // lin=[head|space below hdr line]__
+
+        // lin=[tabl|label@90@space above]__
+        // lin=[tabl|label@90@filler]__
+        // lin=[tabl|label@90@space below]__
+        // lin=[tabl|label@75@space above]__
+        // lin=[tabl|label@75@filler]__
+        // lin=[tabl|label@75@space below]__
+        // lin=[tabl|label@50@space above]__
+        // lin=[tabl|label@50@filler]__
+        // lin=[tabl|label@50@space below]__
+        // lin=[tabl|pair@26@space above@x]__
+        // lin=[tabl|pair@26@~Emma@~Anya]__
+        // lin=[tabl|pair@26@space below@x]__
+        // lin=[tabl|label@25@space above]__
+        // lin=[tabl|label@25@filler]__
+        // lin=[tabl|label@25@space below]__
+        // lin=[tabl|label@10@space above]__
+        // lin=[tabl|label@10@filler]__
+        // lin=[tabl|label@10@space below]__
+
+        // lin=[fill|filler before how big]__
+        //
+
+        if ( [mycode isEqualToString: @"head"] )
+        {                                                  // comp top table header
+            gbl_areInCompatibilityTable = 1;
+
+  NSLog(@"in HEADER");
+  NSLog(@"mycode=[%@]",mycode);
+  NSLog(@"mylin =[%@]",mylin);
+  NSLog(@"gbl_heightCellCOMP =[%ld]",(long)gbl_heightCellCOMP );
+  NSLog(@"gbl_topTableWidth=[%ld]",gbl_topTableWidth);
+
+            
+  NSLog(@"mylin hdr=[%@]",mylin);
+            NSInteger thisIsHeaderSpace;
+            if ([mylin hasPrefix: @"space "]) {
+nbn(50);
+                gbl_heightForCompTable = 2.0;
+                thisIsHeaderSpace      = 1;
+               mylin = @" ";
+            } else {
+//                gbl_heightForCompTable = 18.0;
+                gbl_heightForCompTable = 16.0;
+                thisIsHeaderSpace      = 0;
+            }
+
+
+            // FORMAT the HEADER line
+            //    there are long and short lines depending on the 2 name lengths
+            //
+            if (gbl_pairPersonA.length + gbl_pairPersonB.length > gbl_ThresholdshortTblLineLen) {
+                gbltmpstr = [NSString stringWithFormat: @"|%@%@ |",
+                    [@"" stringByPaddingToLength: gbl_topTableWidth - mylin.length - 11 + 1 // 11 = like "  Not Good "
+                                      withString: @" "
+                                 startingAtIndex: 0
+                    ] ,
+                    mylin 
+                ];
+//                gbl_heightCellCOMP = 18;
+  NSLog(@"gbltmpstr 111  =[%@]",gbltmpstr );
+            } else {
+                gbltmpstr = [NSString stringWithFormat: @"|%@%@ |",
+                    [@"" stringByPaddingToLength: gbl_topTableWidth - mylin.length
+                                      withString: @" "
+                                 startingAtIndex: 0
+                    ] ,
+                    mylin 
+                ];
+//                gbl_heightCellCOMP = 18;
+  NSLog(@"gbltmpstr 222  =[%@]",gbltmpstr );
+            }
+
+
+            mylin             = gbltmpstr;
+
+
+//  NSLog(@"mylin with pipes=[%@]",mylin);
+//  NSLog(@"mylin.length =[%ld]",(long)mylin.length );
+//           gbltmpint = (long)mylin.length ;
+
+//           gbltmpint = mylin.length ;  // WEIRD   MAGIC   has to be  here for right length of first hdr line
+
+            myalign           = NSTextAlignmentCenter;
+//            myalign           = NSTextAlignmentLeft;
+            mynumlines        = 1;    
+            mybgcolor         = gbl_color_cBgr ;
+            mybgcolorfortableline = gbl_color_cHed ;
+//            gbl_heightCellPER = 16;
+//            gbl_heightCellCOMP = 20;
+//            gbl_heightCellCOMP = 24;
+//            gbl_heightCellCOMP = 30;
+//            gbl_heightCellCOMP = 13.8;
+//            gbl_heightCellCOMP = 18;
+
+
+            myadjust          = YES;
+//            myadjust          = NO;
+            mytextcolor       = [UIColor blackColor];
+            myCompFont         = compFont_14;
+
+            // NOTE: this is copied from "tabl|"
+            NSMutableAttributedString *myAttrString;    // for cell text
+//            NSMutableAttributedString *myAttrSpace;     // for cell text
+//            NSString                  *myStringNoAttr;  // for work string
+
+
+//            myAttrString  = [[NSMutableAttributedString alloc] initWithString: mylin ];
+
+
+//#define FONT_SIZE 20
+//#define FONT_HELVETICA @"Helvetica-Light"
+//#define BLACK_SHADOW [UIColor colorWithRed:40.0f/255.0f green:40.0f/255.0f blue:40.0f/255.0f alpha:0.4f]
+//NSString*myNSString = @"This is my string.\nIt goes to a second line.";                
+
+NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+               paragraphStyle.alignment = NSTextAlignmentCenter;
+//             paragraphStyle.lineSpacing = FONT_SIZE/2;
+//             paragraphStyle.lineSpacing = -5;
+
+//                     UIFont * labelFont = [UIFont fontWithName:Menlo size: 16.0];
+//                   UIColor * labelColor = [UIColor colorWithWhite:1 alpha:1];
+//                       NSShadow *shadow = [[NSShadow alloc] init];
+//                 [shadow setShadowColor : BLACK_SHADOW];
+//                [shadow setShadowOffset : CGSizeMake (1.0, 1.0)];
+//            [shadow setShadowBlurRadius : 1 ];
+
+//NSAttributedString *labelText = [[NSAttributedString alloc] initWithString :  myNSString
+//       *myAttrString = [[NSAttributedString alloc] initWithString : mylin   // myNSString
+       myAttrString = [[NSMutableAttributedString alloc] initWithString : mylin   // myNSString
+           attributes : @{
+               NSParagraphStyleAttributeName : paragraphStyle,
+//                         NSFontAttributeName : compFont_16 
+                         NSFontAttributeName : compFont_14 
+//               NSBaselineOffsetAttributeName : @-1.0
+           }
+       ];
+//                 NSKernAttributeName : @2.0,
+//                 NSFontAttributeName : labelFont
+//      NSForegroundColorAttributeName : labelColor,
+//              NSShadowAttributeName : shadow
+
+
+
+
+
+            [myAttrString addAttribute: NSBackgroundColorAttributeName value: gbl_color_cHed
+                                                                       range: NSMakeRange(0, myAttrString.length)];
+
+
+
+//            [myAttrString addAttribute: NSForegroundColorAttributeName value: mybgcolorfortableline  // [UIColor redColor]
+            [myAttrString addAttribute: NSForegroundColorAttributeName value: gbl_color_cBgr 
+                                                                       range: NSMakeRange(0,1)];
+            [myAttrString addAttribute: NSBackgroundColorAttributeName value: gbl_color_cBgr
+                                                                       range: NSMakeRange(0,1)];
+
+//            [myAttrString addAttribute: NSForegroundColorAttributeName value: [UIColor redColor]   // for test
+//                                                                       range: NSMakeRange(0,1)];
+//            [myAttrString addAttribute: NSBackgroundColorAttributeName value: [UIColor greenColor] // for test
+//                                                                       range: NSMakeRange(0,1)];
+
+
+            [myAttrString addAttribute: NSForegroundColorAttributeName value: [UIColor blackColor]
+                                                                       range: NSMakeRange(1,myAttrString.length - 2)];
+
+
+//            [myAttrString addAttribute: NSForegroundColorAttributeName value: mybgcolorfortableline  //[UIColor redColor]
+            [myAttrString addAttribute: NSForegroundColorAttributeName value: gbl_color_cBgr  // [UIColor redColor]
+                                                                       range: NSMakeRange(myAttrString.length - 1, 1)];
+            [myAttrString addAttribute: NSBackgroundColorAttributeName value: gbl_color_cBgr
+                                                                       range: NSMakeRange(myAttrString.length - 1, 1)];
+
+//            [myAttrString addAttribute: NSForegroundColorAttributeName value: [UIColor redColor]   // for test
+//                                                                       range: NSMakeRange(myAttrString.length - 1, 1)];
+//            [myAttrString addAttribute: NSBackgroundColorAttributeName value: [UIColor greenColor]   // for test
+//                                                                       range: NSMakeRange(myAttrString.length - 1, 1)];
+
+  NSLog(@"myAttrString =[%@]",[myAttrString string]);
+
+
+//            UIButton *myInvisibleButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+//            [UIButton buttonWithType: UIButtonTypeCustom];
+//            myInvisibleButton.backgroundColor = [UIColor clearColor];
+
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <===  comp  table header
+//                cell.textLabel.text                      = mylin;  // plain text not used
+//                cell.textLabel.attributedText            = myAttrString;  // order matters- pipes appear if this line is here
+//                cell.textLabel.adjustsFontSizeToFitWidth = myadjust;
+//                cell.textLabel.adjustsFontSizeToFitWidth = NO;
+                cell.textLabel.textAlignment             = NSTextAlignmentCenter;
+                cell.userInteractionEnabled              = NO;
+//              cell.accessoryView                       = nil;   // use accessoryType setting   // have right arrow on column labels
+                cell.accessoryView                       = myInvisibleButton;               // no right arrow on column labels
+//                cell.accessoryView                       = myInvisibleButton;               // no right arrow on column labels
+                cell.accessoryType                       = UITableViewCellAccessoryNone;
+                cell.textLabel.numberOfLines             = 1; 
+                cell.textLabel.textColor                 = [UIColor blackColor];
+                cell.textLabel.font                      = myCompFont;
+                cell.textLabel.adjustsFontSizeToFitWidth = NO;
+                cell.textLabel.backgroundColor           = mybgcolor;
+                cell.textLabel.attributedText            = myAttrString;  // order matters- pipes DO NOT appear if this line is here
+                cell.imageView.image                     = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView                      = nil ;
+            });
+
+            CGRect rect = [ myAttrString boundingRectWithSize: CGSizeMake(300, 10000)
+                                                      options: NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+//                                                      options:NSStringDrawingUsesDeviceMetrics | NSStringDrawingUsesFontLeading
+                                                      context: nil
+            ];
+
+            if (thisIsHeaderSpace  == 0) {
+               gbl_heightForCompTable = rect.size.height;  // found NO  "space" in myspace NSString
+            }
+  NSLog(@"HEIGHT for tbl hdr=[%f]",gbl_heightForCompTable );
+
+            return cell;   //     special case cell      special case       special case       special case      special case   
+
+        }  // table header
+
+
+        if ( [mycode isEqualToString: @"foot"] ) {
+            gbl_areInCompatibilityTable = 0;
+            myalign           = NSTextAlignmentCenter;
+            mynumlines        = 1;    
+            mybgcolor         = gbl_color_cHed ;
+//            gbl_heightCellPER = 16;
+            gbl_heightCellCOMP = 18;
+            myadjust          = YES;
+            mytextcolor       = [UIColor blackColor];
+            myCompFont         = compFont_16;
+        }
+
+        if ( [mycode isEqualToString: @"tabl"] ) {
+            gbl_areInCompatibilityTable = 1;
+
+
+//            myalign           = NSTextAlignmentLeft;
+            myalign           = NSTextAlignmentCenter;
+//            myalign           = NSTextAlignmentLeft;
+            mynumlines        = 1;    
+            //            gbl_heightCellPER = 24;
+//            gbl_heightCellCOMP = 20;
+//            gbl_heightCellCOMP = 24;
+//            gbl_heightCellCOMP = 44;
+//            gbl_heightCellCOMP = 13.8;
+            myadjust          = YES;
+            mytextcolor       = [UIColor blackColor];
+//            myCompFont         = compFont_16;
+            myCompFont         = compFont_14;
+            mybgcolor         = gbl_color_cBgr ;
+            
+            tmparr    = [mylin  componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:  @"@"]]; 
+            mycode2 = @" ";
+            myscore = @"00";
+            myspace = @" ";
+            if (tmparr.count >= 2) {
+                mycode2   = tmparr[0];
+                myscore   = tmparr[1];
+                myspace   = tmparr[2];
+            }
+  NSLog(@"mycode2=[%@]",mycode2);
+  NSLog(@"myscore=[%@]",myscore);
+  NSLog(@"myspace=[%@]",myspace);
+
+
+            // lin=[tabl|label@90@space above]__
+            // lin=[tabl|label@90@filler]__
+            // lin=[tabl|label@90@space below]__
+            // lin=[tabl|label@75@space above]__
+            // lin=[tabl|label@75@filler]__
+            // lin=[tabl|label@75@space below]__
+            // lin=[tabl|pair@26@space above@x]__
+            // lin=[tabl|pair@26@~Emma@~Anya]__
+            // lin=[tabl|pair@26@space below@x]__
+            // lin=[tabl|label@25@space below]__
+            // lin=[tabl|label@10@space above]__
+            // lin=[tabl|label@10@filler]__
+            // lin=[tabl|label@10@space below]__
+            //
+            // lin=[fill|filler before how big]__
+            if ( [mycode2 isEqualToString: @"label"] ) {
+
+                // FORMAT the line
+                //    there are long and short lines depending on the 2 name lengths
+                //
+                if (gbl_pairPersonA.length + gbl_pairPersonB.length <= gbl_ThresholdshortTblLineLen) { // SHORT line here
+                    // SHORT line here
+
+  NSLog(@"1line is short");
+                    if( [myscore isEqualToString: @"90"] ) {
+                        mybgcolorfortableline = gbl_color_cGr2;
+
+                        if (      [myspace isEqualToString: @"space above"] ) {
+                            gbltmpstr          = @"             ";
+                            gbl_heightForCompTable =  2.0;
+                        }
+                        else if ( [myspace isEqualToString: @"space below"] ) {
+                            gbltmpstr          = @"             ";
+                            gbl_heightForCompTable =  3.0;
+                        } else {
+                            gbltmpstr          = @"90  Great    ";
+                            gbl_heightForCompTable = 18.0;
+                        }
+                    }
+  NSLog(@"gbltmpstr              =[%@]",gbltmpstr          );
+  NSLog(@"gbl_heightForCompTable =[%f]",gbl_heightForCompTable );
+
+                    if( [myscore isEqualToString: @"75"] ) {
+                        mybgcolorfortableline = gbl_color_cGre;
+                        if (      [myspace isEqualToString: @"space above"] ) {
+                            gbltmpstr              = @"             ";
+                            gbl_heightForCompTable =  2.0;
+                        }
+                        else if ( [myspace isEqualToString: @"space below"] ) {
+                            gbltmpstr              = @"             ";
+                            gbl_heightForCompTable =  3.0;
+                        } else {
+                            gbltmpstr              = @"75  Good     ";
+                            gbl_heightForCompTable = 18.0;
+                        }
+                    }
+
+//                    if( [myscore isEqualToString: @"50"] ) { mybgcolorfortableline = gbl_color_cNeu; gbltmpstr = @"50  Average  ";}
+                    if( [myscore isEqualToString: @"50"] ) {
+                        mybgcolorfortableline = gbl_color_cNeu;
+                        if (      [myspace isEqualToString: @"space above"] ) {
+                            gbltmpstr              = @"             ";
+                            gbl_heightForCompTable =  2.0;
+                        }
+                        else if ( [myspace isEqualToString: @"space below"] ) {
+                            gbltmpstr              = @"             ";
+                            gbl_heightForCompTable =  3.0;
+                        } else {
+                            gbltmpstr              = @"50  Average  ";
+                            gbl_heightForCompTable = 18.0;
+                        }
+                    }
+
+                    if( [myscore isEqualToString: @"25"] ) {
+                        mybgcolorfortableline = gbl_color_cRed;
+                        if (      [myspace isEqualToString: @"space above"] ) {
+                            gbltmpstr              = @"             ";
+                            gbl_heightForCompTable =  2.0;
+                        }
+                        else if ( [myspace isEqualToString: @"space below"] ) {
+                            gbltmpstr              = @"             ";
+                            gbl_heightForCompTable =  3.0;
+                        } else {
+                            gbltmpstr              = @"25  Not Good ";
+                            gbl_heightForCompTable = 18.0;
+                        }
+                    }
+                    if( [myscore isEqualToString: @"10"] ) {
+                        mybgcolorfortableline = gbl_color_cRe2;
+                        if (      [myspace isEqualToString: @"space above"] ) {
+                            gbltmpstr              = @"             ";
+                            gbl_heightForCompTable =  2.0;
+                        }
+                        else if ( [myspace isEqualToString: @"space below"] ) {
+                            gbltmpstr              = @"             ";
+                            gbl_heightForCompTable =  3.0;
+                        } else {
+                            gbltmpstr              = @"10  OMG      ";
+                            gbl_heightForCompTable = 18.0;
+                        }
+                    }
+
+                    mylin = [NSString stringWithFormat:@"|%@%@|",
+                        [@"" stringByPaddingToLength: gbl_topTableNamesWidth       withString: @" " startingAtIndex: 0],
+                        gbltmpstr
+                    ];
+                    gbl_heightCellCOMP = 18;
+
+  NSLog(@"[mylin s length]=[%ld]",[mylin length]);
+
+
+                } else { // LONG  line here
+  NSLog(@"2line is long ");
+
+                    // if( [myscore isEqualToString: @"90"] ) { mybgcolorfortableline = gbl_color_cGr2; gbltmpstr = @"   Great  90 ";}
+                    // if( [myscore isEqualToString: @"75"] ) { mybgcolorfortableline = gbl_color_cGre; gbltmpstr = @"    Good  75 ";}
+                    // if( [myscore isEqualToString: @"50"] ) { mybgcolorfortableline = gbl_color_cNeu; gbltmpstr = @" Average  50 ";}
+                    // if( [myscore isEqualToString: @"25"] ) { mybgcolorfortableline = gbl_color_cRed; gbltmpstr = @"Not Good  25 ";}
+                    // if( [myscore isEqualToString: @"10"] ) { mybgcolorfortableline = gbl_color_cRe2; gbltmpstr = @"     OMG  10 ";}
+
+                    if( [myscore isEqualToString: @"90"] ) {
+                        mybgcolorfortableline = gbl_color_cGr2;
+                        if (      [myspace isEqualToString: @"space above"] ) {
+                            gbltmpstr              = @"             ";
+                            gbl_heightForCompTable =  2.0;
+                        }
+                        else if ( [myspace isEqualToString: @"space below"] ) {
+                            gbltmpstr              = @"             ";
+                            gbl_heightForCompTable =  3.0;
+                        } else {
+                            gbltmpstr              = @"   Great  90 ";
+                            gbl_heightForCompTable = 18.0;
+                        }
+                    }
+                    if( [myscore isEqualToString: @"75"] ) {
+                        mybgcolorfortableline = gbl_color_cGre;
+                        if (      [myspace isEqualToString: @"space above"] ) {
+                            gbltmpstr              = @"             ";
+                            gbl_heightForCompTable =  2.0;
+                        }
+                        else if ( [myspace isEqualToString: @"space below"] ) {
+                            gbltmpstr              = @"             ";
+                            gbl_heightForCompTable =  3.0;
+                        } else {
+                            gbltmpstr              = @"    Good  75 ";
+                            gbl_heightForCompTable = 18.0;
+                        }
+                    }
+                    if( [myscore isEqualToString: @"50"] ) {
+                        mybgcolorfortableline = gbl_color_cNeu;
+                        if (      [myspace isEqualToString: @"space above"] ) {
+                            gbltmpstr              = @"             ";
+                            gbl_heightForCompTable =  2.0;
+                        }
+                        else if ( [myspace isEqualToString: @"space below"] ) {
+                            gbltmpstr              = @"             ";
+                            gbl_heightForCompTable =  3.0;
+                        } else {
+                            gbltmpstr              = @" Average  50 ";
+                            gbl_heightForCompTable = 18.0;
+                        }
+                    }
+                    if( [myscore isEqualToString: @"25"] ) {
+                        mybgcolorfortableline = gbl_color_cRed;
+                        if (      [myspace isEqualToString: @"space above"] ) {
+                            gbltmpstr              = @"             ";
+                            gbl_heightForCompTable =  2.0;
+                        }
+                        else if ( [myspace isEqualToString: @"space below"] ) {
+                            gbltmpstr              = @"             ";
+                            gbl_heightForCompTable =  3.0;
+                        } else {
+                            gbltmpstr              = @"Not Good  25 ";
+                            gbl_heightForCompTable = 18.0;
+                        }
+                    }
+                    if( [myscore isEqualToString: @"10"] ) {
+                        mybgcolorfortableline = gbl_color_cRe2;
+                        if (      [myspace isEqualToString: @"space above"] ) {
+                            gbltmpstr              = @"             ";
+                            gbl_heightForCompTable =  2.0;
+                        }
+                        else if ( [myspace isEqualToString: @"space below"] ) {
+                            gbltmpstr              = @"             ";
+                            gbl_heightForCompTable =  3.0;
+                        } else {
+                            gbltmpstr              = @"     OMG  10 ";
+                            gbl_heightForCompTable = 18.0;
+                        }
+                    }
+                    mylin = [NSString stringWithFormat:@"|%@%@|",
+                        [@"" stringByPaddingToLength: gbl_topTableNamesWidth + 1 - 11 withString: @" " startingAtIndex: 0], // 11="  Not Good "
+                        gbltmpstr
+                    ];
+                    gbl_heightCellCOMP = 18;
+
+                } // end   LONG  line here
+
+  NSLog(@"[mylin l length]=[%ld]",[mylin length]);
+            } // if ( [mycode2 isEqualToString: @"label"] )
+
+
+            // lin=[tabl|pair@26@space above@x]__
+            // lin=[tabl|pair@26@~Emma@~Anya]__
+            // lin=[tabl|pair@26@space below@x]__
+            if ( [mycode2 isEqualToString: @"pair"] ) {
+
+                // set mylin string
+                //
+                if( [myspace hasPrefix: @"space "] ) {
+                    if (gbl_pairPersonA.length + gbl_pairPersonB.length <= gbl_ThresholdshortTblLineLen) { // SHORT line here
+  NSLog(@"3line is short ");
+                        mylin = [NSString stringWithFormat:@"|%@%@|",
+                            [@"" stringByPaddingToLength: gbl_topTableNamesWidth       withString: @" " startingAtIndex: 0],
+                            gbltmpstr
+                        ];
+
+                    } else { // LONG line here
+  NSLog(@"4line is long ");
+                        mylin = [NSString stringWithFormat:@"|%@%@|",
+                            [@"" stringByPaddingToLength: gbl_topTableNamesWidth + 1 - 11 withString: @" " startingAtIndex: 0], // 11 is "  Not Good "
+                            gbltmpstr
+                        ];
+                    }
+
+                } else {
+  NSLog(@"else ");
+                    mylin = gbl_topTablePairLine;
+                }
+  NSLog(@"[mylin space length]=[%ld]",[mylin length]);
+  NSLog(@"mylin=[%@]",mylin);
+  NSLog(@"gbltmpstr=[%@]",gbltmpstr);
+
+
+                if ( [myspace isEqualToString: @"space above"] ) {
+                     gbltmpstr              = @"             ";
+                    // gbltmpstr is set above
+                    gbl_heightForCompTable =  2.0;
+//                    gbl_heightForCompTable =  20.0;  for test
+  NSLog(@"mylin a =[%@]",mylin);
+                }
+                if ( [myspace isEqualToString: @"space below"] ) {
+                     gbltmpstr              = @"             ";
+                    // gbltmpstr is set above
+                    gbl_heightForCompTable =  3.0;
+//                    gbl_heightForCompTable =  20.0;  for test
+  NSLog(@"mylin b =[%@]",mylin);
+                } 
+
+                if (   [myspace isEqualToString: @"space above"]
+                    || [myspace isEqualToString: @"space below"]
+                ) {
+                    if (gbl_pairPersonA.length + gbl_pairPersonB.length <= gbl_ThresholdshortTblLineLen) { // SHORT line here
+  NSLog(@"10line is short ");
+                        mylin = [NSString stringWithFormat:@"|%@%@|",
+                            [@"" stringByPaddingToLength: gbl_topTableNamesWidth       withString: @" " startingAtIndex: 0],
+                            gbltmpstr
+                        ];
+
+                    } else { // LONG line here
+  NSLog(@"11Iline is long ");
+                        mylin = [NSString stringWithFormat:@"|%@%@|",
+                            [@"" stringByPaddingToLength: gbl_topTableNamesWidth + 1 - 11 withString: @" " startingAtIndex: 0], // 11 is "  Not Good "
+                            gbltmpstr
+                        ];
+                    }
+                }
+
+
+                int sco;
+                sco = [myscore intValue];  // nsstring to int
+                if( sco >= 90    )  mybgcolorfortableline = gbl_color_cGr2;
+
+                if( sco <  90 &&
+                    sco >= 75    )  mybgcolorfortableline = gbl_color_cGre;
+                if( sco <  75 &&
+                    sco >  25    )  mybgcolorfortableline = gbl_color_cNeu;
+                if( sco <= 25 &&
+                    sco >  10    )  mybgcolorfortableline = gbl_color_cRed;
+
+                if( sco <= 10    )  mybgcolorfortableline = gbl_color_cRe2;
+            }
+
+            // NOTE: this is copied from "tabl|"
+            NSMutableAttributedString *myAttrString;    // for cell text
+//            NSMutableAttributedString *myAttrSpace;     // for cell text
+//            NSString                  *myStringNoAttr;  // for work string
+
+
+//            myAttrString  = [[NSMutableAttributedString alloc] initWithString: mylin ];
+
+
+//#define FONT_SIZE 20
+//#define FONT_HELVETICA @"Helvetica-Light"
+//#define BLACK_SHADOW [UIColor colorWithRed:40.0f/255.0f green:40.0f/255.0f blue:40.0f/255.0f alpha:0.4f]
+//NSString*myNSString = @"This is my string.\nIt goes to a second line.";                
+
+NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+               paragraphStyle.alignment = NSTextAlignmentCenter;
+//               paragraphStyle.alignment = NSTextAlignmentLeft;
+//             paragraphStyle.lineSpacing = FONT_SIZE/2;
+//             paragraphStyle.lineSpacing = -5;
+
+//                     UIFont * labelFont = [UIFont fontWithName:Menlo size: 16.0];
+//                   UIColor * labelColor = [UIColor colorWithWhite:1 alpha:1];
+//                       NSShadow *shadow = [[NSShadow alloc] init];
+//                 [shadow setShadowColor : BLACK_SHADOW];
+//                [shadow setShadowOffset : CGSizeMake (1.0, 1.0)];
+//            [shadow setShadowBlurRadius : 1 ];
+
+//NSAttributedString *labelText = [[NSAttributedString alloc] initWithString :  myNSString
+//       *myAttrString = [[NSAttributedString alloc] initWithString : mylin   // myNSString
+       myAttrString = [[NSMutableAttributedString alloc] initWithString : mylin   // myNSString
+           attributes : @{
+               NSParagraphStyleAttributeName : paragraphStyle,
+//                         NSFontAttributeName : compFont_16 
+                         NSFontAttributeName : compFont_14 
+//               NSBaselineOffsetAttributeName : @-1.0
+           }
+       ];
+//                 NSKernAttributeName : @2.0,
+//                 NSFontAttributeName : labelFont
+//      NSForegroundColorAttributeName : labelColor,
+//              NSShadowAttributeName : shadow
+
+
+
+//            [myAttrString addAttribute: NSForegroundColorAttributeName value: gbl_color_cBgr
+            [myAttrString addAttribute: NSBackgroundColorAttributeName value: mybgcolorfortableline
+                                                                       range: NSMakeRange(0, myAttrString.length)];
+
+
+//            [myAttrString addAttribute: NSForegroundColorAttributeName value: mybgcolorfortableline  // [UIColor redColor]
+            [myAttrString addAttribute: NSForegroundColorAttributeName value: gbl_color_cBgr
+                                                                       range: NSMakeRange(0,1)];
+            [myAttrString addAttribute: NSBackgroundColorAttributeName value: gbl_color_cBgr
+                                                                       range: NSMakeRange(0,1)];
+
+//            [myAttrString addAttribute: NSForegroundColorAttributeName value: [UIColor redColor]  // for test
+//                                                                       range: NSMakeRange(0,1)];
+//            [myAttrString addAttribute: NSBackgroundColorAttributeName value: [UIColor greenColor]  // for test
+//                                                                       range: NSMakeRange(0,1)];
+
+            [myAttrString addAttribute: NSForegroundColorAttributeName value: [UIColor blackColor]
+                                                                       range: NSMakeRange(1,myAttrString.length - 2)];
+
+//            [myAttrString addAttribute: NSForegroundColorAttributeName value: gbl_color_cBgr
+//                                                                       range: NSMakeRange(myAttrString.length - 1, 1)];
+//            [myAttrString addAttribute: NSBackgroundColorAttributeName value: gbl_color_cBgr
+//                                                                       range: NSMakeRange(myAttrString.length - 1, 1)];
+
+            [myAttrString addAttribute: NSForegroundColorAttributeName value: gbl_color_cBgr   // foreground
+                                                                       range: NSMakeRange(myAttrString.length - 1, 1)];
+            [myAttrString addAttribute: NSBackgroundColorAttributeName value: gbl_color_cBgr   // background
+                                                                       range: NSMakeRange(myAttrString.length - 1, 1)];
+
+//            [myAttrString addAttribute: NSForegroundColorAttributeName value: mybgcolorfortableline  //[UIColor redColor]
+//            [myAttrString addAttribute: NSForegroundColorAttributeName value: gbl_color_cBgr  // [UIColor redColor]
+//                                                                       range: NSMakeRange(myAttrString.length - 1, 1)];
+
+
+//            [myAttrString addAttribute: NSForegroundColorAttributeName value: [UIColor redColor]   // for test
+//                                                                       range: NSMakeRange(myAttrString.length - 1, 1)];
+//            [myAttrString addAttribute: NSBackgroundColorAttributeName value: [UIColor greenColor]   // for test
+//                                                                       range: NSMakeRange(myAttrString.length - 1, 1)];
+
+
+            UIButton *myInvisibleButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+            [UIButton buttonWithType: UIButtonTypeCustom];
+            myInvisibleButton.backgroundColor = [UIColor clearColor];
+
+            CGRect rect;
+
+            dispatch_async(dispatch_get_main_queue(), ^{               // <===  comp pair
+                // do not set text
+                cell.textLabel.textAlignment             = NSTextAlignmentCenter;
+                cell.userInteractionEnabled              = NO;
+//                cell.accessoryView                       = nil;   // use accessoryType setting   // have right arrow on column labels
+                cell.accessoryView                       = myInvisibleButton;               // no right arrow on column labels
+                cell.accessoryType                       = UITableViewCellAccessoryNone;
+                cell.textLabel.numberOfLines             = 1; 
+                cell.textLabel.textColor       = mytextcolor;
+                cell.textLabel.font                      = myCompFont;
+                cell.textLabel.adjustsFontSizeToFitWidth = myadjust;
+                cell.textLabel.backgroundColor           = mybgcolor;
+                cell.textLabel.attributedText            = myAttrString;
+                cell.imageView.image                     = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView                      = nil ;
+
+            });
+            //<.> gold below, but above workd
+            //            dispatch_async(dispatch_get_main_queue(), ^{            // <===  comp fall thru
+            //                cell.textLabel.text                      = mylin;   // --------------------------------------------------
+            //                cell.textLabel.adjustsFontSizeToFitWidth = myadjust;
+            //                cell.textLabel.textAlignment             = myalign;
+            //                cell.userInteractionEnabled              = NO;
+            //                cell.accessoryView                       = nil;   // use accessoryType setting   // have right arrow on column labels
+            //                cell.accessoryType                       = UITableViewCellAccessoryNone;
+            //                cell.textLabel.numberOfLines             = 1; 
+            //                cell.textLabel.textColor                 = mytextcolor;
+            //                cell.textLabel.font                      = myCompFont;
+            //                cell.textLabel.adjustsFontSizeToFitWidth = NO;
+            //                cell.textLabel.backgroundColor           = mybgcolor;
+            //            });
+            //<.>
+            //
+
+                   rect = [ myAttrString boundingRectWithSize: CGSizeMake(300, 10000)
+//                                                      options: NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+//                                                      options:NSStringDrawingUsesDeviceMetrics | NSStringDrawingUsesFontLeading
+                                                      options:NSStringDrawingUsesDeviceMetrics | NSStringDrawingUsesDeviceMetrics  // these give NO grey lines (notice booboo)
+                                                      context: nil
+            ];
+
+  NSLog(@"hey hey=[%@]",myspace);
+            if ([myspace rangeOfString:@"space"].location == NSNotFound) {
+
+//                gbl_heightForCompTable = myAttrString.size.height;  // found NO  "space" in myspace NSString
+                gbl_heightForCompTable = rect.size.height;  // found NO  "space" in myspace NSString
+
+  NSLog(@"gbl_heightForCompTable =[%f]",gbl_heightForCompTable );
+//                gbl_heightForCompTable = ceil(myAttrString.size.height);  // found NO  "space" in myspace NSString
+//  NSLog(@"gbl_heightForCompTable =[%f]",gbl_heightForCompTable );
+            } else {
+                ;   // gbl_heightForCompTable  already set        NSLog(@"string does not contain bla");
+            }
+kdn(gbl_heightForCompTable );
+
+  NSLog(@"end of tabl|     ");
+
+
+
+            return cell;   //     special case cell      special case       special case       special case      special case   
+
+        } // end of "tabl|"
+
+
+        // "how big" section   input data
+        //
+        // lin=[fill|filler before how big]__
+        // lin=[fill|before how big header]__
+        // lin=[howbighdr| HOW BIG]__
+        // lin=[howbighdr| are the   favorable influences    +++++  ]__
+        // lin=[howbighdr| and the   chalenging influences   -----  ]__
+        // lin=[howbighdr| in the 3 categories below]__
+        // lin=[fill|after how big header]__
+        // lin=[catlabel| CLOSENESS ]__
+        // lin=[stars|        easy ++++++++++++++++++++++++++++++                                                 ]__
+        // lin=[stars|   difficult ----------                                                                     ]__
+        // lin=[fill|after personal stars]__
+        // lin=[catlabel| FROM ~EMMA's POINT OF VIEW ]__
+        // lin=[stars|        easy +++++++++++++++++++++++++++++++++                                              ]__
+        // lin=[stars|   difficult ----------------------------------------------------                           ]__
+        // lin=[fill|after personA ptofview]__
+        // lin=[catlabel| FROM ~ANYA's POINT OF VIEW ]__
+        // lin=[stars|        easy +++++++++++++++++++++++++++++                                                  ]__
+        // lin=[stars|   difficult --------------------------------------------------------------                 ]__
+        // lin=[fill|after personB ptofview]__
+        // lin=[howbigftr| good indicators are a full line of pluses]__
+        // lin=[howbigftr| and double the pluses compared to minues ]__
+        // lin=[fill|after howbigftr]__
+        // lin=[fill|filler after how big]__
+        // lin=[fill|filler before paras]__
+        //
+        if (   [mycode isEqualToString: @"howbighdr"]
+        ) {
+            gbl_areInCompatibilityTable = 0;
+
+            myalign           = NSTextAlignmentLeft;
+            mynumlines        = 1;    
+            mybgcolor         = gbl_color_cHed ;
+//            mybgcolor         = gbl_color_cNeu ;
+            gbl_heightCellCOMP = 18;
+            myadjust          = NO;
+            mytextcolor       = [UIColor blackColor];
+//            myCompFont         = myFont_14;
+            myCompFont         = compFont_14;
+nbn(20); trn(" in howbighdr");
+  NSLog(@"mylin=[%@]",mylin);
+
+            NSInteger areInPlusesLine;
+            areInPlusesLine = 0;
+            NSInteger areInMinusesLine;
+            areInMinusesLine = 0;
+  NSLog(@"areInPlusesLine   =[%ld]",areInPlusesLine  );
+  NSLog(@"areInMinusesLine  =[%ld]",areInMinusesLine  );
+
+            const char *cString = [mylin UTF8String];
+
+//            if (   [mylin rangeOfString: @"+++"   options: NSCaseInsensitiveSearch ].location == NSNotFound) areInMinusesLine = 1;
+//            if (   [mylin rangeOfString: @"qqq"   options: NSCaseInsensitiveSearch ].location == NSNotFound) areInPlusesLine  = 1;
+//            if (   [mylin rangeOfString: @"+++"   options: NSLiteralSearch ].location == NSNotFound) 
+            if (strstr(cString, "+++") != NULL )  areInPlusesLine  = 1;
+            if (strstr(cString, "---") != NULL )  areInMinusesLine = 1;
+
+  NSLog(@"areInPlusesLine   =[%ld]",areInPlusesLine  );
+  NSLog(@"areInMinusesLine  =[%ld]",areInMinusesLine  );
+
+        if (areInPlusesLine  == 1) mybgcolor         = gbl_color_cGre ;
+        if (areInMinusesLine == 1) mybgcolor         = gbl_color_cRed ;
+
+
+//<.>  attrstr apple bug in ios 8 prevents this
+//        if (areInPlusesLine == 1)
+//        {   // here we have +++ line
+//nbn(22);
+//nbn(221);
+//                NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+//                paragraphStyle.alignment = NSTextAlignmentLeft;
+//
+////  NSLog(@"mylin=[%@]",mylin);
+////  mylin   = [NSString stringWithFormat:@"%@\n ", mylin]; //  assign  assign  assign  assign  assign  assign assign 
+////  NSLog(@"mylin=[%@]",mylin);
+//                gbl_attrStrWrk_11 = [[NSMutableAttributedString alloc] initWithString : mylin   // myNSString
+//                   attributes : @{
+//                       NSParagraphStyleAttributeName : paragraphStyle,
+//                                  NSFontAttributeName: myFont_14,
+//                       NSForegroundColorAttributeName: [UIColor blackColor]
+////                       ,
+////                       NSBackgroundColorAttributeName: gbl_color_cHed
+//                   }
+//                ];
+//NSLog(@"gbl_attrStrWrk_11 =[%@]",[gbl_attrStrWrk_11 string]);
+//
+//
+//                // BUG  
+//                // Seems on iOS 8.0 (12A365) NSMutableAttributedString sometimes will not be displayed correctly.
+//                // The problem obviously occurs when the range of the attribute does not start at the beginning of the text
+//                // (and if there is no other attribute starting at the beginning of the text).
+//                // BUG  
+//                // 
+//                // [text addAttribute:NSBackgroundColorAttributeName value:[UIColor clearColor] range:(NSRange){0,text.length}]; // ***FIX ***
+//                // 
+////                [gbl_attrStrWrk_11 addAttribute: NSBackgroundColorAttributeName value: [UIColor clearColor]
+////                                                                            range: NSMakeRange(0, 10)
+////                ];
+////                [gbl_attrStrWrk_11 addAttribute: NSBackgroundColorAttributeName value:  [UIColor clearColor]
+//////                                                                            range: NSMakeRange(0, gbl_attrStrWrk_11.length)
+////                                                                            range: (NSRange){0,gbl_attrStrWrk_11.length}   //Fix
+////                ];
+////                [gbl_attrStrWrk_11 addAttribute: NSBackgroundColorAttributeName value: gbl_color_cGre
+//
+////                                                                                range: NSMakeRange(10, 10)
+////                ];
+//
+////                [gbl_attrStrWrk_11 addAttribute: NSBackgroundColorAttributeName value: gbl_color_cHed
+////                                                                                range: (NSRange){0,gbl_attrStrWrk_11.length}]; // ***FIX ***
+//
+//
+//
+//                [gbl_attrStrWrk_11 addAttribute: NSBackgroundColorAttributeName value: gbl_color_cGre
+//                                                                                range: NSMakeRange(10, 31)
+//                ];
+//
+//// new approach    did not work
+////    NSString *subStr = [mylin substringWithRange:NSMakeRange(10, 31)];
+////  NSLog(@"subStr =[%@]",subStr );
+////    gbl_attrStrWrk_12 = [[NSMutableAttributedString alloc] initWithString : subStr ];  // myNSString
+////    [gbl_attrStrWrk_12 addAttribute: NSBackgroundColorAttributeName value: gbl_color_cGre  // color whole string
+////                                                                    range: NSMakeRange(0, [gbl_attrStrWrk_12 length] )
+////    ];
+//////    [gbl_attrStrWrk_11 replaceCharactersInRange: NSMakeRange(5, [replace length]) withAttributedString:replace];
+////    // put colored string in orig
+////    [gbl_attrStrWrk_11 replaceCharactersInRange: NSMakeRange(10, 31) withAttributedString: gbl_attrStrWrk_12 ];
+////
+//
+//
+//
+//NSLog(@"gbl_attrStrWrk_11 =[%@]",[gbl_attrStrWrk_11 string]);
+//NSLog(@"gbl_attrStrWrk_11 =[%@]",gbl_attrStrWrk_11);
+//
+//                UIButton *myInvisibleButton = [[UIButton alloc] initWithFrame: CGRectMake(0, 0, 1, 1)];
+//                [UIButton buttonWithType: UIButtonTypeCustom];
+//                myInvisibleButton.backgroundColor = [UIColor clearColor];
+//
+//                dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+////                    cell.textLabel.font            = myFont_12;
+//                    // cell.textLabel.numberOfLines = 5;
+////                    cell.accessoryView             = myInvisibleButton;               // no right arrow on column labels
+//                    cell.userInteractionEnabled    = NO;
+////                    cell.textLabel.textAlignment   = NSTextAlignmentCenter;
+//                    cell.textLabel.textAlignment   = NSTextAlignmentLeft;
+//                    cell.textLabel.textColor       = mytextcolor;
+//                    cell.textLabel.attributedText  = gbl_attrStrWrk_11;
+//                    cell.textLabel.numberOfLines   = 7; 
+//                    cell.textLabel.backgroundColor = mybgcolor;
+//                    cell.textLabel.font            = myFont_12;
+//              });
+//
+//nbn(23);
+//NSLog(@"cell=[%@]",cell);
+//                return cell;   //     special case cell      special case       special case       special case      special case   
+//            } // here we have +++ 
+////<.>
+//
+
+
+
+        } // howbighdr    end of if (   [mycode isEqualToString: @"howbighdr"]
+
+
+        if (   [mycode isEqualToString: @"howbigftr"] ) {
+            gbl_areInCompatibilityTable = 0;
+
+            myalign           = NSTextAlignmentLeft;
+            mynumlines        = 1;    
+            mybgcolor         = gbl_color_cHed ;
+//            mybgcolor         = gbl_color_cNeu ;
+            gbl_heightCellCOMP = 18;
+            myadjust          = NO;
+            mytextcolor       = [UIColor blackColor];
+            myCompFont         = compFont_14;
+
+        }
+        if ( [mycode isEqualToString: @"catlabel"] ) {
+            gbl_areInCompatibilityTable = 0;
+
+            myalign           = NSTextAlignmentLeft;
+            mynumlines        = 1;    
+            mybgcolor         = gbl_color_cHed ;
+//            mybgcolor         = gbl_color_cBgr ;
+//            mybgcolor         = gbl_color_cNeu ;
+            gbl_heightCellCOMP = 18;
+            myadjust          = NO;
+            mytextcolor       = [UIColor blackColor];
+            myCompFont         = compFont_14;
+        }
+
+
+        if ( [mycode isEqualToString: @"stars"] )  // start stars
+        {   // start stars
+
+
+            gbl_areInCompatibilityTable = 0;
+
+            UIColor *myRedGreenColor;
+
+            // convert num stars to int
+            //
+            NSInteger n = [mylin integerValue];   // max is 77
+
+  NSLog(@"=n[%ld]",(long)n);
+
+            if (n > 0) {   // put plus signs
+
+                n = (n * 40) / 77; // convert 1 -> 77 to 1 -> 40
+//                n = (n * 50) / 77; // convert 1 -> 77 to 1 -> 50
+                if (n < 1.0) n = 1;
+                gbl_starsNSInteger = n;
+
+  NSLog(@"=n[%ld]",(long)n);
+
+                NSString *myPlusSigns = 
+                    [@"" stringByPaddingToLength: n
+                                      withString: @"+"
+                                 startingAtIndex: 0
+                    ]
+                ;
+                gbl_starsNSString = myPlusSigns;
+//                mylin             = myPlusSigns;            
+//                mylin = [NSString stringWithFormat:@"    %@", myPlusSigns ];
+                mylin = [NSString stringWithFormat:@"%@", myPlusSigns ];
+                myRedGreenColor = gbl_color_cGre ;
+
+            } else if (n < 0) {   // put minus signs
+
+                n = (n * -1 * 40) / 77; // convert -1 -> -77 to 1 -> 40
+//                n = (n * -1 * 50) / 77; // convert -1 -> -77 to 1 -> 50
+                if (n < 1.0) n = 1;
+                gbl_starsNSInteger = n;
+  NSLog(@"=n[%ld]",(long)n);
+
+                NSString *myMinusSigns = 
+                    [@"" stringByPaddingToLength: n
+                                      withString: @"-"
+                                 startingAtIndex: 0
+                    ]
+                ;
+                gbl_starsNSString = myMinusSigns;
+//                mylin             = myPlusSigns;            
+//                mylin = [NSString stringWithFormat:@"    %@", myMinusSigns ];
+                mylin = [NSString stringWithFormat:@"%@", myMinusSigns ];
+                myRedGreenColor = gbl_color_cRed ;
+            } else {
+                // defaults
+                mylin     = @"x";
+                myRedGreenColor = gbl_color_cHed ;
+            }
+
+            gbl_starsWhiteSpaces = 
+                [@"" stringByPaddingToLength: 40 - gbl_starsNSInteger
+                                  withString: @" "
+                             startingAtIndex: 0
+                ]
+            ;
+
+  NSLog(@"mylin before print             =[%@]",       mylin);
+  NSLog(@"gbl_starsNSInteger             =[%ld]",(long)gbl_starsNSInteger);
+  NSLog(@"gbl_starsNSString              =[%@]",       gbl_starsNSString);
+  NSLog(@"gbl_starsWhiteSpaces           =[%@]",       gbl_starsWhiteSpaces );
+
+
+
+            mytextcolor       = [UIColor blackColor];
+            mybgcolor         = gbl_color_cHed;
+            myalign           = NSTextAlignmentLeft;
+            mynumlines        = 1;    
+//            gbl_heightCellCOMP = 18;
+//            gbl_heightCellCOMP = 15;  // get pipes to join
+//            gbl_heightCellCOMP = 10;  // get pipes to join
+//            gbl_heightCellCOMP = 13;  // get pipes to join
+//            gbl_heightCellCOMP = 12;  // get pipes to join
+            gbl_heightCellCOMP = 11;  // get pipes to join
+            myadjust          = NO;
+//            myCompFont         = compFont_14;
+            myCompFont         = compFont_12;
+
+            // you can simply calculate UILabel width for string size,try this simple code for set UILabel size
+            // Single line, no wrapping;
+
+//            // CGSize expectedLabelSize = [mylin sizeWithFont: compFont_14];  // you get width,height in expectedLabelSize; DEPRECATED
+//            CGSize expectedLabelSize = [mylin sizeWithAttributes:              // you get width,height in expectedLabelSize;
+//                                                                               // expectedLabelSize.width ,expectedLabelSize.height
+//                @{ NSFontAttributeName: compFont_14 }
+//            ];
+//            // Values are fractional -- you should take the ceilf to get equivalent values
+//            CGSize adjustedSize = CGSizeMake(ceilf(expectedLabelSize.width), ceilf(expectedLabelSize.height));
+
+//<.>
+//@Pedroinpeace You would use boundingRectWithSize:options:attributes:context: instead, passing in CGSizeMake(250.0f, CGFLOAT_MAX) in most cases. – Incyc Dec 18 '13 at 16:07 
+//<.>
+
+     
+//          CGRect rect0 = CGRectZero;
+//          CGRect rect1 = CGRectZero;
+//          CGRect rect21 = CGRectZero;
+
+//            // add label for left left margin   -----  about 2 chars----------------------------------------========================
+//            //
+////            CGRect rect0 = [@"123" boundingRectWithSize: CGSizeMake(300, 10000)
+//            CGRect rect0 = [@"+++" boundingRectWithSize: CGSizeMake(300, 10000)
+//                                                       options: NSStringDrawingUsesLineFragmentOrigin
+//                                                    attributes: @{ NSFontAttributeName: compFont_12 }
+//                                                       context: nil
+//            ];
+//            CGRect lFrame0 = CGRectMake(  // arg 1=x 2=y 3=width 4=height
+//                0,
+//                0,
+////                expectedLabelSize.width + 10.0,
+//                ceilf(rect0.size.width),
+//                ceilf(rect0.size.height)
+//            );
+//
+//            UILabel* label0 = [[UILabel alloc] initWithFrame: lFrame0];
+//            label0.text            = @"  "; // spaces
+//            label0.font            = compFont_12;
+//            label0.backgroundColor = gbl_color_cBgr;
+////            label0.backgroundColor = [UIColor orangeColor];
+//            //            label0.layer.borderColor = [UIColor redColor].CGColor;
+//            label0.numberOfLines   = 0;
+//            label0.textAlignment   = NSTextAlignmentLeft;
+//            label0.maskView        = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+//tn();tr("leftl wid=");kin( ceilf(rect0.size.width));
+//     tr("leftl hei=");kin( ceilf(rect0.size.height));
+//
+//
+
+//
+//            // add label for left margin   ---------------------------------------------------------------========================
+//            //
+//            //       options: NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+//            //       options: NSStringDrawingUsesDeviceMetrics 
+//            CGRect rect1 = [@"4567890" boundingRectWithSize: CGSizeMake(300, 10000)
+//                                                    options: NSStringDrawingUsesLineFragmentOrigin
+//                                                 attributes: @{ NSFontAttributeName: compFont_12 }
+//                                                    context: nil
+//            ];
+//tn();tr("leftm wid=");kin( ceilf(rect1.size.width));
+//     tr("leftm hei=");kin( ceilf(rect1.size.height));
+//
+//            //  NSLog(@"compFont_12.lineHeight=[%f]",compFont_12.lineHeight);
+//            //  NSLog(@"compFont_12.ascender  =[%f]",compFont_12.ascender);
+//            //  NSLog(@"compFont_12.descender =[%f]",compFont_12.descender);
+//            //  NSLog(@"compFont_12.capHeight =[%f]",compFont_12.capHeight);
+//            //  NSLog(@"compFont_12.xHeight   =[%f]",compFont_12.xHeight);
+//
+//
+//            //NSFont *font = [NSFont fontWithName:@"Times New Roman" size:96.0];
+//            //The line height of this font, if I would use it in an NSTextView is 111.0.
+//            //NSLayoutManager *lm = [[NSLayoutManager alloc] init];
+//            //NSLog(@"%f", [lm defaultLineHeightForFont:font]); // this is 111.0
+//            //
+//                //            NSLayoutManager *lm = [[NSLayoutManager alloc] init];
+//                //NSLog(@"layout manager font height=[%f]", [lm defaultLineHeightForFont:  compFont_14 ] );
+//
+//
+//            //            // Values are fractional -- you should take the ceilf to get equivalent values
+//            //            CGSize adjustedSize = CGSizeMake(ceilf(expectedLabelSize.width), ceilf(expectedLabelSize.height));
+//            //
+//
+//            CGRect lFrame1 = CGRectMake(  // arg 1=x 2=y 3=width 4=height
+//                ceilf(rect0.size.width),   // allow for left left margin width
+//                0,
+////                expectedLabelSize.width + 10.0,
+//                ceilf(rect1.size.width),
+//                ceilf(rect1.size.height)
+//            );
+//
+//            UILabel* label1 = [[UILabel alloc] initWithFrame: lFrame1];
+////            label1.text            = @"    "; // spaces
+////            label1.text            = @"    |"; // spaces
+////            label1.text            = @"          "; // spaces
+//            label1.text            = @"        "; // spaces
+////            label1.text            = @"oiwjefoijf"; // spaces
+////            label1.text            = @""; // spaces
+//            label1.font            = compFont_12;
+////            label1.textColor       = gbl_color_cBgr;
+////            label1.backgroundColor = gbl_color_cBgr;
+////            label1.backgroundColor = [UIColor cyanColor];
+//            label1.backgroundColor = gbl_color_cNeu;
+//            label1.numberOfLines   = 0;
+//            label1.textAlignment = NSTextAlignmentLeft;
+//            label1.maskView                = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+//
+//            //            // for test, mk label visibile
+//            //            label1.layer.borderWidth = 1.0;
+//            //            label1.layer.borderColor = [UIColor redColor].CGColor;
+//
+
+
+            // add label for stars ---------------------------------------------------------------------------------------
+            //
+
+//old
+//            CGRect rect2 = [mylin boundingRectWithSize: CGSizeMake(300, 10000)
+////                                               options: NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+////                                                 options: NSStringDrawingUsesDeviceMetrics | NSStringDrawingUsesLineFragmentOrigin  | NSStringDrawingUsesFontLeading
+//                                                 options: NSStringDrawingUsesLineFragmentOrigin
+//                                            attributes: @{ NSFontAttributeName: compFont_12 }
+//                                               context: nil
+//            ];
+
+
+
+
+//<.>
+//            CGRect rect2 = [gbl_starsNSString boundingRectWithSize: CGSizeMake(300, 10000)
+//                                                           options: NSStringDrawingUsesLineFragmentOrigin
+//                                                        attributes: @{ NSFontAttributeName: compFont_12 }
+//                                                           context: nil
+//            ];
+//
+//
+//            CGRect lFrame2 = CGRectMake(  // arg 1=x 2=y 3=width 4=height
+////                0,
+////                ceilf(rect1.size.width),
+//                30,
+//                0,
+////                expectedLabelSize.width + 10.0,
+////                ceilf(rect2.size.width),
+////           widthAvailable = ceilf(self.view.bounds.size.width) - (ceilf(rect1.size.width) + ceilf(rect2.size.width)),
+////                ceilf(self.view.bounds.size.width) - ceilf(rect0.size.width) - ceilf(rect1.size.width) - 18.0, // whole width minus left margin
+////                ceilf(self.view.bounds.size.width) - ceilf(rect0.size.width) - ceilf(rect1.size.width)       , // whole width minus left margin
+//
+//                ceilf(rect2.size.width),
+//                ceilf(rect2.size.height)
+////                ceilf(rect2.size.height) + 10.0 // + 10 = uilabel border width * 2
+//            );
+////tn();tr("stars wid=");kin( ceilf(rect2.size.width));
+////tn();tr("stars wid=");kin( ceilf(self.view.bounds.size.width) - ceilf(rect0.size.width) - ceilf(rect1.size.width) -18.0 );
+//tn();tr("stars wid=");kin( ceilf(self.view.bounds.size.width) - ceilf(rect0.size.width) - ceilf(rect1.size.width)       );
+//     tr("stars hei=");kin( ceilf(rect2.size.height));
+//
+//            gbl_heightCellCOMP = ceilf(rect2.size.height);  // set it here - consecutive star lines should touch
+////            gbl_heightCellCOMP = gbl_heightCellCOMP + 10; // + 10 = uilabel border width * 2
+//
+//            UILabel* label2 = [[UILabel alloc] initWithFrame: lFrame2];
+//
+//            label2.text            = mylin;
+//            label2.font            = compFont_12;
+//            label2.backgroundColor = myRedGreenColor;
+//            label2.numberOfLines   = 0;
+//            label2.textAlignment = NSTextAlignmentLeft;
+//            label2.maskView                = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+//
+////            label2.layer.borderWidth = 3.0;
+//            label2.layer.borderWidth = 1.0;
+////            label2.layer.borderColor = [UIColor redColor].CGColor;
+//            label2.layer.borderColor =  myRedGreenColor.CGColor ;
+//
+//            [label2 sizeToFit];
+//
+////            [cell.contentView addSubview: label2];
+//  NSLog(@"label2.text            =[%@]",label2.text            );
+//
+//
+
+//
+//            // get rect for a line containing max num of stars
+//            //
+//            NSString *starLineOfMaxSize;
+//            starLineOfMaxSize = [@"" stringByPaddingToLength: 40 //  40 is  MAGIC  77 -> 40
+//                                                  withString: @"+"
+//                                             startingAtIndex: 0 ];
+//
+//            CGRect rect3 = [starLineOfMaxSize boundingRectWithSize: CGSizeMake(300, 10000)
+//                                                           options: NSStringDrawingUsesLineFragmentOrigin
+//                                                        attributes: @{ NSFontAttributeName: compFont_12 }
+//                                                           context: nil
+//            ];
+//
+
+//
+//            // add white label for after stars ---------------------------------------------------------------------------------
+//            //
+////            CGRect lFrame21 = CGRectMake(  // arg 1=x 2=y 3=width 4=height
+////                //ceilf(rect0.size.width) + ceilf(rect1.size.width) + ceilf(rect2.size.width),   // left marg(2) + siz of stars
+////                ceilf(rect1.size.width) + ceilf(rect2.size.width),   // left marg(2) + siz of stars
+////                0,
+////                ceilf(rect3.size.width) - ceilf(rect2.size.width ), // size of line with max stars - size of line with actual stars 
+////                ceilf(rect2.size.height)
+////            );
+//            CGRect rect21 = [gbl_starsWhiteSpaces boundingRectWithSize: CGSizeMake(300, 10000)
+//                                                              options: NSStringDrawingUsesLineFragmentOrigin
+//                                                           attributes: @{ NSFontAttributeName: compFont_12 }
+//                                                              context: nil
+//            ];
+//
+//            CGRect lFrame21 = CGRectMake(  // arg 1=x 2=y 3=width 4=height
+//                 // ceilf(rect0.size.width) +   // allow for left left margin   WHY ??? exclude this, but it works
+//                    ceilf(rect1.size.width) +   // and  left margin and 
+//                    ceilf(rect2.size.width)     // and  stars width
+//         + 30.0
+//                ,
+//                0,
+//                ceilf(rect21.size.width),
+//                ceilf(rect21.size.height)
+//            );
+//
+//
+//            UILabel* label21 = [[UILabel alloc] initWithFrame: lFrame21];
+//            label21.text            = @" ";
+//            label21.font            = compFont_12;
+//            label21.backgroundColor = [UIColor whiteColor];
+//            label21.numberOfLines   = 0;
+//            label21.textAlignment   = NSTextAlignmentLeft;
+//            label21.maskView        = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+//
+
+
+
+//
+//            // add label for right margin  ---------------------------------------------------------------------
+//            // the x  argument offset is left marg + max size of 77 chars
+//            //
+//            CGFloat fudgeAddonRightMargin = 5.0f;
+//
+//            CGRect lFrame3 = CGRectMake(  // arg 1=x 2=y 3=width 4=height
+////                ceilf(rect1.size.width) + ceilf(rect2.size.width),
+////                ceilf(rect0.size.width) + ceilf(rect1.size.width) + ceilf(rect3.size.width),   // left marg(2) + max siz star line
+////                ceilf(rect1.size.width) + ceilf(rect3.size.width),   // left marg(2) + max siz star line
+//                 // ceilf(rect0.size.width) +   // allow for left left margin   WHY ??? exclude this, but it works
+//            
+//             // ceilf(rect0.size.width) +   // allow for left left margin   WHY ??? exclude this, but it works
+//                ceilf(rect1.size.width) +
+//                ceilf(rect2.size.width) + ceilf(rect21.size.width),
+//                0,
+////                ceilf(self.view.bounds.size.width) - (  ceilf(rect0.size.width) + ceilf(rect1.size.width) + ceilf(rect2.size.width)  ),
+////                ceilf(self.view.bounds.size.width) - (  ceilf(rect1.size.width) + ceilf(rect2.size.width)  ),
+////                ceilf(self.view.bounds.size.width) -
+////                    (  ceilf(rect1.size.width) + ceilf(rect3.size.width) + ceilf(rect0.size.width )  ) 
+////                    +  fudgeAddonRightMargin ,
+//                ceilf(self.view.bounds.size.width) -
+//                    (  ceilf(rect0.size.width) +
+//                       ceilf(rect1.size.width) +
+//                       ceilf(rect2.size.width) +
+//                       ceilf(rect21.size.width ) 
+//                    ) 
+////                +  fudgeAddonRightMargin
+//                ,
+//                ceilf(rect2.size.height)
+//            );
+////tn();tr("ritem wid=");kin( ceilf(rect2.size.width));
+//     tr("ritem hei=");kin( ceilf(rect2.size.height));
+//
+//            UILabel* label3 = [[UILabel alloc] initWithFrame: lFrame3];
+//
+//
+////            label3.text            = @"1234567890|234";  // get 2...
+////            label3.text            = @"1234567|";  // get
+////            label3.text            = rStringShorter;
+////            label3.text            = @"|";  // get
+//            label3.text            = @" ";  // get
+//            label3.font            = compFont_12;
+////            label3.backgroundColor = gbl_color_cBgr;
+//            label3.backgroundColor = gbl_color_cNeu;
+////            label3.backgroundColor = [UIColor blueColor];
+//            label3.numberOfLines   = 0;
+//            label3.textAlignment = NSTextAlignmentLeft;
+//            label3.maskView                = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+//
+//
+
+
+//
+//            // add label for right right margin  ===========  to "fill" the line     (avoid bleeding)  -----------------=================
+//            //
+//            CGFloat widthRightMargin;
+//            widthRightMargin = (
+//                     ceilf(self.view.bounds.size.width) - (  ceilf(rect1.size.width) + ceilf(rect3.size.width) + ceilf(rect0.size.width )  ) 
+//                    +  fudgeAddonRightMargin
+//            );
+//
+//            CGRect lFrame4 = CGRectMake(  // arg 1=x 2=y 3=width 4=height
+//                ceilf(rect0.size.width) + ceilf(rect1.size.width) + ceilf(rect3.size.width)     // left marg(2) + max siz star line + right marg
+//                    + widthRightMargin 
+//                ,
+//                0.0,
+//                4.0,
+////                ceilf(self.view.bounds.size.width) - (  ceilf(rect1.size.width) + ceilf(rect3.size.width) + ceilf(rect0.size.width )  ) 
+////                    +  fudgeAddonRightMargin ,
+//
+//
+//                ceilf(rect2.size.height)
+//            );
+//            UILabel* label4 = [[UILabel alloc] initWithFrame: lFrame4];
+//            label4.text            = @" ";
+//            label4.font            = compFont_12;
+////            label4.backgroundColor = gbl_color_cBgr;
+//            label4.backgroundColor = [UIColor purpleColor];
+//            label4.numberOfLines   = 0;
+//            label4.textAlignment   = NSTextAlignmentLeft;
+//            label4.maskView        = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+//
+//
+
+
+
+//  NSLog(@"width left left          =[%f]", ceilf(rect0.size.width));
+//  NSLog(@"width left margin        =[%f]", ceilf(rect1.size.width));
+//  NSLog(@"width stars only         =[%f]", ceilf(rect2.size.width));
+//  NSLog(@"width white space        =[%f]", ceilf(rect21.size.width));
+////  NSLog(@"widthRightMargin         =[%f]",widthRightMargin);
+//  NSLog(@"total                    =[%f]",
+//             ceilf(rect0.size.width) +
+//             ceilf(rect1.size.width) +
+//             ceilf(rect3.size.width) );
+//  NSLog(@"starLineOfMaxSize width  =[%f]", ceilf(rect3.size.width));
+////widthRightMargin);
+//  NSLog(@"   screen width          =[%f]",ceilf(self.view.bounds.size.width) );
+//
+
+        gbltmpstr = mylin;  // add 5 leading spaces
+//        mylin = [NSString stringWithFormat:@"     |%@%@|",  
+//        mylin = [NSString stringWithFormat:@"     %@%@",  
+        mylin = [NSString stringWithFormat:@"     %@%@|",  
+            gbltmpstr,
+            [@"" stringByPaddingToLength: 40 - [gbltmpstr length]  withString: @" " startingAtIndex: 0]
+        ];
+
+
+
+        dispatch_async(dispatch_get_main_queue(), ^{            // <=== comp  stars
+// old
+////            cell.textLabel.text                      = mylin; 
+////            cell.textLabel.adjustsFontSizeToFitWidth = myadjust;
+////            cell.textLabel.textAlignment = NSTextAlignmentLeft;
+//            cell.textLabel.textAlignment = NSTextAlignmentCenter;
+//            cell.textLabel.textAlignment             = myalign;
+//
+//            cell.userInteractionEnabled              = NO;
+//
+//            cell.accessoryView                       = nil;   // use accessoryType setting   // have right arrow on column labels
+////            cell.accessoryType                       = UITableViewCellAccessoryDisclosureIndicator;
+//
+////            cell.accessoryView                       = myDisclosureIndicatorLabel;
+////            cell.accessoryType                       = UITableViewCellAccessoryDisclosureIndicator;
+//            cell.accessoryType                       = UITableViewCellAccessoryNone;
+//
+//            cell.textLabel.numberOfLines             = mynumlines; 
+//            cell.textLabel.textColor                 = mytextcolor;
+//            cell.textLabel.font                      = compFont_12;
+////            cell.textLabel.adjustsFontSizeToFitWidth = YES;
+//            cell.textLabel.backgroundColor           = mybgcolor;
+////                cell.contentView.backgroundColor           = gbl_thisCellBackGroundColor;  // see above x
+//
+
+// new
+//            [cell.contentView addSubview: label0];
+//            [cell.contentView addSubview: label1];
+//            [cell.contentView addSubview: label2];
+//            [cell.contentView addSubview: label21];  // white space after stars
+//            [cell.contentView addSubview: label3];
+
+            cell.textLabel.text                      = mylin; 
+//            cell.textLabel.text                      = nil;   // this prevents  text bleed
+//            cell.textLabel.adjustsFontSizeToFitWidth = myadjust;
+            cell.textLabel.textAlignment             = myalign;
+            cell.userInteractionEnabled              = NO;
+//            cell.accessoryView                       = nil;   // use accessoryType setting   // have right arrow on column labels
+            cell.accessoryView                       = myInvisibleButton;               // no right arrow on column labels
+            cell.accessoryType                       = UITableViewCellAccessoryNone;
+//            cell.textLabel.numberOfLines             = 1; 
+            cell.textLabel.numberOfLines             = 0; 
+            cell.textLabel.textColor                 = mytextcolor;
+            cell.textLabel.font                      = compFont_12;
+            cell.textLabel.adjustsFontSizeToFitWidth = NO;
+//            cell.textLabel.backgroundColor           = mybgcolor;
+            cell.textLabel.backgroundColor           = myRedGreenColor;
+//            cell.textLabel.attributedText            = myAttrString;  // order matters- pipes DO NOT appear if this line is here
+            cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+            cell.backgroundView          = nil ;
+        });
+bn(802);
+        return cell;
+
+
+        }  // end of stars
+
+
+
+
+        // example para lines
+        //
+        // lin=[howbigftr| Good indicators are a full line of +++ ]__
+        // lin=[howbigftr| and double the +++ compared to  --- ]__
+        // lin=[fill|after howbigftr]__
+        // lin=[fill|filler after how big]__
+        // lin=[fill|filler before paras]__
+        // lin=[fill|before para]__
+        // lin=[para|  There is a very good indication between ]__
+        // lin=[para|  ~Olivia's sun and Mother Lastna's moon  ]__
+        // lin=[para|  which is an excellent indicator of      ]__
+        // lin=[para|  compatibility.                          ]__
+        // lin=[redgreenline|13
+        // ]__
+        // lin=[fill|before para]__
+        // lin=[para|  You could have a psychic link between   ]__
+        // lin=[para|  you. Mother Lastna can bring creative   ]__
+        // lin=[para|  imagination to ~Olivia.                 ]__
+        // lin=[redgreenline|22
+        // ]__
+        //
+        // lin=[fill|before goodrelationship]__
+        //
+        if ( [mycode isEqualToString: @"para"] ) {
+            gbl_areInCompatibilityTable = 0;
+            myalign           = NSTextAlignmentLeft;
+            mynumlines        = 1;    
+            mybgcolor         = gbl_color_cBgr ;
+            gbl_heightCellCOMP = 18;
+            myadjust          = NO;
+            mytextcolor       = [UIColor blackColor];
+//            myCompFont         = compFont_16;
+            myCompFont         = compFont_14;
+
+        } // end of "para|"
+
+
+        // lin=[fill|before goodrelationship]__
+        // lin=[fill|in goodrelationship at beg]__
+        // lin=[goodrelationship|details in cocoa]__
+        // lin=[fill|in goodrelationship at end]__
+        // lin=[fill|before produced by]__
+        // lin=[prod|produced by iPhone app Me and my BFFs]__
+        // lin=[fill|before entertainment]__
+        // lin=[purp|This report is for entertainment purposes only.]__
+        //
+        // _(end of mamb_report_just_2_people())__
+        //
+//<.>
+//<.>
+//        if ( [mycode isEqualToString: @"will"] ) {
+//            myalign           = NSTextAlignmentLeft;
+//            mynumlines        = 1;    
+//            mybgcolor         = gbl_color_cHed ;
+//            gbl_heightCellPER = 16;
+//            myadjust          = YES;
+//            mytextcolor       = [UIColor blackColor];
+//            myPerFont         = perFont_16;
+//        }
+//<.>
+//<.>
+//
+        if ( [mycode isEqualToString: @"goodrelationship"] )
+        {  // the text of this is in here, not in input
+
+            gbl_areInCompatibilityTable = 0;
+
+  NSLog(@" if ( [mycode isEqualToString: goodrelationship] )   // the text of this is in here, not in input ");
+
+            myalign           = NSTextAlignmentLeft;
+            mynumlines        = 1;    
+            mybgcolor         = gbl_color_cHed ;
+//            myadjust          = YES;
+            myadjust          = NO;
+            mytextcolor       = [UIColor blackColor];
+            myCompFont         = compFont_12;
+//            gbl_heightCellCOMP = 18;
+//            gbl_heightCellCOMP = 12;
+            gbl_heightCellCOMP = 15;
+        }
+
+//            myalign           = NSTextAlignmentLeft;
+//            mynumlines        = 1;    
+//            mybgcolor         = gbl_color_cHed ;
+//            gbl_heightCellCOMP = 16;
+//            myadjust          = YES;
+//            mytextcolor       = [UIColor blackColor];
+//            myCompFont         = compFont_12;
+//
+//                                                                         // ARE IN   new compatibility TBLRPT  report
+//
+//            // NOTE: this is copied from per
+//
+//
+//            NSMutableAttributedString *myAttrString;    // for cell text
+//            NSString                  *myStringNoAttr;  // for work string
+//            NSString                  *myStringNoAttr2;  // for work string
+//
+////            myAttrString   = [[NSMutableAttributedString alloc] initWithString:  @"                             \n|   a GOOD RELATIONSHIP     |\n|   usually has 2 things    |\n|1. compatibility potential |\n|2. both sides show positive|\n|   personality traits      |\n                             "
+////            ];
+////            myStringNoAttr = [myAttrString  string];
+////  NSLog(@"myStringNoAttr =[%@]",myStringNoAttr );
+////
+//            // find the pipes and make them invisible
+////            // note: search myStringNoAttr, but make changes in myAttringString
+////            //
+////            // Setup what you're searching and what you want to find
+////            NSString *toFind = @"|";
+////            //
+////            // Initialise the searching range to the whole string
+////            NSRange searchRange = NSMakeRange(0, [myStringNoAttr length]);
+////            do {
+////                // Search for next occurrence
+////                NSRange searchReturnRange = [myStringNoAttr  rangeOfString: toFind  options: 0  range: searchRange];
+////                if (searchReturnRange.location != NSNotFound) {
+////                    // If found, searchReturnRange contains the range of the current iteration
+////
+////                    [ myAttrString  addAttribute: NSForegroundColorAttributeName
+////                                           value: gbl_color_cHed
+////                                           range: NSMakeRange(searchReturnRange.location, 1)
+////                    ];
+////
+////                    // Reset search range for next attempt to start after the current found range
+////                    searchRange.location = searchReturnRange.location + searchReturnRange.length;
+////                    searchRange.length = [myAttrString length] - searchRange.location;
+////
+////                } else {
+////                    // If we didn't find it, we have no more occurrences
+////                    break;
+////                }
+////            } while (1);
+////
+//
+//            // find the pipes and make them invisible
+//            myStringNoAttr2 = [myStringNoAttr stringByReplacingOccurrencesOfString: @"|"  withString: @" "];
+//  NSLog(@"myStringNoAttr aftg =[%@]",myStringNoAttr );
+//
+//            mylin = myStringNoAttr;
+//
+//            UIButton *myInvisibleButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+//            [UIButton buttonWithType: UIButtonTypeCustom];
+//            myInvisibleButton.backgroundColor = [UIColor clearColor];
+//
+//            dispatch_async(dispatch_get_main_queue(), ^{                                // comp <===  good relationship
+////                cell.textLabel.attributedText            = myAttrString;
+//                cell.textLabel.text                      = myStringNoAttr2;
+//                cell.textLabel.textAlignment             = NSTextAlignmentCenter;
+//                cell.userInteractionEnabled              = NO;
+//                //cell.accessoryView                       = myInvisibleButton;               // no right arrow on column labels
+//                cell.accessoryView                       = nil;   // use accessoryType setting   // have right arrow on column labels
+//                cell.accessoryType                       = UITableViewCellAccessoryNone;
+//                cell.textLabel.numberOfLines             = 5; 
+//                // cell.textLabel.numberOfLines = 5;
+////                cell.textLabel.numberOfLines   = 7; 
+//                cell.textLabel.textColor                 = mytextcolor;
+//                cell.textLabel.font                      = compFont_12;
+//                cell.textLabel.adjustsFontSizeToFitWidth = myadjust;
+//                cell.textLabel.backgroundColor           = gbl_color_cHed;
+//
+//            });
+//        return cell;   //     special case cell      special case       special case       special case      special case   
+//
+
+
+        if ( [mycode isEqualToString: @"prod"] ) {
+            gbl_areInCompatibilityTable = 0;
+            myalign           = NSTextAlignmentCenter;
+            mynumlines        = 1;    
+            mybgcolor         = gbl_color_cBgr ;
+//            mybgcolor         = [UIColor yellowColor];
+//            gbl_heightCellCOMP = 16;
+            gbl_heightCellCOMP = 18;
+//            myadjust          = YES;
+            myadjust          = NO;
+            mytextcolor       = [UIColor blackColor];
+            myCompFont         = compFont_12;
+        }
+        if ( [mycode isEqualToString: @"purp"] ) {
+            gbl_areInCompatibilityTable = 0;
+            myalign           = NSTextAlignmentCenter;
+            mynumlines        = 1;    
+            mybgcolor         = gbl_color_cBgr ;
+//            mybgcolor         = [UIColor lightGrayColor];
+//            gbl_heightCellCOMP = 16;
+            gbl_heightCellCOMP = 18;
+//            myadjust          = YES;
+            myadjust          = NO;
+            mytextcolor       = [UIColor redColor];
+
+//            if (self.view.bounds.size.height  <= 320 ) myCompFont = compFont_10b;
+//            else                                       myCompFont = compFont_11b;
+            myCompFont = compFont_11b;
+        }
+
+
+        dispatch_async(dispatch_get_main_queue(), ^{            // <===  comp fall thru
+            cell.textLabel.text                      = mylin;   // --------------------------------------------------
+//            cell.textLabel.adjustsFontSizeToFitWidth = myadjust;
+//            cell.textLabel.textAlignment = NSTextAlignmentLeft;
+//            cell.textLabel.textAlignment = NSTextAlignmentCenter;
+            cell.textLabel.textAlignment             = myalign;
+            cell.userInteractionEnabled              = NO;
+//            cell.accessoryView                       = nil;   // use accessoryType setting   // have right arrow on column labels
+                cell.accessoryView                       = myInvisibleButton;               // no right arrow on column labels
+            cell.accessoryType                       = UITableViewCellAccessoryNone;
+            cell.textLabel.numberOfLines             = 1; 
+            cell.textLabel.textColor                 = mytextcolor;
+            cell.textLabel.font                      = myCompFont;
+            cell.textLabel.adjustsFontSizeToFitWidth = NO;
+            cell.textLabel.backgroundColor           = mybgcolor;
+//            cell.textLabel.attributedText            = nil;  // order matters- pipes DO NOT appear if this line is here
+            cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+            cell.backgroundView          = nil ;
+        });
+
+//bn(602);
+        return cell;
+
+    }  // end of new compatibility TBLRPT  report
+bn(603);
+
+    // END of    new compatibility TBLRPT  report   $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+
+
+
+
+
+
+
 
 
 
@@ -1953,10 +4100,26 @@ bn(303);
     ) {
         return gbl_heightCellPER;  
     }
-    if ( [gbl_currentMenuPlusReportCode hasSuffix: @"co"]  //  new personality TBLRPT  report
+    if ( [gbl_currentMenuPlusReportCode hasSuffix: @"co"]  //  new compatibility   grpof2
     ) {
+
+        if (gbl_areInCompatibilityTable == 1)
+        {
+
+nb(40);kdn(gbl_heightForCompTable );
+            if (gbl_heightForCompTable > 30.0) gbl_heightForCompTable =  gbl_heightForCompTable  /  2.0; // MAGIC FIX 15+15 on 6+, possibly 6 - fixes hdr
+kdn(gbl_heightForCompTable );
+
+  NSLog(@"return CELL HEIGHT 1 is [%f]", gbl_heightForCompTable );
+            return (gbl_heightForCompTable ); 
+        } else {
+//  NSLog(@"return CELL HEIGHT 2 is [%ld]", (long)gbl_heightCellCOMP);
+            return gbl_heightCellCOMP;  
+        }
+
         return gbl_heightCellCOMP;  
-    }
+
+    } // co
 
 
     // return customTableCellHeight;
@@ -2000,7 +4163,8 @@ bn(303);
 
     // the only report MAMB09viewTBLRPTs_2_TableViewController.m does is grpone with kingpin being a member of the group
     //
-    return 34.0;   // MY Best Match in Group ...   2 lines
+//    return 34.0;   // MY Best Match in Group ...   2 lines
+    return 32.0;   // MY Best Match in Group ...   2 lines
 }  // ---------------------------------------------------------------------------------------------------------------------
 
 
@@ -2088,9 +4252,18 @@ bn(303);
 {
 //  NSLog(@"in willDisplayCell");
 
+//    if (   [gbl_currentMenuPlusReportCode hasSuffix: @"pe"]  
+//        || [gbl_currentMenuPlusReportCode hasSuffix: @"co"]  
+//    ) {
+//        return;
+//    }
     if (   [gbl_currentMenuPlusReportCode hasSuffix: @"pe"]  
-        || [gbl_currentMenuPlusReportCode hasSuffix: @"co"]  
     ) {
+        return;
+    }
+    if (   [gbl_currentMenuPlusReportCode hasSuffix: @"co"]  
+    ) {
+        cell.backgroundColor = gbl_color_cBgr;
         return;
     }
 
@@ -2175,13 +4348,31 @@ bn(303);
 
     [super viewWillAppear: animated];
 
-
-    if ( [gbl_currentMenuPlusReportCode hasSuffix: @"pe"] )  //  personality
+    // this reload re-positions report with line 1 at top of screen
+    //
+    // do not need to do it if we just returned from info screen
+    //
+    if (   [gbl_currentMenuPlusReportCode hasSuffix: @"pe"]    //  personality
+        || [gbl_currentMenuPlusReportCode hasSuffix: @"co"] )  //  grpof 2
     {
+         if (gbl_justLookedAtInfoScreen == 0 )  {
             // try to get rid of tbl position in middle on startup
-            dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
-                [self.tableView reloadData]; // self.view is the table view if self is its controller
-           });
+//            dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+//                [self.tableView reloadData]; // self.view is the table view if self is its controller
+//           });
+
+//            [self.tableView reloadSections: [NSIndexSet indexSetWithIndex: 0]   withRowAnimation: UITableViewRowAnimationAutomatic];
+//            [self.tableView reloadSections: [NSIndexSet indexSetWithIndex: 0]   withRowAnimation: UITableViewRowAnimationRight];
+//            [self.tableView reloadSections: [NSIndexSet indexSetWithIndex: 0]   withRowAnimation: UITableViewRowAnimationBottom];
+//            [self.tableView reloadSections: [NSIndexSet indexSetWithIndex: 0]   withRowAnimation: UITableViewRowAnimationMiddle];
+             [self.tableView reloadSections: [NSIndexSet indexSetWithIndex: 0]  
+                                                          withRowAnimation: UITableViewRowAnimationNone // does a default unchangeable animation
+             ];
+
+         } 
+         if (gbl_justLookedAtInfoScreen == 1 )  {
+             gbl_justLookedAtInfoScreen = 0;  // no re-load
+         }
     }
 
 
@@ -2794,7 +4985,7 @@ NSLog(@"Ok button pressed");
 
 //
 // iPhone UITableView. How do turn on the single letter alphabetical list like the Music App?
-//
+
 //
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
 
@@ -2831,6 +5022,14 @@ NSLog(@"Ok button pressed");
         NSArray *myVisibleRows = [tableView indexPathsForVisibleRows];
         NSIndexPath *myTopRow  = (NSIndexPath*)[myVisibleRows objectAtIndex:0];
         return myTopRow.row;
+    }
+
+
+    // no section index for these
+    if (   [gbl_currentMenuPlusReportCode       hasSuffix: @"pe"]    // personality
+        || [gbl_currentMenuPlusReportCode       hasSuffix: @"co"]    // grpof2
+    ) {
+        return 0;
     }
 
 
@@ -2927,4 +5126,103 @@ NSLog(@"Ok button pressed");
 //ksn(psvName); ksn(psvMth); ksn(psvDay);
 //
 
+
+        //<.>  from pe
+        ////tn();ksn(myStringBuffForTraitCSV);tn();
+        //
+        //        // determine trait name that has the  highest score (for INFO for personality)
+        //        // all trait scores are in  ( stringBuffForTraitCSV=[42,85,44,21,67,34] )
+        //        //
+        //        // _myStringBuffForTraitCSV=[78,1,55,84,90,79]__
+        //        //
+        //        NSString *myNSStringTraitCSV = [NSString stringWithUTF8String: myStringBuffForTraitCSV];  // convert c string to NSString
+        ////  NSLog(@"myNSStringTraitCSV =%@",myNSStringTraitCSV );
+        //        NSArray  *arrayOfScores      = [myNSStringTraitCSV componentsSeparatedByString:@","];
+        ////  NSLog(@"arrayOfScores      =%@",arrayOfScores      );
+        //        NSInteger thisScoreINT, thisScoreIndex;
+        //        NSInteger highestTraitScore, highestTraitScoreIndex;
+        //        highestTraitScore      = 0;
+        //        highestTraitScoreIndex = 0;
+        //        thisScoreINT           = 0;
+        //        thisScoreIndex         = 0;
+        //        NSString *thisScoreSTR;
+        //
+        //        for (thisScoreSTR in arrayOfScores) {
+        ////  NSLog(@"thisScoreSTR =%@",thisScoreSTR );
+        ////  NSLog(@"thisScoreINT =%ld",(long)thisScoreINT );
+        //            thisScoreIndex = thisScoreIndex + 1;       // one-based
+        //            thisScoreINT   = [thisScoreSTR intValue];  // convert NSString to integer
+        //            if (thisScoreINT >  highestTraitScore) {
+        //                highestTraitScore      = thisScoreINT;
+        //                highestTraitScoreIndex = thisScoreIndex;
+        ////  NSLog(@"highestTraitScore      =%ld",(long)highestTraitScore      );
+        ////  NSLog(@"highestTraitScoreIndex =%ld",(long)highestTraitScoreIndex );
+        //            }
+        //        }
+        //
+        //        //  do_special_line(IDX_FOR_AGGRESSIVE);    1
+        //        //  do_special_line(IDX_FOR_SENSITIVE);     2
+        //        //  do_special_line(IDX_FOR_RESTLESS);      3
+        //        //  do_special_line(IDX_FOR_DOWN_TO_EARTH); 4
+        //        //  do_special_line(IDX_FOR_SEX_DRIVE);     5
+        //        //  do_special_line(IDX_FOR_UPS_AND_DOWNS); 6  (removed)
+        //        //
+        //        gbl_highestTraitScore = [NSString stringWithFormat:@"%ld", (long)highestTraitScore ]; // convert NSInteger to NSString 
+        //
+        //        gbl_highestTraitScoreDescription = @" ";
+        //        if (highestTraitScoreIndex == 1) gbl_highestTraitScoreDescription = @"Assertive";
+        //        if (highestTraitScoreIndex == 2) gbl_highestTraitScoreDescription = @"Emotional";
+        //        if (highestTraitScoreIndex == 3) gbl_highestTraitScoreDescription = @"Restless";
+        //        if (highestTraitScoreIndex == 4) gbl_highestTraitScoreDescription = @"Down-to-earth";
+        //        if (highestTraitScoreIndex == 5) gbl_highestTraitScoreDescription = @"Passionate";
+        //        //  if (highestTraitScoreIndex == 6) gbl_highestTraitScoreDescription = @"Ups and Downs";
+        //tn();ksn(myStringBuffForTraitCSV);
+        //  NSLog(@"gbl_highestTraitScore=%@",gbl_highestTraitScore );
+        //  NSLog(@"gbl_highestTraitScoreDescription=%@",gbl_highestTraitScoreDescription );
+        //
+        //
+        //        if (retval == 0) {
+        //           
+        //            // show all files in temp dir
+        //            NSFileManager *manager = [NSFileManager defaultManager];
+        //            NSArray *fileList = [manager contentsOfDirectoryAtPath:NSTemporaryDirectory() error:nil];
+        //            for (NSString *s in fileList){
+        //                NSLog(@"TEMP DIR %@", s);
+        //            }
+        //            
+        //            
+        //            /* here, go and look at html report */
+        //            // [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"about:blank"]]];  // ?clean for re-use
+        //            
+        //            self.outletWebView.scalesPageToFit = YES;
+        //            
+        //            // I was having the same problem. I found a property on the UIWebView
+        //            // that allows you to turn off the data detectors.
+        //            //
+        //            self.outletWebView.dataDetectorTypes = UIDataDetectorTypeNone;
+        //
+        //            // did not work // fill whole screen, no gaps   
+        //            //             self.outletWebView.autoresizesSubviews = YES;
+        //            //             self.outletWebView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+        //            //
+        //
+        //            
+        //             // place our URL in a URL Request
+        //             HTML_URLrequest = [[NSURLRequest alloc] initWithURL: URLtoHTML_forWebview];
+        //             
+        //             // UIWebView is part of UIKit, so you should operate on the main thread.
+        //             //
+        //             // old= [self.outletWebView loadRequest: HTML_URLrequest];
+        //             //
+        //             dispatch_async(dispatch_get_main_queue(), ^(void){
+        //                 [self.outletWebView loadRequest:HTML_URLrequest];
+        //
+        //                 // webView.delegate = self; // http://stackoverflow.com/questions/10666484/html-content-fit-in-uiwebview-without-zooming-out
+        //                 self.outletWebView.delegate = self; // http://stackoverflow.com/questions/10666484/html-content-fit-in-uiwebview-without-zooming-out
+        //
+        //             });
+        //        } // retval = 0
+        //
+        //<.> from viewHTML  aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+        //
 

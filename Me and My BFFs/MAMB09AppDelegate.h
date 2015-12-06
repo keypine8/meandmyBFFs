@@ -37,6 +37,9 @@
 NSString *gbltmpstr; // for debug
 NSInteger gbltmpint; // for debug
 
+
+NSInteger gbl_justLookedAtInfoScreen;
+
 NSInteger gbl_starsNSInteger;
 NSString *gbl_starsNSString;
 NSString *gbl_starsWhiteSpaces;
@@ -431,6 +434,15 @@ NSString *gbl_TBLRPTS1_PSV_personJust1; // for single person reports
 NSString *gbl_TBLRPTS1_NAME_personA;     // of pair
 NSString *gbl_TBLRPTS1_NAME_personB;     // of pair
 NSString *gbl_TBLRPTS1_NAME_personJust1; // for single person reports
+
+// 3 vars for use inside  MAMB09viewTBLRPTs_1_TableViewController.m
+//
+NSString *gbl_TBLRPTS2_PSV_personA;     // of pair
+NSString *gbl_TBLRPTS2_PSV_personB;     // of pair
+NSString *gbl_TBLRPTS2_PSV_personJust1; // for single person reports
+NSString *gbl_TBLRPTS2_NAME_personA;     // of pair
+NSString *gbl_TBLRPTS2_NAME_personB;     // of pair
+NSString *gbl_TBLRPTS2_NAME_personJust1; // for single person reports
 
 
 // FYI

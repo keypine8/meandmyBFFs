@@ -50,6 +50,9 @@ NSString *myGoodBadText;  // for trait
     
     fopen_fpdb_for_debug();
     NSLog(@"in INFO   viewDidLoad!");
+    
+    gbl_justLookedAtInfoScreen = 1;
+    
   NSLog(@"gbl_currentMenuPlusReportCode=%@",gbl_currentMenuPlusReportCode);
 
 tn(); NSLog(@"in INFO   viewDidLoad!");

@@ -511,8 +511,7 @@ bn(302);
 
 
 
-
-    //  new compatibility TBLRPT  report   $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+    //  new compatibility TBLRPT  report   $$$$$$$ in cellforrowataindexpath $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     //
 //nbn(600);
     if ( [gbl_currentMenuPlusReportCode isEqualToString: @"hompco"] )
@@ -3764,19 +3763,19 @@ ksn(my_tmp_str);
 //  NSLog(@"gbl_heightForCompTable      =[%f]",gbl_heightForCompTable );
 //  NSLog(@"gbl_heightCellCOMP          =[%ld]",gbl_heightCellCOMP);
 
-      if (gbl_areInCompatibilityTable == 1)
-      {
+        if (gbl_areInCompatibilityTable == 1)
+        {
 
 nb(40);kdn(gbl_heightForCompTable );
             if (gbl_heightForCompTable > 30.0) gbl_heightForCompTable =  gbl_heightForCompTable  /  2.0; // MAGIC FIX 15+15 on 6+, possibly 6 - fixes hdr
 kdn(gbl_heightForCompTable );
 
   NSLog(@"return CELL HEIGHT 1 is [%f]", gbl_heightForCompTable );
-          return (gbl_heightForCompTable ); 
-      } else {
+            return (gbl_heightForCompTable ); 
+        } else {
 //  NSLog(@"return CELL HEIGHT 2 is [%ld]", (long)gbl_heightCellCOMP);
-          return gbl_heightCellCOMP;  
-      }
+            return gbl_heightCellCOMP;  
+        }
 
 //      return (gbl_heightForCompTable / 2.0 );
           // 19.62 ?
@@ -3915,6 +3914,7 @@ kdn(gbl_heightForCompTable );
 //        } else {
 //        }
         cell.backgroundColor = gbl_color_cBgr;
+        return;
     }
 
     NSString *thisCellBGcolorName; 
@@ -4565,23 +4565,42 @@ nbn(451);
             dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
 
 //                [self.tableView reloadData]; // self.view is the table view if self is its controller // try to get rid of tbl position in middle on startup
+//
+////            [self.tableView reloadSections: [NSIndexSet indexSetWithIndex: 0]   withRowAnimation: UITableViewRowAnimationAutomatic];
+////            [self.tableView reloadSections: [NSIndexSet indexSetWithIndex: 0]   withRowAnimation: UITableViewRowAnimationRight];
+////            [self.tableView reloadSections: [NSIndexSet indexSetWithIndex: 0]   withRowAnimation: UITableViewRowAnimationBottom];
+////            [self.tableView reloadSections: [NSIndexSet indexSetWithIndex: 0]   withRowAnimation: UITableViewRowAnimationMiddle];
+//                [self.tableView reloadSections: [NSIndexSet indexSetWithIndex: 0]  
+//                              withRowAnimation: UITableViewRowAnimationNone           // does a default unchangeable animation
+//                ];
+//
+////            [table setContentOffset:CGPointMake(0, CGFLOAT_MAX)];
+////            [self.tableView setContentOffset:CGPointMake(0, 0)];
+//
+//
+////            NSIndexPath *scrollToPath = [NSIndexPath indexPathForRow:0 inSection:0]; 
+////            [self.tableView scrollToRowAtIndexPath:scrollToPath  atScrollPosition: UITableViewScrollPositionTop animated: YES];   
+//
+//
 
-//            [self.tableView reloadSections: [NSIndexSet indexSetWithIndex: 0]   withRowAnimation: UITableViewRowAnimationAutomatic];
-//            [self.tableView reloadSections: [NSIndexSet indexSetWithIndex: 0]   withRowAnimation: UITableViewRowAnimationRight];
-//            [self.tableView reloadSections: [NSIndexSet indexSetWithIndex: 0]   withRowAnimation: UITableViewRowAnimationBottom];
-//            [self.tableView reloadSections: [NSIndexSet indexSetWithIndex: 0]   withRowAnimation: UITableViewRowAnimationMiddle];
-
-                [self.tableView reloadSections: [NSIndexSet indexSetWithIndex: 0]  
-                              withRowAnimation: UITableViewRowAnimationNone           // does a default unchangeable animation
-                ];
-
-//            [table setContentOffset:CGPointMake(0, CGFLOAT_MAX)];
-//            [self.tableView setContentOffset:CGPointMake(0, 0)];
-
-
-//            NSIndexPath *scrollToPath = [NSIndexPath indexPathForRow:0 inSection:0]; 
-//            [self.tableView scrollToRowAtIndexPath:scrollToPath  atScrollPosition: UITableViewScrollPositionTop animated: YES];   
-
+                if (gbl_justLookedAtInfoScreen == 0 )  {
+                   // try to get rid of tbl position in middle on startup
+       //            dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+       //                [self.tableView reloadData]; // self.view is the table view if self is its controller
+       //           });
+       
+       //            [self.tableView reloadSections: [NSIndexSet indexSetWithIndex: 0]   withRowAnimation: UITableViewRowAnimationAutomatic];
+       //            [self.tableView reloadSections: [NSIndexSet indexSetWithIndex: 0]   withRowAnimation: UITableViewRowAnimationRight];
+       //            [self.tableView reloadSections: [NSIndexSet indexSetWithIndex: 0]   withRowAnimation: UITableViewRowAnimationBottom];
+       //            [self.tableView reloadSections: [NSIndexSet indexSetWithIndex: 0]   withRowAnimation: UITableViewRowAnimationMiddle];
+                    [self.tableView reloadSections: [NSIndexSet indexSetWithIndex: 0]  
+                                                                 withRowAnimation: UITableViewRowAnimationNone // does a default unchangeable animation
+                    ];
+       
+                } 
+                if (gbl_justLookedAtInfoScreen == 1 )  {
+                    gbl_justLookedAtInfoScreen = 0;  // no re-load
+                }
            });
     }
 
@@ -4921,7 +4940,7 @@ for (id eltTst in gbl_perDataLines) { NSLog(@"    gbl_per=%@", eltTst); }
     // run grpof2 report
     // load new grpof2 TBLRPT  report data from URLtoHTML_forWebview into array gbl_compDataLines 
     //
-    if ( [gbl_currentMenuPlusReportCode isEqualToString: @"hompco"] )  // home + personality
+    if ( [gbl_currentMenuPlusReportCode isEqualToString: @"hompco"] )  // grpof2 // compatibility report  (just 2)
     {
 // TODO 
 
