@@ -121,7 +121,6 @@ nbn(501);
         }
         if ([gbl_currentMenuPlusReportCode       hasSuffix: @"pe"]) {       // + personality
             myNavBarTitle = @"Personality";
-nbn(601);            
             // 2-LINE TITLE for Personality  in LABEL  myNavBarLabel      
             //
             UILabel *myNavBarLabel      = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 480.0, 44.0)];
@@ -1282,7 +1281,7 @@ for (id eltTst in gbl_compDataLines) { NSLog(@"    gbl_comp=%@", eltTst); }
 
     if ( [gbl_currentMenuPlusReportCode hasSuffix: @"pe"] )
     {  //  new personality TBLRPT  report
-bn(301);
+//bn(301);
 //  NSLog(@"indexPath.row =[%ld]",indexPath.row );
 //  NSLog(@"gbl_perDataLines[indexPath.row]  [%@]",gbl_perDataLines[indexPath.row]  );
 
@@ -1295,11 +1294,20 @@ bn(301);
 
 
 //        UIFont *myPerFont        = [UIFont fontWithName: @"Menlo" size: 12.0];
-        UIFont *myPerFont;
+//        UIFont *myPerFont;
 //        UIFont *perFontNormal   = [UIFont fontWithName: @"Menlo" size: 14.0];
-        UIFont *perFontNormal   = [UIFont fontWithName: @"Menlo" size: 16.0];
-        UIFont *perFontSmaller  = [UIFont fontWithName: @"Menlo" size: 12.0];
-        UIFont *perFontSmallest = [UIFont fontWithName: @"Menlo-bold" size: 11.0];
+
+//        UIFont *perFontNormal   = [UIFont fontWithName: @"Menlo" size: 16.0];
+//        UIFont *perFontSmaller  = [UIFont fontWithName: @"Menlo" size: 12.0];
+//        UIFont *perFontSmallest = [UIFont fontWithName: @"Menlo-bold" size: 11.0];
+
+        UIFont *myPerFont;
+        UIFont *perFont_16  = [UIFont fontWithName: @"Menlo" size: 16.0];
+        UIFont *perFont_14  = [UIFont fontWithName: @"Menlo" size: 14.0];
+        UIFont *perFont_12  = [UIFont fontWithName: @"Menlo" size: 12.0];
+        UIFont *perFont_11b = [UIFont fontWithName: @"Menlo-bold" size: 11.0];
+        
+
         
         NSCharacterSet *mySeps;
         NSArray        *tmparr;
@@ -1311,7 +1319,7 @@ bn(301);
         NSInteger       mynumlines;
         BOOL            myadjust;
 
-        mybgcolor         = [UIColor redColor];
+        mybgcolor         = [UIColor redColor]; // should not show up
         myalign           = NSTextAlignmentLeft;  // default
         mynumlines        = 1;                    // default
         myadjust          = YES;                  // default
@@ -1332,15 +1340,14 @@ bn(301);
 //gbl_color_cBgr 
 //gbl_color_cHed
         if ( [mycode isEqualToString: @"fill"] ) {
-bn(3011);
             myalign           = NSTextAlignmentCenter;
             mynumlines        = 1;    
             myadjust          = NO;
             mytextcolor       = [UIColor blackColor];
-            myPerFont         = perFontNormal;
+//            myPerFont         = perFontNormal;
+            myPerFont         = perFont_16;
 
             if ( [mylin isEqualToString: @"filler line #1 at top"] ) {
-bn(3012);
                 mylin             = @" ";
                 mybgcolor         = gbl_color_cBgr ;
                 gbl_heightCellPER = 8;
@@ -1368,7 +1375,8 @@ bn(3012);
             else if ( [mylin isEqualToString: @"before para"] ) {
                 mylin             = @" ";
                 mybgcolor         = gbl_color_cBgr ;
-                gbl_heightCellPER = 16;
+//                gbl_heightCellPER = 16;
+                gbl_heightCellPER = 12;
             }
             else if ( [mylin isEqualToString: @"before willpower"] ) {
                 mylin             = @" ";
@@ -1401,20 +1409,24 @@ bn(3012);
             mynumlines        = 1;    
             mybgcolor         = gbl_color_cHed ;
 //            gbl_heightCellPER = 16;
-            gbl_heightCellPER = 20;
+//            gbl_heightCellPER = 20;
+            gbl_heightCellPER = 16;
             myadjust          = YES;
             mytextcolor       = [UIColor blackColor];
-            myPerFont         = perFontNormal;
+//            myPerFont         = perFontNormal;
+            myPerFont         = perFont_14;
         }
         if ( [mycode isEqualToString: @"foot"] ) {
             myalign           = NSTextAlignmentCenter;
             mynumlines        = 1;    
             mybgcolor         = gbl_color_cHed ;
 //            gbl_heightCellPER = 16;
-            gbl_heightCellPER = 18;
+//            gbl_heightCellPER = 18;
+            gbl_heightCellPER = 16;
             myadjust          = YES;
             mytextcolor       = [UIColor blackColor];
-            myPerFont         = perFontNormal;
+//            myPerFont         = perFontNormal;
+            myPerFont         = perFont_14;
         }
         if ( [mycode isEqualToString: @"tabl"] ) {
             myalign           = NSTextAlignmentLeft;
@@ -1424,7 +1436,8 @@ bn(3012);
             gbl_heightCellPER = 20;
             myadjust          = YES;
             mytextcolor       = [UIColor blackColor];
-            myPerFont         = perFontNormal;
+//            myPerFont         = perFontNormal;
+            myPerFont         = perFont_16;
         }
         if ( [mycode isEqualToString: @"para"] ) {
             myalign           = NSTextAlignmentLeft;
@@ -1435,7 +1448,8 @@ bn(3012);
             gbl_heightCellPER = 18;
             myadjust          = NO;
             mytextcolor       = [UIColor blackColor];
-            myPerFont         = perFontNormal;
+//            myPerFont         = perFontNormal;
+            myPerFont         = perFont_16;
         }
         if ( [mycode isEqualToString: @"will"] ) {
             myalign           = NSTextAlignmentLeft;
@@ -1444,7 +1458,8 @@ bn(3012);
             gbl_heightCellPER = 16;
             myadjust          = YES;
             mytextcolor       = [UIColor blackColor];
-            myPerFont         = perFontNormal;
+//            myPerFont         = perFontNormal;
+            myPerFont         = perFont_16;
         }
         if ( [mycode isEqualToString: @"prod"] ) {
             myalign           = NSTextAlignmentCenter;
@@ -1453,7 +1468,8 @@ bn(3012);
             gbl_heightCellPER = 16;
             myadjust          = YES;
             mytextcolor       = [UIColor blackColor];
-            myPerFont         = perFontSmaller;
+//            myPerFont         = perFontSmaller;
+            myPerFont         = perFont_12;
         }
         if ( [mycode isEqualToString: @"purp"] ) {
             myalign           = NSTextAlignmentCenter;
@@ -1462,7 +1478,8 @@ bn(3012);
             gbl_heightCellPER = 16;
             myadjust          = YES;
             mytextcolor       = [UIColor redColor];
-            myPerFont         = perFontSmallest;
+//            myPerFont         = perFontSmallest;
+            myPerFont         = perFont_11b;
         }
 
 
@@ -1490,18 +1507,15 @@ bn(3012);
 //                cell.contentView.backgroundColor           = gbl_thisCellBackGroundColor;  // see above x
         });
 
-bn(302);
         return cell;
 
     }  // end of new personality TBLRPT  report
-bn(303);
 
 
 
 
     //  new compatibility TBLRPT  report   $$$$$$$ in cellforrowataindexpath $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     //
-//nbn(600);
     // if ( [gbl_currentMenuPlusReportCode isEqualToString: @"hompco"] )
     if ( [gbl_currentMenuPlusReportCode hasSuffix: @"co"] )
     { 
@@ -1611,7 +1625,7 @@ bn(303);
 
 //        UIColor *mybgcolortouse;
 
-        mybgcolor         = [UIColor redColor];
+        mybgcolor         = [UIColor brownColor];
         myalign           = NSTextAlignmentLeft;  // default
         mynumlines        = 1;                    // default
         myadjust          = YES;                  // default
@@ -1620,8 +1634,8 @@ bn(303);
         mySeps    = [NSCharacterSet characterSetWithCharactersInString:  @"|"];
 
  tn();
-  NSLog(@"mywrk=[%@]",mywrk);
         mywrk     = gbl_compDataLines[indexPath.row];  
+  NSLog(@"mywrk=[%@]",mywrk);
 
         tmparr    = [mywrk  componentsSeparatedByCharactersInSet: mySeps];
         if (tmparr.count > 1) {
@@ -1636,7 +1650,6 @@ bn(303);
 //gbl_color_cHed
         if ( [mycode isEqualToString: @"fill"] ) {
             gbl_areInCompatibilityTable = 0;
-bn(6011);
             myalign           = NSTextAlignmentCenter;
             mynumlines        = 1;    
             myadjust          = NO;
@@ -1644,15 +1657,16 @@ bn(6011);
             myCompFont         = compFont_16;
 
             if ( [mylin isEqualToString: @"filler line #1 at top"] ) {
-bn(6012);
                 mylin             = @" ";
                 mybgcolor         = gbl_color_cBgr ;
+//                mybgcolor         = [UIColor redColor];
                 gbl_heightCellCOMP = 18;
             }
             else if ( [mylin isEqualToString: @"before table head"] ) {
                 mylin             = @" ";
-//                mybgcolor         = gbl_color_cHed ;
-                mybgcolor         = gbl_color_cNeu ;
+                mybgcolor         = gbl_color_cHed ;
+//                mybgcolor         = gbl_color_cGre ;
+//                mybgcolor         = gbl_color_cNeu ;
                 gbl_heightCellCOMP = 8;
             }
             else if ( [mylin isEqualToString: @"after table head"] ) {
@@ -1826,13 +1840,15 @@ bn(6012);
   NSLog(@"mylin hdr=[%@]",mylin);
             NSInteger thisIsHeaderSpace;
             if ([mylin hasPrefix: @"space "]) {
-nbn(50);
+                mybgcolor         = [UIColor blueColor];
                 gbl_heightForCompTable = 2.0;
                 thisIsHeaderSpace      = 1;
                mylin = @" ";
             } else {
+                mybgcolor         = [UIColor cyanColor];
 //                gbl_heightForCompTable = 18.0;
-                gbl_heightForCompTable = 16.0;
+//                gbl_heightForCompTable = 16.0;
+                gbl_heightForCompTable = 2.0;
                 thisIsHeaderSpace      = 0;
             }
 
@@ -2115,6 +2131,7 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
 
 //                    if( [myscore isEqualToString: @"50"] ) { mybgcolorfortableline = gbl_color_cNeu; gbltmpstr = @"50  Average  ";}
                     if( [myscore isEqualToString: @"50"] ) {
+nbn(70);
                         mybgcolorfortableline = gbl_color_cNeu;
                         if (      [myspace isEqualToString: @"space above"] ) {
                             gbltmpstr              = @"             ";
@@ -2205,6 +2222,7 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
                         }
                     }
                     if( [myscore isEqualToString: @"50"] ) {
+nbn(75);
                         mybgcolorfortableline = gbl_color_cNeu;
                         if (      [myspace isEqualToString: @"space above"] ) {
                             gbltmpstr              = @"             ";
@@ -2332,7 +2350,10 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
                 if( sco <  90 &&
                     sco >= 75    )  mybgcolorfortableline = gbl_color_cGre;
                 if( sco <  75 &&
-                    sco >  25    )  mybgcolorfortableline = gbl_color_cNeu;
+                    sco >  25    ) {
+nbn(76);
+                    mybgcolorfortableline = gbl_color_cNeu;
+                }
                 if( sco <= 25 &&
                     sco >  10    )  mybgcolorfortableline = gbl_color_cRed;
 
@@ -3397,7 +3418,6 @@ bn(802);
         return cell;
 
     }  // end of new compatibility TBLRPT  report
-bn(603);
 
     // END of    new compatibility TBLRPT  report   $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
@@ -4117,7 +4137,7 @@ kdn(gbl_heightForCompTable );
             return gbl_heightCellCOMP;  
         }
 
-        return gbl_heightCellCOMP;  
+//        return gbl_heightCellCOMP;  
 
     } // co
 
@@ -4155,16 +4175,26 @@ kdn(gbl_heightForCompTable );
 // how to set the section header cell height
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section  // --------------------------------
 {
+  NSLog(@"gbl_currentMenuPlusReportCode =[%@]",gbl_currentMenuPlusReportCode );
     if (   [gbl_currentMenuPlusReportCode hasSuffix: @"pe"]  
-        || [gbl_currentMenuPlusReportCode hasSuffix: @"co"]  
     ) {
         return 0.0;
+    }
+    if (   [gbl_currentMenuPlusReportCode hasSuffix: @"co"]  
+    ) {
+        // return 34.0;
+        return 0.0;
+    }
+
+    if (   [gbl_currentMenuPlusReportCode isEqualToString: @"gbm2bm"]       // my Best Match in Group ... (personB)
+        || [gbl_currentMenuPlusReportCode isEqualToString: @"pbm2bm"]       // my Best Match in Group ... (personB)
+    ) {
+        return 34.0;   // MY Best Match in Group ...   2 lines
     }
 
     // the only report MAMB09viewTBLRPTs_2_TableViewController.m does is grpone with kingpin being a member of the group
     //
-//    return 34.0;   // MY Best Match in Group ...   2 lines
-    return 32.0;   // MY Best Match in Group ...   2 lines
+    return 34.0;   // MY Best Match in Group ...   2 lines
 }  // ---------------------------------------------------------------------------------------------------------------------
 
 
@@ -4236,6 +4266,7 @@ kdn(gbl_heightForCompTable );
         lblSection0.font          = currentFontBolded;
 
 
+
         lblSection0.textAlignment = NSTextAlignmentCenter;
         myReturnView = lblSection0;
     }
@@ -4295,7 +4326,11 @@ kdn(gbl_heightForCompTable );
 
         if ( [thisCellBGcolorName isEqualToString: @"cGr2"] )  cell.backgroundColor = gbl_color_cGr2;
         if ( [thisCellBGcolorName isEqualToString: @"cGre"] )  cell.backgroundColor = gbl_color_cGre;
-        if ( [thisCellBGcolorName isEqualToString: @"cNeu"] )  cell.backgroundColor = gbl_color_cNeu;
+        if ( [thisCellBGcolorName isEqualToString: @"cNeu"] )
+        {
+nbn(77);
+            cell.backgroundColor = gbl_color_cNeu;
+        }
         if ( [thisCellBGcolorName isEqualToString: @"cRed"] )  cell.backgroundColor = gbl_color_cRed;
         if ( [thisCellBGcolorName isEqualToString: @"cRe2"] )  cell.backgroundColor = gbl_color_cRe2;
         if ( [thisCellBGcolorName isEqualToString: @"cBgr"] )  cell.backgroundColor = gbl_color_cBgr;
@@ -4357,6 +4392,8 @@ kdn(gbl_heightForCompTable );
     {
          if (gbl_justLookedAtInfoScreen == 0 )  {
             // try to get rid of tbl position in middle on startup
+
+dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
 //            dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
 //                [self.tableView reloadData]; // self.view is the table view if self is its controller
 //           });
@@ -4368,6 +4405,7 @@ kdn(gbl_heightForCompTable );
              [self.tableView reloadSections: [NSIndexSet indexSetWithIndex: 0]  
                                                           withRowAnimation: UITableViewRowAnimationNone // does a default unchangeable animation
              ];
+});  // reload
 
          } 
          if (gbl_justLookedAtInfoScreen == 1 )  {
@@ -4438,14 +4476,12 @@ kdn(gbl_heightForCompTable );
 
     // add Navigation Bar right buttons, if not added alread
     //
-nbn(500);
   NSLog(@"gbl_currentMenuPrefixFromMatchRpt =[%@]",gbl_currentMenuPrefixFromMatchRpt );
   NSLog(@"gbl_lastSelectedPerson =[%@]",gbl_lastSelectedPerson );
   NSLog(@"gbl_currentMenuPlusReportCode=[%@]",gbl_currentMenuPlusReportCode);
     NSString *myNavBarTitle;
     if (gbl_tblrpts2_ShouldAddToNavBar == 1) { // init to prevent  multiple programatic adds of nav bar items
 
-nbn(600);            
         gbl_tblrpts2_ShouldAddToNavBar  = 0;   // do not do this again
 
         // you have to add the info button in interface builder by hand,

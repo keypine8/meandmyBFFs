@@ -2578,6 +2578,7 @@ tn();nbn(333);
             myAttrString   = [[NSMutableAttributedString alloc] initWithString:  @"                             \n|   a GOOD RELATIONSHIP     |\n|   usually has 2 things    |\n|1. compatibility potential |\n|2. both sides show positive|\n|   personality traits      |\n                             "
             ];
             myStringNoAttr = [myAttrString  string];
+  NSLog(@"myStringNoAttr =[%@]",myStringNoAttr );
 
             // find the pipes and make them invisible
             // note: search myStringNoAttr, but make changes in myAttringString
@@ -2626,11 +2627,14 @@ tn();nbn(333);
                 }
             } while (1);
 
+  NSLog(@"[myAttrString  string]=[%@]",[myAttrString  string]);
 
 
             dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
                 cell.textLabel.font          = myFont_12;
 //                cell.textLabel.numberOfLines = 5;
+//                cell.textLabel.numberOfLines = 7; 
+                cell.textLabel.numberOfLines = 0; 
                 cell.accessoryView           = myInvisibleButton;               // no right arrow on column labels
                 cell.userInteractionEnabled  = NO;
                 cell.textLabel.textAlignment = NSTextAlignmentCenter;
@@ -2638,8 +2642,6 @@ tn();nbn(333);
 //  ORIG          cell.textLabel.text          = @"                                         \n        a GOOD RELATIONSHIP              \n        usually has 2 things             \n     1. compatibility potential          \n     2. both sides show positive         \n        personality traits               \n                                         ";
                 cell.textLabel.attributedText = myAttrString;
 
-//                cell.textLabel.numberOfLines = 7; 
-                cell.textLabel.numberOfLines = 1; 
                 cell.textLabel.backgroundColor           = gbl_thisCellBackGroundColor;  // see above x
 
             });
