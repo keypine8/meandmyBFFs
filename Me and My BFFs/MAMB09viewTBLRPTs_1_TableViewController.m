@@ -3769,7 +3769,10 @@ ksn(my_tmp_str);
         {
 
 nb(40);kdn(gbl_heightForCompTable );
-            if (gbl_heightForCompTable > 30.0) gbl_heightForCompTable =  gbl_heightForCompTable  /  2.0; // MAGIC FIX 15+15 on 6+, possibly 6 - fixes hdr
+            if (gbl_heightForCompTable > 30.0) {
+                gbl_heightForCompTable =  gbl_heightForCompTable  /  2.0; // MAGIC FIX 15+15 on 6+, possibly 6 - fixes hdr
+            }
+            gbl_heightForCompTable =  ceilf(gbl_heightForCompTable);
 kdn(gbl_heightForCompTable );
 
   NSLog(@"return CELL HEIGHT 1 is [%f]", gbl_heightForCompTable );
@@ -4539,6 +4542,13 @@ tn();trn("just tapped on row in TBLRPTS_1");
 
   [super viewWillDisappear:animated];
 
+
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                    name: UIApplicationDidChangeStatusBarOrientationNotification
+                                                  object: nil
+    ];
+
+
 //  if (self.isBeingDismissed || self.isMovingFromParentViewController) {
 //
 //      // Handle the case of being dismissed or popped.
@@ -4549,12 +4559,44 @@ tn();trn("just tapped on row in TBLRPTS_1");
 } // viewWillDisappear
 
 
+- (void)didChangeOrientation:(NSNotification *)notification
+{
+tn();
+  NSLog(@"in myDidChangeOrientation !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  ");
+//    UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
+//    if (UIInterfaceOrientationIsLandscape(orientation)) {
+//        NSLog(@"Landscape");
+//    }
+//    else {
+//        NSLog(@"Portrait");
+//    }
+
+    dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+        [self.tableView reloadSections: [NSIndexSet indexSetWithIndex: 0]  
+                      withRowAnimation: UITableViewRowAnimationNone // does a default unchangeable animation
+        ];
+    });  // reload
+
+} // end of myDidChangeOrientation
+
+
 -(void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear: animated];
 
     NSLog(@"in TBLRPTs 1  viewWillAppear!");
 NSLog(@"gbl_TBLRPTS1_saveSelectedIndexPath.row=%ld",(long)gbl_TBLRPTS1_saveSelectedIndexPath.row);
+
+
+
+  NSLog(@"HEYnotify 1");
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(didChangeOrientation:)
+                                                 name: UIApplicationDidChangeStatusBarOrientationNotification
+                                               object: nil
+    ];
+
+
 
     gbl_areInCompatibilityTable = 0;
 

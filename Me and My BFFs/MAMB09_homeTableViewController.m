@@ -61,7 +61,7 @@
 // –  Adam Carter Mar 27 '13 at 13:39
 //
 // - (NSUInteger)supportedInterfaceOrientations
-
+//
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
 
@@ -81,6 +81,7 @@
  [ self shouldAutorotate ];
  [ self supportedInterfaceOrientations ];
 
+    gbl_justAddedRecord  = 0;  // do not reload home array
 
     self.tableView.allowsSelectionDuringEditing = YES;
 
@@ -1084,7 +1085,12 @@ NSLog(@"in viewDidAppear()  in HOME");
 //    BOOL cond1 =  gbl_fromHomeLastEntityRemSaved != nil ;
 //    BOOL cond2 = ![gbl_fromHomeLastEntityRemSaved isEqualToString: gbl_fromHomeCurrentEntityName];
 //
-
+   
+    if (gbl_justAddedRecord == 1) {
+        gbl_justAddedRecord  = 0;
+  NSLog(@"reloading tableview");
+        [self.tableView reloadData];
+    }
 
     if (gbl_fromHomeCurrentEntityName  &&  gbl_fromHomeCurrentEntityName.length != 0) { // have to have something to save
         if ( (  gbl_fromHomeLastEntityRemSaved == nil )    ||                                          // if  nil, save

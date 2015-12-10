@@ -39,6 +39,7 @@ NSInteger gbltmpint; // for debug
 
 
 NSInteger gbl_justLookedAtInfoScreen;
+NSInteger gbl_justAddedRecord;
 
 NSInteger gbl_starsNSInteger;
 NSString *gbl_starsNSString;

@@ -285,7 +285,9 @@ tn();
 //    UIImage *myImagePersonality      = [UIImage  imageNamed: @"person_info6.png"      inBundle: nil compatibleWithTraitCollection: nil ];
     UIImage *myImagePersonality      = [UIImage  imageNamed: @"person_info8.png"      inBundle: nil compatibleWithTraitCollection: nil ];
 //    UIImage *myImageCategories3      = [UIImage  imageNamed: @"categories3_info3.png" inBundle: nil compatibleWithTraitCollection: nil ];
-    UIImage *myImageCategories3      = [UIImage  imageNamed: @"categories3_info9.png" inBundle: nil compatibleWithTraitCollection: nil ];
+//    UIImage *myImageCategories3      = [UIImage  imageNamed: @"categories3_info9.png" inBundle: nil compatibleWithTraitCollection: nil ];
+//    UIImage *myImageCategories3      = [UIImage  imageNamed: @"categories5.png" inBundle: nil compatibleWithTraitCollection: nil ];
+    UIImage *myImageCategories3      = [UIImage  imageNamed: @"categories3_6.png" inBundle: nil compatibleWithTraitCollection: nil ];
 //    UIImage *myImageTwoThings        = [UIImage  imageNamed: @"twoThings_info5.png"   inBundle: nil compatibleWithTraitCollection: nil ];
     UIImage *myImageTwoThings        = [UIImage  imageNamed: @"twoThings_info8.png"   inBundle: nil compatibleWithTraitCollection: nil ];
     UIImage *myImageWillpower        = [UIImage  imageNamed: @"willpower_info3.png"   inBundle: nil compatibleWithTraitCollection: nil ];
@@ -893,7 +895,7 @@ nbn(100);
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
 //                cell.textLabel.text          = @"The Compatibility Potential score for two people takes into account many influences between the two.  But, within each person, good personality traits are assumed.\n\nThe potential of a good relationship can be ruined despite a high compatibility score if one of the two people (or both) have bad personality traits.";
-                cell.textLabel.text          = @"The Compatibility Potential score for two people takes into account many influences between the two.  But, within each person, good personality traits are assumed.\n\nThe potential of a good relationship can be ruined despite a high compatibility score if one of the two people (or both) have challenging personality traits.";
+                cell.textLabel.text          = @"The Compatibility Potential score for two people takes into account many influences between the two.  But, within each person, good personality traits are assumed.\n\nThe potential of a good relationship can be ruined despite a high compatibility potential score if one of the two people (or both) have challenging personality traits.";
                 cell.imageView.image         = nil;
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -1096,7 +1098,8 @@ nbn(100);
                 cell.textLabel.numberOfLines = 0;
 //                cell.textLabel.text          = @"The Compatibility Potential score for two people takes into account many influences between the two.  But, within each person, good personality traits are assumed.\n\nThe potential of a good relationship can be ruined despite a high compatibility score if one of the two people (or both) have bad personality traits.";
 
-                cell.textLabel.text          = @"The Compatibility Potential score for two people takes into account many influences between the two.  But, within each person, good personality traits are assumed.\n\nThe potential of a good relationship can be ruined despite a high compatibility score if one of the two people (or both) have challenging personality traits.";
+//                cell.textLabel.text          = @"The Compatibility Potential score for two people takes into account many influences between the two.  But, within each person, good personality traits are assumed.\n\nThe potential of a good relationship can be ruined despite a high compatibility potential score if one of the two people (or both) have challenging personality traits.";
+                cell.textLabel.text          = @"The Compatibility Potential score for two people takes into account many influences between the two.  But, within each person, good personality traits are assumed.\n\nThe potential of a good relationship can be ruined despite a high compatibility potential score if one of the two people (or both) have challenging personality traits.";
                 cell.imageView.image         = nil;
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -1189,7 +1192,9 @@ nbn(100);
                 cell.textLabel.font          = myTitleFont;
                 cell.backgroundColor         = gbl_color_cHed;
                 cell.textLabel.numberOfLines = 0;
-                cell.textLabel.text          = @"The 3 Fun Categories";
+//                cell.textLabel.text          = @"The 3 Fun Categories";
+//                cell.textLabel.text          = @"Three Relationship Categories";
+                cell.textLabel.text          = @"3 Relationship Categories";
                 cell.imageView.image         = nil;
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -1326,7 +1331,11 @@ nbn(100);
                 cell.textLabel.font          = myFont;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
-                cell.textLabel.text          = @"The compatibility details on the bottom give a LOT of detail.  It's hard work to combine the differing influences into an overall picture.\n\nIn doing his integration you have\n  - the 3 fun categories\n  - details at the bottom\n  - a personality report for each\n    of the 2 people\n\nA lot of the integration is done for you in the compatibility Potential score from 1 to 99.";
+//                cell.textLabel.text          = @"The compatibility details on the bottom give a LOT of detail.  It's hard work to combine the differing influences into an overall picture.\n\nIn doing his integration you have\n  - the 3 categories\n  - details at the bottom\n  - a personality report for each\n    of the 2 people\n\nA lot of the integration is done for you in the compatibility Potential score from 1 to 99.";
+
+//                cell.textLabel.text          = @"The Compatibility Potential number from 1 to 99 gives an overall score for the relationship.\n\nIt's a very hard job to combine all the influences affecting a relationship to get an overall picture.\n\nThis report has\n  - the Compatibility Potential score\n  - the 3 relationship categories\n  - the description of relationship influences\n\nThe personality report has\n  - descriptions of personality influences\n    for each of the 2 people\n\nRelationships are complex.";
+                cell.textLabel.text          = @"The Compatibility Potential number from 1 to 99 gives an overall score for the relationship.\n\nIt's a very hard job to combine all the influences affecting a relationship to get an overall picture.\n\nThis report has\n  - the Compatibility Potential score\n  - the 3 relationship categories\n  - all the relationship influences\n\nThe personality report has\n  - all the personality influences\n    for each of the 2 people\n\nRelationships are complex.";
+
 //This is why consulting astrologers can make a living meeting with people for an hour to sort everything out
 
                 cell.imageView.image         = nil;
@@ -2401,7 +2410,9 @@ nbn(100);
 
         if (indexPath.row == 19) return     16.0;  // spacer
         if (indexPath.row == 20) return    30.0;  // title for relationships are really complex
-        if (indexPath.row == 21) return   210.0;  // text for complexity part 2
+//        if (indexPath.row == 21) return   210.0;  // text for complexity part 2
+//        if (indexPath.row == 21) return   225.0;  // text for complexity part 2
+        if (indexPath.row == 21) return   240.0;  // text for complexity part 2
         if (indexPath.row == 22) return    20.0;  // text for disclaimer
     }
     // if (  [gbl_currentMenuPlusReportCode isEqualToString: @"hompwc"])     // what color is the day?

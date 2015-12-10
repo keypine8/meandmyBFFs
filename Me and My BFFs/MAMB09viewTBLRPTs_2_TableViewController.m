@@ -4171,6 +4171,10 @@ kdn(gbl_heightForCompTable );
 
 }  // ---------------------------------------------------------------------------------------------------------------------
 
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+    return nil;
+}
+
 
 // how to set the section header cell height
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section  // --------------------------------
@@ -4183,7 +4187,8 @@ kdn(gbl_heightForCompTable );
     if (   [gbl_currentMenuPlusReportCode hasSuffix: @"co"]  
     ) {
         // return 34.0;
-        return 0.0;
+        // return 0.0;
+        return 0.01f;
     }
 
     if (   [gbl_currentMenuPlusReportCode isEqualToString: @"gbm2bm"]       // my Best Match in Group ... (personB)
@@ -4194,7 +4199,8 @@ kdn(gbl_heightForCompTable );
 
     // the only report MAMB09viewTBLRPTs_2_TableViewController.m does is grpone with kingpin being a member of the group
     //
-    return 34.0;   // MY Best Match in Group ...   2 lines
+    //return 34.0;  
+    return 0.01f;   // should  not happen
 }  // ---------------------------------------------------------------------------------------------------------------------
 
 
@@ -4367,7 +4373,15 @@ nbn(77);
 - (void)viewWillDisappear:(BOOL)animated {
      NSLog(@"in viewWillDisappear in TBLRPTs_2 !");
 
-  [super viewWillDisappear:animated];
+    [super viewWillDisappear:animated];
+
+
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+//                                                  name: UIDeviceOrientationDidChangeNotification
+                                                    name: UIApplicationDidChangeStatusBarOrientationNotification
+                                                  object: nil
+    ];
+
 
   if (self.isBeingDismissed || self.isMovingFromParentViewController) {
 
@@ -4377,11 +4391,42 @@ nbn(77);
   }
 }
 
+- (void)didChangeOrientation:(NSNotification *)notification
+{
+tn();
+  NSLog(@"in myDidChangeOrientation !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  ");
+    UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
+
+//    if (UIInterfaceOrientationIsLandscape(orientation)) {
+//        NSLog(@"Landscape");
+//    }
+//    else {
+//        NSLog(@"Portrait");
+//    }
+
+    dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+        [self.tableView reloadSections: [NSIndexSet indexSetWithIndex: 0]  
+                      withRowAnimation: UITableViewRowAnimationNone // does a default unchangeable animation
+        ];
+    });  // reload
+
+} // end of myDidChangeOrientation
+
 
 -(void) viewWillAppear:(BOOL)animated {
     NSLog(@"in TBLRPTs 2  viewWillAppear!");
 
     [super viewWillAppear: animated];
+
+
+  NSLog(@"HEYnotify 2");
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(didChangeOrientation:)
+                                                 name: UIApplicationDidChangeStatusBarOrientationNotification
+                                               object: nil
+    ];
+
+
 
     // this reload re-positions report with line 1 at top of screen
     //
@@ -5023,7 +5068,8 @@ NSLog(@"Ok button pressed");
 // iPhone UITableView. How do turn on the single letter alphabetical list like the Music App?
 
 //
-- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
+{
 
 
     if (group_report_output_idx_B <= gbl_numRowsToTurnOnIndexBar) return nil;
@@ -5043,7 +5089,9 @@ NSLog(@"Ok button pressed");
             @"80",
          @" ", @" ", @" ", @" ",  @" ", @" ",
             @"==", nil ];
-  }
+
+  } // sectionIndexTitlesForTableView
+
 
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle: (NSString *)title 
                                                                     atIndex: (NSInteger)index  {
@@ -5053,6 +5101,14 @@ NSLog(@"Ok button pressed");
     NSInteger newRow;
     newRow = 0;
 
+    // no section index for these
+    if (   [gbl_currentMenuPlusReportCode       hasSuffix: @"pe"]    // personality
+        || [gbl_currentMenuPlusReportCode       hasSuffix: @"co"]    // grpof2
+    ) {
+        return 0;
+    }
+
+
     //    if ([title isEqualToString:@"  "])    // does not work when title = "  "
     if ([title hasPrefix:@" "]) {
         NSArray *myVisibleRows = [tableView indexPathsForVisibleRows];
@@ -5060,13 +5116,6 @@ NSLog(@"Ok button pressed");
         return myTopRow.row;
     }
 
-
-    // no section index for these
-    if (   [gbl_currentMenuPlusReportCode       hasSuffix: @"pe"]    // personality
-        || [gbl_currentMenuPlusReportCode       hasSuffix: @"co"]    // grpof2
-    ) {
-        return 0;
-    }
 
 
     if ([title isEqualToString:@"__"]) newRow = 0;

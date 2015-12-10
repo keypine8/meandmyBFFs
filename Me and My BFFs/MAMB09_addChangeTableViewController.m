@@ -1855,10 +1855,7 @@ NSLog(@"end of  oncityInputViewKeyboardButton!"); tn();
                 [self.navigationController popToRootViewControllerAnimated: YES]; // actually do the "Back" action
             }
 // TODO
-
-            // Actually do save of New Person   here
-
-            // check for missing information  name,city,date  same as prompt
+            // before save of New Person,  check for missing information  name,city,date  same as prompt
             if (   [gbl_DisplayName isEqualToString: @"" ]
                 || [gbl_DisplayCity isEqualToString: @"" ]
                 || [gbl_DisplayCoun isEqualToString: @"" ]
@@ -1872,9 +1869,9 @@ NSLog(@"end of  oncityInputViewKeyboardButton!"); tn();
                 NSString *missingMsg =  [NSString stringWithFormat:@"Missing Information:\n%@\n%@\n%@",
                     namePrompt, cityPrompt, datePrompt
                 ];
-                UIAlertController* alert = [UIAlertController alertControllerWithTitle: @"Can Not Save"
-                                                                               message: missingMsg
-                                                                        preferredStyle: UIAlertControllerStyleAlert  ];
+                UIAlertController* myAlert = [UIAlertController alertControllerWithTitle: @"Can Not Save"
+                                                                                 message: missingMsg
+                                                                          preferredStyle: UIAlertControllerStyleAlert  ];
                  
                 UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
                                                                     style: UIAlertActionStyleDefault
@@ -1883,18 +1880,158 @@ NSLog(@"end of  oncityInputViewKeyboardButton!"); tn();
                     }
                 ];
                  
-                [alert addAction:  okButton];
+                [myAlert addAction:  okButton];
 
-                [self presentViewController: alert  animated: YES  completion: nil   ];
+                [self presentViewController: myAlert  animated: YES  completion: nil   ];
             }
+
+            // before save of New Person,  check if entered name already exists in database
+            //
+            NSString *nameOfGrpOrPer;
+            NSArray  *arrayGrpOrper;
+//            NSInteger idxGrpOrPer;
+//            idxGrpOrPer = -1;
+            NSCharacterSet *mySeparators = [NSCharacterSet characterSetWithCharactersInString:@"|"];
+
+            for (id eltPer in gbl_arrayPer) {
+//                idxGrpOrPer = idxGrpOrPer + 1;
+//  NSLog(@"idxGrpOrPer =%ld", (long)idxGrpOrPer );
+//  NSLog(@"eltPer=%@", eltPer);
+//
+//  NSLog(@"nameOfGrpOrPer =[%@]",nameOfGrpOrPer );
+//  NSLog(@"gbl_DisplayName=[%@]",gbl_DisplayName);
+                arrayGrpOrper  = [eltPer componentsSeparatedByCharactersInSet: mySeparators];
+                nameOfGrpOrPer = arrayGrpOrper[0];  // name is 1st fld
+
+//                if ([nameOfGrpOrPer isEqualToString: gbl_DisplayName]) {
+                if( [nameOfGrpOrPer caseInsensitiveCompare: gbl_DisplayName] == NSOrderedSame ) // strings are equal except for possibly case
+                {
+                    // here the name of New Person is in database
+
+                    NSString *msg_alreadyThere = [
+                        NSString stringWithFormat: @"You already have a Person with the name \"%@\".\n\nPlease make this new name different.",
+                        nameOfGrpOrPer  // gbl_DisplayName
+                    ];
+                    UIAlertController* myAlert = [UIAlertController alertControllerWithTitle: @"Person Already There"
+                                                                                     message: msg_alreadyThere 
+                                                                              preferredStyle: UIAlertControllerStyleAlert  ];
+                     
+                    UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                                        style: UIAlertActionStyleDefault
+                                                                      handler: ^(UIAlertAction * action) {
+                            NSLog(@"Ok button pressed");
+                        }
+                    ];
+                     
+                    [myAlert addAction:  okButton];
+
+                    [self presentViewController: myAlert  animated: YES  completion: nil   ];
+
+                    return;  // pressed "Done" > cannot save > stay in this screen
+
+                }
+            } // search thru gbl_arrayPer
+
+
   NSLog(@" // Actually do save of New Person   here");
+            // Actually do save of New Person   here
+            //
+
+<.>
+            // first build a Person database record in a string
+            NSString *myNewPersonRecord;
+            myNewPersonRecord = [self buildPersonRecord ];
+<.>
+// // FINAL  values for saving
+// //
+// NSString *gbl_userSpecifiedPersonName;  // final value in "add person" screen
+// 
+// NSString *gbl_rollerBirth_mth;  // like "Jan"
+// NSString *gbl_rollerBirth_dd;
+// NSString *gbl_rollerBirth_yyyy; // for saving picker roller current values
+// NSString *gbl_rollerBirth_hour;
+// NSString *gbl_rollerBirth_min;
+// NSString *gbl_rollerBirth_amPm;
+// 
+// NSString *gbl_userSpecifiedCity;  // final value in "add person" screen  use for calc  latitude, hours diff from greenwich
+// NSString *gbl_userSpecifiedProv;  // final value in "add person" screen
+// NSString *gbl_userSpecifiedCoun;  // final value in "add person" screen
+// //
+// // FINAL  values for saving
+//
+- (NSString) buildPersonRecord  // from globals
+{
+} // end of getPersonRecord  
+<.>
+
+<.>  the 10 fields are:
+            strcpy(psvName, csv_get_field(my_psv, "|", 1));
+            strcpy(psvMth,  csv_get_field(my_psv, "|", 2));
+            strcpy(psvDay,  csv_get_field(my_psv, "|", 3));
+            strcpy(psvYear, csv_get_field(my_psv, "|", 4));
+            strcpy(psvHour, csv_get_field(my_psv, "|", 5));
+            strcpy(psvMin,  csv_get_field(my_psv, "|", 6));
+            strcpy(psvAmPm, csv_get_field(my_psv, "|", 7));
+            strcpy(psvCity, csv_get_field(my_psv, "|", 8));
+            strcpy(psvProv, csv_get_field(my_psv, "|", 9));
+            strcpy(psvCountry, csv_get_field(my_psv, "|", 10));
+            ksn(psvMth);ks(psvDay);ks(psvYear);ks(psvHour);ks(psvMin);ks(psvAmPm);tn();
+            ksn(psvCity);ks(psvProv);ks(psvCountry);tn();
+            
+            // get longitude and timezone hoursDiff from Greenwich
+            // by looking up psvCity, psvProv, psvCountry
+            //
+            seq_find_exact_citPrvCountry(returnPSV, psvCity, psvProv, psvCountry);
+            
+            strcpy(psvHoursDiff,  csv_get_field(returnPSV, "|", 1));
+            strcpy(psvLongitude,  csv_get_field(returnPSV, "|", 2));
+<.>
+<.>
+
+NSString *gbl_DisplayName;
+
+      NSLog(@"gbl_rollerBirth_mth  =%@",gbl_rollerBirth_mth  );
+      NSLog(@"gbl_rollerBirth_dd   =%@",gbl_rollerBirth_dd   );
+      NSLog(@"gbl_rollerBirth_yyyy =%@",gbl_rollerBirth_yyyy );
+      NSLog(@"gbl_rollerBirth_hour =%@",gbl_rollerBirth_hour );
+      NSLog(@"gbl_rollerBirth_min  =%@",gbl_rollerBirth_min  );
+      NSLog(@"gbl_rollerBirth_amPm =%@",gbl_rollerBirth_amPm );
+
+NSString *gbl_enteredCity; // to update 3 place labels
+NSString *gbl_enteredProv; // to update 3 place label
+NSString *gbl_enteredCoun; // to update 3 place labels
+            
+<.>
+
+            //  test = [[NSMutableArray alloc]init];
+nbn(14);
+            [gbl_arrayPer addObject: myNewPersonRecord]; // add the new Person database record in a string to the person array
+
+
+            MAMB09AppDelegate *myappDelegate =
+                (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
+
+            [myappDelegate mambWriteNSArrayWithDescription: (NSString *) @"person"];  // write new data to file
+nbn(15);
+            [myappDelegate mambReadArrayFileWithDescription: (NSString *) @"person"]; // read new data from file to array
+nbn(152);
+            [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription:  (NSString *) @"person"]; } // sort by name
+nbn(153);
+
+            gbl_justAddedRecord  = 1;  // cause reload of home data
+
+nbn(16);
+            // after saving new person, go back to home view
+            [self.navigationController popToRootViewControllerAnimated: YES]; // pop to root view controller (actually do the "Back" action)
+
+nbn(17);
 
         } else {
             // here editing changes have NOT happened
   NSLog(@" // 222b actually do the BACK action  when Done hit and there are no editing changes");
-            [self.navigationController popToRootViewControllerAnimated: YES]; // pop to root view controller
+            [self.navigationController popToRootViewControllerAnimated: YES]; // pop to root view controller (actually do the "Back" action)
         }
-    } // if gbl_homeEditingState = @"add"
+    } // if gbl_homeEditingState = "add"
 
 
 
