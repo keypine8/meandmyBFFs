@@ -1089,7 +1089,10 @@ NSLog(@"in viewDidAppear()  in HOME");
     if (gbl_justAddedRecord == 1) {
         gbl_justAddedRecord  = 0;
   NSLog(@"reloading tableview");
+
         [self.tableView reloadData];
+
+        [self putHighlightOnCorrectRow ];
     }
 
     if (gbl_fromHomeCurrentEntityName  &&  gbl_fromHomeCurrentEntityName.length != 0) { // have to have something to save
@@ -1769,6 +1772,8 @@ tn();    NSLog(@"reaching accessoryButtonTappedForRowWithIndexPath:");
 - (void) putHighlightOnCorrectRow 
 {
 nbn(357);
+  NSLog(@"in putHighlightOnCorrectRow  ");
+  NSLog(@"gbl_lastSelectedPerson=[%@]",gbl_lastSelectedPerson);
 
 // return; // for test empty Launch image
 

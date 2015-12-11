@@ -999,7 +999,7 @@ nbn(881);
 //        UIBarButtonItem *mySpacerForTitle = [[UIBarButtonItem alloc] initWithCustomView: spaceView];
 //
 
-//<.>
+//
 //    UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 33, 44)];  // 3rd arg is horizontal length
 //    UIBarButtonItem *mySpacerForTitle = [[UIBarButtonItem alloc] initWithCustomView:spaceView];
 //
@@ -1022,7 +1022,7 @@ nbn(881);
 //                self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerForTitle];
 //                [self.navigationController.navigationBar setTranslucent:NO];
 //
-//<.>
+//
 //
 
 
@@ -1279,7 +1279,6 @@ nbn(881);
 
     [self showHide_ButtonToSeePicklist ];
 
-//<.> TODO
 //    [[self.view viewWithTag: gbl_tag_cityInputPicklistButton ] setHidden: YES ];
 
 } // end of oncityInputViewClearButton1
@@ -1301,7 +1300,6 @@ nbn(881);
 //    //
 //    [ self updateCityProvCoun ]; // update city/prov/couon field  in cellForRowAtIndexpath
 //
-////<.> TODO
 ////    [[self.view viewWithTag: gbl_tag_cityInputPicklistButton ] setHidden: YES ];
 //} // end of oncityInputViewClearButton2
 
@@ -1653,7 +1651,7 @@ NSLog(@"end of  oncityInputViewKeyboardButton!"); tn();
 ////  gbltmpint = gbl_justCancelledOutOfCityPicker ;
 ////        gbl_justCancelledOutOfCityPicker = 0;   // used in should/did  begin/end  editing  to alter city inputview  kb/picker
 ////  NSLog(@"--onc (end)- USAGE gbl_justCancelledOutOfCityPicker ---------------- old=[%ld]  new=[%ld] ---", gbltmpint, gbl_justCancelledOutOfCityPicker );
-////<.>
+////
 //
 //    [self putUpCancelButtonOrNot  ];
 //
@@ -1823,7 +1821,8 @@ NSLog(@"end of  oncityInputViewKeyboardButton!"); tn();
 
 
     
-    if ([gbl_homeEditingState isEqualToString:  @"add" ] ) {
+    if ([gbl_homeEditingState isEqualToString:  @"add" ] )
+    {
 
         if (   gbl_editingChangeNAMEHasOccurred == 1
             || gbl_editingChangeCITYHasOccurred == 1
@@ -1903,7 +1902,7 @@ NSLog(@"end of  oncityInputViewKeyboardButton!"); tn();
                 arrayGrpOrper  = [eltPer componentsSeparatedByCharactersInSet: mySeparators];
                 nameOfGrpOrPer = arrayGrpOrper[0];  // name is 1st fld
 
-//                if ([nameOfGrpOrPer isEqualToString: gbl_DisplayName]) {
+//                if ([nameOfGrpOrPer isEqualToString: gbl_DisplayName]) 
                 if( [nameOfGrpOrPer caseInsensitiveCompare: gbl_DisplayName] == NSOrderedSame ) // strings are equal except for possibly case
                 {
                     // here the name of New Person is in database
@@ -1937,71 +1936,40 @@ NSLog(@"end of  oncityInputViewKeyboardButton!"); tn();
             // Actually do save of New Person   here
             //
 
-<.>
             // first build a Person database record in a string
-            NSString *myNewPersonRecord;
-            myNewPersonRecord = [self buildPersonRecord ];
-<.>
-// // FINAL  values for saving
-// //
-// NSString *gbl_userSpecifiedPersonName;  // final value in "add person" screen
-// 
-// NSString *gbl_rollerBirth_mth;  // like "Jan"
-// NSString *gbl_rollerBirth_dd;
-// NSString *gbl_rollerBirth_yyyy; // for saving picker roller current values
-// NSString *gbl_rollerBirth_hour;
-// NSString *gbl_rollerBirth_min;
-// NSString *gbl_rollerBirth_amPm;
-// 
-// NSString *gbl_userSpecifiedCity;  // final value in "add person" screen  use for calc  latitude, hours diff from greenwich
-// NSString *gbl_userSpecifiedProv;  // final value in "add person" screen
-// NSString *gbl_userSpecifiedCoun;  // final value in "add person" screen
-// //
-// // FINAL  values for saving
-//
-- (NSString) buildPersonRecord  // from globals
-{
-} // end of getPersonRecord  
-<.>
-
-<.>  the 10 fields are:
-            strcpy(psvName, csv_get_field(my_psv, "|", 1));
-            strcpy(psvMth,  csv_get_field(my_psv, "|", 2));
-            strcpy(psvDay,  csv_get_field(my_psv, "|", 3));
-            strcpy(psvYear, csv_get_field(my_psv, "|", 4));
-            strcpy(psvHour, csv_get_field(my_psv, "|", 5));
-            strcpy(psvMin,  csv_get_field(my_psv, "|", 6));
-            strcpy(psvAmPm, csv_get_field(my_psv, "|", 7));
-            strcpy(psvCity, csv_get_field(my_psv, "|", 8));
-            strcpy(psvProv, csv_get_field(my_psv, "|", 9));
-            strcpy(psvCountry, csv_get_field(my_psv, "|", 10));
-            ksn(psvMth);ks(psvDay);ks(psvYear);ks(psvHour);ks(psvMin);ks(psvAmPm);tn();
-            ksn(psvCity);ks(psvProv);ks(psvCountry);tn();
-            
-            // get longitude and timezone hoursDiff from Greenwich
-            // by looking up psvCity, psvProv, psvCountry
             //
-            seq_find_exact_citPrvCountry(returnPSV, psvCity, psvProv, psvCountry);
+            // // FINAL  values for saving
+            // //
+            // NSString *gbl_userSpecifiedPersonName;  // final value in "add person" screen
+            // 
+            // NSString *gbl_rollerBirth_mth;  // like "Jan"
+            // NSString *gbl_rollerBirth_dd;
+            // NSString *gbl_rollerBirth_yyyy; // for saving picker roller current values
+            // NSString *gbl_rollerBirth_hour;
+            // NSString *gbl_rollerBirth_min;
+            // NSString *gbl_rollerBirth_amPm;
+            // 
+            // NSString *gbl_userSpecifiedCity;  // final value in "add person" screen  use for calc  latitude, hours diff from greenwich
+            // NSString *gbl_userSpecifiedProv;  // final value in "add person" screen
+            // NSString *gbl_userSpecifiedCoun;  // final value in "add person" screen
+            // //
+            // // FINAL  values for saving
+            //
+            NSString *myNewPersonRecord;
+            myNewPersonRecord = [NSString stringWithFormat: @"%@|%@|%@|%@|%@|%@|%@|%@|%@|%@|",
+                gbl_DisplayName,
+                gbl_rollerBirth_mth,
+                gbl_rollerBirth_dd,
+                gbl_rollerBirth_yyyy,
+                gbl_rollerBirth_hour,
+                gbl_rollerBirth_min,
+                gbl_rollerBirth_amPm,
+                gbl_enteredCity,
+                gbl_enteredProv,
+                gbl_enteredCoun
+            ];
+  NSLog(@"myNewPersonRecord =[%@]",myNewPersonRecord );
             
-            strcpy(psvHoursDiff,  csv_get_field(returnPSV, "|", 1));
-            strcpy(psvLongitude,  csv_get_field(returnPSV, "|", 2));
-<.>
-<.>
-
-NSString *gbl_DisplayName;
-
-      NSLog(@"gbl_rollerBirth_mth  =%@",gbl_rollerBirth_mth  );
-      NSLog(@"gbl_rollerBirth_dd   =%@",gbl_rollerBirth_dd   );
-      NSLog(@"gbl_rollerBirth_yyyy =%@",gbl_rollerBirth_yyyy );
-      NSLog(@"gbl_rollerBirth_hour =%@",gbl_rollerBirth_hour );
-      NSLog(@"gbl_rollerBirth_min  =%@",gbl_rollerBirth_min  );
-      NSLog(@"gbl_rollerBirth_amPm =%@",gbl_rollerBirth_amPm );
-
-NSString *gbl_enteredCity; // to update 3 place labels
-NSString *gbl_enteredProv; // to update 3 place label
-NSString *gbl_enteredCoun; // to update 3 place labels
-            
-<.>
 
             //  test = [[NSMutableArray alloc]init];
 nbn(14);
@@ -2015,25 +1983,27 @@ nbn(14);
 nbn(15);
             [myappDelegate mambReadArrayFileWithDescription: (NSString *) @"person"]; // read new data from file to array
 nbn(152);
-            [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription:  (NSString *) @"person"]; } // sort by name
+            [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription:  (NSString *) @"person"];  // sort by name
 nbn(153);
 
             gbl_justAddedRecord  = 1;  // cause reload of home data
 
 nbn(16);
+            gbl_lastSelectedPerson = gbl_DisplayName;  // this row (gbl_lastSelectedPerson) gets selection highlight in home tableview
+  NSLog(@"gbl_lastSelectedPerson=[%@]",gbl_lastSelectedPerson);
+
+nbn(162);
             // after saving new person, go back to home view
             [self.navigationController popToRootViewControllerAnimated: YES]; // pop to root view controller (actually do the "Back" action)
 
 nbn(17);
-
         } else {
+
             // here editing changes have NOT happened
   NSLog(@" // 222b actually do the BACK action  when Done hit and there are no editing changes");
             [self.navigationController popToRootViewControllerAnimated: YES]; // pop to root view controller (actually do the "Back" action)
         }
     } // if gbl_homeEditingState = "add"
-
-
 
 
 } // pressedSaveDone
@@ -2231,7 +2201,7 @@ tn();   NSLog(@"in textFieldDidBeginEditing ####################################
 //        ) {
 //
 //  tn();trn(" putting up  picker because gbl_mycityInputView isEqualToString: picker");
-//  //<.>
+//  //
 //  //          [gbl_mycitySearchString resignFirstResponder]; // control goes to textFieldShouldEndEditing > textFieldDidEndEditing > back here
 //  //          [gbl_mycitySearchString becomeFirstResponder];  // control goes to textFieldShouldEndEditing > textFieldDidEndEditing > back here
 //    //
@@ -2721,9 +2691,7 @@ NSLog(@"=gbl_myCitySoFar %@",gbl_myCitySoFar );
 //        CFTimeInterval timeNow      = CACurrentMediaTime();  // returns double CFTimeInterval
 //        gbl_timeOfCurrCityKeystroke = timeNow;               // set city keystroke interval times
 
-//<.>
 //    [self showHide_ButtonToSeePicklist ];
-//<.>
 
         if (textField.tag == 1) { // name
             gbl_editingChangeNAMEHasOccurred = 1;   // default 0 at startup (after hitting "Edit" button on home page)
@@ -4084,7 +4052,6 @@ kin(num_PSVs_found);
         [self setCitySearchStringTitleTo: gbl_myCitySoFar ];
 
 
-//<.>
 
 //  NSLog(@"CALL  putUpCityPicklist    in showCityProvCountryForTypedInCity  !!");
 //        [ self putUpCityPicklist ];
@@ -5236,10 +5203,7 @@ tn();trn("in didSelectRow in some  PICKER !!   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 
 
 
-
-
-
-//<.>  commenting this out leaves the rollers there
+//  commenting this out leaves the rollers there
             // display YMDHMA  selected
             //
 //    //<.>  TODO
@@ -5402,7 +5366,7 @@ trn("!!!!!!!!!  END OF  didSelectRow in some  PICKER !!   !!!!!!!!!!!!!!!!!!!!!!
 //NSString *gbl_initPromptCoun;
 //NSString *gbl_initPromptDate;
 
-//<.>  TODO 
+//
 //  NSLog(@"-- USAGE  gbl_justCancelledOutOfCityPicker --  in  shouldChangeCharactersInRange --  set gbl_intervalBetweenLast2Keystrokes");
 ////    if (gbl_justCancelledOutOfCityPicker == 1)   gbl_intervalBetweenLast2Keystrokes = 0.0;
 //    if (gbl_justCancelledOutOfCityPicker == 1) {
@@ -5448,4 +5412,28 @@ trn("!!!!!!!!!  END OF  didSelectRow in some  PICKER !!   !!!!!!!!!!!!!!!!!!!!!!
 //    } else {
 //
 //        && [textField.text          isEqualToString: @""  ]     // here first character typed for city is SPACE
+
+//  the 10 fields are:
+//            strcpy(psvName, csv_get_field(my_psv, "|", 1));
+//            strcpy(psvMth,  csv_get_field(my_psv, "|", 2));
+//            strcpy(psvDay,  csv_get_field(my_psv, "|", 3));
+//            strcpy(psvYear, csv_get_field(my_psv, "|", 4));
+//            strcpy(psvHour, csv_get_field(my_psv, "|", 5));
+//            strcpy(psvMin,  csv_get_field(my_psv, "|", 6));
+//            strcpy(psvAmPm, csv_get_field(my_psv, "|", 7));
+//            strcpy(psvCity, csv_get_field(my_psv, "|", 8));
+//            strcpy(psvProv, csv_get_field(my_psv, "|", 9));
+//            strcpy(psvCountry, csv_get_field(my_psv, "|", 10));
+//            ksn(psvMth);ks(psvDay);ks(psvYear);ks(psvHour);ks(psvMin);ks(psvAmPm);tn();
+//            ksn(psvCity);ks(psvProv);ks(psvCountry);tn();
+//            
+//            // get longitude and timezone hoursDiff from Greenwich
+//            // by looking up psvCity, psvProv, psvCountry
+//            //
+//            seq_find_exact_citPrvCountry(returnPSV, psvCity, psvProv, psvCountry);
+//            
+//            strcpy(psvHoursDiff,  csv_get_field(returnPSV, "|", 1));
+//            strcpy(psvLongitude,  csv_get_field(returnPSV, "|", 2));
+//
+
 
