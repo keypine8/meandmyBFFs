@@ -1561,9 +1561,23 @@ tn();
 //        if (   [gbl_currentMenuPlusReportCode hasSuffix: @"cy"]              // @"Calendar Year"
         if (   [gbl_currentMenuPlusReportCode hasSuffix: @"hompcy"]              // @"Calendar Year" from home hompcy
         ) {
-            myNavBar2lineTitle  = [NSString stringWithFormat:  @"%@\nIn Year %@", 
-//                                   gbl_lastSelectedPerson, gbl_lastSelectedYear ];
-                                   gbl_viewHTML_NAME_personJust1, gbl_lastSelectedYear ];
+            if (   self.view.bounds.size.width >= 414.0        // 6+ and 6s+  and bigger
+            ) {
+                myNavBar2lineTitle  = [NSString stringWithFormat:  @"%@\nStress Levels in Year %@", 
+                                       gbl_viewHTML_NAME_personJust1, gbl_lastSelectedYear ];
+            }
+            else if (   self.view.bounds.size.width  < 414.0    // 6 and 6s
+                     && self.view.bounds.size.width  > 320.0
+            ) {
+                myNavBar2lineTitle  = [NSString stringWithFormat:  @"%@\nStress Levels in Year %@", 
+                                       gbl_viewHTML_NAME_personJust1, gbl_lastSelectedYear ];
+            }
+            else if (   self.view.bounds.size.width <= 320.0   //  5s and 5 and 4s and smaller
+            ) {
+                myNavBar2lineTitle  = [NSString stringWithFormat:  @"%@\nStress Levels %@",
+                                       gbl_viewHTML_NAME_personJust1, gbl_lastSelectedYear ];
+            }
+
         }
 //        if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgby"]    // calendar year report from best year
         if (   [gbl_currentMenuPlusReportCode isEqualToString: @"gbypcy"]    // calendar year report from best year
@@ -2473,10 +2487,10 @@ NSLog(@"Ok button pressed");
         self.outletWebView.dataDetectorTypes = UIDataDetectorTypeNone;
 
        
-        if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] ==  NO) {// suspend handling of touch-related events
+        if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] ==  NO) {  // suspend handling of touch-related events
             [[UIApplication sharedApplication] beginIgnoringInteractionEvents];     // typically call this before an animation or transitiion.
   NSLog(@"ARE  IGnoring events");
-            }
+        }
 
         // place our URL in a URL Request
         NSURLRequest *HTML_URLrequestForWhatColorReport;
@@ -2489,6 +2503,10 @@ NSLog(@"Ok button pressed");
                                                              cachePolicy: NSURLRequestReloadIgnoringCacheData
                                                          timeoutInterval: 0.0  ];
 
+        // put up new report for new day  BUT
+        // but, disable user interaction for "mytime"
+        // to prevent machine-gun pounding on next or prev key
+        //
         if (gbl_shouldUseDelayOnBackwardForeward == 1) {  // = 1 (0.5 sec  on what color update)
                                                           // = 0 (no delay on first show of screen)
             [self.view setUserInteractionEnabled: NO];                              // this works to disable user interaction for "mytime"
@@ -2510,10 +2528,10 @@ NSLog(@"Ok button pressed");
             });
         }                                                          
 
-        if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] == YES) {// re-enable handling of touch-related events
+        if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] == YES) {  // re-enable handling of touch-related events
             [[UIApplication sharedApplication] endIgnoringInteractionEvents];       // typically call this after an animation or transitiion.
   NSLog(@"STOP IGnoring events");
-  }
+        }
 
         gbl_shouldUseDelayOnBackwardForeward = 1;   // only use no delay for fast presentation on initial user viewing
     }

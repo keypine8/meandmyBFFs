@@ -50,8 +50,8 @@
 
 
 //#import "QuartzCore"  
-#import "QuartzCore/QuartzCore.h"  // for rounded corners uitextview
 //#import <QuartzCore/QuartzCore.h>
+//#import "QuartzCore/QuartzCore.h"  // for rounded corners uitextview
 
 
 @interface MAMB09_addChangeTableViewController ()
@@ -59,8 +59,19 @@
 
 @end
 
+
     char city_prov_coun_PSVs[26 * 128];    // [max num 25 * fixed length of 128]  for search city using typed so far
     int  num_PSVs_found;                   // zero-based                          for search city using typed so far
+
+//    char psvName[32], psvMth[4], psvDay[4], psvYear[8], psvHour[4], psvMin[4], psvAmPm[4], psvCity[64], psvProv[64], psvCountry[64];
+//    char psvLongitude[16], psvHoursDiff[8], returnPSV[64];
+//    const char *my_psvc; // psv=pipe-separated values
+//    char my_psv[128];
+//
+
+    NSString *fldName, *fldMth, *fldDay, *fldYear, *fldHour, *fldMin, *fldAmPm, *fldCity, *fldProv, *fldCountry;
+//    NSString *fldLongitude, *fldHoursDiff;
+
 
 
 @implementation MAMB09_addChangeTableViewController
@@ -935,6 +946,71 @@ nbn(881);
 
     addChangeViewJustEntered = 1;  // 1=y,0=n
 
+    // grab all personal information of gbl_fromHomeCurrentSelectionPSV 
+    //
+        // 2015-12-11 15:37:58.275 Me and My BFFs[2970:1143000] gbl_homeUseMODE     =[edit mode]
+        // 2015-12-11 15:37:58.275 Me and My BFFs[2970:1143000] gbl_homeEditingState=[view or change]
+        //
+    if (   [gbl_homeUseMODE      isEqualToString: @"edit mode" ]
+        && [gbl_homeEditingState isEqualToString: @"view or change" ]
+    ) {
+        //
+        //        // NSString object to C
+        //        my_psvc = [gbl_fromHomeCurrentSelectionPSV cStringUsingEncoding:NSUTF8StringEncoding];  // for personality
+        //
+        //        strcpy(my_psv, my_psvc);
+        //        ksn(my_psv);
+        //        
+        //        strcpy(psvName, csv_get_field(my_psv, "|", 1));
+        //        strcpy(psvMth,  csv_get_field(my_psv, "|", 2));
+        //        strcpy(psvDay,  csv_get_field(my_psv, "|", 3));
+        //        strcpy(psvYear, csv_get_field(my_psv, "|", 4));
+        //        strcpy(psvHour, csv_get_field(my_psv, "|", 5));
+        //        strcpy(psvMin,  csv_get_field(my_psv, "|", 6));
+        //        strcpy(psvAmPm, csv_get_field(my_psv, "|", 7));
+        //        strcpy(psvCity, csv_get_field(my_psv, "|", 8));
+        //        strcpy(psvProv, csv_get_field(my_psv, "|", 9));
+        //        strcpy(psvCountry, csv_get_field(my_psv, "|", 10));
+        //ksn(psvMth);ks(psvDay);ks(psvYear);ks(psvHour);ks(psvMin);ks(psvAmPm);tn();
+        //ksn(psvCity);ks(psvProv);ks(psvCountry);tn();
+        //        
+        //        // get longitude and timezone hoursDiff from Greenwich
+        //        // by looking up psvCity, psvProv, psvCountry
+        //        //
+        //        seq_find_exact_citPrvCountry(returnPSV, psvCity, psvProv, psvCountry);
+        //        
+        //        strcpy(psvHoursDiff,  csv_get_field(returnPSV, "|", 1));
+        //        strcpy(psvLongitude,  csv_get_field(returnPSV, "|", 2));
+        //ksn(psvHoursDiff);
+        //ksn(psvLongitude);
+        //
+
+        NSArray *fields = [gbl_fromHomeCurrentSelectionPSV componentsSeparatedByString: @"|"];
+        fldName      = fields[ 0];
+        fldMth       = fields[ 1];
+        fldDay       = fields[ 2];
+        fldYear      = fields[ 3];
+        fldHour      = fields[ 4];
+        fldMin       = fields[ 5];
+        fldAmPm      = fields[ 6];
+        fldCity      = fields[ 7];
+        fldProv      = fields[ 8];
+        fldCountry   = fields[ 9];
+  NSLog(@"fldName   = [%@]",fldName);
+  NSLog(@"fldMth    = [%@]",fldMth);
+  NSLog(@"fldDay    = [%@]",fldDay);
+  NSLog(@"fldYear   = [%@]",fldYear);
+  NSLog(@"fldHour   = [%@]",fldHour);
+  NSLog(@"fldMin    = [%@]",fldMin);
+  NSLog(@"fldAmPm   = [%@]",fldAmPm);
+  NSLog(@"fldCity   = [%@]",fldCity);
+  NSLog(@"fldProv   = [%@]",fldProv);
+  NSLog(@"fldCountry= [%@]",fldCountry);
+    }
+            
+        
+
+
 // do now when current field changes to "city"
 //    [ [NSRunLoop mainRunLoop] addTimer: self.timerToCheckCityPicklistTrigger  // init
 //                               forMode: NSRunLoopCommonModes
@@ -959,17 +1035,17 @@ nbn(881);
     gbl_previousCharTypedWasSpace = 0;                 // for no multiple consecutive spaces
 
 
-
-
-        if (   [gbl_homeUseMODE      isEqualToString: @"regular mode" ]
-            && [gbl_homeEditingState isEqualToString: @"add" ]
-        ) {
-            self.view.backgroundColor     = gbl_colorHomeBG;     // blue
-            gbl_colorEditingBG_current    = gbl_colorHomeBG;     // is now yellow or blue for add a record screen  (addChange view)
-        } else {
-            self.view.backgroundColor     = gbl_colorEditingBG;  // set yellow bg for editing screens
-            gbl_colorEditingBG_current    = gbl_colorEditingBG;   // is now yellow or blue for add a record screen  (addChange view)
-        }
+    // set blue  or  yellow  background color
+    //
+    if (   [gbl_homeUseMODE      isEqualToString: @"regular mode" ]
+        && [gbl_homeEditingState isEqualToString: @"add" ]
+    ) {
+        self.view.backgroundColor     = gbl_colorHomeBG;     // BLUE
+        gbl_colorEditingBG_current    = gbl_colorHomeBG;     // is now yellow or blue for add a record screen  (addChange view)
+    } else {
+        self.view.backgroundColor     = gbl_colorEditingBG;  // set YELLOW bg for editing screens
+        gbl_colorEditingBG_current    = gbl_colorEditingBG;  // is now yellow or blue for add a record screen  (addChange view)
+    }
 
 
     do {  // set up NAV BAR
@@ -993,49 +1069,6 @@ nbn(881);
         UIBarButtonItem *navCancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
                                                                                          target: self
                                                                                          action: @selector(pressedCancel:)];
-
-//        UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 33, 44)];  // 3rd arg is horizontal length
-//        spaceView.backgroundColor = [UIColor redColor];
-//        UIBarButtonItem *mySpacerForTitle = [[UIBarButtonItem alloc] initWithCustomView: spaceView];
-//
-
-//
-//    UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 33, 44)];  // 3rd arg is horizontal length
-//    UIBarButtonItem *mySpacerForTitle = [[UIBarButtonItem alloc] initWithCustomView:spaceView];
-//
-//
-//    // TWO-LINE NAV BAR TITLE
-//    //
-//    dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
-//        self.navigationItem.rightBarButtonItem = _goToReportButton;
-//        self.navigationItem.titleView           = mySelDate_Label; // mySelDate_Label.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
-//        self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerForTitle];
-//    });
-//
-//
-//        UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 11, 44)];  // 3rd arg is horizontal length
-//        UIBarButtonItem *mySpacerForTitle = [[UIBarButtonItem alloc] initWithCustomView:spaceView];
-//
-//
-//            dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
-//                self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: shareButton];
-//                self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerForTitle];
-//                [self.navigationController.navigationBar setTranslucent:NO];
-//
-//
-//
-
-
-
-//        navCancelButton.title = @"Cancel";
-//        //        navAddButton.tintColor = [UIColor blackColor];   // colors text
-
-//    [UIBarButtonItem.appearance setBackButtonTitlePositionAdjustment:UIOffsetMake(0, 60) forBarMetrics: UIBarMetricsDefault];     // make all "Back" buttons have just the arrow
-//    [UIBarButtonItem.appearance setBackButtonTitlePositionAdjustment:UIOffsetMake(0, 60) forBarMetrics: UIBarMetricsLandscapePhone];     // make all "Back" buttons have just the arrow
-////        navCancelButton.title = @"Cancel";
-////    [UIBarButtonItem.appearance setTitle: @"Cancel" ];     // 
-//
-
 
 
         dispatch_async(dispatch_get_main_queue(), ^{  
@@ -1711,16 +1744,21 @@ NSLog(@"end of  oncityInputViewKeyboardButton!"); tn();
   NSLog(@"-didsel3a-- VASSIGN gbl_mycitySearchString RESIGN!FIRST_RESPONDER ---------------- " );
 
 
-    
+  NSLog(@"gbl_enteredCity=[%@]",gbl_enteredCity);
+  NSLog(@"gbl_DisplayCity   =[%@]",gbl_DisplayCity ) ;
+
     if (   gbl_editingChangeNAMEHasOccurred == 1
         || gbl_editingChangeCITYHasOccurred == 1
         || gbl_editingChangeDATEHasOccurred == 1
     ) {
-
+nbn(700);
         // here editing changes have happened
 
         NSString *msg;            // set msg
-        if ([gbl_homeEditingState isEqualToString:  @"add" ] ) {
+        if (   [gbl_homeEditingState isEqualToString:  @"add" ]
+            || [gbl_homeEditingState isEqualToString:  @"view or change" ]
+        ) {
+nbn(701);
 
             if ([gbl_myname.text       isEqualToString: gbl_initPromptName ] ) gbl_DisplayName = @"";
             else                                                               gbl_DisplayName = gbl_myname.text;
@@ -1755,9 +1793,10 @@ NSLog(@"end of  oncityInputViewKeyboardButton!"); tn();
             }
 
         }
-        if ([gbl_homeEditingState isEqualToString:  @"view or change" ] ) {  
-            msg = @"\nthrow away your changes?";
-        }
+nbn(702);
+//        if ([gbl_homeEditingState isEqualToString:  @"view or change" ] ) {  
+//            msg = @"\nthrow away your changes?";
+//        }
 
         UIAlertController* alert = [UIAlertController alertControllerWithTitle: @"Are you Sure"
                                                                        message: msg
@@ -1823,12 +1862,22 @@ NSLog(@"end of  oncityInputViewKeyboardButton!"); tn();
     
     if ([gbl_homeEditingState isEqualToString:  @"add" ] )
     {
+        if (   gbl_editingChangeNAMEHasOccurred == 0
+            && gbl_editingChangeCITYHasOccurred == 0
+            && gbl_editingChangeDATEHasOccurred == 0
+        ) {
+            // here editing changes have NOT happened
+  NSLog(@" // 222b actually do the BACK action  when Done hit and there are no editing changes");
+            [self.navigationController popToRootViewControllerAnimated: YES]; // pop to root view controller (actually do the "Back" action)
+        }
 
         if (   gbl_editingChangeNAMEHasOccurred == 1
             || gbl_editingChangeCITYHasOccurred == 1
             || gbl_editingChangeDATEHasOccurred == 1
+
         ) {
             // here editing changes have happened
+
 
             if ([gbl_myname.text       isEqualToString: gbl_initPromptName ] ) gbl_DisplayName = @"";
             else                                                               gbl_DisplayName = gbl_myname.text;
@@ -1855,6 +1904,7 @@ NSLog(@"end of  oncityInputViewKeyboardButton!"); tn();
             }
 // TODO
             // before save of New Person,  check for missing information  name,city,date  same as prompt
+            //
             if (   [gbl_DisplayName isEqualToString: @"" ]
                 || [gbl_DisplayCity isEqualToString: @"" ]
                 || [gbl_DisplayCoun isEqualToString: @"" ]
@@ -1881,8 +1931,12 @@ NSLog(@"end of  oncityInputViewKeyboardButton!"); tn();
                  
                 [myAlert addAction:  okButton];
 
-                [self presentViewController: myAlert  animated: YES  completion: nil   ];
-            }
+                // cannot save because of missing information > stay in this screen
+                //
+                [self presentViewController: myAlert  animated: YES  completion: nil   ]; // cannot save because of missing information
+
+            } // before save of New Person,  check for missing information 
+
 
             // before save of New Person,  check if entered name already exists in database
             //
@@ -1892,7 +1946,8 @@ NSLog(@"end of  oncityInputViewKeyboardButton!"); tn();
 //            idxGrpOrPer = -1;
             NSCharacterSet *mySeparators = [NSCharacterSet characterSetWithCharactersInString:@"|"];
 
-            for (id eltPer in gbl_arrayPer) {
+            // search thru gbl_arrayPer
+            for (id eltPer in gbl_arrayPer) { // search thru gbl_arrayPer
 //                idxGrpOrPer = idxGrpOrPer + 1;
 //  NSLog(@"idxGrpOrPer =%ld", (long)idxGrpOrPer );
 //  NSLog(@"eltPer=%@", eltPer);
@@ -1926,10 +1981,11 @@ NSLog(@"end of  oncityInputViewKeyboardButton!"); tn();
 
                     [self presentViewController: myAlert  animated: YES  completion: nil   ];
 
+                    // cannot save because of duplicate name > stay in this screen
                     return;  // pressed "Done" > cannot save > stay in this screen
 
                 }
-            } // search thru gbl_arrayPer
+            } // search thru gbl_arrayPer for name already there 
 
 
   NSLog(@" // Actually do save of New Person   here");
@@ -1955,6 +2011,15 @@ NSLog(@"end of  oncityInputViewKeyboardButton!"); tn();
             // //
             // // FINAL  values for saving
             //
+
+            // before write of array data to file, disallow/ignore user interaction events
+            //
+            if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] ==  NO) {  // suspend handling of touch-related events
+                [[UIApplication sharedApplication] beginIgnoringInteractionEvents];     // typically call this before an animation or transitiion.
+  NSLog(@"ARE  IGnoring events");
+            }
+
+
             NSString *myNewPersonRecord;
             myNewPersonRecord = [NSString stringWithFormat: @"%@|%@|%@|%@|%@|%@|%@|%@|%@|%@|",
                 gbl_DisplayName,
@@ -1972,7 +2037,6 @@ NSLog(@"end of  oncityInputViewKeyboardButton!"); tn();
             
 
             //  test = [[NSMutableArray alloc]init];
-nbn(14);
             [gbl_arrayPer addObject: myNewPersonRecord]; // add the new Person database record in a string to the person array
 
 
@@ -1980,29 +2044,26 @@ nbn(14);
                 (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
 
             [myappDelegate mambWriteNSArrayWithDescription: (NSString *) @"person"];  // write new data to file
-nbn(15);
             [myappDelegate mambReadArrayFileWithDescription: (NSString *) @"person"]; // read new data from file to array
-nbn(152);
             [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription:  (NSString *) @"person"];  // sort by name
-nbn(153);
 
             gbl_justAddedRecord  = 1;  // cause reload of home data
 
-nbn(16);
             gbl_lastSelectedPerson = gbl_DisplayName;  // this row (gbl_lastSelectedPerson) gets selection highlight in home tableview
   NSLog(@"gbl_lastSelectedPerson=[%@]",gbl_lastSelectedPerson);
 
-nbn(162);
             // after saving new person, go back to home view
             [self.navigationController popToRootViewControllerAnimated: YES]; // pop to root view controller (actually do the "Back" action)
 
-nbn(17);
-        } else {
+            // after write of array data to file, allow user interaction events again
+            //
+            if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] == YES) {  // re-enable handling of touch-related events
+                [[UIApplication sharedApplication] endIgnoringInteractionEvents];       // typically call this after an animation or transitiion.
+  NSLog(@"STOP IGnoring events");
+            }
 
-            // here editing changes have NOT happened
-  NSLog(@" // 222b actually do the BACK action  when Done hit and there are no editing changes");
-            [self.navigationController popToRootViewControllerAnimated: YES]; // pop to root view controller (actually do the "Back" action)
-        }
+        } // here editing changes have happened
+
     } // if gbl_homeEditingState = "add"
 
 
@@ -3125,72 +3186,45 @@ nbn(200);
      }
 
      if (indexPath.row == 1) {   //  NAME of Person or Group
-//nbn(2011);
-//  NSLog(@"gbl_fieldTap_goingto =[%@]",gbl_fieldTap_goingto );
+
+nbn(201);
   NSLog(@"name row    gbl_myname.text =[%@]",gbl_myname.text );
+  NSLog(@"gbl_homeUseMODE=[%@]",gbl_homeUseMODE);
+  NSLog(@"gbl_homeEditingState=[%@]",gbl_homeEditingState);
 
         gbl_myname.delegate = self;
 
-// arcane
-//        // set current BG editing color  depending on what field has focus
-//        //
-//        if      ([gbl_fieldTap_goingto isEqualToString: @"name"]) { currentBGfieldColor = gbl_bgColor_editFocus_YES; }
-//        else                                                      { currentBGfieldColor = gbl_bgColor_editFocus_NO ; }
-
-
-        dispatch_async(dispatch_get_main_queue(), ^{        
+        dispatch_async(dispatch_get_main_queue(), ^{
 
 //            cell.textLabel.backgroundColor           = gbl_colorEditing;
             cell.contentView.backgroundColor    = gbl_colorEditingBG_current;
             cell.selectionStyle                 = UITableViewCellSelectionStyleNone;
 
-//            gbl_myname.placeholder              = @"Name";
-//            [gbl_myname setValue: [UIColor colorWithRed: 064.0/255.0    // use KVC
-//                                                  green: 064.0/255.0
-//                                                   blue: 064.0/255.0
-//                                                  alpha: 1.0         ]
-//                      forKeyPath: @"_placeholderLabel.textColor"];
-
-
-
             gbl_myname.autocorrectionType       = UITextAutocorrectionTypeNo;
 //            gbl_myname.clearButtonMode          = UITextFieldViewModeWhileEditing ;
 //            gbl_myname.keyboardType             = UIKeyboardTypeNamePhonePad; // optimized for entering a person's name or phone number
-// UIKeyboardTypeASCIICapable   disables emoji keyboard
-            gbl_myname.keyboardType             = UIKeyboardTypeASCIICapable; // disables emoji keyboard
 
+            // UIKeyboardTypeASCIICapable   disables emoji keyboard
+            gbl_myname.keyboardType             = UIKeyboardTypeASCIICapable; // disables emoji keyboard
 
 //            gbl_myname.backgroundColor          = gbl_colorEditing;
 //            gbl_myname.backgroundColor          = [UIColor yellowColor];
             gbl_myname.backgroundColor          = gbl_colorEditingBGforInputField;
 //            gbl_myname.backgroundColor          = currentBGfieldColor;
 
-//            if (   [gbl_myname.text isEqualToString: @"" ] 
-//                ||  gbl_myname.text == nil 
-//                || [gbl_myname.text isEqualToString: gbl_myname.text ]   xx wrong xxx
 
             if (   [gbl_myname.text isEqualToString: gbl_initPromptName ] 
-                &&  gbl_editingChangeNAMEHasOccurred == 0                  // default 0 at startup (after hitting "Edit" button on home page)
+                &&  gbl_editingChangeNAMEHasOccurred == 0                 // default 0 at startup (after hitting "Edit" button on home page)
+                && ! [gbl_homeEditingState isEqualToString: @"view or change" ] 
             ) {
                 gbl_myname.text                     = gbl_initPromptName ; // is  @"Name"
-
-//            gbl_myname.placeholder              = @"Name";
-//            gbl_myname.placeholder              = gbl_initPromptName ;  // is  @"Name"
-nbn(700);
-
-//            [gbl_myname setValue: [UIColor colorWithRed: 128.0/255.0    // use KVC
-//                                                  green: 128.0/255.0
-//                                                   blue: 128.0/255.0
-//                                                  alpha: 1.0         ]
-//                      forKeyPath: @"_placeholderLabel.textColor"];
-
-//                gbl_myname.textColor                = [UIColor grayColor];
-
-                gbl_myname.textColor                = [UIColor colorWithRed: 128.0/255.0    // use KVC
+                gbl_myname.textColor                = [UIColor colorWithRed: 128.0/255.0    // use KVC    gray
                                                                       green: 128.0/255.0
                                                                        blue: 128.0/255.0
                                                                       alpha: 1.0         ] ;
             } else {
+                //  home didSelectRow gbl_fromHomeCurrentSelectionPSV =~Jackson|2|3|1993|0|1|1|Los Angeles|California|United States||z
+                gbl_myname.text                     = fldName;
                 gbl_myname.textColor                = [UIColor blackColor];
             }
 
@@ -3212,23 +3246,6 @@ nbn(700);
      } //  NAME
 
 
-
-
-
-//     if (indexPath.row == 2) {   //  filler 
-//nbn(202);
-//        dispatch_async(dispatch_get_main_queue(), ^{        
-//            cell.contentView.backgroundColor    = gbl_colorEditingBG_current;
-//            cell.selectionStyle                 = UITableViewCellSelectionStyleNone;
-//            cell.contentView.backgroundColor    = gbl_colorEditingBG_current;
-//        });
-//     }
-//
-
-
-
-
-
      if (indexPath.row == 3) {   // "LABEL" for  city,proc,coun  of Birth of Person
 nb(203);
   NSLog(@"city row   gbl_fieldTap_goingto =[%@]",gbl_fieldTap_goingto );
@@ -3238,7 +3255,13 @@ nb(203);
 //        myTextCity = [NSString stringWithFormat:@" %@\025|%@\025 %@", gbl_enteredCity, gbl_enteredProv, gbl_enteredCoun ];
 //        myTextCity = [NSString stringWithFormat:@" %@\n                        z%@            \n %@", gbl_enteredCity, gbl_enteredProv, gbl_enteredCoun ];
         NSString *myTextCity;
-        myTextCity = [NSString stringWithFormat:@" %@\n %@\n %@", gbl_enteredCity, gbl_enteredProv, gbl_enteredCoun ];
+
+        if ([gbl_homeEditingState isEqualToString: @"view or change" ] )
+        {
+            myTextCity = [NSString stringWithFormat:@" %@\n %@\n %@", fldCity, fldProv, fldCountry ]; // edit current row
+        } else {
+            myTextCity = [NSString stringWithFormat:@" %@\n %@\n %@", gbl_enteredCity, gbl_enteredProv, gbl_enteredCoun ];
+        }
 
 
 //        myTextCity = [NSString stringWithFormat:@" %@qqqy%@qqq %@", gbl_enteredCity, gbl_enteredProv, gbl_enteredCoun ];
@@ -3339,7 +3362,8 @@ nb(204);
 
 
 
-     if (indexPath.row == 5) {   // "LABEl" for  time of birth information
+     if (indexPath.row == 5)     // "LABEl" for  time of birth information
+     {
 nb(205);
   NSLog(@"date row                            DRAWING        CELL  having LABEl for  DATE/time of birth ");
   NSLog(@"                                    gbl_lastInputFieldTapped=%@",gbl_lastInputFieldTapped);
@@ -5434,6 +5458,49 @@ trn("!!!!!!!!!  END OF  didSelectRow in some  PICKER !!   !!!!!!!!!!!!!!!!!!!!!!
 //            
 //            strcpy(psvHoursDiff,  csv_get_field(returnPSV, "|", 1));
 //            strcpy(psvLongitude,  csv_get_field(returnPSV, "|", 2));
+//
+
+
+//        UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 33, 44)];  // 3rd arg is horizontal length
+//        spaceView.backgroundColor = [UIColor redColor];
+//        UIBarButtonItem *mySpacerForTitle = [[UIBarButtonItem alloc] initWithCustomView: spaceView];
+//
+
+//
+//    UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 33, 44)];  // 3rd arg is horizontal length
+//    UIBarButtonItem *mySpacerForTitle = [[UIBarButtonItem alloc] initWithCustomView:spaceView];
+//
+//
+//    // TWO-LINE NAV BAR TITLE
+//    //
+//    dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+//        self.navigationItem.rightBarButtonItem = _goToReportButton;
+//        self.navigationItem.titleView           = mySelDate_Label; // mySelDate_Label.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
+//        self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerForTitle];
+//    });
+//
+//
+//        UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 11, 44)];  // 3rd arg is horizontal length
+//        UIBarButtonItem *mySpacerForTitle = [[UIBarButtonItem alloc] initWithCustomView:spaceView];
+//
+//
+//            dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+//                self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: shareButton];
+//                self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerForTitle];
+//                [self.navigationController.navigationBar setTranslucent:NO];
+//
+//
+//
+
+
+
+//        navCancelButton.title = @"Cancel";
+//        //        navAddButton.tintColor = [UIColor blackColor];   // colors text
+
+//    [UIBarButtonItem.appearance setBackButtonTitlePositionAdjustment:UIOffsetMake(0, 60) forBarMetrics: UIBarMetricsDefault];     // make all "Back" buttons have just the arrow
+//    [UIBarButtonItem.appearance setBackButtonTitlePositionAdjustment:UIOffsetMake(0, 60) forBarMetrics: UIBarMetricsLandscapePhone];     // make all "Back" buttons have just the arrow
+////        navCancelButton.title = @"Cancel";
+////    [UIBarButtonItem.appearance setTitle: @"Cancel" ];     // 
 //
 
 

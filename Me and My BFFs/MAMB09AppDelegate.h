@@ -88,8 +88,9 @@ NSString *gbl_fieldTap_goingto; // note that name and city are captured in shoul
 // cell.accessoryType = UITableViewCellAccessoryDisclosurebutton;    // home mode edit    with tap giving record details 
 // cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator; // home mode regular with tap giving report list
 //
-NSString *gbl_homeUseMODE;       // = "edit mode" or "regular mode"
-NSString *gbl_homeEditingState;  // if gbl_homeUseMODE = "edit mode" then either "add" or "view or change"   for tapped person or group
+NSString *gbl_homeUseMODE;      // "edit mode" (yellow)   or   "regular mode" (blue)
+NSString *gbl_homeEditingState; // if gbl_homeUseMODE = "edit mode"    then can be "add" or "view or change"   for tapped person or group
+// no, i think  // if gbl_homeUseMODE = "regular mode" then can be "add" or nil                for tapped person or group
 
 
 

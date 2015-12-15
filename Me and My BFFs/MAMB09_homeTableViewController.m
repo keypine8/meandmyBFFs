@@ -751,7 +751,7 @@ nbn(100);
 //
 //         }
 //     }
-//}
+//
 //
 
 
@@ -1167,8 +1167,22 @@ NSLog(@"in viewDidAppear()  in HOME");
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath: (NSIndexPath *) indexPath
 {
+  NSLog(@"in HOME  didSelectRowAtIndexPath ");
 
-    gbl_homeEditingState = @"view or change";  // "add" for add a new person or group, "view or change" for tapped person or group
+    // selecting home row in yellow "edit mode" gives you  view or change mode
+    //
+    if ( [gbl_homeUseMODE isEqualToString: @"edit mode" ] )
+    {
+        gbl_homeEditingState = @"view or change";  // "add" for add a new person or group, "view or change" for tapped person or group
+    }
+
+    if ( [gbl_homeUseMODE isEqualToString: @"regular mode" ] )
+    {
+        gbl_homeEditingState = nil;
+        ;  // just go ahead with regular report selection functionality
+    }
+  NSLog(@"gbl_homeEditingState =[%@]",gbl_homeEditingState );
+
 
 //     // deselect previous row, select new one  (grey highlight)
 //     //
@@ -1269,6 +1283,29 @@ NSLog(@"in viewDidAppear()  in HOME");
                                                       animated: YES];
     b(31);
 
+
+    if ([gbl_homeUseMODE isEqualToString: @"edit mode" ] )   // = yellow
+    {
+  NSLog(@"go to add change ON TAP of ROW");
+
+        // Because background threads are not prioritized and will wait a very long time
+        // before you see results, unlike the mainthread, which is high priority for the system.
+        //
+        // Also, all UI-related stuff must be done on the *main queue*. That's way you need that dispatch_async.
+        //
+        dispatch_async(dispatch_get_main_queue(), ^{                                 // <===  <.>
+            [self performSegueWithIdentifier:@"segueHomeToAddChange" sender:self]; //  
+        });
+
+    } else {
+
+        dispatch_async(dispatch_get_main_queue(), ^{                                 // <===  <.>
+            [self performSegueWithIdentifier:@"segueHomeToReportList" sender:self]; //  
+        });
+    }
+
+    b(32);
+        
 
 } // end of  didSelectRowAtIndexPath: (NSIndexPath *) indexPath
 
