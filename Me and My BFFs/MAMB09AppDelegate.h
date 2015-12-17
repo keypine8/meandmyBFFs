@@ -76,6 +76,12 @@ UIImage *gbl_YellowBG ;
 UIImage *gbl_BlueBG ;
 
 NSInteger addChangeViewJustEntered;  // 1=y,0=n
+NSInteger gbl_citySetEditingValue;  // 1=y,0=n  // set initial value  when first entering City in "edit mode"  yellow
+NSInteger gbl_citySetPickerValue;   // 1=y,0=n  // set initial value  when first entering City in "edit mode"  yellow
+NSInteger gbl_citySetLabelValue;    // 1=y,0=n  // set initial value  when first entering City in "edit mode"  yellow
+//NSInteger gbl_citySetValue;   // 1=y,0=n  // set initial value  when first entering City in "edit mode"  yellow
+NSInteger gbl_dateSetEditingValue;  // 1=y,0=n  // set initial values when first entering Date in "edit mode"  yellow
+
 
 // all 4 of these have possible values  "name" or "city" or "date" or "" or nil
 //
@@ -771,6 +777,11 @@ NSInteger gbl_intBirthDayOfMonth;
 //   or initial setting of highlight for last selection 
 NSString *gbl_lastSelectedGroup;        // like "~Family"
 NSString *gbl_lastSelectedPerson;       // like "~Dave"
+
+                                              // in change mode, the name might change out from under you
+NSString *gbl_lastSelectedPersonBeforeChange; // like "~Dave"   used in YELLOW gbl_homeUseMODE "edit mode"
+                                              // for BOTH gbl_homeEditingState  =  "add" OR "view or change")
+
 NSString *gbl_lastSelectedSecondPerson; // set for  hompc-just 2 compat after selecting 2nd person
 //NSString *gbl_lastSelPersonWasA;        // @"group" or @"person"  used when coming back to selPersonViewController to re-draw  NOW use gbl_currentMenuPlusReportCode instead
 

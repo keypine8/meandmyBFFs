@@ -588,11 +588,6 @@ nbn(100);
     // NSLog(@"_mambCurrentEntity=%@",_mambCurrentEntity);
 
     NSString *currentLine, *nameOfGrpOrPer;
-    // NSLog(@"_mambCurrentEntity=%@",_mambCurrentEntity);
-
-
-    //if ([_mambCurrentEntity isEqualToString:@"group"]) {
-    // NSLog(@"gbl_lastSelectionType =%@",gbl_lastSelectionType );
 
     if ([gbl_lastSelectionType isEqualToString:@"group"]) {
         currentLine = [gbl_arrayGrp objectAtIndex:indexPath.row];
@@ -647,7 +642,58 @@ nbn(100);
         cell.accessoryType        = gbl_home_cell_AccessoryType;           // home mode edit    with tap giving record details
         cell.editingAccessoryType = gbl_home_cell_editingAccessoryType;    // home mode edit    with tap giving record details
 
-//        cell.hidesAccessoryWhenEditing = YES;
+//        cell.textLabel.textAlignment = NSTextAlignmentCenter;
+
+        // PROBLEM  name slides left off screen when you hit red round delete
+        //          and delete button slides from right into screen
+        //
+        cell.indentationWidth = 12.0; // these 2 keep the name on the screen when hit red round delete and delete button slides from right
+        cell.indentationLevel =  3;   // these 2 keep the name on the screen when hit red round delete and delete button slides from right
+
+
+
+//@property(nonatomic) UIEdgeInsets separatorInset
+//typedef struct { CGFloat top, left , bottom, right ; } UIEdgeInsets;
+//UIEdgeInsets UIEdgeInsetsMake ( CGFloat top, CGFloat left, CGFloat bottom, CGFloat right );
+
+
+//        cell.textLabel.autoresizingMask  = UIViewAutoresizingFlexibleRightMargin;
+         //[customView setAutoresizingMask: UIViewAutoresizingFlexibleWidth |UIViewAutoresizingFlexibleHeight];
+
+//        cell.textLabel.autoresizingMask  = UIViewAutoresizingFlexibleLeftMargin |
+//             UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth |UIViewAutoresizingFlexibleHeight;
+//        cell.contentView.autoresizingMask  = UIViewAutoresizingFlexibleLeftMargin |
+//             UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth |UIViewAutoresizingFlexibleHeight;
+
+//        cell.autoresizingMask  = UIViewAutoresizingFlexibleRightMargin;  // allow right margin to shrink
+//        cell.autoresizingMask  = nil;
+
+//        self.tableView.autoresizingMask  = UIViewAutoresizingFlexibleRightMargin;  // allow right margin to shrink
+//        cell.contentView.autoresizingMask  = UIViewAutoresizingFlexibleRightMargin;  // allow right margin to shrink
+//        cell.autoresizingMask  = UIViewAutoresizingFlexibleRightMargin;  // allow right margin to shrink
+
+        // This will make a UI Element stay centered since it will NOT be hugging any one side.
+        //
+
+//        cell.textLabel.autoresizingMask  =
+//            UIViewAutoresizingNone;      
+//        self.tableView.autoresizingMask  = 
+//            UIViewAutoresizingNone;      
+//        cell.contentView.autoresizingMask  = 
+//            UIViewAutoresizingNone;      
+//        cell.autoresizingMask  = 
+//            UIViewAutoresizingNone;      
+//
+
+//            UIViewAutoresizingFlexibleLeftMargin;      
+//            UIViewAutoresizingFlexibleBottomMargin    | 
+//            UIViewAutoresizingFlexibleRightMargin     | 
+//            UIViewAutoresizingFlexibleTopMargin
+
+//        cell.autoresizingMask     = UIViewAutoresizingFlexibleRightMargin;
+//        cell.hidesAccessoryWhenEditing = NO;
+
+//        cell.shouldIndentWhileEditing = NO;
 
         if ([gbl_homeUseMODE isEqualToString: @"edit mode"]) cell.tintColor = [UIColor blackColor];
 
@@ -656,6 +702,19 @@ nbn(100);
 
     return cell;
 } // cellForRowAtIndexPath
+
+
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+
+    // rows in yellow edit mode  should not be selectable
+    //
+    // NSString *gbl_homeUseMODE;      // "edit mode" (yellow)   or   "regular mode" (blue)
+    //
+    if ([gbl_homeUseMODE isEqualToString: @"edit mode"]) return nil;
+
+    return indexPath; // By default, allow row to be selected
+}
+
 
 
 // how to set the tableview cell height
@@ -677,43 +736,82 @@ nbn(100);
 
 
 /*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
+//// Override to support conditional editing of the table view.
+//- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    // Return NO if you do not want the specified item to be editable.
+//    return YES;
+//}
 */
 
 /*
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
+//    if (editingStyle == UITableViewCellEditingStyleDelete) {
+//        // Delete the row from the data source
+//        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+//    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
+//        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+//    }   
 }
 
 */
 
 /*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
+//// Override to support rearranging the table view.
+//- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
+//{
 }
 */
 
 /*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
+//// Override to support conditional rearranging of the table view.
+//- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    // Return NO if you do not want the item to be re-orderable.
+//    return YES;
+//}
+*/
+
+
+// Override to support conditional editing of the table view.
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+//  NSLog(@"in canEditRowAtIndexPath!");
+//  NSLog(@"indexPath.row =%ld",indexPath.row );
+
+//
+//    // Return NO if you do not want the specified item to be editable.
+//    if (indexPath.row == 5 ) return  NO;
+//    else                     return YES;
+//
+
     return YES;
 }
-*/
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath: (NSIndexPath *)indexPath
+{
+//tn();
+//NSLog(@"in editingStyleForRowAtIndexPath");
+    return UITableViewCellEditingStyleDelete;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle: (UITableViewCellEditingStyle)  editingStyle
+                                            forRowAtIndexPath: (NSIndexPath *)                indexPath
+{
+  NSLog(@"in commitEditingStyle");
+  NSLog(@"editingStyle=[%ld]",(long)editingStyle);
+    // If row is deleted, remove it from the list.
+
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+//        SimpleEditableListAppDelegate *controller = (SimpleEditableListAppDelegate *)[[UIApplication sharedApplication] delegate];
+//        [controller removeObjectFromListAtIndex:indexPath.row];
+//        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+  NSLog(@"in commitEditingStyle  2222222");
+    }
+
+}
+
 
 
 #pragma mark - Navigation
@@ -786,6 +884,10 @@ nbn(101);
 //        destViewController.selectionName = @"alarms";
 //
 //        [sender setEnabled:NO];
+
+
+        [self.tableView setEditing: YES animated: YES];  // turn cocoa editing mode off when this screen leaves
+
     }
 
 
@@ -1184,134 +1286,149 @@ NSLog(@"in viewDidAppear()  in HOME");
   NSLog(@"gbl_homeEditingState =[%@]",gbl_homeEditingState );
 
 
-//     // deselect previous row, select new one  (grey highlight)
-//     //
-//     // When the user selects a cell, you should respond by deselecting the previously selected cell (
-//     // by calling the deselectRowAtIndexPath:animated: method) as well as by
-//     // performing any appropriate action, such as displaying a detail view.
-//     // 
-//     NSIndexPath *previouslyselectedIndexPath = [self.tableView indexPathForSelectedRow];  // this is the "previously" selected row now
-//     [self.tableView deselectRowAtIndexPath: previouslyselectedIndexPath  // deselect "previously" selected row and remove light grey highlight
-//                                   animated: NO];
-// 
-//     NSIndexPath *myIdxPath = [self.tableView indexPathForSelectedRow]; // get the indexpath of current row
-//     if(myIdxPath) {
-//         [self.tableView selectRowAtIndexPath:myIdxPath // puts highlight on this row (?)
-//                                     animated:YES
-//                               scrollPosition:UITableViewScrollPositionNone];
-//     }
+
+    [self codeForCellTapOrAccessoryButtonTapWithIndexPath: indexPath ];
 
 
-// tn();     NSLog(@"in didSelectRowAtIndexPath in home !!!!!!!!!!  BEFORE  !!!!!!!!!!!!!");
-//             NSLog(@"_mambCurrentEntity=%@",_mambCurrentEntity);
-//             NSLog(@"_mambCurrentSelection=%@",_mambCurrentSelection);
-//             NSLog(@"_mambCurrentSelectionType=%@",_mambCurrentSelectionType);
-//             NSLog(@"gbl_fromHomeCurrentSelectionPSV=%@",gbl_fromHomeCurrentSelectionPSV);
-//             NSLog(@"gbl_fromHomeCurrentSelectionArrayIdx=%ld",(long)gbl_fromHomeCurrentSelectionArrayIdx);
-//             NSLog(@"gbl_fromHomeCurrentSelectionType=%@",gbl_fromHomeCurrentSelectionType);
-//             NSLog(@"gbl_fromHomeCurrentEntity=%@",gbl_fromHomeCurrentEntity);
+//
+////     // deselect previous row, select new one  (grey highlight)
+////     //
+////     // When the user selects a cell, you should respond by deselecting the previously selected cell (
+////     // by calling the deselectRowAtIndexPath:animated: method) as well as by
+////     // performing any appropriate action, such as displaying a detail view.
+////     // 
+////     NSIndexPath *previouslyselectedIndexPath = [self.tableView indexPathForSelectedRow];  // this is the "previously" selected row now
+////     [self.tableView deselectRowAtIndexPath: previouslyselectedIndexPath  // deselect "previously" selected row and remove light grey highlight
+////                                   animated: NO];
+//// 
+////     NSIndexPath *myIdxPath = [self.tableView indexPathForSelectedRow]; // get the indexpath of current row
+////     if(myIdxPath) {
+////         [self.tableView selectRowAtIndexPath:myIdxPath // puts highlight on this row (?)
+////                                     animated:YES
+////                               scrollPosition:UITableViewScrollPositionNone];
+////     }
+//
+//
+//// tn();     NSLog(@"in didSelectRowAtIndexPath in home !!!!!!!!!!  BEFORE  !!!!!!!!!!!!!");
+////             NSLog(@"_mambCurrentEntity=%@",_mambCurrentEntity);
+////             NSLog(@"_mambCurrentSelection=%@",_mambCurrentSelection);
+////             NSLog(@"_mambCurrentSelectionType=%@",_mambCurrentSelectionType);
+////             NSLog(@"gbl_fromHomeCurrentSelectionPSV=%@",gbl_fromHomeCurrentSelectionPSV);
+////             NSLog(@"gbl_fromHomeCurrentSelectionArrayIdx=%ld",(long)gbl_fromHomeCurrentSelectionArrayIdx);
+////             NSLog(@"gbl_fromHomeCurrentSelectionType=%@",gbl_fromHomeCurrentSelectionType);
+////             NSLog(@"gbl_fromHomeCurrentEntity=%@",gbl_fromHomeCurrentEntity);
+////             NSLog(@"gbl_lastSelectedPerson=%@",gbl_lastSelectedPerson);
+////             NSLog(@"gbl_lastSelectedGroup=%@",gbl_lastSelectedGroup);
+////             //NSLog(@"=%@",);
+//// NSLog(@"in didSelectRowAtIndexPath!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//
+//
+//    // this is the "currently" selected row now
+//    //NSIndexPath *currentlyselectedIndexPath = [self.tableView indexPathForSelectedRow];
+//    NSIndexPath *myIdxPath = [self.tableView indexPathForSelectedRow];
+//    
+//
+//    // below is from prep for segue
+//    gbl_savePrevIndexPath  = myIdxPath;
+//    NSLog(@"gbl_savePrevIndexPath=%@",gbl_savePrevIndexPath);
+//    gbl_fromHomeCurrentEntity = gbl_lastSelectionType; // "group" or "person"
+//    if ([gbl_fromHomeCurrentEntity isEqualToString:@"group"])  {
+//        gbl_fromHomeCurrentSelectionPSV      = [gbl_arrayGrp objectAtIndex:myIdxPath.row];  /* PSV */
+//        gbl_fromHomeCurrentSelectionArrayIdx = myIdxPath.row;
+//    }
+//    if ([gbl_fromHomeCurrentEntity isEqualToString:@"person"]) {
+//        gbl_fromHomeCurrentSelectionPSV      = [gbl_arrayPer objectAtIndex:myIdxPath.row];  /* PSV */
+//        gbl_fromHomeCurrentSelectionArrayIdx = myIdxPath.row;
+//    }
+//    NSLog(@"home didSelectRow gbl_fromHomeCurrentSelectionArrayIdx=%ld",(long)gbl_fromHomeCurrentSelectionArrayIdx);
+//    NSLog(@"home didSelectRow gbl_fromHomeCurrentSelectionPSV =%@",gbl_fromHomeCurrentSelectionPSV);
+//    NSLog(@"home didSelectRow gbl_fromHomeCurrentSelectionType=%@",gbl_fromHomeCurrentSelectionType);
+//    NSLog(@"home didSelectRow gbl_fromHomeCurrentEntity=%@",gbl_fromHomeCurrentEntity);
+//    NSLog(@"home didSelectRow gbl_currentMenuPrefixFromHome=%@",gbl_currentMenuPrefixFromHome);
+//    // above is from prep for segue
+//
+//
+//    const char *my_psvc;  // psv=pipe-separated values
+//    char my_psv[1024], psvName[32];
+//    my_psvc = [gbl_fromHomeCurrentSelectionPSV cStringUsingEncoding:NSUTF8StringEncoding]; // convert NSString to c string
+//    strcpy(my_psv, my_psvc);
+//    strcpy(psvName, csv_get_field(my_psv, "|", 1));
+//    NSString *myNameOstr =  [NSString stringWithUTF8String:psvName];  // convert c string to NSString
+//
+//    gbl_fromHomeCurrentEntityName = myNameOstr;  // like "~Anya" or "~Swim Team"
+//    if ([gbl_fromHomeCurrentSelectionType isEqualToString:@"person"]) {
+//        gbl_lastSelectedPerson = myNameOstr;
+//    }
+//    if ([gbl_fromHomeCurrentSelectionType isEqualToString:@"group"]) {
+//        gbl_lastSelectedGroup  = myNameOstr;
+//    }
+//
+//
+//// tn();     NSLog(@"in didSelectRowAtIndexPath!!!!!!!!!!  AFTER   !!!!!!!!!!!!!");
+////             NSLog(@"_mambCurrentEntity=%@",_mambCurrentEntity);
+////             NSLog(@"_mambCurrentSelection=%@",_mambCurrentSelection);
+////             NSLog(@"_mambCurrentSelectionType=%@",_mambCurrentSelectionType);
+////             NSLog(@"gbl_fromHomeCurrentSelectionPSV=%@",gbl_fromHomeCurrentSelectionPSV);
+////             NSLog(@"gbl_fromHomeCurrentSelectionArrayIdx=%ld",(long)gbl_fromHomeCurrentSelectionArrayIdx);
+////             NSLog(@"gbl_fromHomeCurrentSelectionType=%@",gbl_fromHomeCurrentSelectionType);
+////             NSLog(@"gbl_fromHomeCurrentEntity=%@",gbl_fromHomeCurrentEntity);
 //             NSLog(@"gbl_lastSelectedPerson=%@",gbl_lastSelectedPerson);
 //             NSLog(@"gbl_lastSelectedGroup=%@",gbl_lastSelectedGroup);
-//             //NSLog(@"=%@",);
-// NSLog(@"in didSelectRowAtIndexPath!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-
-
-    // this is the "currently" selected row now
-    //NSIndexPath *currentlyselectedIndexPath = [self.tableView indexPathForSelectedRow];
-    NSIndexPath *myIdxPath = [self.tableView indexPathForSelectedRow];
-    
-
-    // below is from prep for segue
-    gbl_savePrevIndexPath  = myIdxPath;
-    NSLog(@"gbl_savePrevIndexPath=%@",gbl_savePrevIndexPath);
-    gbl_fromHomeCurrentEntity = gbl_lastSelectionType; // "group" or "person"
-    if ([gbl_fromHomeCurrentEntity isEqualToString:@"group"])  {
-        gbl_fromHomeCurrentSelectionPSV      = [gbl_arrayGrp objectAtIndex:myIdxPath.row];  /* PSV */
-        gbl_fromHomeCurrentSelectionArrayIdx = myIdxPath.row;
-    }
-    if ([gbl_fromHomeCurrentEntity isEqualToString:@"person"]) {
-        gbl_fromHomeCurrentSelectionPSV      = [gbl_arrayPer objectAtIndex:myIdxPath.row];  /* PSV */
-        gbl_fromHomeCurrentSelectionArrayIdx = myIdxPath.row;
-    }
-    NSLog(@"home didSelectRow gbl_fromHomeCurrentSelectionArrayIdx=%ld",(long)gbl_fromHomeCurrentSelectionArrayIdx);
-    NSLog(@"home didSelectRow gbl_fromHomeCurrentSelectionPSV =%@",gbl_fromHomeCurrentSelectionPSV);
-    NSLog(@"home didSelectRow gbl_fromHomeCurrentSelectionType=%@",gbl_fromHomeCurrentSelectionType);
-    NSLog(@"home didSelectRow gbl_fromHomeCurrentEntity=%@",gbl_fromHomeCurrentEntity);
-    NSLog(@"home didSelectRow gbl_currentMenuPrefixFromHome=%@",gbl_currentMenuPrefixFromHome);
-    // above is from prep for segue
-
-
-    const char *my_psvc;  // psv=pipe-separated values
-    char my_psv[1024], psvName[32];
-    my_psvc = [gbl_fromHomeCurrentSelectionPSV cStringUsingEncoding:NSUTF8StringEncoding]; // convert NSString to c string
-    strcpy(my_psv, my_psvc);
-    strcpy(psvName, csv_get_field(my_psv, "|", 1));
-    NSString *myNameOstr =  [NSString stringWithUTF8String:psvName];  // convert c string to NSString
-
-    gbl_fromHomeCurrentEntityName = myNameOstr;  // like "~Anya" or "~Swim Team"
-    if ([gbl_fromHomeCurrentSelectionType isEqualToString:@"person"]) {
-        gbl_lastSelectedPerson = myNameOstr;
-    }
-    if ([gbl_fromHomeCurrentSelectionType isEqualToString:@"group"]) {
-        gbl_lastSelectedGroup  = myNameOstr;
-    }
-
-
-// tn();     NSLog(@"in didSelectRowAtIndexPath!!!!!!!!!!  AFTER   !!!!!!!!!!!!!");
-//             NSLog(@"_mambCurrentEntity=%@",_mambCurrentEntity);
-//             NSLog(@"_mambCurrentSelection=%@",_mambCurrentSelection);
-//             NSLog(@"_mambCurrentSelectionType=%@",_mambCurrentSelectionType);
-//             NSLog(@"gbl_fromHomeCurrentSelectionPSV=%@",gbl_fromHomeCurrentSelectionPSV);
-//             NSLog(@"gbl_fromHomeCurrentSelectionArrayIdx=%ld",(long)gbl_fromHomeCurrentSelectionArrayIdx);
-//             NSLog(@"gbl_fromHomeCurrentSelectionType=%@",gbl_fromHomeCurrentSelectionType);
-//             NSLog(@"gbl_fromHomeCurrentEntity=%@",gbl_fromHomeCurrentEntity);
-             NSLog(@"gbl_lastSelectedPerson=%@",gbl_lastSelectedPerson);
-             NSLog(@"gbl_lastSelectedGroup=%@",gbl_lastSelectedGroup);
-//             //NSLog(@"=%@",);
-// NSLog(@"in didSelectRowAtIndexPath!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-
-//tn();trn("SCROLL 666666666666666666666666666666666666666666666666666666666");
-    // select the row in UITableView
-    // This puts in the light grey "highlight" indicating selection
-    //[self.tableView selectRowAtIndexPath:currentlyselectedIndexPath
-    [self.tableView selectRowAtIndexPath: myIdxPath
-                                animated: YES
-                          scrollPosition: UITableViewScrollPositionNone];
-
-    //[self.tableView scrollToNearestSelectedRowAtScrollPosition: myIdxPath.row
-    [self.tableView scrollToNearestSelectedRowAtScrollPosition: UITableViewScrollPositionMiddle
-                                                      animated: YES];
-    b(31);
-
-
-    if ([gbl_homeUseMODE isEqualToString: @"edit mode" ] )   // = yellow
-    {
-  NSLog(@"go to add change ON TAP of ROW");
-
-        // Because background threads are not prioritized and will wait a very long time
-        // before you see results, unlike the mainthread, which is high priority for the system.
-        //
-        // Also, all UI-related stuff must be done on the *main queue*. That's way you need that dispatch_async.
-        //
-        dispatch_async(dispatch_get_main_queue(), ^{                                 // <===  <.>
-            [self performSegueWithIdentifier:@"segueHomeToAddChange" sender:self]; //  
-        });
-
-    } else {
-
-        dispatch_async(dispatch_get_main_queue(), ^{                                 // <===  <.>
-            [self performSegueWithIdentifier:@"segueHomeToReportList" sender:self]; //  
-        });
-    }
-
-    b(32);
-        
+////             //NSLog(@"=%@",);
+//// NSLog(@"in didSelectRowAtIndexPath!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//
+////tn();trn("SCROLL 666666666666666666666666666666666666666666666666666666666");
+//    // select the row in UITableView
+//    // This puts in the light grey "highlight" indicating selection
+//    //[self.tableView selectRowAtIndexPath:currentlyselectedIndexPath
+//    [self.tableView selectRowAtIndexPath: myIdxPath
+//                                animated: YES
+//                          scrollPosition: UITableViewScrollPositionNone];
+//
+//    //[self.tableView scrollToNearestSelectedRowAtScrollPosition: myIdxPath.row
+//    [self.tableView scrollToNearestSelectedRowAtScrollPosition: UITableViewScrollPositionMiddle
+//                                                      animated: YES];
+//    b(31);
+//
+//
+//    if ([gbl_homeUseMODE isEqualToString: @"edit mode" ] )   // = yellow
+//    {
+//  NSLog(@"go to add change ON TAP of ROW");
+//
+//        // Because background threads are not prioritized and will wait a very long time
+//        // before you see results, unlike the mainthread, which is high priority for the system.
+//        //
+//        // Also, all UI-related stuff must be done on the *main queue*. That's way you need that dispatch_async.
+//        //
+//        dispatch_async(dispatch_get_main_queue(), ^{                                 // <===  <.>
+//            [self performSegueWithIdentifier:@"segueHomeToAddChange" sender:self]; //  
+//        });
+//
+//    } else {
+//
+//        dispatch_async(dispatch_get_main_queue(), ^{                                 // <===  <.>
+//            [self performSegueWithIdentifier:@"segueHomeToReportList" sender:self]; //  
+//        });
+//    }
+//
+//    b(32);
+//        
+//
 
 } // end of  didSelectRowAtIndexPath: (NSIndexPath *) indexPath
 
 
 -(void) viewWillAppear:(BOOL)animated {
  NSLog(@"in viewWillAppear() in home   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
+
+    //   gbl_homeUseMODE;      // "edit mode" (yellow)   or   "regular mode" (blue)
+    if ([gbl_homeUseMODE isEqualToString:@"edit mode"]) {
+        [self.tableView setEditing: YES animated: YES];  // turn cocoa editing mode off when this screen leaves
+    } else {
+        [self.tableView setEditing: NO  animated: YES];  // turn cocoa editing mode off when this screen leaves
+    }
+
 
     gbl_currentMenuPlusReportCode = @"HOME";  // also set in viewDidAppear for coming back to HOME from other places (INFO ptr)
   NSLog(@"gbl_currentMenuPlusReportCode =%@",gbl_currentMenuPlusReportCode );
@@ -1800,7 +1917,146 @@ nbn(311);
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath{
 tn();    NSLog(@"reaching accessoryButtonTappedForRowWithIndexPath:");
 //    [self performSegueWithIdentifier:@"modaltodetails" sender:[self.eventsTable cellForRowAtIndexPath:indexPath]];
+
+    [self codeForCellTapOrAccessoryButtonTapWithIndexPath: indexPath ];
+
+    gbl_homeUseMODE      = @"edit mode" ;
+    gbl_homeEditingState = @"view or change" ;
 }
+
+
+//NSString *gbl_homeUseMODE;      // "edit mode" (yellow)   or   "regular mode" (blue)
+//NSString *gbl_homeEditingState; // if gbl_homeUseMODE = "edit mode"    then can be "add" or "view or change"   for tapped person or group
+///
+- (void) codeForCellTapOrAccessoryButtonTapWithIndexPath:(NSIndexPath *)indexPath  // for  gbl_homeUseMODE  =  "edit mode" (yellow)
+{
+
+//     // deselect previous row, select new one  (grey highlight)
+//     //
+//     // When the user selects a cell, you should respond by deselecting the previously selected cell (
+//     // by calling the deselectRowAtIndexPath:animated: method) as well as by
+//     // performing any appropriate action, such as displaying a detail view.
+//     // 
+//     NSIndexPath *previouslyselectedIndexPath = [self.tableView indexPathForSelectedRow];  // this is the "previously" selected row now
+//     [self.tableView deselectRowAtIndexPath: previouslyselectedIndexPath  // deselect "previously" selected row and remove light grey highlight
+//                                   animated: NO];
+// 
+//     NSIndexPath *myIdxPath = [self.tableView indexPathForSelectedRow]; // get the indexpath of current row
+//     if(myIdxPath) {
+//         [self.tableView selectRowAtIndexPath:myIdxPath // puts highlight on this row (?)
+//                                     animated:YES
+//                               scrollPosition:UITableViewScrollPositionNone];
+//     }
+
+
+// tn();     NSLog(@"in didSelectRowAtIndexPath in home !!!!!!!!!!  BEFORE  !!!!!!!!!!!!!");
+//             NSLog(@"_mambCurrentEntity=%@",_mambCurrentEntity);
+//             NSLog(@"_mambCurrentSelection=%@",_mambCurrentSelection);
+//             NSLog(@"_mambCurrentSelectionType=%@",_mambCurrentSelectionType);
+//             NSLog(@"gbl_fromHomeCurrentSelectionPSV=%@",gbl_fromHomeCurrentSelectionPSV);
+//             NSLog(@"gbl_fromHomeCurrentSelectionArrayIdx=%ld",(long)gbl_fromHomeCurrentSelectionArrayIdx);
+//             NSLog(@"gbl_fromHomeCurrentSelectionType=%@",gbl_fromHomeCurrentSelectionType);
+//             NSLog(@"gbl_fromHomeCurrentEntity=%@",gbl_fromHomeCurrentEntity);
+//             NSLog(@"gbl_lastSelectedPerson=%@",gbl_lastSelectedPerson);
+//             NSLog(@"gbl_lastSelectedGroup=%@",gbl_lastSelectedGroup);
+//             //NSLog(@"=%@",);
+// NSLog(@"in didSelectRowAtIndexPath!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
+
+    // this is the "currently" selected row now
+    //NSIndexPath *currentlyselectedIndexPath = [self.tableView indexPathForSelectedRow];
+//    NSIndexPath *myIdxPath = [self.tableView indexPathForSelectedRow];
+    NSIndexPath *myIdxPath = indexPath;  // method argument
+    
+
+    // below is from prep for segue
+    gbl_savePrevIndexPath  = myIdxPath;
+    NSLog(@"gbl_savePrevIndexPath=%@",gbl_savePrevIndexPath);
+    gbl_fromHomeCurrentEntity = gbl_lastSelectionType; // "group" or "person"
+    if ([gbl_fromHomeCurrentEntity isEqualToString:@"group"])  {
+        gbl_fromHomeCurrentSelectionPSV      = [gbl_arrayGrp objectAtIndex:myIdxPath.row];  /* PSV */
+        gbl_fromHomeCurrentSelectionArrayIdx = myIdxPath.row;
+    }
+    if ([gbl_fromHomeCurrentEntity isEqualToString:@"person"]) {
+        gbl_fromHomeCurrentSelectionPSV      = [gbl_arrayPer objectAtIndex:myIdxPath.row];  /* PSV */
+        gbl_fromHomeCurrentSelectionArrayIdx = myIdxPath.row;
+    }
+    NSLog(@"home didSelectRow gbl_fromHomeCurrentSelectionArrayIdx=%ld",(long)gbl_fromHomeCurrentSelectionArrayIdx);
+    NSLog(@"home didSelectRow gbl_fromHomeCurrentSelectionPSV =%@",gbl_fromHomeCurrentSelectionPSV);
+    NSLog(@"home didSelectRow gbl_fromHomeCurrentSelectionType=%@",gbl_fromHomeCurrentSelectionType);
+    NSLog(@"home didSelectRow gbl_fromHomeCurrentEntity=%@",gbl_fromHomeCurrentEntity);
+    NSLog(@"home didSelectRow gbl_currentMenuPrefixFromHome=%@",gbl_currentMenuPrefixFromHome);
+    // above is from prep for segue
+
+
+    const char *my_psvc;  // psv=pipe-separated values
+    char my_psv[1024], psvName[32];
+    my_psvc = [gbl_fromHomeCurrentSelectionPSV cStringUsingEncoding:NSUTF8StringEncoding]; // convert NSString to c string
+    strcpy(my_psv, my_psvc);
+    strcpy(psvName, csv_get_field(my_psv, "|", 1));
+    NSString *myNameOstr =  [NSString stringWithUTF8String:psvName];  // convert c string to NSString
+
+    gbl_fromHomeCurrentEntityName = myNameOstr;  // like "~Anya" or "~Swim Team"
+    if ([gbl_fromHomeCurrentSelectionType isEqualToString:@"person"]) {
+        gbl_lastSelectedPerson = myNameOstr;
+    }
+    if ([gbl_fromHomeCurrentSelectionType isEqualToString:@"group"]) {
+        gbl_lastSelectedGroup  = myNameOstr;
+    }
+
+
+// tn();     NSLog(@"in didSelectRowAtIndexPath!!!!!!!!!!  AFTER   !!!!!!!!!!!!!");
+//             NSLog(@"_mambCurrentEntity=%@",_mambCurrentEntity);
+//             NSLog(@"_mambCurrentSelection=%@",_mambCurrentSelection);
+//             NSLog(@"_mambCurrentSelectionType=%@",_mambCurrentSelectionType);
+//             NSLog(@"gbl_fromHomeCurrentSelectionPSV=%@",gbl_fromHomeCurrentSelectionPSV);
+//             NSLog(@"gbl_fromHomeCurrentSelectionArrayIdx=%ld",(long)gbl_fromHomeCurrentSelectionArrayIdx);
+//             NSLog(@"gbl_fromHomeCurrentSelectionType=%@",gbl_fromHomeCurrentSelectionType);
+//             NSLog(@"gbl_fromHomeCurrentEntity=%@",gbl_fromHomeCurrentEntity);
+             NSLog(@"gbl_lastSelectedPerson=%@",gbl_lastSelectedPerson);
+             NSLog(@"gbl_lastSelectedGroup=%@",gbl_lastSelectedGroup);
+//             //NSLog(@"=%@",);
+// NSLog(@"in didSelectRowAtIndexPath!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
+//tn();trn("SCROLL 666666666666666666666666666666666666666666666666666666666");
+    // select the row in UITableView
+    // This puts in the light grey "highlight" indicating selection
+    //[self.tableView selectRowAtIndexPath:currentlyselectedIndexPath
+    [self.tableView selectRowAtIndexPath: myIdxPath
+                                animated: YES
+                          scrollPosition: UITableViewScrollPositionNone];
+
+    //[self.tableView scrollToNearestSelectedRowAtScrollPosition: myIdxPath.row
+    [self.tableView scrollToNearestSelectedRowAtScrollPosition: UITableViewScrollPositionMiddle
+                                                      animated: YES];
+    b(31);
+
+
+    if ([gbl_homeUseMODE isEqualToString: @"edit mode" ] )   // = yellow
+    {
+  NSLog(@"go to add change ON TAP of ROW");
+
+        // Because background threads are not prioritized and will wait a very long time
+        // before you see results, unlike the mainthread, which is high priority for the system.
+        //
+        // Also, all UI-related stuff must be done on the *main queue*. That's way you need that dispatch_async.
+        //
+        dispatch_async(dispatch_get_main_queue(), ^{                                 // <===  <.>
+            [self performSegueWithIdentifier:@"segueHomeToAddChange" sender:self]; //  
+        });
+
+    } else {
+
+        dispatch_async(dispatch_get_main_queue(), ^{                                 // <===  <.>
+            [self performSegueWithIdentifier:@"segueHomeToReportList" sender:self]; //  
+        });
+    }
+
+    b(32);
+        
+} // end of codeForCellTapOrAccessoryButtonTap  
+
+
 
 //
 // ===  end of EDITING  ================================================================================

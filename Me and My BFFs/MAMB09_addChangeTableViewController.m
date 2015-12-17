@@ -60,6 +60,9 @@
 @end
 
 
+
+
+
     char city_prov_coun_PSVs[26 * 128];    // [max num 25 * fixed length of 128]  for search city using typed so far
     int  num_PSVs_found;                   // zero-based                          for search city using typed so far
 
@@ -71,6 +74,8 @@
 
     NSString *fldName, *fldMth, *fldDay, *fldYear, *fldHour, *fldMin, *fldAmPm, *fldCity, *fldProv, *fldCountry;
 //    NSString *fldLongitude, *fldHoursDiff;
+
+
 
 
 
@@ -213,6 +218,11 @@
   NSLog(@"in ADD CHANGE  viewDidLoad!");
   NSLog(@"gbl_lastSelectedPerson=[%@]",gbl_lastSelectedPerson);
 
+    self.tableView.allowsMultipleSelectionDuringEditing = NO;
+
+    gbl_lastSelectedPersonBeforeChange = gbl_lastSelectedPerson;   // like "~Dave"   used in YELLOW gbl_homeUseMODE "edit mode"
+
+
 //
 ////UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didRecognizeTapGesture:)];
 //UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:gbl_myname action:@selector(didRecognizeTapGesture:)];
@@ -221,7 +231,6 @@
 ////[gbl_myname addGestureRecognizer:tapGesture];
 //[self.tableView addGestureRecognizer:tapGesture];
 //tapGesture.delegate = self;
-//
 //
 
 
@@ -946,6 +955,12 @@ nbn(881);
 
     addChangeViewJustEntered = 1;  // 1=y,0=n
 
+    gbl_citySetEditingValue  = 1;  // 1=y,0=n  // set initial value  when first entering City in "edit mode"  yellow
+    gbl_citySetPickerValue   = 1;  // 1=y,0=n  // set initial value  when first entering City in "edit mode"  yellow
+    gbl_citySetLabelValue    = 1;  // 1=y,0=n  // set initial value  when first entering City in "edit mode"  yellow
+
+    gbl_dateSetEditingValue  = 1;  // 1=y,0=n  // set initial values when first entering Date in "edit mode"  yellow
+
     // grab all personal information of gbl_fromHomeCurrentSelectionPSV 
     //
         // 2015-12-11 15:37:58.275 Me and My BFFs[2970:1143000] gbl_homeUseMODE     =[edit mode]
@@ -1404,6 +1419,7 @@ tn();  NSLog(@"in showHide_ButtonToSeePicklist!");
 }  // showHide_ButtonToSeePicklist
 
 
+
 // show the city picklist
 - (IBAction) oncityInputViewPicklistButton: (id)sender {
   NSLog(@"in oncityInputViewPicklistButton!");
@@ -1851,7 +1867,7 @@ nbn(702);
 - (IBAction)pressedSaveDone:(id)sender
 {
   NSLog(@"in pressedSAVEDONE!!");
-
+nbn(700);
   NSLog(@"gbl_myname.text       =[%@]",gbl_myname.text       );
   NSLog(@"gbl_enteredCity       =[%@]",gbl_enteredCity);
   NSLog(@"gbl_enteredProv       =[%@]",gbl_enteredProv);
@@ -1860,7 +1876,8 @@ nbn(702);
 
 
     
-    if ([gbl_homeEditingState isEqualToString:  @"add" ] )
+    if (   [gbl_homeEditingState isEqualToString:  @"add" ] 
+        || [gbl_homeEditingState isEqualToString:  @"view or change" ] )
     {
         if (   gbl_editingChangeNAMEHasOccurred == 0
             && gbl_editingChangeCITYHasOccurred == 0
@@ -1902,7 +1919,8 @@ nbn(702);
   NSLog(@" // 111b actually do the BACK action on when changes net out to nothing");
                 [self.navigationController popToRootViewControllerAnimated: YES]; // actually do the "Back" action
             }
-// TODO
+
+
             // before save of New Person,  check for missing information  name,city,date  same as prompt
             //
             if (   [gbl_DisplayName isEqualToString: @"" ]
@@ -1937,55 +1955,63 @@ nbn(702);
 
             } // before save of New Person,  check for missing information 
 
-
-            // before save of New Person,  check if entered name already exists in database
+nbn(701);
+//            // ONLY IF    [gbl_homeEditingState isEqualToString:  @"add" ] 
             //
-            NSString *nameOfGrpOrPer;
-            NSArray  *arrayGrpOrper;
-//            NSInteger idxGrpOrPer;
-//            idxGrpOrPer = -1;
-            NSCharacterSet *mySeparators = [NSCharacterSet characterSetWithCharactersInString:@"|"];
+            // before save of New Person,  check if entered name already exists in database
+            // OR  save of changed person with changed name
+            //
+//            if (  [gbl_homeEditingState isEqualToString:  @"add" ] )
+//            {  // add mode - check for duplicate name
+nbn(702);
+                NSString *nameOfGrpOrPer;
+                NSArray  *arrayGrpOrper;
+    //            NSInteger idxGrpOrPer;
+    //            idxGrpOrPer = -1;
+                NSCharacterSet *mySeparators = [NSCharacterSet characterSetWithCharactersInString:@"|"];
 
-            // search thru gbl_arrayPer
-            for (id eltPer in gbl_arrayPer) { // search thru gbl_arrayPer
-//                idxGrpOrPer = idxGrpOrPer + 1;
-//  NSLog(@"idxGrpOrPer =%ld", (long)idxGrpOrPer );
-//  NSLog(@"eltPer=%@", eltPer);
-//
-//  NSLog(@"nameOfGrpOrPer =[%@]",nameOfGrpOrPer );
-//  NSLog(@"gbl_DisplayName=[%@]",gbl_DisplayName);
-                arrayGrpOrper  = [eltPer componentsSeparatedByCharactersInSet: mySeparators];
-                nameOfGrpOrPer = arrayGrpOrper[0];  // name is 1st fld
+                // search thru gbl_arrayPer
+                for (id eltPer in gbl_arrayPer) { // search thru gbl_arrayPer
+    //                idxGrpOrPer = idxGrpOrPer + 1;
+    //  NSLog(@"idxGrpOrPer =%ld", (long)idxGrpOrPer );
+    //  NSLog(@"eltPer=%@", eltPer);
+    //
+    //  NSLog(@"nameOfGrpOrPer =[%@]",nameOfGrpOrPer );
+    //  NSLog(@"gbl_DisplayName=[%@]",gbl_DisplayName);
+                    arrayGrpOrper  = [eltPer componentsSeparatedByCharactersInSet: mySeparators];
+                    nameOfGrpOrPer = arrayGrpOrper[0];  // name is 1st fld
 
-//                if ([nameOfGrpOrPer isEqualToString: gbl_DisplayName]) 
-                if( [nameOfGrpOrPer caseInsensitiveCompare: gbl_DisplayName] == NSOrderedSame ) // strings are equal except for possibly case
-                {
-                    // here the name of New Person is in database
+    //                if ([nameOfGrpOrPer isEqualToString: gbl_DisplayName]) 
+                    if( [nameOfGrpOrPer caseInsensitiveCompare: gbl_DisplayName] == NSOrderedSame ) // strings are equal except for possibly case
+                    {
+                        // here the name of New Person is in database
 
-                    NSString *msg_alreadyThere = [
-                        NSString stringWithFormat: @"You already have a Person with the name \"%@\".\n\nPlease make this new name different.",
-                        nameOfGrpOrPer  // gbl_DisplayName
-                    ];
-                    UIAlertController* myAlert = [UIAlertController alertControllerWithTitle: @"Person Already There"
-                                                                                     message: msg_alreadyThere 
-                                                                              preferredStyle: UIAlertControllerStyleAlert  ];
-                     
-                    UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
-                                                                        style: UIAlertActionStyleDefault
-                                                                      handler: ^(UIAlertAction * action) {
-                            NSLog(@"Ok button pressed");
-                        }
-                    ];
-                     
-                    [myAlert addAction:  okButton];
+                        NSString *msg_alreadyThere = [
+                            NSString stringWithFormat: @"You already have a Person with the name \"%@\".\n\nPlease make this new name different.",
+                            nameOfGrpOrPer  // gbl_DisplayName
+                        ];
+                        UIAlertController* myAlert = [UIAlertController alertControllerWithTitle: @"Person Already There"
+                                                                                         message: msg_alreadyThere 
+                                                                                  preferredStyle: UIAlertControllerStyleAlert  ];
+                         
+                        UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                                            style: UIAlertActionStyleDefault
+                                                                          handler: ^(UIAlertAction * action) {
+                                NSLog(@"Ok button pressed");
+                            }
+                        ];
+                         
+                        [myAlert addAction:  okButton];
 
-                    [self presentViewController: myAlert  animated: YES  completion: nil   ];
+                        [self presentViewController: myAlert  animated: YES  completion: nil   ];
 
-                    // cannot save because of duplicate name > stay in this screen
-                    return;  // pressed "Done" > cannot save > stay in this screen
+                        // cannot save because of duplicate name > stay in this screen
+                        return;  // pressed "Done" > cannot save > stay in this screen
 
-                }
-            } // search thru gbl_arrayPer for name already there 
+                    }
+                } // search thru gbl_arrayPer for name already there 
+
+//            }  // add mode - check for duplicate name
 
 
   NSLog(@" // Actually do save of New Person   here");
@@ -2012,14 +2038,6 @@ nbn(702);
             // // FINAL  values for saving
             //
 
-            // before write of array data to file, disallow/ignore user interaction events
-            //
-            if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] ==  NO) {  // suspend handling of touch-related events
-                [[UIApplication sharedApplication] beginIgnoringInteractionEvents];     // typically call this before an animation or transitiion.
-  NSLog(@"ARE  IGnoring events");
-            }
-
-
             NSString *myNewPersonRecord;
             myNewPersonRecord = [NSString stringWithFormat: @"%@|%@|%@|%@|%@|%@|%@|%@|%@|%@|",
                 gbl_DisplayName,
@@ -2036,7 +2054,47 @@ nbn(702);
   NSLog(@"myNewPersonRecord =[%@]",myNewPersonRecord );
             
 
-            //  test = [[NSMutableArray alloc]init];
+            // before write of array data to file, disallow/ignore user interaction events
+            //
+            if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] ==  NO) {  // suspend handling of touch-related events
+                [[UIApplication sharedApplication] beginIgnoringInteractionEvents];     // typically call this before an animation or transitiion.
+  NSLog(@"ARE  IGnoring events");
+            }
+
+            // ONLY IF    [gbl_homeEditingState isEqualToString:  @"view or change" ] 
+            // DELETE  the existing record first
+            // before  adding the changed record above
+            //
+            if ([gbl_homeEditingState isEqualToString:  @"view or change" ] )
+            {
+nbn(703);
+//                NSString *prefixStr = [NSString stringWithFormat: @"%@|", gbl_DisplayName ];
+                NSString *prefixStr = [NSString stringWithFormat: @"%@|", gbl_lastSelectedPersonBeforeChange ];
+
+                NSInteger idx, foundIdx;  
+                idx = 0;       foundIdx = -1;
+
+                for (NSString *element in gbl_arrayPer) {
+                    if ([element hasPrefix: prefixStr]) {
+                        foundIdx = idx;
+                        break;
+                    }
+                    idx = idx + 1;
+                }
+  NSLog(@"foundIdx =[%ld]",(long)foundIdx );
+                if (foundIdx == -1) {
+                    return;  // should not happen
+                }
+
+                // here, delete old array element before adding new changed personRecord above
+                //
+                [gbl_arrayPer removeObjectAtIndex:  foundIdx ]; //  delete old array element before adding new changed personRecord above
+
+            } // ONLY IF    [gbl_homeEditingState isEqualToString:  @"view or change" ] , DELETE  the existing record first
+
+nbn(704);
+            // add the new Person database record in a string to the person array
+            //
             [gbl_arrayPer addObject: myNewPersonRecord]; // add the new Person database record in a string to the person array
 
 
@@ -2055,6 +2113,10 @@ nbn(702);
             // after saving new person, go back to home view
             [self.navigationController popToRootViewControllerAnimated: YES]; // pop to root view controller (actually do the "Back" action)
 
+            // is system "done" button function here
+//            gbl_lastSelectedPersonBeforeChange = gbl_DisplayName;   // like "~Dave"   used in YELLOW gbl_homeUseMODE "edit mode"
+
+
             // after write of array data to file, allow user interaction events again
             //
             if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] == YES) {  // re-enable handling of touch-related events
@@ -2070,6 +2132,45 @@ nbn(702);
 } // pressedSaveDone
 
 
+//
+//// Override to support conditional editing of the table view.
+//- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+//  NSLog(@"in canEditRowAtIndexPath!");
+//  NSLog(@"indexPath.row =%ld",indexPath.row );
+//
+////
+////    // Return NO if you do not want the specified item to be editable.
+////    if (indexPath.row == 5 ) return  NO;
+////    else                     return YES;
+////
+//
+//    return YES;
+//}
+//
+//- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath: (NSIndexPath *)indexPath
+//{
+//tn();
+//NSLog(@"in editingStyleForRowAtIndexPath");
+//    return UITableViewCellEditingStyleDelete;
+//}
+//
+//- (void)tableView:(UITableView *)tableView commitEditingStyle: (UITableViewCellEditingStyle)  editingStyle
+//                                            forRowAtIndexPath: (NSIndexPath *)                indexPath
+//{
+//  NSLog(@"in commitEditingStyle");
+//  NSLog(@"editingStyle=[%@]",editingStyle);
+//    // If row is deleted, remove it from the list.
+//
+//    if (editingStyle == UITableViewCellEditingStyleDelete) {
+////        SimpleEditableListAppDelegate *controller = (SimpleEditableListAppDelegate *)[[UIApplication sharedApplication] delegate];
+////        [controller removeObjectFromListAtIndex:indexPath.row];
+////        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+//  NSLog(@"in commitEditingStyle  2222222");
+//    }
+//
+//}
+//
+//
 
 - (IBAction)pressedPrivacy:(id)sender
 {
@@ -2145,7 +2246,19 @@ tn();   NSLog(@"in textFieldShouldBeginEditing #################################
   NSLog(@"gbl_myCitySoFar=%@",gbl_myCitySoFar);
   NSLog(@"gbl_myname.text=[%@]",gbl_myname.text);
 //  NSLog(@"gbl_justCancelledOutOfCityPicker =%ld",gbl_justCancelledOutOfCityPicker );
+
+
+    if (gbl_citySetEditingValue == 1) {  // set initial value  when first entering City in "edit mode"  yellow
+        gbl_citySetEditingValue  = 0;    // set initial value  when first entering City in "edit mode"  yellow
+    
+        gbl_myCitySoFar   = fldCity;
+        textField.text    = fldCity;
   NSLog(@"gbl_myCitySoFar=%@",gbl_myCitySoFar);
+  NSLog(@"textField.text=[%@]",textField.text);
+
+        [self showCityProvCountryForTypedInCity:  gbl_myCitySoFar ];   // and possibly shown button  "Picklist >"
+    } 
+
 
     [ self checkResponderStuff ];
     if ( [gbl_firstResponder_current isEqualToString:  @"date" ] ) {
@@ -3247,7 +3360,7 @@ nbn(201);
 
 
      if (indexPath.row == 3) {   // "LABEL" for  city,proc,coun  of Birth of Person
-nb(203);
+nbn(203);
   NSLog(@"city row   gbl_fieldTap_goingto =[%@]",gbl_fieldTap_goingto );
 
 
@@ -3256,12 +3369,28 @@ nb(203);
 //        myTextCity = [NSString stringWithFormat:@" %@\n                        z%@            \n %@", gbl_enteredCity, gbl_enteredProv, gbl_enteredCoun ];
         NSString *myTextCity;
 
+  NSLog(@"fldCity        = [%@]",fldCity);
+  NSLog(@"fldProv        = [%@]",fldProv);
+  NSLog(@"fldCountry       [%@]",fldCountry);
+  NSLog(@"gbl_enteredCity= [%@]",gbl_enteredCity);
+  NSLog(@"gbl_enteredProv= [%@]",gbl_enteredProv);
+  NSLog(@"gbl_enteredCoun= [%@]",gbl_enteredCoun);
+
         if ([gbl_homeEditingState isEqualToString: @"view or change" ] )
         {
-            myTextCity = [NSString stringWithFormat:@" %@\n %@\n %@", fldCity, fldProv, fldCountry ]; // edit current row
-        } else {
+
+            if (gbl_citySetLabelValue == 1 ) {  // 1=y,0=n  // set initial value  when first entering City in "edit mode"  yellow
+                gbl_citySetLabelValue  = 0;     // 1=y,0=n  // set initial value  when first entering City in "edit mode"  yellow
+                myTextCity = [NSString stringWithFormat:@" %@\n %@\n %@", fldCity, fldProv, fldCountry ]; // edit current row
+            } else {
+                myTextCity = [NSString stringWithFormat:@" %@\n %@\n %@", gbl_enteredCity, gbl_enteredProv, gbl_enteredCoun ];
+            }
+
+//            myTextCity = [NSString stringWithFormat:@" %@\n %@\n %@", fldCity, fldProv, fldCountry ]; // edit current row
+        } else {  // is "add"
             myTextCity = [NSString stringWithFormat:@" %@\n %@\n %@", gbl_enteredCity, gbl_enteredProv, gbl_enteredCoun ];
         }
+  NSLog(@"myTextCity =[%@]",myTextCity );
 
 
 //        myTextCity = [NSString stringWithFormat:@" %@qqqy%@qqq %@", gbl_enteredCity, gbl_enteredProv, gbl_enteredCoun ];
@@ -3726,7 +3855,7 @@ NSLog(@"indexPath.row =%ld",(long)indexPath.row );
 
         // put APPROPRIATE  inputview   KEYBOARD   or   CITY PICKER
         //
-nbn(121); trn("kdkdkdkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
+nbn(121); trn("kdkdkdkkk selected row 3 =city/prov/coun   kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
 
 
 
@@ -3795,11 +3924,11 @@ nbn(124);
 
             dispatch_async(dispatch_get_main_queue(), ^{        
                 [gbl_myname             resignFirstResponder];
-  NSLog(@"-didsel3b-- VASSIGN gbl_myname             RESIGN!FIRST_RESPONDER ---------------- " );
+//  NSLog(@"-didsel3b-- VASSIGN gbl_myname             RESIGN!FIRST_RESPONDER ---------------- " );
                 [gbl_mybirthinformation resignFirstResponder]; 
-  NSLog(@"-didsel3b-- VASSIGN gbl_mybirthinformation RESIGN!FIRST_RESPONDER ---------------- " );
+//  NSLog(@"-didsel3b-- VASSIGN gbl_mybirthinformation RESIGN!FIRST_RESPONDER ---------------- " );
                 [gbl_mycitySearchString resignFirstResponder]; // control goes to textFieldShouldEndEditing > textFieldDidEndEditing > back here
-  NSLog(@"-didsel3b-- VASSIGN gbl_mycitySearchString RESIGN!FIRST_RESPONDER ---------------- " );
+//  NSLog(@"-didsel3b-- VASSIGN gbl_mycitySearchString RESIGN!FIRST_RESPONDER ---------------- " );
 
 
                 // gbl_mycitySearchString.inputView = nil ;   // necessary ?   note: with this in, no keyboard appears
@@ -3812,8 +3941,9 @@ nbn(124);
   NSLog(@"gbl_mycityInputView =[%@]",gbl_mycityInputView );
 
   gbltmpstr = [gbl_mycitySearchString.inputAccessoryView.description substringToIndex: 15];
+
                 [self setCityInputAccessoryViewFor: gbl_mycityInputView ];  // arg is "keyboard" or "picker"
-  NSLog(@"-didsel 2b-- VASSIGN gbl_mycitySearchString.inputAccessoryView.description --- old=[%@]  new=[%@] ---", gbltmpstr, [ gbl_mycitySearchString.inputAccessoryView.description substringToIndex: 15]);
+  NSLog(@"gbl_mycitySearchString.inputAccessoryView.description --- old=[%@]  new=[%@] ---", gbltmpstr, [ gbl_mycitySearchString.inputAccessoryView.description substringToIndex: 15]);
 
                 //
                 // All UIResponder objects have an inputView property.
@@ -3821,8 +3951,12 @@ nbn(124);
                 // WHEN THE RESPONDER BECOMES THE FIRST RESPONDER.
                 //
      //  ?? switch  becomefirst  and inputview=  ???
+tn();
+  NSLog(@"gbl_mycitySearchString   GOING TO       city    BECOME_FIRST_RESPONDER ---------------- " );
                 [gbl_mycitySearchString becomeFirstResponder];  // control goes to textFieldShouldEndEditing > textFieldDidEndEditing > back here
-  NSLog(@"-didsel3b-- VASSIGN gbl_mycitySearchString BECOME_FIRST_RESPONDER ---------------- " );
+  NSLog(@"gbl_mycitySearchString   RETURNING FROM city    BECOME_FIRST_RESPONDER ---------------- " );
+tn();
+
 //                gbl_mycitySearchString.inputView = [self pickerViewCity] ; 
 
 
@@ -3832,12 +3966,15 @@ nbn(124);
 //                if (gbl_myCitySoFar != nil  &&  gbl_myCitySoFar.length > 0) gbl_searchStringTitle.title = gbl_myCitySoFar;
 //                else                                                        gbl_searchStringTitle.title = @"Type City Name";
 
+//  NSLog(@"fldCity   = [%@]",fldCity);
+
                 if (gbl_myCitySoFar != nil  &&  gbl_myCitySoFar.length > 0) {
                     [self setCitySearchStringTitleTo: gbl_myCitySoFar ];
                 } else {
                     [self setCitySearchStringTitleTo: @"Type City Name" ];
                 }
 
+//[self setCitySearchStringTitleTo: fldCity ];
             });
         } // show kb
 
@@ -3862,50 +3999,40 @@ nbn(124);
             });
         }
     
+  NSLog(@"end of didSelectRowAtIndexPath   for row = 3");
+tn();
     } // row == 3
 
 } // didSelectRowAtIndexPath
 
 
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-//  NSLog(@"in canEditRowAtIndexPath!");
-//  NSLog(@"indexPath.row =%ld",indexPath.row );
+//tableView: editingStyleForRowAtIndexPath
+//tableView: commitEditingStyle: forRowAtIndexPath
 
 //
-//    // Return NO if you do not want the specified item to be editable.
-//    if (indexPath.row == 5 ) return  NO;
-//    else                     return YES;
+//// Override to support editing the table view.
+//- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+//    if (editingStyle == UITableViewCellEditingStyleDelete) {
+//        // Delete the row from the data source
+//        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+//    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
+//        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+//    }   
+//}
 //
-
-    return YES;
-}
-
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
 
 /*
 // Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
+//- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
+//}
 */
 
 /*
 // Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
+//- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+//    // Return NO if you do not want the item to be re-orderable.
+//    return YES;
+//}
 */
 
 
@@ -4041,7 +4168,11 @@ kin(num_PSVs_found);
 
     } else if (idx_into_placetab == -2) {  // -2  IF there are few enough cities to make a picklist
 
-        gbl_fewEnoughCitiesToMakePicklist = 1;
+        // if num_PSVs_found is exactly one, do NOT offer a picklist for it
+        //
+        if (num_PSVs_found == 1) gbl_fewEnoughCitiesToMakePicklist = 0;
+        else                     gbl_fewEnoughCitiesToMakePicklist = 1;
+
         gbl_pickerToUse                   = @"city picker";
   NSLog(@"gbl_pickerToUse  44      =[%@]",gbl_pickerToUse          );
 
@@ -4412,6 +4543,8 @@ nbn(40);
 
 //    [gbl_mycitySearchString reloadInputViews];
 
+NSLog(@"=OUT   setCityInputAccessoryViewFor ");
+tn();
 } // setCityInputAccessoryViewFor 
 
 
@@ -4478,7 +4611,70 @@ tn();  NSLog(@"in putUpCityPicklist !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
     
     [self.pickerViewCity reloadAllComponents]; // just in case things have changed, do no show old data
-    [self.pickerViewCity selectRow: 0   inComponent: 0 animated: YES];
+
+
+    // set city picker to show correct row selected
+    //
+
+    if (gbl_citySetPickerValue == 1 ) {   // 1=y,0=n  // set initial value  when first entering City in "edit mode"  yellow
+        gbl_citySetPickerValue  = 0;      // 1=y,0=n  // set initial value  when first entering City in "edit mode"  yellow
+
+        // in this case, picker should have row entered before (this is edit mode)
+        
+        // Find rownum in the picklist for fldCity + fldProv + fldCoun (row entered before)
+        //
+        // char city_prov_coun_PSVs[26 * 128];    // [max num 25 * fixed length of 128]  for search city using typed so far
+        // int  num_PSVs_found;                   // zero-based                          for search city using typed so far
+        // sprintf(my128PSV, "%s|%s|%s", city_buf, prov_buf, coun_buf);
+        //
+        int ll;                 ll = 0;
+        int foundAtIdx; foundAtIdx = -1;
+        char      myPSVbuf[128];
+        NSString *myPSV_nsstring;
+        NSString *candidateCity;
+        NSString *candidateProv;
+        NSString *candidateCoun;
+        NSArray *tmpArray5;
+        for (ll = 0; ll < num_PSVs_found; ll ++)
+        {
+            strcpy(myPSVbuf, city_prov_coun_PSVs + ll * 128);  // fixed rec =  128  chars
+ksn(myPSVbuf);
+
+             myPSV_nsstring = [NSString stringWithUTF8String: myPSVbuf ];  // convert c string to NSString
+  NSLog(@"myPSV_nsstring =[%@]",myPSV_nsstring );
+
+            NSCharacterSet *mySeps5 = [NSCharacterSet characterSetWithCharactersInString: @"|"];
+            tmpArray5               = [myPSV_nsstring componentsSeparatedByCharactersInSet: mySeps5 ];
+
+            candidateCity = tmpArray5[0];
+            candidateProv = tmpArray5[1];
+            candidateCoun = tmpArray5[2];
+  NSLog(@"candidateCity =[%@]",candidateCity );
+  NSLog(@"candidateProv =[%@]",candidateProv );
+  NSLog(@"candidateCoun =[%@]",candidateCoun );
+  
+            if (   [candidateCity isEqualToString: fldCity] 
+                && [candidateProv isEqualToString: fldProv] 
+                && [candidateCoun isEqualToString: fldCountry] 
+            ) {
+                foundAtIdx = ll;
+            }
+
+        }
+        if (foundAtIdx == -1)  // not found at all
+        {
+nbn(601);
+            [self.pickerViewCity selectRow: 0           inComponent: 0 animated: YES];
+        } else {
+nbn(602);
+            [self.pickerViewCity selectRow: foundAtIdx  inComponent: 0 animated: YES];
+        }
+
+    } else {
+        [self.pickerViewCity selectRow: 0   inComponent: 0 animated: YES];
+//        [self.pickerViewCity selectRow: 1   inComponent: 0 animated: YES];
+    }
+
     
   NSLog(@"--putup fn- VASSIGN gbl_mycitySearchString RESIGN!FIRST_RESPONDER ---------------- " );
   NSLog(@"--putup fn- VASSIGN6gbl_mycitySearchString.inputView --- old=[%@]  new=[%@] ---", gbltmpstr, [ gbl_mycitySearchString.inputView.description substringToIndex: 15]);
@@ -4523,6 +4719,7 @@ tn();  NSLog(@"in putUpCityPicklist !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     //
 - (void)updateCityProvCoun
 {
+tn();
   NSLog(@"in updateCityProvCoun");
     // update city,prov,coun label fields
 
@@ -4536,10 +4733,14 @@ tn();  NSLog(@"in putUpCityPicklist !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     NSIndexPath *indexPathLabelCityProvCoun = [NSIndexPath indexPathForRow: 3 inSection: 0];
 
     NSArray *indexPathsToUpdate = [NSArray arrayWithObjects: indexPathLabelCityProvCoun, nil];
-    [self.tableView beginUpdates];
-    [self.tableView reloadRowsAtIndexPaths: indexPathsToUpdate
-                          withRowAnimation: UITableViewRowAnimationNone ];
-    [self.tableView endUpdates];
+nbn(1100);
+    dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+
+        [self.tableView beginUpdates];
+        [self.tableView reloadRowsAtIndexPaths: indexPathsToUpdate
+                              withRowAnimation: UITableViewRowAnimationNone ];
+        [self.tableView endUpdates];
+    });
 
 } // end of updateCityProvCoun
 
@@ -4892,6 +5093,8 @@ NSLog(@"RETURN titleForRowRetval=%@",titleForRowRetval);
 
 - (void) getCurrentCityProvCounForRownum: (NSInteger) arg_rownum   // populates gbl_enteredCity, Prov, Coun
 {
+tn();
+  NSLog(@"in getCurrentCityProvCounForRownum");
     char my_buff[256];
     NSMutableString *myContentsPSV;
     NSArray  *tmpArray3;
@@ -4906,6 +5109,9 @@ NSLog(@"RETURN titleForRowRetval=%@",titleForRowRetval);
     gbl_enteredCity = tmpArray3[0];
     gbl_enteredProv = tmpArray3[1];
     gbl_enteredCoun = tmpArray3[2];
+  NSLog(@"gbl_enteredCity =[%@]",gbl_enteredCity );
+  NSLog(@"gbl_enteredProv =[%@]",gbl_enteredProv );
+  NSLog(@"gbl_enteredCoun =[%@]",gbl_enteredCoun );
 }
 
 
@@ -5029,7 +5235,8 @@ tn();trn("in didSelectRow in some  PICKER !!   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 
     gbl_editingChangeDATEHasOccurred = 1;   // default 0 at startup (after hitting "Edit" button on home page)
 
-    if ([ gbl_pickerToUse isEqualToString: @"date/time picker"] ) {  // "city picker" or "date/time picker"
+    if ([ gbl_pickerToUse isEqualToString: @"date/time picker"] )
+    {  // "city picker" or "date/time picker"
 
 
         gbl_lastInputFieldTapped = @"date";
