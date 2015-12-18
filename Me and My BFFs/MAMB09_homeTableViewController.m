@@ -364,7 +364,7 @@ nbn(100);
 //    //   for test   TO SIMULATE first downloading the app-  when there are no data files
 //    //   FOR test   remove all regular named files   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 //    //
-//<.>
+//
 //    [gbl_sharedFM removeItemAtURL: gbl_URLToLastEnt    error: &err01];
 //    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm lastent %@", [err01 localizedFailureReason]); }
 //    [gbl_sharedFM removeItemAtURL: gbl_URLToGroup      error: &err01];
@@ -796,21 +796,96 @@ nbn(100);
     return UITableViewCellEditingStyleDelete;
 }
 
+
+//   DELETE METHOD  DELETE METHOD  DELETE METHOD  DELETE METHOD  DELETE METHOD  DELETE METHOD  DELETE METHOD  DELETE METHOD DELETE METHOD
+//
 - (void)tableView:(UITableView *)tableView commitEditingStyle: (UITableViewCellEditingStyle)  editingStyle
                                             forRowAtIndexPath: (NSIndexPath *)                indexPath
 {
+tn();
   NSLog(@"in commitEditingStyle");
-  NSLog(@"editingStyle=[%ld]",(long)editingStyle);
-    // If row is deleted, remove it from the list.
+  NSLog(@"editingStyle =[%ld]",(long)editingStyle);
+  NSLog(@"indexPath.row=%ld",(long)indexPath.row);
 
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-//        SimpleEditableListAppDelegate *controller = (SimpleEditableListAppDelegate *)[[UIApplication sharedApplication] delegate];
-//        [controller removeObjectFromListAtIndex:indexPath.row];
-//        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
   NSLog(@"in commitEditingStyle  2222222");
-    }
 
-}
+        NSInteger arrayCountBeforeDelete;
+        NSInteger arrayIndexToDelete;
+        NSInteger arrayIndexOfNew_gbl_lastSelectedPerson;
+
+        arrayCountBeforeDelete = gbl_arrayPer.count;
+        arrayIndexToDelete     = indexPath.row;
+
+
+        // before write of array data to file, disallow/ignore user interaction events
+        //
+        if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] ==  NO) {  // suspend handling of touch-related events
+            [[UIApplication sharedApplication] beginIgnoringInteractionEvents];     // typically call this before an animation or transitiion.
+  NSLog(@"ARE  IGnoring events");
+        }
+
+
+        // delete the array element for this cell
+        // here the array index to delete matches the incoming  indexPath.row
+        //
+        [gbl_arrayPer removeObjectAtIndex:  arrayIndexToDelete ]; 
+
+
+        MAMB09AppDelegate *myappDelegate =
+            (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
+
+        [myappDelegate mambWriteNSArrayWithDescription:               (NSString *) @"person"]; // write new array data to file
+        [myappDelegate mambReadArrayFileWithDescription:              (NSString *) @"person"]; // read new data from file to array
+        [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription:  (NSString *) @"person"]; // sort array by name
+
+
+        // have to set new gbl_lastSelectedPerson  
+        // have to set new gbl_fromHomeCurrentSelectionPSV
+        //
+        // to be the "nearest" person after this deleted one 
+        // UNLESS deleted one IS the last person, then the one before.
+        //
+        if ( arrayIndexToDelete == arrayCountBeforeDelete - 1) {                       // if deleted last element
+            arrayIndexOfNew_gbl_lastSelectedPerson  = arrayCountBeforeDelete - 1 - 1;  //      new = last element minus one
+        } else {
+            arrayIndexOfNew_gbl_lastSelectedPerson  = arrayIndexToDelete;              // else new = last element
+        }
+  NSLog(@"before gbl_fromHomeCurrentSelectionPSV =[%@]",gbl_fromHomeCurrentSelectionPSV );
+  NSLog(@"before gbl_lastSelectedPerson          =[%@]",gbl_lastSelectedPerson);
+
+        gbl_fromHomeCurrentSelectionPSV  = gbl_arrayPer[arrayIndexOfNew_gbl_lastSelectedPerson];
+        gbl_lastSelectedPerson           = [gbl_fromHomeCurrentSelectionPSV  componentsSeparatedByString:@"|"][0]; // get fld1 (name) 0-based 
+
+  NSLog(@"after  gbl_fromHomeCurrentSelectionPSV =[%@]",gbl_fromHomeCurrentSelectionPSV );
+  NSLog(@"after  gbl_lastSelectedPerson          =[%@]",gbl_lastSelectedPerson);
+
+
+        // now delete the row on the screen
+        // and put highlight on row number for  arrayIndexOfNew_gbl_lastSelectedPerson
+        //
+        dispatch_async(dispatch_get_main_queue(), ^{  
+
+            [self.tableView deleteRowsAtIndexPaths: [NSArray arrayWithObject: indexPath]   // now delete the row on the screen
+                                  withRowAnimation: UITableViewRowAnimationFade
+            ];
+
+            [self putHighlightOnCorrectRow ];
+        });
+
+
+        // after write of array data to file, allow user interaction events again
+        //
+        if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] == YES) {  // re-enable handling of touch-related events
+            [[UIApplication sharedApplication] endIgnoringInteractionEvents];       // typically call this after an animation or transitiion.
+  NSLog(@"STOP IGnoring events");
+        }
+
+    }  // if (editingStyle == UITableViewCellEditingStyleDelete) 
+
+}  // end of commitEditingStyle
+//
+//   DELETE METHOD  DELETE METHOD  DELETE METHOD  DELETE METHOD  DELETE METHOD  DELETE METHOD  DELETE METHOD  DELETE METHOD DELETE METHOD
 
 
 
@@ -1034,7 +1109,7 @@ nbn(101);
 //        [self setEditing: YES   animated: YES ];
 //    }
 
-    dispatch_async(dispatch_get_main_queue(), ^{                                 // <===  <.>
+    dispatch_async(dispatch_get_main_queue(), ^{                                 // <===  
         [self performSegueWithIdentifier:@"segueHomeToAddChange" sender:self]; //  
     });
 
@@ -1400,13 +1475,13 @@ NSLog(@"in viewDidAppear()  in HOME");
 //        //
 //        // Also, all UI-related stuff must be done on the *main queue*. That's way you need that dispatch_async.
 //        //
-//        dispatch_async(dispatch_get_main_queue(), ^{                                 // <===  <.>
+//        dispatch_async(dispatch_get_main_queue(), ^{                                 // <===  
 //            [self performSegueWithIdentifier:@"segueHomeToAddChange" sender:self]; //  
 //        });
 //
 //    } else {
 //
-//        dispatch_async(dispatch_get_main_queue(), ^{                                 // <===  <.>
+//        dispatch_async(dispatch_get_main_queue(), ^{                                 // <===  
 //            [self performSegueWithIdentifier:@"segueHomeToReportList" sender:self]; //  
 //        });
 //    }
@@ -1499,7 +1574,7 @@ tn();trn("in doStuffOnEnteringForeground()   NOTIFICATION method     lastEntity 
 
     [self putHighlightOnCorrectRow ];
 
-//<.>
+//
 //    // highlight correct entity in seg control at top
 //    //
 //    //
@@ -1975,13 +2050,13 @@ tn();    NSLog(@"reaching accessoryButtonTappedForRowWithIndexPath:");
     gbl_fromHomeCurrentEntity = gbl_lastSelectionType; // "group" or "person"
     if ([gbl_fromHomeCurrentEntity isEqualToString:@"group"])  {
         gbl_fromHomeCurrentSelectionPSV      = [gbl_arrayGrp objectAtIndex:myIdxPath.row];  /* PSV */
-        gbl_fromHomeCurrentSelectionArrayIdx = myIdxPath.row;
+//        gbl_fromHomeCurrentSelectionArrayIdx = myIdxPath.row;
     }
     if ([gbl_fromHomeCurrentEntity isEqualToString:@"person"]) {
         gbl_fromHomeCurrentSelectionPSV      = [gbl_arrayPer objectAtIndex:myIdxPath.row];  /* PSV */
-        gbl_fromHomeCurrentSelectionArrayIdx = myIdxPath.row;
+//        gbl_fromHomeCurrentSelectionArrayIdx = myIdxPath.row;
     }
-    NSLog(@"home didSelectRow gbl_fromHomeCurrentSelectionArrayIdx=%ld",(long)gbl_fromHomeCurrentSelectionArrayIdx);
+    NSLog(@"home didSelectRow CurrentSelectionArrayIdx=%ld",(long)myIdxPath.row);
     NSLog(@"home didSelectRow gbl_fromHomeCurrentSelectionPSV =%@",gbl_fromHomeCurrentSelectionPSV);
     NSLog(@"home didSelectRow gbl_fromHomeCurrentSelectionType=%@",gbl_fromHomeCurrentSelectionType);
     NSLog(@"home didSelectRow gbl_fromHomeCurrentEntity=%@",gbl_fromHomeCurrentEntity);
@@ -2041,13 +2116,13 @@ tn();    NSLog(@"reaching accessoryButtonTappedForRowWithIndexPath:");
         //
         // Also, all UI-related stuff must be done on the *main queue*. That's way you need that dispatch_async.
         //
-        dispatch_async(dispatch_get_main_queue(), ^{                                 // <===  <.>
+        dispatch_async(dispatch_get_main_queue(), ^{                                 // <===  
             [self performSegueWithIdentifier:@"segueHomeToAddChange" sender:self]; //  
         });
 
     } else {
 
-        dispatch_async(dispatch_get_main_queue(), ^{                                 // <===  <.>
+        dispatch_async(dispatch_get_main_queue(), ^{                                 // <===  
             [self performSegueWithIdentifier:@"segueHomeToReportList" sender:self]; //  
         });
     }

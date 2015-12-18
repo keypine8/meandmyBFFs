@@ -955,11 +955,23 @@ nbn(881);
 
     addChangeViewJustEntered = 1;  // 1=y,0=n
 
-    gbl_citySetEditingValue  = 1;  // 1=y,0=n  // set initial value  when first entering City in "edit mode"  yellow
-    gbl_citySetPickerValue   = 1;  // 1=y,0=n  // set initial value  when first entering City in "edit mode"  yellow
-    gbl_citySetLabelValue    = 1;  // 1=y,0=n  // set initial value  when first entering City in "edit mode"  yellow
+    if (   [gbl_homeUseMODE      isEqualToString: @"edit mode" ]
+        && [gbl_homeEditingState isEqualToString: @"view or change" ]
+    ) {
+        gbl_citySetEditingValue  = 1;  // 1=y,0=n  // set initial value  when first entering City in "edit mode"  yellow
+        gbl_citySetPickerValue   = 1;  // 1=y,0=n  // set initial value  when first entering City in "edit mode"  yellow
+        gbl_citySetLabelValue    = 1;  // 1=y,0=n  // set initial value  when first entering City in "edit mode"  yellow
 
-    gbl_dateSetEditingValue  = 1;  // 1=y,0=n  // set initial values when first entering Date in "edit mode"  yellow
+        gbl_dateSetEditingValue  = 1;  // 1=y,0=n  // set initial values when first entering Date in "edit mode"  yellow
+
+    } else {
+        gbl_citySetEditingValue  = 0;  // 1=y,0=n  // set initial value  when first entering City in "edit mode"  yellow
+        gbl_citySetPickerValue   = 0;  // 1=y,0=n  // set initial value  when first entering City in "edit mode"  yellow
+        gbl_citySetLabelValue    = 0;  // 1=y,0=n  // set initial value  when first entering City in "edit mode"  yellow
+
+        gbl_dateSetEditingValue  = 0;  // 1=y,0=n  // set initial values when first entering Date in "edit mode"  yellow
+
+    }
 
     // grab all personal information of gbl_fromHomeCurrentSelectionPSV 
     //
@@ -969,6 +981,8 @@ nbn(881);
     if (   [gbl_homeUseMODE      isEqualToString: @"edit mode" ]
         && [gbl_homeEditingState isEqualToString: @"view or change" ]
     ) {
+
+
         //
         //        // NSString object to C
         //        my_psvc = [gbl_fromHomeCurrentSelectionPSV cStringUsingEncoding:NSUTF8StringEncoding];  // for personality
@@ -2101,20 +2115,17 @@ nbn(704);
             MAMB09AppDelegate *myappDelegate =
                 (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
 
-            [myappDelegate mambWriteNSArrayWithDescription: (NSString *) @"person"];  // write new data to file
-            [myappDelegate mambReadArrayFileWithDescription: (NSString *) @"person"]; // read new data from file to array
-            [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription:  (NSString *) @"person"];  // sort by name
+            [myappDelegate mambWriteNSArrayWithDescription:              (NSString *) @"person"]; // write new array data to file
+            [myappDelegate mambReadArrayFileWithDescription:             (NSString *) @"person"]; // read new data from file to array
+            [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription: (NSString *) @"person"]; // sort array by name
 
             gbl_justAddedRecord  = 1;  // cause reload of home data
 
-            gbl_lastSelectedPerson = gbl_DisplayName;  // this row (gbl_lastSelectedPerson) gets selection highlight in home tableview
-  NSLog(@"gbl_lastSelectedPerson=[%@]",gbl_lastSelectedPerson);
 
-            // after saving new person, go back to home view
-            [self.navigationController popToRootViewControllerAnimated: YES]; // pop to root view controller (actually do the "Back" action)
-
-            // is system "done" button function here
-//            gbl_lastSelectedPersonBeforeChange = gbl_DisplayName;   // like "~Dave"   used in YELLOW gbl_homeUseMODE "edit mode"
+            gbl_lastSelectedPerson          = gbl_DisplayName;  // this row (gbl_lastSelectedPerson) gets selection highlight in home tableview
+            gbl_fromHomeCurrentSelectionPSV = myNewPersonRecord;
+  NSLog(@"gbl_lastSelectedPerson          =[%@]",gbl_lastSelectedPerson);
+  NSLog(@"gbl_fromHomeCurrentSelectionPSV =[%@]",gbl_fromHomeCurrentSelectionPSV );
 
 
             // after write of array data to file, allow user interaction events again
@@ -2123,6 +2134,14 @@ nbn(704);
                 [[UIApplication sharedApplication] endIgnoringInteractionEvents];       // typically call this after an animation or transitiion.
   NSLog(@"STOP IGnoring events");
             }
+
+        dispatch_async(dispatch_get_main_queue(), ^{  
+            // after saving new person, go back to home view
+            [self.navigationController popToRootViewControllerAnimated: YES]; // pop to root view controller (actually do the "Back" action)
+
+        });
+            // is system "done" button function here
+//            gbl_lastSelectedPersonBeforeChange = gbl_DisplayName;   // like "~Dave"   used in YELLOW gbl_homeUseMODE "edit mode"
 
         } // here editing changes have happened
 
@@ -3475,7 +3494,7 @@ nbn(24);
             [cell addSubview: gbl_mycityprovcounLabel ];
 
         });
-     } // row = 2   "LABEL" for  city,proc,coun  of Birth of Person
+     } // row = 3   "LABEL" for  city,proc,coun  of Birth of Person
 
 
      if (indexPath.row == 4) {   //  filler 

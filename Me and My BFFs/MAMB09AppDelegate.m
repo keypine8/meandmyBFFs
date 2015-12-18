@@ -1653,7 +1653,7 @@ tn();  NSLog(@"at end of   mambReadLastEntityFile  myLastEntityDecoded=\n%@",myL
 
     // sort temp array  mutArrayNewTmp  here (has new delimiters)
     //
-    if (mutArrayNewTmp)  { [mutArrayNewTmp sortUsingSelector:@selector(caseInsensitiveCompare:)]; }
+    if (mutArrayNewTmp)  { [mutArrayNewTmp sortUsingSelector: @selector(caseInsensitiveCompare:)]; }
 
     // now we have SORTED tmp array with each element  a TSV (string with fields sep by "\t" TAB)
 

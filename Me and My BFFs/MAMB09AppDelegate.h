@@ -753,11 +753,11 @@ NSString       *gbl_currentDay_yyyymmdd;
 
 // Report Parameters information
 NSString  *gbl_fromHomeCurrentSelectionPSV;     // PSV  for per or grp
-NSInteger  gbl_fromHomeCurrentSelectionArrayIdx;
+//NSInteger  gbl_fromHomeCurrentSelectionArrayIdx;
 NSString  *gbl_fromHomeCurrentEntity;           // like "group" or "person" or "member"
 NSString  *gbl_fromHomeCurrentEntityName;       // like "~Anya" or "~Swim Team"
 NSString  *gbl_fromHomeLastEntityRemSaved;      // like "~Anya" or "~Swim Team" (control saving *Rem)
-NSString  *gbl_fromHomeRememberedPSV;      // collect this when user taps on a home table cell
+//NSString  *gbl_fromHomeRememberedPSV;      // collect this when user taps on a home table cell
 
 NSString *gbl_fromSelSecondPersonPSV;      // PSV from select person tableview  (selPersonViewController)
 NSString *gbl_fromSelGroupPSV;             // PSV from select group  tableview  (selPersonViewController)

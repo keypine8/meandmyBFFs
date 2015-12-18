@@ -141,7 +141,6 @@
         
         
         // get the date of birth  for starting point from   gbl_fromHomeCurrentSelectionPSV
-        // get the date of birth  for starting point from   gbl_fromHomeRememberedPSV 
 
 
         NSArray *psvArray;

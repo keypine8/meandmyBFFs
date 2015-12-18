@@ -99,7 +99,6 @@
         // NSString *yearStr = [@(gbl_currentYear) stringValue];  // convert integer to NSString
         
         // get the year of birth to start  from   gbl_fromHomeCurrentSelectionPSV 
-        // get the year of birth to start  from   gbl_fromHomeRememberedPSV 
 
 
         // NSArray *psvArray = [gbl_fromHomeCurrentSelectionPSV componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"|"]];
