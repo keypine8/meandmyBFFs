@@ -452,16 +452,43 @@ nbn(100);
 //
 
 
+        [myappDelegate mambReadArrayFileWithDescription: (NSString *) @"group"];
+        [myappDelegate mambReadArrayFileWithDescription: (NSString *) @"person"];
+        [myappDelegate mambReadArrayFileWithDescription: (NSString *) @"member"];
+        [myappDelegate mambReadArrayFileWithDescription: (NSString *) @"grprem"];
+        [myappDelegate mambReadArrayFileWithDescription: (NSString *) @"perrem"];
 
-    
-    // read data files  with regular names into arrays
-    // and sort the arrays in place by name
-    //
-    [myappDelegate mambReadArrayFileWithDescription: (NSString *) @"group"];
-    [myappDelegate mambReadArrayFileWithDescription: (NSString *) @"person"];
-    [myappDelegate mambReadArrayFileWithDescription: (NSString *) @"member"];
-    [myappDelegate mambReadArrayFileWithDescription: (NSString *) @"grprem"];
-    [myappDelegate mambReadArrayFileWithDescription: (NSString *) @"perrem"];
+
+
+//
+//    // read data files  with regular names into arrays
+//    // and sort the arrays in place by name
+//    //
+//    NSInteger myCorruptDataErrNum;
+//    do {
+//        [myappDelegate mambReadArrayFileWithDescription: (NSString *) @"group"];
+//        [myappDelegate mambReadArrayFileWithDescription: (NSString *) @"person"];
+//        [myappDelegate mambReadArrayFileWithDescription: (NSString *) @"member"];
+//        [myappDelegate mambReadArrayFileWithDescription: (NSString *) @"grprem"];
+//        [myappDelegate mambReadArrayFileWithDescription: (NSString *) @"perrem"];
+//
+//        // check for data corruption  (should not happen)
+//        //
+//        myCorruptDataErrNum =  [myappDelegate mambCheckForCorruptData ];
+//
+//        if (myCorruptDataErrNum > 0) {
+//            [myappDelegate handleCorruptDataErrNum: myCorruptDataErrNum ];
+//
+//exit(1);  // for test do just once
+////break;  // for test, continue
+//        }
+//
+//    } while ( myCorruptDataErrNum != 0);
+//
+
+
+
+
 
 
 
@@ -607,24 +634,30 @@ nbn(100);
 
     // NSLog(@"gbl_home_cell_AccessoryType=[%d]",gbl_home_cell_AccessoryType);
 
+//    // make label for cell text
+//    //
+//    UILabel *lblCellText = [[UILabel alloc] init];
+//        lblCellText.numberOfLines = 1;
+//        lblCellText.font          = [UIFont boldSystemFontOfSize: 17.0];
+//        lblCellText.text          = nameOfGrpOrPer;
+//
+//    lblCellText.backgroundColor = [UIColor whiteColor];
+//
+//    [lblCellText sizeToFit];
+
+
 //  NSLog(@"gbl_homeUseMODE =%@",gbl_homeUseMODE );
     dispatch_async(dispatch_get_main_queue(), ^{                        
 
 
-        cell.textLabel.text = nameOfGrpOrPer;
 //  cell.textLabel.text = @"";   // for test TODO  create empty Launch screen shot <.>
-
-        
-    //    UIFont *myFont = [ UIFont fontWithName:@"Menlo" size:16];
-    //    cell.textLabel.font            = myFont;
-    // cell.textLabel.font.lineHeight = 20;
-
-//        cell.textLabel.font            = [UIFont systemFontOfSize: 16.0];
+        cell.textLabel.text = nameOfGrpOrPer;
         cell.textLabel.font            = [UIFont boldSystemFontOfSize: 17.0];
 
         // set cell.accessoryType         (depends on gbl_homeUseMode - editing or not)
         // set cell.editingAccessoryType
         //
+//        [cell addSubview: lblCellText ];
 
 //        if ([gbl_homeUseMODE isEqualToString: @"regular mode"]) {
 //            cell.accessoryType        = gbl_home_cell_AccessoryType;           // home mode edit    with tap giving record details
@@ -650,6 +683,16 @@ nbn(100);
         cell.indentationWidth = 12.0; // these 2 keep the name on the screen when hit red round delete and delete button slides from right
         cell.indentationLevel =  3;   // these 2 keep the name on the screen when hit red round delete and delete button slides from right
 
+//        cell.contentView.autoresizingMask  = UIViewAutoresizingFlexibleRightMargin;  // allow right margin to shrink
+
+//        [cell.contentView setTranslatesAutoresizingMaskIntoConstraints:NO];
+//        [cell.textLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+//        cell.textLabel.autoresizingMask  = nil;
+
+
+
+//        cell.textLabel.autoresizingMask  = UIViewAutoresizingFlexibleWidth;      
+//        cell.contentView.autoresizingMask  = UIViewAutoresizingFlexibleWidth;      
 
 
 //@property(nonatomic) UIEdgeInsets separatorInset
@@ -905,47 +948,20 @@ tn();
     NSLog(@"in prepareForSegue() in home!");
 
 
-//- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
-//    if ([segue.identifier isEqualToString:@"alarmSegue"]) {
-//
-//
-//        CATransition transition = [CATransition animation];
-//        transition.duration = 0.5;
-//        transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-//        transition.type = kCATransitionPush;
-//        transition.subtype = direction;
-//        [self.view.layer addAnimation:transition forKey:kCATransition];
-//
-//        tab2ViewController *destViewController = segue.destinationViewController;
-//        UIView *destView = destViewController.view;
-//        destViewController.selectionName = @"alarms";
-//
-//        [sender setEnabled:NO];
-//
-//         }
-//     }
-//
-//
-
-
-
-//  // this worked, but unwind too hard    NOW   wait for unwind from both  Save and Cancel  buttons on addChange screen
-
-
   NSLog(@"segue.identifier =[%@]",segue.identifier );
-nbn(100);
+
     if ([segue.identifier isEqualToString:@"segueHomeToAddChange"]) {
-nbn(101);
+
 
 
         CATransition *transition = [CATransition animation];
         transition.duration = 0.5;
         transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
         transition.type = kCATransitionPush;
-//        transition.subtype = direction;
-//        transition.subtype = kCATransitionFromBottom;
-//        transition.subtype = kCATransitionFromTop;
-//        transition.subtype = kCATransitionFromLeft;
+        //        transition.subtype = direction;
+        //        transition.subtype = kCATransitionFromBottom;
+        //        transition.subtype = kCATransitionFromTop;
+        //        transition.subtype = kCATransitionFromLeft;
         transition.subtype = kCATransitionFade;
         [self.view.layer addAnimation:transition forKey:kCATransition];
 
@@ -953,122 +969,9 @@ nbn(101);
     [sourceViewController.navigationController.view.layer addAnimation: transition 
                                                                 forKey: kCATransition];
 
-
-//        tab2ViewController *destViewController = segue.destinationViewController;
-//        UIView *destView = destViewController.view;
-//        destViewController.selectionName = @"alarms";
-//
-//        [sender setEnabled:NO];
-
-
         [self.tableView setEditing: YES animated: YES];  // turn cocoa editing mode off when this screen leaves
 
     }
-
-
-    // Get the new view controller using [segue destinationViewController].
-
-//nbn(100);
-//    if ([segue.identifier isEqualToString:@"seguehomeToAddChange"]) {
-//nbn(101);
-//
-//        CATransition *myTransition = [CATransition animation];
-//        myTransition.duration = 0.5;
-//        myTransition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-//        myTransition.type = kCATransitionPush;
-////        myTransition.subtype = direction;
-//        myTransition.subtype = kCATransitionFromBottom;
-//  NSLog(@"myTransition=%@",myTransition);
-//
-////        [self.view.layer addAnimation:myTransition forKey: kCATransition];
-////        [self.view.layer addAnimation:myTransition forKey: @"myTransition"];
-////        [self.view.layer addAnimation:myTransition forKey: kCATransitionFromBottom];
-////        [self.view.layer addAnimation:myTransition forKey: kCATransitionPush];
-//
-////        tab2ViewController *destViewController = segue.destinationViewController;
-////        UIView *destView = destViewController.view;
-////        destViewController.selectionName = @"alarms";
-//
-//
-//
-////   UIViewController *sourceViewController = (UIViewController*)[self sourceViewController];
-////   UIViewController *destinationController = (UIViewController*)[self destinationViewController];                    
-//
-//    // Get the new view controller using [segue destinationViewController]
-//
-//   UIViewController *sourceViewController  =  [segue sourceViewController];
-//   UIViewController *destinationController =  [segue destinationViewController];
-//  NSLog(@"sourceViewController  =%@",sourceViewController  );
-//  NSLog(@"destinationController =%@",destinationController );
-//    [sourceViewController.navigationController.view.layer addAnimation: myTransition
-//                                                                forKey: kCATransition];
-////    [sourceViewController.navigationController pushViewController: destinationController animated: NO];    
-//     
-//
-//        [sender setEnabled:NO];
-//
-//    }
-//
-
-
-
-
-// moved to didSelectRow
-//    // get the indexpath of current row
-//    NSIndexPath *myIdxPath = [self.tableView indexPathForSelectedRow];
-//    gbl_savePrevIndexPath  = myIdxPath;
-//    NSLog(@"gbl_savePrevIndexPath=%@",gbl_savePrevIndexPath);
-//
-//    /* segueHomeToReportList
-//    */
-//    if ([segue.identifier isEqualToString:@"segueHomeToReportList"]) {
-//        // UINavigationController *nc = segue.destinationViewController;
-//        // UINavigationController *nc = segue.destinationViewController;
-//        //  MAMB09_selectReportsTableViewController *myDestTableViewController = segue.destinationViewController;
-//
-//        // myDestTableViewController.fromHomeCurrentSelectionType = _mambCurrentSelectionType; // "group" or "person" or "pair"
-//        // gbl_fromHomeCurrentSelectionType = _mambCurrentSelectionType; // "group" or "person" or "pair"
-//        
-//        //myDestTableViewController.fromHomeCurrentEntity = _mambCurrentEntity; // "group" or "person"
-//        //gbl_fromHomeCurrentEntity = _mambCurrentEntity; // "group" or "person"
-//        //gbl_fromHomeCurrentEntity = _mambCurrentEntity; // "group" or "person"
-//        gbl_fromHomeCurrentEntity = gbl_lastSelectionType; // "group" or "person"
-//
-//    
-//        if ([gbl_fromHomeCurrentEntity isEqualToString:@"group"])  {
-//            // NSLog(@"current  row 231=[%@]", [gbl_arrayGrp objectAtIndex:myIdxPath.row]);
-//            //myDestTableViewController.fromHomeCurrentSelectionPSV = [gbl_arrayGrp objectAtIndex:myIdxPath.row];  /* PSV */
-//            gbl_fromHomeCurrentSelectionPSV      = [gbl_arrayGrp objectAtIndex:myIdxPath.row];  /* PSV */
-//            gbl_fromHomeCurrentSelectionArrayIdx = myIdxPath.row;
-//        }
-//        if ([gbl_fromHomeCurrentEntity isEqualToString:@"person"]) {
-//            // NSLog(@"current  row 232=[%@]", [gbl_arrayPer objectAtIndex:myIdxPath.row]);
-//            //myDestTableViewController.fromHomeCurrentSelectionPSV = [gbl_arrayPer objectAtIndex:myIdxPath.row];  /* PSV */
-//            gbl_fromHomeCurrentSelectionPSV      = [gbl_arrayPer objectAtIndex:myIdxPath.row];  /* PSV */
-//            gbl_fromHomeCurrentSelectionArrayIdx = myIdxPath.row;
-//        }
-//        NSLog(@"gbl_fromHomeCurrentSelectionArrayIdx=%ld",(long)gbl_fromHomeCurrentSelectionArrayIdx);
-//        NSLog(@"gbl_fromHomeCurrentSelectionPSV =%@",gbl_fromHomeCurrentSelectionPSV);
-//        NSLog(@"gbl_fromHomeCurrentSelectionType=%@",gbl_fromHomeCurrentSelectionType);
-//        NSLog(@"gbl_fromHomeCurrentEntity=%@",gbl_fromHomeCurrentEntity);
-//
-//
-//        
-//        // this infinite loops on performseg s
-//        // Because background threads are not prioritized and will wait a very long time
-//        // before you see results, unlike the mainthread, which is high priority for the system.
-//        //
-//        // Also, all UI-related stuff must be done on the *main queue*. That's way you need that dispatch_async.
-//        //
-////        ntrn("calling dispatch home to rptlist !!!!!!!!!!!!!!!!!!!!!");
-////        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
-////            [self performSegueWithIdentifier:@"segueHomeToReportList" sender:self];
-////        });
-////        ntrn("calling dispatch home to rptlist !!!!!!!!!!!!!!!!!!!!!");
-//
-//    } /* segueHomeToReportList */
-//
-
 } // end of  prepareForSegue 
 
 
@@ -1083,6 +986,7 @@ nbn(101);
 // using setediting  INSTEAD
 // WHEN TAPPED, THIS BUTTON AUTOMATICALLY TOGGLES BETWEEN AN eDIT AND dONE BUTTON AND
 // CALLS YOUR VIEW CONTROLLER’S  setEditing:animated:  METHOD WITH APPROPRIATE VALUES.
+
 //-(IBAction)pressedEditButtonAction:(id)sender
 //{
 //  NSLog(@"in   pressedEditButtonAction!  in HOME");
@@ -2675,3 +2579,138 @@ nbn(357);
     //NSIndexPath *myIndexPath = [self.tableView indexPathForSelectedRow];
     //detailViewController.data = [self.dataController objectInListAtIndex: myIndexPath.row];
     //}
+
+
+// moved to didSelectRow
+//    // get the indexpath of current row
+//    NSIndexPath *myIdxPath = [self.tableView indexPathForSelectedRow];
+//    gbl_savePrevIndexPath  = myIdxPath;
+//    NSLog(@"gbl_savePrevIndexPath=%@",gbl_savePrevIndexPath);
+//
+//    /* segueHomeToReportList
+//    */
+//    if ([segue.identifier isEqualToString:@"segueHomeToReportList"]) {
+//        // UINavigationController *nc = segue.destinationViewController;
+//        // UINavigationController *nc = segue.destinationViewController;
+//        //  MAMB09_selectReportsTableViewController *myDestTableViewController = segue.destinationViewController;
+//
+//        // myDestTableViewController.fromHomeCurrentSelectionType = _mambCurrentSelectionType; // "group" or "person" or "pair"
+//        // gbl_fromHomeCurrentSelectionType = _mambCurrentSelectionType; // "group" or "person" or "pair"
+//        
+//        //myDestTableViewController.fromHomeCurrentEntity = _mambCurrentEntity; // "group" or "person"
+//        //gbl_fromHomeCurrentEntity = _mambCurrentEntity; // "group" or "person"
+//        //gbl_fromHomeCurrentEntity = _mambCurrentEntity; // "group" or "person"
+//        gbl_fromHomeCurrentEntity = gbl_lastSelectionType; // "group" or "person"
+//
+//    
+//        if ([gbl_fromHomeCurrentEntity isEqualToString:@"group"])  {
+//            // NSLog(@"current  row 231=[%@]", [gbl_arrayGrp objectAtIndex:myIdxPath.row]);
+//            //myDestTableViewController.fromHomeCurrentSelectionPSV = [gbl_arrayGrp objectAtIndex:myIdxPath.row];  /* PSV */
+//            gbl_fromHomeCurrentSelectionPSV      = [gbl_arrayGrp objectAtIndex:myIdxPath.row];  /* PSV */
+//            gbl_fromHomeCurrentSelectionArrayIdx = myIdxPath.row;
+//        }
+//        if ([gbl_fromHomeCurrentEntity isEqualToString:@"person"]) {
+//            // NSLog(@"current  row 232=[%@]", [gbl_arrayPer objectAtIndex:myIdxPath.row]);
+//            //myDestTableViewController.fromHomeCurrentSelectionPSV = [gbl_arrayPer objectAtIndex:myIdxPath.row];  /* PSV */
+//            gbl_fromHomeCurrentSelectionPSV      = [gbl_arrayPer objectAtIndex:myIdxPath.row];  /* PSV */
+//            gbl_fromHomeCurrentSelectionArrayIdx = myIdxPath.row;
+//        }
+//        NSLog(@"gbl_fromHomeCurrentSelectionArrayIdx=%ld",(long)gbl_fromHomeCurrentSelectionArrayIdx);
+//        NSLog(@"gbl_fromHomeCurrentSelectionPSV =%@",gbl_fromHomeCurrentSelectionPSV);
+//        NSLog(@"gbl_fromHomeCurrentSelectionType=%@",gbl_fromHomeCurrentSelectionType);
+//        NSLog(@"gbl_fromHomeCurrentEntity=%@",gbl_fromHomeCurrentEntity);
+//
+//
+//        
+//        // this infinite loops on performseg s
+//        // Because background threads are not prioritized and will wait a very long time
+//        // before you see results, unlike the mainthread, which is high priority for the system.
+//        //
+//        // Also, all UI-related stuff must be done on the *main queue*. That's way you need that dispatch_async.
+//        //
+////        ntrn("calling dispatch home to rptlist !!!!!!!!!!!!!!!!!!!!!");
+////        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+////            [self performSegueWithIdentifier:@"segueHomeToReportList" sender:self];
+////        });
+////        ntrn("calling dispatch home to rptlist !!!!!!!!!!!!!!!!!!!!!");
+//
+//    } /* segueHomeToReportList */
+//
+
+
+//        tab2ViewController *destViewController = segue.destinationViewController;
+//        UIView *destView = destViewController.view;
+//        destViewController.selectionName = @"alarms";
+//
+//        [sender setEnabled:NO];
+
+
+
+
+//- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+//    if ([segue.identifier isEqualToString:@"alarmSegue"]) {
+//
+//
+//        CATransition transition = [CATransition animation];
+//        transition.duration = 0.5;
+//        transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+//        transition.type = kCATransitionPush;
+//        transition.subtype = direction;
+//        [self.view.layer addAnimation:transition forKey:kCATransition];
+//
+//        tab2ViewController *destViewController = segue.destinationViewController;
+//        UIView *destView = destViewController.view;
+//        destViewController.selectionName = @"alarms";
+//
+//        [sender setEnabled:NO];
+//
+//         }
+//     }
+//
+//
+
+
+
+    // from prepareForSegue 
+    //
+    //    if ([segue.identifier isEqualToString:@"seguehomeToAddChange"]) {
+    //
+    //
+    //        CATransition *myTransition = [CATransition animation];
+    //        myTransition.duration = 0.5;
+    //        myTransition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    //        myTransition.type = kCATransitionPush;
+    ////        myTransition.subtype = direction;
+    //        myTransition.subtype = kCATransitionFromBottom;
+    //  NSLog(@"myTransition=%@",myTransition);
+    //
+    ////        [self.view.layer addAnimation:myTransition forKey: kCATransition];
+    ////        [self.view.layer addAnimation:myTransition forKey: @"myTransition"];
+    ////        [self.view.layer addAnimation:myTransition forKey: kCATransitionFromBottom];
+    ////        [self.view.layer addAnimation:myTransition forKey: kCATransitionPush];
+    //
+    ////        tab2ViewController *destViewController = segue.destinationViewController;
+    ////        UIView *destView = destViewController.view;
+    ////        destViewController.selectionName = @"alarms";
+    //
+    //
+    //
+    ////   UIViewController *sourceViewController = (UIViewController*)[self sourceViewController];
+    ////   UIViewController *destinationController = (UIViewController*)[self destinationViewController];                    
+    //
+    //    // Get the new view controller using [segue destinationViewController]
+    //
+    //   UIViewController *sourceViewController  =  [segue sourceViewController];
+    //   UIViewController *destinationController =  [segue destinationViewController];
+    //  NSLog(@"sourceViewController  =%@",sourceViewController  );
+    //  NSLog(@"destinationController =%@",destinationController );
+    //    [sourceViewController.navigationController.view.layer addAnimation: myTransition
+    //                                                                forKey: kCATransition];
+    ////    [sourceViewController.navigationController pushViewController: destinationController animated: NO];    
+    //     
+    //
+    //        [sender setEnabled:NO];
+    //
+    //    }
+    //
+

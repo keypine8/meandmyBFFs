@@ -264,12 +264,15 @@ NSIndexPath *gbl_IdxPathSaved_SelPerson;          // for highlight previous choi
 NSIndexPath *gbl_TBLRPTS1_saveSelectedIndexPath;  // for deselecting with animation when return to TBLRPTS1
 
 //
-NSInteger gbl_MAX_persons;               // 250 max in app and max in group
-NSInteger gbl_MAX_lengthOfName;          // 15 (applies to Person and Group both)
+NSInteger gbl_MAX_groups;               //  50 max in app
+NSInteger gbl_MAX_persons;              // 250 max in app and max in group
+NSInteger gbl_MAX_personsInGroup;       // max 250 members in a Group
+//NSInteger gbl_maxGrpBirthinfoCSVs;   // max 250 members in a Group
+
+NSInteger gbl_MAX_lengthOfName;          //  15 (applies to Person and Group both)
 NSInteger gbl_MAX_lengthOfCity;
 
 
-NSInteger gbl_maxGrpBirthinfoCSVs;   // max 250 members in a Group
 NSInteger gbl_maxLenBirthinfoCSV;    // max len of birthinfo CSV for a Group Member is 64 chars
 NSInteger gbl_maxGrpRptLines;        // max 333 cells in app tableview 
 NSInteger gbl_maxLenRptLinePSV;      // max len of report data PSV for a cell is 128 chars
@@ -946,6 +949,9 @@ NSIndexPath *gbl_savePrevIndexPath;  // for scrolling to the prev row you were o
 - (void) mambSortOnFieldOneForPSVarrayWithDescription:  (NSString *) argArrayDescription; // like "group" "grprem"
 
 - (CGSize) currentScreenSize;   // for using  CGSize.width and CGSize.height
+
+- (NSInteger) mambCheckForCorruptData;
+- (void) handleCorruptDataErrNum: (NSInteger) argCorruptDataErrNum;
 
 @end
 

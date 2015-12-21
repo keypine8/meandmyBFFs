@@ -80,7 +80,7 @@
 //    gbl_mycity  = [[UITextField alloc] initWithFrame:CGRectMake(16, 8, 180, 30)]; // arg 1=x 2=y 3=width 4=height
     gbl_mycitySearchString   = [[UITextField alloc] initWithFrame:CGRectMake(16, 8, 180, 36)]; // arg 1=x 2=y 3=width 4=height
 
-//    <.>
+//    
 //        UIImageView *myRightViewImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"forwardArrow_029.png"]];
 //
 //            gbl_mycitySearchString.rightViewMode          = UITextFieldViewModeAlways;
@@ -202,13 +202,11 @@
 
 
 
-// for test <.>  try with text "back"
 
     // make all "Back" buttons have just the arrow
     //
     //   [UIBarButtonItem.appearance setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -45) forBarMetrics:UIBarMetricsDefault];     // make all "Back" buttons have just the arrow
     //  [UIBarButtonItem.appearance setBackButtonTitlePositionAdjustment:UIOffsetMake(, -60) forBarMetrics:UIBarMetricsDefault];     // make all "Back" buttons have just the arrow
-
     [UIBarButtonItem.appearance setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics: UIBarMetricsDefault];     // make all "Back" buttons have just the arrow
     //    [UIBarButtonItem.appearance setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics: UIBarMetricsLandscapePhone];     // make all "Back" buttons have just the arrow
     [UIBarButtonItem.appearance setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics: UIBarMetricsCompact];     // make all "Back" buttons have just the arrow
@@ -222,11 +220,13 @@
 
     gbl_ThresholdshortTblLineLen = 17;  // nameA  + nameB more than this , then move benchmark label
     
-    gbl_MAX_persons         = 250;   // max in app and max in group
+    gbl_MAX_groups          =  50;   // max in app 
+    gbl_MAX_persons         = 250;   // max in app 
+    gbl_MAX_personsInGroup  = 250;   // max in a Group
+
     gbl_MAX_lengthOfName    =  15;   // 15 (applies to Person and Group both)
     gbl_MAX_lengthOfCity    =  30;   
 
-    gbl_maxGrpBirthinfoCSVs = 250;   // max 250 members in a Group
     gbl_maxLenBirthinfoCSV  = 128;   // max len of birthinfo CSV for a Group Member 
     gbl_maxGrpRptLines      = 333;   // max 333 cells in app tableview 
     gbl_maxLenRptLinePSV    = 128;   // max len of report data PSV for a cell is 128 chars
@@ -275,26 +275,26 @@
       @"Mother Lastna|3|12|1965|10|45|0|Los Angeles|California|United States||",
       @"Mo|3|12|1965|10|45|1|Los Angeles|California|United States||",
       @"Sister1 Lastnam|2|31|1988|0|30|1|Los Angeles|California|United States||",
-      @"Sis|2|31|1988|0|30|1|Los Angeles|California|United States||",
+      @"Sis|2|31|1988|12|30|1|Los Angeles|California|United States||",
       @"~Abigail 012345|8|21|1994|1|20|0|Los Angeles|California|United States||",
       @"~Aiden 89012345|8|4|1991|10|30|1|Los Angeles|California|United States||",
       @"~Anya|10|19|1990|8|20|0|Los Angeles|California|United States||",
       @"~Ava|2|3|1992|8|10|0|Los Angeles|California|United States||",
       @"~Brother|11|6|1986|8|1|1|Los Angeles|California|United States||",
       @"~Elijah|10|10|1992|0|1|1|Los Angeles|California|United States||",
-      @"~Emma|5|17|1993|0|1|1|Los Angeles|California|United States||",
+      @"~Emma|5|17|1993|12|1|1|Los Angeles|California|United States||",
       @"~Father|7|11|1961|11|8|1|Los Angeles|California|United States||",
       @"~Grandma|8|17|1939|8|5|0|Los Angeles|California|United States||",
       @"~Ingrid|3|13|1993|4|10|1|Los Angeles|California|United States||",
-      @"~Jackson|2|3|1993|0|1|1|Los Angeles|California|United States||",
+      @"~Jackson|2|3|1993|12|1|1|Los Angeles|California|United States||",
       @"~Jen|6|22|1992|4|10|0|Los Angeles|California|United States||",
-      @"~Liam|4|8|1993|0|1|1|Los Angeles|California|United States||",
+      @"~Liam|4|8|1993|12|1|1|Los Angeles|California|United States||",
       @"~Liz|3|13|1991|4|10|1|Los Angeles|California|United States||",
       @"~Lucas|4|20|1992|6|30|1|Los Angeles|California|United States||",
       @"~Mother|3|12|1965|10|45|0|Los Angeles|California|United States||",
       @"~Noah|12|19|1994|11|4|0|Los Angeles|California|United States||",
-      @"~Olivia|4|13|1994|0|53|1|Los Angeles|California|United States||",
-      @"~Sister1|2|31|1988|0|30|1|Los Angeles|California|United States||",
+      @"~Olivia|4|13|1994|12|53|1|Los Angeles|California|United States||",
+      @"~Sister1|2|31|1988|12|30|1|Los Angeles|California|United States||",
       @"~Sister2|2|13|1990|3|35|0|Los Angeles|California|United States||",
       @"~Sophia|9|20|1991|4|0|0|Los Angeles|California|United States||",
     ];
@@ -1075,6 +1075,262 @@ NSLog(@"end of gggggggggggggggggggggggggggggggggggggggg grabLastSelectionValueFo
 } // end of mambReadArrayFileWithDescription
 
 
+// check these for invalid stuff
+//    gbl_arrayPer
+//    gbl_arrayGrp  
+//    gbl_arrayMem
+//             example data:
+//                  @"~My Family||",
+//                  @"~Sister1|2|31|1988|0|30|1|Los Angeles|California|United States||",
+//                  @"~My Family|~Sister1|",
+//
+//    NSInteger gbl_MAX_groups;                //  50 max in app
+//    NSInteger gbl_MAX_persons;               // 250 max in app and max in group
+//    NSInteger gbl_MAX_personsInGroup;        // max 250 members in a Group
+//
+- (NSInteger) mambCheckForCorruptData
+{
+tn();
+  NSLog(@"in mambCheckForCorruptData    BEG");
+    NSCharacterSet *mySeparators = [NSCharacterSet characterSetWithCharactersInString: @"|"];
+    NSArray        *flds;
+
+    const char *constant_char;                                           // NSString object to C str
+    NSString  *fname,*fmth,*fday,*fyr,*fhr,*fmin,*fampm;
+    char      cname[32], cmth[32], cday[32], cyr[32], chr[32], cmin[32], campm[32];
+    NSString *fcity, *fprov, *fcoun, *fhighsec;
+    char allowedCharactersInName[128] = "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+    char allowedCharactersInCity[128] = "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-";
+    int daysinmonth[12]     ={31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    int daysinmonth_leap[12]={31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+    // get the current year
+    NSCalendar       *gregorian;
+    NSDateComponents *dateComponents;
+    NSInteger         myCurrentYearInt;
+    gregorian        = [NSCalendar currentCalendar]; 
+    dateComponents   = [gregorian components: (NSCalendarUnitDay| NSCalendarUnitMonth | NSCalendarUnitYear) 
+                                    fromDate: [NSDate date]
+    ];
+    myCurrentYearInt = [dateComponents year];
+
+    //  int sall(char *s,char *set) // returns 1 if  str s consists entirely of chars in str set, else 0
+
+    NSInteger numRecords;
+    NSInteger numFields;
+
+  NSLog(@"BEG   CHECK  group");
+    //      BEG   CHECK  group
+    numRecords = 0;   numFields = 0;
+    for (NSString *psvGrp in gbl_arrayGrp) {     // get PSV of arg name
+        numRecords = numRecords + 1;
+       
+        // check for exactly 3 fields
+        //                  @"~My Family||",
+        //
+        flds  = [psvGrp componentsSeparatedByCharactersInSet: mySeparators];
+        if (flds.count != 3)                                   return   1;   // s/b 3   for test
+
+        fname    = flds[0];
+
+        if (fname.length < 1)                                  return   2;
+        if (fname.length > gbl_MAX_lengthOfName)               return   3;
+
+        // check for invalid characters in name
+        //
+        if ([fname canBeConvertedToEncoding:         NSUTF8StringEncoding] == NO) return 4;
+        constant_char = [fname cStringUsingEncoding: NSUTF8StringEncoding]; // NSString object to C str
+        strcpy(cname, constant_char);                                        // NSString object to C str  // because of const
+        if (cname[0] == '~') {        // ~ only legal as first char
+            if (sall(cname + 1, allowedCharactersInName) == 0) return   4;
+        } else {
+            if (sall(cname,     allowedCharactersInName) == 0) return   5;
+        }
+    }
+    if (numRecords <   2 )                                     return   6;  // 2 is MAGIC for the 2 example groups
+    if (numRecords >  gbl_MAX_groups)                          return   7;  // max groups is 50
+  NSLog(@"END   CHECK  group");
+
+
+
+  NSLog(@"BEG   CHECK  person");
+    //      BEG   CHECK  person)";
+    for (NSString *psvPer in gbl_arrayPer) {     // get PSV of arg name
+        numRecords = numRecords + 1;
+
+        // check for exactly 12 fields
+        //                  @"~Sister1|2|31|1988|0|30|1|Los Angeles|California|United States||",
+        //
+        flds  = [psvPer componentsSeparatedByCharactersInSet: mySeparators];
+        
+  NSLog(@"flds=[%@]",flds);
+  NSLog(@"flds.count=[%ld]",(long)flds.count);
+        if (flds.count != 12)                                 return  11;  
+        
+        fname    = flds[0];
+        fmth     = flds[1];
+        fday     = flds[2];
+        fyr      = flds[3];
+        fhr      = flds[4];
+        fmin     = flds[5];
+        fampm    = flds[6];
+        fcity    = flds[7];
+        fprov    = flds[8];
+        fcoun    = flds[9];
+        fhighsec = flds[10];  // "" or "hs"
+
+        // check for invalid  name fld
+        if (fname.length < 1)                                  return  12;
+        if (fname.length > gbl_MAX_lengthOfName)               return  13;
+        constant_char = [fname  cStringUsingEncoding: NSUTF8StringEncoding]; // NSString object to C str
+        strcpy(cname, constant_char);                                        // NSString object to C str  // because of const
+        //
+        if (cname[0] == '~') {        // ~ only legal as first char of name
+            if (sall(cname + 1, allowedCharactersInName) == 0) return  14;
+        } else {
+            if (sall(cname,     allowedCharactersInName) == 0) return  15;
+        }
+
+
+        // check for invalid  month fld
+        if (fmth.length < 1)                                   return  16;
+        if (fmth.length > 2)                                   return  17;
+        constant_char = [fmth  cStringUsingEncoding: NSUTF8StringEncoding]; // NSString object to C str
+        strcpy(cmth, constant_char);                                        // NSString object to C str  // because of const
+        if (sall(cmth, "0123456789") == 0)                     return  18;
+        if (atoi(cmth) <  1)                                   return  19;
+        if (atoi(cmth) > 12)                                   return  20;
+
+        // check for invalid  year fld
+        if (fyr.length != 4)                                   return  25;
+        constant_char = [fyr  cStringUsingEncoding: NSUTF8StringEncoding]; // NSString object to C str
+        strcpy(cyr, constant_char);                                        // NSString object to C str  // because of const
+        if (sall(cyr, "0123456789") == 0)                      return  26;
+        if (atoi(cyr) < gbl_earliestYear)                      return  27;
+        if (atoi(cyr) > (int) myCurrentYearInt + 1)            return  28;
+
+
+        // check for invalid  day fld
+        if (fday.length < 1)                                   return  21;
+        if (fday.length > 2)                                   return  22;
+        constant_char = [fday  cStringUsingEncoding: NSUTF8StringEncoding]; // NSString object to C str
+        strcpy(cday, constant_char);                                        // NSString object to C str  // because of const
+        if (sall(cday, "0123456789") == 0)                     return  23;
+        if (atoi(cday) <  1)                                   return  24;
+        //
+        if (    atoi(cyr) % 400 == 0                            //  invalid day of month
+            || (atoi(cyr) % 100 != 0  &&  atoi(cyr) % 4 == 0))  // if leap year
+        {
+            if (atoi(cday) > daysinmonth_leap[ atoi(cmth) ])   return  25;
+        } else {
+            if (atoi(cday) > daysinmonth     [ atoi(cmth) ])   return  25;
+        }
+
+
+        // check for invalid  hr fld
+        if (fhr.length < 1)                                    return  29;
+        if (fhr.length > 2)                                    return  30;
+        constant_char = [fhr  cStringUsingEncoding: NSUTF8StringEncoding]; // NSString object to C str
+        strcpy(chr, constant_char);                                        // NSString object to C str  // because of const
+ksn(chr);
+        if (sall(chr, "0123456789") == 0)                      return  30;
+        if (atoi(chr) <  1)                                    return  31;
+        if (atoi(chr) > 12)                                    return  32;
+
+
+        // check for invalid  min fld
+        if (fmin.length < 1)                                   return  33;
+        if (fmin.length > 2)                                   return  34;
+        constant_char = [fmin  cStringUsingEncoding: NSUTF8StringEncoding]; // NSString object to C str
+        strcpy(cmin, constant_char);                                        // NSString object to C str  // because of const
+        if (sall(cmin, "0123456789") == 0)                     return  35;
+        if (atoi(cmin) <  0)                                   return  36;
+        if (atoi(cmin) > 59)                                   return  37;
+
+
+        // check for invalid  am/pm (0/1) fld
+        if (fampm.length != 1)                                 return  38;
+        constant_char = [fampm  cStringUsingEncoding: NSUTF8StringEncoding]; // NSString object to C str
+        strcpy(campm, constant_char);                                        // NSString object to C str  // because of const
+        if (sall(campm, "0123456789") == 0)                    return  39;
+        if (atoi(campm) <  0)                                  return  40;
+        if (atoi(campm) >  1)                                  return  41;
+
+//<.>
+//        fcity    = flds[7];
+//        fprov    = flds[8];
+//        fcoun    = flds[9];
+//        fhighsec = flds[10];  // "" or "hs"
+//<.>
+//
+
+
+
+
+
+//<.>
+
+    }
+  NSLog(@"END   CHECK  person");
+
+  NSLog(@"BEG   CHECK  member");
+    //     "BEG   CHECK  member)";
+    for (NSString *psvMem in gbl_arrayMem) {   // loop thru gbl group member array
+    }
+  NSLog(@"END   CHECK  member");
+
+  NSLog(@"in mambCheckForCorruptData    END");
+
+  return 0;  // no errors
+
+}  // end of mambCheckForCorruptData
+
+
+- (void) handleCorruptDataErrNum:  (NSInteger) argCorruptDataErrNum
+{
+  NSLog(@"in handleCorruptDataNum    BEG");
+  NSLog(@"argCorruptDataErrNum=[%ld]",(long)argCorruptDataErrNum);
+
+//automatic backup?  how often?  when?
+//
+//-------------------------------------------
+//RECOVERY from Corrupt Data
+//-------------------------------------------
+//Corrupt data has caused your current data to be lost.
+//
+//Do these RECOVERY steps to get back your latest BACKUP data.
+//
+//   1. Leave this App alone right now.  Do not tap OK.
+//   2. On this device, go to the mail App.
+//   3. Open your MOST RECENT email
+//      with the subject "Me and my BFFs BACKUP"
+//      and the attachment "BACKUP.mamb".
+//   4. Long-press the email attachment.
+//   4. Tap and hold on the email attachment.
+//   5. Tap YES for doing the backup recovery.
+//   6. When the recovery is done, come back here and tap OK.
+//
+//These instructions are also on the home page. Tap the Info button.
+//
+//The data corruption error number was 123.   auto-email to web site?
+//-------------------------------------------
+//
+//
+//Tap OK and let the App clean up.
+//Corrupt Data has been found
+//
+//RECOVER your latest BACKUP.
+//This App will now start running with only the example data that comes with the App.
+//
+//Hopefully, you recently backed up your data by sending yourself an email with group "BACKUP".
+//
+//Then let the App put back your saved birth information for all the people you have entered before (or imported before).
+//You will also get back the groups you had at the time you backed up.
+//
+
+
+  NSLog(@"in handleCorruptDataNum    END");
+} // end of handleCorruptDataNum
 
 
 - (NSData *) mambKriptOnThisNSData:  (NSData *)  argMyArchive   // arg is NSData/archived, returns a file-writeable NSData
@@ -2256,4 +2512,9 @@ tn();  NSLog(@"at end of   mambReadLastEntityFile  myLastEntityDecoded=\n%@",myL
 //            NSString *myCSVobj = [NSString stringWithUTF8String: csv_person_string];  // convert c string to NSString
 //
 //
+
+//        if ( [allowedCharactersInName rangeOfString: arg_typedCharAsNSString].location == NSNotFound)
+//        {
+//            NSLog(@"allowedCharacters does not contain typed char");
+//        }
 

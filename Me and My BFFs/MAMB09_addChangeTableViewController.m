@@ -713,67 +713,119 @@ nbn(881);
         }
   NSLog(@"self.array_BirthYearsToPick.count=%lu",(unsigned long)self.array_BirthYearsToPick.count);
         
-//        NSString *myInitDateFormatted = @"Birth Date and Time";  // use yr= 2000
-        NSString *myInitDateFormatted = gbl_initPromptDate ; // is @"Birth Date and Time" // use yr= 2000
+
+        //  INIT DATE PICKER roller values   for "add"
+        //
+        if (   [gbl_homeUseMODE      isEqualToString: @"edit mode" ]
+            && [gbl_homeEditingState isEqualToString: @"add" ]
+        ) {
+            gbl_rollerBirth_yyyy  = @"2000"; 
+            gbl_rollerBirth_mth   = @"Jan";
+            gbl_rollerBirth_dd    = @"01";
+            gbl_rollerBirth_hour  = @"12";
+            gbl_rollerBirth_min   = @"01";
+            gbl_rollerBirth_amPm  = @"PM";
+
+            NSString *myInitDateFormatted = gbl_initPromptDate ; // is @"Birth Date and Time"
   NSLog(@"myInitDateFormatted =%@",myInitDateFormatted );
 
-//        gbl_rollerBirth_yyyy  = @"initYYYY";  // birth date of 30-year-old
-        gbl_rollerBirth_yyyy  = @"2000";  // birth date of 30-year-old
-        gbl_rollerBirth_mth   = @"Jan";
-        gbl_rollerBirth_dd    = @"01";
-        gbl_rollerBirth_hour  = @"12";
-        gbl_rollerBirth_min   = @"01";
-        gbl_rollerBirth_amPm  = @"PM";
 
-        gbl_selectedBirthInfo = myInitDateFormatted;  // initial display of birth time info
+            gbl_selectedBirthInfo = myInitDateFormatted;  // initial display of birth time info
 
-        //        // Here is a short list of sample formats using ICU:
-        //        // -------------------------------------------------------------------------
-        //        // Pattern                           Result (in a particular locale)
-        //        // -------------------------------------------------------------------------
-        //        // yyyy.MM.dd G 'at' HH:mm:ss zzz    1996.07.10 AD at 15:08:56 PDT
-        //        // EEE, MMM d, ''yy                  Wed, July 10, '96
-        //        // h:mm a                            12:08 PM
-        //        // hh 'o''clock' a, zzzz             12 o'clock PM, Pacific Daylight Time
-        //        // K:mm a, z                         0:00 PM, PST
-        //        // yyyyy.MMMM.dd GGG hh:mm aaa       01996.July.10 AD 12:08 PM
-        //        // -------------------------------------------------------------------------
-        //        // The format specifiers are quite straightforward, Y = year, M = month, etc.
-        //        // Changing the number of specifiers for a field, changes the output.
-        //        // For example, MMMM generates the full month name “November”,
-        //        // MMM results in “Nov” and MM outputs “11”.
-        //        // 
-        //        NSDateFormatter *myFormatter = [[NSDateFormatter alloc] init];
-        //        [myFormatter setDateFormat:@"MMM dd, yyyy"];
-        //        NSString *yearString = [myFormatter stringFromDate:[NSDate date]];
-        //
+            //        // Here is a short list of sample formats using ICU:
+            //        // -------------------------------------------------------------------------
+            //        // Pattern                           Result (in a particular locale)
+            //        // -------------------------------------------------------------------------
+            //        // yyyy.MM.dd G 'at' HH:mm:ss zzz    1996.07.10 AD at 15:08:56 PDT
+            //        // EEE, MMM d, ''yy                  Wed, July 10, '96
+            //        // h:mm a                            12:08 PM
+            //        // hh 'o''clock' a, zzzz             12 o'clock PM, Pacific Daylight Time
+            //        // K:mm a, z                         0:00 PM, PST
+            //        // yyyyy.MMMM.dd GGG hh:mm aaa       01996.July.10 AD 12:08 PM
+            //        // -------------------------------------------------------------------------
+            //        // The format specifiers are quite straightforward, Y = year, M = month, etc.
+            //        // Changing the number of specifiers for a field, changes the output.
+            //        // For example, MMMM generates the full month name “November”,
+            //        // MMM results in “Nov” and MM outputs “11”.
+            //        // 
+            //        NSDateFormatter *myFormatter = [[NSDateFormatter alloc] init];
+            //        [myFormatter setDateFormat:@"MMM dd, yyyy"];
+            //        NSString *yearString = [myFormatter stringFromDate:[NSDate date]];
+            //
 
-        // display YMDHMA  initial value
-        //
+            // display YMDHMA  initial value
+            //
+            NSInteger myIndex;
+            myIndex = [self.array_BirthYearsToPick  indexOfObject: @"2000"];  // start roller on year 2000
 
-        //  INIT  PICKER roller values
-        //
-//        NSString* myInitYear = [NSString stringWithFormat:@"%i", initYYYY];  // convert c int to NSString
-        NSInteger myIndex;
-        myIndex = [self.array_BirthYearsToPick  indexOfObject: @"2000"];  // start roller on year 2000
+            // for (id member in self.array_BirthYearsToPick)    // loop thru year array
 
-        // for (id member in self.array_BirthYearsToPick)    // loop thru year array
+            if (myIndex == NSNotFound) {
+                myIndex = yearsToPickFrom3.count - 1;
+            }
 
-        if (myIndex == NSNotFound) {
-            myIndex = yearsToPickFrom3.count - 1;
-        }
+            dispatch_async(dispatch_get_main_queue(), ^{    //  INIT  PICKER roller values
 
-        dispatch_async(dispatch_get_main_queue(), ^{    //  INIT  PICKER roller values
+                [self.pickerViewDateTime selectRow: myIndex inComponent: 0 animated: YES]; // This is how you manually SET(!!) a selection!
+                [self.pickerViewDateTime selectRow:       0 inComponent: 1 animated: YES]; // mth  = jan
+                [self.pickerViewDateTime selectRow:       0 inComponent: 2 animated: YES]; // day  = 01
+                // 3 = spacer
+                [self.pickerViewDateTime selectRow:      11 inComponent: 4 animated: YES]; // hr   = 12
+                // 5 = colon
+                [self.pickerViewDateTime selectRow:       1 inComponent: 6 animated: YES]; // min  = 01   2nd one
+                [self.pickerViewDateTime selectRow:       1 inComponent: 7 animated: YES]; // ampm = 12   2nd one
+            });
 
-            [self.pickerViewDateTime selectRow: myIndex inComponent: 0 animated: YES]; // This is how you manually SET(!!) a selection!
-            [self.pickerViewDateTime selectRow:       0 inComponent: 1 animated: YES]; // mth  = jan
-            [self.pickerViewDateTime selectRow:       0 inComponent: 2 animated: YES]; // day  = 01
-            // 3 = spacer
-            [self.pickerViewDateTime selectRow:      11 inComponent: 4 animated: YES]; // hr   = 12
-            // 5 = colon
-            [self.pickerViewDateTime selectRow:       1 inComponent: 6 animated: YES]; // min  = 01   2nd one
-            [self.pickerViewDateTime selectRow:       1 inComponent: 7 animated: YES]; // ampm = 12   2nd one
-        });
+        } //  INIT DATE PICKER roller values   for "add"
+
+
+//<.>
+//        //  INIT DATE PICKER roller values   for "view or change"
+//        //
+//        if (   [gbl_homeUseMODE      isEqualToString: @"edit mode" ]
+//            && [gbl_homeEditingState isEqualToString: @"view or change" ]
+//        ) {
+//
+//            gbl_rollerBirth_yyyy  = @"2000"; 
+//            gbl_rollerBirth_mth   = @"Jan";
+//            gbl_rollerBirth_dd    = @"01";
+//            gbl_rollerBirth_hour  = @"12";
+//            gbl_rollerBirth_min   = @"01";
+//            gbl_rollerBirth_amPm  = @"PM";
+//
+//            NSString *myInitDateFormatted = gbl_initPromptDate ; // is @"Birth Date and Time"
+//  NSLog(@"myInitDateFormatted =%@",myInitDateFormatted );
+//
+//
+//            gbl_selectedBirthInfo = myInitDateFormatted;  // initial display of birth time info
+//
+//            // display YMDHMA  initial value
+//            //
+//            NSInteger myIndex;
+//            myIndex = [self.array_BirthYearsToPick  indexOfObject: @"2000"];  // start roller on year 2000
+//
+//            // for (id member in self.array_BirthYearsToPick)    // loop thru year array
+//
+//            if (myIndex == NSNotFound) {
+//                myIndex = yearsToPickFrom3.count - 1;
+//            }
+//
+//            dispatch_async(dispatch_get_main_queue(), ^{    //  INIT  PICKER roller values
+//
+//                [self.pickerViewDateTime selectRow: myIndex inComponent: 0 animated: YES]; // This is how you manually SET(!!) a selection!
+//                [self.pickerViewDateTime selectRow:       0 inComponent: 1 animated: YES]; // mth  = jan
+//                [self.pickerViewDateTime selectRow:       0 inComponent: 2 animated: YES]; // day  = 01
+//                // 3 = spacer
+//                [self.pickerViewDateTime selectRow:      11 inComponent: 4 animated: YES]; // hr   = 12
+//                // 5 = colon
+//                [self.pickerViewDateTime selectRow:       1 inComponent: 6 animated: YES]; // min  = 01   2nd one
+//                [self.pickerViewDateTime selectRow:       1 inComponent: 7 animated: YES]; // ampm = 12   2nd one
+//            });
+//<.>
+//        } 
+//
+
+
 
     } while( false);  // populate array array_BirthYearsToPick for uiPickerView
 
@@ -981,8 +1033,6 @@ nbn(881);
     if (   [gbl_homeUseMODE      isEqualToString: @"edit mode" ]
         && [gbl_homeEditingState isEqualToString: @"view or change" ]
     ) {
-
-
         //
         //        // NSString object to C
         //        my_psvc = [gbl_fromHomeCurrentSelectionPSV cStringUsingEncoding:NSUTF8StringEncoding];  // for personality
@@ -1035,6 +1085,81 @@ nbn(881);
   NSLog(@"fldCity   = [%@]",fldCity);
   NSLog(@"fldProv   = [%@]",fldProv);
   NSLog(@"fldCountry= [%@]",fldCountry);
+
+nbn(710);
+        //  INIT DATE PICKER roller values   for "view or change"
+        //
+        if (   [gbl_homeUseMODE      isEqualToString: @"edit mode" ]
+            && [gbl_homeEditingState isEqualToString: @"view or change" ]
+        ) {
+
+            gbl_rollerBirth_yyyy  = fldYear;
+            gbl_rollerBirth_mth   = fldMth;
+            gbl_rollerBirth_dd    = fldDay;
+            gbl_rollerBirth_hour  = fldHour;
+            gbl_rollerBirth_min   = fldMin;
+            gbl_rollerBirth_amPm  = fldAmPm;
+
+            NSString *myInitDateFormatted = gbl_initPromptDate ; // is @"Birth Date and Time"
+  NSLog(@"myInitDateFormatted =%@",myInitDateFormatted );
+
+
+            // show  selected day field on screen    fmt "2016 Dec 25  12:01 am"
+            //
+            //    self.array_BirthYearsToPick 
+            //    self.array_Months      
+            //    self.array_DaysOfMonth
+            //    self.array_Hours_1_12
+            //    self.array_Min_0_59 
+            //    self.array_AM_PM   
+            //
+            NSString *myFormattedStr =  [NSString stringWithFormat: @"%@  %@ %@  %@:%@ %@",  // fmt "2016 Dec 25  12:01 am"
+                                                                //            array_3letterDaysOfWeek[my_day_of_week_idx],
+                gbl_rollerBirth_yyyy,
+                self.array_Months     [ [gbl_rollerBirth_mth   intValue] - 1 ],
+                self.array_DaysOfMonth[ [gbl_rollerBirth_dd    intValue] - 1 ],
+                self.array_Hours_1_12 [ [gbl_rollerBirth_hour  intValue]     ],
+                self.array_Min_0_59   [ [gbl_rollerBirth_min   intValue]     ],
+                self.array_AM_PM      [ [gbl_rollerBirth_amPm  intValue] - 1 ]
+            ];
+
+            gbl_selectedBirthInfo = myFormattedStr ;
+            gbl_rollerBirthInfo   = myFormattedStr ;  // only shows stuff actually selected on the rollers
+
+
+            // display YMDHMA  initial value on rollers
+            //
+            NSInteger myIdxYear, myIdxMth, myIdxDay, myIdxHour, myIdxMin, myIdxAmPm;
+
+            myIdxYear     = [self.array_BirthYearsToPick  indexOfObject: gbl_rollerBirth_yyyy];
+            myIdxMth      = [gbl_rollerBirth_mth  intValue] - 1;             // convert NSString to integer
+            myIdxDay      = [gbl_rollerBirth_dd   intValue] - 1;             // convert NSString to integer
+            myIdxHour     = [gbl_rollerBirth_hour intValue] - 1;             // convert NSString to integer
+            myIdxMin      = [gbl_rollerBirth_min  intValue] - 1;             // convert NSString to integer
+            myIdxAmPm     = [gbl_rollerBirth_amPm intValue];             // convert NSString to integer
+
+            // for (id member in self.array_BirthYearsToPick)    // loop thru year array
+
+            if (myIdxYear == NSNotFound) {                // should not happen
+nbn(711);
+                myIdxYear = yearsToPickFrom3.count - 1;   // ?
+            }
+
+nbn(712);
+            dispatch_async(dispatch_get_main_queue(), ^{    //  INIT  PICKER roller values
+
+                [self.pickerViewDateTime selectRow: myIdxYear inComponent: 0 animated: YES]; // This is how you manually SET(!!) a selection!
+                [self.pickerViewDateTime selectRow: myIdxMth  inComponent: 1 animated: YES]; // mth  = jan
+                [self.pickerViewDateTime selectRow: myIdxDay  inComponent: 2 animated: YES]; // day  = 01
+                // 3 = spacer
+                [self.pickerViewDateTime selectRow: myIdxHour inComponent: 4 animated: YES]; // hr   = 12
+                // 5 = colon
+                [self.pickerViewDateTime selectRow: myIdxMin  inComponent: 6 animated: YES]; // min  = 01   2nd one
+                [self.pickerViewDateTime selectRow: myIdxAmPm inComponent: 7 animated: YES]; // ampm = 12   2nd one
+            });
+nbn(714);
+
+        } 
     }
             
         
@@ -2052,15 +2177,55 @@ nbn(702);
             // // FINAL  values for saving
             //
 
+            // if( [nameOfGrpOrPer caseInsensitiveCompare: gbl_DisplayName] == NSOrderedSame ) // strings are equal except for possibly case
+            NSString *mymthnum; 
+            mymthnum = @"0"; 
+            if      ([gbl_rollerBirth_mth caseInsensitiveCompare:  @"Jan" ] == NSOrderedSame) mymthnum = @"1";
+            else if ([gbl_rollerBirth_mth caseInsensitiveCompare:  @"Feb" ] == NSOrderedSame) mymthnum = @"2";
+            else if ([gbl_rollerBirth_mth caseInsensitiveCompare:  @"Mar" ] == NSOrderedSame) mymthnum = @"3";
+            else if ([gbl_rollerBirth_mth caseInsensitiveCompare:  @"Apr" ] == NSOrderedSame) mymthnum = @"4";
+            else if ([gbl_rollerBirth_mth caseInsensitiveCompare:  @"May" ] == NSOrderedSame) mymthnum = @"5";
+            else if ([gbl_rollerBirth_mth caseInsensitiveCompare:  @"Jun" ] == NSOrderedSame) mymthnum = @"6";
+            else if ([gbl_rollerBirth_mth caseInsensitiveCompare:  @"Jul" ] == NSOrderedSame) mymthnum = @"7";
+            else if ([gbl_rollerBirth_mth caseInsensitiveCompare:  @"Aug" ] == NSOrderedSame) mymthnum = @"8";
+            else if ([gbl_rollerBirth_mth caseInsensitiveCompare:  @"Sep" ] == NSOrderedSame) mymthnum = @"9";
+            else if ([gbl_rollerBirth_mth caseInsensitiveCompare:  @"Oct" ] == NSOrderedSame) mymthnum = @"10";
+            else if ([gbl_rollerBirth_mth caseInsensitiveCompare:  @"Nov" ] == NSOrderedSame) mymthnum = @"11";
+            else if ([gbl_rollerBirth_mth caseInsensitiveCompare:  @"Dec" ] == NSOrderedSame) mymthnum = @"12";
+
+            NSString *myampmnum; 
+            myampmnum = @"0"; 
+            if      ([gbl_rollerBirth_amPm caseInsensitiveCompare: @"AM" ]  == NSOrderedSame) myampmnum = @"0";
+            else if ([gbl_rollerBirth_amPm caseInsensitiveCompare: @"PM" ]  == NSOrderedSame) myampmnum = @"1";
+
+//            NSString *myhour; 
+//            myhour = @"0"; 
+//            if      ([gbl_rollerBirth_hour caseInsensitiveCompare: @"1"  ]  == NSOrderedSame) myhour = @"1";
+//            else if ([gbl_rollerBirth_hour caseInsensitiveCompare: @"2"  ]  == NSOrderedSame) myhour = @"2";
+//            else if ([gbl_rollerBirth_hour caseInsensitiveCompare: @"3"  ]  == NSOrderedSame) myhour = @"3";
+//            else if ([gbl_rollerBirth_hour caseInsensitiveCompare: @"4"  ]  == NSOrderedSame) myhour = @"4";
+//            else if ([gbl_rollerBirth_hour caseInsensitiveCompare: @"5"  ]  == NSOrderedSame) myhour = @"5";
+//            else if ([gbl_rollerBirth_hour caseInsensitiveCompare: @"6"  ]  == NSOrderedSame) myhour = @"6";
+//            else if ([gbl_rollerBirth_hour caseInsensitiveCompare: @"7"  ]  == NSOrderedSame) myhour = @"7";
+//            else if ([gbl_rollerBirth_hour caseInsensitiveCompare: @"8"  ]  == NSOrderedSame) myhour = @"8";
+//            else if ([gbl_rollerBirth_hour caseInsensitiveCompare: @"9"  ]  == NSOrderedSame) myhour = @"9";
+//            else if ([gbl_rollerBirth_hour caseInsensitiveCompare: @"10" ]  == NSOrderedSame) myhour = @"10";
+//            else if ([gbl_rollerBirth_hour caseInsensitiveCompare: @"11" ]  == NSOrderedSame) myhour = @"11";
+//            else if ([gbl_rollerBirth_hour caseInsensitiveCompare: @"12" ]  == NSOrderedSame) myhour = @"12";
+//
+
             NSString *myNewPersonRecord;
-            myNewPersonRecord = [NSString stringWithFormat: @"%@|%@|%@|%@|%@|%@|%@|%@|%@|%@|",
+            myNewPersonRecord = [NSString stringWithFormat: @"%@|%@|%@|%@|%@|%@|%@|%@|%@|%@||",
                 gbl_DisplayName,
-                gbl_rollerBirth_mth,
+//                gbl_rollerBirth_mth,
+                mymthnum,
                 gbl_rollerBirth_dd,
                 gbl_rollerBirth_yyyy,
                 gbl_rollerBirth_hour,
+//                myhour,
                 gbl_rollerBirth_min,
-                gbl_rollerBirth_amPm,
+//                gbl_rollerBirth_amPm,
+                myampmnum,
                 gbl_enteredCity,
                 gbl_enteredProv,
                 gbl_enteredCoun

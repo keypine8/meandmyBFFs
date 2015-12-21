@@ -938,7 +938,9 @@ for (id eltTst in gbl_compDataLines) { NSLog(@"    gbl_comp=%@", eltTst); }
         // char group_report_input_birthinfo_CSVs_B[gbl_maxGrpBirthinfoCSVs * gbl_maxLenBirthinfoCSV];  // [250 * fixed length of 64]
         // int  group_report_input_birthinfo_idx_b;
         //
-        char *my_mamb_csv_arr[gbl_maxGrpBirthinfoCSVs];
+//        char *my_mamb_csv_arr[gbl_maxGrpBirthinfoCSVs];
+        char *my_mamb_csv_arr[gbl_MAX_personsInGroup];
+
         int num_input_csvs;
         num_input_csvs = (int)gbl_grp_CSVs_B.count;
         group_report_input_birthinfo_idx_b =  -1;  // zero-based  init

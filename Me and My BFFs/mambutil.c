@@ -389,8 +389,7 @@ void calc_chart(double mnarg, double dyarg, double yrarg,
   dy = dyarg;
   yr = yrarg;
   hr = hrarg;
-  /* hr of 12 must be 0 for here */
-  if (hr == 12.0) hr = 0.0;
+  if (hr == 12.0) hr = 0.0; /* hr of 12 must be 0 for here */
   mu = muarg;  /* get event specs */
   ap = aparg;
   tz = tzarg;
@@ -917,10 +916,15 @@ void get_event_details(   /* called from perdoc.c, ... */
     case 8:  *gedtz = atof(pNewField);  break;
     case 9:  *gedln = atof(pNewField);  break;
     default:
+      ;
+
+  // comment this out later
 /*       fprintf(stderr, "mambutil>get_event_details()>switch crazy error.\n"); */
       fprintf(stderr, "mambutil>get_event_details()>switch crazy error.\n"); 
       exit(1);
       break;
+  // comment this out later
+
     }                       /* end of switch */
 
 /* tn();b(80);ki(field_idx);ksn(pNewField); ks(event_name);  */
@@ -949,10 +953,14 @@ char *mkstr(char *s, char *begarg, char *end)
   char *t;
   char *beg = begarg;
   ;
+
+  // comment this out later
   if (beg > end) {
     fprintf(stderr, "Error in util mkstr() beg > end \n");
     exit(1);
   }
+  // comment this out later
+
   for (t=s; beg <= end; beg++,t++) {
     *t = *beg;
   }

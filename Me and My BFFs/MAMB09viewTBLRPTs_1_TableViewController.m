@@ -5596,7 +5596,9 @@ nbn(201);
         // char group_report_input_birthinfo_CSVs[gbl_maxGrpBirthinfoCSVs * gbl_maxLenBirthinfoCSV];  // [250 * fixed length of 64]
         // int  group_report_input_birthinfo_idx;
         //
-        char *my_mamb_csv_arr[gbl_maxGrpBirthinfoCSVs];
+//        char *my_mamb_csv_arr[gbl_maxGrpBirthinfoCSVs];
+        char *my_mamb_csv_arr[gbl_MAX_personsInGroup];  // 250
+
         int num_input_csvs;
         num_input_csvs = (int)gbl_grp_CSVs.count;
         group_report_input_birthinfo_idx =  -1;  // zero-based  init
@@ -6072,7 +6074,8 @@ NSLog(@"gbl_pathToFileToBeEmailed=%@",gbl_pathToFileToBeEmailed);
         // char group_report_input_birthinfo_CSVs[gbl_maxGrpBirthinfoCSVs * gbl_maxLenBirthinfoCSV];  // [250 * fixed length of 64]
         // int  group_report_input_birthinfo_idx;
         //
-        char *my_mamb_csv_arr[gbl_maxGrpBirthinfoCSVs];
+//        char *my_mamb_csv_arr[gbl_maxGrpBirthinfoCSVs];
+        char *my_mamb_csv_arr[gbl_MAX_personsInGroup];  // 250
         int num_input_csvs;
         num_input_csvs = (int)gbl_grp_CSVs.count;
         group_report_input_birthinfo_idx =  -1;  // zero-based  init
