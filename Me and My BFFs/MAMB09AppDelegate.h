@@ -37,6 +37,23 @@
 NSString *gbltmpstr; // for debug
 NSInteger gbltmpint; // for debug
 
+// cell.accessoryType = UITableViewCellAccessoryDisclosurebutton;    // home mode edit    with tap giving record details 
+// cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator; // home mode regular with tap giving report list
+//
+NSString *gbl_homeUseMODE;      // "edit mode" (yellow)   or   "regular mode" (blue)
+NSString *gbl_homeEditingState; // if gbl_homeUseMODE = "edit mode"    then can be "add" or "view or change"   for tapped person or group
+// no, i think  // if gbl_homeUseMODE = "regular mode" then can be "add" or nil                for tapped person or group
+
+
+// THE THREE  "FIELDS"  =======================================================
+//
+//     UITextField *gbl_myname;              // for add new person or group
+//     UILabel     *gbl_mycityprovcounLabel; // for display found city,prov,coun
+//     UITextField *gbl_mybirthinformation;  // for add new person
+//
+// THE THREE  "FIELDS"  =======================================================
+
+
 
 NSInteger gbl_justLookedAtInfoScreen;
 NSInteger gbl_justAddedRecord;
@@ -57,7 +74,6 @@ CGFloat   gbl_heightForScreen;  // 6+  = 736.0 x 414  and 6s+  (self.view.bounds
                                 // 5s  = 568.0 x 320  and 5 
                                 // 4s  = 480.0 x 320 
 
-
 NSString  *gbl_pairScore   ;
 NSString  *gbl_pairPersonA ;
 NSString  *gbl_pairPersonB ;
@@ -75,7 +91,8 @@ NSInteger gbl_ThresholdshortTblLineLen;
 UIImage *gbl_YellowBG ;
 UIImage *gbl_BlueBG ;
 
-NSInteger addChangeViewJustEntered;  // 1=y,0=n
+//NSInteger addChangeViewJustEntered;  // 1=y,0=n
+NSInteger gbl_justEnteredAddChangeView;  // 1=y,0=n
 NSInteger gbl_citySetEditingValue;  // 1=y,0=n  // set initial value  when first entering City in "edit mode"  yellow
 NSInteger gbl_citySetPickerValue;   // 1=y,0=n  // set initial value  when first entering City in "edit mode"  yellow
 NSInteger gbl_citySetLabelValue;    // 1=y,0=n  // set initial value  when first entering City in "edit mode"  yellow
@@ -91,27 +108,10 @@ NSString *gbl_fieldTap_leaving; // note that name and city are captured in shoul
 NSString *gbl_fieldTap_goingto; // note that name and city are captured in should/did editing, date in viewForRow uipickerview
 
 
-// cell.accessoryType = UITableViewCellAccessoryDisclosurebutton;    // home mode edit    with tap giving record details 
-// cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator; // home mode regular with tap giving report list
-//
-NSString *gbl_homeUseMODE;      // "edit mode" (yellow)   or   "regular mode" (blue)
-NSString *gbl_homeEditingState; // if gbl_homeUseMODE = "edit mode"    then can be "add" or "view or change"   for tapped person or group
-// no, i think  // if gbl_homeUseMODE = "regular mode" then can be "add" or nil                for tapped person or group
-
-
-
-// THE THREE  "FIELDS"  =======================================================
-//
-//     UITextField *gbl_myname;              // for add new person or group
-//     UILabel     *gbl_mycityprovcounLabel; // for display found city,prov,coun
-//     UITextField *gbl_mybirthinformation;  // for add new person
-//
-// THE THREE  "FIELDS"  =======================================================
-
-
 UIColor *gbl_bgColor_editFocus_NO;    // white
 UIColor *gbl_bgColor_editFocus_YES;   // something else
 
+//NSString    *incomingNameAtBegOfAddChange;  // when 
 UITextField *gbl_myname;              // for add new person or group         // one of THE THREE  "FIELDS"  =====
 UITextField *gbl_mycitySearchString;  // for add new person  SEARCH STRING
 UILabel     *gbl_mycityprovcounLabel; // for display found city,prov,coun    // one of THE THREE  "FIELDS"  =====
@@ -422,7 +422,6 @@ NSString *gbl_currentMenuPlusReportCode;   // should be called gbl_currentSource
 NSString *gbl_PSVtappedPerson_fromGRP;    // any of the above 14 RPTs
 NSString *gbl_PSVtappedPersonA_inPair;    // hompbm,homgbm,pbmco,gbmco
 NSString *gbl_PSVtappedPersonB_inPair;    // same
-//        gbl_fromHomeCurrentSelectionPSV // hompcy,homppe,hompwc (other RPTs needing a person selection
 
 //NSString *gbl_PSVtappedPerson_home;    // USE gbl_fromHomeCurrentSelectionPSV INSTEAD (see below)
 //NSString *gbl_PSVtappedPerson_selp;    // USE gbl_fromSelSecondPersonPSV      INSTEAD (see below)

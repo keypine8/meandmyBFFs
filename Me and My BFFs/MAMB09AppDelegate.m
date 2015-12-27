@@ -274,14 +274,15 @@
       @"Fa|7|11|1961|11|8|1|Los Angeles|California|United States||",
       @"Mother Lastna|3|12|1965|10|45|0|Los Angeles|California|United States||",
       @"Mo|3|12|1965|10|45|1|Los Angeles|California|United States||",
-      @"Sister1 Lastnam|2|31|1988|0|30|1|Los Angeles|California|United States||",
+      @"Sister1 Lastnam|2|31|1988|12|31|1|Los Angeles|California|United States||",
       @"Sis|2|31|1988|12|30|1|Los Angeles|California|United States||",
+      @"Sis3|2|31|1988|3|30|1|Los Angeles|California|United States||",
       @"~Abigail 012345|8|21|1994|1|20|0|Los Angeles|California|United States||",
       @"~Aiden 89012345|8|4|1991|10|30|1|Los Angeles|California|United States||",
       @"~Anya|10|19|1990|8|20|0|Los Angeles|California|United States||",
       @"~Ava|2|3|1992|8|10|0|Los Angeles|California|United States||",
       @"~Brother|11|6|1986|8|1|1|Los Angeles|California|United States||",
-      @"~Elijah|10|10|1992|0|1|1|Los Angeles|California|United States||",
+      @"~Elijah|10|10|1992|12|1|1|Los Angeles|California|United States||",
       @"~Emma|5|17|1993|12|1|1|Los Angeles|California|United States||",
       @"~Father|7|11|1961|11|8|1|Los Angeles|California|United States||",
       @"~Grandma|8|17|1939|8|5|0|Los Angeles|California|United States||",
@@ -1977,6 +1978,16 @@ tn();  NSLog(@"at end of   mambReadLastEntityFile  myLastEntityDecoded=\n%@",myL
     }
 
     return myScreenSize;
+}
+
+
+- (void) mambChangeMemberNameFrom: (NSString *) arg_originalName
+                        toNewName: (NSString *) arg_newName
+{
+tn();
+NSLog(@"in mambChangeMemberNameFrom: toNewName:  ");
+  NSLog(@" TODO   after coded 1. new group  2. member selection  3. group \"view or change\"");
+  // TODO   after coded 1. new group  2. member selection  3. group "view or change"
 }
 
 

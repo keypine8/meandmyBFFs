@@ -30,7 +30,7 @@ NSMutableArray *yearsToPickFrom3;  /* for pickerYearInLife */
 @property (strong, nonatomic)          NSMutableArray *array_DaysOfMonth;
 @property (strong, nonatomic)          NSMutableArray *array_Hours_1_12;
 @property (strong, nonatomic)          NSMutableArray *array_Min_0_59;
-@property (strong, nonatomic)          NSMutableArray *array_AM_PM;
+@property (strong, nonatomic)          NSMutableArray *array_am_pm;
 
 // @property (strong, nonatomic) IBOutlet UITableView *outletToHomeTableview;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *outletToButtonToGetPicklist;

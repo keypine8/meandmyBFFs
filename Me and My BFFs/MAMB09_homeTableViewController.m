@@ -364,7 +364,7 @@ nbn(100);
 //    //   for test   TO SIMULATE first downloading the app-  when there are no data files
 //    //   FOR test   remove all regular named files   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 //    //
-//
+//    NSLog(@" FOR test   BEG   remove all regular named files   xxxxxxxxxx ");
 //    [gbl_sharedFM removeItemAtURL: gbl_URLToLastEnt    error: &err01];
 //    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm lastent %@", [err01 localizedFailureReason]); }
 //    [gbl_sharedFM removeItemAtURL: gbl_URLToGroup      error: &err01];
@@ -377,7 +377,9 @@ nbn(100);
 //    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm GrpRem  %@", [err01 localizedFailureReason]); }
 //    [gbl_sharedFM removeItemAtURL: gbl_URLToPerRem     error: &err01];
 //    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm PerRem  %@", [err01 localizedFailureReason]); }
+//    NSLog(@" FOR test   END   remove all regular named files   xxxxxxxxxx ");
 //    // end of   FOR test   remove all regular named files   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+//
 //
 
 
@@ -391,8 +393,8 @@ nbn(100);
     haveGrpRem = [gbl_sharedFM fileExistsAtPath: gbl_pathToGrpRem];
     havePerRem = [gbl_sharedFM fileExistsAtPath: gbl_pathToPerRem];
 
-//tn();tr("test before check data files ");
-//ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
+tn();tr("test before check data files ");
+ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
 
     if ( haveGrp && havePer && haveMem ) {   // good to go
         NSLog(@"%@", @"use regular files!");
@@ -418,15 +420,15 @@ nbn(100);
         if (!havePer) {
             //      remove all data named files (these cannot exist - no overcopy)
             [gbl_sharedFM removeItemAtURL: gbl_URLToGroup error:&err01];
-            if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"Error rm group %@",  err01); }
+            if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"Error in rm group %@",  err01); }
             [gbl_sharedFM removeItemAtURL: gbl_URLToPerson error:&err01];
-            if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"Error rm person %@", err01); }
+            if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"Error in rm person %@", err01); }
             [gbl_sharedFM removeItemAtURL: gbl_URLToMember error:&err01];
-            if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"Error rm member %@", err01); }
+            if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"Error in rm member %@", err01); }
             [gbl_sharedFM removeItemAtURL: gbl_URLToGrpRem error:&err01];
-            if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"Error rm grprem %@", err01); }
+            if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"Error in rm grprem %@", err01); }
             [gbl_sharedFM removeItemAtURL: gbl_URLToPerRem error:&err01];
-            if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"Error rm perrem %@", err01); }
+            if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"Error in rm perrem %@", err01); }
 
             [myappDelegate mambWriteNSArrayWithDescription: (NSString *) @"examplegroup"];   // write on init app
 //    NSLog(@"home1viewDidLoad  gbl_arrayGrp=%@",gbl_arrayGrp);
@@ -749,11 +751,15 @@ nbn(100);
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
-    // rows in yellow edit mode  should not be selectable
-    //
-    // NSString *gbl_homeUseMODE;      // "edit mode" (yellow)   or   "regular mode" (blue)
-    //
-    if ([gbl_homeUseMODE isEqualToString: @"edit mode"]) return nil;
+
+// comment this out and try making  rows in yellow edit mode   selectable  (same action as "i" accessory)
+//
+//    // rows in yellow edit mode  should not be selectable
+//    //
+//    // NSString *gbl_homeUseMODE;      // "edit mode" (yellow)   or   "regular mode" (blue)
+//    //
+//    if ([gbl_homeUseMODE isEqualToString: @"edit mode"]) return nil;
+//
 
     return indexPath; // By default, allow row to be selected
 }
@@ -2009,7 +2015,6 @@ tn();    NSLog(@"reaching accessoryButtonTappedForRowWithIndexPath:");
     [self.tableView scrollToNearestSelectedRowAtScrollPosition: UITableViewScrollPositionMiddle
                                                       animated: YES];
     b(31);
-
 
     if ([gbl_homeUseMODE isEqualToString: @"edit mode" ] )   // = yellow
     {
