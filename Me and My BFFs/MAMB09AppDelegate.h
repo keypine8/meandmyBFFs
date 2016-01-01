@@ -136,6 +136,7 @@ UIColor  *gbl_colorPlaceHolderPrompt; // gray
 
 //UIBarButtonItem *gbl_searchStringTitle;     // set in appdel .m
 UIBarButtonItem *gbl_title_personName;     // set in appdel .m
+UIBarButtonItem *gbl_title_groupName;     // set in appdel .m
 UIBarButtonItem *gbl_title_cityPicklist;     // set in appdel .m
 UIBarButtonItem *gbl_title_cityKeyboard;     // set in appdel .m
 UIBarButtonItem *gbl_title_birthDate;     // set in appdel .m
@@ -146,11 +147,13 @@ UIBarButtonItem *gbl_cityButtonToClearKeyboard; //  @"Clear City"
 UIBarButtonItem *gbl_cityButtonToGetKeyboard  ; //  @"< Keyboard "   
 UIBarButtonItem *gbl_dateButtonToClearKeyboard; //  @"Clear Birth Date"   
 
+UIToolbar       *gbl_ToolbarForGroupName;
 UIToolbar       *gbl_ToolbarForPersonName;
 UIToolbar       *gbl_ToolbarForCityPicklist;
 UIToolbar       *gbl_ToolbarForCityKeyboard;
 UIToolbar       *gbl_ToolbarForBirthDate;
 
+NSArray *gbl_buttonArrayForGroupName;
 NSArray *gbl_buttonArrayForPersonName;
 NSArray *gbl_buttonArrayForPicklist;
 NSMutableArray *gbl_buttonArrayForKeyboard;  // mutable to show/hide picklist button
@@ -782,6 +785,8 @@ NSString *gbl_lastSelectedPerson;       // like "~Dave"
 
                                               // in change mode, the name might change out from under you
 NSString *gbl_lastSelectedPersonBeforeChange; // like "~Dave"   used in YELLOW gbl_homeUseMODE "edit mode"
+                                              // for BOTH gbl_homeEditingState  =  "add" OR "view or change")
+NSString *gbl_lastSelectedGroupBeforeChange;  // like "~Swim Team"   used in YELLOW gbl_homeUseMODE "edit mode"
                                               // for BOTH gbl_homeEditingState  =  "add" OR "view or change")
 
 NSString *gbl_lastSelectedSecondPerson; // set for  hompc-just 2 compat after selecting 2nd person

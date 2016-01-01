@@ -690,11 +690,63 @@ tn();    NSLog(@"in didSelectRowAtIndexPath!  in SelectPerson !!!!!!!!!!!!");
 
 //    if (   [gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"]
 //        || [gbl_currentMenuPlusReportCode isEqualToString: @"pbm2bm"]
-//    ) {   
-      else {
+//    )    
+    else {
 
         gbl_lastSelectedGroup = currcell.textLabel.text;
-//        gbl_lastSelPersonWasA = @"group";
+
+
+        // search in  gbl_arrayMem  for   currcell.textLabel.text
+        // count how many members
+        // if not at least 2 members,  alert and return
+        //
+  NSLog(@"currcell.textLabel.text =[%@]",currcell.textLabel.text );
+
+        NSInteger member_cnt;
+        NSString *prefixStr = [NSString stringWithFormat: @"%@|", currcell.textLabel.text ];
+
+        member_cnt = 0;
+        for (NSString *element in gbl_arrayMem) {
+            if ([element hasPrefix: prefixStr]) {
+                member_cnt = member_cnt + 1;
+            }
+        }
+
+  NSLog(@"prefixStr  =[%@]",prefixStr );
+  NSLog(@"member_cnt =[%ld]",(long) member_cnt );
+
+        if (member_cnt  <  2) {
+
+            // here info is missing
+            NSString *missingMsg;
+            
+            if (member_cnt == 0) missingMsg = [ NSString stringWithFormat:
+                @"A group report needs\nat least 2 members.\n\nGroup \"%@\" has %ld members.",
+                currcell.textLabel.text, member_cnt
+            ];
+//            UIAlertController* myAlert = [UIAlertController alertControllerWithTitle: @"Need more Group Members"
+            UIAlertController* myAlert = [UIAlertController alertControllerWithTitle: @"Not enough Group Members"
+                                                                             message: missingMsg
+                                                                      preferredStyle: UIAlertControllerStyleAlert  ];
+             
+            UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                                style: UIAlertActionStyleDefault
+                                                              handler: ^(UIAlertAction * action) {
+                    NSLog(@"Ok button pressed");
+                }
+            ];
+             
+            [myAlert addAction:  okButton];
+
+            // cannot save because of missing information > stay in this screen
+            //
+            [self presentViewController: myAlert  animated: YES  completion: nil   ]; // cannot save because of missing information
+
+            return;  // cannot save because of missing information > stay in this screen
+
+
+        }
+   
 
         // save selection
         //

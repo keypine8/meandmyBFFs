@@ -73,6 +73,7 @@
 //
 
     NSString *fldName, *fldMth, *fldDay, *fldYear, *fldHour, *fldMin, *fldAmPm, *fldCity, *fldProv, *fldCountry;
+    NSString *fldNameG;
 //    NSString *fldLongitude, *fldHoursDiff;
 
 
@@ -222,6 +223,7 @@ NSLog(@"in ADD CHANGE  viewDidLoad!");
     self.tableView.allowsMultipleSelectionDuringEditing = NO;
 
     gbl_lastSelectedPersonBeforeChange = gbl_lastSelectedPerson;   // like "~Dave"   used in YELLOW gbl_homeUseMODE "edit mode"
+    gbl_lastSelectedGroupBeforeChange  = gbl_lastSelectedGroup ;   // like "~Dave"   used in YELLOW gbl_homeUseMODE "edit mode"
 
 
 //
@@ -568,32 +570,50 @@ nbn(881);
 
         // make arrays of buttons for the Toolbars
         //
-        gbl_buttonArrayForPersonName    =  [NSArray arrayWithObjects:  // like  " Clear Person Name  ___      "
-            gbl_nameButtonToClearKeyboard, gbl_flexibleSpace,
-            gbl_title_personName         , gbl_flexibleSpace,
-            gbl_flexibleSpace            , nil ]; 
+        if ([gbl_fromHomeCurrentSelectionType isEqualToString: @"person" ] )
+        {
+            gbl_buttonArrayForPersonName    =  [NSArray arrayWithObjects:  // like  " Clear Person Name  ___      "
+                gbl_nameButtonToClearKeyboard, gbl_flexibleSpace,
+                gbl_title_personName         , gbl_flexibleSpace,
+                gbl_flexibleSpace            , nil ]; 
 
 
-        gbl_buttonArrayForPicklist    =  [NSArray arrayWithObjects:  // like  " < KeyBoard    toron     _____      "
-            gbl_cityButtonToGetKeyboard, gbl_flexibleSpace,
-            gbl_title_cityPicklist     , gbl_flexibleSpace,
-            gbl_flexibleSpace            , nil ]; 
+            gbl_buttonArrayForPicklist    =  [NSArray arrayWithObjects:  // like  " < KeyBoard    toron     _____      "
+                gbl_cityButtonToGetKeyboard, gbl_flexibleSpace,
+                gbl_title_cityPicklist     , gbl_flexibleSpace,
+                gbl_flexibleSpace            , nil ]; 
 
-        gbl_buttonArrayForKeyboard    =  [NSMutableArray arrayWithObjects:  // like  " Clear         toron     Picklist > "
-            gbl_cityButtonToClearKeyboard, gbl_flexibleSpace,
-            gbl_title_cityKeyboard       , gbl_flexibleSpace,
-            self.outletToButtonToGetPicklist              , nil ]; 
+            gbl_buttonArrayForKeyboard    =  [NSMutableArray arrayWithObjects:  // like  " Clear         toron     Picklist > "
+                gbl_cityButtonToClearKeyboard, gbl_flexibleSpace,
+                gbl_title_cityKeyboard       , gbl_flexibleSpace,
+                self.outletToButtonToGetPicklist              , nil ]; 
 
-        gbl_buttonArrayForBirthDate    =  [NSArray arrayWithObjects:  // like  " Clear Person Name  ___      "
-            gbl_dateButtonToClearKeyboard, gbl_flexibleSpace,
-            gbl_title_birthDate         , gbl_flexibleSpace,
-            gbl_flexibleSpace            , nil ]; 
+            gbl_buttonArrayForBirthDate    =  [NSArray arrayWithObjects:  // like  " Clear Person Name  ___      "
+                gbl_dateButtonToClearKeyboard, gbl_flexibleSpace,
+                gbl_title_birthDate         , gbl_flexibleSpace,
+                gbl_flexibleSpace            , nil ]; 
 
-        // put the array of buttons in the Toolbar
-        [gbl_ToolbarForPersonName    setItems: gbl_buttonArrayForPersonName  animated: YES];
-        [gbl_ToolbarForCityPicklist  setItems: gbl_buttonArrayForPicklist    animated: YES];
-        [gbl_ToolbarForCityKeyboard  setItems: gbl_buttonArrayForKeyboard    animated: YES];
-        [gbl_ToolbarForBirthDate     setItems: gbl_buttonArrayForBirthDate   animated: YES];
+            // put the array of buttons in the Toolbar
+            [gbl_ToolbarForPersonName    setItems: gbl_buttonArrayForPersonName  animated: YES];
+            [gbl_ToolbarForCityPicklist  setItems: gbl_buttonArrayForPicklist    animated: YES];
+            [gbl_ToolbarForCityKeyboard  setItems: gbl_buttonArrayForKeyboard    animated: YES];
+            [gbl_ToolbarForBirthDate     setItems: gbl_buttonArrayForBirthDate   animated: YES];
+        }  //  gbl_fromHomeCurrentSelectionType = "person" 
+
+
+        // make arrays of buttons for the Toolbars
+        //
+        if ([gbl_fromHomeCurrentSelectionType isEqualToString: @"group" ] )
+        {
+                // for group 
+            gbl_buttonArrayForGroupName    =  [NSArray arrayWithObjects: 
+                gbl_nameButtonToClearKeyboard, gbl_flexibleSpace,
+                gbl_title_groupName          , gbl_flexibleSpace,
+                gbl_flexibleSpace            , nil ]; 
+            //
+            [gbl_ToolbarForGroupName    setItems: gbl_buttonArrayForPersonName  animated: YES];
+        }  //  gbl_fromHomeCurrentSelectionType = "person" 
+
 
 
 
@@ -1071,207 +1091,233 @@ tn();
     if (   [gbl_homeUseMODE      isEqualToString: @"edit mode" ]
         && [gbl_homeEditingState isEqualToString: @"view or change" ]
     ) {
-        //
-        //        // NSString object to C
-        //        my_psvc = [gbl_fromHomeCurrentSelectionPSV cStringUsingEncoding:NSUTF8StringEncoding];  // for personality
-        //
-        //        strcpy(my_psv, my_psvc);
-        //        ksn(my_psv);
-        //        
-        //        strcpy(psvName, csv_get_field(my_psv, "|", 1));
-        //        strcpy(psvMth,  csv_get_field(my_psv, "|", 2));
-        //        strcpy(psvDay,  csv_get_field(my_psv, "|", 3));
-        //        strcpy(psvYear, csv_get_field(my_psv, "|", 4));
-        //        strcpy(psvHour, csv_get_field(my_psv, "|", 5));
-        //        strcpy(psvMin,  csv_get_field(my_psv, "|", 6));
-        //        strcpy(psvAmPm, csv_get_field(my_psv, "|", 7));
-        //        strcpy(psvCity, csv_get_field(my_psv, "|", 8));
-        //        strcpy(psvProv, csv_get_field(my_psv, "|", 9));
-        //        strcpy(psvCountry, csv_get_field(my_psv, "|", 10));
-        //ksn(psvMth);ks(psvDay);ks(psvYear);ks(psvHour);ks(psvMin);ks(psvAmPm);tn();
-        //ksn(psvCity);ks(psvProv);ks(psvCountry);tn();
-        //        
-        //        // get longitude and timezone hoursDiff from Greenwich
-        //        // by looking up psvCity, psvProv, psvCountry
-        //        //
-        //        seq_find_exact_citPrvCountry(returnPSV, psvCity, psvProv, psvCountry);
-        //        
-        //        strcpy(psvHoursDiff,  csv_get_field(returnPSV, "|", 1));
-        //        strcpy(psvLongitude,  csv_get_field(returnPSV, "|", 2));
-        //ksn(psvHoursDiff);
-        //ksn(psvLongitude);
-        //
 
-        NSArray *fields = [gbl_fromHomeCurrentSelectionPSV componentsSeparatedByString: @"|"];
-        fldName      = fields[ 0];
-        fldMth       = fields[ 1];
-        fldDay       = fields[ 2];
-        fldYear      = fields[ 3];
-        fldHour      = fields[ 4];
-        fldMin       = fields[ 5];
-        fldAmPm      = fields[ 6];
-        fldCity      = fields[ 7];
-        fldProv      = fields[ 8];
-        fldCountry   = fields[ 9];
-  NSLog(@"fldName   = [%@]",fldName);
-  NSLog(@"fldMth    = [%@]",fldMth);
-  NSLog(@"fldDay    = [%@]",fldDay);
-  NSLog(@"fldYear   = [%@]",fldYear);
-  NSLog(@"fldHour   = [%@]",fldHour);
-  NSLog(@"fldMin    = [%@]",fldMin);
-  NSLog(@"fldAmPm   = [%@]",fldAmPm);
-  NSLog(@"fldCity   = [%@]",fldCity);
-  NSLog(@"fldProv   = [%@]",fldProv);
-  NSLog(@"fldCountry= [%@]",fldCountry);
+        if ([gbl_fromHomeCurrentSelectionType isEqualToString: @"person" ] )
+        {  // "person" gbl_fromHomeCurrentSelectionType 
 
-        if (   [gbl_homeUseMODE      isEqualToString: @"edit mode" ]
-            && [gbl_homeEditingState isEqualToString: @"view or change" ]
-        ) {
-            gbl_myCitySoFar = fldCity;
-            gbl_enteredCity = fldCity;
-            gbl_enteredProv = fldProv;
-            gbl_enteredCoun = fldCountry;
-
-        } else {
-            gbl_myCitySoFar = @"";
-            gbl_enteredCity = @"";
-            gbl_enteredProv = @"";
-            gbl_enteredCoun = @"";
-        }
-
-  NSLog(@" -1 gbl_myCitySoFar  =[%@]",gbl_myCitySoFar );
-  NSLog(@" -1 gbl_enteredCity  =[%@]",gbl_enteredCity );
-  NSLog(@" -1 gbl_enteredProv  =[%@]",gbl_enteredProv );
-  NSLog(@" -1 gbl_enteredCoun  =[%@]",gbl_enteredCoun );
-
-nbn(710);
-        //  INIT DATE PICKER roller values   for "view or change"
-        //
-        if (   [gbl_homeUseMODE      isEqualToString: @"edit mode" ]
-            && [gbl_homeEditingState isEqualToString: @"view or change" ]
-        ) {
-            // gbl_rollerBirth_yyyy  = @"2000"; 
-            // gbl_rollerBirth_mth   = @"Jan";
-            // gbl_rollerBirth_dd    = @"01";
-            // gbl_rollerBirth_hour  = @"12";
-            // gbl_rollerBirth_min   = @"01";
-            // gbl_rollerBirth_amPm  = @"pm";
             //
-            gbl_rollerBirth_yyyy  = fldYear;
-
-//            gbl_rollerBirth_mth   = fldMth;
-            // self.array_Months      = [[NSArray alloc] initWithObjects:@"Jan",@"Feb",@"Mar",@"Apr",@"May",@"Jun",@"Jul",@"Aug",@"Sep",@"Oct",@"Nov",@"Dec", nil];
-            gbl_rollerBirth_mth   = self.array_Months[ [fldMth intValue] - 1 ];
-
-            gbl_rollerBirth_dd    = fldDay;
-            gbl_rollerBirth_hour  = fldHour;
-            gbl_rollerBirth_min   = fldMin;
-//            gbl_rollerBirth_amPm  = fldAmPm;
-            gbl_rollerBirth_amPm  = @"am"; // default  (should never happen)
-            if ( [fldAmPm isEqualToString: @"0" ] )  gbl_rollerBirth_amPm  = @"am";
-            if ( [fldAmPm isEqualToString: @"1" ] )  gbl_rollerBirth_amPm  = @"pm";
-
-            NSString *myInitDateFormatted = gbl_initPromptDate ; // is @"Birth Date and Time"
-  NSLog(@"myInitDateFormatted =%@",myInitDateFormatted );
-  NSLog(@" 0 gbl_rollerBirth_yyyy =%@",gbl_rollerBirth_yyyy );
-  NSLog(@" 0 gbl_rollerBirth_mth  =%@",gbl_rollerBirth_mth  );
-  NSLog(@" 0 gbl_rollerBirth_dd   =%@",gbl_rollerBirth_dd   );
-  NSLog(@" 0 gbl_rollerBirth_hour =%@",gbl_rollerBirth_hour );
-  NSLog(@" 0 gbl_rollerBirth_min  =%@",gbl_rollerBirth_min  );
-  NSLog(@" 0 gbl_rollerBirth_amPm =%@",gbl_rollerBirth_amPm );
-
-
-            // show  selected day field on screen    fmt "2016 Dec 25  12:01 am"
+            //        // NSString object to C
+            //        my_psvc = [gbl_fromHomeCurrentSelectionPSV cStringUsingEncoding:NSUTF8StringEncoding];  // for personality
             //
-            //    self.array_BirthYearsToPick 
-            //    self.array_Months      
-            //    self.array_DaysOfMonth
-            //    self.array_Hours_1_12
-            //    self.array_Min_0_59 
-            //    self.array_am_pm   
+            //        strcpy(my_psv, my_psvc);
+            //        ksn(my_psv);
+            //        
+            //        strcpy(psvName, csv_get_field(my_psv, "|", 1));
+            //        strcpy(psvMth,  csv_get_field(my_psv, "|", 2));
+            //        strcpy(psvDay,  csv_get_field(my_psv, "|", 3));
+            //        strcpy(psvYear, csv_get_field(my_psv, "|", 4));
+            //        strcpy(psvHour, csv_get_field(my_psv, "|", 5));
+            //        strcpy(psvMin,  csv_get_field(my_psv, "|", 6));
+            //        strcpy(psvAmPm, csv_get_field(my_psv, "|", 7));
+            //        strcpy(psvCity, csv_get_field(my_psv, "|", 8));
+            //        strcpy(psvProv, csv_get_field(my_psv, "|", 9));
+            //        strcpy(psvCountry, csv_get_field(my_psv, "|", 10));
+            //ksn(psvMth);ks(psvDay);ks(psvYear);ks(psvHour);ks(psvMin);ks(psvAmPm);tn();
+            //ksn(psvCity);ks(psvProv);ks(psvCountry);tn();
+            //        
+            //        // get longitude and timezone hoursDiff from Greenwich
+            //        // by looking up psvCity, psvProv, psvCountry
+            //        //
+            //        seq_find_exact_citPrvCountry(returnPSV, psvCity, psvProv, psvCountry);
+            //        
+            //        strcpy(psvHoursDiff,  csv_get_field(returnPSV, "|", 1));
+            //        strcpy(psvLongitude,  csv_get_field(returnPSV, "|", 2));
+            //ksn(psvHoursDiff);
+            //ksn(psvLongitude);
             //
-            NSString *myFormattedStr =  [NSString stringWithFormat: @"%@  %@ %@  %@:%@ %@",  // fmt "2016 Dec 25  12:01 am"
-                                                                //            array_3letterDaysOfWeek[my_day_of_week_idx],
-//                gbl_rollerBirth_yyyy,
-//                self.array_Months     [ [gbl_rollerBirth_mth   intValue] - 1 ], // starts at one
-//                self.array_DaysOfMonth[ [gbl_rollerBirth_dd    intValue] - 1 ], // starts at one
-//                self.array_Hours_1_12 [ [gbl_rollerBirth_hour  intValue] - 1 ], // starts at one
-//                self.array_Min_0_59   [ [gbl_rollerBirth_min   intValue]     ], // starts at zero
-//                self.array_am_pm      [ [gbl_rollerBirth_amPm  intValue]     ]  // starts at zero
 
-                gbl_rollerBirth_yyyy,
-                self.array_Months     [ [fldMth   intValue] - 1 ], // starts at one
-                self.array_DaysOfMonth[ [fldDay   intValue] - 1 ], // starts at one
-                self.array_Hours_1_12 [ [fldHour  intValue] - 1 ], // starts at one
-                self.array_Min_0_59   [ [fldMin   intValue]     ], // starts at zero
-                self.array_am_pm      [ [fldAmPm  intValue]     ]  // starts at zero
-            ];
+            NSArray *fields = [gbl_fromHomeCurrentSelectionPSV componentsSeparatedByString: @"|"];
+            fldName      = fields[ 0];
+            fldMth       = fields[ 1];
+            fldDay       = fields[ 2];
+            fldYear      = fields[ 3];
+            fldHour      = fields[ 4];
+            fldMin       = fields[ 5];
+            fldAmPm      = fields[ 6];
+            fldCity      = fields[ 7];
+            fldProv      = fields[ 8];
+            fldCountry   = fields[ 9];
+      NSLog(@"fldName   = [%@]",fldName);
+      NSLog(@"fldMth    = [%@]",fldMth);
+      NSLog(@"fldDay    = [%@]",fldDay);
+      NSLog(@"fldYear   = [%@]",fldYear);
+      NSLog(@"fldHour   = [%@]",fldHour);
+      NSLog(@"fldMin    = [%@]",fldMin);
+      NSLog(@"fldAmPm   = [%@]",fldAmPm);
+      NSLog(@"fldCity   = [%@]",fldCity);
+      NSLog(@"fldProv   = [%@]",fldProv);
+      NSLog(@"fldCountry= [%@]",fldCountry);
 
-            gbl_selectedBirthInfo = myFormattedStr ;
-            gbl_rollerBirthInfo   = myFormattedStr ;  // only shows stuff actually selected on the rollers
+            if (   [gbl_homeUseMODE      isEqualToString: @"edit mode" ]
+                && [gbl_homeEditingState isEqualToString: @"view or change" ]
+            ) {
+                gbl_myCitySoFar = fldCity;
+                gbl_enteredCity = fldCity;
+                gbl_enteredProv = fldProv;
+                gbl_enteredCoun = fldCountry;
 
-
-            // display YMDHMA  initial value on rollers
-            //
-            NSInteger myIdxInPicker_Year, myIdxInPicker_Mth, myIdxInPicker_Day, myIdxInPicker_Hour, myIdxInPicker_Min, myIdxInPicker_AmPm;
-
-//            myIdxInPicker_Year     = [self.array_BirthYearsToPick  indexOfObject: gbl_rollerBirth_yyyy];
-//            myIdxInPicker_Mth      = [gbl_rollerBirth_mth  intValue] - 1; // starts at one
-//            myIdxInPicker_Day      = [gbl_rollerBirth_dd   intValue] - 1; // starts at one  
-//            myIdxInPicker_Hour     = [gbl_rollerBirth_hour intValue] - 1; // starts at one 
-//            myIdxInPicker_Min      = [gbl_rollerBirth_min  intValue]    ; // min starts at zero, not one
-//            myIdxInPicker_AmPm     = [gbl_rollerBirth_amPm intValue]    ; // ampm starts at zero, not one
-
-            myIdxInPicker_Year = [self.array_BirthYearsToPick  indexOfObject: gbl_rollerBirth_yyyy ];
-
-            if (myIdxInPicker_Year == NSNotFound) {
-                myIdxInPicker_Year = yearsToPickFrom3.count - 1;
+            } else {
+                gbl_myCitySoFar = @"";
+                gbl_enteredCity = @"";
+                gbl_enteredProv = @"";
+                gbl_enteredCoun = @"";
             }
 
-  NSLog(@"myIdxInPicker_Year=[%ld]",(long)myIdxInPicker_Year);
-            myIdxInPicker_Mth      = [fldMth  intValue] - 1; // starts at one
-  NSLog(@"myIdxInPicker_Mth =[%ld]",(long)myIdxInPicker_Mth );
-            myIdxInPicker_Day      = [fldDay  intValue] - 1; // starts at one  
-  NSLog(@"myIdxInPicker_Day =[%ld]",(long)myIdxInPicker_Day );
-            myIdxInPicker_Hour     = [fldHour intValue] - 1; // starts at one 
-  NSLog(@"myIdxInPicker_Hour=[%ld]",(long)myIdxInPicker_Hour);
-            myIdxInPicker_Min      = [fldMin  intValue]    ; // min starts at zero, not one
-  NSLog(@"myIdxInPicker_Min =[%ld]",(long)myIdxInPicker_Min );
-            myIdxInPicker_AmPm     = [fldAmPm intValue]    ; // ampm starts at zero, not one
-  NSLog(@"myIdxInPicker_AmPm=[%ld]",(long)myIdxInPicker_AmPm);
+      NSLog(@" -1 gbl_myCitySoFar  =[%@]",gbl_myCitySoFar );
+      NSLog(@" -1 gbl_enteredCity  =[%@]",gbl_enteredCity );
+      NSLog(@" -1 gbl_enteredProv  =[%@]",gbl_enteredProv );
+      NSLog(@" -1 gbl_enteredCoun  =[%@]",gbl_enteredCoun );
 
-            // for (id member in self.array_BirthYearsToPick)    // loop thru year array
+    nbn(710);
+            //  INIT DATE PICKER roller values   for "view or change"
+            //
+            if (   [gbl_homeUseMODE      isEqualToString: @"edit mode" ]
+                && [gbl_homeEditingState isEqualToString: @"view or change" ]
+            ) {
+                // gbl_rollerBirth_yyyy  = @"2000"; 
+                // gbl_rollerBirth_mth   = @"Jan";
+                // gbl_rollerBirth_dd    = @"01";
+                // gbl_rollerBirth_hour  = @"12";
+                // gbl_rollerBirth_min   = @"01";
+                // gbl_rollerBirth_amPm  = @"pm";
+                //
+                gbl_rollerBirth_yyyy  = fldYear;
 
-            if (myIdxInPicker_Year == NSNotFound) {                // should not happen
-nbn(711);
-                myIdxInPicker_Year = yearsToPickFrom3.count - 1;   // ?
-            }
+    //            gbl_rollerBirth_mth   = fldMth;
+                // self.array_Months      = [[NSArray alloc] initWithObjects:@"Jan",@"Feb",@"Mar",@"Apr",@"May",@"Jun",@"Jul",@"Aug",@"Sep",@"Oct",@"Nov",@"Dec", nil];
+                gbl_rollerBirth_mth   = self.array_Months[ [fldMth intValue] - 1 ];
 
-nbn(712);
-            dispatch_async(dispatch_get_main_queue(), ^{    //  INIT  PICKER roller values
+                gbl_rollerBirth_dd    = fldDay;
+                gbl_rollerBirth_hour  = fldHour;
+                gbl_rollerBirth_min   = fldMin;
+    //            gbl_rollerBirth_amPm  = fldAmPm;
+                gbl_rollerBirth_amPm  = @"am"; // default  (should never happen)
+                if ( [fldAmPm isEqualToString: @"0" ] )  gbl_rollerBirth_amPm  = @"am";
+                if ( [fldAmPm isEqualToString: @"1" ] )  gbl_rollerBirth_amPm  = @"pm";
 
-                [self.pickerViewDateTime selectRow: myIdxInPicker_Year inComponent: 0 animated: YES]; // This is how you manually SET(!!) a selection!
-                [self.pickerViewDateTime selectRow: myIdxInPicker_Mth  inComponent: 1 animated: YES]; // mth  = jan
-                [self.pickerViewDateTime selectRow: myIdxInPicker_Day  inComponent: 2 animated: YES]; // day  = 01
-                // 3 = spacer
-                [self.pickerViewDateTime selectRow: myIdxInPicker_Hour inComponent: 4 animated: YES]; // hr   = 12
-                // 5 = colon
-                [self.pickerViewDateTime selectRow: myIdxInPicker_Min  inComponent: 6 animated: YES]; // min  = 01   2nd one
-                [self.pickerViewDateTime selectRow: myIdxInPicker_AmPm inComponent: 7 animated: YES]; // ampm = 12   2nd one
-            });
-nbn(714);
+                NSString *myInitDateFormatted = gbl_initPromptDate ; // is @"Birth Date and Time"
+      NSLog(@"myInitDateFormatted =%@",myInitDateFormatted );
+      NSLog(@" 0 gbl_rollerBirth_yyyy =%@",gbl_rollerBirth_yyyy );
+      NSLog(@" 0 gbl_rollerBirth_mth  =%@",gbl_rollerBirth_mth  );
+      NSLog(@" 0 gbl_rollerBirth_dd   =%@",gbl_rollerBirth_dd   );
+      NSLog(@" 0 gbl_rollerBirth_hour =%@",gbl_rollerBirth_hour );
+      NSLog(@" 0 gbl_rollerBirth_min  =%@",gbl_rollerBirth_min  );
+      NSLog(@" 0 gbl_rollerBirth_amPm =%@",gbl_rollerBirth_amPm );
 
-        } 
-            
-        gbl_myname.text = fldName;
 
-        gbl_enteredCity        = fldCity; 
-        gbl_enteredProv        = fldProv;
-        gbl_enteredCoun        = fldCountry;
-        // end of [gbl_homeUseMODE      isEqualToString: @"edit mode" ] && [gbl_homeEditingState isEqualToString: @"view or change" ]
+                // show  selected day field on screen    fmt "2016 Dec 25  12:01 am"
+                //
+                //    self.array_BirthYearsToPick 
+                //    self.array_Months      
+                //    self.array_DaysOfMonth
+                //    self.array_Hours_1_12
+                //    self.array_Min_0_59 
+                //    self.array_am_pm   
+                //
+                NSString *myFormattedStr =  [NSString stringWithFormat: @"%@  %@ %@  %@:%@ %@",  // fmt "2016 Dec 25  12:01 am"
+                                                                    //            array_3letterDaysOfWeek[my_day_of_week_idx],
+    //                gbl_rollerBirth_yyyy,
+    //                self.array_Months     [ [gbl_rollerBirth_mth   intValue] - 1 ], // starts at one
+    //                self.array_DaysOfMonth[ [gbl_rollerBirth_dd    intValue] - 1 ], // starts at one
+    //                self.array_Hours_1_12 [ [gbl_rollerBirth_hour  intValue] - 1 ], // starts at one
+    //                self.array_Min_0_59   [ [gbl_rollerBirth_min   intValue]     ], // starts at zero
+    //                self.array_am_pm      [ [gbl_rollerBirth_amPm  intValue]     ]  // starts at zero
 
+                    gbl_rollerBirth_yyyy,
+                    self.array_Months     [ [fldMth   intValue] - 1 ], // starts at one
+                    self.array_DaysOfMonth[ [fldDay   intValue] - 1 ], // starts at one
+                    self.array_Hours_1_12 [ [fldHour  intValue] - 1 ], // starts at one
+                    self.array_Min_0_59   [ [fldMin   intValue]     ], // starts at zero
+                    self.array_am_pm      [ [fldAmPm  intValue]     ]  // starts at zero
+                ];
+
+                gbl_selectedBirthInfo = myFormattedStr ;
+                gbl_rollerBirthInfo   = myFormattedStr ;  // only shows stuff actually selected on the rollers
+
+
+                // display YMDHMA  initial value on rollers
+                //
+                NSInteger myIdxInPicker_Year, myIdxInPicker_Mth, myIdxInPicker_Day, myIdxInPicker_Hour, myIdxInPicker_Min, myIdxInPicker_AmPm;
+
+    //            myIdxInPicker_Year     = [self.array_BirthYearsToPick  indexOfObject: gbl_rollerBirth_yyyy];
+    //            myIdxInPicker_Mth      = [gbl_rollerBirth_mth  intValue] - 1; // starts at one
+    //            myIdxInPicker_Day      = [gbl_rollerBirth_dd   intValue] - 1; // starts at one  
+    //            myIdxInPicker_Hour     = [gbl_rollerBirth_hour intValue] - 1; // starts at one 
+    //            myIdxInPicker_Min      = [gbl_rollerBirth_min  intValue]    ; // min starts at zero, not one
+    //            myIdxInPicker_AmPm     = [gbl_rollerBirth_amPm intValue]    ; // ampm starts at zero, not one
+
+                myIdxInPicker_Year = [self.array_BirthYearsToPick  indexOfObject: gbl_rollerBirth_yyyy ];
+
+                if (myIdxInPicker_Year == NSNotFound) {
+                    myIdxInPicker_Year = yearsToPickFrom3.count - 1;
+                }
+
+      NSLog(@"myIdxInPicker_Year=[%ld]",(long)myIdxInPicker_Year);
+                myIdxInPicker_Mth      = [fldMth  intValue] - 1; // starts at one
+      NSLog(@"myIdxInPicker_Mth =[%ld]",(long)myIdxInPicker_Mth );
+                myIdxInPicker_Day      = [fldDay  intValue] - 1; // starts at one  
+      NSLog(@"myIdxInPicker_Day =[%ld]",(long)myIdxInPicker_Day );
+                myIdxInPicker_Hour     = [fldHour intValue] - 1; // starts at one 
+      NSLog(@"myIdxInPicker_Hour=[%ld]",(long)myIdxInPicker_Hour);
+                myIdxInPicker_Min      = [fldMin  intValue]    ; // min starts at zero, not one
+      NSLog(@"myIdxInPicker_Min =[%ld]",(long)myIdxInPicker_Min );
+                myIdxInPicker_AmPm     = [fldAmPm intValue]    ; // ampm starts at zero, not one
+      NSLog(@"myIdxInPicker_AmPm=[%ld]",(long)myIdxInPicker_AmPm);
+
+                // for (id member in self.array_BirthYearsToPick)    // loop thru year array
+
+                if (myIdxInPicker_Year == NSNotFound) {                // should not happen
+    nbn(711);
+                    myIdxInPicker_Year = yearsToPickFrom3.count - 1;   // ?
+                }
+
+    nbn(712);
+                dispatch_async(dispatch_get_main_queue(), ^{    //  INIT  PICKER roller values
+
+                    [self.pickerViewDateTime selectRow: myIdxInPicker_Year inComponent: 0 animated: YES]; // This is how you manually SET(!!) a selection!
+                    [self.pickerViewDateTime selectRow: myIdxInPicker_Mth  inComponent: 1 animated: YES]; // mth  = jan
+                    [self.pickerViewDateTime selectRow: myIdxInPicker_Day  inComponent: 2 animated: YES]; // day  = 01
+                    // 3 = spacer
+                    [self.pickerViewDateTime selectRow: myIdxInPicker_Hour inComponent: 4 animated: YES]; // hr   = 12
+                    // 5 = colon
+                    [self.pickerViewDateTime selectRow: myIdxInPicker_Min  inComponent: 6 animated: YES]; // min  = 01   2nd one
+                    [self.pickerViewDateTime selectRow: myIdxInPicker_AmPm inComponent: 7 animated: YES]; // ampm = 12   2nd one
+                });
+    nbn(714);
+
+            } 
+                
+            gbl_myname.text = fldName;
+
+            gbl_enteredCity        = fldCity; 
+            gbl_enteredProv        = fldProv;
+            gbl_enteredCoun        = fldCountry;
+            // end of [gbl_homeUseMODE      isEqualToString: @"edit mode" ] && [gbl_homeEditingState isEqualToString: @"view or change" ]
+
+        } // end of   "person" gbl_fromHomeCurrentSelectionType 
+
+
+
+
+
+        if ([gbl_fromHomeCurrentSelectionType isEqualToString: @"group" ] )
+        {  // "group"
+
+            NSArray *fieldsG = [gbl_fromHomeCurrentSelectionPSV componentsSeparatedByString: @"|"];
+
+            fldNameG        = fieldsG[0];
+            gbl_myname.text = fldNameG;
+  nbn(1);
+  NSLog(@"gbl_fromHomeCurrentSelectionPSV =[%@]",gbl_fromHomeCurrentSelectionPSV );
+  NSLog(@"fldNameG                        =[%@]",fldNameG  );
+  NSLog(@"gbl_myname.text                 =[%@]",gbl_myname.text );
+
+        } // end of  "group" gbl_fromHomeCurrentSelectionType 
+
+        // this WAS view/change mode 
     } else {
-            
+
+        // this is add mode 
         gbl_myname.text = gbl_initPromptName;
 
         gbl_enteredCity        = gbl_initPromptCity;  // @"City or Town";  for display in gbl_mycityprovcounLabel= found city,prov,counl
@@ -1868,18 +1914,24 @@ NSLog(@"end of  oncityInputViewKeyboardButton!"); tn();
 //        [self.navigationController popToRootViewControllerAnimated: YES]; // pop to root view controller
 //    }
 
-        // here editing changes have happened or not
-        // 
-        // pop to root view controller (actually do the "Back" action)
-        // 
-        gbl_myname.text                  = gbl_initPromptName;
-        gbl_myCitySoFar                  = @"";
-        gbl_editingChangeNAMEHasOccurred = 0;
-        gbl_editingChangeCITYHasOccurred = 0;
-        gbl_editingChangeDATEHasOccurred = 0;
-        gbl_lastInputFieldTapped         = @"";  // 3 values are: "name", "city", "date"
 
-        [self.navigationController popToRootViewControllerAnimated: YES]; // pop to root view controller (actually do the "Back" action)
+  NSLog(@"          POP  VIEW   #1");
+        dispatch_async(dispatch_get_main_queue(), ^{  
+
+            // here editing changes have happened or not
+            // 
+            // pop to root view controller (actually do the "Back" action)
+            // 
+            gbl_myname.text                  = gbl_initPromptName;
+            gbl_myCitySoFar                  = @"";
+            gbl_editingChangeNAMEHasOccurred = 0;
+            gbl_editingChangeCITYHasOccurred = 0;
+            gbl_editingChangeDATEHasOccurred = 0;
+            gbl_lastInputFieldTapped         = @"";  // 3 values are: "name", "city", "date"
+
+//            [self.navigationController popToRootViewControllerAnimated: YES]; // pop to root view controller (actually do the "Back" action)
+                [self.navigationController popViewControllerAnimated: YES]; // actually do the "Back" action
+        });
   NSLog(@" // 333 actually do the BACK action ");
 
 
@@ -1899,63 +1951,19 @@ nbn(700);
   NSLog(@"gbl_DisplayProv       =[%@]",gbl_DisplayProv ) ;
   NSLog(@"gbl_DisplayCoun       =[%@]",gbl_DisplayCoun ) ;
   NSLog(@"gbl_selectedBirthInfo =[%@]",gbl_selectedBirthInfo );
+  NSLog(@"gbl_editingChangeNAMEHasOccurred=[%ld]",(long)gbl_editingChangeNAMEHasOccurred);
 
-    
-    if (   [gbl_homeEditingState isEqualToString:  @"add" ] 
-        || [gbl_homeEditingState isEqualToString:  @"view or change" ] )
-    {
-        if (   gbl_editingChangeNAMEHasOccurred == 0
-            && gbl_editingChangeCITYHasOccurred == 0
-            && gbl_editingChangeDATEHasOccurred == 0
-        ) {
+
+    if ([gbl_fromHomeCurrentSelectionType isEqualToString: @"group" ] )
+    { // group saveDone logic  ------------------------------------------------------------------------------------------
+
+        if (   gbl_editingChangeNAMEHasOccurred == 0 )
+        {
             // here editing changes have NOT happened
-  NSLog(@" // 222b actually do the BACK action  when Done hit and there are no editing changes");
+  NSLog(@" // 111-0 actually do the BACK action  when Done hit and there are no editing changes");
 
-            // pop to root view controller (actually do the "Back" action)
-            // 
-            gbl_myname.text                  = gbl_initPromptName;
-            gbl_myCitySoFar                  = @"";
-            gbl_editingChangeNAMEHasOccurred = 0;
-            gbl_editingChangeCITYHasOccurred = 0;
-            gbl_editingChangeDATEHasOccurred = 0;
-            gbl_lastInputFieldTapped         = @"";  // 3 values are: "name", "city", "date"
-
-            [self.navigationController popToRootViewControllerAnimated: YES]; // pop to root view controller (actually do the "Back" action)
-        }
-
-        if (   gbl_editingChangeNAMEHasOccurred == 1
-            || gbl_editingChangeCITYHasOccurred == 1
-            || gbl_editingChangeDATEHasOccurred == 1
-
-        ) {
-            // here editing changes have happened
-
-
-            if ([gbl_myname.text       isEqualToString: gbl_initPromptName ] ) gbl_DisplayName = @"";
-            else                                                               gbl_DisplayName = gbl_myname.text;
-
-            if ([gbl_enteredCity       isEqualToString: gbl_initPromptCity ] ) gbl_DisplayCity = @"";
-            else                                                               gbl_DisplayCity = gbl_enteredCity;
-            if ([gbl_enteredProv       isEqualToString: gbl_initPromptProv ] ) gbl_DisplayProv = @"";
-            else                                                               gbl_DisplayProv = gbl_enteredProv;
-            if ([gbl_enteredCoun       isEqualToString: gbl_initPromptCoun ] ) gbl_DisplayCoun = @"";
-            else                                                               gbl_DisplayCoun = gbl_enteredCoun;
-
-            if ([gbl_selectedBirthInfo isEqualToString: gbl_initPromptDate ] ) gbl_DisplayDate = @"";
-            else                                                               gbl_DisplayDate = gbl_selectedBirthInfo;
-
-  NSLog(@" 2 gbl_DisplayProv       =[%@]",gbl_DisplayProv ) ;
-  NSLog(@" 2 gbl_DisplayCoun       =[%@]",gbl_DisplayCoun ) ;
-  NSLog(@" 2 gbl_selectedBirthInfo =[%@]",gbl_selectedBirthInfo );
-
-            if (   [gbl_DisplayName   isEqualToString: @"" ]
-                && [gbl_DisplayCity   isEqualToString: @"" ]
-                && [gbl_DisplayProv   isEqualToString: @"" ]
-                && [gbl_DisplayCoun   isEqualToString: @"" ]
-                && [gbl_DisplayDate   isEqualToString: @"" ]
-            ) {
-  NSLog(@" // 111b actually do the BACK action on when changes net out to nothing");
-
+  NSLog(@"          POP  VIEW   #2");
+            dispatch_async(dispatch_get_main_queue(), ^{  
                 // pop to root view controller (actually do the "Back" action)
                 // 
                 gbl_myname.text                  = gbl_initPromptName;
@@ -1965,253 +1973,219 @@ nbn(700);
                 gbl_editingChangeDATEHasOccurred = 0;
                 gbl_lastInputFieldTapped         = @"";  // 3 values are: "name", "city", "date"
 
-                [self.navigationController popToRootViewControllerAnimated: YES]; // actually do the "Back" action
-            }
+//                [self.navigationController popToRootViewControllerAnimated: YES]; // pop to root view controller (actually do the "Back" action)
+                [self.navigationController popViewControllerAnimated: YES]; // actually do the "Back" action
+            });
+nbn(490);
+
+            return;
+        } // editing changes have NOT happened  --  return
 
 
-            // before save of New Person,  check for missing information  name,city,date  same as prompt
-            //
-            if (   [gbl_DisplayName isEqualToString: @"" ]
-                || [gbl_DisplayCity isEqualToString: @"" ]
-                || [gbl_DisplayDate isEqualToString: @"" ]
-            ) {
-                // here info is missing
-                NSString *namePrompt; NSString *cityPrompt; NSString *datePrompt;
-                namePrompt = @"";     cityPrompt = @"";     datePrompt = @"";
-                if (  [gbl_DisplayName isEqualToString: @"" ]) namePrompt = @" Name ";
-                if (  [gbl_DisplayCity isEqualToString: @"" ]) cityPrompt = @" Birth City or Town ";
-                if (  [gbl_DisplayDate isEqualToString: @"" ]) datePrompt = @" Birth Date and Time ";
-                NSString *missingMsg =  [NSString stringWithFormat:@"Missing Information:\n%@\n%@\n%@",
-                    namePrompt, cityPrompt, datePrompt
-                ];
-                UIAlertController* myAlert = [UIAlertController alertControllerWithTitle: @"Can Not Save"
-                                                                                 message: missingMsg
-                                                                          preferredStyle: UIAlertControllerStyleAlert  ];
-                 
-                UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
-                                                                    style: UIAlertActionStyleDefault
-                                                                  handler: ^(UIAlertAction * action) {
-                        NSLog(@"Ok button pressed");
-                    }
-                ];
-                 
-                [myAlert addAction:  okButton];
+        //
+        // here editing changes have happened
+        //
 
-                // cannot save because of missing information > stay in this screen
-                //
-                [self presentViewController: myAlert  animated: YES  completion: nil   ]; // cannot save because of missing information
+nbn(491);
 
-                return;  // cannot save because of missing information > stay in this screen
-
-            } // before save of New Person,  check for missing information 
-
-nbn(701);
-            // ONLY IF    [gbl_homeEditingState isEqualToString:  @"add" ] 
-            //      OR    (
-            //                  [gbl_homeEditingState isEqualToString:  @"view or change" ] 
-            //              AND original name in the db record has changed (gbl_myname.txt is different)
-            //            )
-            //
-            // before save of New Person,  check if entered name already exists in database
-            // OR  save of changed person with changed name
-            //
-            if (  [gbl_homeEditingState isEqualToString:  @"add" ] 
-                ||  (
-                        [gbl_homeEditingState isEqualToString:  @"view or change" ] 
-//                     && ! [fldName isEqualToString:  gbl_myname.text ] // this line = true if original name in db record (fldName) has changed 
-                     && ! [gbl_fromHomeCurrentEntityName isEqualToString:  gbl_myname.text ] // this line = true if original name in db record (fldName) has changed 
-
-                    )
-            ) {  // add mode - check for duplicate name     // here name has changed
-nbn(702);
-                // here name has changed
-
-                NSString *nameOfGrpOrPer;
-                NSArray  *arrayGrpOrper;
-    //            NSInteger idxGrpOrPer;
-    //            idxGrpOrPer = -1;
-                NSCharacterSet *mySeparators = [NSCharacterSet characterSetWithCharactersInString:@"|"];
-
-                // search thru gbl_arrayPer
-                for (id eltPer in gbl_arrayPer) { // search thru gbl_arrayPer
-    //                idxGrpOrPer = idxGrpOrPer + 1;
-    //  NSLog(@"idxGrpOrPer =%ld", (long)idxGrpOrPer );
-    //  NSLog(@"eltPer=%@", eltPer);
-    //
-    //  NSLog(@"nameOfGrpOrPer =[%@]",nameOfGrpOrPer );
-    //  NSLog(@"gbl_DisplayName=[%@]",gbl_DisplayName);
-                    arrayGrpOrper  = [eltPer componentsSeparatedByCharactersInSet: mySeparators];
-                    nameOfGrpOrPer = arrayGrpOrper[0];  // name is 1st fld
-
-    //                if ([nameOfGrpOrPer isEqualToString: gbl_DisplayName]) 
-                    if( [nameOfGrpOrPer caseInsensitiveCompare: gbl_DisplayName] == NSOrderedSame ) // strings are equal except for possibly case
-                    {
-                        // here the name of New Person is in database
-
-                        NSString *msg_alreadyThere = [
-                            NSString stringWithFormat: @"You already have a Person with the name \"%@\".\n\nPlease make this new name different.",
-                            nameOfGrpOrPer  // gbl_DisplayName
-                        ];
-                        UIAlertController* myAlert = [UIAlertController alertControllerWithTitle: @"Person Already There"
-                                                                                         message: msg_alreadyThere 
-                                                                                  preferredStyle: UIAlertControllerStyleAlert  ];
-                         
-                        UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
-                                                                            style: UIAlertActionStyleDefault
-                                                                          handler: ^(UIAlertAction * action) {
-                                NSLog(@"Ok button pressed");
-                            }
-                        ];
-                         
-                        [myAlert addAction:  okButton];
-
-                        [self presentViewController: myAlert  animated: YES  completion: nil   ];
-
-                        // cannot save because of duplicate name > stay in this screen
-                        return;  // pressed "Done" > cannot save > stay in this screen
-
-                    }
-                } // search thru gbl_arrayPer for name already there 
-
-            }  // add mode - check for duplicate name
+        // set the current values in each field
+        if ([gbl_myname.text       isEqualToString: gbl_initPromptName ] ) gbl_DisplayName = @"";
+        else                                                               gbl_DisplayName = gbl_myname.text;
 
 
-  NSLog(@" // Actually do save of New Person   here");
-            // Actually do save of New Person   here
-            //
+        if (   [gbl_DisplayName   isEqualToString: @"" ]
+        ) {
+NSLog(@" // 111a actually do the BACK action on when changes net out to nothing");
 
-            // first build a Person database record in a string
-            //
-            // // FINAL  values for saving
-            // //
-            // NSString *gbl_userSpecifiedPersonName;  // final value in "add person" screen
-            // 
-            // NSString *gbl_rollerBirth_mth;  // like "Jan"
-            // NSString *gbl_rollerBirth_dd;
-            // NSString *gbl_rollerBirth_yyyy; // for saving picker roller current values
-            // NSString *gbl_rollerBirth_hour;
-            // NSString *gbl_rollerBirth_min;
-            // NSString *gbl_rollerBirth_amPm;
-            // 
-            // NSString *gbl_userSpecifiedCity;  // final value in "add person" screen  use for calc  latitude, hours diff from greenwich
-            // NSString *gbl_userSpecifiedProv;  // final value in "add person" screen
-            // NSString *gbl_userSpecifiedCoun;  // final value in "add person" screen
-            // //
-            // // FINAL  values for saving
-            //
+  NSLog(@"          POP  VIEW   #3");
+            dispatch_async(dispatch_get_main_queue(), ^{  
+                // pop to root view controller (actually do the "Back" action)
+                // 
+                gbl_myname.text                  = gbl_initPromptName;
+                gbl_editingChangeNAMEHasOccurred = 0;
+                gbl_editingChangeCITYHasOccurred = 0;
+                gbl_editingChangeDATEHasOccurred = 0;
+                gbl_lastInputFieldTapped         = @"";  // 3 values are: "name", "city", "date"
 
-            // if( [nameOfGrpOrPer caseInsensitiveCompare: gbl_DisplayName] == NSOrderedSame ) // strings are equal except for possibly case
-            NSString *mymthnum; 
-            mymthnum = @"0"; 
-            if      ([gbl_rollerBirth_mth caseInsensitiveCompare:  @"Jan" ] == NSOrderedSame) mymthnum = @"1";
-            else if ([gbl_rollerBirth_mth caseInsensitiveCompare:  @"Feb" ] == NSOrderedSame) mymthnum = @"2";
-            else if ([gbl_rollerBirth_mth caseInsensitiveCompare:  @"Mar" ] == NSOrderedSame) mymthnum = @"3";
-            else if ([gbl_rollerBirth_mth caseInsensitiveCompare:  @"Apr" ] == NSOrderedSame) mymthnum = @"4";
-            else if ([gbl_rollerBirth_mth caseInsensitiveCompare:  @"May" ] == NSOrderedSame) mymthnum = @"5";
-            else if ([gbl_rollerBirth_mth caseInsensitiveCompare:  @"Jun" ] == NSOrderedSame) mymthnum = @"6";
-            else if ([gbl_rollerBirth_mth caseInsensitiveCompare:  @"Jul" ] == NSOrderedSame) mymthnum = @"7";
-            else if ([gbl_rollerBirth_mth caseInsensitiveCompare:  @"Aug" ] == NSOrderedSame) mymthnum = @"8";
-            else if ([gbl_rollerBirth_mth caseInsensitiveCompare:  @"Sep" ] == NSOrderedSame) mymthnum = @"9";
-            else if ([gbl_rollerBirth_mth caseInsensitiveCompare:  @"Oct" ] == NSOrderedSame) mymthnum = @"10";
-            else if ([gbl_rollerBirth_mth caseInsensitiveCompare:  @"Nov" ] == NSOrderedSame) mymthnum = @"11";
-            else if ([gbl_rollerBirth_mth caseInsensitiveCompare:  @"Dec" ] == NSOrderedSame) mymthnum = @"12";
-
-            NSString *myampmnum; 
-            myampmnum = @"0"; 
-            if      ([gbl_rollerBirth_amPm caseInsensitiveCompare: @"am" ]  == NSOrderedSame) myampmnum = @"0";
-            else if ([gbl_rollerBirth_amPm caseInsensitiveCompare: @"pm" ]  == NSOrderedSame) myampmnum = @"1";
-
-//            NSString *myhour; 
-//            myhour = @"0"; 
-//            if      ([gbl_rollerBirth_hour caseInsensitiveCompare: @"1"  ]  == NSOrderedSame) myhour = @"1";
-//            else if ([gbl_rollerBirth_hour caseInsensitiveCompare: @"2"  ]  == NSOrderedSame) myhour = @"2";
-//            else if ([gbl_rollerBirth_hour caseInsensitiveCompare: @"3"  ]  == NSOrderedSame) myhour = @"3";
-//            else if ([gbl_rollerBirth_hour caseInsensitiveCompare: @"4"  ]  == NSOrderedSame) myhour = @"4";
-//            else if ([gbl_rollerBirth_hour caseInsensitiveCompare: @"5"  ]  == NSOrderedSame) myhour = @"5";
-//            else if ([gbl_rollerBirth_hour caseInsensitiveCompare: @"6"  ]  == NSOrderedSame) myhour = @"6";
-//            else if ([gbl_rollerBirth_hour caseInsensitiveCompare: @"7"  ]  == NSOrderedSame) myhour = @"7";
-//            else if ([gbl_rollerBirth_hour caseInsensitiveCompare: @"8"  ]  == NSOrderedSame) myhour = @"8";
-//            else if ([gbl_rollerBirth_hour caseInsensitiveCompare: @"9"  ]  == NSOrderedSame) myhour = @"9";
-//            else if ([gbl_rollerBirth_hour caseInsensitiveCompare: @"10" ]  == NSOrderedSame) myhour = @"10";
-//            else if ([gbl_rollerBirth_hour caseInsensitiveCompare: @"11" ]  == NSOrderedSame) myhour = @"11";
-//            else if ([gbl_rollerBirth_hour caseInsensitiveCompare: @"12" ]  == NSOrderedSame) myhour = @"12";
-//
-
-            NSString *myNewPersonRecord;
-            myNewPersonRecord = [NSString stringWithFormat: @"%@|%@|%@|%@|%@|%@|%@|%@|%@|%@||",
-                gbl_DisplayName,
-//                gbl_rollerBirth_mth,
-                mymthnum,
-                gbl_rollerBirth_dd,
-                gbl_rollerBirth_yyyy,
-                gbl_rollerBirth_hour,
-//                myhour,
-                gbl_rollerBirth_min,
-//                gbl_rollerBirth_amPm,
-                myampmnum,
-                gbl_enteredCity,
-                gbl_enteredProv,
-                gbl_enteredCoun
-            ];
-  NSLog(@"myNewPersonRecord =[%@]",myNewPersonRecord );
+//                [self.navigationController popToRootViewControllerAnimated: YES]; // actually do the "Back" action
+                [self.navigationController popViewControllerAnimated: YES]; // actually do the "Back" action
+            });
             
+            return;
+        } // 111a actually do the BACK action on when changes net out to nothing");
+nbn(500);
 
-            // before write of array data to file, disallow/ignore user interaction events
+
+        // before save of New Group,  check for missing information  name  same as prompt
+        //
+        if (   [gbl_DisplayName isEqualToString: @"" ]
+        ) {
+nbn(501);
+            // here info is missing
+            NSString *namePrompt; NSString *cityPrompt; NSString *datePrompt;
+            namePrompt = @"";     cityPrompt = @"";     datePrompt = @"";
+            if (  [gbl_DisplayName isEqualToString: @"" ]) namePrompt = @" Name ";
+            NSString *missingMsg =  [NSString stringWithFormat:@"Missing Information:\n%@",
+                namePrompt
+            ];
+            UIAlertController* myAlert = [UIAlertController alertControllerWithTitle: @"Can Not Save"
+                                                                             message: missingMsg
+                                                                      preferredStyle: UIAlertControllerStyleAlert  ];
+             
+            UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                                style: UIAlertActionStyleDefault
+                                                              handler: ^(UIAlertAction * action) {
+                    NSLog(@"Ok button pressed");
+                }
+            ];
+             
+            [myAlert addAction:  okButton];
+
+            // cannot save because of missing information > stay in this screen
             //
-            if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] ==  NO) {  // suspend handling of touch-related events
-                [[UIApplication sharedApplication] beginIgnoringInteractionEvents];     // typically call this before an animation or transitiion.
-  NSLog(@"ARE  IGnoring events");
+            [self presentViewController: myAlert  animated: YES  completion: nil   ]; // cannot save because of missing information
+
+            return;  // cannot save because of missing information > stay in this screen
+
+        } // before save of New Group,  check for missing information 
+nbn(509);
+//<.>
+        // ONLY IF    [gbl_homeEditingState isEqualToString:  @"add" ] 
+        //      OR    (
+        //                  [gbl_homeEditingState isEqualToString:  @"view or change" ] 
+        //              AND original name in the db record has changed (gbl_myname.txt is different)
+        //            )
+        //
+        // before save of New Person,  check if entered name already exists in database
+        // OR  save of changed person with changed name
+        //
+  NSLog(@"gbl_fromHomeCurrentEntityName=[%@]",gbl_fromHomeCurrentEntityName);
+  NSLog(@"gbl_myname.text              =[%@]",gbl_myname.text);
+  NSLog(@"gbl_DisplayName              =[%@]",gbl_DisplayName);
+
+        if (  [gbl_homeEditingState isEqualToString:  @"add" ] 
+            ||  (
+                    [gbl_homeEditingState isEqualToString:  @"view or change" ] 
+//                     && ! [fldName isEqualToString:  gbl_myname.text ] // this line = true if original name in db record (fldName) has changed 
+                 && ! [gbl_fromHomeCurrentEntityName isEqualToString:  gbl_myname.text ] // this line = true if original name in db record (fldName) has changed 
+
+                )
+        ) {  // add mode - check for duplicate name     // here name has changed
+nbn(502);
+            // here name has changed
+
+            NSString *nameOfGrpOrPer;
+            NSArray  *arrayGrpOrper;
+//            NSInteger idxGrpOrPer;
+//            idxGrpOrPer = -1;
+            NSCharacterSet *mySeparators = [NSCharacterSet characterSetWithCharactersInString:@"|"];
+
+            // search thru gbl_arrayGrp
+            for (id eltGrp in gbl_arrayGrp) { // search thru gbl_arrayPer
+                arrayGrpOrper  = [eltGrp componentsSeparatedByCharactersInSet: mySeparators];
+                nameOfGrpOrPer = arrayGrpOrper[0];  // name is 1st fld
+
+//                if ([nameOfGrpOrPer isEqualToString: gbl_DisplayName]) 
+                if( [nameOfGrpOrPer caseInsensitiveCompare: gbl_DisplayName] == NSOrderedSame ) // strings are equal except for possibly case
+                {
+                    // here the name of New Person is in database
+
+                    NSString *msg_alreadyThere = [
+                        NSString stringWithFormat: @"You already have a Group with the name \"%@\".\n\nPlease make this new name different.",
+                        nameOfGrpOrPer  // gbl_DisplayName
+                    ];
+                    UIAlertController* myAlert = [UIAlertController alertControllerWithTitle: @"Group Already There"
+                                                                                     message: msg_alreadyThere 
+                                                                              preferredStyle: UIAlertControllerStyleAlert  ];
+                     
+                    UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                                        style: UIAlertActionStyleDefault
+                                                                      handler: ^(UIAlertAction * action) {
+                            NSLog(@"Ok button pressed");
+                        }
+                    ];
+                     
+                    [myAlert addAction:  okButton];
+
+                    [self presentViewController: myAlert  animated: YES  completion: nil   ];
+
+                    // cannot save because of duplicate name > stay in this screen
+                    return;  // pressed "Done" > cannot save > stay in this screen
+
+                }
+            } // search thru gbl_arrayGrp for name already there 
+
+        }  // add mode - check for duplicate name
+
+      NSLog(@" // Actually do save of New Group   here");
+//<.>
+        // Actually do save of New Group   here
+        //
+
+        // first build a Group database record in a string
+        //
+
+        NSString *myNewGroupRecord;
+        myNewGroupRecord = [NSString stringWithFormat: @"%@||", gbl_DisplayName ];
+  NSLog(@"myNewGroupRecord =[%@]",myNewGroupRecord );
+
+
+        // before write of array data to file, disallow/ignore user interaction events
+        //
+        if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] ==  NO) {  // suspend handling of touch-related events
+            [[UIApplication sharedApplication] beginIgnoringInteractionEvents];     // typically call this before an animation or transitiion.
+NSLog(@"ARE  IGnoring events");
+        }
+
+        // ONLY IF    [gbl_homeEditingState isEqualToString:  @"view or change" ] 
+        // DELETE  the existing record first
+        // before  adding the changed record above
+        //
+        if ([gbl_homeEditingState isEqualToString:  @"view or change" ] )
+        {
+nbn(503);
+//                NSString *prefixStr = [NSString stringWithFormat: @"%@|", gbl_DisplayName ];
+            NSString *prefixStr = [NSString stringWithFormat: @"%@|", gbl_lastSelectedGroupBeforeChange ];
+
+            NSInteger idx, foundIdx;  
+            idx = 0;       foundIdx = -1;
+
+            for (NSString *element in gbl_arrayGrp) {
+                if ([element hasPrefix: prefixStr]) {
+                    foundIdx = idx;
+                    break;
+                }
+                idx = idx + 1;
+            }
+NSLog(@"foundIdx =[%ld]",(long)foundIdx );
+            if (foundIdx == -1) {
+                return;  // should not happen
             }
 
-            // ONLY IF    [gbl_homeEditingState isEqualToString:  @"view or change" ] 
-            // DELETE  the existing record first
-            // before  adding the changed record above
+            // here, delete old array element before adding new changed Group Record above
             //
-            if ([gbl_homeEditingState isEqualToString:  @"view or change" ] )
-            {
-nbn(703);
-//                NSString *prefixStr = [NSString stringWithFormat: @"%@|", gbl_DisplayName ];
-                NSString *prefixStr = [NSString stringWithFormat: @"%@|", gbl_lastSelectedPersonBeforeChange ];
+            [gbl_arrayGrp removeObjectAtIndex:  foundIdx ]; //  delete old array element before adding new changed GroupRecord above
 
-                NSInteger idx, foundIdx;  
-                idx = 0;       foundIdx = -1;
+        } // ONLY IF    [gbl_homeEditingState isEqualToString:  @"view or change" ] , DELETE  the existing record first
 
-                for (NSString *element in gbl_arrayPer) {
-                    if ([element hasPrefix: prefixStr]) {
-                        foundIdx = idx;
-                        break;
-                    }
-                    idx = idx + 1;
-                }
-  NSLog(@"foundIdx =[%ld]",(long)foundIdx );
-                if (foundIdx == -1) {
-                    return;  // should not happen
-                }
-
-                // here, delete old array element before adding new changed personRecord above
-                //
-                [gbl_arrayPer removeObjectAtIndex:  foundIdx ]; //  delete old array element before adding new changed personRecord above
-
-            } // ONLY IF    [gbl_homeEditingState isEqualToString:  @"view or change" ] , DELETE  the existing record first
-
-nbn(704);
-            // add the new Person database record in a string to the person array
-            //
-            [gbl_arrayPer addObject: myNewPersonRecord]; // add the new Person database record in a string to the person array
+nbn(504);
+        // add the new Grouup database record in a string to the group array
+        //
+        [gbl_arrayGrp addObject: myNewGroupRecord]; // add the new Group database record in a string to the Group array
 
 
-            MAMB09AppDelegate *myappDelegate =
-                (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
+        MAMB09AppDelegate *myappDelegate =
+            (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
 
-            [myappDelegate mambWriteNSArrayWithDescription:              (NSString *) @"person"]; // write new array data to file
-            [myappDelegate mambReadArrayFileWithDescription:             (NSString *) @"person"]; // read new data from file to array
-            [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription: (NSString *) @"person"]; // sort array by name
+        [myappDelegate mambWriteNSArrayWithDescription:              (NSString *) @"group"]; // write new array data to file
+        [myappDelegate mambReadArrayFileWithDescription:             (NSString *) @"group"]; // read new data from file to array
+        [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription: (NSString *) @"group"]; // sort array by name
 
 
 //<.>
 //    // TODO   after coded 1. new group  2. member selection  3. group "view or change"
 //        ???
-//            // if necessary, update MEMBERSHIP  file  (gbl_arrayMem)
+//            // if necessary, update MEMBERSHIP    file  (gbl_arrayMem)
 //            //
 //            if (! [gbl_fromHomeCurrentEntityName isEqualToString:  gbl_myname.text ] )   // true if original name in db record has changed 
 //                [myappDelegate mambChangeMemberNameFrom: (NSString *) gbl_fromHomeCurrentEntityName 
@@ -2220,28 +2194,29 @@ nbn(704);
 //                [myappDelegate mambWriteNSArrayWithDescription:              (NSString *) @"member"]; // write new array data to file
 //                [myappDelegate mambReadArrayFileWithDescription:             (NSString *) @"member"]; // read new data from file to array
 //                [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription: (NSString *) @"member"]; // sort array by name
-//            }
 //<.>
 //
 
-            gbl_justAddedRecord  = 1;  // cause reload of home data
+
+        gbl_justAddedRecord  = 1;  // cause reload of home data
 
 
-            gbl_lastSelectedPerson          = gbl_DisplayName;  // this row (gbl_lastSelectedPerson) gets selection highlight in home tableview
-            gbl_fromHomeCurrentSelectionPSV = myNewPersonRecord;
-  NSLog(@"gbl_lastSelectedPerson          =[%@]",gbl_lastSelectedPerson);
-  NSLog(@"gbl_fromHomeCurrentSelectionPSV =[%@]",gbl_fromHomeCurrentSelectionPSV );
+        gbl_lastSelectedGroup           = gbl_DisplayName;  // this row (gbl_lastSelectedGroup) gets selection highlight in home tableview
+        gbl_fromHomeCurrentSelectionPSV = myNewGroupRecord;
+NSLog(@"gbl_lastSelectedGroup           =[%@]",gbl_lastSelectedGroup );
+NSLog(@"gbl_fromHomeCurrentSelectionPSV =[%@]",gbl_fromHomeCurrentSelectionPSV );
 
 
-            // after write of array data to file, allow user interaction events again
-            //
-            if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] == YES) {  // re-enable handling of touch-related events
-                [[UIApplication sharedApplication] endIgnoringInteractionEvents];       // typically call this after an animation or transitiion.
-  NSLog(@"STOP IGnoring events");
-            }
+        // after write of array data to file, allow user interaction events again
+        //
+        if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] == YES) {  // re-enable handling of touch-related events
+            [[UIApplication sharedApplication] endIgnoringInteractionEvents];       // typically call this after an animation or transitiion.
+NSLog(@"STOP IGnoring events");
+        }
 
+NSLog(@"          POP  VIEW   #6");
         dispatch_async(dispatch_get_main_queue(), ^{  
-            // after saving new person, go back to home view
+            // after saving new group, go back to home view
 
             // pop to root view controller (actually do the "Back" action)
             // 
@@ -2252,15 +2227,407 @@ nbn(704);
             gbl_editingChangeDATEHasOccurred = 0;
             gbl_lastInputFieldTapped         = @"";  // 3 values are: "name", "city", "date"
 
-            [self.navigationController popToRootViewControllerAnimated: YES]; // pop to root view controller (actually do the "Back" action)
+//                    [self.navigationController popToRootViewControllerAnimated: YES]; // pop to root view controller (actually do the "Back" action)
+        [self.navigationController popViewControllerAnimated: YES]; // actually do the "Back" action
 
         });
-            // is system "done" button function here
+
+        // is system "done" button function here
 //            gbl_lastSelectedPersonBeforeChange = gbl_DisplayName;   // like "~Dave"   used in YELLOW gbl_homeUseMODE "edit mode"
+
+
+//<.>
+
+
+nbn(509);
+        return;
+    } // end of group saveDone logic  -----------------------------------------------------------------------------------
+
+nbn(510);
+
+
+
+    if ([gbl_fromHomeCurrentSelectionType isEqualToString: @"person" ] )
+    {  // person saveDone logic   =======================================================================================
+
+    
+//    if (   [gbl_homeEditingState isEqualToString:  @"add" ] 
+//        || [gbl_homeEditingState isEqualToString:  @"view or change" ] )
+//    {
+        if (   gbl_editingChangeNAMEHasOccurred == 0
+            && gbl_editingChangeCITYHasOccurred == 0
+            && gbl_editingChangeDATEHasOccurred == 0
+        ) {
+            // here editing changes have NOT happened
+  NSLog(@" // 222b actually do the BACK action  when Done hit and there are no editing changes");
+
+  NSLog(@"          POP  VIEW   #4");
+            dispatch_async(dispatch_get_main_queue(), ^{  
+                // pop to root view controller (actually do the "Back" action)
+                // 
+                gbl_myname.text                  = gbl_initPromptName;
+                gbl_myCitySoFar                  = @"";
+                gbl_editingChangeNAMEHasOccurred = 0;
+                gbl_editingChangeCITYHasOccurred = 0;
+                gbl_editingChangeDATEHasOccurred = 0;
+                gbl_lastInputFieldTapped         = @"";  // 3 values are: "name", "city", "date"
+
+//                [self.navigationController popToRootViewControllerAnimated: YES]; // pop to root view controller (actually do the "Back" action)
+                [self.navigationController popViewControllerAnimated: YES]; // actually do the "Back" action
+            });
+        }
+
+        if (   gbl_editingChangeNAMEHasOccurred == 1
+            || gbl_editingChangeCITYHasOccurred == 1
+            || gbl_editingChangeDATEHasOccurred == 1
+
+        ) { // here editing changes have happened
+
+
+
+                // set the current values in each field
+
+                if ([gbl_myname.text       isEqualToString: gbl_initPromptName ] ) gbl_DisplayName = @"";
+                else                                                               gbl_DisplayName = gbl_myname.text;
+
+                if ([gbl_enteredCity       isEqualToString: gbl_initPromptCity ] ) gbl_DisplayCity = @"";
+                else                                                               gbl_DisplayCity = gbl_enteredCity;
+                if ([gbl_enteredProv       isEqualToString: gbl_initPromptProv ] ) gbl_DisplayProv = @"";
+                else                                                               gbl_DisplayProv = gbl_enteredProv;
+                if ([gbl_enteredCoun       isEqualToString: gbl_initPromptCoun ] ) gbl_DisplayCoun = @"";
+                else                                                               gbl_DisplayCoun = gbl_enteredCoun;
+
+                if ([gbl_selectedBirthInfo isEqualToString: gbl_initPromptDate ] ) gbl_DisplayDate = @"";
+                else                                                               gbl_DisplayDate = gbl_selectedBirthInfo;
+
+
+
+      NSLog(@" 2 gbl_DisplayProv       =[%@]",gbl_DisplayProv ) ;
+      NSLog(@" 2 gbl_DisplayCoun       =[%@]",gbl_DisplayCoun ) ;
+      NSLog(@" 2 gbl_selectedBirthInfo =[%@]",gbl_selectedBirthInfo );
+
+                if (   [gbl_DisplayName   isEqualToString: @"" ]
+                    && [gbl_DisplayCity   isEqualToString: @"" ]
+                    && [gbl_DisplayProv   isEqualToString: @"" ]
+                    && [gbl_DisplayCoun   isEqualToString: @"" ]
+                    && [gbl_DisplayDate   isEqualToString: @"" ]
+                ) {
+      NSLog(@" // 111b actually do the BACK action on when changes net out to nothing");
+
+  NSLog(@"          POP  VIEW   #5");
+                    dispatch_async(dispatch_get_main_queue(), ^{  
+                        // pop to root view controller (actually do the "Back" action)
+                        // 
+                        gbl_myname.text                  = gbl_initPromptName;
+                        gbl_myCitySoFar                  = @"";
+                        gbl_editingChangeNAMEHasOccurred = 0;
+                        gbl_editingChangeCITYHasOccurred = 0;
+                        gbl_editingChangeDATEHasOccurred = 0;
+                        gbl_lastInputFieldTapped         = @"";  // 3 values are: "name", "city", "date"
+
+//                        [self.navigationController popToRootViewControllerAnimated: YES]; // actually do the "Back" action
+                [self.navigationController popViewControllerAnimated: YES]; // actually do the "Back" action
+                    });
+                }
+
+
+                // before save of New Person,  check for missing information  name,city,date  same as prompt
+                //
+                if (   [gbl_DisplayName isEqualToString: @"" ]
+                    || [gbl_DisplayCity isEqualToString: @"" ]
+                    || [gbl_DisplayDate isEqualToString: @"" ]
+                ) {
+                    // here info is missing
+                    NSString *namePrompt; NSString *cityPrompt; NSString *datePrompt;
+                    namePrompt = @"";     cityPrompt = @"";     datePrompt = @"";
+                    if (  [gbl_DisplayName isEqualToString: @"" ]) namePrompt = @" Name ";
+                    if (  [gbl_DisplayCity isEqualToString: @"" ]) cityPrompt = @" Birth City or Town ";
+                    if (  [gbl_DisplayDate isEqualToString: @"" ]) datePrompt = @" Birth Date and Time ";
+                    NSString *missingMsg =  [NSString stringWithFormat:@"Missing Information:\n%@\n%@\n%@",
+                        namePrompt, cityPrompt, datePrompt
+                    ];
+                    UIAlertController* myAlert = [UIAlertController alertControllerWithTitle: @"Can Not Save"
+                                                                                     message: missingMsg
+                                                                              preferredStyle: UIAlertControllerStyleAlert  ];
+                     
+                    UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                                        style: UIAlertActionStyleDefault
+                                                                      handler: ^(UIAlertAction * action) {
+                            NSLog(@"Ok button pressed");
+                        }
+                    ];
+                     
+                    [myAlert addAction:  okButton];
+
+                    // cannot save because of missing information > stay in this screen
+                    //
+                    [self presentViewController: myAlert  animated: YES  completion: nil   ]; // cannot save because of missing information
+
+                    return;  // cannot save because of missing information > stay in this screen
+
+                } // before save of New Person,  check for missing information 
+
+    nbn(701);
+                // ONLY IF    [gbl_homeEditingState isEqualToString:  @"add" ] 
+                //      OR    (
+                //                  [gbl_homeEditingState isEqualToString:  @"view or change" ] 
+                //              AND original name in the db record has changed (gbl_myname.txt is different)
+                //            )
+                //
+                // before save of New Person,  check if entered name already exists in database
+                // OR  save of changed person with changed name
+                //
+                if (  [gbl_homeEditingState isEqualToString:  @"add" ] 
+                    ||  (
+                            [gbl_homeEditingState isEqualToString:  @"view or change" ] 
+    //                     && ! [fldName isEqualToString:  gbl_myname.text ] // this line = true if original name in db record (fldName) has changed 
+                         && ! [gbl_fromHomeCurrentEntityName isEqualToString:  gbl_myname.text ] // this line = true if original name in db record (fldName) has changed 
+
+                        )
+                ) {  // add mode - check for duplicate name     // here name has changed
+    nbn(702);
+                    // here name has changed
+
+                    NSString *nameOfGrpOrPer;
+                    NSArray  *arrayGrpOrper;
+        //            NSInteger idxGrpOrPer;
+        //            idxGrpOrPer = -1;
+                    NSCharacterSet *mySeparators = [NSCharacterSet characterSetWithCharactersInString:@"|"];
+
+                    // search thru gbl_arrayPer
+                    for (id eltPer in gbl_arrayPer) { // search thru gbl_arrayPer
+        //                idxGrpOrPer = idxGrpOrPer + 1;
+        //  NSLog(@"idxGrpOrPer =%ld", (long)idxGrpOrPer );
+        //  NSLog(@"eltPer=%@", eltPer);
+        //
+        //  NSLog(@"nameOfGrpOrPer =[%@]",nameOfGrpOrPer );
+        //  NSLog(@"gbl_DisplayName=[%@]",gbl_DisplayName);
+                        arrayGrpOrper  = [eltPer componentsSeparatedByCharactersInSet: mySeparators];
+                        nameOfGrpOrPer = arrayGrpOrper[0];  // name is 1st fld
+
+        //                if ([nameOfGrpOrPer isEqualToString: gbl_DisplayName]) 
+                        if( [nameOfGrpOrPer caseInsensitiveCompare: gbl_DisplayName] == NSOrderedSame ) // strings are equal except for possibly case
+                        {
+                            // here the name of New Person is in database
+
+                            NSString *msg_alreadyThere = [
+                                NSString stringWithFormat: @"You already have a Person with the name \"%@\".\n\nPlease make this new name different.",
+                                nameOfGrpOrPer  // gbl_DisplayName
+                            ];
+                            UIAlertController* myAlert = [UIAlertController alertControllerWithTitle: @"Person Already There"
+                                                                                             message: msg_alreadyThere 
+                                                                                      preferredStyle: UIAlertControllerStyleAlert  ];
+                             
+                            UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                                                style: UIAlertActionStyleDefault
+                                                                              handler: ^(UIAlertAction * action) {
+                                    NSLog(@"Ok button pressed");
+                                }
+                            ];
+                             
+                            [myAlert addAction:  okButton];
+
+                            [self presentViewController: myAlert  animated: YES  completion: nil   ];
+
+                            // cannot save because of duplicate name > stay in this screen
+                            return;  // pressed "Done" > cannot save > stay in this screen
+
+                        }
+                    } // search thru gbl_arrayPer for name already there 
+
+                }  // add mode - check for duplicate name
+
+
+      NSLog(@" // Actually do save of New Person   here");
+                // Actually do save of New Person   here
+                //
+
+                // first build a Person database record in a string
+                //
+                // // FINAL  values for saving
+                // //
+                // NSString *gbl_userSpecifiedPersonName;  // final value in "add person" screen
+                // 
+                // NSString *gbl_rollerBirth_mth;  // like "Jan"
+                // NSString *gbl_rollerBirth_dd;
+                // NSString *gbl_rollerBirth_yyyy; // for saving picker roller current values
+                // NSString *gbl_rollerBirth_hour;
+                // NSString *gbl_rollerBirth_min;
+                // NSString *gbl_rollerBirth_amPm;
+                // 
+                // NSString *gbl_userSpecifiedCity;  // final value in "add person" screen  use for calc  latitude, hours diff from greenwich
+                // NSString *gbl_userSpecifiedProv;  // final value in "add person" screen
+                // NSString *gbl_userSpecifiedCoun;  // final value in "add person" screen
+                // //
+                // // FINAL  values for saving
+                //
+
+                // if( [nameOfGrpOrPer caseInsensitiveCompare: gbl_DisplayName] == NSOrderedSame ) // strings are equal except for possibly case
+                NSString *mymthnum; 
+                mymthnum = @"0"; 
+                if      ([gbl_rollerBirth_mth caseInsensitiveCompare:  @"Jan" ] == NSOrderedSame) mymthnum = @"1";
+                else if ([gbl_rollerBirth_mth caseInsensitiveCompare:  @"Feb" ] == NSOrderedSame) mymthnum = @"2";
+                else if ([gbl_rollerBirth_mth caseInsensitiveCompare:  @"Mar" ] == NSOrderedSame) mymthnum = @"3";
+                else if ([gbl_rollerBirth_mth caseInsensitiveCompare:  @"Apr" ] == NSOrderedSame) mymthnum = @"4";
+                else if ([gbl_rollerBirth_mth caseInsensitiveCompare:  @"May" ] == NSOrderedSame) mymthnum = @"5";
+                else if ([gbl_rollerBirth_mth caseInsensitiveCompare:  @"Jun" ] == NSOrderedSame) mymthnum = @"6";
+                else if ([gbl_rollerBirth_mth caseInsensitiveCompare:  @"Jul" ] == NSOrderedSame) mymthnum = @"7";
+                else if ([gbl_rollerBirth_mth caseInsensitiveCompare:  @"Aug" ] == NSOrderedSame) mymthnum = @"8";
+                else if ([gbl_rollerBirth_mth caseInsensitiveCompare:  @"Sep" ] == NSOrderedSame) mymthnum = @"9";
+                else if ([gbl_rollerBirth_mth caseInsensitiveCompare:  @"Oct" ] == NSOrderedSame) mymthnum = @"10";
+                else if ([gbl_rollerBirth_mth caseInsensitiveCompare:  @"Nov" ] == NSOrderedSame) mymthnum = @"11";
+                else if ([gbl_rollerBirth_mth caseInsensitiveCompare:  @"Dec" ] == NSOrderedSame) mymthnum = @"12";
+
+                NSString *myampmnum; 
+                myampmnum = @"0"; 
+                if      ([gbl_rollerBirth_amPm caseInsensitiveCompare: @"am" ]  == NSOrderedSame) myampmnum = @"0";
+                else if ([gbl_rollerBirth_amPm caseInsensitiveCompare: @"pm" ]  == NSOrderedSame) myampmnum = @"1";
+
+    //            NSString *myhour; 
+    //            myhour = @"0"; 
+    //            if      ([gbl_rollerBirth_hour caseInsensitiveCompare: @"1"  ]  == NSOrderedSame) myhour = @"1";
+    //            else if ([gbl_rollerBirth_hour caseInsensitiveCompare: @"2"  ]  == NSOrderedSame) myhour = @"2";
+    //            else if ([gbl_rollerBirth_hour caseInsensitiveCompare: @"3"  ]  == NSOrderedSame) myhour = @"3";
+    //            else if ([gbl_rollerBirth_hour caseInsensitiveCompare: @"4"  ]  == NSOrderedSame) myhour = @"4";
+    //            else if ([gbl_rollerBirth_hour caseInsensitiveCompare: @"5"  ]  == NSOrderedSame) myhour = @"5";
+    //            else if ([gbl_rollerBirth_hour caseInsensitiveCompare: @"6"  ]  == NSOrderedSame) myhour = @"6";
+    //            else if ([gbl_rollerBirth_hour caseInsensitiveCompare: @"7"  ]  == NSOrderedSame) myhour = @"7";
+    //            else if ([gbl_rollerBirth_hour caseInsensitiveCompare: @"8"  ]  == NSOrderedSame) myhour = @"8";
+    //            else if ([gbl_rollerBirth_hour caseInsensitiveCompare: @"9"  ]  == NSOrderedSame) myhour = @"9";
+    //            else if ([gbl_rollerBirth_hour caseInsensitiveCompare: @"10" ]  == NSOrderedSame) myhour = @"10";
+    //            else if ([gbl_rollerBirth_hour caseInsensitiveCompare: @"11" ]  == NSOrderedSame) myhour = @"11";
+    //            else if ([gbl_rollerBirth_hour caseInsensitiveCompare: @"12" ]  == NSOrderedSame) myhour = @"12";
+    //
+
+                NSString *myNewPersonRecord;
+                myNewPersonRecord = [NSString stringWithFormat: @"%@|%@|%@|%@|%@|%@|%@|%@|%@|%@||",
+                    gbl_DisplayName,
+    //                gbl_rollerBirth_mth,
+                    mymthnum,
+                    gbl_rollerBirth_dd,
+                    gbl_rollerBirth_yyyy,
+                    gbl_rollerBirth_hour,
+    //                myhour,
+                    gbl_rollerBirth_min,
+    //                gbl_rollerBirth_amPm,
+                    myampmnum,
+                    gbl_enteredCity,
+                    gbl_enteredProv,
+                    gbl_enteredCoun
+                ];
+      NSLog(@"myNewPersonRecord =[%@]",myNewPersonRecord );
+                
+
+                // before write of array data to file, disallow/ignore user interaction events
+                //
+                if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] ==  NO) {  // suspend handling of touch-related events
+                    [[UIApplication sharedApplication] beginIgnoringInteractionEvents];     // typically call this before an animation or transitiion.
+      NSLog(@"ARE  IGnoring events");
+                }
+
+                // ONLY IF    [gbl_homeEditingState isEqualToString:  @"view or change" ] 
+                // DELETE  the existing record first
+                // before  adding the changed record above
+                //
+                if ([gbl_homeEditingState isEqualToString:  @"view or change" ] )
+                {
+    nbn(703);
+    //                NSString *prefixStr = [NSString stringWithFormat: @"%@|", gbl_DisplayName ];
+                    NSString *prefixStr = [NSString stringWithFormat: @"%@|", gbl_lastSelectedPersonBeforeChange ];
+
+                    NSInteger idx, foundIdx;  
+                    idx = 0;       foundIdx = -1;
+
+                    for (NSString *element in gbl_arrayPer) {
+                        if ([element hasPrefix: prefixStr]) {
+                            foundIdx = idx;
+                            break;
+                        }
+                        idx = idx + 1;
+                    }
+      NSLog(@"foundIdx =[%ld]",(long)foundIdx );
+                    if (foundIdx == -1) {
+                        return;  // should not happen
+                    }
+
+                    // here, delete old array element before adding new changed personRecord above
+                    //
+                    [gbl_arrayPer removeObjectAtIndex:  foundIdx ]; //  delete old array element before adding new changed personRecord above
+
+                } // ONLY IF    [gbl_homeEditingState isEqualToString:  @"view or change" ] , DELETE  the existing record first
+
+    nbn(704);
+                // add the new Person database record in a string to the person array
+                //
+                [gbl_arrayPer addObject: myNewPersonRecord]; // add the new Person database record in a string to the person array
+
+
+                MAMB09AppDelegate *myappDelegate =
+                    (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
+
+                [myappDelegate mambWriteNSArrayWithDescription:              (NSString *) @"person"]; // write new array data to file
+                [myappDelegate mambReadArrayFileWithDescription:             (NSString *) @"person"]; // read new data from file to array
+                [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription: (NSString *) @"person"]; // sort array by name
+
+
+    //<.>
+    //    // TODO   after coded 1. new group  2. member selection  3. group "view or change"
+    //        ???
+    //            // if necessary, update MEMBERSHIP  file  (gbl_arrayMem)
+    //            //
+    //            if (! [gbl_fromHomeCurrentEntityName isEqualToString:  gbl_myname.text ] )   // true if original name in db record has changed 
+    //                [myappDelegate mambChangeMemberNameFrom: (NSString *) gbl_fromHomeCurrentEntityName 
+    //                                              toNewName: (NSString *) gbl_myName.text
+    //                ];
+    //                [myappDelegate mambWriteNSArrayWithDescription:              (NSString *) @"member"]; // write new array data to file
+    //                [myappDelegate mambReadArrayFileWithDescription:             (NSString *) @"member"]; // read new data from file to array
+    //                [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription: (NSString *) @"member"]; // sort array by name
+    //<.>
+    //
+
+                gbl_justAddedRecord  = 1;  // cause reload of home data
+
+
+                gbl_lastSelectedPerson          = gbl_DisplayName;  // this row (gbl_lastSelectedPerson) gets selection highlight in home tableview
+                gbl_fromHomeCurrentSelectionPSV = myNewPersonRecord;
+      NSLog(@"gbl_lastSelectedPerson          =[%@]",gbl_lastSelectedPerson);
+      NSLog(@"gbl_fromHomeCurrentSelectionPSV =[%@]",gbl_fromHomeCurrentSelectionPSV );
+
+
+                // after write of array data to file, allow user interaction events again
+                //
+                if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] == YES) {  // re-enable handling of touch-related events
+                    [[UIApplication sharedApplication] endIgnoringInteractionEvents];       // typically call this after an animation or transitiion.
+      NSLog(@"STOP IGnoring events");
+                }
+
+  NSLog(@"          POP  VIEW   #6");
+                dispatch_async(dispatch_get_main_queue(), ^{  
+                    // after saving new person, go back to home view
+
+                    // pop to root view controller (actually do the "Back" action)
+                    // 
+                    gbl_myname.text                  = gbl_initPromptName;
+                    gbl_myCitySoFar                  = @"";
+                    gbl_editingChangeNAMEHasOccurred = 0;
+                    gbl_editingChangeCITYHasOccurred = 0;
+                    gbl_editingChangeDATEHasOccurred = 0;
+                    gbl_lastInputFieldTapped         = @"";  // 3 values are: "name", "city", "date"
+
+//                    [self.navigationController popToRootViewControllerAnimated: YES]; // pop to root view controller (actually do the "Back" action)
+                [self.navigationController popViewControllerAnimated: YES]; // actually do the "Back" action
+
+                });
+                // is system "done" button function here
+    //            gbl_lastSelectedPersonBeforeChange = gbl_DisplayName;   // like "~Dave"   used in YELLOW gbl_homeUseMODE "edit mode"
+
+
 
         } // here editing changes have happened
 
-    } // if gbl_homeEditingState = "add"   OR   [gbl_homeEditingState =  "view or change" ] )
+//    } // if gbl_homeEditingState = "add"   OR   [gbl_homeEditingState =  "view or change" ] )
+
+    } // end of person  saveDone logic   ================================================================================
 
   NSLog(@"--- 000 -------------------------------------------------------");
   NSLog(@"            gbl_myname.isFirstResponder=%d",gbl_myname.isFirstResponder);
@@ -2350,8 +2717,17 @@ nbn(704);
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-//    return 7;
-    return 6;  // hidden gbl_mycitySearchString   moved to rownum=2 from rownum=6 (for scrollRectToVisible)
+
+    if ([gbl_fromHomeCurrentSelectionType isEqualToString: @"person" ] )
+    { 
+      return 6;  // hidden gbl_mycitySearchString   moved to rownum=2 from rownum=6 (for scrollRectToVisible)
+    } 
+    if ([gbl_fromHomeCurrentSelectionType isEqualToString: @"group" ] )
+    { 
+      return 2;  // hidden gbl_mycitySearchString   moved to rownum=2 from rownum=6 (for scrollRectToVisible)
+    } 
+
+    return 1;  // should not happen
 }
 
 
@@ -2489,8 +2865,6 @@ tn();   NSLog(@"in textFieldDidBeginEditing ####################################
 // try without
         gbl_pickerToUse = @"city picker";  // "city picker" or "date/time picker"
   NSLog(@"gbl_pickerToUse  22      =[%@]",gbl_pickerToUse          );
-
-
 
 
 // qOLD
@@ -2818,8 +3192,8 @@ nb(3);
 
     if (   [arg_typedCharAsNSString isEqualToString: @" " ]
         && (
-               [gbl_myname.text isEqualToString: @""  ]     // here first character typed for city is SPACE
-            ||  gbl_myname.text == nil                      // here first character typed for city is SPACE
+               [gbl_myname.text isEqualToString: @""  ]     // here first character typed is SPACE
+            ||  gbl_myname.text == nil                      // here first character typed is SPACE
            )
     )
     {
@@ -2853,7 +3227,8 @@ tn(); NSLog(@"HEY!    BACKSPACE     was pressed");
 
         // because this is BACKSPACE KEY,  remove final char of arg gbl_myCitySoFar 
         //
-        if ( textField.text != nil  &&  textField.text.length != 0 ) {
+        if ( textField.text != nil  &&  textField.text.length != 0 )
+        {
 
             if (textField.tag == 2) { // city
 //                gbl_myCitySoFar =  textField.text ;
@@ -2902,17 +3277,19 @@ NSLog(@"=gbl_myCitySoFar %@",gbl_myCitySoFar );
         }
 
 
-        if (gbl_myCitySoFar.length == 0) {
-            [self setCitySearchStringTitleTo: @"Type City Name" ]; //  update title of keyboard "toolbar"
-        } else {
-            [self setCitySearchStringTitleTo: gbl_myCitySoFar   ]; //  update title of keyboard "toolbar"
-        }
+        if (textField.tag == 2) { // city
+            if (gbl_myCitySoFar.length == 0) {
+                [self setCitySearchStringTitleTo: @"Type City Name" ]; //  update title of keyboard "toolbar"
+            } else {
+                [self setCitySearchStringTitleTo: gbl_myCitySoFar   ]; //  update title of keyboard "toolbar"
+            }
 
-  NSLog(@"gbl_myCitySoFar=%@",gbl_myCitySoFar);
-        // update place labels  (has one less char in gbl_myCitySoFar)
-        // field updates in cellForRowAtIndexpath
-        //
-        [ self updateCityProvCoun ]; // update city/prov/coun field  in cellForRowAtIndexpath
+      NSLog(@"gbl_myCitySoFar=%@",gbl_myCitySoFar);
+            // update place labels  (has one less char in gbl_myCitySoFar)
+            // field updates in cellForRowAtIndexpath
+            //
+            [ self updateCityProvCoun ]; // update city/prov/coun field  in cellForRowAtIndexpath
+        }
 
 //        gbl_timeOfPrevCityKeystroke = gbl_timeOfCurrCityKeystroke; // set city keystroke interval times
 //        CFTimeInterval timeNow      = CACurrentMediaTime();  // returns double CFTimeInterval
@@ -3356,63 +3733,119 @@ nbn(200);
 
      if (indexPath.row == 1) {   //  NAME of Person or Group
 
-nbn(201);
-  NSLog(@"name row    gbl_myname.text =[%@]",gbl_myname.text );
+        if ([gbl_fromHomeCurrentSelectionType isEqualToString: @"group" ] )
+        {   // do group   name row
+nbn(100);        
+  NSLog(@"group  name row (1)   gbl_myname.text =[%@]",gbl_myname.text );
   NSLog(@"gbl_homeUseMODE=[%@]",gbl_homeUseMODE);
   NSLog(@"gbl_homeEditingState=[%@]",gbl_homeEditingState);
+  NSLog(@"gbl_fromHomeCurrentEntity    =[%@]",gbl_fromHomeCurrentEntity);
+  NSLog(@"gbl_fromHomeCurrentEntityName=[%@]",gbl_fromHomeCurrentEntityName);
 
-        gbl_myname.delegate = self;
+            gbl_myname.delegate = self;
 
-        dispatch_async(dispatch_get_main_queue(), ^{
+            dispatch_async(dispatch_get_main_queue(), ^{
 
-//            cell.textLabel.backgroundColor           = gbl_colorEditing;
-            cell.contentView.backgroundColor    = gbl_colorEditingBG_current;
-            cell.selectionStyle                 = UITableViewCellSelectionStyleNone;
+                cell.contentView.backgroundColor    = gbl_colorEditingBG_current;
+                cell.selectionStyle                 = UITableViewCellSelectionStyleNone;
+                gbl_myname.autocorrectionType       = UITextAutocorrectionTypeNo;
+                gbl_myname.keyboardType             = UIKeyboardTypeASCIICapable; // disables emoji keyboard
+                gbl_myname.backgroundColor          = gbl_colorEditingBGforInputField;
 
-            gbl_myname.autocorrectionType       = UITextAutocorrectionTypeNo;
-//            gbl_myname.clearButtonMode          = UITextFieldViewModeWhileEditing ;
-//            gbl_myname.keyboardType             = UIKeyboardTypeNamePhonePad; // optimized for entering a person's name or phone number
+                if (   [gbl_myname.text isEqualToString: gbl_initPromptName ] 
+                    &&  gbl_editingChangeNAMEHasOccurred == 0                 // default 0 at startup (after hitting "Edit" button on home page)
+                    && ! [gbl_homeEditingState isEqualToString: @"view or change" ] 
+                ) {
+                    gbl_myname.text                     = gbl_initPromptName ; // is  @"Name"
+                    gbl_myname.textColor                = [UIColor colorWithRed: 128.0/255.0    // use KVC    gray
+                                                                          green: 128.0/255.0
+                                                                           blue: 128.0/255.0
+                                                                          alpha: 1.0         ] ;
+                } else {
+//                    gbl_myname.text                     = fldName;
+                    gbl_myname.text                     = fldNameG;
+                    gbl_myname.textColor                = [UIColor blackColor];
+                }
+    
+                gbl_myname.font                     = myFontMiddle;
+                gbl_myname.borderStyle              = UITextBorderStyleRoundedRect;
+                gbl_myname.textAlignment            = NSTextAlignmentLeft;
+                gbl_myname.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+                gbl_myname.tag                      = 1;
+                gbl_myname.autocapitalizationType   = UITextAutocapitalizationTypeNone;
 
-            // UIKeyboardTypeASCIICapable   disables emoji keyboard
-            gbl_myname.keyboardType             = UIKeyboardTypeASCIICapable; // disables emoji keyboard
-
-//            gbl_myname.backgroundColor          = gbl_colorEditing;
-//            gbl_myname.backgroundColor          = [UIColor yellowColor];
-            gbl_myname.backgroundColor          = gbl_colorEditingBGforInputField;
-//            gbl_myname.backgroundColor          = currentBGfieldColor;
-
-
-            if (   [gbl_myname.text isEqualToString: gbl_initPromptName ] 
-                &&  gbl_editingChangeNAMEHasOccurred == 0                 // default 0 at startup (after hitting "Edit" button on home page)
-                && ! [gbl_homeEditingState isEqualToString: @"view or change" ] 
-            ) {
-                gbl_myname.text                     = gbl_initPromptName ; // is  @"Name"
-                gbl_myname.textColor                = [UIColor colorWithRed: 128.0/255.0    // use KVC    gray
-                                                                      green: 128.0/255.0
-                                                                       blue: 128.0/255.0
-                                                                      alpha: 1.0         ] ;
-            } else {
-                //  home didSelectRow gbl_fromHomeCurrentSelectionPSV =~Jackson|2|3|1993|0|1|1|Los Angeles|California|United States||z
-                gbl_myname.text                     = fldName;
-                gbl_myname.textColor                = [UIColor blackColor];
-            }
-
-
-//            gbl_myname.font                     = myFont;
-            gbl_myname.font                     = myFontMiddle;
-            gbl_myname.borderStyle              = UITextBorderStyleRoundedRect;
-            gbl_myname.textAlignment            = NSTextAlignmentLeft;
-            gbl_myname.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-            gbl_myname.tag                      = 1;
-            gbl_myname.autocapitalizationType   = UITextAutocapitalizationTypeNone;
-
-    gbl_myname.inputAccessoryView = gbl_ToolbarForPersonName ; // for person name input field
-  NSLog(@"gbl_myname.inputAccessoryView 01 SET SET SET SET SET SET SET SET SET  SET ");
+        gbl_myname.inputAccessoryView = gbl_ToolbarForPersonName ; // for person name input field
+      NSLog(@"gbl_myname.inputAccessoryView 01_A  SET SET SET SET SET SET SET SET SET  SET ");
 
 
-            [cell addSubview: gbl_myname ];
-        });
-     } //  NAME
+                [cell addSubview: gbl_myname ];
+
+            });
+        }   // do group   name row
+
+        if ([gbl_fromHomeCurrentSelectionType isEqualToString: @"person" ] )
+        {   // do person   name row
+nbn(201);
+  NSLog(@"person name row    gbl_myname.text =[%@]",gbl_myname.text );
+  NSLog(@"gbl_homeUseMODE=[%@]",gbl_homeUseMODE);
+  NSLog(@"gbl_homeEditingState=[%@]",gbl_homeEditingState);
+  NSLog(@"gbl_fromHomeCurrentEntity=[%@]",gbl_fromHomeCurrentEntity);
+  NSLog(@"gbl_fromHomeCurrentEntityName=[%@]",gbl_fromHomeCurrentEntityName);
+
+            gbl_myname.delegate = self;
+
+            dispatch_async(dispatch_get_main_queue(), ^{
+
+    //            cell.textLabel.backgroundColor           = gbl_colorEditing;
+                cell.contentView.backgroundColor    = gbl_colorEditingBG_current;
+                cell.selectionStyle                 = UITableViewCellSelectionStyleNone;
+
+                gbl_myname.autocorrectionType       = UITextAutocorrectionTypeNo;
+    //            gbl_myname.clearButtonMode          = UITextFieldViewModeWhileEditing ;
+    //            gbl_myname.keyboardType             = UIKeyboardTypeNamePhonePad; // optimized for entering a person's name or phone number
+
+                // UIKeyboardTypeASCIICapable   disables emoji keyboard
+                gbl_myname.keyboardType             = UIKeyboardTypeASCIICapable; // disables emoji keyboard
+
+    //            gbl_myname.backgroundColor          = gbl_colorEditing;
+    //            gbl_myname.backgroundColor          = [UIColor yellowColor];
+                gbl_myname.backgroundColor          = gbl_colorEditingBGforInputField;
+    //            gbl_myname.backgroundColor          = currentBGfieldColor;
+
+
+                if (   [gbl_myname.text isEqualToString: gbl_initPromptName ] 
+                    &&  gbl_editingChangeNAMEHasOccurred == 0                 // default 0 at startup (after hitting "Edit" button on home page)
+                    && ! [gbl_homeEditingState isEqualToString: @"view or change" ] 
+                ) {
+                    gbl_myname.text                     = gbl_initPromptName ; // is  @"Name"
+                    gbl_myname.textColor                = [UIColor colorWithRed: 128.0/255.0    // use KVC    gray
+                                                                          green: 128.0/255.0
+                                                                           blue: 128.0/255.0
+                                                                          alpha: 1.0         ] ;
+                } else {
+                    //  home didSelectRow gbl_fromHomeCurrentSelectionPSV =~Jackson|2|3|1993|0|1|1|Los Angeles|California|United States||z
+                    gbl_myname.text                     = fldName;
+                    gbl_myname.textColor                = [UIColor blackColor];
+                }
+
+
+    //            gbl_myname.font                     = myFont;
+                gbl_myname.font                     = myFontMiddle;
+                gbl_myname.borderStyle              = UITextBorderStyleRoundedRect;
+                gbl_myname.textAlignment            = NSTextAlignmentLeft;
+                gbl_myname.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+                gbl_myname.tag                      = 1;
+                gbl_myname.autocapitalizationType   = UITextAutocapitalizationTypeNone;
+
+        gbl_myname.inputAccessoryView = gbl_ToolbarForPersonName ; // for person name input field
+      NSLog(@"gbl_myname.inputAccessoryView 01_B  SET SET SET SET SET SET SET SET SET  SET ");
+
+
+                [cell addSubview: gbl_myname ];
+            });
+        }   // do person   name row
+
+     } //  NAME row (1)
 
 
      if (indexPath.row == 3) {   // "LABEL" for  city,proc,coun  of Birth of Person

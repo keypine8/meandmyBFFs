@@ -89,11 +89,17 @@
 //
 //
 
+    gbl_title_groupName   = [[UIBarButtonItem alloc]initWithTitle: @"Type Group Name"
+                                                            style: UIBarButtonItemStylePlain
+                                                           target: self
+                                                           action: nil
+    ];
     gbl_title_personName   = [[UIBarButtonItem alloc]initWithTitle: @"Type Person Name"
                                                            style: UIBarButtonItemStylePlain
                               //  style: UIBarButtonItemStyleBordered
                                                             target: self
-                                                            action: nil ];
+                                                            action: nil
+    ];
     gbl_title_cityPicklist = [[UIBarButtonItem alloc]initWithTitle: @"Pick City"
                                                               style: UIBarButtonItemStylePlain
                               //  style: UIBarButtonItemStyleBordered
@@ -128,6 +134,7 @@
      gbl_initPromptProv = @"State or Province";
      gbl_initPromptCoun = @"Country";
      gbl_initPromptDate = @"Birth Date and Time";
+
 
 
 
@@ -1900,7 +1907,7 @@ tn();  NSLog(@"at end of   mambReadLastEntityFile  myLastEntityDecoded=\n%@",myL
 
     // now we have one string with lines sep by "}"  and fields sep by "\t" (tab)
 
-    // make temp array with  new PSV delimiter
+    // make temp array of lines with  new  delimiter
     //
     NSMutableArray *mutArrayNewTmp = (NSMutableArray *)
        [stringWithNewDelim componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"}"]];
@@ -1966,6 +1973,71 @@ tn();  NSLog(@"at end of   mambReadLastEntityFile  myLastEntityDecoded=\n%@",myL
 } // end of mambSortArrayOfPSVsOnFieldOne
 
 
+
+// TODO try this instead of new function:
+//     [myappDelegate  mambSortOnFieldOneForPSVarrayWithDescription:  (NSString *) @"member"]; 
+//
+//- (void) mambSortMembershipFile   // sorts gbl_arrayMem  on first 2 flds (group name, member name) // sorts on whole line
+//{
+//    // assumption  "}" does not occur in array of PSVs,
+//    // assumption  "\t" sorts below all letters,nums,space
+//
+//  NSLog(@"in mambSortMembershipFile");
+//
+//    // make big string from starting array  (PSV field sep = "|")
+//    //
+//    NSString *joinedString;
+//    joinedString = [gbl_arrayMem  componentsJoinedByString: @"}"]; 
+//
+//    // now we have one string with lines sep by "}"  and fields sep by "|"
+//
+//    // change delimiter of PSV 
+//    NSString *stringWithNewDelim   = [joinedString stringByReplacingOccurrencesOfString:@"|" withString:@"\t"];
+//    //  NSLog(@"stringWithNewDelim   =%@",stringWithNewDelim   );
+//
+//    // now we have one string with lines sep by "}"  and fields sep by "\t" (tab)
+//
+//    // make temp array with  new delimiter
+//    //
+//    NSMutableArray *mutArrayNewTmp = (NSMutableArray *)
+//       [stringWithNewDelim componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"}"]];
+//    //  NSLog(@"mutArrayNewTmp =%@",mutArrayNewTmp );
+//
+//    // now we have tmp array with each element  a TSV (string with fields sep by "\t" TAB)
+//
+//    // sort temp array  mutArrayNewTmp  here (has new delimiters)
+//    //
+//    if (mutArrayNewTmp)  { [mutArrayNewTmp sortUsingSelector: @selector(caseInsensitiveCompare:)]; }
+//
+//    // now we have SORTED tmp array with each element  a TSV (string with fields sep by "\t" TAB)
+//
+//    // make big string from  sorted temp  array
+//    //
+//    NSString *joinedStringSorted   = [mutArrayNewTmp componentsJoinedByString:@"}"];
+//    //  NSLog(@"joinedStringSorted   =%@",joinedStringSorted   );
+//
+//    // now we have one string with SORTED lines sep by "}"  and fields sep by "\t" (tab)
+//
+//    // change delimiter of PSV back to original
+//    //
+//    NSString *stringWithNewDelim2  = [joinedStringSorted stringByReplacingOccurrencesOfString:@"\t" withString:@"|"];
+//    //  NSLog(@"stringWithNewDelim2  =%@",stringWithNewDelim2  );
+//
+//    // now we have one string with SORTED lines sep by "}"  and fields sep by "|" (pipe)
+//
+//
+//    // make new sorted array with  old PSV delimiter
+//    //
+//    [gbl_arrayMem  removeAllObjects];               // empty array
+//     gbl_arrayMem    = [[NSMutableArray alloc] init];   // init  array
+//     gbl_arrayMem    = (NSMutableArray *)
+//        [stringWithNewDelim2 componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"}"]];
+//
+//} //  end of  mambSortMembershipFile 
+//
+
+
+
 - (CGSize)currentScreenSize {
     CGRect myScreenBounds = [[UIScreen mainScreen] bounds];
     CGSize myScreenSize = myScreenBounds.size;
@@ -1981,17 +2053,29 @@ tn();  NSLog(@"at end of   mambReadLastEntityFile  myLastEntityDecoded=\n%@",myL
 }
 
 
-- (void) mambChangeMemberNameFrom: (NSString *) arg_originalName
-                        toNewName: (NSString *) arg_newName
+- (void) mambChangeGRPMEM_memberNameFrom: (NSString *) arg_originalMemberName
+                               toNewName: (NSString *) arg_newMemberName
 {
 tn();
-NSLog(@"in mambChangeMemberNameFrom: toNewName:  ");
+  NSLog(@"in mambChangeMemberNameFrom: toNewName:  ");
   NSLog(@" TODO   after coded 1. new group  2. member selection  3. group \"view or change\"");
+
+  // TODO   after coded 1. new group  2. member selection  3. group "view or change"
+}
+
+- (void) mambChangeGRPMEM_groupNameFrom: (NSString *) arg_originalGroupName
+                              toNewName: (NSString *) arg_newGroupName
+{
+tn();
+  NSLog(@"in mambChangeMemberNameFrom: toNewName:  ");
+  NSLog(@" TODO   after coded 1. new group  2. member selection  3. group \"view or change\"");
+
   // TODO   after coded 1. new group  2. member selection  3. group "view or change"
 }
 
 
 @end
+
 
 
 

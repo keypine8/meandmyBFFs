@@ -759,7 +759,75 @@ NSLog(@"in dispatch  for SELECT YEAR  !");
 
     }
     
-    
+//
+//// moved to home sel group
+//    // check for group report,  BUT  group  does not have at least  2  members
+//    //   then, alert and return
+//    //
+//    if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgbm"]   // best match
+//        || [gbl_currentMenuPlusReportCode isEqualToString: @"homgma"]   // "Most Assertive ..."
+//        || [gbl_currentMenuPlusReportCode isEqualToString: @"homgme"]   // "Most Emotional ..."
+//        || [gbl_currentMenuPlusReportCode isEqualToString: @"homgmr"]   // "Most Restless ..."
+//        || [gbl_currentMenuPlusReportCode isEqualToString: @"homgmp"]   // "Most Passionate ..."
+//        || [gbl_currentMenuPlusReportCode isEqualToString: @"homgmd"]   // "Most Down-to-earth"
+//        || [gbl_currentMenuPlusReportCode isEqualToString: @"homgby"]   // best year
+//        || [gbl_currentMenuPlusReportCode isEqualToString: @"homgbd"]   // best day
+//    ) {
+//
+//
+//        // search in  gbl_arrayMem  for   gbl_lastSelectedGroup
+//        // count how many members
+//        // if not at least 2 members,  alert and return
+//        //
+//  NSLog(@"gbl_lastSelectedGroup =[%@]",gbl_lastSelectedGroup );
+//
+//        NSInteger member_cnt;
+//        NSString *prefixStr = [NSString stringWithFormat: @"%@|", gbl_lastSelectedGroup ];
+//
+//        member_cnt = 0;
+//        for (NSString *element in gbl_arrayMem) {
+//            if ([element hasPrefix: prefixStr]) {
+//                member_cnt = member_cnt + 1;
+//            }
+//        }
+//
+//  NSLog(@"prefixStr  =[%@]",prefixStr );
+//  NSLog(@"member_cnt =[%ld]",(long) member_cnt );
+//
+//        if (member_cnt  <  2) {
+//
+//            // here info is missing
+//            NSString *missingMsg;
+//            
+//            if (member_cnt == 0) missingMsg = [ NSString stringWithFormat:
+//                @"A group report needs\nat least 2 members.\n\nGroup \"%@\" has %ld members.",
+//                gbl_lastSelectedGroup, member_cnt
+//            ];
+////            UIAlertController* myAlert = [UIAlertController alertControllerWithTitle: @"Need more Group Members"
+//            UIAlertController* myAlert = [UIAlertController alertControllerWithTitle: @"Not enough Group Members"
+//                                                                             message: missingMsg
+//                                                                      preferredStyle: UIAlertControllerStyleAlert  ];
+//             
+//            UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+//                                                                style: UIAlertActionStyleDefault
+//                                                              handler: ^(UIAlertAction * action) {
+//                    NSLog(@"Ok button pressed");
+//                }
+//            ];
+//             
+//            [myAlert addAction:  okButton];
+//
+//            // cannot save because of missing information > stay in this screen
+//            //
+//            [self presentViewController: myAlert  animated: YES  completion: nil   ]; // cannot save because of missing information
+//
+//            return;  // cannot save because of missing information > stay in this screen
+//
+//
+//        }
+//    }
+//
+//
     
     //if ([stringForCurrentlySelectedRow hasPrefix: @"Best Match"] ) 
     if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgbm"] ) {
