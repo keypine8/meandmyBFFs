@@ -1270,8 +1270,6 @@ NSLog(@"in viewDidAppear()  in HOME");
     }
   NSLog(@"gbl_homeEditingState =[%@]",gbl_homeEditingState );
 
-
-
     [self codeForCellTapOrAccessoryButtonTapWithIndexPath: indexPath ];
 
 
@@ -1903,6 +1901,12 @@ nbn(311);
 tn();    NSLog(@"reaching accessoryButtonTappedForRowWithIndexPath:");
 //    [self performSegueWithIdentifier:@"modaltodetails" sender:[self.eventsTable cellForRowAtIndexPath:indexPath]];
 
+
+    gbl_accessoryButtonTapped = 1;
+
+
+
+
     [self codeForCellTapOrAccessoryButtonTapWithIndexPath: indexPath ];
 
     gbl_homeUseMODE      = @"edit mode" ;
@@ -1915,6 +1919,27 @@ tn();    NSLog(@"reaching accessoryButtonTappedForRowWithIndexPath:");
 ///
 - (void) codeForCellTapOrAccessoryButtonTapWithIndexPath:(NSIndexPath *)indexPath  // for  gbl_homeUseMODE  =  "edit mode" (yellow)
 {
+tn();    NSLog(@"in codeForCellTapOrAccessoryButtonTapWithIndexPath:");
+  NSLog(@"gbl_homeUseMODE           =[%@]",gbl_homeUseMODE           );
+  NSLog(@"gbl_fromHomeCurrentEntity =[%@]",gbl_fromHomeCurrentEntity );
+
+        // philosophy  on people list yellow  OR  on group list yellow 
+        //
+        // gbl_homeUseMODE isEqualToString: @"edit mode" // = yellow
+        //   CASE_A   - tap on right side "i" button  ALWAYS  get add/change  screen
+        //            - tap on left  side "-" button  ALWAYS  get delete  of person or group
+        //   CASE_B   - tap on name in cell - for "group"   get group list (selPerson screen where you can "+" or "-" group members)
+        //   CASE_C   - tap on name in cell - for "person"  get nothing
+        //
+    if (   [gbl_homeUseMODE           isEqualToString: @"edit mode" ]     // = yellow
+        && [gbl_fromHomeCurrentEntity isEqualToString: @"person"]         // = group list
+        && gbl_accessoryButtonTapped                == 0              )   // tapped on row, not "i"
+    { 
+        //   CASE_C     - for "person"  get nothing
+        return;  // see above philosophy // if you tap on person name in yellow edit person list, do nothing
+    }
+
+nbn(3);
 
 //     // deselect previous row, select new one  (grey highlight)
 //     //
@@ -1954,7 +1979,10 @@ tn();    NSLog(@"reaching accessoryButtonTappedForRowWithIndexPath:");
     NSIndexPath *myIdxPath = indexPath;  // method argument
     
 
+    // set some gbl s
+
     // below is from prep for segue
+
     gbl_savePrevIndexPath  = myIdxPath;
     NSLog(@"gbl_savePrevIndexPath=%@",gbl_savePrevIndexPath);
     gbl_fromHomeCurrentEntity = gbl_lastSelectionType; // "group" or "person"
@@ -1966,11 +1994,12 @@ tn();    NSLog(@"reaching accessoryButtonTappedForRowWithIndexPath:");
         gbl_fromHomeCurrentSelectionPSV      = [gbl_arrayPer objectAtIndex:myIdxPath.row];  /* PSV */
 //        gbl_fromHomeCurrentSelectionArrayIdx = myIdxPath.row;
     }
-    NSLog(@"home didSelectRow CurrentSelectionArrayIdx=%ld",(long)myIdxPath.row);
-    NSLog(@"home didSelectRow gbl_fromHomeCurrentSelectionPSV =%@",gbl_fromHomeCurrentSelectionPSV);
-    NSLog(@"home didSelectRow gbl_fromHomeCurrentSelectionType=%@",gbl_fromHomeCurrentSelectionType);
-    NSLog(@"home didSelectRow gbl_fromHomeCurrentEntity=%@",gbl_fromHomeCurrentEntity);
-    NSLog(@"home didSelectRow gbl_currentMenuPrefixFromHome=%@",gbl_currentMenuPrefixFromHome);
+//  NSLog(@"home didSelectRow CurrentSelectionArrayIdx=%ld",(long)myIdxPath.row);  not USED
+  NSLog(@"home didSelectRow gbl_fromHomeCurrentSelectionPSV =%@",gbl_fromHomeCurrentSelectionPSV);
+  NSLog(@"home didSelectRow gbl_fromHomeCurrentSelectionType=%@",gbl_fromHomeCurrentSelectionType);
+  NSLog(@"home didSelectRow gbl_fromHomeCurrentEntity=%@",gbl_fromHomeCurrentEntity);
+  NSLog(@"gbl_fromHomeCurrentEntityName=[%@]",gbl_fromHomeCurrentEntityName);
+  NSLog(@"home didSelectRow gbl_currentMenuPrefixFromHome=%@",gbl_currentMenuPrefixFromHome);
     // above is from prep for segue
 
 
@@ -1989,19 +2018,12 @@ tn();    NSLog(@"reaching accessoryButtonTappedForRowWithIndexPath:");
         gbl_lastSelectedGroup  = myNameOstr;
     }
 
-
-// tn();     NSLog(@"in didSelectRowAtIndexPath!!!!!!!!!!  AFTER   !!!!!!!!!!!!!");
-//             NSLog(@"_mambCurrentEntity=%@",_mambCurrentEntity);
-//             NSLog(@"_mambCurrentSelection=%@",_mambCurrentSelection);
-//             NSLog(@"_mambCurrentSelectionType=%@",_mambCurrentSelectionType);
-//             NSLog(@"gbl_fromHomeCurrentSelectionPSV=%@",gbl_fromHomeCurrentSelectionPSV);
 //             NSLog(@"gbl_fromHomeCurrentSelectionArrayIdx=%ld",(long)gbl_fromHomeCurrentSelectionArrayIdx);
-//             NSLog(@"gbl_fromHomeCurrentSelectionType=%@",gbl_fromHomeCurrentSelectionType);
-//             NSLog(@"gbl_fromHomeCurrentEntity=%@",gbl_fromHomeCurrentEntity);
-             NSLog(@"gbl_lastSelectedPerson=%@",gbl_lastSelectedPerson);
-             NSLog(@"gbl_lastSelectedGroup=%@",gbl_lastSelectedGroup);
-//             //NSLog(@"=%@",);
-// NSLog(@"in didSelectRowAtIndexPath!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
+  NSLog(@"gbl_lastSelectedPerson=%@",gbl_lastSelectedPerson);
+  NSLog(@"gbl_lastSelectedGroup=%@",gbl_lastSelectedGroup);
+
+
 
 //tn();trn("SCROLL 666666666666666666666666666666666666666666666666666666666");
     // select the row in UITableView
@@ -2018,20 +2040,50 @@ tn();    NSLog(@"reaching accessoryButtonTappedForRowWithIndexPath:");
 
     if ([gbl_homeUseMODE isEqualToString: @"edit mode" ] )   // = yellow
     {
-  NSLog(@"go to add change ON TAP of ROW");
+//  NSLog(@"go to add change ON TAP of ROW");
 
-        // Because background threads are not prioritized and will wait a very long time
-        // before you see results, unlike the mainthread, which is high priority for the system.
+        // philosophy  on people list yellow  OR  on group list yellow 
         //
-        // Also, all UI-related stuff must be done on the *main queue*. That's way you need that dispatch_async.
+        // gbl_homeUseMODE isEqualToString: @"edit mode" // = yellow
+        //   CASE_A   - tap on right side "i" button  ALWAYS  get add/change  screen
+        //            - tap on left  side "-" button  ALWAYS  get delete  of person or group
+        //   CASE_B   - tap on name in cell - for "group"   get group list (selPerson screen where you can "+" or "-" group members)
+        //   CASE_C   - tap on name in cell - for "person"  get nothing  (see above)
         //
-        dispatch_async(dispatch_get_main_queue(), ^{                                 // <===  
-            [self performSegueWithIdentifier:@"segueHomeToAddChange" sender:self]; //  
-        });
+
+        // oN TAP of accessory button (\"i\") in edit mode,   always  go to  add/change screen");
+        if (gbl_accessoryButtonTapped == 1)  {
+  NSLog(@"ON TAP of accessory button (\"i\"); // go to  add/change screen");
+
+            //   CASE_A   - tap on right side "i" button  ALWAYS  get add/change  screen
+
+            gbl_accessoryButtonTapped = 0;   // reset this to default  (could be = 1 here)
+
+            // Because background threads are not prioritized and will wait a very long time
+            // before you see results, unlike the mainthread, which is high priority for the system.
+            //
+            // Also, all UI-related stuff must be done on the *main queue*. That's way you need that dispatch_async.
+            //
+            dispatch_async(dispatch_get_main_queue(), ^{                           
+                [self performSegueWithIdentifier: @"segueHomeToAddChange" sender:self]; //  
+            });
+        }
+
+  NSLog(@"ON TAP of ROW in yellow edit mode and Group list,   go to  selPerson screen with group members");
+
+        //   CASE_B   - tap on name in cell - for "group"   get group list (selPerson screen where you can "+" or "-" group members)
+// TODO
+//        gbl_groupMemberSelectionMode = @"none";  // to set this, have to tap "+" or "-" in selPerson
+//
+//        dispatch_async(dispatch_get_main_queue(), ^{                                
+//            [self performSegueWithIdentifier: @"segueHomeToSelPerson" sender:self]; // selPerson screen where you can "+" or "-" group members
+//        });
 
     } else {
 
-        // check for not enough group members
+        // this is "regular mode"  as opposed to "edit mode"
+
+        // check for not enough group members  to do a report
 
         // search in  gbl_arrayMem  for   gbl_lastSelectedGroup
         // count how many members
@@ -2075,13 +2127,11 @@ tn();    NSLog(@"reaching accessoryButtonTappedForRowWithIndexPath:");
              
             [myAlert addAction:  okButton];
 
-            // cannot save because of missing information > stay in this screen
+            // cannot goto report list   because of missing information > stay in this screen
             //
-            [self presentViewController: myAlert  animated: YES  completion: nil   ]; // cannot save because of missing information
+            [self presentViewController: myAlert  animated: YES  completion: nil   ];
 
-            return;  // cannot save because of missing information > stay in this screen
-
-
+            return;  // cannot got rpt list   because of missing information > stay in this screen
         }
 
         dispatch_async(dispatch_get_main_queue(), ^{                                 // <===  
@@ -2772,4 +2822,31 @@ nbn(357);
     //
     //    }
     //
+
+//    gbl_tapped_CellRow_inYellowGroupList = 0;   // 1=y,0=n
+//    gbl_tapped_Right_i_inYellowGroupList = 0;   // "i"
+//
+//    if (   [gbl_homeUseMODE           isEqualToString: @"edit mode" ]     // = yellow
+//        && [gbl_fromHomeCurrentEntity isEqualToString: @"group"]      )   // = group list
+//    { 
+//        gbl_tapped_CellRow_inYellowGroupList = 1;   // 1=y,0=n
+//        gbl_tapped_Right_i_inYellowGroupList = 0;   // "i"
+//    } 
+
+//  NSLog(@"gbl_tapped_CellRow_inYellowGroupList =[%ld]",(long)gbl_tapped_CellRow_inYellowGroupList );
+//  NSLog(@"gbl_tapped_Right_i_inYellowGroupList =[%ld]",(long)gbl_tapped_Right_i_inYellowGroupList );
+
+
+//    gbl_tapped_CellRow_inYellowGroupList = 0;   // 1=y,0=n
+//    gbl_tapped_Right_i_inYellowGroupList = 0;   // "i"
+//
+//    if (   [gbl_homeUseMODE           isEqualToString: @"edit mode" ]     // = yellow
+//        && [gbl_fromHomeCurrentEntity isEqualToString: @"group"]      )   // = group list
+//    { 
+//        gbl_tapped_CellRow_inYellowGroupList = 0;   // 1=y,0=n
+//        gbl_tapped_Right_i_inYellowGroupList = 1;   // "i"
+//    } 
+//  NSLog(@"gbl_tapped_CellRow_inYellowGroupList =[%ld]",(long)gbl_tapped_CellRow_inYellowGroupList );
+//  NSLog(@"gbl_tapped_Right_i_inYellowGroupList =[%ld]",(long)gbl_tapped_Right_i_inYellowGroupList );
+//
 

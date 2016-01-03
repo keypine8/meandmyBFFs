@@ -52,16 +52,6 @@
     // set the Nav Bar Title  according to where we came from
     //
     do {
-        //    if (       [gbl_fromHomeCurrentSelectionType isEqualToString: @"person"]) {   // came from a person
-        //        dispatch_async(dispatch_get_main_queue(), ^{                                // <=== 
-        //            [[self navigationItem] setTitle: @"Second Person"];
-        //        });
-        //    } else if ([gbl_fromHomeCurrentSelectionType isEqualToString: @"group"]) {   // came from a group {
-        //        dispatch_async(dispatch_get_main_queue(), ^{                                // <=== 
-        //            [[self navigationItem] setTitle: @"Select Group"];
-        //        });
-        //    }
-        //
 //        UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 11, 44)];  // 3rd arg is horizontal length
 //        UIBarButtonItem *mySpacerForTitle = [[UIBarButtonItem alloc] initWithCustomView:spaceView];
 
@@ -777,64 +767,4 @@ tn();    NSLog(@"in didSelectRowAtIndexPath!  in SelectPerson !!!!!!!!!!!!");
 
 
 @end
-
-
-
-//
-//       // NO 
-//       // for now use trick below:
-//        //
-//        // get the indexpath of row num idxGrpOrPer in tableview
-//        //   ASSUMES index of entity in gbl_array Per or Grp
-//        //   is the same as its index (row) in the tableview
-//
-//        BOOL foundName;
-//        NSInteger myGblArrIdx;
-//        foundName = NO;
-//        myGblArrIdx = -1; // zero-based
-//
-//        for (NSString *elt in gbl_arrayPer) {    // get index in gbl data for this person
-//            if ([elt hasPrefix: gbl_fromHomeCurrentEntityName]) {
-//                foundName = YES;
-//                break;
-//            }
-//            myGblArrIdx =  myGblArrIdx + 1;
-//        }
-//        if (foundName == YES) {  
-//            highlightIdxPath = [NSIndexPath indexPathForRow: myGblArrIdx   inSection:0];  // indexPath of corresponding row in tableview
-//
-//            if (highlightIdxPath) {
-//                [self.tableView selectRowAtIndexPath: highlightIdxPath
-//                                            animated: YES
-//                                      scrollPosition: UITableViewScrollPositionNone ]; // puts highlight on this row (?)
-//            }
-//        }
-//
-//            if ([gbl_lastSelectedPerson length] <= 10) {
-// for test
-//        gbl_lastSelectedPerson =  @"Aiden6789012345";
-//        gbl_lastSelectedPerson =  @"Aiden6789012";
-//            gbl_lastSelectedPerson =  @"MMMMMMMMMMMMMMM";
-//            } else {  // need smaller  font to fit
-//nbn(2);
-//                dispatch_async( dispatch_get_main_queue(), ^{                                // <=== 
-//                    NSDictionary *navbarTitleTextAttributes = [ NSDictionary dictionaryWithObjectsAndKeys:
-//                       [UIColor blackColor]                                 ,  NSForegroundColorAttributeName,
-////                [UIFont fontWithName:@"HelveticaNeueBold" size: 17.0],  NSFontAttributeName,
-////                [UIFont fontWithName:@"HelveticaNeueBold" size: 12.0],  NSFontAttributeName,
-////                [UIFont fontWithName:@"HelveticaNeueBold" size: 8.0],  NSFontAttributeName,
-////                [UIFont fontWithName:@"HelveticaNeueBold" size: 12.0],  NSFontAttributeName,
-////                [UIFont fontWithName:@"HelveticaNeue" size: 12.0],  NSFontAttributeName,
-////                [UIFont fontWithName:@"HelveticaNeue" size: 18.0],  NSFontAttributeName,
-////                [UIFont fontWithName:@"HelveticaNeue" size: 15.0],  NSFontAttributeName,
-//                        [UIFont fontWithName:@"HelveticaNeue" size: 17.0],  NSFontAttributeName,
-//                        nil
-//                    ];
-//
-//                    [self.navigationController.navigationBar setTitleTextAttributes: navbarTitleTextAttributes];
-//
-//                    [[self navigationItem] setTitle: myTitleGrponeSelGroup ];
-//                });
-//            }
-//
 

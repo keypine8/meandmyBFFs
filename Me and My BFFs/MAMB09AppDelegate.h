@@ -755,6 +755,19 @@ NSInteger       gbl_earliestYear;   // see .m  1850
 
 NSString       *gbl_currentDay_yyyymmdd;
 
+// multiple pick for group member stuff
+//
+NSString *gbl_groupMemberSelectionMode;  //  origin is HOME YELLOW GROUP LIST - choices are "from members"  or "from nonmembers" 
+                                         // "from nonmembers" is when tap row > selPerson > tap green "+" for ADD members
+                                         // "from members"    is when tap row > selPerson > tap red   "-" for DEL members
+                                         //
+                                         //  BTW,                when tap "i" > more info on group > add/change screen
+NSInteger gbl_tappedGroupList_CellRow;   // 1=y,0=n
+NSInteger gbl_tappedGroupList_MoreInfo_i;
+NSInteger gbl_accessoryButtonTapped;
+//NSInteger gbl_tapped_CellRow_inYellowGroupList;   // 1=y,0=n
+//NSInteger gbl_tapped_Right_i_inYellowGroupList;   // "i" button on right side of row
+
 
 // Report Parameters information
 NSString  *gbl_fromHomeCurrentSelectionPSV;     // PSV  for per or grp

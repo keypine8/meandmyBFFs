@@ -61,8 +61,30 @@
 //        UIImage *myImage = [[UIImage imageNamed: @"forwardArrow_64.png"]
 //        UIImage *myImage = [[UIImage imageNamed: @"forwardArrow_96.png"]
 //        UIImage *myImage = [[UIImage imageNamed: @"forwardArrow_80.png"]
+
+
+
         UIImage *myImage = [[UIImage imageNamed: @"forwardArrow_029.png"]
                          imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal ];
+
+// for test
+//        UIImage *myImage = [[UIImage imageNamed: @"iconPlusAddGreenBig_66.png"]
+//        UIImage *myImage = [[UIImage imageNamed: @"iconMinusDelRedBig_66.png"]
+//                         imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal ];
+
+//                         imageWithRenderingMode: UIImageRenderingModeAlwaysTemplate];
+
+////        UIImage *myImage = [[UIImage imageNamed: @"iconMinusDel_66.png"]
+////                         imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal ];
+//                         imageWithRenderingMode: UIImageRenderingModeAlwaysTemplate];
+//
+//        // put UIImage in a UIImageView and adjust color with tintColor
+//        UIImageView *myImageView = [[UIImageView alloc]initWithImage: myImage];
+//        myImageView.tintColor = [UIColor blueColor];
+//
+////        myImage.tintColor = [UIColor greenColor];  // all green
+//
+//
 
 //        UIImage *myImage = [[UIImage imageNamed: @"forwardArrow_01.png"]
 //        UIImage *myImage = [UIImage imageNamed: @"forwardArrow_01.png" inBundle: nil compatibleWithTraitCollection: nil ];
@@ -71,6 +93,7 @@
                                                                              style: UIBarButtonItemStylePlain 
                                                                             target: self 
                                                                             action: @selector(actionGoToReport)];
+
 
 //        self.navigationItem.rightBarButtonItem = _goToReportButton;  done below
     //
