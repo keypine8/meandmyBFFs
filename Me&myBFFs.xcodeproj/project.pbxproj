@@ -19,6 +19,8 @@
 		5035460B1A434EEB00FE7853 /* icon_MAMB09_288.png in Resources */ = {isa = PBXBuildFile; fileRef = 503546011A434EEB00FE7853 /* icon_MAMB09_288.png */; };
 		5035460C1A434EEB00FE7853 /* rounded_MAMB09_087.png in Resources */ = {isa = PBXBuildFile; fileRef = 503546021A434EEB00FE7853 /* rounded_MAMB09_087.png */; };
 		5035460D1A434EEB00FE7853 /* rounded_MAMB09_058.png in Resources */ = {isa = PBXBuildFile; fileRef = 503546031A434EEB00FE7853 /* rounded_MAMB09_058.png */; };
+		5049021E1C3ACDA50031DFC4 /* MAMB09_listMembersTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5049021D1C3ACDA50031DFC4 /* MAMB09_listMembersTableViewController.m */; };
+		504902211C3AFBB20031DFC4 /* MAMB09_selNewMembersTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 504902201C3AFBB20031DFC4 /* MAMB09_selNewMembersTableViewController.m */; };
 		504B29851A4350AB009A6A25 /* rounded_MAMB09_029.png in Resources */ = {isa = PBXBuildFile; fileRef = 504B296D1A4350AB009A6A25 /* rounded_MAMB09_029.png */; };
 		504B29861A4350AB009A6A25 /* rounded_MAMB09_144.png in Resources */ = {isa = PBXBuildFile; fileRef = 504B296E1A4350AB009A6A25 /* rounded_MAMB09_144.png */; };
 		504B29871A4350AB009A6A25 /* icon_MAMB09_0512.png in Resources */ = {isa = PBXBuildFile; fileRef = 504B296F1A4350AB009A6A25 /* icon_MAMB09_0512.png */; };
@@ -105,6 +107,10 @@
 		503546011A434EEB00FE7853 /* icon_MAMB09_288.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_MAMB09_288.png; sourceTree = "<group>"; };
 		503546021A434EEB00FE7853 /* rounded_MAMB09_087.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rounded_MAMB09_087.png; sourceTree = "<group>"; };
 		503546031A434EEB00FE7853 /* rounded_MAMB09_058.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rounded_MAMB09_058.png; sourceTree = "<group>"; };
+		5049021C1C3ACDA50031DFC4 /* MAMB09_listMembersTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAMB09_listMembersTableViewController.h; sourceTree = "<group>"; };
+		5049021D1C3ACDA50031DFC4 /* MAMB09_listMembersTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAMB09_listMembersTableViewController.m; sourceTree = "<group>"; };
+		5049021F1C3AFBB20031DFC4 /* MAMB09_selNewMembersTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAMB09_selNewMembersTableViewController.h; sourceTree = "<group>"; };
+		504902201C3AFBB20031DFC4 /* MAMB09_selNewMembersTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAMB09_selNewMembersTableViewController.m; sourceTree = "<group>"; };
 		504B296D1A4350AB009A6A25 /* rounded_MAMB09_029.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = rounded_MAMB09_029.png; path = ../../_old/icon/planet_54jb2a/icon_MAMB09/rounded_MAMB09_029.png; sourceTree = "<group>"; };
 		504B296E1A4350AB009A6A25 /* rounded_MAMB09_144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = rounded_MAMB09_144.png; path = ../../_old/icon/planet_54jb2a/icon_MAMB09/rounded_MAMB09_144.png; sourceTree = "<group>"; };
 		504B296F1A4350AB009A6A25 /* icon_MAMB09_0512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_MAMB09_0512.png; path = ../../_old/icon/planet_54jb2a/icon_MAMB09/icon_MAMB09_0512.png; sourceTree = "<group>"; };
@@ -260,6 +266,10 @@
 				5004DD391ACC426A0094BA14 /* MAMB09_info_TableViewController.m */,
 				50AC392819D0864A00FF3997 /* MAMB09_homeTableViewController.h */,
 				50AC392919D0864A00FF3997 /* MAMB09_homeTableViewController.m */,
+				5049021C1C3ACDA50031DFC4 /* MAMB09_listMembersTableViewController.h */,
+				5049021D1C3ACDA50031DFC4 /* MAMB09_listMembersTableViewController.m */,
+				5049021F1C3AFBB20031DFC4 /* MAMB09_selNewMembersTableViewController.h */,
+				504902201C3AFBB20031DFC4 /* MAMB09_selNewMembersTableViewController.m */,
 				50661E621B41F5AA005BDFCC /* MAMB09_addChangeTableViewController.h */,
 				50661E631B41F5AA005BDFCC /* MAMB09_addChangeTableViewController.m */,
 				50AC392B19D08D3200FF3997 /* MAMB09_selectReportsTableViewController.h */,
@@ -512,6 +522,7 @@
 				50AC390019D082EB00FF3997 /* main.m in Sources */,
 				50C0BAB21A2108CE005B79F4 /* perhtm.c in Sources */,
 				50C0BAAD1A2108CE005B79F4 /* grphtm.c in Sources */,
+				5049021E1C3ACDA50031DFC4 /* MAMB09_listMembersTableViewController.m in Sources */,
 				50C0BAB11A2108CE005B79F4 /* perdoc.c in Sources */,
 				50AC392A19D0864A00FF3997 /* MAMB09_homeTableViewController.m in Sources */,
 				50C0BAB01A2108CE005B79F4 /* futhtm.c in Sources */,
@@ -522,6 +533,7 @@
 				50C0BAAF1A2108CE005B79F4 /* futasp.c in Sources */,
 				50AC392D19D08D3200FF3997 /* MAMB09_selectReportsTableViewController.m in Sources */,
 				50C0BAAB1A2108CE005B79F4 /* incocoa.c in Sources */,
+				504902211C3AFBB20031DFC4 /* MAMB09_selNewMembersTableViewController.m in Sources */,
 				50C0BAB31A2108CE005B79F4 /* rkdebug.c in Sources */,
 				50DE03131A27AB1700425BAC /* MAMB09_selYearViewController.m in Sources */,
 			);

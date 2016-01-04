@@ -73,6 +73,7 @@
                         <outlet property="segEntityOutlet" destination="qPG-Aj-tmX" id="T0R-mu-x57"/>
                         <segue destination="df3-AS-qCo" kind="push" identifier="segueHomeToAddChange" id="Vd0-76-gKQ"/>
                         <segue destination="c6B-B7-05J" kind="push" identifier="segueHomeToReportList" id="FMb-AS-tJX"/>
+                        <segue destination="lj1-OQ-gPo" kind="push" identifier="segueHomeToListMembers" id="HYE-Hx-QR6"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BbN-gl-Rsk" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -121,6 +122,67 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="laJ-CM-NOE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-14002" y="-11682"/>
+        </scene>
+        <!--list Members Table View Controller-->
+        <scene sceneID="w9K-oN-tJ2">
+            <objects>
+                <tableViewController id="lj1-OQ-gPo" customClass="MAMB09_listMembersTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="N24-mu-2Il">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="Axl-fK-PCj">
+                                <rect key="frame" x="0.0" y="92" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Axl-fK-PCj" id="ygg-7s-oaC">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="lj1-OQ-gPo" id="qeB-Xs-M2L"/>
+                            <outlet property="delegate" destination="lj1-OQ-gPo" id="bsD-W9-r3g"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="Rub-Qg-LL7"/>
+                    <connections>
+                        <segue destination="UtY-yH-bzG" kind="push" identifier="segueListMembersToSelNewMembers" id="dWs-Zj-HMU"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dMG-AC-ldm" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-14214" y="-10839"/>
+        </scene>
+        <!--sel New Members Table View Controller-->
+        <scene sceneID="isd-i3-XVq">
+            <objects>
+                <tableViewController id="UtY-yH-bzG" customClass="MAMB09_selNewMembersTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="F8R-NZ-JhW">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="QoT-rH-R3M">
+                                <rect key="frame" x="0.0" y="92" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="QoT-rH-R3M" id="HW5-3u-Uaf">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="UtY-yH-bzG" id="ubM-dC-Itu"/>
+                            <outlet property="delegate" destination="UtY-yH-bzG" id="JJk-zM-Jdi"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="221-AL-GNF"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="uOq-rk-h1D" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-13740" y="-10630"/>
         </scene>
         <!--add Change Table View Controller-->
         <scene sceneID="O5X-S4-osU">
@@ -533,7 +595,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="0US-NI-9lF"/>
-        <segue reference="gk2-9i-3fK"/>
-        <segue reference="ZjV-xs-Xiv"/>
+        <segue reference="2Rt-iZ-59y"/>
+        <segue reference="EzM-79-T0o"/>
     </inferredMetricsTieBreakers>
 </document>

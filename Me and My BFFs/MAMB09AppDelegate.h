@@ -261,7 +261,8 @@ NSInteger gbl_CITY_NOT_FOUND;     // in placetab
 
 NSInteger gbl_shouldUseDelayOnBackwardForeward;  // = 1 (0.5 sec  on what color update)
                                                  // = 0 (no delay on first show of screen)
-UIToolbar *gbl_toolbarForwBack;   // for what color
+UIToolbar *gbl_toolbarForwBack;       // for what color
+UIToolbar *gbl_toolbarMemberAddDel;   // for group member list screen
 
 NSIndexPath *gbl_IdxPathSaved_SelPerson;          // for highlight previous choice when come back to SelPerson
 NSIndexPath *gbl_TBLRPTS1_saveSelectedIndexPath;  // for deselecting with animation when return to TBLRPTS1
@@ -748,6 +749,8 @@ NSURL    *gbl_URLToPerRem; //  the app can "remember" what to put highlight on f
 // Pick from arrays
 NSMutableArray *gbl_arrayPersonsToPickFrom;
 NSMutableArray *gbl_arrayGroupsToPickFrom;
+NSMutableArray *gbl_arrayMembersToPickFrom;
+NSMutableArray *gbl_arrayNewMembersToPickFrom;
 NSInteger       gbl_currentYearInt;
 NSInteger       gbl_currentMonthInt;
 NSInteger       gbl_currentDayInt;

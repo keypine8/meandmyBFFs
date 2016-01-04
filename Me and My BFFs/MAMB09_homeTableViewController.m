@@ -2036,7 +2036,6 @@ nbn(3);
     //[self.tableView scrollToNearestSelectedRowAtScrollPosition: myIdxPath.row
     [self.tableView scrollToNearestSelectedRowAtScrollPosition: UITableViewScrollPositionMiddle
                                                       animated: YES];
-    b(31);
 
     if ([gbl_homeUseMODE isEqualToString: @"edit mode" ] )   // = yellow
     {
@@ -2072,12 +2071,12 @@ nbn(3);
   NSLog(@"ON TAP of ROW in yellow edit mode and Group list,   go to  selPerson screen with group members");
 
         //   CASE_B   - tap on name in cell - for "group"   get group list (selPerson screen where you can "+" or "-" group members)
-// TODO
-//        gbl_groupMemberSelectionMode = @"none";  // to set this, have to tap "+" or "-" in selPerson
-//
-//        dispatch_async(dispatch_get_main_queue(), ^{                                
-//            [self performSegueWithIdentifier: @"segueHomeToSelPerson" sender:self]; // selPerson screen where you can "+" or "-" group members
-//        });
+//  TODO
+        gbl_groupMemberSelectionMode = @"none";  // to set this, have to tap "+" or "-" in selPerson
+
+        dispatch_async(dispatch_get_main_queue(), ^{                                
+            [self performSegueWithIdentifier: @"segueHomeToListMembers" sender:self]; // selPerson screen where you can "+" or "-" group members
+        });
 
     } else {
 
