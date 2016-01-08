@@ -352,8 +352,14 @@ tn();
                 cell.textLabel.numberOfLines             = 1; 
                 cell.textLabel.textColor                 = [UIColor blackColor];
                 cell.textLabel.adjustsFontSizeToFitWidth = YES;
-            });
-            return cell;
+
+                // PROBLEM  name slides left off screen when you hit red round delete "-" button
+                //          and delete button slides from right into screen
+                //
+                cell.indentationWidth = 12.0; // these 2 keep the name on screen when hit red round delete and delete button slides from right
+                cell.indentationLevel =  3;   // these 2 keep the name on screen when hit red round delete and delete button slides from right
+                });
+                return cell;
         }
 //        if (indexPath.row == 7) {   // 2 lines  
 //            thisCellIsActive = 1;
@@ -385,8 +391,14 @@ tn();
                 cell.textLabel.numberOfLines             = 1; 
                 cell.textLabel.textColor                 = [UIColor blackColor];
                 cell.textLabel.adjustsFontSizeToFitWidth = YES;
-            });
-            return cell;
+
+                // PROBLEM  name slides left off screen when you hit red round delete "-" button
+                //          and delete button slides from right into screen
+                //
+                cell.indentationWidth = 12.0; // these 2 keep the name on screen when hit red round delete and delete button slides from right
+                cell.indentationLevel =  3;   // these 2 keep the name on screen when hit red round delete and delete button slides from right
+                });
+                return cell;
         }
             cell.textLabel.numberOfLines             = 1; 
         if (indexPath.row == 7) {   // spacer   this makes bottom cells be  cell.textLabel.numberOfLines = 1; instead of 2 (above)
@@ -453,6 +465,12 @@ tn();
                 cell.textLabel.numberOfLines             = 1; 
                 cell.textLabel.textColor                 = [UIColor blackColor];
                 cell.textLabel.adjustsFontSizeToFitWidth = YES;
+
+                // PROBLEM  name slides left off screen when you hit red round delete "-" button
+                //          and delete button slides from right into screen
+                //
+                cell.indentationWidth = 12.0; // these 2 keep the name on screen when hit red round delete and delete button slides from right
+                cell.indentationLevel =  3;   // these 2 keep the name on screen when hit red round delete and delete button slides from right
             });
             return cell;
         }
@@ -494,6 +512,12 @@ tn();
             cell.textLabel.textColor                 = [UIColor blackColor];
 //            cell.textLabel.font                      = myFont;
             cell.textLabel.adjustsFontSizeToFitWidth = YES;
+
+            // PROBLEM  name slides left off screen when you hit red round delete "-" button
+            //          and delete button slides from right into screen
+            //
+            cell.indentationWidth = 12.0; // these 2 keep the name on screen when hit red round delete and delete button slides from right
+            cell.indentationLevel =  3;   // these 2 keep the name on screen when hit red round delete and delete button slides from right
         });
     }
     if (thisCellIsActive == 1) {
@@ -508,6 +532,12 @@ tn();
             cell.textLabel.textColor                 = [UIColor blackColor];
 //            cell.textLabel.font                      = myFont;
             cell.textLabel.adjustsFontSizeToFitWidth = YES;
+
+            // PROBLEM  name slides left off screen when you hit red round delete "-" button
+            //          and delete button slides from right into screen
+            //
+            cell.indentationWidth = 12.0; // these 2 keep the name on screen when hit red round delete and delete button slides from right
+            cell.indentationLevel =  3;   // these 2 keep the name on screen when hit red round delete and delete button slides from right
         });
     }
 

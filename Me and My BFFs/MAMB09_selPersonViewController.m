@@ -332,17 +332,26 @@
     
     UIFont *myNewFont =  [UIFont boldSystemFontOfSize: 17.0];
 
-    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]) {
-        cell.textLabel.text = [gbl_arrayPersonsToPickFrom   objectAtIndex:indexPath.row];
-        //        cell.textLabel.font = [UIFont systemFontOfSize: 16.0];
-        cell.textLabel.font = myNewFont;
-    }
-//    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"]) {   
-    else {
-        cell.textLabel.text = [gbl_arrayGroupsToPickFrom   objectAtIndex:indexPath.row];
-        // cell.textLabel.font = [UIFont systemFontOfSize: 16.0];
-        cell.textLabel.font = myNewFont;
-    }
+    dispatch_async(dispatch_get_main_queue(), ^(void){
+
+        // PROBLEM  name slides left off screen when you hit red round delete "-" button
+        //          and delete button slides from right into screen
+        //
+        cell.indentationWidth = 12.0; // these 2 keep the name on screen when hit red round delete and delete button slides from right
+        cell.indentationLevel =  3;   // these 2 keep the name on screen when hit red round delete and delete button slides from right
+
+        if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]) {
+            cell.textLabel.text = [gbl_arrayPersonsToPickFrom   objectAtIndex:indexPath.row];
+            //        cell.textLabel.font = [UIFont systemFontOfSize: 16.0];
+            cell.textLabel.font = myNewFont;
+        }
+        //    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"]) {   
+        else {
+            cell.textLabel.text = [gbl_arrayGroupsToPickFrom   objectAtIndex:indexPath.row];
+            // cell.textLabel.font = [UIFont systemFontOfSize: 16.0];
+            cell.textLabel.font = myNewFont;
+        }
+    });
 
     return cell;
 } // cellForRowAtIndexPath

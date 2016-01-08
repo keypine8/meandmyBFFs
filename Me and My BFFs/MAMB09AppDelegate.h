@@ -56,7 +56,9 @@ NSString *gbl_homeEditingState; // if gbl_homeUseMODE = "edit mode"    then can 
 
 
 NSInteger gbl_justLookedAtInfoScreen;
-NSInteger gbl_justAddedRecord;
+NSInteger gbl_justAddedPersonRecord;
+NSInteger gbl_justAddedGroupRecord;
+
 
 NSInteger gbl_starsNSInteger;
 NSString *gbl_starsNSString;
@@ -263,6 +265,10 @@ NSInteger gbl_shouldUseDelayOnBackwardForeward;  // = 1 (0.5 sec  on what color 
                                                  // = 0 (no delay on first show of screen)
 UIToolbar *gbl_toolbarForwBack;       // for what color
 UIToolbar *gbl_toolbarMemberAddDel;   // for group member list screen
+
+NSMutableArray *gbl_selectedMembers_toAdd;
+NSMutableArray *gbl_selectedMembers_toDel;
+NSInteger  gbl_justWroteMemberFile;  // 1=y,0=n
 
 NSIndexPath *gbl_IdxPathSaved_SelPerson;          // for highlight previous choice when come back to SelPerson
 NSIndexPath *gbl_TBLRPTS1_saveSelectedIndexPath;  // for deselecting with animation when return to TBLRPTS1
@@ -628,6 +634,8 @@ UIColor *gbl_colorEditButton_save;  // in order to put back after editing mode c
 UIColor *gbl_colorEditingBG;
 UIColor *gbl_colorEditingBG_current;  // is now yellow or blue for add a record screen  (addChange view)
 UIColor *gbl_colorEditingBGforInputField;
+UIColor *gbl_colorforAddMembers;
+UIColor *gbl_colorforDelMembers;
 
 UIColor *gbl_colorReportsBG;
 UIColor *gbl_colorSelParamForReports;
@@ -749,8 +757,9 @@ NSURL    *gbl_URLToPerRem; //  the app can "remember" what to put highlight on f
 // Pick from arrays
 NSMutableArray *gbl_arrayPersonsToPickFrom;
 NSMutableArray *gbl_arrayGroupsToPickFrom;
-NSMutableArray *gbl_arrayMembersToPickFrom;
+NSMutableArray *gbl_arrayMembersToDisplay;
 NSMutableArray *gbl_arrayNewMembersToPickFrom;
+NSMutableArray *gbl_arrayDeletableMembersToPickFrom;
 NSInteger       gbl_currentYearInt;
 NSInteger       gbl_currentMonthInt;
 NSInteger       gbl_currentDayInt;

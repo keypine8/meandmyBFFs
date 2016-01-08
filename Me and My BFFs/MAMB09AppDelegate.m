@@ -166,13 +166,90 @@
 //    gbl_colorEditing = [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:100.0/255.0 alpha:1.0]; // yellowy for edit
 //    gbl_colorEditing = [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:200.0/255.0 alpha:1.0]; // yellowy for edit
 
-    gbl_colorEditingBG = [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:150.0/255.0 alpha:1.0]; // yellowy for edit
 //    gbl_colorEditing = [UIColor colorWithRed:225.0/255.0 green:225.0/255.0 blue:255.0/255.0 alpha:1.0]; // bluey for edit
 //    gbl_colorEditing = [UIColor colorWithRed:160.0/255.0 green:250.0/255.0 blue:255.0/255.0 alpha:1.0]; // bluey for edit
 //    gbl_colorEditing = [UIColor colorWithRed:252.0/255.0 green:237.0/255.0 blue:189.0/255.0 alpha:1.0]; // orangey for edit
 //    gbl_colorEditing = [UIColor colorWithRed:252.0/255.0 green:224.0/255.0 blue:133.0/255.0 alpha:1.0]; // orangey for edit
 //    gbl_colorEditing = [UIColor colorWithRed:252.0/255.0 green:196.0/255.0 blue:108.0/255.0 alpha:1.0]; // orangey for edit
 //    gbl_colorEditing = [UIColor colorWithRed:229.0/255.0 green:198.0/255.0 blue:166.0/255.0 alpha:1.0]; // browny for edit
+
+//    gbl_color_cGre  = [UIColor colorWithRed:168.0/255.0 green:255.0/255.0 blue:152.0/255.0 alpha:1.0]; // a8ff98
+    gbl_colorEditingBG = [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:150.0/255.0 alpha:1.0]; // yellowy for edit
+
+
+
+
+//    gbl_colorforAddMembers = [UIColor colorWithRed:150.0/255.0 green:255.0/255.0 blue:150.0/255.0 alpha:1.0]; // greeny for add member
+//    gbl_colorforAddMembers = [UIColor colorWithRed:200.0/255.0 green:255.0/255.0 blue:150.0/255.0 alpha:1.0]; // greeny for add member
+//    gbl_colorforAddMembers = [UIColor colorWithRed:230.0/255.0 green:255.0/255.0 blue:150.0/255.0 alpha:1.0]; // greeny for add member
+//    gbl_colorforAddMembers = [UIColor colorWithRed:212.0/255.0 green:255.0/255.0 blue:150.0/255.0 alpha:1.0]; // greeny for add member
+//
+//    gbl_colorforAddMembers = [UIColor colorWithRed:190.0/255.0 green:255.0/255.0 blue:190.0/255.0 alpha:1.0]; // not bright enough
+//    gbl_colorforAddMembers = [UIColor colorWithRed:230.0/255.0 green:255.0/255.0 blue:230.0/255.0 alpha:1.0]; // too light green
+//    gbl_colorforAddMembers = [UIColor colorWithRed:212.0/255.0 green:255.0/255.0 blue:212.0/255.0 alpha:1.0]; // washed out
+//
+//    gbl_colorforAddMembers = [UIColor colorWithRed:150.0/255.0 green:255.0/255.0 blue:150.0/255.0 alpha:1.0]; // greeny for add member
+//    gbl_colorforAddMembers = [UIColor colorWithRed:175.0/255.0 green:255.0/255.0 blue:175.0/255.0 alpha:1.0]; // greeny for add member
+//
+    // add members color
+    //
+//    gbl_colorforAddMembers = [UIColor colorWithRed:200.0/255.0 green:255.0/255.0 blue:200.0/255.0 alpha:1.0]; // greeny for add member
+//
+//    gbl_colorforAddMembers = [UIColor colorWithRed:033.0/255.0 green:128.0/255.0 blue:033.0/255.0 alpha:1.0]; // way dark
+//    gbl_colorforAddMembers = [UIColor colorWithRed:033.0/255.0 green:196.0/255.0 blue:033.0/255.0 alpha:1.0]; // 
+//    gbl_colorforAddMembers = [UIColor colorWithRed:033.0/255.0 green:255.0/255.0 blue:033.0/255.0 alpha:1.0]; // 
+//    gbl_colorforAddMembers = [UIColor colorWithRed:128.0/255.0 green:255.0/255.0 blue:128.0/255.0 alpha:1.0]; //  not bad, touch darker
+//    gbl_colorforAddMembers = [UIColor colorWithRed:096.0/255.0 green:255.0/255.0 blue:096.0/255.0 alpha:1.0]; //
+//    gbl_colorforAddMembers = [UIColor colorWithRed:128.0/255.0 green:255.0/255.0 blue:128.0/255.0 alpha:1.0]; //  not bad
+//    gbl_colorforAddMembers = [UIColor colorWithRed:160.0/255.0 green:255.0/255.0 blue:160.0/255.0 alpha:1.0]; //  
+//
+//    gbl_colorforAddMembers = [UIColor colorWithRed:128.0/255.0 green:255.0/255.0 blue:128.0/255.0 alpha:1.0]; //  not bad
+//
+
+    gbl_colorforAddMembers = [UIColor colorWithRed:160.0/255.0 green:255.0/255.0 blue:160.0/255.0 alpha:1.0]; //  
+
+
+    // del members color
+    //
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1.0]; 
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:100.0/255.0 blue:100.0/255.0 alpha:1.0];
+//
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:033.0/255.0 blue:033.0/255.0 alpha:1.0]; // too rich red
+//    gbl_colorforDelMembers = [UIColor colorWithRed:155.0/255.0 green:033.0/255.0 blue:033.0/255.0 alpha:1.0]; // too dark browny
+//    gbl_colorforDelMembers = [UIColor colorWithRed:200.0/255.0 green:033.0/255.0 blue:033.0/255.0 alpha:1.0]; // too rich red
+//    gbl_colorforDelMembers = [UIColor colorWithRed:200.0/255.0 green:000.0/255.0 blue:000.0/255.0 alpha:1.0]; // too rich red
+//
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:000.0/255.0 blue:000.0/255.0 alpha:1.0]; // too rich red
+//
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:064.0/255.0 blue:064.0/255.0 alpha:1.0]; // too rich red
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0]; // too washed out
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:096.0/255.0 blue:096.0/255.0 alpha:1.0]; // too rich red
+//
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:033.0/255.0 blue:033.0/255.0 alpha:1.0]; // best
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:064.0/255.0 blue:064.0/255.0 alpha:1.0]; // good
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:016.0/255.0 blue:16.0/255.0 alpha:1.0]; // too rich
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:024.0/255.0 blue:024.0/255.0 alpha:1.0]; // good
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:048.0/255.0 blue:048.0/255.0 alpha:1.0]; // not red enough
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:040.0/255.0 blue:040.0/255.0 alpha:1.0]; // not red enough
+//
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:033.0/255.0 blue:033.0/255.0 alpha:1.0]; // best
+//
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:096.0/255.0 blue:096.0/255.0 alpha:1.0]; //
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0]; //
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:160.0/255.0 blue:160.0/255.0 alpha:1.0]; // cant see circles
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0]; // can  see circles
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:112.0/255.0 blue:112.0/255.0 alpha:1.0]; //  too dark (lines strong
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:096.0/255.0 blue:096.0/255.0 alpha:1.0]; // too dark (lines strong)
+//
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:144.0/255.0 blue:144.0/255.0 alpha:1.0]; // hard to see circles
+//
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:136.0/255.0 blue:136.0/255.0 alpha:1.0]; // good
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:120.0/255.0 blue:120.0/255.0 alpha:1.0]; // ok
+//
+    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0]; // can  see circles
+
+
+
 
     gbl_colorEditingBGforInputField = [UIColor colorWithRed:252.0/255.0 green:252.0/255.0 blue:252.0/255.0 alpha:1.0]; // whitish
 
@@ -212,11 +289,43 @@
 
     // make all "Back" buttons have just the arrow
     //
-    //   [UIBarButtonItem.appearance setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -45) forBarMetrics:UIBarMetricsDefault];     // make all "Back" buttons have just the arrow
+
+
+
+
+//   [UIBarButtonItem.appearance setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -45) forBarMetrics:UIBarMetricsDefault];     // make all "Back" buttons have just the arrow
     //  [UIBarButtonItem.appearance setBackButtonTitlePositionAdjustment:UIOffsetMake(, -60) forBarMetrics:UIBarMetricsDefault];     // make all "Back" buttons have just the arrow
-    [UIBarButtonItem.appearance setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics: UIBarMetricsDefault];     // make all "Back" buttons have just the arrow
     //    [UIBarButtonItem.appearance setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics: UIBarMetricsLandscapePhone];     // make all "Back" buttons have just the arrow
-    [UIBarButtonItem.appearance setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics: UIBarMetricsCompact];     // make all "Back" buttons have just the arrow
+//    [UIBarButtonItem.appearance setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics: UIBarMetricsDefault];     // make all "Back" buttons have just the arrow
+
+
+    [UIBarButtonItem.appearance setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics: UIBarMetricsDefault];     // make all "Back" buttons have just the arrow
+
+//    [UIBarButtonItem.appearance setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics: UIBarMetricsCompact];     // make all "Back" buttons have just the arrow
+
+
+    // did not work
+    ////    UIImage *myImageADD2 = [[UIImage imageNamed: @"iconPlusAddGreenBig_66.png"]
+    //    UIImage *myImageADD2 = [[UIImage imageNamed: @"iconPlusAddGreenBig_66"]
+    ////    UIImage *myImageADD2 = [[UIImage imageNamed: @"iconPlusAddGreenBig_44.png"]
+    //                         imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal
+    ////                         imageWithRenderingMode: UIImageRenderingModeAlwaysTemplate
+    //    ];
+    //    [[UIBarButtonItem appearance] setBackButtonBackgroundImage: myImageADD2
+    //                                                      forState: UIControlStateNormal
+    //                                                    barMetrics: UIBarMetricsDefault];
+    //
+
+
+    // ended up putting this paragraphin selReports and MemberList (only used there)
+    //
+    //    UIImage *backBtn = [UIImage imageNamed:@"iconPlusAddGreenBig_66"];
+    //    backBtn = [backBtn imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal];
+    //    self.navigationItem.backBarButtonItem.title=@"";
+    //    self.navigationController.navigationBar.backIndicatorImage = backBtn;
+    //    self.navigationController.navigationBar.backIndicatorTransitionMaskImage = backBtn;
+    //
+
 
 
 

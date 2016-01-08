@@ -1,20 +1,21 @@
 //
-//  MAMB09_selNewMembersTableViewController.m
+//  MAMB09_deleteMembersTableViewController.m
 //  Me&myBFFs
 //
-//  Created by Richard Koskela on 2016-01-04.
+//  Created by Richard Koskela on 2016-01-07.
 //  Copyright © 2016 Richard Koskela. All rights reserved.
 //
 
-#import "MAMB09_selNewMembersTableViewController.h"
+#import "MAMB09_deleteMembersTableViewController.h"
 #import "mamblib.h"
 #import "MAMB09AppDelegate.h"   // to get globals
 
-@interface MAMB09_selNewMembersTableViewController ()
+@interface MAMB09_deleteMembersTableViewController ()
 
 @end
 
-@implementation MAMB09_selNewMembersTableViewController
+@implementation MAMB09_deleteMembersTableViewController
+//@implementation MAMB09_selNewMembersTableViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -25,7 +26,7 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 tn();
-    NSLog(@"in SELECT New MEMBEFRS   viewDidLoad!");
+    NSLog(@"in DELEtE MEMBEFRS   viewDidLoad!");
 
 
 
@@ -41,7 +42,8 @@ tn();
 //    [self.tableView setBackgroundColor: gbl_colorReportsBG];
 //    [self.tableView setBackgroundColor: gbl_colorEditingBG ];
 //    [self.tableView setBackgroundColor: gbl_color_cGre ];
-    [self.tableView setBackgroundColor: gbl_colorforAddMembers ];
+//    [self.tableView setBackgroundColor: gbl_colorforAddMembers ];
+    [self.tableView setBackgroundColor: gbl_colorforDelMembers ];
 
 
 //        UIBarButtonItem *navSaveButton   = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemSave
@@ -83,26 +85,36 @@ tn();
         UILabel *myNavBarLabel      = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 480.0, 44.0)];
 
         NSString *myNavBar2lineTitle;
-        
-        myNavBar2lineTitle = [NSString stringWithFormat:  @"Add New People to\nGroup %@", @"" ]; // default
+//        myNavBar2lineTitle = [NSString stringWithFormat:  @"Delete Members\n from Group %@", gbl_lastSelectedGroup ];
+//      myNavBar2lineTitle = [NSString stringWithFormat:  @"Select Members to DELETE\n from Group %@", gbl_lastSelectedGroup ];
+//      myNavBar2lineTitle = [NSString stringWithFormat:  @"Select Deletable Members\n from Group %@", gbl_lastSelectedGroup ];
+//       myNavBar2lineTitle = [NSString stringWithFormat:  @"Select one to Delete\n from Group %@", gbl_lastSelectedGroup ];
 
-        if (   self.view.bounds.size.width >= 414.0        // 6+ and 6s+  and bigger
-        ) {
-            myNavBar2lineTitle = [NSString stringWithFormat:  @"Add New People to\nGroup %@",gbl_lastSelectedGroup ];
-//myNavBar2lineTitle = [NSString stringWithFormat:  @"Add New People to\nGroup %@", @"Moon Base w2345"];
-        }
-        else if (   self.view.bounds.size.width  < 414.0    // 6 and 6s
-                 && self.view.bounds.size.width  > 320.0
-        ) {
-            myNavBar2lineTitle = [NSString stringWithFormat:  @"Add New People to\nGroup %@",gbl_lastSelectedGroup ];
-//myNavBar2lineTitle = [NSString stringWithFormat:  @"Add New People to\nGroup %@", @"Moon Base w2345"];
-        }
-        else if (   self.view.bounds.size.width <= 320.0   //  5s and 5 and 4s and smaller
-        ) {
-            myNavBar2lineTitle = [NSString stringWithFormat:  @"Add New People to\n%@",gbl_lastSelectedGroup ];
-//myNavBar2lineTitle = [NSString stringWithFormat:  @"Add New People to\n%@", @"Moon Base w2345"];
-        }
+//        myNavBar2lineTitle = [NSString stringWithFormat:  @"Select 8 0 2 4 6 8 0 2 4\n from Group %@", @"1 3 5 7 9 1 3 5"];
+//        myNavBar2lineTitle = [NSString stringWithFormat:  @"Select 8 0 2 4 6 8 0 2 4\n from %@", @"1 3 5 7 9 1 3 5"];
+//        myNavBar2lineTitle = [NSString stringWithFormat:  @"Select 8 0 2 4 67\n from %@", @"1 3 5 7 9 1 3 5"];
+//        myNavBar2lineTitle = [NSString stringWithFormat:  @"Select 8 0 2 4 67\n from %@", @"1 3 5 7 9 1 3 5"];
+//        myNavBar2lineTitle = [NSString stringWithFormat:  @"Delete Members from\nGroup %@",  @"1 3 5 7 9 1 3 5"];
+//        myNavBar2lineTitle = [NSString stringWithFormat:  @"Delete Members from\nGroup %@",@"Moon Base w2345"];
 
+            if (   self.view.bounds.size.width >= 414.0        // 6+ and 6s+  and bigger
+            ) {
+                myNavBar2lineTitle = [NSString stringWithFormat:  @"Delete People from\nGroup %@", gbl_lastSelectedGroup ];
+//myNavBar2lineTitle = [NSString stringWithFormat:  @"Delete Members from\nGroup %@",@"Moon Base w2345"];
+            }
+            else if (   self.view.bounds.size.width  < 414.0    // 6 and 6s
+                     && self.view.bounds.size.width  > 320.0
+            ) {
+                myNavBar2lineTitle = [NSString stringWithFormat:  @"Delete People from\nGroup %@", gbl_lastSelectedGroup ];
+//myNavBar2lineTitle = [NSString stringWithFormat:  @"Delete Members from\nGroup %@",@"Moon Base w2345"];
+            }
+            else if (   self.view.bounds.size.width <= 320.0   //  5s and 5 and 4s and smaller
+            ) {
+                myNavBar2lineTitle = [NSString stringWithFormat:  @"Delete People from\n%@", gbl_lastSelectedGroup ];
+//myNavBar2lineTitle = [NSString stringWithFormat:  @"Delete Members from\n%@",@"Moon Base w2345"];
+            }
+
+//        myNavBar2lineTitle = [NSString stringWithFormat:  @"Select\n for %@", @"xx" ];
 
         myNavBarLabel.numberOfLines = 2;
     //        myNavBarLabel.font          = [UIFont boldSystemFontOfSize: 16.0];
@@ -165,66 +177,15 @@ tn();
     } while (FALSE);
 
 
-//    do {  // set up NAV BAR   BUTTONS
-//
-//
-//        // When someone is creating a new entries, you need a way for them to abandon those entries and not create anything.
-//        // In iOS apps, there are two ways of doing this:
-//        // Use the 'back' button position for the 'cancel' button, and have a single 'done' button.
-//        // This is functionally how many iOS apps handle things, and the method that I would recommend.
-//        // Here you don't have to decide how your back button will behave, and the options are clear to your users.
-//        //
-//        //  navbar=   Cancel   New Contact   Done
-//        //
-//        // http://ux.stackexchange.com/questions/38157/is-there-a-need-for-save-cancel-buttons-in-ios-app
-//
-////        UIBarButtonItem *navSaveButton   = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemSave
-//        UIBarButtonItem *navSaveButton   = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemDone
-//                                                                                         target: self
-//                                                                                         action: @selector(pressedSaveDone:)];
-////        [self.navigationItem.rightBarButtonItem setStyle:UIBarButtonItemStyleDone];
-//        UIBarButtonItem *navCancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
-//                                                                                         target: self
-//                                                                                         action: @selector(pressedCancel:)];
-//
-//
-//        dispatch_async(dispatch_get_main_queue(), ^{  
-//
-////            self.navigationItem.leftBarButtonItems   =
-////                [self.navigationItem.leftBarButtonItems   arrayByAddingObject: navCancelButton]; // add CANCEL BUTTON
-//            self.navigationItem.leftBarButtonItem    = navCancelButton; // replace what's there with  CANCEL BUTTON   Notice no "s" on item
-//            // gold
-//
-//            // below works for when there is an info button
-//            self.navigationItem.rightBarButtonItems  =
-//                [self.navigationItem.rightBarButtonItems  arrayByAddingObject: navSaveButton  ]; // add SAVE   BUTTON
-//
-//            // below works for no info button
-//            // self.navigationItem.RightBarButtonItem    = navSaveButton; // replace what's there with  CANCEL BUTTON   Notice no "s" on item
-//
-////            self.navigationItem.rightBarButtonItems =
-////                [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerForTitle];
-//
-//        });
-//
-//    } while (false);   // set up NAV BAR   BUTTONS
-//
-
-
-
-
     // get array to populate tableview with
 
-    [gbl_arrayNewMembersToPickFrom removeAllObjects];
-    gbl_arrayNewMembersToPickFrom = [[NSMutableArray alloc] init];
+    [gbl_arrayDeletableMembersToPickFrom  removeAllObjects];
+     gbl_arrayDeletableMembersToPickFrom = [[NSMutableArray alloc] init];
 
-    // make array of group member names to check against
+
+    // INCLUDE ONLY      members of gbl_lastSelectedGroup
     //
-    NSMutableArray *grpmemNameArray;
-    grpmemNameArray = [[NSMutableArray alloc]init];
-
-  NSLog(@"gbl_lastSelectedGroup =[%@]",gbl_lastSelectedGroup );
-    for (id myMemberRec in gbl_arrayMem) {
+    for (id myNewMemberRec in gbl_arrayMem) {
 
 // skip example record  TODO in production
 //            if (gbl_show_example_data ==  NO  &&
@@ -232,50 +193,24 @@ tn();
 //                continue;         //  ======================-------------------------------------- PUT BACK when we have non-example data!!!
 //            }
 //
+
         NSArray *psvArray;
         NSString *currGroup;
         NSString *currMember;
         
-        psvArray = [myMemberRec componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"|"]];
+        psvArray = [myNewMemberRec componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"|"]];
         currGroup  = psvArray[0];
         currMember = psvArray[1];
-//  NSLog(@"currGroup  =[%@]",currGroup  );
-//  NSLog(@"currMember =[%@]",currMember );
+
 
         if ([currGroup isEqualToString: gbl_lastSelectedGroup ] )
         {
-            [grpmemNameArray addObject: currMember ];                        //  Person name for pick
-//  NSLog(@"grpmemNameArray =[%@]",grpmemNameArray );
+            [gbl_arrayDeletableMembersToPickFrom  addObject: currMember ];    //  Person name for pick
         }
     } // for each groupmember
-//  NSLog(@"grpmemNameArray =[%@]",grpmemNameArray );
 
-
-    // INCLUDE ONLY  non members of gbl_lastSelectedGroup
-    //
-    for (id myNewMemberRec in gbl_arrayPer) {
-
-// skip example record  TODO in production
-//            if (gbl_show_example_data ==  NO  &&
-//                [mymyMemberRecPSV hasPrefix: @"~"]) {  // skip example record
-//                continue;         //  ======================-------------------------------------- PUT BACK when we have non-example data!!!
-//            }
-//
-
-        NSArray *psvArray;
-        NSString *currMember;
-        
-        psvArray = [myNewMemberRec componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"|"]];
-        currMember = psvArray[0];
-
-
-        if ( [grpmemNameArray containsObject: currMember] ) continue;
-       
-        [gbl_arrayNewMembersToPickFrom addObject: currMember ];                        //  Person name for pick
-    } // for each groupmember
-
- NSLog(@"gbl_arrayNewMembersToPickFrom=%@",gbl_arrayNewMembersToPickFrom);
- NSLog(@"gbl_arrayNewMembersToPickFrom.count=%lu",(unsigned long)gbl_arrayNewMembersToPickFrom.count);
+ NSLog(@"gbl_arrayDeletableMembersToPickFrom =%@",gbl_arrayDeletableMembersToPickFrom );
+ NSLog(@"gbl_arrayDeletableMembersToPickFrom.count=%lu",(unsigned long)gbl_arrayDeletableMembersToPickFrom.count);
 
 
 //    [self updateButtonsToMatchTableState]; // make our view consistent - Update the delete button's title based on how many items are selected.
@@ -307,64 +242,22 @@ tn();
 {
   NSLog(@"in pressedSAVEDONE!!");
 
-    [gbl_selectedMembers_toAdd  removeAllObjects];
-     gbl_selectedMembers_toAdd  = [[NSMutableArray alloc] init];
+    [gbl_selectedMembers_toDel  removeAllObjects];
+     gbl_selectedMembers_toDel  = [[NSMutableArray alloc] init];
         
     for (id idxpath in [self.tableView indexPathsForSelectedRows] )
     {
         UITableViewCell *cell = [self.tableView cellForRowAtIndexPath: idxpath];
-        [gbl_selectedMembers_toAdd  addObject: cell.textLabel.text ];
+        [gbl_selectedMembers_toDel  addObject: cell.textLabel.text ];
     }
 
-    // sort array  gbl_selectedMembers_toAdd 
-    if (gbl_selectedMembers_toAdd)  { [gbl_selectedMembers_toAdd  sortUsingSelector: @selector(caseInsensitiveCompare:)]; }
+    // sort array  gbl_selectedMembers_toDel 
+    if (gbl_selectedMembers_toDel)  { [gbl_selectedMembers_toDel  sortUsingSelector: @selector(caseInsensitiveCompare:)]; }
+
 
   NSLog(@"[self.tableView indexPathsForSelectedRows] =[%@]",[self.tableView indexPathsForSelectedRows] );
-  NSLog(@"gbl_selectedMembers_toAdd  =[%@]",gbl_selectedMembers_toAdd);
-
-    // add the members here
-    //
-    if (gbl_selectedMembers_toAdd.count == 0) return;
-    
-    // before write of array data to file, disallow/ignore user interaction events
-    //
-    if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] ==  NO) {  // suspend handling of touch-related events
-        [[UIApplication sharedApplication] beginIgnoringInteractionEvents];     // typically call this before an animation or transitiion.
-NSLog(@"ARE  IGnoring events");
-    }
-
-    NSString *member_record;
-    for (id add_me in gbl_selectedMembers_toAdd)   // add each new member
-    {
-        member_record = [NSString stringWithFormat:  @"%@|%@||", gbl_lastSelectedGroup, add_me ];
-
-        [gbl_arrayMem addObject: member_record ];                        //  Person name for pick
-
-    }
-
-    MAMB09AppDelegate *myappDelegate =
-        (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
-
-    [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription:  (NSString *) @"member"]; // sort array by name
-    [myappDelegate mambWriteNSArrayWithDescription:               (NSString *) @"member"]; // write new array data to file
-//  [myappDelegate mambReadArrayFileWithDescription:              (NSString *) @"member"]; // read new data from file to array
-
-
-    // after write of array data to file, allow user interaction events again
-    //
-    if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] == YES) {  // re-enable handling of touch-related events
-        [[UIApplication sharedApplication] endIgnoringInteractionEvents];       // typically call this after an animation or transitiion.
-NSLog(@"STOP IGnoring events");
-
-    }
-
-    gbl_justWroteMemberFile = 1;
-
-    dispatch_async(dispatch_get_main_queue(), ^{  
-        [self.navigationController popViewControllerAnimated: YES]; // actually do the "Back" action
-    });
-
-} // pressedSaveDone  for Add selected members
+  NSLog(@"gbl_selectedMembers_toDel  =[%@]",gbl_selectedMembers_toDel);
+} // pressedSaveDone
 
 
 - (IBAction)pressedCancel:(id)sender     // this is the Cancel on left of Nav Bar
@@ -394,7 +287,7 @@ NSLog(@"STOP IGnoring events");
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return gbl_arrayNewMembersToPickFrom.count;
+    return gbl_arrayDeletableMembersToPickFrom.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -402,7 +295,7 @@ NSLog(@"STOP IGnoring events");
 //    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
     
     // create an NSString  we can use as the reuse identifier
-    static NSString *CellIdentifier = @"SelNewPersonCellIdentifier";
+    static NSString *CellIdentifier = @"SelPersonToDeleteCellIdentifier";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: CellIdentifier];
     // if there are no cells to be reused, create a new cell
@@ -420,7 +313,8 @@ NSLog(@"STOP IGnoring events");
 //        cell.tintColor = [UIColor blackColor] ;
 //        cell.accessory.tintColor = [UIColor blackColor] ;
 
-        cell.textLabel.text = [gbl_arrayNewMembersToPickFrom   objectAtIndex:indexPath.row];
+        cell.textLabel.text = [gbl_arrayDeletableMembersToPickFrom  objectAtIndex:indexPath.row];
+
         //        cell.textLabel.font = [UIFont systemFontOfSize: 16.0];
         cell.textLabel.font = myNewFont;
     
@@ -500,3 +394,5 @@ NSLog(@"STOP IGnoring events");
 }
 
 @end
+  //  end of MAMB09_deleteMembersTableViewController.m
+

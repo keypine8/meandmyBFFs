@@ -2169,7 +2169,7 @@ NSLog(@"foundIdx =[%ld]",(long)foundIdx );
         } // ONLY IF    [gbl_homeEditingState isEqualToString:  @"view or change" ] , DELETE  the existing record first
 
 nbn(504);
-        // add the new Grouup database record in a string to the group array
+        // add the new Group database record in a string to the group array
         //
         [gbl_arrayGrp addObject: myNewGroupRecord]; // add the new Group database record in a string to the Group array
 
@@ -2198,7 +2198,7 @@ nbn(504);
 //
 
 
-        gbl_justAddedRecord  = 1;  // cause reload of home data
+        gbl_justAddedGroupRecord  = 1;  // cause reload of home data
 
 
         gbl_lastSelectedGroup           = gbl_DisplayName;  // this row (gbl_lastSelectedGroup) gets selection highlight in home tableview
@@ -2585,7 +2585,7 @@ nbn(510);
     //<.>
     //
 
-                gbl_justAddedRecord  = 1;  // cause reload of home data
+                gbl_justAddedPersonRecord  = 1;  // cause reload of home data
 
 
                 gbl_lastSelectedPerson          = gbl_DisplayName;  // this row (gbl_lastSelectedPerson) gets selection highlight in home tableview

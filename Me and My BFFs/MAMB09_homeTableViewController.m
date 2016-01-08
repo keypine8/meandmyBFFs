@@ -81,7 +81,8 @@
  [ self shouldAutorotate ];
  [ self supportedInterfaceOrientations ];
 
-    gbl_justAddedRecord  = 0;  // do not reload home array
+    gbl_justAddedPersonRecord = 0;  // do not reload home array
+    gbl_justAddedGroupRecord  = 0;  // do not reload home array
 
     self.tableView.allowsSelectionDuringEditing = YES;
 
@@ -621,7 +622,7 @@ ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
     if ([gbl_lastSelectionType isEqualToString:@"group"]) {
         currentLine = [gbl_arrayGrp objectAtIndex:indexPath.row];
     } else {
-        //if ([_mambCurrentEntity isEqualToString:@"person"]) {
+        //if ([_mambCurrentEntity isEqualToString:@"person"]) 
         if ([gbl_lastSelectionType isEqualToString:@"person"]) {
             currentLine = [gbl_arrayPer objectAtIndex:indexPath.row];
         } else {
@@ -679,11 +680,17 @@ ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
 
 //        cell.textLabel.textAlignment = NSTextAlignmentCenter;
 
-        // PROBLEM  name slides left off screen when you hit red round delete
+        // PROBLEM  name slides left off screen when you hit red round delete "-" button
         //          and delete button slides from right into screen
         //
-        cell.indentationWidth = 12.0; // these 2 keep the name on the screen when hit red round delete and delete button slides from right
-        cell.indentationLevel =  3;   // these 2 keep the name on the screen when hit red round delete and delete button slides from right
+        cell.indentationWidth = 12.0; // these 2 keep the name on screen when hit red round delete and delete button slides from right
+        cell.indentationLevel =  3;   // these 2 keep the name on screen when hit red round delete and delete button slides from right
+
+// this jumps if ([gbl_homeUseMODE isEqualToString: @"regular mode"])
+//            {
+//                cell.indentationWidth = 12.0; // these 2 keep the name on screen when hit red round delete and delete button slides from right
+//                cell.indentationLevel =  6;   // these 2 keep the name on screen when hit red round delete and delete button slides from right
+//            }
 
 //        cell.contentView.autoresizingMask  = UIViewAutoresizingFlexibleRightMargin;  // allow right margin to shrink
 
@@ -879,14 +886,17 @@ tn();
         // here the array index to delete matches the incoming  indexPath.row
         //
         [gbl_arrayPer removeObjectAtIndex:  arrayIndexToDelete ]; 
-
+        // gbl_arrayPer  is now golden  (was sorted before)
 
         MAMB09AppDelegate *myappDelegate =
             (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
 
-        [myappDelegate mambWriteNSArrayWithDescription:               (NSString *) @"person"]; // write new array data to file
-        [myappDelegate mambReadArrayFileWithDescription:              (NSString *) @"person"]; // read new data from file to array
+        // was sorted before anyway, but sort it for safety
         [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription:  (NSString *) @"person"]; // sort array by name
+
+        [myappDelegate mambWriteNSArrayWithDescription:               (NSString *) @"person"]; // write new array data to file
+
+    //  [myappDelegate mambReadArrayFileWithDescription:              (NSString *) @"person"]; // read new data from file to array
 
 
         // have to set new gbl_lastSelectedPerson  
@@ -1173,8 +1183,11 @@ NSLog(@"in viewDidAppear()  in HOME");
 //    BOOL cond2 = ![gbl_fromHomeLastEntityRemSaved isEqualToString: gbl_fromHomeCurrentEntityName];
 //
    
-    if (gbl_justAddedRecord == 1) {
-        gbl_justAddedRecord  = 0;
+    if (   gbl_justAddedPersonRecord == 1
+        || gbl_justAddedGroupRecord  == 1
+    ) {
+        gbl_justAddedPersonRecord  = 0;
+        gbl_justAddedGroupRecord   = 0;
   NSLog(@"reloading tableview");
 
         [self.tableView reloadData];
@@ -1407,9 +1420,11 @@ NSLog(@"in viewDidAppear()  in HOME");
 
     //   gbl_homeUseMODE;      // "edit mode" (yellow)   or   "regular mode" (blue)
     if ([gbl_homeUseMODE isEqualToString:@"edit mode"]) {
-        [self.tableView setEditing: YES animated: YES];  // turn cocoa editing mode off when this screen leaves
+        [self.tableView setEditing: YES animated: YES];  // turn cocoa editing mode on
+//        [self.tableView setEditing: YES animated: NO];  // turn cocoa editing mode on
     } else {
-        [self.tableView setEditing: NO  animated: YES];  // turn cocoa editing mode off when this screen leaves
+        [self.tableView setEditing: NO  animated: YES];  // turn cocoa editing mode off
+//        [self.tableView setEditing: NO  animated: NO];  // turn cocoa editing mode off
     }
 
 
@@ -1905,8 +1920,6 @@ tn();    NSLog(@"reaching accessoryButtonTappedForRowWithIndexPath:");
     gbl_accessoryButtonTapped = 1;
 
 
-
-
     [self codeForCellTapOrAccessoryButtonTapWithIndexPath: indexPath ];
 
     gbl_homeUseMODE      = @"edit mode" ;
@@ -2066,6 +2079,8 @@ nbn(3);
             dispatch_async(dispatch_get_main_queue(), ^{                           
                 [self performSegueWithIdentifier: @"segueHomeToAddChange" sender:self]; //  
             });
+            
+            return;
         }
 
   NSLog(@"ON TAP of ROW in yellow edit mode and Group list,   go to  selPerson screen with group members");
@@ -2077,6 +2092,8 @@ nbn(3);
         dispatch_async(dispatch_get_main_queue(), ^{                                
             [self performSegueWithIdentifier: @"segueHomeToListMembers" sender:self]; // selPerson screen where you can "+" or "-" group members
         });
+
+        return;
 
     } else {
 
@@ -2136,6 +2153,8 @@ nbn(3);
         dispatch_async(dispatch_get_main_queue(), ^{                                 // <===  
             [self performSegueWithIdentifier:@"segueHomeToReportList" sender:self]; //  
         });
+    
+        return;
 
     }  // regular mode
 

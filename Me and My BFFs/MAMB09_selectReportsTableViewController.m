@@ -49,6 +49,14 @@ tn(); NSLog(@"in sel Reports viewDidLoad!");
     //
     // http://stackoverflow.com/questions/22413193/dark-shadow-on-navigation-bar-during-segue-transition-after-upgrading-to-xcode-5
 
+
+    // http://stackoverflow.com/questions/18912638/custom-image-for-uinavigation-back-button-in-ios-7
+    UIImage *backBtn = [UIImage imageNamed:@"iconRightArrowBlue_66"];
+    backBtn = [backBtn imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal];
+    self.navigationItem.backBarButtonItem.title=@"";
+    self.navigationController.navigationBar.backIndicatorImage = backBtn;
+    self.navigationController.navigationBar.backIndicatorTransitionMaskImage = backBtn;
+
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -241,6 +249,12 @@ tn(); NSLog(@"in sel Reports viewDidLoad!");
             cell.textLabel.textColor                 = [UIColor blackColor];
 //            cell.textLabel.font                      = myFont;
             cell.textLabel.adjustsFontSizeToFitWidth = YES;
+
+            // PROBLEM  name slides left off screen when you hit red round delete "-" button
+            //          and delete button slides from right into screen
+            //
+            cell.indentationWidth = 12.0; // these 2 keep the name on screen when hit red round delete and delete button slides from right
+            cell.indentationLevel =  3;   // these 2 keep the name on screen when hit red round delete and delete button slides from right
         });
     }
 
@@ -260,8 +274,14 @@ tn(); NSLog(@"in sel Reports viewDidLoad!");
                 cell.textLabel.numberOfLines             = 2; 
                 cell.textLabel.textColor                 = [UIColor blackColor];
                 cell.textLabel.adjustsFontSizeToFitWidth = YES;
-            });
-            return cell;  // row 4, homp
+
+                // PROBLEM  name slides left off screen when you hit red round delete "-" button
+                //          and delete button slides from right into screen
+                //
+                cell.indentationWidth = 12.0; // these 2 keep the name on screen when hit red round delete and delete button slides from right
+                cell.indentationLevel =  3;   // these 2 keep the name on screen when hit red round delete and delete button slides from right
+                });
+                return cell;  // row 4, homp
         }
 
         dispatch_async(dispatch_get_main_queue(), ^{            // <  active
@@ -275,6 +295,12 @@ tn(); NSLog(@"in sel Reports viewDidLoad!");
             cell.textLabel.textColor                 = [UIColor blackColor];
 //            cell.textLabel.font                      = myFont;
             cell.textLabel.adjustsFontSizeToFitWidth = YES;
+
+            // PROBLEM  name slides left off screen when you hit red round delete "-" button
+            //          and delete button slides from right into screen
+            //
+            cell.indentationWidth = 12.0; // these 2 keep the name on screen when hit red round delete and delete button slides from right
+            cell.indentationLevel =  3;   // these 2 keep the name on screen when hit red round delete and delete button slides from right
         });
     }
 

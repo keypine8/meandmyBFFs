@@ -63,9 +63,10 @@
 //        UIImage *myImage = [[UIImage imageNamed: @"forwardArrow_80.png"]
 
 
-
-        UIImage *myImage = [[UIImage imageNamed: @"forwardArrow_029.png"]
-                         imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal ];
+ 
+    // UIImage *myImage = [[UIImage imageNamed: @"forwardArrow_029.png"]
+    UIImage *myImage = [[UIImage imageNamed: @"iconLeftArrowBlue_66"]
+                     imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal ];
 
 // for test
 //        UIImage *myImage = [[UIImage imageNamed: @"iconPlusAddGreenBig_66.png"]
@@ -123,6 +124,7 @@
         self.navigationItem.rightBarButtonItem = _goToReportButton;
         self.navigationItem.titleView           = mySelDate_Label; // mySelDate_Label.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
         self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerForTitle];
+        [self.navigationItem.rightBarButtonItem setImageInsets:UIEdgeInsetsMake(0, 0, -2.0, 0)];  // lower > a bit
     });
 
 

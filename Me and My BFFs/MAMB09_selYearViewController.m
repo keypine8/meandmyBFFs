@@ -39,16 +39,34 @@
 //
 
     // set up navigation bar  right button  ">" in image format
-    UIImage *myImage = [[UIImage imageNamed: @"forwardArrow_029.png"]
+    // UIImage *myImage = [[UIImage imageNamed: @"forwardArrow_029.png"]
+    UIImage *myImage = [[UIImage imageNamed: @"iconLeftArrowBlue_66"]
                      imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal ];
 
 //        UIImage *myImage = [[UIImage imageNamed: @"forwardArrow_01.png"]
 //        UIImage *myImage = [UIImage imageNamed: @"forwardArrow_01.png" inBundle: nil compatibleWithTraitCollection: nil ];
 
+
+
     UIBarButtonItem *_goToReportButton = [[UIBarButtonItem alloc]initWithImage: myImage
                                                                          style: UIBarButtonItemStylePlain 
                                                                         target: self 
                                                                         action: @selector(actionDoReport)];
+
+
+
+//    [[UIBarButtonItem appearance] setTitlePositionAdjustment:UIOffsetMake(15, 15) forBarMetrics:UIBarMetricsDefault];
+
+
+//      UIImageView *myImageView = [[UIImageView alloc] initWithImage: myImage] ;
+//
+//      UIBarButtonItem *_goToReportButton = [[UIBarButtonItem alloc] initWithCustomView: myImageView];
+//      CGRect myrect = myImageView.frame;
+//      CGFloat y_value;
+//      y_value           = [myImageView frame].origin.y ;
+//      myrect.origin.y   = y_value + 20.0;
+//      myImageView.frame = myrect;
+
 
     // set up label for  self.navigationItem.titleView 
     //
@@ -80,9 +98,12 @@
         self.navigationItem.rightBarButtonItem = _goToReportButton;
         self.navigationItem.titleView           = mySelDate_Label; // mySelDate_Label.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
         self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerForTitle];
+//        [self.navigationItem.rightBarButtonItem setImageInsets:UIEdgeInsetsMake(0, 0, -8.0, 0)];  // too  low
+//        [self.navigationItem.rightBarButtonItem setImageInsets:UIEdgeInsetsMake(0, 0,  8.0, 0)];  // too  high
+//        [self.navigationItem.rightBarButtonItem setImageInsets:UIEdgeInsetsMake(0, 0, -4.0, 0)];  // bit  low
+        [self.navigationItem.rightBarButtonItem setImageInsets:UIEdgeInsetsMake(0, 0, -2.0, 0)];  //
+
     });
-
-
 
 
     

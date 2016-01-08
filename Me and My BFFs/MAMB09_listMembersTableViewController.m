@@ -16,7 +16,8 @@
 
 @implementation MAMB09_listMembersTableViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     
     // Uncomment the following line to preserve selection between presentations.
@@ -30,11 +31,67 @@ tn();
 //    [self.tableView setBackgroundColor: gbl_colorReportsBG];
     [self.tableView setBackgroundColor: gbl_colorEditingBG ];
 
-    [gbl_arrayMembersToPickFrom removeAllObjects];
-    gbl_arrayMembersToPickFrom = [[NSMutableArray alloc] init];
+    // set up left arrow for "Back" button
+    //
+    // http://stackoverflow.com/questions/18912638/custom-image-for-uinavigation-back-button-in-ios-7
+//    UIImage *backBtn = [UIImage imageNamed:@"iconPlusAddGreenBig_66"];
+    UIImage *backBtn = [UIImage imageNamed:@"iconRightArrowBlue_66"]; // actually left arrow
+    backBtn = [backBtn imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal];
+    self.navigationItem.backBarButtonItem.title=@"";
+    self.navigationController.navigationBar.backIndicatorImage = backBtn;
+    self.navigationController.navigationBar.backIndicatorTransitionMaskImage = backBtn;
+
+
+    // set the Nav Bar Title  according to where we came from
+    //
+    do {
+        // UIBarButtonItem *myFlexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemFlexibleSpace
+        //                                                                               target: self
+        //                                                                               action: nil];
+
+        UIButton *myInvisibleButton       = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+//        UIButton *myInvisibleButton       = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+        myInvisibleButton.backgroundColor = [UIColor clearColor];
+        UIBarButtonItem *mySpacerNavItem  = [[UIBarButtonItem alloc] initWithCustomView: myInvisibleButton];
+
+        // setup for TWO-LINE NAV BAR TITLE
+
+        //    UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 11, 44)];  // 3rd arg is horizontal length
+//        UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 33, 44)];  // 3rd arg is horizontal length
+        UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 55, 44)];  // 3rd arg is horizontal length
+        UIBarButtonItem *mySpacerForTitle = [[UIBarButtonItem alloc] initWithCustomView:spaceView];
+
+        UILabel *myNavBarLabel      = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 480.0, 44.0)];
+
+        NSString *myNavBar2lineTitle;
+        myNavBar2lineTitle = [NSString stringWithFormat:  @"Current Members of\n Group  %@", gbl_lastSelectedGroup ];
+
+        myNavBarLabel.numberOfLines = 2;
+    //        myNavBarLabel.font          = [UIFont boldSystemFontOfSize: 16.0];
+        myNavBarLabel.font          = [UIFont boldSystemFontOfSize: 14.0];
+        myNavBarLabel.textColor     = [UIColor blackColor];
+        myNavBarLabel.textAlignment = NSTextAlignmentCenter; 
+        myNavBarLabel.text          = myNavBar2lineTitle;
+
+
+        // TWO-LINE NAV BAR TITLE
+        //
+        dispatch_async(dispatch_get_main_queue(), ^{   
+            self.navigationItem.titleView           = myNavBarLabel; // myNavBarLabel.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
+    //      self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerForTitle];
+            self.navigationItem.rightBarButtonItem =  mySpacerForTitle;
+        });
+
+    } while (FALSE);
+
+
+
 
     // INCLUDE ONLY   members of gbl_lastSelectedGroup
     //
+    [gbl_arrayMembersToDisplay removeAllObjects];
+    gbl_arrayMembersToDisplay = [[NSMutableArray alloc] init];
+
     for (id myMemberRec in gbl_arrayMem) {
 
 // skip example record  TODO in production
@@ -54,12 +111,12 @@ tn();
 
         if ([currGroup isEqualToString: gbl_lastSelectedGroup ] )
         {
-            [gbl_arrayMembersToPickFrom addObject: currMember ];                        //  Person name for pick
+            [gbl_arrayMembersToDisplay addObject: currMember ];                        //  Person name for pick
         }
     } // for each groupmember
 
- NSLog(@"gbl_arrayMembersToPickFrom=%@",gbl_arrayMembersToPickFrom);
- NSLog(@"gbl_arrayMembersToPickFrom.count=%lu",(unsigned long)gbl_arrayMembersToPickFrom.count);
+ NSLog(@"gbl_arrayMembersToDisplay=%@",gbl_arrayMembersToDisplay);
+ NSLog(@"gbl_arrayMembersToDisplay.count=%lu",(unsigned long)gbl_arrayMembersToDisplay.count);
 
 } // viewDidLoad
 
@@ -92,22 +149,24 @@ tn();
 
 
     UIImage *myImageADD = [[UIImage imageNamed: @"iconPlusAddGreenBig_66.png"]
-                        imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal ];
+                        imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal
+    ];
     UIImage *myImageDEL = [[UIImage imageNamed: @"iconMinusDelRedBig_66.png"]
-                        imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal ];
+                        imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal 
+    ];
 
 
 //    UIBarButtonItem *memberADD = [[UIBarButtonItem alloc] initWithImage: [UIImage imageNamed: @"iconPlusAddGreenBig_66.png"]
     UIBarButtonItem *memberADD = [[UIBarButtonItem alloc] initWithImage: myImageADD
                                                                   style: UIBarButtonItemStylePlain
                                                                  target: self
-                                                                 action: @selector(pressedGreenAdd)
+                                                                 action: @selector(pressedGreenPlusAdd)
     ];
 //    UIBarButtonItem *memberDEL = [[UIBarButtonItem alloc] initWithImage: [UIImage imageNamed: @"iconMinusDelRedBig_66.png"]
     UIBarButtonItem *memberDEL = [[UIBarButtonItem alloc] initWithImage: myImageDEL
                                                                   style: UIBarButtonItemStylePlain
                                                                  target: self
-                                                                 action: @selector(pressedRedDelete)
+                                                                 action: @selector(pressedRedMinusDel)
     ];
 
     
@@ -206,21 +265,78 @@ nbn(129);
 } // end of   viewWillAppear
 
 
-- (IBAction)pressedGreenAdd
+
+- (void)viewDidAppear:(BOOL)animated
 {
-  NSLog(@"in pressedGreenAdd");
+NSLog(@"in viewDidAppear()  in list  members");
+
+   
+    if (gbl_justWroteMemberFile  == 1
+    ) {
+        gbl_justWroteMemberFile  = 0;
+        
+        // grab new array of members to display
+
+        // INCLUDE ONLY   members of gbl_lastSelectedGroup
+        //
+        [gbl_arrayMembersToDisplay removeAllObjects];
+        gbl_arrayMembersToDisplay = [[NSMutableArray alloc] init];
+
+        for (id myMemberRec in gbl_arrayMem) {
+
+// skip example record  TODO in production
+//            if (gbl_show_example_data ==  NO  &&
+//                [mymyMemberRecPSV hasPrefix: @"~"]) {  // skip example record
+//                continue;         //  ======================-------------------------------------- PUT BACK when we have non-example data!!!
+//            }
+//
+
+            NSArray *psvArray;
+            NSString *currGroup;
+            NSString *currMember;
+            
+            psvArray = [myMemberRec componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"|"]];
+            currGroup  = psvArray[0];
+            currMember = psvArray[1];
+
+            if ([currGroup isEqualToString: gbl_lastSelectedGroup ] )
+            {
+                [gbl_arrayMembersToDisplay addObject: currMember ];                        //  Person name for pick
+            }
+        } // for each groupmember
+
+  NSLog(@"reloading tableview");
+
+        [self.tableView reloadData];
+
+//        [self putHighlightOnCorrectRow ];
+    }
+
+} // viewDidAppear
+
+
+- (IBAction)pressedGreenPlusAdd
+{
+  NSLog(@"in pressedGreenPlusAdd");
 
     dispatch_async(dispatch_get_main_queue(), ^{                                 // <===  
         [self performSegueWithIdentifier:@"segueListMembersToSelNewMembers" sender:self]; //  
     });
 
-} // (IBAction)pressedGreenAdd
+} // (IBAction)pressedGreenPlusAdd
 
 
-- (IBAction)pressedRedDel
+- (IBAction)pressedRedMinusDel
 {
-  NSLog(@"in pressedRedDel");
-} // (IBAction)pressedRedDel
+  NSLog(@"in pressedRedMinusDel");
+//    [self.tableView setBackgroundColor: gbl_colorforDelMembers ];
+
+    dispatch_async(dispatch_get_main_queue(), ^{                                 // <===  
+        [self performSegueWithIdentifier:@"segueListMembersToDeleteMembers" sender:self]; //  
+    });
+
+
+} // (IBAction)pressedRedMinusDel
 
 
 - (void)didReceiveMemoryWarning {
@@ -249,7 +365,7 @@ nbn(129);
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return gbl_arrayMembersToPickFrom.count;
+    return gbl_arrayMembersToDisplay.count;
 }
 
 
@@ -260,7 +376,7 @@ tn();
     //    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
 
     // create an NSString  we can use as the reuse identifier
-    static NSString *CellIdentifier = @"SelPersonCellIdentifier";
+    static NSString *CellIdentifier = @"ListPersonCellIdentifier";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: CellIdentifier];
     // if there are no cells to be reused, create a new cell
@@ -273,9 +389,19 @@ tn();
 
     UIFont *myNewFont =  [UIFont boldSystemFontOfSize: 17.0];
 
-    cell.textLabel.text = [gbl_arrayMembersToPickFrom   objectAtIndex:indexPath.row];
-    //        cell.textLabel.font = [UIFont systemFontOfSize: 16.0];
-    cell.textLabel.font = myNewFont;
+    dispatch_async(dispatch_get_main_queue(), ^(void){
+
+        cell.textLabel.text = [gbl_arrayMembersToDisplay   objectAtIndex:indexPath.row];
+        //        cell.textLabel.font = [UIFont systemFontOfSize: 16.0];
+        cell.textLabel.font = myNewFont;
+
+        // PROBLEM  name slides left off screen when you hit red round delete "-" button
+        //          and delete button slides from right into screen
+        //
+        cell.indentationWidth = 12.0; // these 2 keep the name on screen when hit red round delete and delete button slides from right
+        cell.indentationLevel =  3;   // these 2 keep the name on screen when hit red round delete and delete button slides from right
+    });
+
     
   NSLog(@"cell.textLabel.text=[%@]",cell.textLabel.text);
     return cell;

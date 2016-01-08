@@ -46,6 +46,7 @@
 		5055382E1A9F79C5003DC816 /* MAMB09viewTBLRPTs_1_TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5055382D1A9F79C5003DC816 /* MAMB09viewTBLRPTs_1_TableViewController.m */; };
 		505538341A9FAA6D003DC816 /* MAMB09viewTBLRPTs_2_TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 505538331A9FAA6D003DC816 /* MAMB09viewTBLRPTs_2_TableViewController.m */; };
 		50661E641B41F5AA005BDFCC /* MAMB09_addChangeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50661E631B41F5AA005BDFCC /* MAMB09_addChangeTableViewController.m */; };
+		507133421C3EC44F00AE8207 /* MAMB09_deleteMembersTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 507133411C3EC44F00AE8207 /* MAMB09_deleteMembersTableViewController.m */; };
 		50796A7C1ADC286000360BA4 /* MAMB09_selectReports_B_TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50796A7B1ADC286000360BA4 /* MAMB09_selectReports_B_TableViewController.m */; };
 		50AC38F419D082EB00FF3997 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50AC38F319D082EB00FF3997 /* Foundation.framework */; };
 		50AC38F619D082EB00FF3997 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50AC38F519D082EB00FF3997 /* CoreGraphics.framework */; };
@@ -139,6 +140,8 @@
 		505538331A9FAA6D003DC816 /* MAMB09viewTBLRPTs_2_TableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MAMB09viewTBLRPTs_2_TableViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		50661E621B41F5AA005BDFCC /* MAMB09_addChangeTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAMB09_addChangeTableViewController.h; sourceTree = "<group>"; };
 		50661E631B41F5AA005BDFCC /* MAMB09_addChangeTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAMB09_addChangeTableViewController.m; sourceTree = "<group>"; };
+		507133401C3EC44F00AE8207 /* MAMB09_deleteMembersTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAMB09_deleteMembersTableViewController.h; sourceTree = "<group>"; };
+		507133411C3EC44F00AE8207 /* MAMB09_deleteMembersTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAMB09_deleteMembersTableViewController.m; sourceTree = "<group>"; };
 		50796A7A1ADC286000360BA4 /* MAMB09_selectReports_B_TableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAMB09_selectReports_B_TableViewController.h; sourceTree = "<group>"; };
 		50796A7B1ADC286000360BA4 /* MAMB09_selectReports_B_TableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAMB09_selectReports_B_TableViewController.m; sourceTree = "<group>"; };
 		50AC38F019D082EB00FF3997 /* Me and My BFFs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Me and My BFFs.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -270,6 +273,8 @@
 				5049021D1C3ACDA50031DFC4 /* MAMB09_listMembersTableViewController.m */,
 				5049021F1C3AFBB20031DFC4 /* MAMB09_selNewMembersTableViewController.h */,
 				504902201C3AFBB20031DFC4 /* MAMB09_selNewMembersTableViewController.m */,
+				507133401C3EC44F00AE8207 /* MAMB09_deleteMembersTableViewController.h */,
+				507133411C3EC44F00AE8207 /* MAMB09_deleteMembersTableViewController.m */,
 				50661E621B41F5AA005BDFCC /* MAMB09_addChangeTableViewController.h */,
 				50661E631B41F5AA005BDFCC /* MAMB09_addChangeTableViewController.m */,
 				50AC392B19D08D3200FF3997 /* MAMB09_selectReportsTableViewController.h */,
@@ -530,6 +535,7 @@
 				50C0BAAE1A2108CE005B79F4 /* mambutil.c in Sources */,
 				50C0BAAA1A2108CE005B79F4 /* futdoc.c in Sources */,
 				50C0BAAC1A2108CE005B79F4 /* grpdoc.c in Sources */,
+				507133421C3EC44F00AE8207 /* MAMB09_deleteMembersTableViewController.m in Sources */,
 				50C0BAAF1A2108CE005B79F4 /* futasp.c in Sources */,
 				50AC392D19D08D3200FF3997 /* MAMB09_selectReportsTableViewController.m in Sources */,
 				50C0BAAB1A2108CE005B79F4 /* incocoa.c in Sources */,
