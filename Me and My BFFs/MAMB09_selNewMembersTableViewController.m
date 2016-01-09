@@ -16,7 +16,8 @@
 
 @implementation MAMB09_selNewMembersTableViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     
     // Uncomment the following line to preserve selection between presentations.
@@ -284,6 +285,21 @@ tn();
 } //   viewDidLoad 
 
 
+
+
+- (void)viewDidAppear:(BOOL)animated
+{
+NSLog(@"in viewDidAppear()");
+
+    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
+    [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.0 ];    // after arg seconds
+                                                    
+NSLog(@"in viewDidAppear()");
+} // end of viewDidAppear
+
+
+
+
 - (void)didReceiveMemoryWarning {
     //    [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -325,13 +341,20 @@ tn();
     // add the members here
     //
     if (gbl_selectedMembers_toAdd.count == 0) return;
-    
+
+
+
     // before write of array data to file, disallow/ignore user interaction events
     //
-    if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] ==  NO) {  // suspend handling of touch-related events
-        [[UIApplication sharedApplication] beginIgnoringInteractionEvents];     // typically call this before an animation or transitiion.
-NSLog(@"ARE  IGnoring events");
-    }
+//    if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] ==  NO) {  // suspend handling of touch-related events
+//        [[UIApplication sharedApplication] beginIgnoringInteractionEvents];     // typically call this before an animation or transitiion.
+//NSLog(@"ARE  IGnoring events");
+//    }
+    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+    [myappDelegate mamb_beginIgnoringInteractionEvents ];
+   
+
 
     NSString *member_record;
     for (id add_me in gbl_selectedMembers_toAdd)   // add each new member
@@ -342,21 +365,18 @@ NSLog(@"ARE  IGnoring events");
 
     }
 
-    MAMB09AppDelegate *myappDelegate =
-        (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
-
     [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription:  (NSString *) @"member"]; // sort array by name
     [myappDelegate mambWriteNSArrayWithDescription:               (NSString *) @"member"]; // write new array data to file
 //  [myappDelegate mambReadArrayFileWithDescription:              (NSString *) @"member"]; // read new data from file to array
 
 
-    // after write of array data to file, allow user interaction events again
-    //
-    if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] == YES) {  // re-enable handling of touch-related events
-        [[UIApplication sharedApplication] endIgnoringInteractionEvents];       // typically call this after an animation or transitiion.
-NSLog(@"STOP IGnoring events");
+//    // after write of array data to file, allow user interaction events again
+//    //
+//    if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] == YES) {  // re-enable handling of touch-related events
+//        [[UIApplication sharedApplication] endIgnoringInteractionEvents];       // typically call this after an animation or transitiion.
+//NSLog(@"STOP IGnoring events");
+//    }
 
-    }
 
     gbl_justWroteMemberFile = 1;
 
@@ -371,6 +391,9 @@ NSLog(@"STOP IGnoring events");
 {
   NSLog(@"pressedCancel");
   NSLog(@" // actually do the BACK action ");
+
+    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [myappDelegate mamb_beginIgnoringInteractionEvents ];
 
     dispatch_async(dispatch_get_main_queue(), ^{  
         [self.navigationController popViewControllerAnimated: YES]; // actually do the "Back" action

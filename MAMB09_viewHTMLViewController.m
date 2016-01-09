@@ -885,633 +885,25 @@ tn();
 
     }  // [gbl_currentMenuPlusReportCode hasSuffix: @"wc"] // what color report (calendar day)
 
-  
-//
-//    
-////<.>  this report (grpof2) is now in tblrpts_1
-////
-////
-////    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]) 
-//    if ([gbl_currentMenuPlusReportCode hasSuffix: @"co"])  // compatibility report  (just 2)
-//    {
-//        tn();trn("in Compatibility Potential!");
-//        
-////        // title does not fit any more with addition of i for INFO on right nav bar
-////        //        dispatch_async(dispatch_get_main_queue(), ^{                                // <=== 
-////        //            [[self navigationItem] setTitle: @"Compatibility Potential\011"];
-////        //        });
-////        //
-////        // therefore, make font smaller:
-////        //
-////        dispatch_async( dispatch_get_main_queue(), ^{                                // <=== 
-////            NSDictionary *navbarTitleTextAttributes = [ NSDictionary dictionaryWithObjectsAndKeys:
-////                [UIColor blackColor]                                 ,  NSForegroundColorAttributeName,
-////                [UIFont fontWithName:@"HelveticaNeueBold" size: 17.0],  NSFontAttributeName,
-////                nil
-////            ];
-////            [self.navigationController.navigationBar setTitleTextAttributes: navbarTitleTextAttributes];
-////
-////            [[self navigationItem] setTitle: @"Compatibility Potential"];
-////        });
-////
-//
-//        do { // assemble person1 CSV
-////  NSLog(@"gbl_viewHTML_PSV_personA=%@",gbl_viewHTML_PSV_personA);
-//
-////            my_psvc = [gbl_fromHomeCurrentSelectionPSV cStringUsingEncoding: NSUTF8StringEncoding]; // NSString object to C for pco/personA
-//            my_psvc = [gbl_viewHTML_PSV_personA cStringUsingEncoding: NSUTF8StringEncoding]; // NSString object to C for pco/personA
-//
-//            strcpy(my_psv, my_psvc); // because of const
-////ksn(my_psv);            
-//            strcpy(psvName, csv_get_field(my_psv, "|", 1));
-//            strcpy(psvMth,  csv_get_field(my_psv, "|", 2));
-//            strcpy(psvDay,  csv_get_field(my_psv, "|", 3));
-//            strcpy(psvYear, csv_get_field(my_psv, "|", 4));
-//            strcpy(psvHour, csv_get_field(my_psv, "|", 5));
-//            strcpy(psvMin,  csv_get_field(my_psv, "|", 6));
-//            strcpy(psvAmPm, csv_get_field(my_psv, "|", 7));
-//            strcpy(psvCity, csv_get_field(my_psv, "|", 8));
-//            strcpy(psvProv, csv_get_field(my_psv, "|", 9));
-//            strcpy(psvCountry, csv_get_field(my_psv, "|", 10));
-//            
-//            strcpy(person1_name_for_filename, psvName);
-//            scharswitch(person1_name_for_filename, ' ', '_');
-//
-////ksn(psvMth);ks(psvDay);ks(psvYear);ks(psvHour);ks(psvMin);ks(psvAmPm);tn();
-////ksn(psvCity);ks(psvProv);ks(psvCountry);tn();
-//            
-//            // get longitude and timezone hoursDiff from Greenwich
-//            // by looking up psvCity, psvProv, psvCountry
-//            //
-//            seq_find_exact_citPrvCountry(returnPSV, psvCity, psvProv, psvCountry);
-////ksn(returnPSV);            
-//            strcpy(psvHoursDiff,  csv_get_field(returnPSV, "|", 1));
-//            strcpy(psvLongitude,  csv_get_field(returnPSV, "|", 2));
-////ksn(psvHoursDiff);
-////ksn(psvLongitude);
-//            // set gbl for email
-//            gbl_person_name =  [NSString stringWithUTF8String:psvName ];
-////  NSLog(@"gbl_person_name =%@",gbl_person_name );
-//            // build csv arg for report function call
-//            //
-//            sprintf(csv_person1_string, "%s,%s,%s,%s,%s,%s,%s,%s,%s",
-//                    psvName,psvMth,psvDay,psvYear,psvHour,psvMin,psvAmPm,psvHoursDiff,psvLongitude);
-//            ksn(csv_person1_string);tn();
-//
-//        } while (NO);  // assemble person1 CSV   (do only once)
-//        
-//        do { // assemble person2 CSV
-////            my_psvc = [gbl_fromSelSecondPersonPSV cStringUsingEncoding:NSUTF8StringEncoding]; // NSString object to C  for pco/personB
-//            my_psvc = [gbl_viewHTML_PSV_personB cStringUsingEncoding:NSUTF8StringEncoding]; // NSString object to C  for pco/personB
-//
-//            strcpy(my_psv, my_psvc); // because of const
-//            
-//            strcpy(psvName, csv_get_field(my_psv, "|", 1));
-//            strcpy(psvMth,  csv_get_field(my_psv, "|", 2));
-//            strcpy(psvDay,  csv_get_field(my_psv, "|", 3));
-//            strcpy(psvYear, csv_get_field(my_psv, "|", 4));
-//            strcpy(psvHour, csv_get_field(my_psv, "|", 5));
-//            strcpy(psvMin,  csv_get_field(my_psv, "|", 6));
-//            strcpy(psvAmPm, csv_get_field(my_psv, "|", 7));
-//            strcpy(psvCity, csv_get_field(my_psv, "|", 8));
-//            strcpy(psvProv, csv_get_field(my_psv, "|", 9));
-//            strcpy(psvCountry, csv_get_field(my_psv, "|", 10));
-//            
-//            strcpy(person2_name_for_filename, psvName);
-//            scharswitch(person2_name_for_filename, ' ', '_');
-//            
-//     
-////ksn(psvMth);ks(psvDay);ks(psvYear);ks(psvHour);ks(psvMin);ks(psvAmPm);tn();
-////ksn(psvCity);ks(psvProv);ks(psvCountry);tn();
-//            
-//            // get longitude and timezone hoursDiff from Greenwich
-//            // by looking up psvCity, psvProv, psvCountry
-//            //
-//            seq_find_exact_citPrvCountry(returnPSV, psvCity, psvProv, psvCountry);
-//            
-//            strcpy(psvHoursDiff,  csv_get_field(returnPSV, "|", 1));
-//            strcpy(psvLongitude,  csv_get_field(returnPSV, "|", 2));
-//            
-//            // set gbl for email
-//            gbl_person_name2 =  [NSString stringWithUTF8String:psvName ];
-//
-//            // build csv arg for report function call
-//            //
-//            sprintf(csv_person2_string, "%s,%s,%s,%s,%s,%s,%s,%s,%s",
-//                    psvName,psvMth,psvDay,psvYear,psvHour,psvMin,psvAmPm,psvHoursDiff,psvLongitude);
-//            ksn(csv_person2_string);tn();
-//            
-//        } while (NO);  // assemble person2 CSV   (do only once)
-//
-//        // build HTML file name, path name, an URL in  TMP  Directory
-//        //
-//        sprintf(html_file_name_browser,
-//                "%sgrpof2_%s_%s.html", PREFIX_HTML_FILENAME, person1_name_for_filename, person2_name_for_filename);
-//        sprintf(html_file_name_webview,
-//                "%sgrpof2_%s_%s_webview.html", PREFIX_HTML_FILENAME, person1_name_for_filename, person2_name_for_filename);
-//
-////        Ohtml_file_name = [NSString stringWithUTF8String:html_file_name ];
-////        OpathToHTML = [NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name];
-////        pathToHTML = (char *) [OpathToHTML cStringUsingEncoding:NSUTF8StringEncoding];
-////        /* for use in WebView */
-////        URLtoHTML_forWebview = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name]];
-//        
-//    
-//        
-//        gbl_html_file_name_browser = [NSString stringWithUTF8String:html_file_name_browser ];   // for later sending as email attachment
-//        
-//        Ohtml_file_name_browser = [NSString stringWithUTF8String:html_file_name_browser];
-//        OpathToHTML_browser     = [NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_browser];
-//        pathToHTML_browser      = (char *) [OpathToHTML_browser cStringUsingEncoding:NSUTF8StringEncoding];
-//        
-//        Ohtml_file_name_webview = [NSString stringWithUTF8String:html_file_name_webview ];
-//        OpathToHTML_webview     = [NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_webview];
-//        pathToHTML_webview      = (char *) [OpathToHTML_webview cStringUsingEncoding:NSUTF8StringEncoding];
-//    
-//        URLtoHTML_forWebview = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_webview]];
-//        
-//        //URLtoHTML_forWebview = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_browser]];  // for test
-//        //ksn(pathToHTML_browser);
-//        
-//        gbl_pathToFileToBeEmailed = OpathToHTML_browser;
-//
-//
-//        // remove all "*.html" files from TMP directory before creating new one
-//        //
-//        tmpDirFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:NSTemporaryDirectory() error:NULL];
-////        NSLog(@"tmpDirFiles.count=%lu",(unsigned long)tmpDirFiles.count);
-//        
-//        for (NSString *fil in tmpDirFiles) {
-////            NSLog(@"file to DELETE=%@",fil);
-//            if ([fil hasSuffix: @"html"]) {
-//                [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), fil] error:NULL];
-//            }
-//        }
-//        
-//        
-//        tn();trn("doing compatibility potential c call   mamb_report_just_2_people");
-//        
-//        ks(html_file_name_webview);
-//        
-//        retval = mamb_report_just_2_people(
-//                                           pathToHTML_browser,
-//                                           pathToHTML_webview,
-//                                           csv_person1_string,
-//                                           csv_person2_string
-//                                           );
-//
-//        tn();trn("returning from  compatibility potential c call   mamb_report_just_2_people");
-//
-//
-
-
-
-// now in tblrpts 1 (no webview show)
-//        //tn();trn("returned from HTML creation");
-//        //ksn(html_file_name);
-//        if (retval == 0) {
-//            
-//            // show all files in temp dir
-//            NSFileManager *manager = [NSFileManager defaultManager];
-//            NSArray *fileList = [manager contentsOfDirectoryAtPath:NSTemporaryDirectory() error:nil];
-//            for (NSString *s in fileList){
-//                NSLog(@"TEMP DIR %@", s);
-//            }
-//
-//            /* here, go and look at html report */
-//            // [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"about:blank"]]];  // ?clean for re-use
-//            //        NSURLRequest *HTML_URLrequest = [[NSURLRequest alloc] initWithURL: URLtoHTML_forWebview];
-//            //        self.outletWebView.scalesPageToFit = YES;
-//            //        [self.outletWebView loadRequest: HTML_URLrequest];
-//            
-//            /* here, go and look at html report */
-//            // [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"about:blank"]]];  // ?clean for re-use
-//            
-//            self.outletWebView.scalesPageToFit = YES;
-//
-//            // I was having the same problem. I found a property on the UIWebView
-//            // that allows you to turn off the data detectors.
-//            //
-//            self.outletWebView.dataDetectorTypes = UIDataDetectorTypeNone;
-//            
-//            // place our URL in a URL Request
-//            HTML_URLrequest = [[NSURLRequest alloc] initWithURL: URLtoHTML_forWebview];
-//            
-//            // UIWebView is part of UIKit, so you should operate on the main thread.
-//            //
-//            // old= [self.outletWebView loadRequest: HTML_URLrequest];
-//            //
-//            dispatch_async(dispatch_get_main_queue(), ^(void){
-//                    [self.outletWebView loadRequest:HTML_URLrequest];
-//                }
-//            );
-//        }
-//
-//    }  // [gbl_currentMenuPlusReportCode hasSuffix: @"co"]  // compatibility report  (just 2)
-//
-
-
-// put in ViewTBLRPTs_1_iewController
-//
-//    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"])      // My Best Match in Group ...
-//        tn();trn("in REPORT  My Best Match in Group !");
-//        
-//        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
-//        //     [[self navigationItem] setTitle: @"Personality of       "];
-//            //[[self navigationItem] setTitle: @"Best Match         ."];
-//            //[[self navigationItem] setTitle: @".       Best Match       ."];
-//            //[[self navigationItem] setTitle: @".                             Best Match                             ."];
-//            //[[self navigationItem] setTitle: @"                              Best Match                             ."];
-//            //[[self navigationItem] setTitle: @"Best Match                             ."];
-//            //[[self navigationItem] setTitle: @"Best Match          ."];
-////            [[self navigationItem] setTitle: @"Best Match          ."];
-////              [[self navigationItem] setTitle: @"____________Best Match____________"];
-//              //[[self navigationItem] setTitle: @"_____Match_____"];
-//              //[[self navigationItem] setTitle: @"___Best Match___"];
-//            //  [[self navigationItem] setTitle: @".  Best Match  ."];
-////                [[self navigationItem] setTitle: @"Best  Match  For"];
-//            [[self navigationItem] setTitle: @"Best  Match"];
-//        });
-//
-////
-//        sfill(myStringBuffForTraitCSV, 60, ' ');  // not used here in per, so blanks
-//
-//        // NSString object to C
-//        //const char *my_psvc = [self.fromHomeCurrentSelectionPSV cStringUsingEncoding:NSUTF8StringEncoding];  // psv=pipe-separated values
-//        my_psvc = [gbl_fromHomeCurrentSelectionPSV cStringUsingEncoding:NSUTF8StringEncoding];  // psv=pipe-separated values 
-//        strcpy(my_psv, my_psvc);
-//        ksn(my_psv);
-//        
-//        strcpy(psvName, csv_get_field(my_psv, "|", 1));
-//        strcpy(psvMth,  csv_get_field(my_psv, "|", 2));
-//        strcpy(psvDay,  csv_get_field(my_psv, "|", 3));
-//        strcpy(psvYear, csv_get_field(my_psv, "|", 4));
-//        strcpy(psvHour, csv_get_field(my_psv, "|", 5));
-//        strcpy(psvMin,  csv_get_field(my_psv, "|", 6));
-//        strcpy(psvAmPm, csv_get_field(my_psv, "|", 7));
-//        strcpy(psvCity, csv_get_field(my_psv, "|", 8));
-//        strcpy(psvProv, csv_get_field(my_psv, "|", 9));
-//        strcpy(psvCountry, csv_get_field(my_psv, "|", 10));
-//
-//        ksn(psvMth);ks(psvDay);ks(psvYear);ks(psvHour);ks(psvMin);ks(psvAmPm);tn();
-//        ksn(psvCity);ks(psvProv);ks(psvCountry);tn();
-//        
-//        // get longitude and timezone hoursDiff from Greenwich
-//        // by looking up psvCity, psvProv, psvCountry
-//        //
-//        seq_find_exact_citPrvCountry(returnPSV, psvCity, psvProv, psvCountry);
-//        
-//        strcpy(psvHoursDiff,  csv_get_field(returnPSV, "|", 1));
-//        strcpy(psvLongitude,  csv_get_field(returnPSV, "|", 2));
-//        
-//        // set gbl for email
-//        ksn(psvName);
-//        gbl_person_name =  [NSString stringWithUTF8String:psvName ];
-//
-//        // build csv arg for report function call
-//        //
-//        sprintf(csv_person_string, "%s,%s,%s,%s,%s,%s,%s,%s,%s",
-//                psvName,psvMth,psvDay,psvYear,psvHour,psvMin,psvAmPm,psvHoursDiff,psvLongitude);
-//        ksn(csv_person_string);tn();
-//        
-//    NSLog(@"gbl_lastSelectedPerson=%@", gbl_lastSelectedPerson);
-//    NSLog(@"gbl_lastSelectedGroup =%@", gbl_lastSelectedGroup );
-//
-//        const char *tmp_grp_name_CONST;                                                       // NSString object to C str
-//        char tmp_grp_name[128];                                                             // NSString object to C str
-//        tmp_grp_name_CONST = [gbl_lastSelectedGroup cStringUsingEncoding:NSUTF8StringEncoding]; // NSString object to C str
-//        strcpy(tmp_grp_name, tmp_grp_name_CONST);                                           // NSString object to C str  // because of const
-//        
-//
-//        // build HTML file name  in TMP  Directory
-//        //
-//        strcpy(person_name_for_filename, psvName);
-//        scharswitch(person_name_for_filename, ' ', '_');
-//        strcpy(group_name_for_filename, tmp_grp_name );  
-//        scharswitch(group_name_for_filename, ' ', '_');
-//
-//        sprintf(html_file_name_browser, "%sgrpone_%s_%s.html",        PREFIX_HTML_FILENAME, person_name_for_filename, group_name_for_filename);
-//        sprintf(html_file_name_webview, "%sgrpone_%s_%swebview.html", PREFIX_HTML_FILENAME, person_name_for_filename, group_name_for_filename);
-//        
-//        
-//        gbl_html_file_name_browser = [NSString stringWithUTF8String:html_file_name_browser ];   // for later sending as email attachment
-//        gbl_html_file_name_webview = [NSString stringWithUTF8String:html_file_name_webview ];   // for later viewing in webview
-//
-//
-//        Ohtml_file_name_browser = [NSString stringWithUTF8String:html_file_name_browser ];
-//        OpathToHTML_browser     = [NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_browser];
-//        pathToHTML_browser      = (char *) [OpathToHTML_browser cStringUsingEncoding:NSUTF8StringEncoding];
-//        
-//        Ohtml_file_name_webview = [NSString stringWithUTF8String:html_file_name_webview ];
-//        OpathToHTML_webview     = [NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_webview];
-//        pathToHTML_webview      = (char *) [OpathToHTML_webview cStringUsingEncoding:NSUTF8StringEncoding];
-//        
-//        URLtoHTML_forWebview = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_webview]];
-//        
-//        gbl_pathToFileToBeEmailed = OpathToHTML_browser;
-//        
-//        // remove all "*.html" files from TMP directory before creating new one
-//        //
-//        tmpDirFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:NSTemporaryDirectory() error:NULL];
-//        NSLog(@"tmpDirFiles.count=%lu",(unsigned long)tmpDirFiles.count);
-//        for (NSString *fil in tmpDirFiles) 
-//            NSLog(@"REMOVED THIS fil=%@",fil);
-//            if ([fil hasSuffix: @"html"]) {
-//                [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), fil] error:NULL];
-//            }
-//   
-//        
-//        tn();trn("2 HTMLs !!!!!!!!!!!!!!!!!!!!");
-//        nksn(html_file_name_browser); ksn( html_file_name_webview);
-//        nksn(pathToHTML_browser); ksn(pathToHTML_webview);
-//        NSLog(@"Ohtml_file_name_browser=%@",Ohtml_file_name_browser);
-//        NSLog(@"OpathToHTML_browser=%@",OpathToHTML_browser);
-//
-//        // get a C-string CSV for each member of the group into C array of C strings
-//        //   but excluding  one person who is subject of grpone report "MY Best Match in Group ..." 
-//        //
-//        MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
-//
-//        gbl_grp_CSVs = [myappDelegate getCarrayOfCSVsForGroup: (NSString *) gbl_lastSelectedGroup   // name has spaces
-//                                      excludingThisPersonName: (NSString *) gbl_lastSelectedPerson  // non-empty string for groupOne report
-//        ];
-//        
-////NSLog(@"gbl_grp_CSVs =%@",gbl_grp_CSVs );
-//for (int kk = 0; kk <= gbl_grp_CSVs_idx; kk++) {
-//ksn(gbl_grp_CSVs[kk]);
-//}
-//
-//
-////
-////        retval = mamb_report_personality(     /* in perdoc.o */
-////                                pathToHTML_webview,
-////                                pathToHTML_browser,
-////                                csv_person_string,
-////                                "",  /* could be "return only csv with all trait scores",  instructions */
-////                                /* this instruction arg is now ignored, because arg next, */
-////                                /* myStringBuffForTraitCSV, is ALWAYS populated with trait scores */
-////                                 myStringBuffForTraitCSV);
-////
-//
-/////* ------------------------------------------- */
-////#define CSV_ARRAY_MAX 512  
-////char *mamb_csv_arr [CSV_ARRAY_MAX];
-////int   mamb_csv_idx;
-////int   mamb_csv_idx_max;
-////void  mamb_csv_put(char *line, int length);
-////void  mamb_csv_free(void); 
-////int   is_first_mamb_csv_put;    /* 1=yes, 0=no */
-////int   is_first_mamb_csv_get;    /* 1=yes, 0=no */
-/////* ------------------------------------------- */
-////
-//
-//
-////
-////      /* get all members of group into array 
-////      *    mamb_csv_arr[mamb_csv_idx] = malloc(length + 1);
-////      */
-////
-////      rpt5_person_in_group( 
-////        group_name,
-////        mamb_csv_arr,
-////        num_in_grp,
-////        csv_compare_everyone_with
-////      );
-////
-////
-////void rpt5_person_in_group( 
-////  char *group_name,
-////  char *mamb_csv_arr[],
-////  int   num_in_grp,
-////  char *csv_compare_everyone_with )
-//// 
-////  char html_file_name[256], person_name[32];
-////  char group_buf[32];
-////  int  retval, num_pairs_in_grp;
-////
-////  num_pairs_in_grp = (num_in_grp * (num_in_grp -1)) / 2;
-////  char s_npig[8]; int size_NPIG;
-////  sprintf(s_npig, "%d", num_pairs_in_grp);
-////  size_NPIG = (int)strlen(s_npig);
-////
-////
-////  strcpy(person_name, csv_get_field(csv_compare_everyone_with, ",", 1));
-////  strcpy(group_buf, group_name);
-////  scharswitch(group_buf, ' ', '_');
-////  scharswitch(person_name, ' ', '_');
-////  sprintf(html_file_name, "%s/%sgrpone_%s_%s.html",
-////    dir_html_grpone, PREFIX_HTML_FILENAME, person_name, group_buf);
-////
-////  tn();trn("doing person in group ..."); ks(html_file_name);
-////
-////  /* Now call report function in grpdoc.c
-////  * 
-////  *  struct rank_report_line *out_rank_lines[MAX_IN_RANK_LINE_ARRAY];
-////  *  int out_rank_idx;  * pts to current line in out_rank_lines *
-////  */
-////  out_rank_idx = 0;
-////  retval = mamb_report_person_in_group(  /* in grpdoc.o */
-////    html_file_name,      /* html_file_name */
-////    group_name,          /* group_name */
-////    mamb_csv_arr,        /* in_csv_person_arr[] */
-////    num_in_grp,          /* num_persons_in_grp */
-////    csv_compare_everyone_with,
-////    out_rank_lines,      /* struct rank_report_line *out_rank_lines[]; */
-////    &out_rank_idx 
-////  );
-////
-////  if (retval != 0) {tn(); trn("non-zero retval from mamb_report_person_in_group()");}
-////
-////
-////  /* here, display data in table in cocoa
-////  */
-////
-////
-////
-////
-////
-//
-//
-//
-//
-//
-////        if (retval == 0) {
-////           
-////            // show all files in temp dir
-////            NSFileManager *manager = [NSFileManager defaultManager];
-////            NSArray *fileList = [manager contentsOfDirectoryAtPath:NSTemporaryDirectory() error:nil];
-////            for (NSString *s in fileList){
-////                NSLog(@"TEMP DIR %@", s);
-////            }
-////            
-////            
-////             /* here, go and look at html report */
-////             // [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"about:blank"]]];  // ?clean for re-use
-////             
-////             self.outletWebView.scalesPageToFit = YES;
-////             
-////             // I was having the same problem. I found a property on the UIWebView
-////             // that allows you to turn off the data detectors.
-////             //
-////             self.outletWebView.dataDetectorTypes = UIDataDetectorTypeNone;
-////            
-////             // place our URL in a URL Request
-////             HTML_URLrequest = [[NSURLRequest alloc] initWithURL: URLtoHTML_forWebview];
-////             
-////             // UIWebView is part of UIKit, so you should operate on the main thread.
-////             //
-////             // old= [self.outletWebView loadRequest: HTML_URLrequest];
-////             //
-////             dispatch_async(dispatch_get_main_queue(), ^(void){
-////                 [self.outletWebView loadRequest:HTML_URLrequest];
-////             });
-////        }
-////
-//
-//
-//
-//
-//
-////        dispatch_async(dispatch_get_main_queue(), ^{                                // <=== 
-////            [[self navigationItem] setTitle: @"Best Match"];
-////        });
-////
-//
-//
-//
-//      //  @"hompbm"])     // My Best Match in Group ...
-//
-//
-
-
-    
-//    nb(100);
-//    [self dismissViewControllerAnimated:YES   // this is share button view
-//                             completion:NULL];
-//    bn(101);
-
-//
-//        // put the Toolbar onto bottom of what color view
-//        dispatch_async(dispatch_get_main_queue(), ^(void){
-//            [self.view addSubview: gbl_toolbarForwBack ];
-//        });
-
-
-//        // put the Toolbar onto bottom of what color view
-//        dispatch_async(dispatch_get_main_queue(), ^(void){
-//            [self.view addSubview: gbl_toolbarForwBack ];
-//        });
-
-//nbn(28);
-//        [self.outletWebView reload];
-
 } // viewDidLoad
 
 
-//- (void)webViewDidFinishLoad:(UIWebView *)theWebView
-//{
-//  NSLog(@"in webViewDidFinishLoad! in view HTML");
-//
-//        // put the Toolbar onto bottom of what color view
-//        dispatch_async(dispatch_get_main_queue(), ^(void){
-//            [self.view addSubview: gbl_toolbarForwBack ];
-//        });
-//
-////
-//////  NSLog(@"self.navigationController.navigationBar.translucent=%c",self.navigationController.navigationBar.translucent);
-////
-////    self.navigationController.navigationBar.translucent = NO;   // webview showed up under nav bar, so this
-////
-////
-//////    theWebView.scalesPageToFit = YES;
-////
-////  CGSize contentSize = theWebView.scrollView.contentSize;
-////  CGSize viewSize    = theWebView.bounds.size;
-////
-////kdn(viewSize.width);
-////kdn(contentSize.width);
-////  float rw           = viewSize.width / contentSize.width;
-////kdn(rw);tn();
-////        rw           = contentSize.width / viewSize.width ;
-////kdn(rw);tn();
-////
-//////  rw = 1.0;
-////float rw;
-////  rw = 1.33;  // left chopped
-////kdn(rw);tn();
-////
-////  theWebView.scrollView.minimumZoomScale = rw;
-////  theWebView.scrollView.maximumZoomScale = rw;
-////  theWebView.scrollView.zoomScale        = rw;  
-////
-//////  [[theWebView scrollView] setContentInset:UIEdgeInsetsMake(64, 0, 44, 0)];
-//////  [[theWebView scrollView] setContentInset:UIEdgeInsetsMake(100, 100, 200, 200)];
-//////  [[theWebView scrollView] setContentInset:UIEdgeInsetsMake(0, 200, 0, 0)];
-//////  [[theWebView scrollView] setContentInset:UIEdgeInsetsMake(0, 64, 0, 0)];
-//////  [[theWebView scrollView] setContentInset:UIEdgeInsetsMake(0, 128, 0, 0)];
-////
-////  [[theWebView scrollView] setContentInset:UIEdgeInsetsMake( 600.0, 128.0, 0.0, 0.0)];  // top, left,bot,right
-////
-//////webView.scrollView.scrollIndicatorInsets = webView.scrollView.contentInset;
-////  theWebView.scrollView.scrollIndicatorInsets = theWebView.scrollView.contentInset;
-////
-////
-//
-//}
-//
+- (void)viewDidAppear:(BOOL)animated
+{
+NSLog(@"in viewDidAppear()");
 
-//<.>
-//NSString *urlAddress = @"http://dl.dropbox.com/u/50941418/2-build.html";
-//NSURL *url = [NSURL URLWithString:urlAddress];
-//
-//NSString *html = [NSString stringWithContentsOfURL:url encoding:[NSString defaultCStringEncoding] error:nil];
-//NSRange range = [html rangeOfString:@"<body"];
-//
-//if(range.location != NSNotFound) {
-//    // Adjust style for mobile
-//    float inset = 40;
-//    NSString *style = [NSString stringWithFormat:@"<style>div {max-width: %fpx;}</style>",
-//        self.view.bounds.size.width - inset
-//    ];
-//    html = [NSString stringWithFormat:@"%@%@%@",
-//        [html substringToIndex:range.location],
-//        style,
-//        [html substringFromIndex:range.location]
-//   ];
-//}
-//
-//[webView loadHTMLString:html baseURL:url];
-//
-//<.>
-//
+    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
+    [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.0 ];    // after arg seconds
+                                                    
+NSLog(@"in viewDidAppear()");
+} // end of viewDidAppear
 
 
-//
-//- (BOOL)webView:(UIWebView*)wv
-//shouldStartLoadWithRequest:(NSURLRequest*)request
-//navigationType:(UIWebViewNavigationType)navigationType {
-//
-//NSString *tempURLString = request.URL.absoluteString;
-//
-//if([tempURLString rangeOfString:@"about:blank"].location == NSNotFound)
-//{
-//wv.scalesPageToFit = YES;
-//}
-//else
-//{
-//wv.scalesPageToFit = NO;
-//}
-//
-////[loadingIndicator startAnimating];
-//return YES;
-//}
-//
-//
 
 
-// -(void)webViewDidStartLoad:(UIWebView *)webView
+// ==============   start of email stuff  ================================================================================
+// ==============   start of email stuff  ================================================================================
 
-// ==============   start of email stuff  ====================
 - (void) viewWillAppear: (BOOL) animated
 {
     [super viewWillAppear: animated];
@@ -2487,10 +1879,13 @@ NSLog(@"Ok button pressed");
         self.outletWebView.dataDetectorTypes = UIDataDetectorTypeNone;
 
        
-        if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] ==  NO) {  // suspend handling of touch-related events
-            [[UIApplication sharedApplication] beginIgnoringInteractionEvents];     // typically call this before an animation or transitiion.
-  NSLog(@"ARE  IGnoring events");
-        }
+//        if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] ==  NO) {  // suspend handling of touch-related events
+//            [[UIApplication sharedApplication] beginIgnoringInteractionEvents];     // typically call this before an animation or transitiion.
+//  NSLog(@"ARE  IGnoring events");
+//        }
+        MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
+        [myappDelegate mamb_beginIgnoringInteractionEvents ];
+   
 
         // place our URL in a URL Request
         NSURLRequest *HTML_URLrequestForWhatColorReport;
@@ -2528,10 +1923,13 @@ NSLog(@"Ok button pressed");
             });
         }                                                          
 
-        if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] == YES) {  // re-enable handling of touch-related events
-            [[UIApplication sharedApplication] endIgnoringInteractionEvents];       // typically call this after an animation or transitiion.
-  NSLog(@"STOP IGnoring events");
-        }
+//        if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] == YES) {  // re-enable handling of touch-related events
+//            [[UIApplication sharedApplication] endIgnoringInteractionEvents];       // typically call this after an animation or transitiion.
+//  NSLog(@"STOP IGnoring events");
+//        }
+
+        [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.0 ];    // after arg seconds
+
 
         gbl_shouldUseDelayOnBackwardForeward = 1;   // only use no delay for fast presentation on initial user viewing
     }
@@ -2698,4 +2096,630 @@ NSLog(@"Ok button pressed");
         
         //
 //        double myDelayInSec = 0.5 * (double)NSEC_PER_SEC;
+
+  
+//
+//    
+////<.>  this report (grpof2) is now in tblrpts_1
+////
+////
+////    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]) 
+//    if ([gbl_currentMenuPlusReportCode hasSuffix: @"co"])  // compatibility report  (just 2)
+//    {
+//        tn();trn("in Compatibility Potential!");
+//        
+////        // title does not fit any more with addition of i for INFO on right nav bar
+////        //        dispatch_async(dispatch_get_main_queue(), ^{                                // <=== 
+////        //            [[self navigationItem] setTitle: @"Compatibility Potential\011"];
+////        //        });
+////        //
+////        // therefore, make font smaller:
+////        //
+////        dispatch_async( dispatch_get_main_queue(), ^{                                // <=== 
+////            NSDictionary *navbarTitleTextAttributes = [ NSDictionary dictionaryWithObjectsAndKeys:
+////                [UIColor blackColor]                                 ,  NSForegroundColorAttributeName,
+////                [UIFont fontWithName:@"HelveticaNeueBold" size: 17.0],  NSFontAttributeName,
+////                nil
+////            ];
+////            [self.navigationController.navigationBar setTitleTextAttributes: navbarTitleTextAttributes];
+////
+////            [[self navigationItem] setTitle: @"Compatibility Potential"];
+////        });
+////
+//
+//        do { // assemble person1 CSV
+////  NSLog(@"gbl_viewHTML_PSV_personA=%@",gbl_viewHTML_PSV_personA);
+//
+////            my_psvc = [gbl_fromHomeCurrentSelectionPSV cStringUsingEncoding: NSUTF8StringEncoding]; // NSString object to C for pco/personA
+//            my_psvc = [gbl_viewHTML_PSV_personA cStringUsingEncoding: NSUTF8StringEncoding]; // NSString object to C for pco/personA
+//
+//            strcpy(my_psv, my_psvc); // because of const
+////ksn(my_psv);            
+//            strcpy(psvName, csv_get_field(my_psv, "|", 1));
+//            strcpy(psvMth,  csv_get_field(my_psv, "|", 2));
+//            strcpy(psvDay,  csv_get_field(my_psv, "|", 3));
+//            strcpy(psvYear, csv_get_field(my_psv, "|", 4));
+//            strcpy(psvHour, csv_get_field(my_psv, "|", 5));
+//            strcpy(psvMin,  csv_get_field(my_psv, "|", 6));
+//            strcpy(psvAmPm, csv_get_field(my_psv, "|", 7));
+//            strcpy(psvCity, csv_get_field(my_psv, "|", 8));
+//            strcpy(psvProv, csv_get_field(my_psv, "|", 9));
+//            strcpy(psvCountry, csv_get_field(my_psv, "|", 10));
+//            
+//            strcpy(person1_name_for_filename, psvName);
+//            scharswitch(person1_name_for_filename, ' ', '_');
+//
+////ksn(psvMth);ks(psvDay);ks(psvYear);ks(psvHour);ks(psvMin);ks(psvAmPm);tn();
+////ksn(psvCity);ks(psvProv);ks(psvCountry);tn();
+//            
+//            // get longitude and timezone hoursDiff from Greenwich
+//            // by looking up psvCity, psvProv, psvCountry
+//            //
+//            seq_find_exact_citPrvCountry(returnPSV, psvCity, psvProv, psvCountry);
+////ksn(returnPSV);            
+//            strcpy(psvHoursDiff,  csv_get_field(returnPSV, "|", 1));
+//            strcpy(psvLongitude,  csv_get_field(returnPSV, "|", 2));
+////ksn(psvHoursDiff);
+////ksn(psvLongitude);
+//            // set gbl for email
+//            gbl_person_name =  [NSString stringWithUTF8String:psvName ];
+////  NSLog(@"gbl_person_name =%@",gbl_person_name );
+//            // build csv arg for report function call
+//            //
+//            sprintf(csv_person1_string, "%s,%s,%s,%s,%s,%s,%s,%s,%s",
+//                    psvName,psvMth,psvDay,psvYear,psvHour,psvMin,psvAmPm,psvHoursDiff,psvLongitude);
+//            ksn(csv_person1_string);tn();
+//
+//        } while (NO);  // assemble person1 CSV   (do only once)
+//        
+//        do { // assemble person2 CSV
+////            my_psvc = [gbl_fromSelSecondPersonPSV cStringUsingEncoding:NSUTF8StringEncoding]; // NSString object to C  for pco/personB
+//            my_psvc = [gbl_viewHTML_PSV_personB cStringUsingEncoding:NSUTF8StringEncoding]; // NSString object to C  for pco/personB
+//
+//            strcpy(my_psv, my_psvc); // because of const
+//            
+//            strcpy(psvName, csv_get_field(my_psv, "|", 1));
+//            strcpy(psvMth,  csv_get_field(my_psv, "|", 2));
+//            strcpy(psvDay,  csv_get_field(my_psv, "|", 3));
+//            strcpy(psvYear, csv_get_field(my_psv, "|", 4));
+//            strcpy(psvHour, csv_get_field(my_psv, "|", 5));
+//            strcpy(psvMin,  csv_get_field(my_psv, "|", 6));
+//            strcpy(psvAmPm, csv_get_field(my_psv, "|", 7));
+//            strcpy(psvCity, csv_get_field(my_psv, "|", 8));
+//            strcpy(psvProv, csv_get_field(my_psv, "|", 9));
+//            strcpy(psvCountry, csv_get_field(my_psv, "|", 10));
+//            
+//            strcpy(person2_name_for_filename, psvName);
+//            scharswitch(person2_name_for_filename, ' ', '_');
+//            
+//     
+////ksn(psvMth);ks(psvDay);ks(psvYear);ks(psvHour);ks(psvMin);ks(psvAmPm);tn();
+////ksn(psvCity);ks(psvProv);ks(psvCountry);tn();
+//            
+//            // get longitude and timezone hoursDiff from Greenwich
+//            // by looking up psvCity, psvProv, psvCountry
+//            //
+//            seq_find_exact_citPrvCountry(returnPSV, psvCity, psvProv, psvCountry);
+//            
+//            strcpy(psvHoursDiff,  csv_get_field(returnPSV, "|", 1));
+//            strcpy(psvLongitude,  csv_get_field(returnPSV, "|", 2));
+//            
+//            // set gbl for email
+//            gbl_person_name2 =  [NSString stringWithUTF8String:psvName ];
+//
+//            // build csv arg for report function call
+//            //
+//            sprintf(csv_person2_string, "%s,%s,%s,%s,%s,%s,%s,%s,%s",
+//                    psvName,psvMth,psvDay,psvYear,psvHour,psvMin,psvAmPm,psvHoursDiff,psvLongitude);
+//            ksn(csv_person2_string);tn();
+//            
+//        } while (NO);  // assemble person2 CSV   (do only once)
+//
+//        // build HTML file name, path name, an URL in  TMP  Directory
+//        //
+//        sprintf(html_file_name_browser,
+//                "%sgrpof2_%s_%s.html", PREFIX_HTML_FILENAME, person1_name_for_filename, person2_name_for_filename);
+//        sprintf(html_file_name_webview,
+//                "%sgrpof2_%s_%s_webview.html", PREFIX_HTML_FILENAME, person1_name_for_filename, person2_name_for_filename);
+//
+////        Ohtml_file_name = [NSString stringWithUTF8String:html_file_name ];
+////        OpathToHTML = [NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name];
+////        pathToHTML = (char *) [OpathToHTML cStringUsingEncoding:NSUTF8StringEncoding];
+////        /* for use in WebView */
+////        URLtoHTML_forWebview = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name]];
+//        
+//    
+//        
+//        gbl_html_file_name_browser = [NSString stringWithUTF8String:html_file_name_browser ];   // for later sending as email attachment
+//        
+//        Ohtml_file_name_browser = [NSString stringWithUTF8String:html_file_name_browser];
+//        OpathToHTML_browser     = [NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_browser];
+//        pathToHTML_browser      = (char *) [OpathToHTML_browser cStringUsingEncoding:NSUTF8StringEncoding];
+//        
+//        Ohtml_file_name_webview = [NSString stringWithUTF8String:html_file_name_webview ];
+//        OpathToHTML_webview     = [NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_webview];
+//        pathToHTML_webview      = (char *) [OpathToHTML_webview cStringUsingEncoding:NSUTF8StringEncoding];
+//    
+//        URLtoHTML_forWebview = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_webview]];
+//        
+//        //URLtoHTML_forWebview = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_browser]];  // for test
+//        //ksn(pathToHTML_browser);
+//        
+//        gbl_pathToFileToBeEmailed = OpathToHTML_browser;
+//
+//
+//        // remove all "*.html" files from TMP directory before creating new one
+//        //
+//        tmpDirFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:NSTemporaryDirectory() error:NULL];
+////        NSLog(@"tmpDirFiles.count=%lu",(unsigned long)tmpDirFiles.count);
+//        
+//        for (NSString *fil in tmpDirFiles) {
+////            NSLog(@"file to DELETE=%@",fil);
+//            if ([fil hasSuffix: @"html"]) {
+//                [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), fil] error:NULL];
+//            }
+//        }
+//        
+//        
+//        tn();trn("doing compatibility potential c call   mamb_report_just_2_people");
+//        
+//        ks(html_file_name_webview);
+//        
+//        retval = mamb_report_just_2_people(
+//                                           pathToHTML_browser,
+//                                           pathToHTML_webview,
+//                                           csv_person1_string,
+//                                           csv_person2_string
+//                                           );
+//
+//        tn();trn("returning from  compatibility potential c call   mamb_report_just_2_people");
+//
+//
+
+
+
+// now in tblrpts 1 (no webview show)
+//        //tn();trn("returned from HTML creation");
+//        //ksn(html_file_name);
+//        if (retval == 0) {
+//            
+//            // show all files in temp dir
+//            NSFileManager *manager = [NSFileManager defaultManager];
+//            NSArray *fileList = [manager contentsOfDirectoryAtPath:NSTemporaryDirectory() error:nil];
+//            for (NSString *s in fileList){
+//                NSLog(@"TEMP DIR %@", s);
+//            }
+//
+//            /* here, go and look at html report */
+//            // [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"about:blank"]]];  // ?clean for re-use
+//            //        NSURLRequest *HTML_URLrequest = [[NSURLRequest alloc] initWithURL: URLtoHTML_forWebview];
+//            //        self.outletWebView.scalesPageToFit = YES;
+//            //        [self.outletWebView loadRequest: HTML_URLrequest];
+//            
+//            /* here, go and look at html report */
+//            // [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"about:blank"]]];  // ?clean for re-use
+//            
+//            self.outletWebView.scalesPageToFit = YES;
+//
+//            // I was having the same problem. I found a property on the UIWebView
+//            // that allows you to turn off the data detectors.
+//            //
+//            self.outletWebView.dataDetectorTypes = UIDataDetectorTypeNone;
+//            
+//            // place our URL in a URL Request
+//            HTML_URLrequest = [[NSURLRequest alloc] initWithURL: URLtoHTML_forWebview];
+//            
+//            // UIWebView is part of UIKit, so you should operate on the main thread.
+//            //
+//            // old= [self.outletWebView loadRequest: HTML_URLrequest];
+//            //
+//            dispatch_async(dispatch_get_main_queue(), ^(void){
+//                    [self.outletWebView loadRequest:HTML_URLrequest];
+//                }
+//            );
+//        }
+//
+//    }  // [gbl_currentMenuPlusReportCode hasSuffix: @"co"]  // compatibility report  (just 2)
+//
+
+
+// put in ViewTBLRPTs_1_iewController
+//
+//    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"])      // My Best Match in Group ...
+//        tn();trn("in REPORT  My Best Match in Group !");
+//        
+//        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+//        //     [[self navigationItem] setTitle: @"Personality of       "];
+//            //[[self navigationItem] setTitle: @"Best Match         ."];
+//            //[[self navigationItem] setTitle: @".       Best Match       ."];
+//            //[[self navigationItem] setTitle: @".                             Best Match                             ."];
+//            //[[self navigationItem] setTitle: @"                              Best Match                             ."];
+//            //[[self navigationItem] setTitle: @"Best Match                             ."];
+//            //[[self navigationItem] setTitle: @"Best Match          ."];
+////            [[self navigationItem] setTitle: @"Best Match          ."];
+////              [[self navigationItem] setTitle: @"____________Best Match____________"];
+//              //[[self navigationItem] setTitle: @"_____Match_____"];
+//              //[[self navigationItem] setTitle: @"___Best Match___"];
+//            //  [[self navigationItem] setTitle: @".  Best Match  ."];
+////                [[self navigationItem] setTitle: @"Best  Match  For"];
+//            [[self navigationItem] setTitle: @"Best  Match"];
+//        });
+//
+////
+//        sfill(myStringBuffForTraitCSV, 60, ' ');  // not used here in per, so blanks
+//
+//        // NSString object to C
+//        //const char *my_psvc = [self.fromHomeCurrentSelectionPSV cStringUsingEncoding:NSUTF8StringEncoding];  // psv=pipe-separated values
+//        my_psvc = [gbl_fromHomeCurrentSelectionPSV cStringUsingEncoding:NSUTF8StringEncoding];  // psv=pipe-separated values 
+//        strcpy(my_psv, my_psvc);
+//        ksn(my_psv);
+//        
+//        strcpy(psvName, csv_get_field(my_psv, "|", 1));
+//        strcpy(psvMth,  csv_get_field(my_psv, "|", 2));
+//        strcpy(psvDay,  csv_get_field(my_psv, "|", 3));
+//        strcpy(psvYear, csv_get_field(my_psv, "|", 4));
+//        strcpy(psvHour, csv_get_field(my_psv, "|", 5));
+//        strcpy(psvMin,  csv_get_field(my_psv, "|", 6));
+//        strcpy(psvAmPm, csv_get_field(my_psv, "|", 7));
+//        strcpy(psvCity, csv_get_field(my_psv, "|", 8));
+//        strcpy(psvProv, csv_get_field(my_psv, "|", 9));
+//        strcpy(psvCountry, csv_get_field(my_psv, "|", 10));
+//
+//        ksn(psvMth);ks(psvDay);ks(psvYear);ks(psvHour);ks(psvMin);ks(psvAmPm);tn();
+//        ksn(psvCity);ks(psvProv);ks(psvCountry);tn();
+//        
+//        // get longitude and timezone hoursDiff from Greenwich
+//        // by looking up psvCity, psvProv, psvCountry
+//        //
+//        seq_find_exact_citPrvCountry(returnPSV, psvCity, psvProv, psvCountry);
+//        
+//        strcpy(psvHoursDiff,  csv_get_field(returnPSV, "|", 1));
+//        strcpy(psvLongitude,  csv_get_field(returnPSV, "|", 2));
+//        
+//        // set gbl for email
+//        ksn(psvName);
+//        gbl_person_name =  [NSString stringWithUTF8String:psvName ];
+//
+//        // build csv arg for report function call
+//        //
+//        sprintf(csv_person_string, "%s,%s,%s,%s,%s,%s,%s,%s,%s",
+//                psvName,psvMth,psvDay,psvYear,psvHour,psvMin,psvAmPm,psvHoursDiff,psvLongitude);
+//        ksn(csv_person_string);tn();
+//        
+//    NSLog(@"gbl_lastSelectedPerson=%@", gbl_lastSelectedPerson);
+//    NSLog(@"gbl_lastSelectedGroup =%@", gbl_lastSelectedGroup );
+//
+//        const char *tmp_grp_name_CONST;                                                       // NSString object to C str
+//        char tmp_grp_name[128];                                                             // NSString object to C str
+//        tmp_grp_name_CONST = [gbl_lastSelectedGroup cStringUsingEncoding:NSUTF8StringEncoding]; // NSString object to C str
+//        strcpy(tmp_grp_name, tmp_grp_name_CONST);                                           // NSString object to C str  // because of const
+//        
+//
+//        // build HTML file name  in TMP  Directory
+//        //
+//        strcpy(person_name_for_filename, psvName);
+//        scharswitch(person_name_for_filename, ' ', '_');
+//        strcpy(group_name_for_filename, tmp_grp_name );  
+//        scharswitch(group_name_for_filename, ' ', '_');
+//
+//        sprintf(html_file_name_browser, "%sgrpone_%s_%s.html",        PREFIX_HTML_FILENAME, person_name_for_filename, group_name_for_filename);
+//        sprintf(html_file_name_webview, "%sgrpone_%s_%swebview.html", PREFIX_HTML_FILENAME, person_name_for_filename, group_name_for_filename);
+//        
+//        
+//        gbl_html_file_name_browser = [NSString stringWithUTF8String:html_file_name_browser ];   // for later sending as email attachment
+//        gbl_html_file_name_webview = [NSString stringWithUTF8String:html_file_name_webview ];   // for later viewing in webview
+//
+//
+//        Ohtml_file_name_browser = [NSString stringWithUTF8String:html_file_name_browser ];
+//        OpathToHTML_browser     = [NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_browser];
+//        pathToHTML_browser      = (char *) [OpathToHTML_browser cStringUsingEncoding:NSUTF8StringEncoding];
+//        
+//        Ohtml_file_name_webview = [NSString stringWithUTF8String:html_file_name_webview ];
+//        OpathToHTML_webview     = [NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_webview];
+//        pathToHTML_webview      = (char *) [OpathToHTML_webview cStringUsingEncoding:NSUTF8StringEncoding];
+//        
+//        URLtoHTML_forWebview = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_webview]];
+//        
+//        gbl_pathToFileToBeEmailed = OpathToHTML_browser;
+//        
+//        // remove all "*.html" files from TMP directory before creating new one
+//        //
+//        tmpDirFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:NSTemporaryDirectory() error:NULL];
+//        NSLog(@"tmpDirFiles.count=%lu",(unsigned long)tmpDirFiles.count);
+//        for (NSString *fil in tmpDirFiles) 
+//            NSLog(@"REMOVED THIS fil=%@",fil);
+//            if ([fil hasSuffix: @"html"]) {
+//                [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), fil] error:NULL];
+//            }
+//   
+//        
+//        tn();trn("2 HTMLs !!!!!!!!!!!!!!!!!!!!");
+//        nksn(html_file_name_browser); ksn( html_file_name_webview);
+//        nksn(pathToHTML_browser); ksn(pathToHTML_webview);
+//        NSLog(@"Ohtml_file_name_browser=%@",Ohtml_file_name_browser);
+//        NSLog(@"OpathToHTML_browser=%@",OpathToHTML_browser);
+//
+//        // get a C-string CSV for each member of the group into C array of C strings
+//        //   but excluding  one person who is subject of grpone report "MY Best Match in Group ..." 
+//        //
+//        MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
+//
+//        gbl_grp_CSVs = [myappDelegate getCarrayOfCSVsForGroup: (NSString *) gbl_lastSelectedGroup   // name has spaces
+//                                      excludingThisPersonName: (NSString *) gbl_lastSelectedPerson  // non-empty string for groupOne report
+//        ];
+//        
+////NSLog(@"gbl_grp_CSVs =%@",gbl_grp_CSVs );
+//for (int kk = 0; kk <= gbl_grp_CSVs_idx; kk++) {
+//ksn(gbl_grp_CSVs[kk]);
+//}
+//
+//
+////
+////        retval = mamb_report_personality(     /* in perdoc.o */
+////                                pathToHTML_webview,
+////                                pathToHTML_browser,
+////                                csv_person_string,
+////                                "",  /* could be "return only csv with all trait scores",  instructions */
+////                                /* this instruction arg is now ignored, because arg next, */
+////                                /* myStringBuffForTraitCSV, is ALWAYS populated with trait scores */
+////                                 myStringBuffForTraitCSV);
+////
+//
+/////* ------------------------------------------- */
+////#define CSV_ARRAY_MAX 512  
+////char *mamb_csv_arr [CSV_ARRAY_MAX];
+////int   mamb_csv_idx;
+////int   mamb_csv_idx_max;
+////void  mamb_csv_put(char *line, int length);
+////void  mamb_csv_free(void); 
+////int   is_first_mamb_csv_put;    /* 1=yes, 0=no */
+////int   is_first_mamb_csv_get;    /* 1=yes, 0=no */
+/////* ------------------------------------------- */
+////
+//
+//
+////
+////      /* get all members of group into array 
+////      *    mamb_csv_arr[mamb_csv_idx] = malloc(length + 1);
+////      */
+////
+////      rpt5_person_in_group( 
+////        group_name,
+////        mamb_csv_arr,
+////        num_in_grp,
+////        csv_compare_everyone_with
+////      );
+////
+////
+////void rpt5_person_in_group( 
+////  char *group_name,
+////  char *mamb_csv_arr[],
+////  int   num_in_grp,
+////  char *csv_compare_everyone_with )
+//// 
+////  char html_file_name[256], person_name[32];
+////  char group_buf[32];
+////  int  retval, num_pairs_in_grp;
+////
+////  num_pairs_in_grp = (num_in_grp * (num_in_grp -1)) / 2;
+////  char s_npig[8]; int size_NPIG;
+////  sprintf(s_npig, "%d", num_pairs_in_grp);
+////  size_NPIG = (int)strlen(s_npig);
+////
+////
+////  strcpy(person_name, csv_get_field(csv_compare_everyone_with, ",", 1));
+////  strcpy(group_buf, group_name);
+////  scharswitch(group_buf, ' ', '_');
+////  scharswitch(person_name, ' ', '_');
+////  sprintf(html_file_name, "%s/%sgrpone_%s_%s.html",
+////    dir_html_grpone, PREFIX_HTML_FILENAME, person_name, group_buf);
+////
+////  tn();trn("doing person in group ..."); ks(html_file_name);
+////
+////  /* Now call report function in grpdoc.c
+////  * 
+////  *  struct rank_report_line *out_rank_lines[MAX_IN_RANK_LINE_ARRAY];
+////  *  int out_rank_idx;  * pts to current line in out_rank_lines *
+////  */
+////  out_rank_idx = 0;
+////  retval = mamb_report_person_in_group(  /* in grpdoc.o */
+////    html_file_name,      /* html_file_name */
+////    group_name,          /* group_name */
+////    mamb_csv_arr,        /* in_csv_person_arr[] */
+////    num_in_grp,          /* num_persons_in_grp */
+////    csv_compare_everyone_with,
+////    out_rank_lines,      /* struct rank_report_line *out_rank_lines[]; */
+////    &out_rank_idx 
+////  );
+////
+////  if (retval != 0) {tn(); trn("non-zero retval from mamb_report_person_in_group()");}
+////
+////
+////  /* here, display data in table in cocoa
+////  */
+////
+////
+////
+////
+////
+//
+//
+//
+//
+//
+////        if (retval == 0) {
+////           
+////            // show all files in temp dir
+////            NSFileManager *manager = [NSFileManager defaultManager];
+////            NSArray *fileList = [manager contentsOfDirectoryAtPath:NSTemporaryDirectory() error:nil];
+////            for (NSString *s in fileList){
+////                NSLog(@"TEMP DIR %@", s);
+////            }
+////            
+////            
+////             /* here, go and look at html report */
+////             // [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"about:blank"]]];  // ?clean for re-use
+////             
+////             self.outletWebView.scalesPageToFit = YES;
+////             
+////             // I was having the same problem. I found a property on the UIWebView
+////             // that allows you to turn off the data detectors.
+////             //
+////             self.outletWebView.dataDetectorTypes = UIDataDetectorTypeNone;
+////            
+////             // place our URL in a URL Request
+////             HTML_URLrequest = [[NSURLRequest alloc] initWithURL: URLtoHTML_forWebview];
+////             
+////             // UIWebView is part of UIKit, so you should operate on the main thread.
+////             //
+////             // old= [self.outletWebView loadRequest: HTML_URLrequest];
+////             //
+////             dispatch_async(dispatch_get_main_queue(), ^(void){
+////                 [self.outletWebView loadRequest:HTML_URLrequest];
+////             });
+////        }
+////
+//
+//
+//
+//
+//
+////        dispatch_async(dispatch_get_main_queue(), ^{                                // <=== 
+////            [[self navigationItem] setTitle: @"Best Match"];
+////        });
+////
+//
+//
+//
+//      //  @"hompbm"])     // My Best Match in Group ...
+//
+//
+
+
+    
+//    nb(100);
+//    [self dismissViewControllerAnimated:YES   // this is share button view
+//                             completion:NULL];
+//    bn(101);
+
+//
+//        // put the Toolbar onto bottom of what color view
+//        dispatch_async(dispatch_get_main_queue(), ^(void){
+//            [self.view addSubview: gbl_toolbarForwBack ];
+//        });
+
+
+//        // put the Toolbar onto bottom of what color view
+//        dispatch_async(dispatch_get_main_queue(), ^(void){
+//            [self.view addSubview: gbl_toolbarForwBack ];
+//        });
+
+//nbn(28);
+//        [self.outletWebView reload];
+
+
+
+
+//- (void)webViewDidFinishLoad:(UIWebView *)theWebView
+//{
+//  NSLog(@"in webViewDidFinishLoad! in view HTML");
+//
+//        // put the Toolbar onto bottom of what color view
+//        dispatch_async(dispatch_get_main_queue(), ^(void){
+//            [self.view addSubview: gbl_toolbarForwBack ];
+//        });
+//
+////
+//////  NSLog(@"self.navigationController.navigationBar.translucent=%c",self.navigationController.navigationBar.translucent);
+////
+////    self.navigationController.navigationBar.translucent = NO;   // webview showed up under nav bar, so this
+////
+////
+//////    theWebView.scalesPageToFit = YES;
+////
+////  CGSize contentSize = theWebView.scrollView.contentSize;
+////  CGSize viewSize    = theWebView.bounds.size;
+////
+////kdn(viewSize.width);
+////kdn(contentSize.width);
+////  float rw           = viewSize.width / contentSize.width;
+////kdn(rw);tn();
+////        rw           = contentSize.width / viewSize.width ;
+////kdn(rw);tn();
+////
+//////  rw = 1.0;
+////float rw;
+////  rw = 1.33;  // left chopped
+////kdn(rw);tn();
+////
+////  theWebView.scrollView.minimumZoomScale = rw;
+////  theWebView.scrollView.maximumZoomScale = rw;
+////  theWebView.scrollView.zoomScale        = rw;  
+////
+//////  [[theWebView scrollView] setContentInset:UIEdgeInsetsMake(64, 0, 44, 0)];
+//////  [[theWebView scrollView] setContentInset:UIEdgeInsetsMake(100, 100, 200, 200)];
+//////  [[theWebView scrollView] setContentInset:UIEdgeInsetsMake(0, 200, 0, 0)];
+//////  [[theWebView scrollView] setContentInset:UIEdgeInsetsMake(0, 64, 0, 0)];
+//////  [[theWebView scrollView] setContentInset:UIEdgeInsetsMake(0, 128, 0, 0)];
+////
+////  [[theWebView scrollView] setContentInset:UIEdgeInsetsMake( 600.0, 128.0, 0.0, 0.0)];  // top, left,bot,right
+////
+//////webView.scrollView.scrollIndicatorInsets = webView.scrollView.contentInset;
+////  theWebView.scrollView.scrollIndicatorInsets = theWebView.scrollView.contentInset;
+////
+////
+//
+//}
+//
+
+//<.>
+//NSString *urlAddress = @"http://dl.dropbox.com/u/50941418/2-build.html";
+//NSURL *url = [NSURL URLWithString:urlAddress];
+//
+//NSString *html = [NSString stringWithContentsOfURL:url encoding:[NSString defaultCStringEncoding] error:nil];
+//NSRange range = [html rangeOfString:@"<body"];
+//
+//if(range.location != NSNotFound) {
+//    // Adjust style for mobile
+//    float inset = 40;
+//    NSString *style = [NSString stringWithFormat:@"<style>div {max-width: %fpx;}</style>",
+//        self.view.bounds.size.width - inset
+//    ];
+//    html = [NSString stringWithFormat:@"%@%@%@",
+//        [html substringToIndex:range.location],
+//        style,
+//        [html substringFromIndex:range.location]
+//   ];
+//}
+//
+//[webView loadHTMLString:html baseURL:url];
+//
+//<.>
+//
+
+
+//
+//- (BOOL)webView:(UIWebView*)wv
+//shouldStartLoadWithRequest:(NSURLRequest*)request
+//navigationType:(UIWebViewNavigationType)navigationType {
+//
+//NSString *tempURLString = request.URL.absoluteString;
+//
+//if([tempURLString rangeOfString:@"about:blank"].location == NSNotFound)
+//{
+//wv.scalesPageToFit = YES;
+//}
+//else
+//{
+//wv.scalesPageToFit = NO;
+//}
+//
+////[loadingIndicator startAnimating];
+//return YES;
+//}
+//
+//
+
+
+// -(void)webViewDidStartLoad:(UIWebView *)webView
 

@@ -266,6 +266,7 @@ nbn(129);
 
 
 
+
 - (void)viewDidAppear:(BOOL)animated
 {
 NSLog(@"in viewDidAppear()  in list  members");
@@ -308,9 +309,10 @@ NSLog(@"in viewDidAppear()  in list  members");
   NSLog(@"reloading tableview");
 
         [self.tableView reloadData];
-
-//        [self putHighlightOnCorrectRow ];
     }
+
+    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
+    [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.0 ];    // after arg seconds
 
 } // viewDidAppear
 
@@ -318,6 +320,9 @@ NSLog(@"in viewDidAppear()  in list  members");
 - (IBAction)pressedGreenPlusAdd
 {
   NSLog(@"in pressedGreenPlusAdd");
+
+    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
+    [myappDelegate mamb_beginIgnoringInteractionEvents ];
 
     dispatch_async(dispatch_get_main_queue(), ^{                                 // <===  
         [self performSegueWithIdentifier:@"segueListMembersToSelNewMembers" sender:self]; //  
@@ -330,6 +335,9 @@ NSLog(@"in viewDidAppear()  in list  members");
 {
   NSLog(@"in pressedRedMinusDel");
 //    [self.tableView setBackgroundColor: gbl_colorforDelMembers ];
+
+    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
+    [myappDelegate mamb_beginIgnoringInteractionEvents ];
 
     dispatch_async(dispatch_get_main_queue(), ^{                                 // <===  
         [self performSegueWithIdentifier:@"segueListMembersToDeleteMembers" sender:self]; //  

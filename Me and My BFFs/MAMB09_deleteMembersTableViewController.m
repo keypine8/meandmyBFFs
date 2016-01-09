@@ -17,7 +17,8 @@
 @implementation MAMB09_deleteMembersTableViewController
 //@implementation MAMB09_selNewMembersTableViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     
     // Uncomment the following line to preserve selection between presentations.
@@ -219,6 +220,18 @@ tn();
 } //   viewDidLoad 
 
 
+- (void)viewDidAppear:(BOOL)animated
+{
+NSLog(@"in viewDidAppear()");
+
+    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
+    [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.0 ];    // after arg seconds
+                                                    
+NSLog(@"in viewDidAppear()");
+} // end of viewDidAppear
+
+
+
 - (void)didReceiveMemoryWarning {
     //    [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -242,6 +255,8 @@ tn();
 {
   NSLog(@"in pressedSAVEDONE!!");
 
+    // put selected names to delete into array  gbl_selectedMembers_toDel  
+    //
     [gbl_selectedMembers_toDel  removeAllObjects];
      gbl_selectedMembers_toDel  = [[NSMutableArray alloc] init];
         
@@ -254,9 +269,71 @@ tn();
     // sort array  gbl_selectedMembers_toDel 
     if (gbl_selectedMembers_toDel)  { [gbl_selectedMembers_toDel  sortUsingSelector: @selector(caseInsensitiveCompare:)]; }
 
-
   NSLog(@"[self.tableView indexPathsForSelectedRows] =[%@]",[self.tableView indexPathsForSelectedRows] );
   NSLog(@"gbl_selectedMembers_toDel  =[%@]",gbl_selectedMembers_toDel);
+
+
+    // DELETE the members here
+    //
+    if (gbl_selectedMembers_toDel.count == 0) return;
+    
+    // before write of array data to file, disallow/ignore user interaction events --------------------------------------------------------
+    //
+
+//    if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] ==  NO) {  // suspend handling of touch-related events
+//        [[UIApplication sharedApplication] beginIgnoringInteractionEvents];     // typically call this before an animation or transitiion.
+//NSLog(@"ARE  IGnoring events");
+//    }
+    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [myappDelegate mamb_beginIgnoringInteractionEvents ];
+
+    // delete each selected member from gbl_arrayMem 
+    //     having group  = gbl_lastSelectedGroup
+    //        and member = name in gbl_selectedMembers_toDel
+    //
+    NSInteger arrayIndexToDelete;
+    for (id del_me_name  in  gbl_selectedMembers_toDel)
+    {
+
+        // searchfor element in gbl_arrayMem
+        // matching   group = gbl_lastSelectedGroup   and   member = del_me_indexPath.text
+        // delete that element in gbl_arrayMem
+        // 
+        NSString *prefixStr;
+        prefixStr = [NSString stringWithFormat: @"%@|%@|", gbl_lastSelectedGroup, del_me_name ];
+        for (int i=0;  i < gbl_arrayMem.count;  i++) {
+
+            if ( [gbl_arrayMem[i]  hasPrefix: prefixStr ] )
+            {
+                // delete this array element
+                [gbl_arrayMem removeObjectAtIndex:  i ]; 
+  NSLog(@"DELETED =[%@]",gbl_arrayMem[i]);
+            }
+        } // for each gbl_arrayMem
+
+    } // for each member to delete
+
+
+    // was sorted before anyway, but sort it for safety
+    [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription:  (NSString *) @"member"]; // sort array by name
+
+    [myappDelegate mambWriteNSArrayWithDescription:               (NSString *) @"member"]; // write new array data to file
+    //  [myappDelegate mambReadArrayFileWithDescription:              (NSString *) @"person"]; // read new data from file to array
+
+
+//    // after write of array data to file, allow user interaction events again  ----------------------------------------------------------
+//    //
+//    if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] == YES) {  // re-enable handling of touch-related events
+//        [[UIApplication sharedApplication] endIgnoringInteractionEvents];       // typically call this after an animation or transitiion.
+//NSLog(@"STOP IGnoring events");
+//    }
+
+    gbl_justWroteMemberFile = 1;
+
+    dispatch_async(dispatch_get_main_queue(), ^{  
+        [self.navigationController popViewControllerAnimated: YES]; // actually do the "Back" action
+    });
+
 } // pressedSaveDone
 
 
@@ -264,6 +341,9 @@ tn();
 {
   NSLog(@"pressedCancel");
   NSLog(@" // actually do the BACK action ");
+
+    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [myappDelegate mamb_beginIgnoringInteractionEvents ];
 
     dispatch_async(dispatch_get_main_queue(), ^{  
         [self.navigationController popViewControllerAnimated: YES]; // actually do the "Back" action
@@ -396,3 +476,20 @@ tn();
 @end
   //  end of MAMB09_deleteMembersTableViewController.m
 
+//        NSMutableArray  *member_fields;
+//        NSString        *current_group;
+//        NSString        *current_member;
+//        NSInteger        idx_in_gblarrayMem;
+//        idx_in_gblarrayMem = -1;
+//        for (id member_record in gbl_arrayMem) 
+//        {
+//            idx_in_gblarrayMem = idx_in_gblarrayMem + 1;
+//            member_fields  = [member_record  componentsSeparatedByString:@"|"];
+//            current_group  = member_fields[0];
+//            current_member = member_fields[1];
+//            if (   [current_group  caseInsensitiveCompare: gbl_lastSelectedGroup ] == NSOrderedSame
+//                && [current_member caseInsensitiveCompare: del_me_indexPath.text ] == NSOrderedSame  )
+//            {
+//            }
+//        }
+//

@@ -83,6 +83,19 @@ tn(); NSLog(@"in sel Reports viewDidLoad!");
 } /* viewDidLoad */
 
 
+
+- (void)viewDidAppear:(BOOL)animated
+{
+NSLog(@"in viewDidAppear()");
+
+    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
+    [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.2 ];    // after arg seconds
+                                                    
+NSLog(@"in viewDidAppear()");
+} // end of viewDidAppear
+
+
+
 - (void)didReceiveMemoryWarning {
     //    [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -523,33 +536,6 @@ nbn(78);
 
 } // viewWillAppear
 
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    NSLog(@"in viewDidAppear  in rpt sel!");
-    //[super viewDidAppear];
-
-
-// for test
-
-//
-//    // set cell to whatever you want to be selected first
-//    // yellow highlight that cell
-//    //
-//    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-//    if (indexPath) {
-//        [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
-//        //        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-//        // [self.tableView selectRowAtIndexPath:indexPath animated:YES  scrollPosition:UITableViewScrollPositionNone];
-//    }
-//
-
-
-
-
-
-}
-
 // - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 - (NSIndexPath *)tableView:(UITableView *)tableView willDeselectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -672,6 +658,10 @@ nbn(78);
 tn();trn("selRPT after ");   NSLog(@"gbl_currentMenuPlusReportCode =%@",gbl_currentMenuPlusReportCode ); tn();
 
 
+
+    [myappDelegate mamb_beginIgnoringInteractionEvents ];
+
+   
 
     //if ([stringForCurrentlySelectedRow hasPrefix: @"Calendar Year"] ) 
     if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompcy"] ) {
@@ -1012,3 +1002,25 @@ NSLog(@"in dispatch  for SELECT YEAR  !");
 // self.picker.frame = pickerFrame;
 //
 
+
+//
+//- (void)viewDidAppear:(BOOL)animated
+//{
+//    NSLog(@"in viewDidAppear  in rpt sel!");
+//    //[super viewDidAppear];
+//
+//
+//// for test
+//
+////
+////    // set cell to whatever you want to be selected first
+////    // yellow highlight that cell
+////    //
+////    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+////    if (indexPath) {
+////        [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
+////        //        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+////        // [self.tableView selectRowAtIndexPath:indexPath animated:YES  scrollPosition:UITableViewScrollPositionNone];
+////    }
+//}
+//

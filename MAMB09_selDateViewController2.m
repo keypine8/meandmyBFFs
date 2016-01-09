@@ -394,6 +394,19 @@ tn();tr("date fmt  date fmt  date fmt  date fmt  date fmt  date fmt  date fmt  "
 
 } // viewDidLoad
 
+
+- (void)viewDidAppear:(BOOL)animated
+{
+NSLog(@"in viewDidAppear()");
+
+    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
+    [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.0 ];    // after arg seconds
+                                                    
+NSLog(@"in viewDidAppear()");
+} // end of viewDidAppear
+
+
+
 - (void)viewWillAppear:(BOOL)animated
 {
     trn("in viewWillAppear in MAMB09_sel DATE Controller2 ");
@@ -606,13 +619,17 @@ tn();tr("date fmt  date fmt  date fmt  date fmt  date fmt  date fmt  date fmt  "
     //NSArray *myPSVarr = [gbl_fromHomeCurrentSelectionPSV componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"|"]];
 
 
+    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
 
-//    NSArray *psvArray;
     if (   [gbl_currentMenuPlusReportCode isEqualToString: @"hompwc"]  ) {
         NSLog(@"gbl_fromHomeCurrentSelectionPSV=%@",gbl_fromHomeCurrentSelectionPSV);
 
+
+        [myappDelegate mamb_beginIgnoringInteractionEvents ];
+   
+
         // gbl_lastSelectedYear is 1. remembered year (above) 2. default current year (above) or 3. didSelect year (spinner)
-        MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
+
         [myappDelegate saveLastSelectionForEntity: (NSString *) @"person"
                           havingName: (NSString *) gbl_lastSelectedPerson
             updatingRememberCategory: (NSString *) @"day"
@@ -633,7 +650,9 @@ tn();tr("date fmt  date fmt  date fmt  date fmt  date fmt  date fmt  date fmt  "
 //  NSLog(@"gbl_PSVtappedPerson_fromGRP=%@",gbl_PSVtappedPerson_fromGRP);  ?
 
 
-        MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
+        [myappDelegate mamb_beginIgnoringInteractionEvents ];
+
+
         [myappDelegate saveLastSelectionForEntity: (NSString *) @"group"
                           havingName: (NSString *) gbl_lastSelectedGroup
             updatingRememberCategory: (NSString *) @"day"

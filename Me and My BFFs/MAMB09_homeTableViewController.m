@@ -206,35 +206,6 @@ nbn(100);
 
 
 
-//
-//NSMutableParagraphStyle *style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
-//[style setAlignment:NSTextAlignmentCenter];
-////[style setLineBreakMode:NSLineBreakByWordWrapping];
-//UIFont *font1 = [UIFont fontWithName:@"HelveticaNeue-Medium" size:20.0f];
-////UIFont *font2 = [UIFont fontWithName:@"HelveticaNeue-Light"  size:20.0f];
-//NSDictionary *dict1 = @{
-////        NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle),
-//                  NSFontAttributeName: font1,
-//        NSParagraphStyleAttributeName: style
-//    }; // Added line
-////NSDictionary *dict2 = @{NSUnderlineStyleAttributeName:@(NSUnderlineStyleNone),
-////                        NSFontAttributeName:font2,
-////                        NSParagraphStyleAttributeName:style}; // Added line
-//
-//NSMutableAttributedString *attString = [[NSMutableAttributedString alloc] init];
-////[attString appendAttributedString:[[NSAttributedString alloc] initWithString:@"LINE 1\n"    attributes:dict1]];
-//[attString appendAttributedString:[[NSAttributedString alloc] initWithString:@"Edit"    attributes:dict1]];
-////[attString appendAttributedString:[[NSAttributedString alloc] initWithString:@"line 2"      attributes:dict2]];
-////[self.resolveButton setAttributedTitle:attString forState:UIControlStateNormal];
-//[self.editButtonItem setAttributedTitle: attString   forState: UIControlStateNormal];  // nno such selector
-////[[self.resolveButton titleLabel] setNumberOfLines:0];
-////[[self.resolveButton titleLabel] setLineBreakMode:NSLineBreakByWordWrapping];
-//
-//
-
-
-
-
 
 //        self.navigationItem.rightBarButtonItems =
 //            [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerForTitle];
@@ -298,7 +269,7 @@ nbn(100);
 //            self.navigationItem.leftBarButtonItems = gbl_homeLeftItemsWithAddButton;
 
 
-        }); // end of  dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+        }); // end of  dispatch_async(dispatch_get_main_queue()
 
     } // end of   set up the two nav bar arrays, one with + button for add a record, one without
 
@@ -406,6 +377,7 @@ ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
         //            NSLog (@"building member file from other files");
         //            //  TODO
         //            // without this todo done,  here you lose all  members from all groups 
+        //        } 
         //        else if (!haveGrp && havePer && haveMem) {
         //            NSLog (@"building group file from other files");
         //            //  TODO
@@ -539,6 +511,8 @@ ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
 
 
 } // - (void)viewDidLoad
+
+
 
 
 - (void)didReceiveMemoryWarning {
@@ -863,7 +837,10 @@ tn();
   NSLog(@"editingStyle =[%ld]",(long)editingStyle);
   NSLog(@"indexPath.row=%ld",(long)indexPath.row);
 
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
+// TODO  delete group
+
+    if (editingStyle == UITableViewCellEditingStyleDelete)
+    {
   NSLog(@"in commitEditingStyle  2222222");
 
         NSInteger arrayCountBeforeDelete;
@@ -876,10 +853,14 @@ tn();
 
         // before write of array data to file, disallow/ignore user interaction events
         //
-        if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] ==  NO) {  // suspend handling of touch-related events
-            [[UIApplication sharedApplication] beginIgnoringInteractionEvents];     // typically call this before an animation or transitiion.
-  NSLog(@"ARE  IGnoring events");
-        }
+
+//        if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] ==  NO) {  // suspend handling of touch-related events
+//            [[UIApplication sharedApplication] beginIgnoringInteractionEvents];     // typically call this before an animation or transitiion.
+//  NSLog(@"ARE  IGnoring events");
+//        }
+        MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+        [myappDelegate mamb_beginIgnoringInteractionEvents ];
 
 
         // delete the array element for this cell
@@ -887,9 +868,6 @@ tn();
         //
         [gbl_arrayPer removeObjectAtIndex:  arrayIndexToDelete ]; 
         // gbl_arrayPer  is now golden  (was sorted before)
-
-        MAMB09AppDelegate *myappDelegate =
-            (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
 
         // was sorted before anyway, but sort it for safety
         [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription:  (NSString *) @"person"]; // sort array by name
@@ -935,10 +913,14 @@ tn();
 
         // after write of array data to file, allow user interaction events again
         //
-        if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] == YES) {  // re-enable handling of touch-related events
-            [[UIApplication sharedApplication] endIgnoringInteractionEvents];       // typically call this after an animation or transitiion.
-  NSLog(@"STOP IGnoring events");
-        }
+
+//        if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] == YES) {  // re-enable handling of touch-related events
+//            [[UIApplication sharedApplication] endIgnoringInteractionEvents];       // typically call this after an animation or transitiion.
+//  NSLog(@"STOP IGnoring events");
+//        }
+
+        [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.5 ];    // after arg seconds
+
 
     }  // if (editingStyle == UITableViewCellEditingStyleDelete) 
 
@@ -1029,6 +1011,9 @@ tn();
 //        [self setEditing: YES   animated: YES ];
 //    }
 
+    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [myappDelegate mamb_beginIgnoringInteractionEvents ];
+   
     dispatch_async(dispatch_get_main_queue(), ^{                                 // <===  
         [self performSegueWithIdentifier:@"segueHomeToAddChange" sender:self]; //  
     });
@@ -1196,11 +1181,16 @@ NSLog(@"in viewDidAppear()  in HOME");
     }
 
     if (gbl_fromHomeCurrentEntityName  &&  gbl_fromHomeCurrentEntityName.length != 0) { // have to have something to save
+
         if ( (  gbl_fromHomeLastEntityRemSaved == nil )    ||                                          // if  nil, save
              (  gbl_fromHomeLastEntityRemSaved != nil   &&
                ![gbl_fromHomeLastEntityRemSaved isEqualToString: gbl_fromHomeCurrentEntityName] ) )  // if not equal to last, save
         {
-                MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global methods in appDelegate.m
+
+                MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+                [myappDelegate mamb_beginIgnoringInteractionEvents ];
+               
 
                 if ([gbl_fromHomeCurrentSelectionType isEqualToString:@"person"]) {
                     [myappDelegate mambWriteNSArrayWithDescription: (NSString *) @"perrem"];
@@ -1210,6 +1200,9 @@ NSLog(@"in viewDidAppear()  in HOME");
                 }
 
                 gbl_fromHomeLastEntityRemSaved = gbl_fromHomeCurrentEntityName;
+
+
+                [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.6 ];    // after arg seconds
         }
     }   // save the  remember array  gbl_arrayPerRem or gbl_arrayGrpRem
     
@@ -1231,6 +1224,12 @@ NSLog(@"in viewDidAppear()  in HOME");
     //[self.tableView scrollToNearestSelectedRowAtScrollPosition: myIdxPath.row
     [self.tableView scrollToNearestSelectedRowAtScrollPosition: UITableViewScrollPositionMiddle
                                                       animated: YES];
+
+
+
+    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.0 ];    // after arg seconds
+
 } // end of viewDidAppear
 
 
@@ -1466,6 +1465,10 @@ tn();trn("in doStuffOnEnteringForeground()   NOTIFICATION method     lastEntity 
     // lastEntity stuff  to (1) highlight correct entity in seg control at top and (2) highlight correct person-or-group
     //
     //
+
+    [myappDelegate mamb_beginIgnoringInteractionEvents ];
+
+
     NSString *lastEntityStr = [myappDelegate mambReadLastEntityFile];
 
     //NSCharacterSet *myNSCharacterSet = [NSCharacterSet characterSetWithCharactersInString:@"=|"];
@@ -1496,6 +1499,10 @@ tn();trn("in doStuffOnEnteringForeground()   NOTIFICATION method     lastEntity 
     if ([gbl_lastSelectionType isEqualToString:@"person"]) _segEntityOutlet.selectedSegmentIndex = 1; // highlight correct entity in seg ctrl
 
     [self putHighlightOnCorrectRow ];
+
+   
+    [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.3 ];    // after arg seconds
+
 
 //
 //    // highlight correct entity in seg control at top
@@ -1914,7 +1921,6 @@ nbn(311);
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath{
 tn();    NSLog(@"reaching accessoryButtonTappedForRowWithIndexPath:");
-//    [self performSegueWithIdentifier:@"modaltodetails" sender:[self.eventsTable cellForRowAtIndexPath:indexPath]];
 
 
     gbl_accessoryButtonTapped = 1;
@@ -2071,6 +2077,9 @@ nbn(3);
 
             gbl_accessoryButtonTapped = 0;   // reset this to default  (could be = 1 here)
 
+            MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
+            [myappDelegate mamb_beginIgnoringInteractionEvents ];
+
             // Because background threads are not prioritized and will wait a very long time
             // before you see results, unlike the mainthread, which is high priority for the system.
             //
@@ -2088,6 +2097,9 @@ nbn(3);
         //   CASE_B   - tap on name in cell - for "group"   get group list (selPerson screen where you can "+" or "-" group members)
 //  TODO
         gbl_groupMemberSelectionMode = @"none";  // to set this, have to tap "+" or "-" in selPerson
+
+        MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
+        [myappDelegate mamb_beginIgnoringInteractionEvents ];
 
         dispatch_async(dispatch_get_main_queue(), ^{                                
             [self performSegueWithIdentifier: @"segueHomeToListMembers" sender:self]; // selPerson screen where you can "+" or "-" group members
@@ -2149,6 +2161,9 @@ nbn(3);
 
             return;  // cannot got rpt list   because of missing information > stay in this screen
         }
+
+        MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
+        [myappDelegate mamb_beginIgnoringInteractionEvents ];
 
         dispatch_async(dispatch_get_main_queue(), ^{                                 // <===  
             [self performSegueWithIdentifier:@"segueHomeToReportList" sender:self]; //  
@@ -2867,4 +2882,33 @@ nbn(357);
 //  NSLog(@"gbl_tapped_CellRow_inYellowGroupList =[%ld]",(long)gbl_tapped_CellRow_inYellowGroupList );
 //  NSLog(@"gbl_tapped_Right_i_inYellowGroupList =[%ld]",(long)gbl_tapped_Right_i_inYellowGroupList );
 //
+
+
+//
+//NSMutableParagraphStyle *style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+//[style setAlignment:NSTextAlignmentCenter];
+////[style setLineBreakMode:NSLineBreakByWordWrapping];
+//UIFont *font1 = [UIFont fontWithName:@"HelveticaNeue-Medium" size:20.0f];
+////UIFont *font2 = [UIFont fontWithName:@"HelveticaNeue-Light"  size:20.0f];
+//NSDictionary *dict1 = @{
+////        NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle),
+//                  NSFontAttributeName: font1,
+//        NSParagraphStyleAttributeName: style
+//    }; // Added line
+////NSDictionary *dict2 = @{NSUnderlineStyleAttributeName:@(NSUnderlineStyleNone),
+////                        NSFontAttributeName:font2,
+////                        NSParagraphStyleAttributeName:style}; // Added line
+//
+//NSMutableAttributedString *attString = [[NSMutableAttributedString alloc] init];
+////[attString appendAttributedString:[[NSAttributedString alloc] initWithString:@"LINE 1\n"    attributes:dict1]];
+//[attString appendAttributedString:[[NSAttributedString alloc] initWithString:@"Edit"    attributes:dict1]];
+////[attString appendAttributedString:[[NSAttributedString alloc] initWithString:@"line 2"      attributes:dict2]];
+////[self.resolveButton setAttributedTitle:attString forState:UIControlStateNormal];
+//[self.editButtonItem setAttributedTitle: attString   forState: UIControlStateNormal];  // nno such selector
+////[[self.resolveButton titleLabel] setNumberOfLines:0];
+////[[self.resolveButton titleLabel] setLineBreakMode:NSLineBreakByWordWrapping];
+//
+//
+
+
 

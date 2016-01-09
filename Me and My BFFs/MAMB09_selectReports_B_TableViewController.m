@@ -700,6 +700,9 @@ tn();
      NSLog(@"in viewDidAppear  in rpt sel  BBBBB  !");
 //    [super viewDidAppear];
 
+    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
+    [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.0 ];    // after arg seconds
+
     //
     //    // set cell to whatever you want to be selected first
     //    // yellow highlight that cell
@@ -713,6 +716,7 @@ tn();
     //
 //    tn(); NSLog(@"END of   viewDidAppear  in rpt sel  BBBBB  !");
 }
+
 
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willDeselectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -852,6 +856,10 @@ tn(); NSLog(@"gbl_currentMenuPlusReportCode in rptsel BBB =%@",gbl_currentMenuPl
         //
         // Also, all UI-related stuff must be done on the *main queue*. That's way you need that dispatch_async.
         //
+
+        MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
+        [myappDelegate mamb_beginIgnoringInteractionEvents ];
+   
         dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
 //            [self performSegueWithIdentifier: @"segueRptSel_B_ToViewHTML" sender:self];
             [self performSegueWithIdentifier:@"segueRptSelBToTBLRPT2" sender:self];   // is  now table rpt 
@@ -867,7 +875,9 @@ tn(); NSLog(@"gbl_currentMenuPlusReportCode in rptsel BBB =%@",gbl_currentMenuPl
         || [gbl_currentMenuPlusReportCode isEqualToString: @"gbm2bm" ]
     ) {
 
-
+        MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
+        [myappDelegate mamb_beginIgnoringInteractionEvents ];
+   
         dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
             [self performSegueWithIdentifier:@"segueRptSelBToTBLRPT2" sender:self];
         });

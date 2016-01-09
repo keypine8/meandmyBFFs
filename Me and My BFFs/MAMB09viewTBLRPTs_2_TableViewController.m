@@ -4969,6 +4969,8 @@ NSLog(@"Ok button pressed");
 //    [super viewDidAppear:animated];
 //    [self.tableView reloadData]; // self.view is the table view if self is its controller
 
+    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
+    [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.0 ];    // after arg seconds
 }
 
 

@@ -4501,11 +4501,16 @@ tn();trn("just tapped on row in TBLRPTS_1");
   NSLog(@"gbl_PSVtappedPerson_fromGRP =%@",gbl_PSVtappedPerson_fromGRP );
   NSLog(@"doing  segue   from TBLRPTS1 to   Select REPORTS B!");
 
+
+
     if (  [gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"] // My Best Match in Group ...
       ||  [gbl_currentMenuPlusReportCode       hasPrefix: @"pbm"   ] // My Best Match in Group ... grpone
       ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgbm"] //    Best Match in Group ...
       ||  [gbl_currentMenuPlusReportCode       hasPrefix: @"gbm"   ] //    Best Match in Group ... grpall
     ) {
+
+        [myappDelegate mamb_beginIgnoringInteractionEvents ];
+   
         dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
             [self performSegueWithIdentifier:@"segueTBLRPT1toSELRPT_B" sender:self];
         });                                   
@@ -4520,6 +4525,8 @@ tn();trn("just tapped on row in TBLRPTS_1");
       ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgby"]      // group Best RPTs  (tap here goes to gbypcy in viewHTML)
       ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgbd"]      //                  (tap here goes to gbdpwc in viewHTML) 
     ) {
+
+        [myappDelegate mamb_beginIgnoringInteractionEvents ];
 
         dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
             [self performSegueWithIdentifier:@"segueTBLRPT1_toViewHTML" sender:self];
@@ -5944,7 +5951,6 @@ tn();trn("DOING person in group ... in tblrpts 111111"); ks(html_file_name_brows
 nbn(299);
 
 
-        // reminder: this is in viewDidAppear
 
 // ALL  MOST and BEST  group reports
 //
@@ -6772,11 +6778,17 @@ nbn(1);
         }
     }
 
+
+    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
+    [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.0 ];    // after arg seconds
+                                                    
+
     return;
 
 
-
 } // end of viewDidAppear
+
+
 
 
 

@@ -982,6 +982,9 @@ NSIndexPath *gbl_savePrevIndexPath;  // for scrolling to the prev row you were o
 - (NSInteger) mambCheckForCorruptData;
 - (void) handleCorruptDataErrNum: (NSInteger) argCorruptDataErrNum;
 
+- (void) mamb_endIgnoringInteractionEvents_after: (CGFloat) arg_numSecondsDelay; 
+- (void) mamb_beginIgnoringInteractionEvents;                                   
+
 @end
 
 

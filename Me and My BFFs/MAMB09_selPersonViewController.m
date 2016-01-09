@@ -478,14 +478,6 @@
     [super viewDidAppear:animated];
     // [self.view reloadData]; // self.view is the table view if self is its controller
 
-
-
-//    [self.tableView reloadData];
-
-
-//<.>
-
-
 // comment out like in  sel rpt
 //    
 //    // set cell to whatever you want to be selected first
@@ -498,6 +490,11 @@
 //        // [self.tableView selectRowAtIndexPath:indexPath animated:YES  scrollPosition:UITableViewScrollPositionNone];
 //    }
 //
+
+
+   //  here we are ignoring interaction events from the previous segue 
+
+
     MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for global methods in appDelegate.m
     NSIndexPath *highlightIdxPath;
     NSString *rememberedLastPerson;
@@ -546,7 +543,7 @@
             }
         }
     }
-//    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"]) {   
+//    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"])    
     else  {
         rememberedLastGroup = [myappDelegate grabLastSelectionValueForEntity: (NSString *) @"person"
                                                                    havingName: (NSString *) gbl_fromHomeCurrentEntityName 
@@ -569,7 +566,11 @@
         }
     }
 
-}
+    [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.0 ];    // after arg seconds
+
+} //  viewDidAppear
+
+
 
 // - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 - (NSIndexPath *)tableView:(UITableView *)tableView willDeselectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -675,6 +676,11 @@ tn();    NSLog(@"in didSelectRowAtIndexPath!  in SelectPerson !!!!!!!!!!!!");
         NSString *selectedPersonName  = psvArray[0];
 
         MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // to access global methods in appDelegate.m
+
+
+        [myappDelegate mamb_beginIgnoringInteractionEvents ];
+
+
         [myappDelegate saveLastSelectionForEntity: (NSString *) @"person"
                                        havingName: (NSString *) gbl_fromHomeCurrentEntityName
                          updatingRememberCategory: (NSString *) @"person"
@@ -757,6 +763,9 @@ tn();    NSLog(@"in didSelectRowAtIndexPath!  in SelectPerson !!!!!!!!!!!!");
         NSString *selectedGroupName  = psvArray[0];
 
         MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // to access global methods in appDelegate.m
+
+        [myappDelegate mamb_beginIgnoringInteractionEvents ];
+
         [myappDelegate saveLastSelectionForEntity: (NSString *) @"person"
                                        havingName: (NSString *) gbl_fromHomeCurrentEntityName
                          updatingRememberCategory: (NSString *) @"group"

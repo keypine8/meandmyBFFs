@@ -1393,6 +1393,7 @@ ksn(chr);
   NSLog(@"BEG   CHECK  member");
     //     "BEG   CHECK  member)";
     for (NSString *psvMem in gbl_arrayMem) {   // loop thru gbl group member array
+// TODO 
     }
   NSLog(@"END   CHECK  member");
 
@@ -1413,6 +1414,7 @@ ksn(chr);
 //-------------------------------------------
 //RECOVERY from Corrupt Data
 //-------------------------------------------
+// TODO 
 //Corrupt data has caused your current data to be lost.
 //
 //Do these RECOVERY steps to get back your latest BACKUP data.
@@ -2181,6 +2183,89 @@ tn();
 
   // TODO   after coded 1. new group  2. member selection  3. group "view or change"
 }
+
+
+
+
+// usage:
+//
+// MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
+// [myappDelegate mamb_beginIgnoringInteractionEvents ];
+//
+// MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
+// [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.6 ];    // after arg seconds
+//
+//
+// want to mamb_beginIgnoringInteractionEvents
+//    in just before leaving view - viewWillDisappear  NO  not so far
+//    just before performSegue                   
+//    just before popViewControllerAnimated     
+//    just before mambread  file 
+//    just before mambwrite file
+//    just before saveLastSelectionForEntity
+//
+// want to mamb_endIgnoringInteractionEvents_after 
+//    in first method after view appears  - viewDidAppear     at end of method
+//    just after  mambread  file
+//    just after  mambwrite file
+//    just after  saveLastSelectionForEntity
+//
+//
+- (void) mamb_endIgnoringInteractionEvents_after: (CGFloat) arg_numSecondsDelay  // seconds  ( endIgnoringInteractionEvents )
+{
+tn();
+  NSLog(@"in mamb_endIgnoringInteractionEvents_after:  ");
+  NSLog(@"isIgnoringInteractionEvents=[%d]a", [[UIApplication sharedApplication] isIgnoringInteractionEvents] );
+  NSLog(@"arg_numSecondsDelay  =[%f]",arg_numSecondsDelay  );
+
+    if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] ==  YES) 
+    {
+        int64_t myDelayInSec   = arg_numSecondsDelay * (double)NSEC_PER_SEC;
+  NSLog(@"myDelayInSec   =[%ld]",myDelayInSec   );
+
+
+
+//        dispatch_time_t my_dispatch_time = dispatch_time(DISPATCH_TIME_NOW, (int64_t)myDelayInSec);
+//
+//        dispatch_after(my_dispatch_time, dispatch_get_main_queue(), ^{     
+//
+//            [[UIApplication sharedApplication] endIgnoringInteractionEvents ];
+//        });
+//
+
+        // suspend handling of touch-related events
+        [[UIApplication sharedApplication] endIgnoringInteractionEvents];       // typically call this after an animation or transitiion.
+
+  NSLog(@"isIgnoringInteractionEvents=[%d]b", [[UIApplication sharedApplication] isIgnoringInteractionEvents] );
+    }
+
+    if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] ==   NO)
+    {
+  NSLog(@"isIgnoringInteractionEvents=[%d]c", [[UIApplication sharedApplication] isIgnoringInteractionEvents] );
+    }
+}
+
+
+- (void) mamb_beginIgnoringInteractionEvents 
+{
+tn();
+  NSLog(@"in mamb_beginIgnoringInteractionEvents:  ");
+  NSLog(@"isIgnoringInteractionEvents=[%d]x", [[UIApplication sharedApplication] isIgnoringInteractionEvents] );
+
+    if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] ==   YES)
+    {
+  NSLog(@"isIgnoringInteractionEvents=[%d]y", [[UIApplication sharedApplication] isIgnoringInteractionEvents] );
+    }
+
+    if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] ==    NO)
+    {
+        // suspend handling of touch-related events
+        [[UIApplication sharedApplication] beginIgnoringInteractionEvents];     // typically call this before an animation or transitiion.
+
+  NSLog(@"isIgnoringInteractionEvents=[%d]z", [[UIApplication sharedApplication] isIgnoringInteractionEvents] );
+    }
+}
+
 
 
 @end

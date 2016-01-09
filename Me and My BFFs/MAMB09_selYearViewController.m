@@ -228,6 +228,19 @@
 } // end of viewDidLoad 
 
 
+
+- (void)viewDidAppear:(BOOL)animated
+{
+NSLog(@"in viewDidAppear()");
+
+    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
+    [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.0 ];    // after arg seconds
+                                                    
+NSLog(@"in viewDidAppear()");
+} // end of viewDidAppear
+
+
+
 - (void)viewWillAppear:(BOOL)animated
 {
     NSLog(@"selyear viewWillAppear");
@@ -255,8 +268,12 @@
 
     NSLog(@"gbl_fromHomeCurrentSelectionPSV=%@",gbl_fromHomeCurrentSelectionPSV);
 
+    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
+   
     if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompcy"]  // calendar year
     ) {
+        [myappDelegate mamb_beginIgnoringInteractionEvents ];
+
         // gbl_lastSelectedYear is 1. remembered year (above) 2. default current year (above) or 3. didSelect year (spinner)
         MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
         [myappDelegate saveLastSelectionForEntity: (NSString *) @"person"
@@ -276,6 +293,8 @@
     }
     if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgby"]  // best year
     ) {
+        [myappDelegate mamb_beginIgnoringInteractionEvents ];
+
         // gbl_lastSelectedYear is 1. remembered year (above) 2. default current year (above) or 3. didSelect year (spinner)
         MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
         [myappDelegate saveLastSelectionForEntity: (NSString *) @"group"
@@ -294,7 +313,9 @@
         });
     }
 
-}
+} // actionDoReport
+
+
 
 // implement methods for  <UIPickerViewDataSource, UIPickerViewDelegate>
 //
