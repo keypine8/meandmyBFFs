@@ -16,6 +16,10 @@
 
 @implementation MAMB09_listMembersTableViewController
 
+CGFloat myCurrentScreenHeight;
+CGFloat myCurrentNavbarHeight;
+CGFloat myCurrentStatusbarHeight;
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -86,7 +90,8 @@ tn();
 
 
 
-
+    // populate gbl_arrayMembersToDisplay
+    //
     // INCLUDE ONLY   members of gbl_lastSelectedGroup
     //
     [gbl_arrayMembersToDisplay removeAllObjects];
@@ -100,6 +105,7 @@ tn();
 //                continue;         //  ======================-------------------------------------- PUT BACK when we have non-example data!!!
 //            }
 //
+  NSLog(@"myMemberRec =[%@]",myMemberRec );
 
         NSArray *psvArray;
         NSString *currGroup;
@@ -108,9 +114,12 @@ tn();
         psvArray = [myMemberRec componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"|"]];
         currGroup  = psvArray[0];
         currMember = psvArray[1];
+  NSLog(@"currGroup  =[%@]",currGroup  );
+  NSLog(@"currMember =[%@]",currMember );
 
         if ([currGroup isEqualToString: gbl_lastSelectedGroup ] )
         {
+  NSLog(@"ADDED to gbl_arrayMembersToDisplay ");
             [gbl_arrayMembersToDisplay addObject: currMember ];                        //  Person name for pick
         }
     } // for each groupmember
@@ -186,12 +195,16 @@ tn();
 
     MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
     CGSize currentScreenWidthHeight = [myappDelegate currentScreenSize];
-    my_screen_height = currentScreenWidthHeight.height;
+    my_screen_height       = currentScreenWidthHeight.height;
+    myCurrentScreenHeight  = currentScreenWidthHeight.height;
 
     CGSize myStatusBarSize = [[UIApplication sharedApplication] statusBarFrame].size;
     my_status_bar_height   = MIN(myStatusBarSize.width, myStatusBarSize.height);
+    myCurrentStatusbarHeight = MIN(myStatusBarSize.width, myStatusBarSize.height);
 
-    my_nav_bar_height    =  self.navigationController.navigationBar.frame.size.height;
+
+    my_nav_bar_height      =  self.navigationController.navigationBar.frame.size.height;
+    myCurrentNavbarHeight  =  self.navigationController.navigationBar.frame.size.height;
 
 
 //  NSLog(@"cu33entScreenWidthHeight.width  =%f",currentScreenWidthHeight.width );
@@ -199,9 +212,9 @@ tn();
   NSLog(@"my_screen_height                  =%f",my_screen_height );
   NSLog(@"my_status_bar_height              =%f",my_status_bar_height   );
   NSLog(@"my_nav_bar_height                 =%f",my_nav_bar_height    );
+    my_toolbar_height = 44.0;
   NSLog(@"my_toolbar_height                 =%f",my_toolbar_height );
 
-    my_toolbar_height = 44.0;
 
     float y_value_of_toolbar; 
     //    y_value_of_toolbar  = currentScreenWidthHeight.height - 44.0;
@@ -264,6 +277,25 @@ nbn(129);
 
 } // end of   viewWillAppear
 
+
+- (void)scrollViewDidScroll: (UIScrollView *)scrollView
+{
+  NSLog(@"myCurrentScreenHeight             =[%f]",myCurrentScreenHeight );
+  NSLog(@"myCurrentNavbarHeight             =[%f]",myCurrentNavbarHeight );
+  NSLog(@"my_status_bar_height              =[%f]",myCurrentStatusbarHeight );
+
+//    CGRect fixedFrame = self.menuViewRelative.frame;
+    CGRect fixedFrame = gbl_toolbarMemberAddDel.frame;
+//    fixedFrame.origin.y = 0 + scrollView.contentOffset.y;
+//    fixedFrame.origin.y =  (myCurrentScreenHeight -44.0)  +  scrollView.contentOffset.y;
+    fixedFrame.origin.y =  (myCurrentScreenHeight - (44.0 * 2) - myCurrentNavbarHeight )  +  scrollView.contentOffset.y;
+
+  NSLog(@"fixedFrame.origin.y               =[%f]",fixedFrame.origin.y );
+
+//    fixedFrame.origin.y =  (myCurrentScreenHeight -200.0)  +  scrollView.contentOffset.y;
+//    self.menuViewRelative.frame = fixedFrame;
+    gbl_toolbarMemberAddDel.frame = fixedFrame;
+}
 
 
 
