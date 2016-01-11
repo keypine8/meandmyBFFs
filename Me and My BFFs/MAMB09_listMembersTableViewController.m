@@ -274,28 +274,70 @@ nbn(129);
 
         });
 
+        // set the y postion of this toolbar, so we can keep it on the bottom
+        //
+        gbl_listMemberToolbar_y = gbl_toolbarMemberAddDel.frame.origin.y ;
+  NSLog(@"gbl_listMemberToolbar_y =[%f]",gbl_listMemberToolbar_y );
 
 } // end of   viewWillAppear
 
-
+// on the fly,  adjust the y value of the frame of the bottom toolbar
+// so it is ALWAYS on the bottom
+//
+// http://stackoverflow.com/questions/13663230/ios-add-subview-with-a-fix-position-on-screen
+//
+// Replace 20 by how many points you want it to be from top of the table view.
+// You still add self.fixedView as a subliew of self.view,
+// this will just make sure it looks like it's in a fixed position above table view.
+//
+// - (void)scrollViewDidScroll:(UIScrollView *)scrollView
+// {
+//     CGRect fixedFrame = self.fixedView.frame;
+//     fixedFrame.origin.y = 20 + scrollView.contentOffset.y;
+//     self.fixedView.frame = fixedFrame;
+// }
+//
 - (void)scrollViewDidScroll: (UIScrollView *)scrollView
 {
-  NSLog(@"myCurrentScreenHeight             =[%f]",myCurrentScreenHeight );
-  NSLog(@"myCurrentNavbarHeight             =[%f]",myCurrentNavbarHeight );
-  NSLog(@"my_status_bar_height              =[%f]",myCurrentStatusbarHeight );
-
-//    CGRect fixedFrame = self.menuViewRelative.frame;
     CGRect fixedFrame = gbl_toolbarMemberAddDel.frame;
-//    fixedFrame.origin.y = 0 + scrollView.contentOffset.y;
-//    fixedFrame.origin.y =  (myCurrentScreenHeight -44.0)  +  scrollView.contentOffset.y;
-    fixedFrame.origin.y =  (myCurrentScreenHeight - (44.0 * 2) - myCurrentNavbarHeight )  +  scrollView.contentOffset.y;
 
-  NSLog(@"fixedFrame.origin.y               =[%f]",fixedFrame.origin.y );
+//tn();
+//  NSLog(@"myCurrentScreenHeight             =[%f]",myCurrentScreenHeight );
+//  NSLog(@"myCurrentNavbarHeight             =[%f]",myCurrentNavbarHeight );
+//  NSLog(@"my_status_bar_height              =[%f]",myCurrentStatusbarHeight );
+//  NSLog(@"scrollView.contentOffset.y        =[%f]",scrollView.contentOffset.y );
+//  NSLog(@"fixedFrame.origin.y               =[%f]",fixedFrame.origin.y );
+//  NSLog(@"gbl_listMemberToolbar_y           =[%f]",gbl_listMemberToolbar_y );
+//  NSLog(@"gbl_toolbarMemberAddDel.frame y   =[%f]",gbl_toolbarMemberAddDel.frame.origin.y  );
+//
 
-//    fixedFrame.origin.y =  (myCurrentScreenHeight -200.0)  +  scrollView.contentOffset.y;
-//    self.menuViewRelative.frame = fixedFrame;
+//    fixedFrame.origin.y =  628.0                  + scrollView.contentOffset.y ;
+    fixedFrame.origin.y =  gbl_listMemberToolbar_y  + scrollView.contentOffset.y ;
+
+  NSLog(@"fixedFrame.origin.y  FINAL        =[%f]",fixedFrame.origin.y );
+
     gbl_toolbarMemberAddDel.frame = fixedFrame;
-}
+} // scrollViewDidScroll
+
+
+
+//- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+//{
+//    if(section == 0) {
+//        UIView *fakeFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 44.0, 44.0)];  // 3rd arg is horizontal length
+//        return fakeFooterView;
+//    }
+//    else return nil;
+//} // viewForFooterInSection
+//
+//
+//- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+//{
+//    if(section == 0) return 44.0f;
+//
+//    return 44.0f;
+//}
+//
 
 
 

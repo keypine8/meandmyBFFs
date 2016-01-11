@@ -158,7 +158,8 @@
 //
 
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
 //    
 ////  for test
@@ -892,6 +893,17 @@ nbn(829);
   NSLog(@"END ViewDidLoad   add/change");
 tn();
 } // viewDidLoad
+
+
+
+- (void)viewDidAppear:(BOOL)animated
+{
+NSLog(@"in viewDidAppear()  in add/change   ");
+
+    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
+    [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.0 ];    // after arg seconds
+
+} // viewDidAppear
 
 
 
@@ -1795,6 +1807,13 @@ NSLog(@"end of  oncityInputViewKeyboardButton!"); tn();
 //
 
 //            [self.view endEditing: YES];
+
+                
+    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+    [myappDelegate mamb_beginIgnoringInteractionEvents ];
+
+
     [gbl_myname             resignFirstResponder];
   NSLog(@"-didsel3a-- VASSIGN gbl_myname             RESIGN!FIRST_RESPONDER ---------------- " );
     [gbl_mybirthinformation resignFirstResponder]; 
@@ -1954,11 +1973,15 @@ nbn(700);
   NSLog(@"gbl_editingChangeNAMEHasOccurred=[%ld]",(long)gbl_editingChangeNAMEHasOccurred);
 
 
+    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // methods in appdele
+
     if ([gbl_fromHomeCurrentSelectionType isEqualToString: @"group" ] )
     { // group saveDone logic  ------------------------------------------------------------------------------------------
 
         if (   gbl_editingChangeNAMEHasOccurred == 0 )
         {
+            [myappDelegate mamb_beginIgnoringInteractionEvents ];
+
             // here editing changes have NOT happened
   NSLog(@" // 111-0 actually do the BACK action  when Done hit and there are no editing changes");
 
@@ -1996,6 +2019,8 @@ nbn(491);
         if (   [gbl_DisplayName   isEqualToString: @"" ]
         ) {
 NSLog(@" // 111a actually do the BACK action on when changes net out to nothing");
+
+            [myappDelegate mamb_beginIgnoringInteractionEvents ];
 
   NSLog(@"          POP  VIEW   #3");
             dispatch_async(dispatch_get_main_queue(), ^{  
@@ -2132,10 +2157,15 @@ nbn(502);
 
         // before write of array data to file, disallow/ignore user interaction events
         //
-        if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] ==  NO) {  // suspend handling of touch-related events
-            [[UIApplication sharedApplication] beginIgnoringInteractionEvents];     // typically call this before an animation or transitiion.
-NSLog(@"ARE  IGnoring events");
-        }
+
+//        if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] ==  NO) {  // suspend handling of touch-related events
+//            [[UIApplication sharedApplication] beginIgnoringInteractionEvents];     // typically call this before an animation or transitiion.
+//NSLog(@"ARE  IGnoring events");
+//        }
+
+
+        [myappDelegate mamb_beginIgnoringInteractionEvents ];
+
 
         // ONLY IF    [gbl_homeEditingState isEqualToString:  @"view or change" ] 
         // DELETE  the existing record first
@@ -2174,9 +2204,6 @@ nbn(504);
         [gbl_arrayGrp addObject: myNewGroupRecord]; // add the new Group database record in a string to the Group array
 
 
-        MAMB09AppDelegate *myappDelegate =
-            (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
-
         [myappDelegate mambWriteNSArrayWithDescription:              (NSString *) @"group"]; // write new array data to file
         [myappDelegate mambReadArrayFileWithDescription:             (NSString *) @"group"]; // read new data from file to array
         [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription: (NSString *) @"group"]; // sort array by name
@@ -2207,12 +2234,12 @@ NSLog(@"gbl_lastSelectedGroup           =[%@]",gbl_lastSelectedGroup );
 NSLog(@"gbl_fromHomeCurrentSelectionPSV =[%@]",gbl_fromHomeCurrentSelectionPSV );
 
 
-        // after write of array data to file, allow user interaction events again
-        //
-        if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] == YES) {  // re-enable handling of touch-related events
-            [[UIApplication sharedApplication] endIgnoringInteractionEvents];       // typically call this after an animation or transitiion.
-NSLog(@"STOP IGnoring events");
-        }
+//        // after write of array data to file, allow user interaction events again
+//        //
+//        if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] == YES) {  // re-enable handling of touch-related events
+//            [[UIApplication sharedApplication] endIgnoringInteractionEvents];       // typically call this after an animation or transitiion.
+//NSLog(@"STOP IGnoring events");
+//        }
 
 NSLog(@"          POP  VIEW   #6");
         dispatch_async(dispatch_get_main_queue(), ^{  
@@ -2228,7 +2255,7 @@ NSLog(@"          POP  VIEW   #6");
             gbl_lastInputFieldTapped         = @"";  // 3 values are: "name", "city", "date"
 
 //                    [self.navigationController popToRootViewControllerAnimated: YES]; // pop to root view controller (actually do the "Back" action)
-        [self.navigationController popViewControllerAnimated: YES]; // actually do the "Back" action
+            [self.navigationController popViewControllerAnimated: YES]; // actually do the "Back" action
 
         });
 
@@ -2260,6 +2287,9 @@ nbn(510);
         ) {
             // here editing changes have NOT happened
   NSLog(@" // 222b actually do the BACK action  when Done hit and there are no editing changes");
+
+
+            [myappDelegate mamb_beginIgnoringInteractionEvents ];
 
   NSLog(@"          POP  VIEW   #4");
             dispatch_async(dispatch_get_main_queue(), ^{  
@@ -2314,6 +2344,8 @@ nbn(510);
                 ) {
       NSLog(@" // 111b actually do the BACK action on when changes net out to nothing");
 
+                    [myappDelegate mamb_beginIgnoringInteractionEvents ];
+
   NSLog(@"          POP  VIEW   #5");
                     dispatch_async(dispatch_get_main_queue(), ^{  
                         // pop to root view controller (actually do the "Back" action)
@@ -2326,7 +2358,7 @@ nbn(510);
                         gbl_lastInputFieldTapped         = @"";  // 3 values are: "name", "city", "date"
 
 //                        [self.navigationController popToRootViewControllerAnimated: YES]; // actually do the "Back" action
-                [self.navigationController popViewControllerAnimated: YES]; // actually do the "Back" action
+                       [self.navigationController popViewControllerAnimated: YES]; // actually do the "Back" action
                     });
                 }
 
@@ -2439,6 +2471,8 @@ nbn(510);
 
 
       NSLog(@" // Actually do save of New Person   here");
+
+
                 // Actually do save of New Person   here
                 //
 
@@ -2520,10 +2554,12 @@ nbn(510);
 
                 // before write of array data to file, disallow/ignore user interaction events
                 //
-                if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] ==  NO) {  // suspend handling of touch-related events
-                    [[UIApplication sharedApplication] beginIgnoringInteractionEvents];     // typically call this before an animation or transitiion.
-      NSLog(@"ARE  IGnoring events");
-                }
+
+//                if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] ==  NO) {  // suspend handling of touch-related events
+//                    [[UIApplication sharedApplication] beginIgnoringInteractionEvents];     // typically call this before an animation or transitiion.
+//      NSLog(@"ARE  IGnoring events");
+//                }
+                  [myappDelegate mamb_beginIgnoringInteractionEvents ];
 
                 // ONLY IF    [gbl_homeEditingState isEqualToString:  @"view or change" ] 
                 // DELETE  the existing record first
@@ -2562,44 +2598,45 @@ nbn(510);
                 [gbl_arrayPer addObject: myNewPersonRecord]; // add the new Person database record in a string to the person array
 
 
-                MAMB09AppDelegate *myappDelegate =
-                    (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
-
                 [myappDelegate mambWriteNSArrayWithDescription:              (NSString *) @"person"]; // write new array data to file
                 [myappDelegate mambReadArrayFileWithDescription:             (NSString *) @"person"]; // read new data from file to array
                 [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription: (NSString *) @"person"]; // sort array by name
 
 
-    //<.>
-    //    // TODO   after coded 1. new group  2. member selection  3. group "view or change"
-    //        ???
-    //            // if necessary, update MEMBERSHIP  file  (gbl_arrayMem)
-    //            //
-    //            if (! [gbl_fromHomeCurrentEntityName isEqualToString:  gbl_myname.text ] )   // true if original name in db record has changed 
-    //                [myappDelegate mambChangeMemberNameFrom: (NSString *) gbl_fromHomeCurrentEntityName 
-    //                                              toNewName: (NSString *) gbl_myName.text
-    //                ];
-    //                [myappDelegate mambWriteNSArrayWithDescription:              (NSString *) @"member"]; // write new array data to file
-    //                [myappDelegate mambReadArrayFileWithDescription:             (NSString *) @"member"]; // read new data from file to array
-    //                [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription: (NSString *) @"member"]; // sort array by name
-    //<.>
-    //
+
+                // if necessary, update MEMBERSHIP  file  (gbl_arrayMem)
+                //
+                BOOL originalNameHasChanged;
+                // true if original name in db record has changed 
+                originalNameHasChanged = ! [gbl_fromHomeCurrentEntityName isEqualToString: gbl_myname.text ];
+
+                if (originalNameHasChanged )
+                {
+                    [myappDelegate mambChangeGRPMEM_memberNameFrom: (NSString *) gbl_fromHomeCurrentEntityName 
+                                                         toNewName: (NSString *) gbl_myname.text
+                    ];
+                    [myappDelegate mambWriteNSArrayWithDescription:              (NSString *) @"member"]; // write new array data to file
+//                    [myappDelegate mambReadArrayFileWithDescription:             (NSString *) @"member"]; // read new data from file to array
+                    [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription: (NSString *) @"member"]; // sort array by name
+                }
 
                 gbl_justAddedPersonRecord  = 1;  // cause reload of home data
 
 
-                gbl_lastSelectedPerson          = gbl_DisplayName;  // this row (gbl_lastSelectedPerson) gets selection highlight in home tableview
+                gbl_lastSelectedPerson     = gbl_DisplayName;  // this row (gbl_lastSelectedPerson) gets selection highlight in home tableview
+
                 gbl_fromHomeCurrentSelectionPSV = myNewPersonRecord;
       NSLog(@"gbl_lastSelectedPerson          =[%@]",gbl_lastSelectedPerson);
       NSLog(@"gbl_fromHomeCurrentSelectionPSV =[%@]",gbl_fromHomeCurrentSelectionPSV );
 
 
-                // after write of array data to file, allow user interaction events again
-                //
-                if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] == YES) {  // re-enable handling of touch-related events
-                    [[UIApplication sharedApplication] endIgnoringInteractionEvents];       // typically call this after an animation or transitiion.
-      NSLog(@"STOP IGnoring events");
-                }
+//                // after write of array data to file, allow user interaction events again
+//                //
+//                if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] == YES) {  // re-enable handling of touch-related events
+//                    [[UIApplication sharedApplication] endIgnoringInteractionEvents];       // typically call this after an animation or transitiion.
+//      NSLog(@"STOP IGnoring events");
+//                }
+//
 
   NSLog(@"          POP  VIEW   #6");
                 dispatch_async(dispatch_get_main_queue(), ^{  
@@ -2615,7 +2652,7 @@ nbn(510);
                     gbl_lastInputFieldTapped         = @"";  // 3 values are: "name", "city", "date"
 
 //                    [self.navigationController popToRootViewControllerAnimated: YES]; // pop to root view controller (actually do the "Back" action)
-                [self.navigationController popViewControllerAnimated: YES]; // actually do the "Back" action
+                    [self.navigationController popViewControllerAnimated: YES]; // actually do the "Back" action
 
                 });
                 // is system "done" button function here
@@ -5704,21 +5741,8 @@ kin(rollerDD);
 
     //        gbl_lastSelectedDayFormattedForEmail = myFormattedStr;  // save for email format
 
-
-    //        NSString *myFormattedStr2 =  [NSString stringWithFormat:@"%@ %@, %@",  // fmt "Dec 25,  2016"
-    //            gbl_rollerBirth_mth,
-    //            gbl_rollerBirth_dd,
-    //        gbl_lastSelectedDayFormattedForTitle = myFormattedStr2;  // save for title format in tblrpts1
-    //
-
-
-
-
-//  commenting this out leaves the rollers there
             // display YMDHMA  selected
             //
-//    //<.>  TODO
-    nbn(300);
       NSLog(@"myFormattedStr=%@", myFormattedStr);
     gbl_selectedBirthInfo = myFormattedStr;  // used to update field in cellforrow
 

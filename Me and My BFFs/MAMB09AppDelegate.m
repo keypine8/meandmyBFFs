@@ -2164,6 +2164,9 @@ tn();  NSLog(@"at end of   mambReadLastEntityFile  myLastEntityDecoded=\n%@",myL
 }
 
 
+
+// Look in gbl_arrayMem  for  arg_originalMemberName  and  change it to  arg_newMemberName
+//
 - (void) mambChangeGRPMEM_memberNameFrom: (NSString *) arg_originalMemberName
                                toNewName: (NSString *) arg_newMemberName
 {
@@ -2171,8 +2174,99 @@ tn();
   NSLog(@"in mambChangeMemberNameFrom: toNewName:  ");
   NSLog(@" TODO   after coded 1. new group  2. member selection  3. group \"view or change\"");
 
-  // TODO   after coded 1. new group  2. member selection  3. group "view or change"
-}
+    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for global methods in appDelegate.m
+
+    NSArray *psvArray;
+    NSString *currGroup;
+    NSString *currMember;
+    NSMutableString *prefixStr;
+    NSInteger        idx, foundIdx, idxToDel;  
+    NSMutableArray  *indexNumsToDeleteFrom_gblArrayMem;
+    NSMutableArray  *recordsToAddTo_gblarrayMem;
+
+    [indexNumsToDeleteFrom_gblArrayMem  removeAllObjects];
+     indexNumsToDeleteFrom_gblArrayMem  = [[NSMutableArray alloc] init];
+
+    [recordsToAddTo_gblarrayMem  removeAllObjects];
+     recordsToAddTo_gblarrayMem  = [[NSMutableArray alloc] init];
+
+        
+    for (id myMemberRec in gbl_arrayMem)  {
+
+// skip example record  TODO in production
+//            if (gbl_show_example_data ==  NO  &&
+//                [mymyMemberRecPSV hasPrefix: @"~"]) {  // skip example record
+//                continue;         //  ======================-------------------------------------- PUT BACK when we have non-example data!!!
+//            }
+//
+  NSLog(@"myMemberRec =[%@]",myMemberRec );
+
+        psvArray = [myMemberRec componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"|"]];
+        currGroup  = psvArray[0];
+        currMember = psvArray[1];
+  NSLog(@"currGroup  =[%@]",currGroup  );
+  NSLog(@"currMember =[%@]",currMember );
+
+        if ([currMember isEqualToString: arg_originalMemberName ] )
+        {
+            // here, we're going to change the name in this member record
+
+            // here, get a copy of myMemberRec with the member name changed in it
+            //
+            NSString *myUpdatedRec = [myappDelegate updateDelimitedString: (NSMutableString *) myMemberRec
+                                                              delimitedBy: (NSString *) @"|"
+                                                 updateOneBasedElementNum: (NSInteger)  2                 // member name field
+                                                           withThisString: (NSString *) arg_newMemberName ];
+
+            // get the array index of this element of the array gbl_arrayMem 
+            // so we can delete it  (and then add myUpdatedRec)
+            //
+            do {
+                idx = 0;       foundIdx = -1;
+                prefixStr = [NSMutableString stringWithFormat: @"%@|%@|", currGroup, currMember ];
+
+                for (NSString *element in gbl_arrayMem) {
+                    if ([element hasPrefix: prefixStr]) {
+                        foundIdx = idx;
+  NSLog(@"found element  =[%@]",element);
+//                        [indexNumsToDeleteFrom_gblArrayMem addObject: [NSNumber numberWithInt: foundIdx ]] ;
+                        [indexNumsToDeleteFrom_gblArrayMem addObject: [[NSNumber alloc] initWithInteger: foundIdx ]] ;
+                        [recordsToAddTo_gblarrayMem        addObject: myUpdatedRec ];
+                    }
+                    idx = idx + 1;
+                }
+            } while (FALSE);
+
+        } // change member name
+
+    } // for each groupmember
+
+  NSLog(@"indexNumsToDeleteFrom_gblArrayMem =[%@]",indexNumsToDeleteFrom_gblArrayMem );
+  NSLog(@"recordsToAddTo_gblarrayMem        =[%@]",recordsToAddTo_gblarrayMem);
+
+
+    // now delete the old records in gbl_arrayMem
+    for (id del_me in indexNumsToDeleteFrom_gblArrayMem)
+    {
+//NSInteger itemAddressed = [[self.itemsBottom objectAtIndex:itemIndex] integerValue];
+        idxToDel = [del_me integerValue];
+
+        [gbl_arrayMem removeObjectAtIndex: del_me ]; 
+  NSLog(@"deleted index=[%ld]", (long)idxToDel);
+    }
+
+    // now add the updated record in gbl_arrayMem
+    for (id add_me in recordsToAddTo_gblarrayMem)
+    {
+        [gbl_arrayMem addObject:  add_me ]; 
+  NSLog(@"added   =[%@]", add_me);
+    }
+
+
+} // mambChangeGRPMEM_memberNameFrom
+
+
+
 
 - (void) mambChangeGRPMEM_groupNameFrom: (NSString *) arg_originalGroupName
                               toNewName: (NSString *) arg_newGroupName
@@ -2189,10 +2283,10 @@ tn();
 
 // usage:
 //
-// MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
+// MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
 // [myappDelegate mamb_beginIgnoringInteractionEvents ];
 //
-// MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
+// MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
 // [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.6 ];    // after arg seconds
 //
 //
@@ -2221,7 +2315,7 @@ tn();
     if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] ==  YES) 
     {
         int64_t myDelayInSec   = arg_numSecondsDelay * (double)NSEC_PER_SEC;
-  NSLog(@"myDelayInSec   =[%ld]",myDelayInSec   );
+  NSLog(@"myDelayInSec   =[%lld]",myDelayInSec   );
 
 
 

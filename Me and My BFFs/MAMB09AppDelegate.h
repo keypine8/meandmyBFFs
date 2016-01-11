@@ -265,6 +265,7 @@ NSInteger gbl_shouldUseDelayOnBackwardForeward;  // = 1 (0.5 sec  on what color 
                                                  // = 0 (no delay on first show of screen)
 UIToolbar *gbl_toolbarForwBack;       // for what color
 UIToolbar *gbl_toolbarMemberAddDel;   // for group member list screen
+CGFloat    gbl_listMemberToolbar_y;   // to set y offset of bottom toolbar on list members screen
 
 NSMutableArray *gbl_selectedMembers_toAdd;
 NSMutableArray *gbl_selectedMembers_toDel;
@@ -984,6 +985,14 @@ NSIndexPath *gbl_savePrevIndexPath;  // for scrolling to the prev row you were o
 
 - (void) mamb_endIgnoringInteractionEvents_after: (CGFloat) arg_numSecondsDelay; 
 - (void) mamb_beginIgnoringInteractionEvents;                                   
+
+
+- (void) mambChangeGRPMEM_memberNameFrom: (NSString *) arg_originalMemberName
+                               toNewName: (NSString *) arg_newMemberName;
+
+- (void) mambChangeGRPMEM_groupNameFrom: (NSString *) arg_originalGroupName
+                              toNewName: (NSString *) arg_newGroupName;
+
 
 @end
 
