@@ -464,7 +464,6 @@ NSLog(@"in viewDidAppear()");
 
     MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // to access global methods in appDelegate.m
 
-// TODO   <.>
 
     // Now  highlight the  remembered last report selection  for the current  person
 
@@ -513,12 +512,11 @@ nbn(73);
 
   NSLog(@"foundIndexPath=%@",foundIndexPath);
 
-
-
-      //how can I get the text of the cell here?    // TODO remove test
-      UITableViewCell *testcell = [self.tableView cellForRowAtIndexPath: foundIndexPath];
-  NSLog(@" testcell.textLabel.text=[%@]", testcell.textLabel.text);
-
+//      // for test
+//      //how can I get the text of the cell here?    
+//      UITableViewCell *testcell = [self.tableView cellForRowAtIndexPath: foundIndexPath];
+//      NSLog(@" testcell.textLabel.text=[%@]", testcell.textLabel.text);
+//
 
 
             if (foundIndexPath) {

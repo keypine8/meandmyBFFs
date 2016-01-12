@@ -173,7 +173,6 @@ nbn(501);
         } //  per
 
         if ([gbl_currentMenuPlusReportCode       hasSuffix: @"co"]) {       // grpof2
-            // myNavBarTitle = @"Compatibility Potential"; // TODO put the 2 names in title
 
             // e.g.
             // gbl_PSVtappedPersonA_inPair=~Liz|3|13|1991|4|10|1|Los Angeles|California|United States||
@@ -433,7 +432,6 @@ for (id eltTst in gbl_perDataLines) { NSLog(@"    gbl_per=%@", eltTst); }
     } // end of if   [gbl_currentMenuPlusReportCode isEqualToString: @"homppe"] // home + personality
 
 
-// TODO
     // 1. run compatibility report
     // 2. load new grpof2 TBLRPT  report data into array URLtoHTML_forWebview;
     //
@@ -996,7 +994,6 @@ for (id eltTst in gbl_compDataLines) { NSLog(@"    gbl_comp=%@", eltTst); }
         //
         if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgbm"]) {    // Best Match in Group ...  this is grpall
 
-// TODO
 
         } else {       // *MY*  Best Match in Group ...  this is grpone
 

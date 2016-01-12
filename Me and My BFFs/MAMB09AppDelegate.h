@@ -823,7 +823,7 @@ NSString *gbl_lastSelectedDay;          // yyyymmdd
 NSString *gbl_lastSelectedDaySaved;     // yyyymmdd  SAVE START DAY (for "Start button")
 NSString *gbl_lastSelectedDayLimit;     // yyyymmdd  Maximum future lookahead is to the end of the
                                         //           calendar year after the current calendar year.
-NSString *gbl_lastSelectedReportGroup;  // TODO fix codes 3-letter code  gbm,gma,gme,gmr,gmp,gmd,gby,gbd 
+NSString *gbl_lastSelectedReportGroup;  // 3-letter code  gbm,gma,gme,gmr,gmp,gmd,gby,gbd 
 NSString *gbl_lastSelectedReportPerson; // 3-letter code  pbm,pcy,ppe,pco,pbg,pwc 
 
 NSString *gbl_lastSelectedHomePairReport; // hompbm or homgbm  (for deciding sel rpt B choices)

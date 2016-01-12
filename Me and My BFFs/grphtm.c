@@ -937,7 +937,7 @@ tn();tr("closeness doclin=");ksn(doclin);
 //    0%                                100%|
 //    0%                                100%|
 //
-// TODO  OR put 0% -> 100%  in Info screen    20151201  decide to leave out
+// no no      OR put 0% -> 100%  in Info screen    20151201  decide to leave out
 
 
     // here we start pco DETAIL paragraphs   YYYYYYYYYYY  webview version  YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY DO PARAGRAPHS HERE 
@@ -5112,7 +5112,7 @@ void g_fn_webview_aspect_text(char *in_aspect_code){
 
     //
     //// 20151201  DECIDE TO LEAVE OUT
-    //// TODO  OR put 0% -> 100%  in Info screen    20151201  decide to leave out
+    //// no no   OR put 0% -> 100%  in Info screen    20151201  decide to leave out
     //  //  do red/green line in cocoa now (in tblrpts)
     //  sprintf(writebuf, "redgreenline|%s\n",  numplusminus);
     //  g_fn_prtlin(writebuf);

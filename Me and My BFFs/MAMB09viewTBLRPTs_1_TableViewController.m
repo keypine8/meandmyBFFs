@@ -4993,7 +4993,6 @@ for (id eltTst in gbl_perDataLines) { NSLog(@"    gbl_per=%@", eltTst); }
     //
     if ( [gbl_currentMenuPlusReportCode isEqualToString: @"hompco"] )  // grpof2 // compatibility report  (just 2)
     {
-// TODO 
 
 //    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]) 
 //    if ([gbl_currentMenuPlusReportCode hasSuffix: @"co"])  // compatibility report  (just 2)
@@ -5665,9 +5664,6 @@ nbn(201);
 
         ) { // grpall
 
-//// TODO
-
-//tn();trn("todo   GRPALL HERE pppppppppppppppppppppppppppppppppppppppppppp");
 //  NSLog(@"gbl_currentMenuPlusReportCode=%@",gbl_currentMenuPlusReportCode);
 
 
@@ -7168,15 +7164,15 @@ tn();trn("// set new gbl_currentMenuPlusReportCode    for info in next report");
 //
 //        //   NO  are in tblrpts_2
 //        //        if ([gbl_currentMenuPlusReportCode isEqualToString: @"gbm1bm"]) {    // My Best Match in Group ...
-//        //           myKingpinPerson       = gbl_nameOfPerson_1_OfPair;                      // TODO  gbl_nameOfPerson_1_OfPair
+//        //           myKingpinPerson       = gbl_nameOfPerson_1_OfPair;                      // 
 //        //           myKingpinCSV_NSString = [myappDelegate getCSVforPersonName: (NSString *) myKingpinPerson]; 
 //        //        }
 //        //        if ([gbl_currentMenuPlusReportCode isEqualToString: @"gbm2bm"]) {    // My Best Match in Group ...
-//        //           myKingpinPerson       = gbl_nameOfPerson_2_OfPair;                      // TODO  gbl_nameOfPerson_2_OfPair
+//        //           myKingpinPerson       = gbl_nameOfPerson_2_OfPair;                      // 
 //        //           myKingpinCSV_NSString = [myappDelegate getCSVforPersonName: (NSString *) myKingpinPerson]; 
 //        //        }
 //        //        if ([gbl_currentMenuPlusReportCode isEqualToString: @"pbm2bm"]) {    // My Best Match in Group ...
-//        //           myKingpinPerson       = gbl_nonKingpinPerson;                     // TODO  gbl_nameOf_NonKingpin_Person
+//        //           myKingpinPerson       = gbl_nonKingpinPerson;                     // 
 //        //           myKingpinCSV_NSString = [myappDelegate getCSVforPersonName: (NSString *) myKingpinPerson]; 
 //        //        }
 //        //
@@ -7385,7 +7381,6 @@ tn();trn("// set new gbl_currentMenuPlusReportCode    for info in next report");
 //        //
 //        if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgbm"]) {    // Best Match in Group ...  this is grpall
 //
-//// TODO
 //
 //        } else {       // *MY*  Best Match in Group ...  this is grpone
 //
@@ -7589,7 +7584,6 @@ tn();trn("// set new gbl_currentMenuPlusReportCode    for info in next report");
 //
 //// best day, best year
 //
-// // TODO    
 // 
 //// END  of GUTS of ViewDidLoad (called only once) moved to ViewDidAppear (called each time becomes visible)
 // 

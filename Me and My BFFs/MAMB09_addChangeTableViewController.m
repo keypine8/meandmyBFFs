@@ -1976,7 +1976,7 @@ nbn(700);
     MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // methods in appdele
 
     if ([gbl_fromHomeCurrentSelectionType isEqualToString: @"group" ] )
-    { // group saveDone logic  ------------------------------------------------------------------------------------------
+    { // group saveDone logic  --------- about 300 lines  --------------------------------------------------------------
 
         if (   gbl_editingChangeNAMEHasOccurred == 0 )
         {
@@ -2209,20 +2209,27 @@ nbn(504);
         [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription: (NSString *) @"group"]; // sort array by name
 
 
-//<.>
-//    // TODO   after coded 1. new group  2. member selection  3. group "view or change"
-//        ???
-//            // if necessary, update MEMBERSHIP    file  (gbl_arrayMem)
-//            //
-//            if (! [gbl_fromHomeCurrentEntityName isEqualToString:  gbl_myname.text ] )   // true if original name in db record has changed 
-//                [myappDelegate mambChangeMemberNameFrom: (NSString *) gbl_fromHomeCurrentEntityName 
-//                                              toNewName: (NSString *) gbl_myName.text
-//                ];
-//                [myappDelegate mambWriteNSArrayWithDescription:              (NSString *) @"member"]; // write new array data to file
-//                [myappDelegate mambReadArrayFileWithDescription:             (NSString *) @"member"]; // read new data from file to array
-//                [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription: (NSString *) @"member"]; // sort array by name
-//<.>
-//
+        // if necessary, update MEMBERSHIP  file  (gbl_arrayMem)
+        //
+        BOOL originalNameHasChanged;
+        // true if original name in db record has changed 
+        originalNameHasChanged = ! [gbl_fromHomeCurrentEntityName isEqualToString: gbl_myname.text ];
+nbn(1);
+        if (originalNameHasChanged )
+        {
+nbn(2);
+            [myappDelegate mambChangeGRPMEM_groupNameFrom: (NSString *) gbl_fromHomeCurrentEntityName 
+                                                toNewName: (NSString *) gbl_myname.text
+            ];
+nbn(3);
+            [myappDelegate mambWriteNSArrayWithDescription:              (NSString *) @"member"]; // write new array data to file
+nbn(4);
+//                    [myappDelegate mambReadArrayFileWithDescription:             (NSString *) @"member"]; // read new data from file to array
+            [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription: (NSString *) @"member"]; // sort array by name
+nbn(5);
+        }
+
+nbn(6);
 
 
         gbl_justAddedGroupRecord  = 1;  // cause reload of home data
@@ -2626,8 +2633,8 @@ nbn(510);
                 gbl_lastSelectedPerson     = gbl_DisplayName;  // this row (gbl_lastSelectedPerson) gets selection highlight in home tableview
 
                 gbl_fromHomeCurrentSelectionPSV = myNewPersonRecord;
-      NSLog(@"gbl_lastSelectedPerson          =[%@]",gbl_lastSelectedPerson);
-      NSLog(@"gbl_fromHomeCurrentSelectionPSV =[%@]",gbl_fromHomeCurrentSelectionPSV );
+//      NSLog(@"gbl_lastSelectedPerson          =[%@]",gbl_lastSelectedPerson);
+//      NSLog(@"gbl_fromHomeCurrentSelectionPSV =[%@]",gbl_fromHomeCurrentSelectionPSV );
 
 
 //                // after write of array data to file, allow user interaction events again

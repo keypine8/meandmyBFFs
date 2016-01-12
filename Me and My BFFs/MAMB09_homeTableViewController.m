@@ -501,6 +501,7 @@ ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
 
 
 
+
     [self doStuffOnEnteringForeground];  // read   lastEntity stuff
 
     // for test  LOOK AT all files in doc dir
