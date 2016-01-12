@@ -372,16 +372,17 @@ ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
         NSLog(@"%@", @"use regular files!");
 
     } else {   // INIT with example data    (here  at least one  have = NO )
+
        // possibly implement later 
         //        if (haveGrp && havePer && !haveMem) {
         //            NSLog (@"building member file from other files");
-        //            //  TODO
-        //            // without this todo done,  here you lose all  members from all groups 
+        //            //  TODox
+        //            // without this done,  here you lose all  members from all groups 
         //        } 
         //        else if (!haveGrp && havePer && haveMem) {
         //            NSLog (@"building group file from other files");
-        //            //  TODO
-        //            // without this todo done,  here you lose all  groups 
+        //            //  TODOx
+        //            // without this done,  here you lose all  groups 
         //        } else {
         //        }
         //
@@ -628,8 +629,11 @@ ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
     dispatch_async(dispatch_get_main_queue(), ^{                        
 
 
-//  cell.textLabel.text = @"";   // for test TODO  create empty Launch screen shot <.>
+//  cell.textLabel.text = @"";           // for test TODO  create empty Launch screen shot <.>
+//  cell.accessoryType        = nil;      // for test TODO  create empty Launch screen shot <.>      
+//  cell.editingAccessoryType = nil;     // for test TODO  create empty Launch screen shot <.>
         cell.textLabel.text = nameOfGrpOrPer;
+
         cell.textLabel.font            = [UIFont boldSystemFontOfSize: 17.0];
 
         // set cell.accessoryType         (depends on gbl_homeUseMode - editing or not)
@@ -660,67 +664,6 @@ ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
         //
         cell.indentationWidth = 12.0; // these 2 keep the name on screen when hit red round delete and delete button slides from right
         cell.indentationLevel =  3;   // these 2 keep the name on screen when hit red round delete and delete button slides from right
-
-// this jumps if ([gbl_homeUseMODE isEqualToString: @"regular mode"])
-//            {
-//                cell.indentationWidth = 12.0; // these 2 keep the name on screen when hit red round delete and delete button slides from right
-//                cell.indentationLevel =  6;   // these 2 keep the name on screen when hit red round delete and delete button slides from right
-//            }
-
-//        cell.contentView.autoresizingMask  = UIViewAutoresizingFlexibleRightMargin;  // allow right margin to shrink
-
-//        [cell.contentView setTranslatesAutoresizingMaskIntoConstraints:NO];
-//        [cell.textLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
-//        cell.textLabel.autoresizingMask  = nil;
-
-
-
-//        cell.textLabel.autoresizingMask  = UIViewAutoresizingFlexibleWidth;      
-//        cell.contentView.autoresizingMask  = UIViewAutoresizingFlexibleWidth;      
-
-
-//@property(nonatomic) UIEdgeInsets separatorInset
-//typedef struct { CGFloat top, left , bottom, right ; } UIEdgeInsets;
-//UIEdgeInsets UIEdgeInsetsMake ( CGFloat top, CGFloat left, CGFloat bottom, CGFloat right );
-
-
-//        cell.textLabel.autoresizingMask  = UIViewAutoresizingFlexibleRightMargin;
-         //[customView setAutoresizingMask: UIViewAutoresizingFlexibleWidth |UIViewAutoresizingFlexibleHeight];
-
-//        cell.textLabel.autoresizingMask  = UIViewAutoresizingFlexibleLeftMargin |
-//             UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth |UIViewAutoresizingFlexibleHeight;
-//        cell.contentView.autoresizingMask  = UIViewAutoresizingFlexibleLeftMargin |
-//             UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth |UIViewAutoresizingFlexibleHeight;
-
-//        cell.autoresizingMask  = UIViewAutoresizingFlexibleRightMargin;  // allow right margin to shrink
-//        cell.autoresizingMask  = nil;
-
-//        self.tableView.autoresizingMask  = UIViewAutoresizingFlexibleRightMargin;  // allow right margin to shrink
-//        cell.contentView.autoresizingMask  = UIViewAutoresizingFlexibleRightMargin;  // allow right margin to shrink
-//        cell.autoresizingMask  = UIViewAutoresizingFlexibleRightMargin;  // allow right margin to shrink
-
-        // This will make a UI Element stay centered since it will NOT be hugging any one side.
-        //
-
-//        cell.textLabel.autoresizingMask  =
-//            UIViewAutoresizingNone;      
-//        self.tableView.autoresizingMask  = 
-//            UIViewAutoresizingNone;      
-//        cell.contentView.autoresizingMask  = 
-//            UIViewAutoresizingNone;      
-//        cell.autoresizingMask  = 
-//            UIViewAutoresizingNone;      
-//
-
-//            UIViewAutoresizingFlexibleLeftMargin;      
-//            UIViewAutoresizingFlexibleBottomMargin    | 
-//            UIViewAutoresizingFlexibleRightMargin     | 
-//            UIViewAutoresizingFlexibleTopMargin
-
-//        cell.autoresizingMask     = UIViewAutoresizingFlexibleRightMargin;
-//        cell.hidesAccessoryWhenEditing = NO;
-
-//        cell.shouldIndentWhileEditing = NO;
 
         if ([gbl_homeUseMODE isEqualToString: @"edit mode"]) cell.tintColor = [UIColor blackColor];
 
@@ -838,7 +781,6 @@ tn();
   NSLog(@"editingStyle =[%ld]",(long)editingStyle);
   NSLog(@"indexPath.row=%ld",(long)indexPath.row);
 
-// TODO  delete group
 
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
@@ -2096,7 +2038,7 @@ nbn(3);
   NSLog(@"ON TAP of ROW in yellow edit mode and Group list,   go to  selPerson screen with group members");
 
         //   CASE_B   - tap on name in cell - for "group"   get group list (selPerson screen where you can "+" or "-" group members)
-//  TODO
+
         gbl_groupMemberSelectionMode = @"none";  // to set this, have to tap "+" or "-" in selPerson
 
         MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -2912,4 +2854,66 @@ nbn(357);
 //
 
 
+
+
+// this jumps if ([gbl_homeUseMODE isEqualToString: @"regular mode"])
+//            {
+//                cell.indentationWidth = 12.0; // these 2 keep the name on screen when hit red round delete and delete button slides from right
+//                cell.indentationLevel =  6;   // these 2 keep the name on screen when hit red round delete and delete button slides from right
+//            }
+
+//        cell.contentView.autoresizingMask  = UIViewAutoresizingFlexibleRightMargin;  // allow right margin to shrink
+
+//        [cell.contentView setTranslatesAutoresizingMaskIntoConstraints:NO];
+//        [cell.textLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+//        cell.textLabel.autoresizingMask  = nil;
+
+
+
+//        cell.textLabel.autoresizingMask  = UIViewAutoresizingFlexibleWidth;      
+//        cell.contentView.autoresizingMask  = UIViewAutoresizingFlexibleWidth;      
+
+
+//@property(nonatomic) UIEdgeInsets separatorInset
+//typedef struct { CGFloat top, left , bottom, right ; } UIEdgeInsets;
+//UIEdgeInsets UIEdgeInsetsMake ( CGFloat top, CGFloat left, CGFloat bottom, CGFloat right );
+
+
+//        cell.textLabel.autoresizingMask  = UIViewAutoresizingFlexibleRightMargin;
+         //[customView setAutoresizingMask: UIViewAutoresizingFlexibleWidth |UIViewAutoresizingFlexibleHeight];
+
+//        cell.textLabel.autoresizingMask  = UIViewAutoresizingFlexibleLeftMargin |
+//             UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth |UIViewAutoresizingFlexibleHeight;
+//        cell.contentView.autoresizingMask  = UIViewAutoresizingFlexibleLeftMargin |
+//             UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth |UIViewAutoresizingFlexibleHeight;
+
+//        cell.autoresizingMask  = UIViewAutoresizingFlexibleRightMargin;  // allow right margin to shrink
+//        cell.autoresizingMask  = nil;
+
+//        self.tableView.autoresizingMask  = UIViewAutoresizingFlexibleRightMargin;  // allow right margin to shrink
+//        cell.contentView.autoresizingMask  = UIViewAutoresizingFlexibleRightMargin;  // allow right margin to shrink
+//        cell.autoresizingMask  = UIViewAutoresizingFlexibleRightMargin;  // allow right margin to shrink
+
+        // This will make a UI Element stay centered since it will NOT be hugging any one side.
+        //
+
+//        cell.textLabel.autoresizingMask  =
+//            UIViewAutoresizingNone;      
+//        self.tableView.autoresizingMask  = 
+//            UIViewAutoresizingNone;      
+//        cell.contentView.autoresizingMask  = 
+//            UIViewAutoresizingNone;      
+//        cell.autoresizingMask  = 
+//            UIViewAutoresizingNone;      
+//
+
+//            UIViewAutoresizingFlexibleLeftMargin;      
+//            UIViewAutoresizingFlexibleBottomMargin    | 
+//            UIViewAutoresizingFlexibleRightMargin     | 
+//            UIViewAutoresizingFlexibleTopMargin
+
+//        cell.autoresizingMask     = UIViewAutoresizingFlexibleRightMargin;
+//        cell.hidesAccessoryWhenEditing = NO;
+
+//        cell.shouldIndentWhileEditing = NO;
 
