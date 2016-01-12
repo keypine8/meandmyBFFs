@@ -628,32 +628,14 @@ ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
 //  NSLog(@"gbl_homeUseMODE =%@",gbl_homeUseMODE );
     dispatch_async(dispatch_get_main_queue(), ^{                        
 
+//  cell.textLabel.text = @"";           // for test create empty Launch screen shot 
+//  cell.accessoryType        = nil;      // for test create empty Launch screen shot
+//  cell.editingAccessoryType = nil;     // for test create empty Launch screen shot
 
-//  cell.textLabel.text = @"";           // for test TODO  create empty Launch screen shot <.>
-//  cell.accessoryType        = nil;      // for test TODO  create empty Launch screen shot <.>      
-//  cell.editingAccessoryType = nil;     // for test TODO  create empty Launch screen shot <.>
+//<.> for test create empty Launch screen shot  //  ALSO comment out between the 2  <.>  below
         cell.textLabel.text = nameOfGrpOrPer;
 
         cell.textLabel.font            = [UIFont boldSystemFontOfSize: 17.0];
-
-        // set cell.accessoryType         (depends on gbl_homeUseMode - editing or not)
-        // set cell.editingAccessoryType
-        //
-//        [cell addSubview: lblCellText ];
-
-//        if ([gbl_homeUseMODE isEqualToString: @"regular mode"]) {
-//            cell.accessoryType        = gbl_home_cell_AccessoryType;           // home mode edit    with tap giving record details
-//            cell.editingAccessoryType = gbl_home_cell_editingAccessoryType;    // home mode edit    with tap giving record details
-//
-//            // The accessoryView property has priority over the accessoryType property.
-//            // If you set the accessoryView to nil, you'll see the accessory button again.
-//            cell.accessoryView        = nil; 
-//        }
-//        if ([gbl_homeUseMODE isEqualToString: @"edit mode"]) {
-//            cell.accessoryView        = UITableViewCellAccessoryDetailDisclosureButton;
-//        }
-//
-
         cell.accessoryType        = gbl_home_cell_AccessoryType;           // home mode edit    with tap giving record details
         cell.editingAccessoryType = gbl_home_cell_editingAccessoryType;    // home mode edit    with tap giving record details
 
@@ -666,6 +648,7 @@ ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
         cell.indentationLevel =  3;   // these 2 keep the name on screen when hit red round delete and delete button slides from right
 
         if ([gbl_homeUseMODE isEqualToString: @"edit mode"]) cell.tintColor = [UIColor blackColor];
+//<.> for test create empty Launch screen shot  //  ALSO comment out between the 2  <.>  above
 
     });
   
@@ -2916,4 +2899,23 @@ nbn(357);
 //        cell.hidesAccessoryWhenEditing = NO;
 
 //        cell.shouldIndentWhileEditing = NO;
+
+
+        // set cell.accessoryType         (depends on gbl_homeUseMode - editing or not)
+        // set cell.editingAccessoryType
+        //
+//        [cell addSubview: lblCellText ];
+
+//        if ([gbl_homeUseMODE isEqualToString: @"regular mode"]) {
+//            cell.accessoryType        = gbl_home_cell_AccessoryType;           // home mode edit    with tap giving record details
+//            cell.editingAccessoryType = gbl_home_cell_editingAccessoryType;    // home mode edit    with tap giving record details
+//
+//            // The accessoryView property has priority over the accessoryType property.
+//            // If you set the accessoryView to nil, you'll see the accessory button again.
+//            cell.accessoryView        = nil; 
+//        }
+//        if ([gbl_homeUseMODE isEqualToString: @"edit mode"]) {
+//            cell.accessoryView        = UITableViewCellAccessoryDetailDisclosureButton;
+//        }
+//
 
