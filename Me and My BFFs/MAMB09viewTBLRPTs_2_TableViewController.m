@@ -1375,7 +1375,8 @@ for (id eltTst in gbl_compDataLines) { NSLog(@"    gbl_comp=%@", eltTst); }
                 mylin             = @" ";
                 mybgcolor         = gbl_color_cBgr ;
 //                gbl_heightCellPER = 16;
-                gbl_heightCellPER = 12;
+//                gbl_heightCellPER = 12;
+                gbl_heightCellPER = 15;
             }
             else if ( [mylin isEqualToString: @"before willpower"] ) {
                 mylin             = @" ";

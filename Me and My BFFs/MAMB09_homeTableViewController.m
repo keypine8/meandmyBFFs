@@ -428,11 +428,11 @@ ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
 //
 
 
-        [myappDelegate mambReadArrayFileWithDescription: (NSString *) @"group"];
-        [myappDelegate mambReadArrayFileWithDescription: (NSString *) @"person"];
-        [myappDelegate mambReadArrayFileWithDescription: (NSString *) @"member"];
-        [myappDelegate mambReadArrayFileWithDescription: (NSString *) @"grprem"];
-        [myappDelegate mambReadArrayFileWithDescription: (NSString *) @"perrem"];
+    [myappDelegate mambReadArrayFileWithDescription: (NSString *) @"group"];
+    [myappDelegate mambReadArrayFileWithDescription: (NSString *) @"person"];
+    [myappDelegate mambReadArrayFileWithDescription: (NSString *) @"member"];
+    [myappDelegate mambReadArrayFileWithDescription: (NSString *) @"grprem"];
+    [myappDelegate mambReadArrayFileWithDescription: (NSString *) @"perrem"];
 
 
 
@@ -440,30 +440,6 @@ ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
 //    // read data files  with regular names into arrays
 //    // and sort the arrays in place by name
 //    //
-//    NSInteger myCorruptDataErrNum;
-//    do {
-//        [myappDelegate mambReadArrayFileWithDescription: (NSString *) @"group"];
-//        [myappDelegate mambReadArrayFileWithDescription: (NSString *) @"person"];
-//        [myappDelegate mambReadArrayFileWithDescription: (NSString *) @"member"];
-//        [myappDelegate mambReadArrayFileWithDescription: (NSString *) @"grprem"];
-//        [myappDelegate mambReadArrayFileWithDescription: (NSString *) @"perrem"];
-//
-//        // check for data corruption  (should not happen)
-//        //
-//        myCorruptDataErrNum =  [myappDelegate mambCheckForCorruptData ];
-//
-//        if (myCorruptDataErrNum > 0) {
-//            [myappDelegate handleCorruptDataErrNum: myCorruptDataErrNum ];
-//
-//exit(1);  // for test do just once
-////break;  // for test, continue
-//        }
-//
-//    } while ( myCorruptDataErrNum != 0);
-//
-
-
-
 
 
 
@@ -487,8 +463,6 @@ ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
 
 
 
-    
-
 //    // test
 //tn();trn(" HOME   AFTER read data files  with regular names into arrays // and sort the arrays in place by name");
 //    NSLog(@"home2viewDidLoad  gbl_arrayGrp=%@",gbl_arrayGrp);
@@ -498,6 +472,23 @@ ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
 //    NSLog(@"home2viewDidLoad  gbl_arrayPerRem=%@",gbl_arrayPerRem);
 //
 
+// exit(1);  // for test do just once
+// //break;  // for test, continue
+
+
+    // check for data corruption  (should not happen)
+    //
+    NSInteger myCorruptDataErrNum;
+    do {
+        myCorruptDataErrNum =  [myappDelegate mambCheckForCorruptData ];
+
+        if (myCorruptDataErrNum > 0) {
+  NSLog(@"myCorruptDataErrNum =[%ld]",(long)myCorruptDataErrNum );
+
+            [myappDelegate handleCorruptDataErrNum: myCorruptDataErrNum ];
+        }
+
+    } while ( myCorruptDataErrNum != 0);
 
 
 

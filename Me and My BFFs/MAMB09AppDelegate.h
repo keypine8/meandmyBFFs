@@ -113,6 +113,10 @@ NSString *gbl_fieldTap_goingto; // note that name and city are captured in shoul
 UIColor *gbl_bgColor_editFocus_NO;    // white
 UIColor *gbl_bgColor_editFocus_YES;   // something else
 
+// in local vars
+//char gbl_allowedCharactersInName[128] = "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+//char gbl_allowedCharactersInCity[128] = "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-";
+
 //NSString    *incomingNameAtBegOfAddChange;  // when 
 UITextField *gbl_myname;              // for add new person or group         // one of THE THREE  "FIELDS"  =====
 UITextField *gbl_mycitySearchString;  // for add new person  SEARCH STRING

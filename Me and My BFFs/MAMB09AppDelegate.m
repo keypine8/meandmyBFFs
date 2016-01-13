@@ -246,12 +246,26 @@
 //    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:136.0/255.0 blue:136.0/255.0 alpha:1.0]; // good
 //    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:120.0/255.0 blue:120.0/255.0 alpha:1.0]; // ok
 //
+
+
+
     gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0]; // can  see circles
 
 
 
+    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:096.0/255.0 blue:096.0/255.0 alpha:1.0]; // too dark (lines strong)
+    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:096.0/255.0 blue:048.0/255.0 alpha:1.0]; // too dark (lines strong)
+    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:112.0/255.0 blue:112.0/255.0 alpha:1.0]; // too dark (lines strong)
 
-    gbl_colorEditingBGforInputField = [UIColor colorWithRed:252.0/255.0 green:252.0/255.0 blue:252.0/255.0 alpha:1.0]; // whitish
+    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:160.0/255.0 blue:128.0/255.0 alpha:1.0]; // weird
+    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:192.0/255.0 blue:128.0/255.0 alpha:1.0]; // 
+    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:160.0/255.0 blue:160.0/255.0 alpha:1.0]; // no circles
+    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:140.0/255.0 blue:140.0/255.0 alpha:1.0]; // 
+
+    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:192.0/255.0 blue:192.0/255.0 alpha:1.0]; // 
+
+
+    gbl_colorEditingBGforInputField = [UIColor colorWithRed:252.0/255.0 green:252.0/255.0 blue:252.0/255.0 alpha:1.0]; // white
 
 //    gbl_bgColor_editFocus_NO   = gbl_colorEditingBGforInputField;    // whitish
 //    gbl_bgColor_editFocus_YES  = [UIColor grayColor];
@@ -684,19 +698,65 @@
 // for test   gbl_color_cBgr  = [UIColor redColor];
  
     gbl_color_cHed  = [UIColor colorWithRed:252.0/255.0 green:252.0/255.0 blue:224.0/255.0 alpha:1.0]; // fcfce0
-    gbl_color_cGr2  = [UIColor colorWithRed:042.0/255.0 green:255.0/255.0 blue:021.0/255.0 alpha:1.0]; // 66ff33
-    gbl_color_cGre  = [UIColor colorWithRed:168.0/255.0 green:255.0/255.0 blue:152.0/255.0 alpha:1.0]; // a8ff98
 
-    gbl_color_cNeu  = [UIColor colorWithRed:229.0/255.0 green:226.0/255.0 blue:199.0/255.0 alpha:1.0]; // e5e2c7
-//    gbl_color_cNeu  = [UIColor colorWithRed:237.0/255.0 green:235.0/255.0 blue:216.0/255.0 alpha:1.0]; // edebd8
+
+
+    gbl_color_cGr2  = [UIColor colorWithRed:042.0/255.0 green:255.0/255.0 blue:021.0/255.0 alpha:1.0]; // 66ff33  gold
+//
+//    gbl_color_cGr2  = [UIColor colorWithRed:192.0/255.0 green:255.0/255.0 blue:192.0/255.0 alpha:1.0]; // 
+//    gbl_color_cGr2  = [UIColor colorWithRed:128.0/255.0 green:255.0/255.0 blue:128.0/255.0 alpha:1.0]; // 
+
+
+
+//    gbl_color_cGre  = [UIColor colorWithRed:168.0/255.0 green:255.0/255.0 blue:152.0/255.0 alpha:1.0]; // a8ff98  gold
+
+//    gbl_color_cGre  = [UIColor colorWithRed:223.0/255.0 green:255.0/255.0 blue:223.0/255.0 alpha:1.0]; // 
+    gbl_color_cGre  = [UIColor colorWithRed:192.0/255.0 green:255.0/255.0 blue:192.0/255.0 alpha:1.0]; //  NEW  gold
+
+
+
+
+//    gbl_color_cNeu  = [UIColor colorWithRed:229.0/255.0 green:226.0/255.0 blue:199.0/255.0 alpha:1.0]; // e5e2c7  gold
+    gbl_color_cNeu  = [UIColor colorWithRed:237.0/255.0 green:235.0/255.0 blue:216.0/255.0 alpha:1.0]; // edebd8
 //    gbl_color_cNeu  = [UIColor colorWithRed:245.0/255.0 green:244.0/255.0 blue:234.0/255.0 alpha:1.0]; // f5f4ea
+
 
     // new reds    20150511
     //
 //    gbl_color_cRed  = [UIColor colorWithRed:255.0/255.0 green:152.0/255.0 blue:168.0/255.0 alpha:1.0]; // ff98a8
 //    gbl_color_cRe2  = [UIColor colorWithRed:255.0/255.0 green:068.0/255.0 blue:119.0/255.0 alpha:1.0]; // ff4477
-    gbl_color_cRed  = [UIColor colorWithRed:255.0/255.0 green:181.0/255.0 blue:201.0/255.0 alpha:1.0]; // ffb5c9
-    gbl_color_cRe2  = [UIColor colorWithRed:255.0/255.0 green:103.0/255.0 blue:143.0/255.0 alpha:1.0]; // ff678f
+
+
+
+    gbl_color_cRed  = [UIColor colorWithRed:255.0/255.0 green:181.0/255.0 blue:201.0/255.0 alpha:1.0]; // ffb5c9  gold
+//    gbl_color_cRed  = [UIColor colorWithRed:255.0/255.0 green:223.0/255.0 blue:223.0/255.0 alpha:1.0]; // 
+//    gbl_color_cRed  = [UIColor colorWithRed:255.0/255.0 green:192.0/255.0 blue:192.0/255.0 alpha:1.0]; // 
+//    gbl_color_cRed  = [UIColor colorWithRed:255.0/255.0 green:181.0/255.0 blue:201.0/255.0 alpha:1.0]; // ffb5c9  gold
+
+
+
+//    gbl_color_cRe2  = [UIColor colorWithRed:255.0/255.0 green:103.0/255.0 blue:143.0/255.0 alpha:1.0]; // ff678f  gold
+
+//    gbl_color_cRe2  = [UIColor colorWithRed:255.0/255.0 green:033.0/255.0 blue:033.0/255.0 alpha:1.0]; // 
+//    gbl_color_cRe2  = [UIColor colorWithRed:255.0/255.0 green:064.0/255.0 blue:064.0/255.0 alpha:1.0]; // 
+//    gbl_color_cRe2  = [UIColor colorWithRed:255.0/255.0 green:160.0/255.0 blue:160.0/255.0 alpha:1.0]; // 
+//    gbl_color_cRe2  = [UIColor colorWithRed:255.0/255.0 green:033.0/255.0 blue:033.0/255.0 alpha:1.0]; // 
+//    gbl_color_cRe2  = [UIColor colorWithRed:255.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0]; // 
+//    gbl_color_cRe2  = [UIColor colorWithRed:255.0/255.0 green:092.0/255.0 blue:092.0/255.0 alpha:1.0]; // 
+//    gbl_color_cRe2  = [UIColor colorWithRed:255.0/255.0 green:108.0/255.0 blue:108.0/255.0 alpha:1.0]; // 
+//    gbl_color_cRe2  = [UIColor colorWithRed:255.0/255.0 green:133.0/255.0 blue:133.0/255.0 alpha:1.0]; // 
+//    gbl_color_cRe2  = [UIColor colorWithRed:255.0/255.0 green:103.0/255.0 blue:143.0/255.0 alpha:1.0]; // ff678f  gold
+//    gbl_color_cRe2  = [UIColor colorWithRed:192.0/255.0 green:103.0/255.0 blue:143.0/255.0 alpha:1.0]; // 
+//    gbl_color_cRe2  = [UIColor colorWithRed:255.0/255.0 green:093.0/255.0 blue:123.0/255.0 alpha:1.0]; // 
+
+//    gbl_color_cRe2  = [UIColor colorWithRed:255.0/255.0 green:123.0/255.0 blue:163.0/255.0 alpha:1.0]; //  ok
+//    gbl_color_cRe2  = [UIColor colorWithRed:255.0/255.0 green:143.0/255.0 blue:188.0/255.0 alpha:1.0]; //  too pinky
+//    gbl_color_cRe2  = [UIColor colorWithRed:255.0/255.0 green:163.0/255.0 blue:188.0/255.0 alpha:1.0]; //  too light
+//    gbl_color_cRe2  = [UIColor colorWithRed:255.0/255.0 green:133.0/255.0 blue:173.0/255.0 alpha:1.0]; //  
+      gbl_color_cRe2  = [UIColor colorWithRed:255.0/255.0 green:123.0/255.0 blue:163.0/255.0 alpha:1.0]; //   NEW gold
+
+
+
 
 //    gbl_color_textRe2  = [UIColor colorWithRed:034.0/255.0 green:034.0/255.0 blue:102.0/255.0 alpha:1.0]; // 222266  FOR TEST
 
@@ -1216,8 +1276,8 @@ tn();
     NSString  *fname,*fmth,*fday,*fyr,*fhr,*fmin,*fampm;
     char      cname[32], cmth[32], cday[32], cyr[32], chr[32], cmin[32], campm[32];
     NSString *fcity, *fprov, *fcoun, *fhighsec;
-    char allowedCharactersInName[128] = "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-    char allowedCharactersInCity[128] = "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-";
+    char C_allowedCharactersInName[128] = "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+    char C_allowedCharactersInCity[128] = "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-";
     int daysinmonth[12]     ={31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     int daysinmonth_leap[12]={31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
@@ -1236,7 +1296,7 @@ tn();
     NSInteger numRecords;
     NSInteger numFields;
 
-  NSLog(@"BEG   CHECK  group");
+  NSLog(@"BEG   CHECK  group NAME");
     //      BEG   CHECK  group
     numRecords = 0;   numFields = 0;
     for (NSString *psvGrp in gbl_arrayGrp) {     // get PSV of arg name
@@ -1259,14 +1319,14 @@ tn();
         constant_char = [fname cStringUsingEncoding: NSUTF8StringEncoding]; // NSString object to C str
         strcpy(cname, constant_char);                                        // NSString object to C str  // because of const
         if (cname[0] == '~') {        // ~ only legal as first char
-            if (sall(cname + 1, allowedCharactersInName) == 0) return   4;
+            if (sall(cname + 1, C_allowedCharactersInName) == 0) return   4;
         } else {
-            if (sall(cname,     allowedCharactersInName) == 0) return   5;
+            if (sall(cname,     C_allowedCharactersInName) == 0) return   5;
         }
     }
     if (numRecords <   2 )                                     return   6;  // 2 is MAGIC for the 2 example groups
     if (numRecords >  gbl_MAX_groups)                          return   7;  // max groups is 50
-  NSLog(@"END   CHECK  group");
+  NSLog(@"END   CHECK  group NAME");
 
 
 
@@ -1280,8 +1340,8 @@ tn();
         //
         flds  = [psvPer componentsSeparatedByCharactersInSet: mySeparators];
         
-  NSLog(@"flds=[%@]",flds);
-  NSLog(@"flds.count=[%ld]",(long)flds.count);
+//  NSLog(@"flds=[%@]",flds);
+//  NSLog(@"flds.count=[%ld]",(long)flds.count);
         if (flds.count != 12)                                 return  11;  
         
         fname    = flds[0];
@@ -1303,9 +1363,9 @@ tn();
         strcpy(cname, constant_char);                                        // NSString object to C str  // because of const
         //
         if (cname[0] == '~') {        // ~ only legal as first char of name
-            if (sall(cname + 1, allowedCharactersInName) == 0) return  14;
+            if (sall(cname + 1, C_allowedCharactersInName) == 0) return  14;
         } else {
-            if (sall(cname,     allowedCharactersInName) == 0) return  15;
+            if (sall(cname,     C_allowedCharactersInName) == 0) return  15;
         }
 
 
@@ -1349,7 +1409,7 @@ tn();
         if (fhr.length > 2)                                    return  30;
         constant_char = [fhr  cStringUsingEncoding: NSUTF8StringEncoding]; // NSString object to C str
         strcpy(chr, constant_char);                                        // NSString object to C str  // because of const
-ksn(chr);
+//ksn(chr);
         if (sall(chr, "0123456789") == 0)                      return  30;
         if (atoi(chr) <  1)                                    return  31;
         if (atoi(chr) > 12)                                    return  32;
@@ -1373,29 +1433,151 @@ ksn(chr);
         if (atoi(campm) <  0)                                  return  40;
         if (atoi(campm) >  1)                                  return  41;
 
-//<.>
-//        fcity    = flds[7];
-//        fprov    = flds[8];
-//        fcoun    = flds[9];
-//        fhighsec = flds[10];  // "" or "hs"
-//<.>
-//
-
-
-
-
-
-//<.>
-
     }
   NSLog(@"END   CHECK  person");
 
-  NSLog(@"BEG   CHECK  member");
-    //     "BEG   CHECK  member)";
-    for (NSString *psvMem in gbl_arrayMem) {   // loop thru gbl group member array
-// TODO 
-    }
-  NSLog(@"END   CHECK  member");
+
+
+  NSLog(@"BEG   CHECK all members");
+    // go thru  gbl_arrayMem
+    //   - check each group  name exists
+    //     - if group does not exist,  delete this gbl_arrayMem
+    //   - check each person name exists
+    //     - if person does not exist,  delete this gbl_arrayMem
+    //
+    NSString *arrayMem_rec;
+    NSArray  *psvArray;
+    NSString *currGroup;
+    NSString *currPerson;
+    NSString *prefixStr6;
+    NSString *prefixStr7;
+    BOOL      group_wasFound, person_wasFound;
+    NSString *lastFoundPersonName;
+    NSString *lastFoundGroupName;
+    NSInteger idx_gbl_arrayMem, num_rec_arrayMem;
+    NSMutableArray  *indexNumsToDeleteFrom_gblArrayMem;
+    NSInteger idxToDel;
+
+    [indexNumsToDeleteFrom_gblArrayMem  removeAllObjects];
+     indexNumsToDeleteFrom_gblArrayMem  = [[NSMutableArray alloc] init];
+
+    idx_gbl_arrayMem    = -1;
+    lastFoundPersonName = @"";
+    lastFoundGroupName  = @"";
+
+//    for (id myMemberRec in gbl_arrayMem)  
+    num_rec_arrayMem = gbl_arrayMem.count;
+  NSLog(@"num_rec_arrayMem =[%ld]",(long)num_rec_arrayMem );
+
+    for (idx_gbl_arrayMem = 0; idx_gbl_arrayMem < num_rec_arrayMem; idx_gbl_arrayMem++ ) 
+    {
+        arrayMem_rec = gbl_arrayMem[idx_gbl_arrayMem];
+        psvArray        = [arrayMem_rec componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString: @"|"]];
+        currGroup       = psvArray[0];
+        currPerson      = psvArray[1];
+        group_wasFound  = NO;
+        person_wasFound = NO;
+tn();
+        // for test, put in non-existant group and person
+        //if ([currGroup isEqualToString: @"Short Names" ]) currGroup = @"short names xxx";
+        //if ([currPerson isEqualToString: @"harry" ]) currPerson = @"harry xxx";
+
+        if ([currGroup isEqualToString: lastFoundGroupName ])
+        {   
+            // do NOT look up if group exists
+            group_wasFound      = YES;
+
+        } else {  // look up if group exists
+
+            prefixStr6 = [NSString stringWithFormat: @"%@|", currGroup];  // notice '|'
+      NSLog(@"prefixStr6 =[%@]",prefixStr6 );
+            for (NSString *elt in gbl_arrayGrp) {     
+                if ([elt hasPrefix: prefixStr6]) { 
+                    group_wasFound      = YES;
+                    lastFoundGroupName  = currGroup;
+                    break;
+                }
+            }
+        } //  look up if group exists
+
+  NSLog(@"group_wasFound =[%d]",group_wasFound );
+  NSLog(@"currGroup      =[%@]",currGroup);
+
+        if (group_wasFound == NO) { 
+            // here group was NOT found
+
+            [indexNumsToDeleteFrom_gblArrayMem addObject: [[NSNumber alloc] initWithInteger: idx_gbl_arrayMem ]] ;
+  NSLog(@"delete member with group  1 =[%@]", currGroup);
+  NSLog(@"delete member with member 1 =[%@]", currPerson);
+            continue;
+        } else {
+            // here group was found,  so look for Person
+
+            if ([currPerson isEqualToString: lastFoundPersonName ])
+            {   
+                // do NOT look up if person exists
+                person_wasFound      = YES;
+
+            } else {  // look up if person exists
+
+                prefixStr7 = [NSString stringWithFormat: @"%@|", currPerson];  // notice '|'
+  NSLog(@"prefixStr7 =[%@]",prefixStr7 );
+                for (NSString *elt in gbl_arrayPer) {   
+                    if ([elt hasPrefix: prefixStr7]) { 
+                        person_wasFound      = YES;
+                        lastFoundPersonName  = currPerson;
+                    }
+                }
+            } //  look up if person exists
+
+  NSLog(@"person_wasFound =[%d]",person_wasFound );
+  NSLog(@"currperson      =[%@]",currPerson);
+
+            if (person_wasFound == NO) { 
+                // here person was NOT found
+                [indexNumsToDeleteFrom_gblArrayMem addObject: [[NSNumber alloc] initWithInteger: idx_gbl_arrayMem ]] ;
+  NSLog(@"delete member with group  2 =[%@]", currGroup);
+  NSLog(@"delete member with member 2 =[%@]", currPerson);
+            } else {
+                // here person was  found
+                continue;
+            }
+        } // group was found
+
+    } // for each gbl_arrayMem
+
+  NSLog(@"indexNumsToDeleteFrom_gblArrayMem =[%@]",indexNumsToDeleteFrom_gblArrayMem );
+
+    // now delete all the gbl_arrayMemb elements that were not kosheer
+    //
+    if (indexNumsToDeleteFrom_gblArrayMem.count > 0) {
+
+        [indexNumsToDeleteFrom_gblArrayMem  removeAllObjects];
+         indexNumsToDeleteFrom_gblArrayMem  = [[NSMutableArray alloc] init];
+
+        // now delete from gbl_arrayMem
+        // by  going backwards from the highest index to delete to the lowest
+        // (because indexNumsToDeleteFrom_gblArrayMem is automatically sorted  smallest idx to largest idx)
+        //
+        for (NSInteger i = indexNumsToDeleteFrom_gblArrayMem.count - 1;  i >= 0;  i--) 
+        {
+            idxToDel = [indexNumsToDeleteFrom_gblArrayMem[i]  integerValue];
+//  NSLog(@"idxToDel      =[%ld]",idxToDel);
+//  NSLog(@"(long)idxToDel=[%ld]",(long)idxToDel);
+
+
+
+
+//            [gbl_arrayMem removeObjectAtIndex: idxToDel ]; 
+
+
+
+      NSLog(@"deleted index=[%ld]", (long)idxToDel);
+        }
+    }  // delete deleteable gbl_arrayMem
+
+
+  NSLog(@"END   CHECK all members");
 
   NSLog(@"in mambCheckForCorruptData    END");
 

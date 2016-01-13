@@ -29,6 +29,7 @@
 
         self.outletWebView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);  // this worked
 
+
 //        // put the Toolbar onto bottom of what color view
 //        dispatch_async(dispatch_get_main_queue(), ^(void){
 //            [self.view addSubview: gbl_toolbarForwBack ];
@@ -52,6 +53,17 @@
     
     // Do any additional setup after loading the view.
     NSLog(@"in viewHTML viewDidLoad!");
+
+//            dispatch_async(dispatch_get_main_queue(), ^(void){
+//    [self.outletWebView  loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"about:blank"]]];  // 1st time still slow
+//            });
+
+//    [self loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"about:blank"]]];
+//                [self.outletWebView loadRequest:HTML_URLrequest];
+//    [self.outletWebView  loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"about:blank"]]];  // 1st time still slow
+
+//   [self.outletWebView  stringByEvaluatingJavaScriptFromString:@"document.open();document.close()"];
+
     
 
     gbl_viewHTML_ShouldAddToNavBar = 1; // init to prevent  multiple programatic adds of nav bar items
@@ -703,6 +715,7 @@ tn();
         
         if (retval == 0 && retval2 == 0) {
 
+
             /* here, go and look at html report */
             // [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"about:blank"]]];  // ?clean for re-use
             //        NSURLRequest *HTML_URLrequest = [[NSURLRequest alloc] initWithURL: URLtoHTML_forWebview];
@@ -908,6 +921,7 @@ NSLog(@"in viewDidAppear()");
 {
     [super viewWillAppear: animated];
   NSLog(@"in viewWillAppear! in view HTML");
+
 
 
 //    [self.navigationController.navigationBar.layer removeAllAnimations];  // stop the nav bar title stutter l to r

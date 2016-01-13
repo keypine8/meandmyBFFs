@@ -376,7 +376,9 @@ bn(3012);
             else if ( [mylin isEqualToString: @"before para"] ) {
                 mylin             = @" ";
                 mybgcolor         = gbl_color_cBgr ;
-                gbl_heightCellPER = 12;;
+//                gbl_heightCellPER = 12;
+//                gbl_heightCellPER = 18;
+                gbl_heightCellPER = 15;
             }
             else if ( [mylin isEqualToString: @"before willpower"] ) {
                 mylin             = @" ";
