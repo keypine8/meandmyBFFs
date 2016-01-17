@@ -1,3 +1,4 @@
+
 //
 //  MAMB09_listMembersTableViewController.m
 //  Me&myBFFs
@@ -31,6 +32,8 @@ CGFloat myCurrentStatusbarHeight;
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 tn();
     NSLog(@"in LIST MEMBEFRS   viewDidLoad!");
+
+//    gbl_justLeftMemberAddorDelScreen  = 0;
 
 //    [self.tableView setBackgroundColor: gbl_colorReportsBG];
     [self.tableView setBackgroundColor: gbl_colorEditingBG ];
@@ -114,12 +117,12 @@ tn();
         psvArray = [myMemberRec componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"|"]];
         currGroup  = psvArray[0];
         currMember = psvArray[1];
-  NSLog(@"currGroup  =[%@]",currGroup  );
-  NSLog(@"currMember =[%@]",currMember );
+//  NSLog(@"currGroup  =[%@]",currGroup  );
+//  NSLog(@"currMember =[%@]",currMember );
 
         if ([currGroup isEqualToString: gbl_lastSelectedGroup ] )
         {
-  NSLog(@"ADDED to gbl_arrayMembersToDisplay ");
+//  NSLog(@"ADDED to gbl_arrayMembersToDisplay ");
             [gbl_arrayMembersToDisplay addObject: currMember ];                        //  Person name for pick
         }
     } // for each groupmember
@@ -137,147 +140,159 @@ tn();
   NSLog(@"in viewWillAppear! in LIST MEMBERS ");
 
 
-    // use 2 buttons in a toolbar on bottom of screen to  add- green "+"  delete- red "-"
+    // set up toolbar at bottom of screen
+    // BUT ONLY if we got here for the first time "from below".
     //
-    UIBarButtonItem *myPrompt = [[UIBarButtonItem alloc]initWithTitle: @"Members" 
-                                                                style: UIBarButtonItemStylePlain
-                                                               target: self
-                                                               action: nil
-    ];
-
-    [myPrompt setTitleTextAttributes: @{
-//                    NSFontAttributeName: [UIFont fontWithName:@"Helvetica-Bold" size:26.0],
-//                    NSFontAttributeName: [UIFont boldSystemFontOfSize: 17.0],
-                    NSFontAttributeName: [UIFont boldSystemFontOfSize: 20.0],
-//         NSForegroundColorAttributeName: [UIColor greenColor]
-         NSForegroundColorAttributeName: [UIColor blackColor]
-       }
-                            forState: UIControlStateNormal
-    ];
-
-
-
-    UIImage *myImageADD = [[UIImage imageNamed: @"iconPlusAddGreenBig_66.png"]
-                        imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal
-    ];
-    UIImage *myImageDEL = [[UIImage imageNamed: @"iconMinusDelRedBig_66.png"]
-                        imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal 
-    ];
-
-
-//    UIBarButtonItem *memberADD = [[UIBarButtonItem alloc] initWithImage: [UIImage imageNamed: @"iconPlusAddGreenBig_66.png"]
-    UIBarButtonItem *memberADD = [[UIBarButtonItem alloc] initWithImage: myImageADD
-                                                                  style: UIBarButtonItemStylePlain
-                                                                 target: self
-                                                                 action: @selector(pressedGreenPlusAdd)
-    ];
-//    UIBarButtonItem *memberDEL = [[UIBarButtonItem alloc] initWithImage: [UIImage imageNamed: @"iconMinusDelRedBig_66.png"]
-    UIBarButtonItem *memberDEL = [[UIBarButtonItem alloc] initWithImage: myImageDEL
-                                                                  style: UIBarButtonItemStylePlain
-                                                                 target: self
-                                                                 action: @selector(pressedRedMinusDel)
-    ];
-
-    
-    UIBarButtonItem *myFlexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemFlexibleSpace
-                                                                                     target: self
-                                                                                     action: nil];
-        // create a Toolbar
-
-//       UIToolbar *myToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 44, 320, 44)];
-//       UIToolbar *myToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 44, self.view.frame.size.width, 44)];
-//        gbl_toolbarForwBack = [[UIToolbar alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 44, self.view.frame.size.width, 44)];
-
-    float my_screen_height;
-    float my_status_bar_height;
-    float my_nav_bar_height;
-    float my_toolbar_height;
-
-    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
-    CGSize currentScreenWidthHeight = [myappDelegate currentScreenSize];
-    my_screen_height       = currentScreenWidthHeight.height;
-    myCurrentScreenHeight  = currentScreenWidthHeight.height;
-
-    CGSize myStatusBarSize = [[UIApplication sharedApplication] statusBarFrame].size;
-    my_status_bar_height   = MIN(myStatusBarSize.width, myStatusBarSize.height);
-    myCurrentStatusbarHeight = MIN(myStatusBarSize.width, myStatusBarSize.height);
-
-
-    my_nav_bar_height      =  self.navigationController.navigationBar.frame.size.height;
-    myCurrentNavbarHeight  =  self.navigationController.navigationBar.frame.size.height;
-
-
-//  NSLog(@"cu33entScreenWidthHeight.width  =%f",currentScreenWidthHeight.width );
-//  NSLog(@"cu33entScreenWidthHeight.height =%f",currentScreenWidthHeight.height );
-  NSLog(@"my_screen_height                  =%f",my_screen_height );
-  NSLog(@"my_status_bar_height              =%f",my_status_bar_height   );
-  NSLog(@"my_nav_bar_height                 =%f",my_nav_bar_height    );
-    my_toolbar_height = 44.0;
-  NSLog(@"my_toolbar_height                 =%f",my_toolbar_height );
-
-
-    float y_value_of_toolbar; 
-    //    y_value_of_toolbar  = currentScreenWidthHeight.height - 44.0;
-    //    y_value_of_toolbar  = 400.0;
-    //    y_value_of_toolbar  = 436.0;
-    //    y_value_of_toolbar  = 480.0;
-    //    y_value_of_toolbar  = 472.0;// too low
-    //    y_value_of_toolbar  = 464.0; // very close
-    //    y_value_of_toolbar  = 458.0; // too high
-    //    y_value_of_toolbar  = 456.0; // too high
-    //    y_value_of_toolbar  = 459.0; // too high
-    //    y_value_of_toolbar  = 460.0; // very close   exact
-    y_value_of_toolbar  = my_screen_height  - my_status_bar_height  - my_nav_bar_height - my_toolbar_height;
-  NSLog(@"y_value_of_toolbar  =%f",y_value_of_toolbar  );
-
-
-    gbl_toolbarMemberAddDel = [[UIToolbar alloc] initWithFrame:CGRectMake(
-        0.0,
-        y_value_of_toolbar, 
-        currentScreenWidthHeight.width,
-        44.0)];
-
-
-//
-//439://      gbl_myCellBgView =[[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, [cell frame].size.width -20, [cell frame].size.height)];
-//906:// CGRect pickerFrame = CGRectMake(0.0, viewFrame.size.height-pickerHeight, viewFrame.size.width, pickerHeight);
-//28:    self.outletWebView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
-//
-
-        // make array of buttons for the Toolbar
-        NSArray *myButtonArray =  [NSArray arrayWithObjects:
-//            myFlexibleSpace, myPrompt, myFlexibleSpace, memberADD, myFlexibleSpace, memberDEL, myFlexibleSpace, nil
-//            myFlexibleSpace, myFlexibleSpace, myPrompt, myFlexibleSpace, memberADD, myFlexibleSpace, memberDEL, myFlexibleSpace, myFlexibleSpace, nil
-            myFlexibleSpace, myFlexibleSpace, myFlexibleSpace,
-            myPrompt, myFlexibleSpace, memberADD, myFlexibleSpace, memberDEL,
-            myFlexibleSpace, myFlexibleSpace, myFlexibleSpace, nil
-        ]; 
-
-        // put the array of buttons in the Toolbar
-        [gbl_toolbarMemberAddDel setItems: myButtonArray   animated: NO];
-nbn(129);
-            // set bottom toolbar bg color to white
-            //
-            gbl_toolbarMemberAddDel.translucent  = NO;
-            gbl_toolbarMemberAddDel.barTintColor = [UIColor whiteColor];
-
-        // put the Toolbar onto bottom of what color view
-        dispatch_async(dispatch_get_main_queue(), ^(void){
-//             self.navigationController.toolbar.hidden = YES;
-            [self.view addSubview: gbl_toolbarMemberAddDel ];
-
-//            [self.navigationController.view addSubview: gbl_toolbarForwBack ];  // this worked  but in info, it stayed  also allows too fast
-//             self.navigationController.toolbar.hidden = NO;
-//            [self.navigationController.toolbar setItems: myButtonArray ]; 
-//            self.navigationController.toolbar.items = myButtonArray; 
-//             self.navigationController.toolbar.hidden = NO
-
-        });
-
-        // set the y postion of this toolbar, so we can keep it on the bottom
+    // If we are here returning from add member or del member,
+    // we do not want to paint the toolbar again
+    //
+    if (self.isBeingPresented || self.isMovingToParentViewController) {   // "first time" entering from below
+        // here we got to this screen from "below"
         //
-        gbl_listMemberToolbar_y = gbl_toolbarMemberAddDel.frame.origin.y ;
+
+        // use 2 buttons in a toolbar on bottom of screen to  add- green "+"  delete- red "-"
+        //
+        UIBarButtonItem *myPrompt = [[UIBarButtonItem alloc]initWithTitle: @"Members" 
+                                                                    style: UIBarButtonItemStylePlain
+                                                                   target: self
+                                                                   action: nil
+        ];
+
+        [myPrompt setTitleTextAttributes: @{
+    //                    NSFontAttributeName: [UIFont fontWithName:@"Helvetica-Bold" size:26.0],
+    //                    NSFontAttributeName: [UIFont boldSystemFontOfSize: 17.0],
+                        NSFontAttributeName: [UIFont boldSystemFontOfSize: 20.0],
+    //         NSForegroundColorAttributeName: [UIColor greenColor]
+             NSForegroundColorAttributeName: [UIColor blackColor]
+           }
+                                forState: UIControlStateNormal
+        ];
+
+
+
+        UIImage *myImageADD = [[UIImage imageNamed: @"iconPlusAddGreenBig_66.png"]
+                            imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal
+        ];
+        UIImage *myImageDEL = [[UIImage imageNamed: @"iconMinusDelRedBig_66.png"]
+                            imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal 
+        ];
+
+
+    //    UIBarButtonItem *memberADD = [[UIBarButtonItem alloc] initWithImage: [UIImage imageNamed: @"iconPlusAddGreenBig_66.png"]
+        UIBarButtonItem *memberADD = [[UIBarButtonItem alloc] initWithImage: myImageADD
+                                                                      style: UIBarButtonItemStylePlain
+                                                                     target: self
+                                                                     action: @selector(pressedGreenPlusAdd)
+        ];
+    //    UIBarButtonItem *memberDEL = [[UIBarButtonItem alloc] initWithImage: [UIImage imageNamed: @"iconMinusDelRedBig_66.png"]
+        UIBarButtonItem *memberDEL = [[UIBarButtonItem alloc] initWithImage: myImageDEL
+                                                                      style: UIBarButtonItemStylePlain
+                                                                     target: self
+                                                                     action: @selector(pressedRedMinusDel)
+        ];
+
+        
+        UIBarButtonItem *myFlexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemFlexibleSpace
+                                                                                         target: self
+                                                                                         action: nil];
+            // create a Toolbar
+
+    //       UIToolbar *myToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 44, 320, 44)];
+    //       UIToolbar *myToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 44, self.view.frame.size.width, 44)];
+    //        gbl_toolbarForwBack = [[UIToolbar alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 44, self.view.frame.size.width, 44)];
+
+        float my_screen_height;
+        float my_status_bar_height;
+        float my_nav_bar_height;
+        float my_toolbar_height;
+
+        MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
+        CGSize currentScreenWidthHeight = [myappDelegate currentScreenSize];
+        my_screen_height       = currentScreenWidthHeight.height;
+        myCurrentScreenHeight  = currentScreenWidthHeight.height;
+
+        CGSize myStatusBarSize = [[UIApplication sharedApplication] statusBarFrame].size;
+        my_status_bar_height   = MIN(myStatusBarSize.width, myStatusBarSize.height);
+        myCurrentStatusbarHeight = MIN(myStatusBarSize.width, myStatusBarSize.height);
+
+
+        my_nav_bar_height      =  self.navigationController.navigationBar.frame.size.height;
+        myCurrentNavbarHeight  =  self.navigationController.navigationBar.frame.size.height;
+
+
+    //  NSLog(@"cu33entScreenWidthHeight.width  =%f",currentScreenWidthHeight.width );
+    //  NSLog(@"cu33entScreenWidthHeight.height =%f",currentScreenWidthHeight.height );
+      NSLog(@"my_screen_height                  =%f",my_screen_height );
+      NSLog(@"my_status_bar_height              =%f",my_status_bar_height   );
+      NSLog(@"my_nav_bar_height                 =%f",my_nav_bar_height    );
+        my_toolbar_height = 44.0;
+      NSLog(@"my_toolbar_height                 =%f",my_toolbar_height );
+
+
+        float y_value_of_toolbar; 
+        //    y_value_of_toolbar  = currentScreenWidthHeight.height - 44.0;
+        //    y_value_of_toolbar  = 400.0;
+        //    y_value_of_toolbar  = 436.0;
+        //    y_value_of_toolbar  = 480.0;
+        //    y_value_of_toolbar  = 472.0;// too low
+        //    y_value_of_toolbar  = 464.0; // very close
+        //    y_value_of_toolbar  = 458.0; // too high
+        //    y_value_of_toolbar  = 456.0; // too high
+        //    y_value_of_toolbar  = 459.0; // too high
+        //    y_value_of_toolbar  = 460.0; // very close   exact
+        y_value_of_toolbar  = my_screen_height  - my_status_bar_height  - my_nav_bar_height - my_toolbar_height;
+      NSLog(@"y_value_of_toolbar  =%f",y_value_of_toolbar  );
+
+
+        gbl_toolbarMemberAddDel = [[UIToolbar alloc] initWithFrame:CGRectMake(
+            0.0,
+            y_value_of_toolbar, 
+            currentScreenWidthHeight.width,
+            44.0)];
+
+
+    //
+    //439://      gbl_myCellBgView =[[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, [cell frame].size.width -20, [cell frame].size.height)];
+    //906:// CGRect pickerFrame = CGRectMake(0.0, viewFrame.size.height-pickerHeight, viewFrame.size.width, pickerHeight);
+    //28:    self.outletWebView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+    //
+
+            // make array of buttons for the Toolbar
+            NSArray *myButtonArray =  [NSArray arrayWithObjects:
+    //            myFlexibleSpace, myPrompt, myFlexibleSpace, memberADD, myFlexibleSpace, memberDEL, myFlexibleSpace, nil
+    //            myFlexibleSpace, myFlexibleSpace, myPrompt, myFlexibleSpace, memberADD, myFlexibleSpace, memberDEL, myFlexibleSpace, myFlexibleSpace, nil
+                myFlexibleSpace, myFlexibleSpace, myFlexibleSpace,
+                myPrompt, myFlexibleSpace, memberADD, myFlexibleSpace, memberDEL,
+                myFlexibleSpace, myFlexibleSpace, myFlexibleSpace, nil
+            ]; 
+
+            // put the array of buttons in the Toolbar
+            [gbl_toolbarMemberAddDel setItems: myButtonArray   animated: NO];
+    nbn(129);
+                // set bottom toolbar bg color to white
+                //
+                gbl_toolbarMemberAddDel.translucent  = NO;
+                gbl_toolbarMemberAddDel.barTintColor = [UIColor whiteColor];
+
+            // put the Toolbar onto bottom of what color view
+            dispatch_async(dispatch_get_main_queue(), ^(void){
+    //             self.navigationController.toolbar.hidden = YES;
+                [self.view addSubview: gbl_toolbarMemberAddDel ];
+
+    //            [self.navigationController.view addSubview: gbl_toolbarForwBack ];  // this worked  but in info, it stayed  also allows too fast
+    //             self.navigationController.toolbar.hidden = NO;
+    //            [self.navigationController.toolbar setItems: myButtonArray ]; 
+    //            self.navigationController.toolbar.items = myButtonArray; 
+    //             self.navigationController.toolbar.hidden = NO
+
+            });
+
+            // set the y postion of this toolbar, so we can keep it on the bottom
+            //
+            gbl_listMemberToolbar_y = gbl_toolbarMemberAddDel.frame.origin.y ;
   NSLog(@"gbl_listMemberToolbar_y =[%f]",gbl_listMemberToolbar_y );
+  
+  } // end of set Member  Toolbar at bottom of screen
 
 } // end of   viewWillAppear
 
@@ -314,7 +329,7 @@ nbn(129);
 //    fixedFrame.origin.y =  628.0                  + scrollView.contentOffset.y ;
     fixedFrame.origin.y =  gbl_listMemberToolbar_y  + scrollView.contentOffset.y ;
 
-  NSLog(@"fixedFrame.origin.y  FINAL        =[%f]",fixedFrame.origin.y );
+//  NSLog(@"fixedFrame.origin.y  FINAL        =[%f]",fixedFrame.origin.y );
 
     gbl_toolbarMemberAddDel.frame = fixedFrame;
 } // scrollViewDidScroll
@@ -454,7 +469,7 @@ NSLog(@"in viewDidAppear()  in list  members");
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 tn();
   NSLog(@"in cellForRowAtIndexPath");
-  NSLog(@"=[%ld]",(long)indexPath.row);
+//  NSLog(@"row=[%ld]",(long)indexPath.row);
     //    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
 
     // create an NSString  we can use as the reuse identifier
@@ -485,7 +500,7 @@ tn();
     });
 
     
-  NSLog(@"cell.textLabel.text=[%@]",cell.textLabel.text);
+//  NSLog(@"cell.textLabel.text=[%@]",cell.textLabel.text);
     return cell;
 }
 

@@ -332,7 +332,7 @@ nbn(100);
 
 
 
-//
+
 //    //   for test   TO SIMULATE first downloading the app-  when there are no data files
 //    //   FOR test   remove all regular named files   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 //    //
@@ -352,7 +352,12 @@ nbn(100);
 //    NSLog(@" FOR test   END   remove all regular named files   xxxxxxxxxx ");
 //    // end of   FOR test   remove all regular named files   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 //
-//
+
+
+
+
+
+
 
 
 
@@ -392,6 +397,7 @@ ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
         // delete all data files, if present, and write and use example data arrays
         //
         if (!havePer) {
+
             //      remove all data named files (these cannot exist - no overcopy)
             [gbl_sharedFM removeItemAtURL: gbl_URLToGroup error:&err01];
             if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"Error in rm group %@",  err01); }
@@ -478,18 +484,208 @@ ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
 
     // check for data corruption  (should not happen)
     //
+nbn(1);
     NSInteger myCorruptDataErrNum;
     do {
         myCorruptDataErrNum =  [myappDelegate mambCheckForCorruptData ];
-
-        if (myCorruptDataErrNum > 0) {
   NSLog(@"myCorruptDataErrNum =[%ld]",(long)myCorruptDataErrNum );
 
-            [myappDelegate handleCorruptDataErrNum: myCorruptDataErrNum ];
-        }
+        if (myCorruptDataErrNum > 0) {
 
-    } while ( myCorruptDataErrNum != 0);
+  NSLog(@"myCorruptDataErrNum =[%ld]",(long)myCorruptDataErrNum );
 
+            MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
+            [myappDelegate mamb_beginIgnoringInteractionEvents ];
+
+
+            // delete all non-example data from people, groups and members
+            //
+            // now delete from each gbl_arrayXxx  the non-example data
+            // by  going backwards from the highest index to delete to the lowest
+            //
+            for (NSInteger i = gbl_arrayMem.count - 1;  i >= 0;  i--) {
+                if ([gbl_arrayMem[i] hasPrefix: @"~"]) continue; 
+                [gbl_arrayMem removeObjectAtIndex: i ];
+            }
+            for (NSInteger i = gbl_arrayPer.count - 1;  i >= 0;  i--) {
+                if ([gbl_arrayPer[i] hasPrefix: @"~"]) continue; 
+                [gbl_arrayPer removeObjectAtIndex: i ];
+            }
+            for (NSInteger i = gbl_arrayGrp.count - 1;  i >= 0;  i--) {
+                if ([gbl_arrayGrp[i] hasPrefix: @"~"]) continue; 
+                [gbl_arrayGrp removeObjectAtIndex: i ];
+            }
+
+            [myappDelegate mambWriteNSArrayWithDescription:              (NSString *) @"group" ]; // write new array data to file
+            [myappDelegate mambReadArrayFileWithDescription:             (NSString *) @"group" ]; // read new data from file to array
+            [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription: (NSString *) @"group" ]; // sort array by name
+
+
+            [myappDelegate mambWriteNSArrayWithDescription:              (NSString *) @"person"]; // write new array data to file
+            [myappDelegate mambReadArrayFileWithDescription:             (NSString *) @"person"]; // read new data from file to array
+            [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription: (NSString *) @"person"]; // sort array by name
+
+            [myappDelegate mambWriteNSArrayWithDescription:              (NSString *) @"member"]; // write new array data to file
+            [myappDelegate mambReadArrayFileWithDescription:             (NSString *) @"member"]; // read new data from file to array
+            [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription: (NSString *) @"member"]; // sort array by name
+
+
+            [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.5 ];   
+
+
+//<.>
+//            // http://stackoverflow.com/questions/25962559/uialertcontroller-text-alignment
+//            //
+//            // I have successfully used the following, for both aligning and styling the text of UIAlertControllers:
+//            // 
+//            // let paragraphStyle = NSMutableParagraphStyle()
+//            // paragraphStyle.alignment = NSTextAlignment.Left
+//            // 
+//            // let messageText = NSMutableAttributedString(
+//            //     string: "The message you want to display",
+//            //     attributes: [
+//            //         NSParagraphStyleAttributeName: paragraphStyle,
+//            //         NSFontAttributeName : UIFont.preferredFontForTextStyle(UIFontTextStyleBody),
+//            //         NSForegroundColorAttributeName : UIColor.blackColor()
+//            //     ]
+//            // )
+//            // 
+//            // myAlert.setValue(messageText, forKey: "attributedMessage")
+//            // You can do a similar thing with the title, if you use "attributedTitle", instead of "attributedMessage"
+//            // 
+//            // Eduardo 3,901
+//            //   	 	
+//            // Seems like this is private API use, did this make it into the App Store? – powerj1984 Jul 6 '15 at 14:10
+//            // @powerj1984 yes, it did. – Eduardo Jul 6 '15 at 15:02
+//            //
+// 
+//<.>
+//
+//  Use this code instead       [self.navigationController presentViewController: myAlert  animated: YES  completion: nil ];
+
+
+
+            // want left-justified alert text for long msg
+            //
+//   //#define FONT_SIZE 20
+//   //#define FONT_HELVETICA @"Helvetica-Light"
+//   //#define BLACK_SHADOW [UIColor colorWithRed:40.0f/255.0f green:40.0f/255.0f blue:40.0f/255.0f alpha:0.4f]
+//   //NSString*myNSString = @"This is my string.\nIt goes to a second line.";                
+//   
+//   NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+//                  paragraphStyle.alignment = NSTextAlignmentCenter;
+//   //             paragraphStyle.lineSpacing = FONT_SIZE/2;
+//   //             paragraphStyle.lineSpacing = -5;
+//   
+//   //                     UIFont * labelFont = [UIFont fontWithName:Menlo size: 16.0];
+//   //                   UIColor * labelColor = [UIColor colorWithWhite:1 alpha:1];
+//   //                       NSShadow *shadow = [[NSShadow alloc] init];
+//   //                 [shadow setShadowColor : BLACK_SHADOW];
+//   //                [shadow setShadowOffset : CGSizeMake (1.0, 1.0)];
+//   //            [shadow setShadowBlurRadius : 1 ];
+//   
+//   //NSAttributedString *labelText = [[NSAttributedString alloc] initWithString :  myNSString
+//   //       *myAttrString = [[NSAttributedString alloc] initWithString : mylin   // myNSString
+//          myAttrString = [[NSMutableAttributedString alloc] initWithString : mylin   // myNSString
+//              attributes : @{
+//                  NSParagraphStyleAttributeName : paragraphStyle,
+//   //                         NSFontAttributeName : compFont_16 
+//                            NSFontAttributeName : compFont_14 
+//   //               NSBaselineOffsetAttributeName : @-1.0
+//              }
+//          ];
+//   //                 NSKernAttributeName : @2.0,
+//   //                 NSFontAttributeName : labelFont
+//   //      NSForegroundColorAttributeName : labelColor,
+//   //              NSShadowAttributeName : shadow
+//
+
+
+nbn(2);
+            // want left-justified alert text for long msg
+            //
+            NSString *mymsg;
+            mymsg = @"When corrupt data is found, the App has to delete all of your added people, groups and group members.\n\n   RECOVERY of DATA \n\nMethod 1:  Assuming you did backups, go to your latest email having the subject \"Me and My BFFs BACKUP\".  Follow the instructions in the email to restore the data.\n\nMethod 2:  Delete the App \"Me and My BFFs\" and install it again from the App store.  Doing this might restore the data for people, groups and members.";
+
+            NSMutableParagraphStyle *myParagraphStyle = [[NSMutableParagraphStyle alloc] init];
+            myParagraphStyle.alignment                = NSTextAlignmentLeft;
+
+            NSMutableAttributedString *myAttrMessage;
+            myAttrMessage = [[NSMutableAttributedString alloc] initWithString : mymsg   // myNSString
+                attributes : @{
+                    NSParagraphStyleAttributeName : myParagraphStyle,
+//                   NSBackgroundColorAttributeName : gbl_color_cRed,
+                              NSFontAttributeName : [UIFont boldSystemFontOfSize: 12.0]
+                }
+            ];
+//            // myAlert.setValue(messageText, forKey: "attributedMessage")
+
+
+nbn(3);
+
+            UIAlertController* myAlert = [UIAlertController alertControllerWithTitle: @"Found Corrupt Data"
+                                                                           message: mymsg
+                                                                    preferredStyle: UIAlertControllerStyleAlert  ];
+             
+            [myAlert setValue: myAttrMessage  forKey: @"attributedMessage" ];
+nbn(5);
+
+            UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                                style: UIAlertActionStyleDefault
+                                                              handler: ^(UIAlertAction * action) {
+                NSLog(@"Ok button pressed    for corrupt data");
+            } ];
+             
+            [myAlert addAction:  okButton];
+
+nbn(6);
+            // was using this:
+            //[self presentViewController: myAlert  animated: YES  completion: nil   ];
+            //
+            // but was getting this:   Warning :-Presenting view controllers on detached view controllers is discouraged
+            //
+            // finally, this got rid of the warning:
+            //
+            [self.navigationController presentViewController: myAlert  animated: YES  completion: nil ];
+
+nbn(7);
+            // tried all these:
+            //
+            // To avoid getting the warning in a push navigation, you can directly use :
+            // 
+            // [self.view.window.rootViewController presentViewController:viewController animated:YES completion:nil];
+            // And then in your modal view controller, when everything is finished, you can just call :
+            // 
+            // [self dismissViewControllerAnimated:YES completion:nil];
+            //
+            //[self.view.window.rootViewController presentViewController:viewController animated:YES completion:nil];
+            //[self.view.window.rootViewController presentViewController: myAlert  animated: YES  completion: nil ];
+            //
+            // run on rootviewcontroller
+            //            id rootVC = [[[[[UIApplication sharedApplication] keyWindow] subviews] objectAtIndex:0] nextResponder];
+            //            [rootViewController presentViewController: myAlert  animated: YES  completion: nil ];
+            //You can access it using the below code if the rootViewController is a UIViewController
+            //
+            //ViewController *rootController=(ViewController *)((AppDelegate *)[[UIApplication sharedApplication] delegate]).window.rootViewController;
+            //But if it's a UINavigationController you can use the code below.
+            //
+            //UINavigationController *nav=(UINavigationController *)((AppDelegate *)[[UIApplication sharedApplication] delegate]).window.rootViewController;
+            //ViewController *rootController=(ViewController *)[nav.viewControllers objectAtIndex:0];
+            //
+            //        UINavigationController *nav=(UINavigationController *)((AppDelegate *)[[UIApplication sharedApplication] delegate]).window.rootViewController;
+            //nbn(2); 
+            //        ViewController *rootController=(ViewController *)[nav.viewControllers objectAtIndex:0];
+            //nbn(3); 
+            //       [rootController presentViewController: myAlert  animated: YES  completion: nil ];
+            //
+            //    [sourceViewController.navigationController.view.layer addAnimation: transition 
+            //    self.navigationController.toolbarHidden = YES;  // ensure that the bottom of screen toolbar is NOT visible 
+
+
+        } // got corrupt data
+
+
+    } while (FALSE);  // check for data corruption  (should not happen)
 
 
 
@@ -623,7 +819,7 @@ ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
 //  cell.accessoryType        = nil;      // for test create empty Launch screen shot
 //  cell.editingAccessoryType = nil;     // for test create empty Launch screen shot
 
-//<.> for test create empty Launch screen shot  //  ALSO comment out between the 2  <.>  below
+// for test create empty Launch screen shot  //  ALSO comment out between her and  <.x  below
         cell.textLabel.text = nameOfGrpOrPer;
 
         cell.textLabel.font            = [UIFont boldSystemFontOfSize: 17.0];
@@ -639,7 +835,7 @@ ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
         cell.indentationLevel =  3;   // these 2 keep the name on screen when hit red round delete and delete button slides from right
 
         if ([gbl_homeUseMODE isEqualToString: @"edit mode"]) cell.tintColor = [UIColor blackColor];
-//<.> for test create empty Launch screen shot  //  ALSO comment out between the 2  <.>  above
+//<.x for test create empty Launch screen shot  //  ALSO comment out between the 2  <.  above
 
     });
   
@@ -1109,7 +1305,7 @@ NSLog(@"in viewDidAppear()  in HOME");
                 [myappDelegate mamb_beginIgnoringInteractionEvents ];
                
 
-                if ([gbl_fromHomeCurrentSelectionType isEqualToString:@"person"]) {
+                if ([gbl_fromHomeCurrentSelectionType isEqualToString:@"person"]) {  
                     [myappDelegate mambWriteNSArrayWithDescription: (NSString *) @"perrem"];
                 }
                 if ([gbl_fromHomeCurrentSelectionType isEqualToString:@"group"]) {
@@ -1420,98 +1616,13 @@ tn();trn("in doStuffOnEnteringForeground()   NOTIFICATION method     lastEntity 
    
     [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.3 ];    // after arg seconds
 
-
-//
-//    // highlight correct entity in seg control at top
-//    //
-//    //
-//    NSString  *nameOfGrpOrPer;
-//    NSInteger idxGrpOrPer;
-//    NSArray *arrayGrpOrper;
-//    idxGrpOrPer = -1;   // zero-based idx
-//    if ([gbl_lastSelectionType isEqualToString:@"group"]) {
-//
-//        _segEntityOutlet.selectedSegmentIndex = 0;
-//
-//        for (id eltGrp in gbl_arrayGrp) { // find index of _mambCurrentSelection (like "~Family") in gbl_arrayGrp
-//          idxGrpOrPer = idxGrpOrPer + 1;
-//          //NSLog(@"idxGrpOrPer =%ld", (long)idxGrpOrPer );
-//          //NSLog(@"eltGrp=%@", eltGrp);
-//          NSCharacterSet *mySeparators = [NSCharacterSet characterSetWithCharactersInString:@"|"];
-//          arrayGrpOrper  = [eltGrp componentsSeparatedByCharactersInSet: mySeparators];
-//          nameOfGrpOrPer = arrayGrpOrper[0];  // name is 1st fld
-//
-//          if ([nameOfGrpOrPer isEqualToString: gbl_lastSelectedGroup]) {
-//            break;
-//          }
-//        } // search thru gbl_arrayGrp
-//        //NSLog(@"FOUND !=%ld", (long)idxGrpOrPer);
-//
-//        // get the indexpath of row num idxGrpOrPer in tableview
-//        NSIndexPath *foundIndexPath = [NSIndexPath indexPathForRow:idxGrpOrPer inSection:0];
-////tn();trn("SCROLL 111111111111111111111111111111111111111111111111111111111");
-//
-//        // select the row in UITableView
-//        // This puts in the light grey "highlight" indicating selection
-//        [self.tableView selectRowAtIndexPath: foundIndexPath 
-//                                    animated: YES
-//                              scrollPosition: UITableViewScrollPositionNone];
-//        //[self.tableView scrollToNearestSelectedRowAtScrollPosition: foundIndexPath.row 
-//        [self.tableView scrollToNearestSelectedRowAtScrollPosition: UITableViewScrollPositionMiddle
-//                                                  animated: YES];
-//    }
-//    //if ([_mambCurrentEntity isEqualToString:@"person"]) 
-//    if ([gbl_lastSelectionType isEqualToString:@"person"]) {
-//
-//        _segEntityOutlet.selectedSegmentIndex = 1;
-//
-//        NSLog(@"gbl_lastSelectedPerson=%@",gbl_lastSelectedPerson);
-//        
-//        do { // highlight gbl_lastSelectedPerson row in tableview
-//
-//            for (id eltPer in gbl_arrayPer) {  // find index of gbl_lastSelectedPerson (like "~Dave") in gbl_arrayPer
-//                idxGrpOrPer = idxGrpOrPer + 1; 
-////              NSLog(@"idxGrpOrPer =%ld", (long)idxGrpOrPer );
-////              NSLog(@"eltPer=%@", eltPer);
-//
-//              NSCharacterSet *mySeparators = [NSCharacterSet characterSetWithCharactersInString:@"|"];
-//              arrayGrpOrper  = [eltPer componentsSeparatedByCharactersInSet: mySeparators];
-//              nameOfGrpOrPer = arrayGrpOrper[0];  // name is 1st fld
-//
-//              if ([nameOfGrpOrPer isEqualToString: gbl_lastSelectedPerson]) {
-//                break;
-//              }
-//            } // search thru gbl_arrayPer
-////        NSLog(@"FOUND !=%ld", (long)idxGrpOrPer);
-//
-//            // get the indexpath of row num idxGrpOrPer in tableview
-//            NSIndexPath *foundIndexPath = [NSIndexPath indexPathForRow:idxGrpOrPer inSection:0];
-////        NSLog(@"foundIndexPath=%@",foundIndexPath);
-////        NSLog(@"foundIndexPath.row=%ld",(long)foundIndexPath.row);
-//
-//
-//            // select the row in UITableView
-//            // This puts in the light grey "highlight" indicating selection
-//            [self.tableView selectRowAtIndexPath: foundIndexPath 
-//                                        animated: YES
-//                                  scrollPosition: UITableViewScrollPositionMiddle];
-////                                  scrollPosition: UITableViewScrollPositionNone];
-//            //[self.tableView scrollToNearestSelectedRowAtScrollPosition: foundIndexPath.row 
-//            [self.tableView scrollToNearestSelectedRowAtScrollPosition: UITableViewScrollPositionMiddle
-//                                                              animated: YES];
-//
-//        }  while (FALSE);  // END highlight lastEntity row in tableview
-//
-//    }
-//    // end of   highlight correct entity in seg control at top
-//
-
 } // end of  doStuffOnEnteringForeground()
 
 
 - (void) dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];  // will crash without this
 }
+
 
 //--------------------------------------------------------------------------------------------
 // SECTION INDEX VIEW
@@ -1865,15 +1976,19 @@ tn();    NSLog(@"in codeForCellTapOrAccessoryButtonTapWithIndexPath:");
         //   CASE_A   - tap on right side "i" button  ALWAYS  get add/change  screen
         //            - tap on left  side "-" button  ALWAYS  get delete  of person or group
         //   CASE_B   - tap on name in cell - for "group"   get group list (selPerson screen where you can "+" or "-" group members)
-        //   CASE_C   - tap on name in cell - for "person"  get nothing
+        //   CASE_C   - tap on name in cell - for "person"  get add/change  screen
         //
-    if (   [gbl_homeUseMODE           isEqualToString: @"edit mode" ]     // = yellow
-        && [gbl_fromHomeCurrentEntity isEqualToString: @"person"]         // = group list
-        && gbl_accessoryButtonTapped                == 0              )   // tapped on row, not "i"
-    { 
-        //   CASE_C     - for "person"  get nothing
-        return;  // see above philosophy // if you tap on person name in yellow edit person list, do nothing
-    }
+
+// 2016014  change behaviour to do edit details now, instead of nothing
+// //      //   CASE_C   - tap on name in cell - for "person"  get nothing
+//    if (   [gbl_homeUseMODE           isEqualToString: @"edit mode" ]     // = yellow
+//        && [gbl_fromHomeCurrentEntity isEqualToString: @"person"]         // = group list
+//        && gbl_accessoryButtonTapped                == 0              )   // tapped on row, not "i"
+//    { 
+//        //   CASE_C     - for "person"  get nothing
+//        return;  // see above philosophy // if you tap on person name in yellow edit person list, do nothing
+//    }
+//
 
 nbn(3);
 
@@ -2009,24 +2124,50 @@ nbn(3);
             return;
         }
 
+
+
+        if ([gbl_fromHomeCurrentSelectionType isEqualToString: @"group"])
+        {
   NSLog(@"ON TAP of ROW in yellow edit mode and Group list,   go to  selPerson screen with group members");
+  
+            //   CASE_B   - tap on name in cell - for "group"   get group list (selPerson screen where you can "+" or "-" group members)
 
-        //   CASE_B   - tap on name in cell - for "group"   get group list (selPerson screen where you can "+" or "-" group members)
+            gbl_groupMemberSelectionMode = @"none";  // to set this, have to tap "+" or "-" in selPerson
 
-        gbl_groupMemberSelectionMode = @"none";  // to set this, have to tap "+" or "-" in selPerson
+            MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
+            [myappDelegate mamb_beginIgnoringInteractionEvents ];
 
-        MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
-        [myappDelegate mamb_beginIgnoringInteractionEvents ];
+            dispatch_async(dispatch_get_main_queue(), ^{                                
+                [self performSegueWithIdentifier: @"segueHomeToListMembers" sender:self]; // selPerson screen where you can "+" or "-" group members
+            });
 
-        dispatch_async(dispatch_get_main_queue(), ^{                                
-            [self performSegueWithIdentifier: @"segueHomeToListMembers" sender:self]; // selPerson screen where you can "+" or "-" group members
-        });
+            return;
+        }
+        if ([gbl_fromHomeCurrentSelectionType isEqualToString: @"person"])
+        {
 
-        return;
+            gbl_accessoryButtonTapped = 0;   // reset this to default  (could be = 1 here)
 
-    } else {
+            MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
+            [myappDelegate mamb_beginIgnoringInteractionEvents ];
 
-        // this is "regular mode"  as opposed to "edit mode"
+            // Because background threads are not prioritized and will wait a very long time
+            // before you see results, unlike the mainthread, which is high priority for the system.
+            //
+            // Also, all UI-related stuff must be done on the *main queue*. That's way you need that dispatch_async.
+            //
+            dispatch_async(dispatch_get_main_queue(), ^{                           
+                [self performSegueWithIdentifier: @"segueHomeToAddChange" sender:self]; //  
+            });
+            
+            return;
+        }
+
+
+    }  // if edit mode
+
+    else
+    { // this is "regular mode"  as opposed to "edit mode"
 
         // check for not enough group members  to do a report
 
@@ -2347,9 +2488,6 @@ nbn(357);
 //
             
             // write out example data files from internal arrays
-//            [myappDelegate mambWriteGroupArray:  (NSArray *) arrayMAMBexampleGroup];
-//            [myappDelegate mambWritePersonArray: (NSArray *) arrayMAMBexamplePerson]; 
-//            [myappDelegate mambWriteMemberArray: (NSArray *) arrayMAMBexampleMember]; 
 //
 
 
@@ -2908,5 +3046,91 @@ nbn(357);
 //        if ([gbl_homeUseMODE isEqualToString: @"edit mode"]) {
 //            cell.accessoryView        = UITableViewCellAccessoryDetailDisclosureButton;
 //        }
+//
+
+
+//
+//    // highlight correct entity in seg control at top
+//    //
+//    //
+//    NSString  *nameOfGrpOrPer;
+//    NSInteger idxGrpOrPer;
+//    NSArray *arrayGrpOrper;
+//    idxGrpOrPer = -1;   // zero-based idx
+//    if ([gbl_lastSelectionType isEqualToString:@"group"]) {
+//
+//        _segEntityOutlet.selectedSegmentIndex = 0;
+//
+//        for (id eltGrp in gbl_arrayGrp) { // find index of _mambCurrentSelection (like "~Family") in gbl_arrayGrp
+//          idxGrpOrPer = idxGrpOrPer + 1;
+//          //NSLog(@"idxGrpOrPer =%ld", (long)idxGrpOrPer );
+//          //NSLog(@"eltGrp=%@", eltGrp);
+//          NSCharacterSet *mySeparators = [NSCharacterSet characterSetWithCharactersInString:@"|"];
+//          arrayGrpOrper  = [eltGrp componentsSeparatedByCharactersInSet: mySeparators];
+//          nameOfGrpOrPer = arrayGrpOrper[0];  // name is 1st fld
+//
+//          if ([nameOfGrpOrPer isEqualToString: gbl_lastSelectedGroup]) {
+//            break;
+//          }
+//        } // search thru gbl_arrayGrp
+//        //NSLog(@"FOUND !=%ld", (long)idxGrpOrPer);
+//
+//        // get the indexpath of row num idxGrpOrPer in tableview
+//        NSIndexPath *foundIndexPath = [NSIndexPath indexPathForRow:idxGrpOrPer inSection:0];
+////tn();trn("SCROLL 111111111111111111111111111111111111111111111111111111111");
+//
+//        // select the row in UITableView
+//        // This puts in the light grey "highlight" indicating selection
+//        [self.tableView selectRowAtIndexPath: foundIndexPath 
+//                                    animated: YES
+//                              scrollPosition: UITableViewScrollPositionNone];
+//        //[self.tableView scrollToNearestSelectedRowAtScrollPosition: foundIndexPath.row 
+//        [self.tableView scrollToNearestSelectedRowAtScrollPosition: UITableViewScrollPositionMiddle
+//                                                  animated: YES];
+//    }
+//    //if ([_mambCurrentEntity isEqualToString:@"person"]) 
+//    if ([gbl_lastSelectionType isEqualToString:@"person"]) {
+//
+//        _segEntityOutlet.selectedSegmentIndex = 1;
+//
+//        NSLog(@"gbl_lastSelectedPerson=%@",gbl_lastSelectedPerson);
+//        
+//        do { // highlight gbl_lastSelectedPerson row in tableview
+//
+//            for (id eltPer in gbl_arrayPer) {  // find index of gbl_lastSelectedPerson (like "~Dave") in gbl_arrayPer
+//                idxGrpOrPer = idxGrpOrPer + 1; 
+////              NSLog(@"idxGrpOrPer =%ld", (long)idxGrpOrPer );
+////              NSLog(@"eltPer=%@", eltPer);
+//
+//              NSCharacterSet *mySeparators = [NSCharacterSet characterSetWithCharactersInString:@"|"];
+//              arrayGrpOrper  = [eltPer componentsSeparatedByCharactersInSet: mySeparators];
+//              nameOfGrpOrPer = arrayGrpOrper[0];  // name is 1st fld
+//
+//              if ([nameOfGrpOrPer isEqualToString: gbl_lastSelectedPerson]) {
+//                break;
+//              }
+//            } // search thru gbl_arrayPer
+////        NSLog(@"FOUND !=%ld", (long)idxGrpOrPer);
+//
+//            // get the indexpath of row num idxGrpOrPer in tableview
+//            NSIndexPath *foundIndexPath = [NSIndexPath indexPathForRow:idxGrpOrPer inSection:0];
+////        NSLog(@"foundIndexPath=%@",foundIndexPath);
+////        NSLog(@"foundIndexPath.row=%ld",(long)foundIndexPath.row);
+//
+//
+//            // select the row in UITableView
+//            // This puts in the light grey "highlight" indicating selection
+//            [self.tableView selectRowAtIndexPath: foundIndexPath 
+//                                        animated: YES
+//                                  scrollPosition: UITableViewScrollPositionMiddle];
+////                                  scrollPosition: UITableViewScrollPositionNone];
+//            //[self.tableView scrollToNearestSelectedRowAtScrollPosition: foundIndexPath.row 
+//            [self.tableView scrollToNearestSelectedRowAtScrollPosition: UITableViewScrollPositionMiddle
+//                                                              animated: YES];
+//
+//        }  while (FALSE);  // END highlight lastEntity row in tableview
+//
+//    }
+//    // end of   highlight correct entity in seg control at top
 //
 

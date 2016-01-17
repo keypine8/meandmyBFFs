@@ -47,11 +47,14 @@
     // EDITING stuff
     //
 
+    // editing        mode bg color for home navbar button
     gbl_YellowBG = [UIImage  imageNamed: @"bg_yellow_1x1b.png" 
                                inBundle: nil
           compatibleWithTraitCollection: nil
     ];
-    gbl_BlueBG   = [UIImage  imageNamed: @"bg_blue_1x1a.png" 
+
+    // regular report mode bg color for home navbar button
+    gbl_BlueBG   = [UIImage  imageNamed: @"bg_blue_1x1a.png" // [self.editButtonItem setBackgroundImage: gbl_BlueBG
                                inBundle: nil
           compatibleWithTraitCollection: nil
     ];
@@ -400,7 +403,7 @@
 
     gbl_arrayExaPer = // field 11= locked or not   HAVE TO BE PRE-SORTED
     @[
-      @"Father Lastnae|7|11|1961|11|8|1|Los Angeles|California|United States||",
+      @"Father Lastnae|7|11|1961|11|8|1|Los Angeles|California|United States||",   // notice hr goes 1-12
       @"Fa|7|11|1961|11|8|1|Los Angeles|California|United States||",
       @"Mother Lastna|3|12|1965|10|45|0|Los Angeles|California|United States||",
       @"Mo|3|12|1965|10|45|1|Los Angeles|California|United States||",
@@ -413,6 +416,7 @@
       @"~Ava|2|3|1992|8|10|0|Los Angeles|California|United States||",
       @"~Brother|11|6|1986|8|1|1|Los Angeles|California|United States||",
       @"~Elijah|10|10|1992|12|1|1|Los Angeles|California|United States||",
+//      @"~Elijah|10|10|1992|0|1|1|Los Angeles|California|United States||",   // test bad hr = 0
       @"~Emma|5|17|1993|12|1|1|Los Angeles|California|United States||",
       @"~Father|7|11|1961|11|8|1|Los Angeles|California|United States||",
       @"~Grandma|8|17|1939|8|5|0|Los Angeles|California|United States||",
@@ -675,12 +679,19 @@
 
 
 
-//    gbl_colorHomeBG = [UIColor colorWithRed:167.0/255.0 green:207.0/255.0 blue:252.0/255.0 alpha:1.0]; // test  mid of sail/baby blue
-//    gbl_colorHomeBG = [UIColor colorWithRed:181.0/255.0 green:214.0/255.0 blue:252.0/255.0 alpha:1.0]; // test  sail
+//    gbl_colorHomeBG = [UIColor colorWithRed:167.0/255.0 green:207.0/255.0 blue:252.0/255.0 alpha:1.0]; // test  mid of sail/baby blue slightly dark
+//    gbl_colorHomeBG = [UIColor colorWithRed:181.0/255.0 green:214.0/255.0 blue:252.0/255.0 alpha:1.0]; // test  sail    OK
 //    gbl_colorHomeBG = [UIColor colorWithRed:206.0/255.0 green:227.0/255.0 blue:252.0/255.0 alpha:1.0]; // test  Hawkes blue
-//    gbl_colorHomeBG = [UIColor colorWithRed:222.0/255.0 green:237.0/255.0 blue:252.0/255.0 alpha:1.0]; // test  mid
-//
-    gbl_colorHomeBG      = [UIColor colorWithRed:230.0/255.0 green:242.0/255.0 blue:254.0/255.0 alpha:1.0]; // test  mid
+//    gbl_colorHomeBG = [UIColor colorWithRed:222.0/255.0 green:237.0/255.0 blue:252.0/255.0 alpha:1.0]; // test  mid    too light
+
+
+
+
+
+    gbl_colorHomeBG      = [UIColor colorWithRed:230.0/255.0 green:242.0/255.0 blue:254.0/255.0 alpha:1.0]; // gold  10160114
+
+
+
 
     gbl_colorHomeBG_save = gbl_colorHomeBG ;  // in order to put back after editing mode color
 
@@ -1306,7 +1317,7 @@ tn();
         //                  @"~My Family||",
         //
         flds  = [psvGrp componentsSeparatedByCharactersInSet: mySeparators];
-        if (flds.count != 3)                                   return   1;   // s/b 3   for test
+        if (flds.count != 3)                                   return   1;   // s/b 3   
 
         fname    = flds[0];
 
@@ -1333,6 +1344,7 @@ tn();
   NSLog(@"BEG   CHECK  person");
     //      BEG   CHECK  person)";
     for (NSString *psvPer in gbl_arrayPer) {     // get PSV of arg name
+  NSLog(@"psvPer =[%@]",psvPer );
         numRecords = numRecords + 1;
 
         // check for exactly 12 fields
@@ -1355,6 +1367,7 @@ tn();
         fprov    = flds[8];
         fcoun    = flds[9];
         fhighsec = flds[10];  // "" or "hs"
+  NSLog(@"fhr=[%@]",fhr);
 
         // check for invalid  name fld
         if (fname.length < 1)                                  return  12;
@@ -1411,8 +1424,10 @@ tn();
         strcpy(chr, constant_char);                                        // NSString object to C str  // because of const
 //ksn(chr);
         if (sall(chr, "0123456789") == 0)                      return  30;
-        if (atoi(chr) <  1)                                    return  31;
-        if (atoi(chr) > 12)                                    return  32;
+        if (atoi(chr) <  1)                                    return  31; // valid vals= 01 to 12
+        if (atoi(chr) > 12)                                    return  32; // valid vals= 01 to 12
+//        if (atoi(chr) <  0)                                    return  31; // valid vals= 00 to 11
+//        if (atoi(chr) > 11)                                    return  32;
 
 
         // check for invalid  min fld
@@ -1490,7 +1505,7 @@ tn();
         } else {  // look up if group exists
 
             prefixStr6 = [NSString stringWithFormat: @"%@|", currGroup];  // notice '|'
-      NSLog(@"prefixStr6 =[%@]",prefixStr6 );
+//  NSLog(@"prefixStr6 =[%@]",prefixStr6 );
             for (NSString *elt in gbl_arrayGrp) {     
                 if ([elt hasPrefix: prefixStr6]) { 
                     group_wasFound      = YES;
@@ -1500,15 +1515,15 @@ tn();
             }
         } //  look up if group exists
 
-  NSLog(@"group_wasFound =[%d]",group_wasFound );
-  NSLog(@"currGroup      =[%@]",currGroup);
+//  NSLog(@"group_wasFound =[%d]",group_wasFound );
+//  NSLog(@"currGroup      =[%@]",currGroup);
 
         if (group_wasFound == NO) { 
             // here group was NOT found
 
             [indexNumsToDeleteFrom_gblArrayMem addObject: [[NSNumber alloc] initWithInteger: idx_gbl_arrayMem ]] ;
-  NSLog(@"delete member with group  1 =[%@]", currGroup);
-  NSLog(@"delete member with member 1 =[%@]", currPerson);
+//  NSLog(@"delete member with group  1 =[%@]", currGroup);
+//  NSLog(@"delete member with member 1 =[%@]", currPerson);
             continue;
         } else {
             // here group was found,  so look for Person
@@ -1521,7 +1536,7 @@ tn();
             } else {  // look up if person exists
 
                 prefixStr7 = [NSString stringWithFormat: @"%@|", currPerson];  // notice '|'
-  NSLog(@"prefixStr7 =[%@]",prefixStr7 );
+//  NSLog(@"prefixStr7 =[%@]",prefixStr7 );
                 for (NSString *elt in gbl_arrayPer) {   
                     if ([elt hasPrefix: prefixStr7]) { 
                         person_wasFound      = YES;
@@ -1530,14 +1545,14 @@ tn();
                 }
             } //  look up if person exists
 
-  NSLog(@"person_wasFound =[%d]",person_wasFound );
-  NSLog(@"currperson      =[%@]",currPerson);
+//  NSLog(@"person_wasFound =[%d]",person_wasFound );
+//  NSLog(@"currperson      =[%@]",currPerson);
 
             if (person_wasFound == NO) { 
                 // here person was NOT found
                 [indexNumsToDeleteFrom_gblArrayMem addObject: [[NSNumber alloc] initWithInteger: idx_gbl_arrayMem ]] ;
-  NSLog(@"delete member with group  2 =[%@]", currGroup);
-  NSLog(@"delete member with member 2 =[%@]", currPerson);
+//  NSLog(@"delete member with group  2 =[%@]", currGroup);
+//  NSLog(@"delete member with member 2 =[%@]", currPerson);
             } else {
                 // here person was  found
                 continue;
@@ -1546,7 +1561,7 @@ tn();
 
     } // for each gbl_arrayMem
 
-  NSLog(@"indexNumsToDeleteFrom_gblArrayMem =[%@]",indexNumsToDeleteFrom_gblArrayMem );
+//  NSLog(@"indexNumsToDeleteFrom_gblArrayMem =[%@]",indexNumsToDeleteFrom_gblArrayMem );
 
     // now delete all the gbl_arrayMemb elements that were not kosheer
     //
@@ -1565,14 +1580,9 @@ tn();
 //  NSLog(@"idxToDel      =[%ld]",idxToDel);
 //  NSLog(@"(long)idxToDel=[%ld]",(long)idxToDel);
 
+            [gbl_arrayMem removeObjectAtIndex: idxToDel ];   // TODO      uncomment
 
-
-
-//            [gbl_arrayMem removeObjectAtIndex: idxToDel ]; 
-
-
-
-      NSLog(@"deleted index=[%ld]", (long)idxToDel);
+//      NSLog(@"deleted index=[%ld]", (long)idxToDel);
         }
     }  // delete deleteable gbl_arrayMem
 
@@ -1586,52 +1596,103 @@ tn();
 }  // end of mambCheckForCorruptData
 
 
-- (void) handleCorruptDataErrNum:  (NSInteger) argCorruptDataErrNum
-{
-  NSLog(@"in handleCorruptDataNum    BEG");
-  NSLog(@"argCorruptDataErrNum=[%ld]",(long)argCorruptDataErrNum);
-
-//automatic backup?  how often?  when?
+//- (void) handleCorruptDataErrNum:  (NSInteger) argCorruptDataErrNum
+//{
+//  NSLog(@"in handleCorruptDataNum    BEG");
+//  NSLog(@"argCorruptDataErrNum=[%ld]",(long)argCorruptDataErrNum);
 //
-//-------------------------------------------
-//RECOVERY from Corrupt Data
-//-------------------------------------------
-// TODO 
-//Corrupt data has caused your current data to be lost.
+//    NSString *mymsg;
+//    mymsg = @"When corrupt data is found, the App has to delete all of your added people, groups and group members.\n\n   RECOVERY of DATA \n\n Method 1:\n\nAssuming you did backups, go to the latest email having the \"Me and My BFFs\" BACKUP.\nFollow the instructions in the email to restore the data.\n\nMethod 2:  Delete \"Me and My BFFs\" and install it again from the App store. \n Doing this uses your iTunes or iCloud backup to automatically restore the data for people, groups and members.\n\n ";
 //
-//Do these RECOVERY steps to get back your latest BACKUP data.
+//    UIAlertController* alert = [UIAlertController alertControllerWithTitle: @"Corrupt Data has been Found"
+//                                                                   message: mymsg
+//                                                            preferredStyle: UIAlertControllerStyleAlert  ];
+//     
+//    UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+//                                                        style: UIAlertActionStyleDefault
+//                                                      handler: ^(UIAlertAction * action) {
+//        NSLog(@"Ok button pressed    for corrupt data");
+//    } ];
+//     
+//    [alert addAction:  okButton];
 //
-//   1. Leave this App alone right now.  Do not tap OK.
-//   2. On this device, go to the mail App.
-//   3. Open your MOST RECENT email
-//      with the subject "Me and my BFFs BACKUP"
-//      and the attachment "BACKUP.mamb".
-//   4. Long-press the email attachment.
-//   4. Tap and hold on the email attachment.
-//   5. Tap YES for doing the backup recovery.
-//   6. When the recovery is done, come back here and tap OK.
+//    [self presentViewController: alert  animated: YES  completion: nil   ];
+////    [presentViewController: alert  animated: YES  completion: nil   ];
+//        
 //
-//These instructions are also on the home page. Tap the Info button.
+//// automatic backup?  how often?  when?   NO  all manual
+////
+////-------------------------------------------
+////RECOVERY from Corrupt Data
+////-------------------------------------------
+//// TODO 
 //
-//The data corruption error number was 123.   auto-email to web site?
-//-------------------------------------------
+////      Corrupt data has been found
+////
+//// When corrupt data is found, the App has to delete
+//// all of your added people, groups and group members.
+////
+//// RECOVERY of DATA 
+////
+//// Method 1:  Assuming you did backups, go to the latest email having the \"Me and My BFFs\" BACKUP.
+//// Follow the instructions in the email to restore the data.
+////
+//// Method 2:  Delete "Me and My BFFs" and install it again from the App store. 
+//// Doing this uses your iTunes or iCloud backup to automatically restore the data for people, groups and members.
+////
 //
 //
-//Tap OK and let the App clean up.
-//Corrupt Data has been found
+//// The people, groups and members data is automatically restored from iCloud backup.
 //
-//RECOVER your latest BACKUP.
-//This App will now start running with only the example data that comes with the App.
 //
-//Hopefully, you recently backed up your data by sending yourself an email with group "BACKUP".
+////      Corrupt data has been found
+////
+//// When corrupt data is found, the App has to delete
+//// all of your added people, groups and group members.
+////
+//// Luckily, the App every so often sends you a data BACKUP file
+//// as an email attachment.
+////
+//// Do these RECOVERY steps to get back your latest BACKUP data.
+////
+////   1. On this device, go to the mail App.
+////   2. Open the MOST RECENT email with
+////      - the subject "BACKUP for Me and my BFFs on yyyymmdd"
+////      - the attachment "BACKUP_yyyymmdd.mamb"
+////        (yyyymmdd is the date of the backup)
+////   3. Follow the direcions in the email to
+////      restore your backed up data.
+//// 
 //
-//Then let the App put back your saved birth information for all the people you have entered before (or imported before).
-//You will also get back the groups you had at the time you backed up.
 //
-
-
-  NSLog(@"in handleCorruptDataNum    END");
-} // end of handleCorruptDataNum
+////Corrupt data has caused your current data to be lost.
+////
+////Do these RECOVERY steps to get back your latest BACKUP data.
+////
+////   1. Leave this App alone right now.  Do not tap OK.
+//
+////   1. On this device, go to the mail App.
+////   2. Open your MOST RECENT email
+////      with the subject "Me and my BFFs BACKUP"
+////      and the attachment "BACKUP.mamb".
+////   3. Follow the direcions in the email to
+////      restore the backup data.
+//
+//
+////   4. Long-press the email attachment.
+////   5. Tap and hold on the email attachment.
+////   6. Tap YES for doing the backup recovery.
+////   7. When the recovery is done, come back here and tap OK.
+////
+////These instructions are also on the home page. Tap the Info button.
+////
+////The data corruption error number was 123.   auto-email to web site?
+////-------------------------------------------
+//
+//
+//  NSLog(@"in handleCorruptDataNum    END");
+//} // end of handleCorruptDataNum
+//
 
 
 - (NSData *) mambKriptOnThisNSData:  (NSData *)  argMyArchive   // arg is NSData/archived, returns a file-writeable NSData

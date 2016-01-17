@@ -1807,24 +1807,24 @@ nbn(100);
 
             if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgma"]   // Most Assertive Person in Group
             ) {
-                myGoodBadText = [NSString stringWithFormat: @"A challenging expression of %@ might be a domineering approach or hot-tempered behavior.\n\nA favorable expression of %@ might be acting as a good leader and speaking up against injustices. ", myMostWhat , myMostWhat ];
+                myGoodBadText = [NSString stringWithFormat: @"A challenging expression of the trait \"%@\" might be a domineering approach or hot-tempered behavior.\n\nA favorable expression of the trait \"%@\" might be acting as a good leader and speaking up against injustices. ", myMostWhat , myMostWhat ];
             }
             if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgme"]   // Most Emotional
             ) {
-                myGoodBadText = [NSString stringWithFormat: @"A challenging expression of %@ might be extreme sensitivity or being too impressionable.\n\nA favorable expression of %@ might be alertness to other's feelings and protecting those less fortunate. ", myMostWhat , myMostWhat ];
+                myGoodBadText = [NSString stringWithFormat: @"A challenging expression of the trait \"%@\" might be extreme sensitivity or being too impressionable.\n\nA favorable expression of the trait \"%@\" might be alertness to other's feelings and protecting those less fortunate. ", myMostWhat , myMostWhat ];
 
             }
             if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgmr"]   // Most Restless 
             ) {
-                myGoodBadText = [NSString stringWithFormat: @"A challenging expression of %@ might be a scattered approach and changeableness.\n\nA favorable expression of %@ might be independence and versatility.", myMostWhat , myMostWhat ];
+                myGoodBadText = [NSString stringWithFormat: @"A challenging expression of the trait \"%@\" might be a scattered approach and changeableness.\n\nA favorable expression of the trait \"%@\" might be independence and versatility.", myMostWhat , myMostWhat ];
             }
             if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgmp"]   // Most Passionate
             ) {
-                myGoodBadText = [NSString stringWithFormat: @"A challenging expression of %@ might be overpowering intensity or holding grudges.\n\nA favorable expression of %@ might be enthusiasm or doing a job with intensity.", myMostWhat , myMostWhat ];
+                myGoodBadText = [NSString stringWithFormat: @"A challenging expression of the trait \"%@\" might be overpowering intensity or holding grudges.\n\nA favorable expression of the trait \"%@\" might be an enthusiastic attitude or doing a job with intensity.", myMostWhat , myMostWhat ];
             }
             if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgmd"]   // Most Down-to-earth
             ) {
-                myGoodBadText = [NSString stringWithFormat: @"A challenging expression of %@ might be rigidity and an uncompromising approach.\n\nA favorable expression of %@ might be stability and a practical approach. ", myMostWhat , myMostWhat ];
+                myGoodBadText = [NSString stringWithFormat: @"A challenging expression of the trait \"%@\" might be rigidity and an uncompromising approach.\n\nA favorable expression of the trait \"%@\" might be stability and a practical approach. ", myMostWhat , myMostWhat ];
             }
 
             dispatch_async(dispatch_get_main_queue(), ^{                                // <===  

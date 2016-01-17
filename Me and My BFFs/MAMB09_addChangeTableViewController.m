@@ -662,7 +662,7 @@ nbn(881);
     }
     //NSLog(@"self.arrayMonths=%@",self.arrayMonths);
     for (int i = 1; i <= 12; i++) {
-        [self.array_Hours_1_12 addObject:[NSString stringWithFormat:@"%02d", i]];
+        [self.array_Hours_1_12 addObject:[NSString stringWithFormat:@"%02d", i]];  // values 1-12
     }
     for (int i = 0; i <= 59; i++) {
         [self.array_Min_0_59 addObject:[NSString stringWithFormat:@"%02d", i]];
