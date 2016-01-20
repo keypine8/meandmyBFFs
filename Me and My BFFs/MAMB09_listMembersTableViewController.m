@@ -97,6 +97,10 @@ tn();
     //
     // INCLUDE ONLY   members of gbl_lastSelectedGroup
     //
+tn();
+  NSLog(@"doing  // populate gbl_arrayMembersToDisplay");
+  NSLog(@"gbl_lastSelectedGroup =[%@]",gbl_lastSelectedGroup );
+
     [gbl_arrayMembersToDisplay removeAllObjects];
     gbl_arrayMembersToDisplay = [[NSMutableArray alloc] init];
 

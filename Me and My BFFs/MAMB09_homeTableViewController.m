@@ -351,7 +351,11 @@ nbn(100);
 //    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm PerRem  %@", [err01 localizedFailureReason]); }
 //    NSLog(@" FOR test   END   remove all regular named files   xxxxxxxxxx ");
 //    // end of   FOR test   remove all regular named files   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-//
+
+
+
+
+
 
 
 
@@ -742,13 +746,22 @@ nbn(7);
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+  NSLog(@"in numberOfRowsInSection");
     // Return the number of rows in the section.
     //return 0;
     //return mambyObjectList.count;
     //if ([_mambCurrentEntity isEqualToString:@"group"])  return gbl_arrayGrp.count;
     //if ([_mambCurrentEntity isEqualToString:@"person"]) return gbl_arrayPer.count;
-    if ([gbl_lastSelectionType isEqualToString:@"group"])  return gbl_arrayGrp.count;
-    if ([gbl_lastSelectionType isEqualToString:@"person"]) return gbl_arrayPer.count;
+    if ([gbl_lastSelectionType isEqualToString:@"group"]) 
+    {
+  NSLog(@"return num groups=[%ld]",(long)gbl_arrayGrp.count);
+        return gbl_arrayGrp.count;
+    }
+    if ([gbl_lastSelectionType isEqualToString:@"person"])
+    {
+  NSLog(@"return num people=[%ld]",(long)gbl_arrayPer.count);
+        return gbl_arrayPer.count;
+    }
     return 0;
 } // numberOfRowsInSection
 
@@ -952,8 +965,9 @@ tn();
   NSLog(@"indexPath.row=%ld",(long)indexPath.row);
 
 
-    if (editingStyle == UITableViewCellEditingStyleDelete)
-    {
+    if (   editingStyle == UITableViewCellEditingStyleDelete
+        && [gbl_lastSelectionType isEqualToString: @"person" ]
+    ) {
   NSLog(@"in commitEditingStyle  2222222");
 
         NSInteger arrayCountBeforeDelete;
@@ -966,11 +980,6 @@ tn();
 
         // before write of array data to file, disallow/ignore user interaction events
         //
-
-//        if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] ==  NO) {  // suspend handling of touch-related events
-//            [[UIApplication sharedApplication] beginIgnoringInteractionEvents];     // typically call this before an animation or transitiion.
-//  NSLog(@"ARE  IGnoring events");
-//        }
         MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
 
         [myappDelegate mamb_beginIgnoringInteractionEvents ];
@@ -984,7 +993,6 @@ tn();
 
         // was sorted before anyway, but sort it for safety
         [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription:  (NSString *) @"person"]; // sort array by name
-
         [myappDelegate mambWriteNSArrayWithDescription:               (NSString *) @"person"]; // write new array data to file
 
     //  [myappDelegate mambReadArrayFileWithDescription:              (NSString *) @"person"]; // read new data from file to array
@@ -1023,19 +1031,86 @@ tn();
             [self putHighlightOnCorrectRow ];
         });
 
+        // after write of array data to file, allow user interaction events again
+        //
+        [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.5 ];    // after arg seconds
+
+    }  // if (editingStyle == UITableViewCellEditingStyleDelete) 
+
+
+
+    if (   editingStyle == UITableViewCellEditingStyleDelete
+        && [gbl_lastSelectionType isEqualToString: @"group" ]
+    ) {
+  NSLog(@"in commitEditingStyle  3333333");
+
+        NSInteger arrayCountBeforeDelete;
+        NSInteger arrayIndexToDelete;
+        NSInteger arrayIndexOfNew_gbl_lastSelectedGroup;
+
+        arrayCountBeforeDelete = gbl_arrayGrp.count;
+        arrayIndexToDelete     = indexPath.row;
+
+
+        // before write of array data to file, disallow/ignore user interaction events
+        //
+        MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+        [myappDelegate mamb_beginIgnoringInteractionEvents ];
+
+
+        // delete the array element for this cell
+        // here the array index to delete matches the incoming  indexPath.row
+        //
+        [gbl_arrayGrp removeObjectAtIndex:  arrayIndexToDelete ]; 
+        // gbl_arrayGrp  is now golden  (was sorted before)
+
+        // was sorted before anyway, but sort it for safety
+        [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription:  (NSString *) @"group"]; // sort array by name
+        [myappDelegate mambWriteNSArrayWithDescription:               (NSString *) @"group"]; // write new array data to file
+
+    //  [myappDelegate mambReadArrayFileWithDescription:              (NSString *) @"group"]; // read new data from file to array
+
+
+        // have to set new gbl_lastSelectedGroup  
+        // have to set new gbl_fromHomeCurrentSelectionPSV
+        //
+        // to be the "nearest" group after this deleted one 
+        // UNLESS deleted one IS the last group, then the one before.
+        //
+        if ( arrayIndexToDelete == arrayCountBeforeDelete - 1) {                       // if deleted last element
+            arrayIndexOfNew_gbl_lastSelectedGroup  = arrayCountBeforeDelete - 1 - 1;  //      new = last element minus one
+        } else {
+            arrayIndexOfNew_gbl_lastSelectedGroup  = arrayIndexToDelete;              // else new = last element
+        }
+  NSLog(@"before gbl_fromHomeCurrentSelectionPSV =[%@]",gbl_fromHomeCurrentSelectionPSV );
+  NSLog(@"before gbl_lastSelectedGroup   I       =[%@]",gbl_lastSelectedGroup);
+
+        gbl_fromHomeCurrentSelectionPSV  = gbl_arrayGrp[arrayIndexOfNew_gbl_lastSelectedGroup];
+        gbl_lastSelectedGroup           = [gbl_fromHomeCurrentSelectionPSV  componentsSeparatedByString:@"|"][0]; // get fld1 (name) 0-based 
+
+  NSLog(@"after  gbl_fromHomeCurrentSelectionPSV =[%@]",gbl_fromHomeCurrentSelectionPSV );
+  NSLog(@"after  gbl_lastSelectedGroup           =[%@]",gbl_lastSelectedGroup);
+
+
+        // now delete the row on the screen
+        // and put highlight on row number for  arrayIndexOfNew_gbl_lastSelectedGroup
+        //
+        dispatch_async(dispatch_get_main_queue(), ^{  
+
+            [self.tableView deleteRowsAtIndexPaths: [NSArray arrayWithObject: indexPath]   // now delete the row on the screen
+                                  withRowAnimation: UITableViewRowAnimationFade
+            ];
+
+            [self putHighlightOnCorrectRow ];
+        });
 
         // after write of array data to file, allow user interaction events again
         //
-
-//        if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] == YES) {  // re-enable handling of touch-related events
-//            [[UIApplication sharedApplication] endIgnoringInteractionEvents];       // typically call this after an animation or transitiion.
-//  NSLog(@"STOP IGnoring events");
-//        }
-
         [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.5 ];    // after arg seconds
 
-
     }  // if (editingStyle == UITableViewCellEditingStyleDelete) 
+
 
 }  // end of commitEditingStyle
 //

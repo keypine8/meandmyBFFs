@@ -101,6 +101,8 @@ NSInteger gbl_citySetLabelValue;    // 1=y,0=n  // set initial value  when first
 //NSInteger gbl_citySetValue;   // 1=y,0=n  // set initial value  when first entering City in "edit mode"  yellow
 NSInteger gbl_dateSetEditingValue;  // 1=y,0=n  // set initial values when first entering Date in "edit mode"  yellow
 
+NSString *gbl_kindOfSave;   // "regular save"  or  "high security save"
+
 
 // all 4 of these have possible values  "name" or "city" or "date" or "" or nil
 //

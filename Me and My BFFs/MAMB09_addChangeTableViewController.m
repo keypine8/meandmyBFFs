@@ -803,7 +803,7 @@ nbn(881);
         } //  INIT DATE PICKER roller values   for "add"
 
 
-//<.>
+//
 //        //  INIT DATE PICKER roller values   for "view or change"
 //        //
 //        if (   [gbl_homeUseMODE      isEqualToString: @"edit mode" ]
@@ -845,7 +845,7 @@ nbn(881);
 //                [self.pickerViewDateTime selectRow:       1 inComponent: 6 animated: YES]; // min  = 01   2nd one
 //                [self.pickerViewDateTime selectRow:       1 inComponent: 7 animated: YES]; // ampm = 12   2nd one
 //            });
-//<.>
+//
 //        } 
 //
 
@@ -901,7 +901,7 @@ tn();
 NSLog(@"in viewDidAppear()  in add/change   ");
 
     MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
-    [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.0 ];    // after arg seconds
+    [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.0 ];    // when view first appears on screen   after arg seconds
 
 } // viewDidAppear
 
@@ -1811,7 +1811,7 @@ NSLog(@"end of  oncityInputViewKeyboardButton!"); tn();
                 
     MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
 
-    [myappDelegate mamb_beginIgnoringInteractionEvents ];
+    [myappDelegate mamb_beginIgnoringInteractionEvents ];  // XXXXX  BEGIN  ignor #01   XXXXXXXXX  pressed Cancel  XXXXXXXXXXXXXXXXXXXXX
 
 
     [gbl_myname             resignFirstResponder];
@@ -1980,7 +1980,7 @@ nbn(700);
 
         if (   gbl_editingChangeNAMEHasOccurred == 0 )
         {
-            [myappDelegate mamb_beginIgnoringInteractionEvents ];
+            [myappDelegate mamb_beginIgnoringInteractionEvents ];  // XXXXX  BEGIN  ignor #02   grp   do back- no editing changes XXXXXXXXX
 
             // here editing changes have NOT happened
   NSLog(@" // 111-0 actually do the BACK action  when Done hit and there are no editing changes");
@@ -2020,7 +2020,7 @@ nbn(491);
         ) {
 NSLog(@" // 111a actually do the BACK action on when changes net out to nothing");
 
-            [myappDelegate mamb_beginIgnoringInteractionEvents ];
+            [myappDelegate mamb_beginIgnoringInteractionEvents ];  // XXXXX  BEGIN  ignor #03   grp  do back- edit changes net to nothing XXXXXX
 
   NSLog(@"          POP  VIEW   #3");
             dispatch_async(dispatch_get_main_queue(), ^{  
@@ -2038,14 +2038,14 @@ NSLog(@" // 111a actually do the BACK action on when changes net out to nothing"
             
             return;
         } // 111a actually do the BACK action on when changes net out to nothing");
-nbn(500);
+nbn(600);
 
 
         // before save of New Group,  check for missing information  name  same as prompt
         //
         if (   [gbl_DisplayName isEqualToString: @"" ]
         ) {
-nbn(501);
+nbn(601);
             // here info is missing
             NSString *namePrompt; NSString *cityPrompt; NSString *datePrompt;
             namePrompt = @"";     cityPrompt = @"";     datePrompt = @"";
@@ -2073,8 +2073,8 @@ nbn(501);
             return;  // cannot save because of missing information > stay in this screen
 
         } // before save of New Group,  check for missing information 
-nbn(509);
-//<.>
+nbn(609);
+
         // ONLY IF    [gbl_homeEditingState isEqualToString:  @"add" ] 
         //      OR    (
         //                  [gbl_homeEditingState isEqualToString:  @"view or change" ] 
@@ -2143,7 +2143,7 @@ nbn(502);
         }  // add mode - check for duplicate name
 
       NSLog(@" // Actually do save of New Group   here");
-//<.>
+
         // Actually do save of New Group   here
         //
 
@@ -2164,7 +2164,7 @@ nbn(502);
 //        }
 
 
-        [myappDelegate mamb_beginIgnoringInteractionEvents ];
+        [myappDelegate mamb_beginIgnoringInteractionEvents ];  // XXXXX  BEGIN  ignor #04   grp   before grp write + go back XXXXXXXXXXXXX
 
 
         // ONLY IF    [gbl_homeEditingState isEqualToString:  @"view or change" ] 
@@ -2209,27 +2209,28 @@ nbn(504);
         [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription: (NSString *) @"group"]; // sort array by name
 
 
-        // if necessary, update MEMBERSHIP  file  (gbl_arrayMem)
+        // in change mode, if necessary, update MEMBERSHIP  file  (gbl_arrayMem)
         //
-        BOOL originalNameHasChanged;
-        // true if original name in db record has changed 
-        originalNameHasChanged = ! [gbl_fromHomeCurrentEntityName isEqualToString: gbl_myname.text ];
-nbn(1);
-        if (originalNameHasChanged )
+        if ([gbl_homeEditingState isEqualToString:  @"view or change" ] )
         {
-nbn(2);
-            [myappDelegate mambChangeGRPMEM_groupNameFrom: (NSString *) gbl_fromHomeCurrentEntityName 
-                                                toNewName: (NSString *) gbl_myname.text
-            ];
-nbn(3);
-            [myappDelegate mambWriteNSArrayWithDescription:              (NSString *) @"member"]; // write new array data to file
-nbn(4);
-//                    [myappDelegate mambReadArrayFileWithDescription:             (NSString *) @"member"]; // read new data from file to array
-            [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription: (NSString *) @"member"]; // sort array by name
-nbn(5);
-        }
+tn();
+  NSLog(@" // if necessary, update MEMBERSHIP  file  (gbl_arrayMem)");
+  NSLog(@"gbl_fromHomeCurrentEntityName =[%@]",gbl_fromHomeCurrentEntityName );
+  NSLog(@"gbl_myname.text               =[%@]",gbl_myname.text );
+            BOOL originalNameHasChanged;
+            // true if original name in db record has changed 
+            originalNameHasChanged = ! [gbl_fromHomeCurrentEntityName isEqualToString: gbl_myname.text ];
+            if (originalNameHasChanged )
+            {
+                [myappDelegate mambChangeGRPMEM_groupNameFrom: (NSString *) gbl_fromHomeCurrentEntityName 
+                                                    toNewName: (NSString *) gbl_myname.text
+                ];
+                [myappDelegate mambWriteNSArrayWithDescription:              (NSString *) @"member"]; // write new array data to file
+   //           [myappDelegate mambReadArrayFileWithDescription:             (NSString *) @"member"]; // read new data from file to array
+                [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription: (NSString *) @"member"]; // sort array by name
+            }
+        } // in change mode, if necessary, update MEMBERSHIP  file  (gbl_arrayMem)
 
-nbn(6);
 
 
         gbl_justAddedGroupRecord  = 1;  // cause reload of home data
@@ -2237,7 +2238,10 @@ nbn(6);
 
         gbl_lastSelectedGroup           = gbl_DisplayName;  // this row (gbl_lastSelectedGroup) gets selection highlight in home tableview
         gbl_fromHomeCurrentSelectionPSV = myNewGroupRecord;
+        gbl_fromHomeCurrentEntityName   = gbl_DisplayName;
+
 NSLog(@"gbl_lastSelectedGroup           =[%@]",gbl_lastSelectedGroup );
+NSLog(@"gbl_fromHomeCurrentEntityName=[%@]",gbl_fromHomeCurrentEntityName);
 NSLog(@"gbl_fromHomeCurrentSelectionPSV =[%@]",gbl_fromHomeCurrentSelectionPSV );
 
 
@@ -2270,8 +2274,6 @@ NSLog(@"          POP  VIEW   #6");
 //            gbl_lastSelectedPersonBeforeChange = gbl_DisplayName;   // like "~Dave"   used in YELLOW gbl_homeUseMODE "edit mode"
 
 
-//<.>
-
 
 nbn(509);
         return;
@@ -2285,9 +2287,6 @@ nbn(510);
     {  // person saveDone logic   =======================================================================================
 
     
-//    if (   [gbl_homeEditingState isEqualToString:  @"add" ] 
-//        || [gbl_homeEditingState isEqualToString:  @"view or change" ] )
-//    {
         if (   gbl_editingChangeNAMEHasOccurred == 0
             && gbl_editingChangeCITYHasOccurred == 0
             && gbl_editingChangeDATEHasOccurred == 0
@@ -2296,7 +2295,7 @@ nbn(510);
   NSLog(@" // 222b actually do the BACK action  when Done hit and there are no editing changes");
 
 
-            [myappDelegate mamb_beginIgnoringInteractionEvents ];
+            [myappDelegate mamb_beginIgnoringInteractionEvents ];  // XXXXX  BEGIN  ignor #05   per  do back- no edit changes  XXXXXXXXXXXXXXXX
 
   NSLog(@"          POP  VIEW   #4");
             dispatch_async(dispatch_get_main_queue(), ^{  
@@ -2343,6 +2342,8 @@ nbn(510);
       NSLog(@" 2 gbl_DisplayCoun       =[%@]",gbl_DisplayCoun ) ;
       NSLog(@" 2 gbl_selectedBirthInfo =[%@]",gbl_selectedBirthInfo );
 
+                // 111b actually do the BACK action on when changes net out to nothing");
+                //
                 if (   [gbl_DisplayName   isEqualToString: @"" ]
                     && [gbl_DisplayCity   isEqualToString: @"" ]
                     && [gbl_DisplayProv   isEqualToString: @"" ]
@@ -2351,7 +2352,9 @@ nbn(510);
                 ) {
       NSLog(@" // 111b actually do the BACK action on when changes net out to nothing");
 
-                    [myappDelegate mamb_beginIgnoringInteractionEvents ];
+
+
+                    [myappDelegate mamb_beginIgnoringInteractionEvents ];  // XXXXX  BEGIN  ignor #06   per  do back, edit changes net zeroXX
 
   NSLog(@"          POP  VIEW   #5");
                     dispatch_async(dispatch_get_main_queue(), ^{  
@@ -2367,7 +2370,8 @@ nbn(510);
 //                        [self.navigationController popToRootViewControllerAnimated: YES]; // actually do the "Back" action
                        [self.navigationController popViewControllerAnimated: YES]; // actually do the "Back" action
                     });
-                }
+                } // 111b actually do the BACK action on when changes net out to nothing");
+
 
 
                 // before save of New Person,  check for missing information  name,city,date  same as prompt
@@ -2478,7 +2482,190 @@ nbn(510);
 
 
       NSLog(@" // Actually do save of New Person   here");
+                // Actually do save of New Person   here");
 
+
+                // offer to save person with high security
+                //
+                NSString *saveTitle;
+                NSString *saveMsg;
+                saveTitle = @"Choose Kind of Save\n";
+//                saveMsg   = @"note:\n   The High Security Save prevents EVERYONE, including yourself and this device owner, from EVER seeing this birth place or this birth time again.\n\n";
+//                saveMsg   = @"note:\n   The High Security Save prevents EVERYONE, including yourself and this device owner, from EVER seeing this birth place or birth time again.\n\n";
+//                saveMsg   = @"note:\n   The High Security Save prevents EVERYONE, including yourself and this device owner, from EVER seeing this person\'s birth date or city.\n\n";
+
+                NSString *nameInPossessiveForm;
+                if (   [gbl_myname.text  hasSuffix: @"s" ]
+                    || [gbl_myname.text  hasSuffix: @"S" ]
+                    || [gbl_myname.text  hasSuffix: @"z" ]
+                    || [gbl_myname.text  hasSuffix: @"Z" ]  )
+                {
+                     nameInPossessiveForm = [NSString stringWithFormat: @"%@\'",  gbl_myname.text ];
+                } else {
+                     nameInPossessiveForm = [NSString stringWithFormat: @"%@\'s", gbl_myname.text ];
+                }
+//                saveMsg = [NSString stringWithFormat: @"note:\n   The High Security Save prevents EVERYONE, including yourself and this device owner, from EVER seeing %@ birth date or city.\n\n", nameInPossessiveForm ];
+                saveMsg = [NSString stringWithFormat: @"note:\n   The High Security Save prevents EVERYONE, including yourself and this device owner, from EVER seeing %@\'s birth date or city.\n\n", gbl_myname.text ];
+
+
+
+                NSMutableParagraphStyle *myParagraphStyle = [[NSMutableParagraphStyle alloc] init];
+                myParagraphStyle.alignment                = NSTextAlignmentLeft;
+                myParagraphStyle.headIndent               = 12;
+//                myParagraphStyle.firstLineHeadIndent      = 12;
+
+
+                NSDictionary *myNeededAttribsMessage = @{
+                    //   e.g.
+                    ////                                      NSForegroundColorAttributeName: self.label.textColor,
+                    ////                                      NSBackgroundColorAttributeName: cell.textLabel.attributedText
+                    ////                                      NSBackgroundColorAttributeName: cell.textLabel.textColor
+                    //                                      NSFontAttributeName: cell.textLabel.font,
+                    //                                      NSBackgroundColorAttributeName: cell.textLabel.backgroundColor
+                    //                                      };
+                    //
+                    //            NSMutableAttributedString *myAttributedTextLabelExplain = 
+                    //                [[NSMutableAttributedString alloc] initWithString: allLabelExplaintext
+                    //                                                       attributes: myNeededAttribs     ];
+                    //
+    //                NSBackgroundColorAttributeName: retvalUILabel.attributedText.backgroundColor
+    //                NSBackgroundColorAttributeName: retvalUILabel.backgroundColor
+
+                      NSParagraphStyleAttributeName : myParagraphStyle,
+                      NSForegroundColorAttributeName: [UIColor blackColor],
+                      NSBackgroundColorAttributeName: gbl_colorEditingBG,
+                                 NSFontAttributeName: [UIFont systemFontOfSize: 16]
+
+                };
+                NSDictionary *myNeededAttribsTitle = @{
+//                                 NSFontAttributeName: [UIFont boldSystemFontOfSize: 16]
+//                      NSForegroundColorAttributeName: [UIColor blueColor],
+//                      NSForegroundColorAttributeName: gbl_color_cAplBlue,
+//                      NSForegroundColorAttributeName: [UIColor darkGrayColor],
+                      NSForegroundColorAttributeName: [UIColor blackColor],
+                                 NSFontAttributeName: [UIFont boldSystemFontOfSize: 18]
+
+                };
+
+  
+                NSMutableAttributedString *myAttributedMessage = [
+                    [ NSMutableAttributedString alloc ] initWithString: saveMsg
+                                                            attributes: myNeededAttribsMessage
+                ];
+                NSMutableAttributedString *myAttributedTitle = [
+                    [ NSMutableAttributedString alloc ] initWithString: saveTitle
+                                                            attributes: myNeededAttribsTitle
+                ];
+
+
+
+                UIAlertController *myActionSheet = [UIAlertController alertControllerWithTitle: saveTitle
+                                                                                       message: saveMsg
+                                                                                preferredStyle: UIAlertControllerStyleActionSheet];
+                [myActionSheet setValue: myAttributedTitle 
+                                 forKey: @"attributedTitle"
+                ];
+                [myActionSheet setValue: myAttributedMessage 
+                                 forKey: @"attributedMessage"
+                ];
+
+nbn(0);
+                [myActionSheet addAction: 
+                    [UIAlertAction actionWithTitle: @"Cancel"
+                                             style: UIAlertActionStyleCancel
+                                           handler: ^(UIAlertAction *action) {
+                                               [self dismissViewControllerAnimated: YES completion: ^{   }  ];
+                                           }
+                    ]
+                ];
+nbn(1);
+                [myActionSheet addAction:
+                    [UIAlertAction actionWithTitle: @"Regular Save"
+            //                                 style: UIAlertActionStyleDestructive
+                                             style: UIAlertActionStyleDefault
+                                           handler: ^(UIAlertAction *action) {
+  NSLog(@"pressed   regular save");
+                                               gbl_kindOfSave = @"regular save";   // or  "high security save"
+  NSLog(@"gbl_kindOfSave 11 =[%@]",gbl_kindOfSave);
+sleep(5);
+//                                               [view dismissViewControllerAnimated: YES  completion: nil];
+//                [self.navigationController popViewControllerAnimated: YES]; // "Back" out of save dialogue
+//                [myActionSheet popViewControllerAnimated: YES]; // "Back" out of save dialogue
+
+//                                               [myActionSheet dismissViewControllerAnimated: YES  completion: nil];
+
+                                           }
+                    ]
+                ];
+nbn(2);
+                [myActionSheet addAction:
+                    [UIAlertAction actionWithTitle: @"High Security Save"
+            //                                 style: UIAlertActionStyleDestructive
+                                             style: UIAlertActionStyleDefault
+                                           handler: ^(UIAlertAction *action) {
+
+  NSLog(@"pressed   high security save");
+                                               gbl_kindOfSave = @"high security save";   // or  "regular save"
+  NSLog(@"gbl_kindOfSave 12 =[%@]",gbl_kindOfSave);
+
+sleep(5);
+//                                               [self dismissViewControllerAnimated: YES completion: ^{   } ];
+
+//                                               [myActionSheet dismissViewControllerAnimated: YES  completion: nil];
+                                           }
+                    ]
+                ];
+
+            //    myActionSheet.view.transparent = NO;
+            //    myActionSheet.view.backgroundColor = [UIColor whiteColor];
+            //    myActionSheet.view.backgroundColor = [UIColor greenColor];
+            //    myActionSheet.view.backgroundColor = gbl_colorHomeBG;
+            //    myActionSheet.view.tintColor =  [UIColor blackColor];  // colors choices
+
+//                myActionSheet.view.backgroundColor = gbl_colorEditingBG;
+
+nbn(3);
+
+                // Present action sheet.
+//               [self presentViewController: myActionSheet animated: YES completion: nil];
+
+
+//
+//                dispatch_async(dispatch_get_main_queue(), ^{  
+//                dispatch_sync(dispatch_get_main_queue(), ^{     // use  SYNC  so pgm does not continue until this alert is dismissed
+//nbn(4);
+//                    id rootViewController = [UIApplication sharedApplication].delegate.window.rootViewController;
+//nbn(5);
+//                    if([rootViewController isKindOfClass:[UINavigationController class]])
+//                    {
+//nbn(6);
+//                       rootViewController=[((UINavigationController *)rootViewController).viewControllers objectAtIndex:0];
+//nbn(7);
+//                    }
+//nbn(8);
+////                [rootViewController presentViewController:alertController animated:YES completion:nil];
+//                    [rootViewController presentViewController: myActionSheet animated:YES completion:nil];
+//
+
+
+nbn(9);
+                [self presentViewController: myActionSheet animated: YES completion: nil];
+nbn(10);
+//                });
+//
+
+//                [self presentViewController: myActionSheet animated: YES completion: nil];
+nbn(11);
+
+
+
+
+  NSLog(@"gbl_kindOfSave 1 =[%@]",gbl_kindOfSave);
+//                [self.navigationController popViewControllerAnimated: YES]; // "Back" out of save dialogue
+
+  NSLog(@"gbl_kindOfSave 2 =[%@]",gbl_kindOfSave);
+
+return; // for test  <.>
 
                 // Actually do save of New Person   here
                 //
@@ -2541,7 +2728,11 @@ nbn(510);
     //
 
                 NSString *myNewPersonRecord;
-                myNewPersonRecord = [NSString stringWithFormat: @"%@|%@|%@|%@|%@|%@|%@|%@|%@|%@||",
+                NSString *mySaveCode;
+                if ([gbl_kindOfSave isEqualToString:  @"regular save" ] )        mySaveCode = @"";
+                if ([gbl_kindOfSave isEqualToString:  @"high security save" ] )  mySaveCode = @"hs";
+                    
+                myNewPersonRecord = [NSString stringWithFormat: @"%@|%@|%@|%@|%@|%@|%@|%@|%@|%@|%@|",
                     gbl_DisplayName,
     //                gbl_rollerBirth_mth,
                     mymthnum,
@@ -2554,7 +2745,8 @@ nbn(510);
                     myampmnum,
                     gbl_enteredCity,
                     gbl_enteredProv,
-                    gbl_enteredCoun
+                    gbl_enteredCoun,
+                    mySaveCode               // "" or "hs"
                 ];
       NSLog(@"myNewPersonRecord =[%@]",myNewPersonRecord );
                 
@@ -2566,7 +2758,9 @@ nbn(510);
 //                    [[UIApplication sharedApplication] beginIgnoringInteractionEvents];     // typically call this before an animation or transitiion.
 //      NSLog(@"ARE  IGnoring events");
 //                }
-                  [myappDelegate mamb_beginIgnoringInteractionEvents ];
+                  [myappDelegate mamb_beginIgnoringInteractionEvents ];  // XXXXX  BEGIN  ignor #07   per before write + do back XXXXXXXXXXXX
+
+
 
                 // ONLY IF    [gbl_homeEditingState isEqualToString:  @"view or change" ] 
                 // DELETE  the existing record first
@@ -2603,6 +2797,7 @@ nbn(510);
                 // add the new Person database record in a string to the person array
                 //
                 [gbl_arrayPer addObject: myNewPersonRecord]; // add the new Person database record in a string to the person array
+
 
 
                 [myappDelegate mambWriteNSArrayWithDescription:              (NSString *) @"person"]; // write new array data to file
@@ -2669,7 +2864,6 @@ nbn(510);
 
         } // here editing changes have happened
 
-//    } // if gbl_homeEditingState = "add"   OR   [gbl_homeEditingState =  "view or change" ] )
 
     } // end of person  saveDone logic   ================================================================================
 
@@ -2971,7 +3165,7 @@ tn();   NSLog(@"in textFieldDidBeginEditing ####################################
     if (            gbl_myname.isFirstResponder == 1)  gbl_fieldTap_goingto = @"name";
     if (gbl_mycitySearchString.isFirstResponder == 1)  gbl_fieldTap_goingto = @"city"; 
     if (gbl_mybirthinformation.isFirstResponder == 1)  gbl_fieldTap_goingto = @"date";  // never
-//<.>
+
   NSLog(@"gbl_fieldTap_goingto =%@  tap tap tap ",gbl_fieldTap_goingto );
 
 nbn(802);
