@@ -256,10 +256,40 @@ NSLog(@"in viewDidAppear()");
     
 }
 
+
+-(bool) anySubViewScrolling: (UIView*)view
+{
+  NSLog(@"in anySubViewScrolling !!");
+    if( [ view isKindOfClass:[ UIScrollView class ] ] ) {
+        UIScrollView* scroll_view = (UIScrollView*) view;
+        if( scroll_view.dragging || scroll_view.decelerating ) return true;
+    }
+
+    for( UIView *sub_view in [ view subviews ] ) {
+        if( [ self anySubViewScrolling:sub_view ] ) return true;
+    }
+    return false;
+}
+
+
+
 //- (IBAction)actionDoReport:(id)sender {    // take  the global report specs and do ViewHTML
 - (void)actionDoReport {    // take  the global report specs and do ViewHTML
     
     NSLog(@"in actionDoReport!");
+
+
+    // if the pickerview is scrolling right now, return
+    //
+    BOOL aSubViewIsScrolling;
+//    aSubViewIsScrolling = [self anySubViewScrolling: self.view ];
+    aSubViewIsScrolling = [self anySubViewScrolling: self.outletYearPicker ];
+
+
+  NSLog(@"aSubViewIsScrolling =[%ld]",(long)aSubViewIsScrolling );
+    if(aSubViewIsScrolling == YES) return;
+
+
 
     // The report param selection has been made just now, so save it.
     //

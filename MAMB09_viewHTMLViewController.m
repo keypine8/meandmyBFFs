@@ -54,6 +54,7 @@
     // Do any additional setup after loading the view.
     NSLog(@"in viewHTML viewDidLoad!");
 
+
 //            dispatch_async(dispatch_get_main_queue(), ^(void){
 //    [self.outletWebView  loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"about:blank"]]];  // 1st time still slow
 //            });
@@ -64,7 +65,8 @@
 
 //   [self.outletWebView  stringByEvaluatingJavaScriptFromString:@"document.open();document.close()"];
 
-    
+// try to reduce load time of first cal yr report    did not work
+
 
     gbl_viewHTML_ShouldAddToNavBar = 1; // init to prevent  multiple programatic adds of nav bar items
 

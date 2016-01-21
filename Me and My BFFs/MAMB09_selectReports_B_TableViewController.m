@@ -296,6 +296,39 @@ tn();
     myNewCellText    = @" ";
     thisCellIsActive = 0;
 
+
+
+
+        // UILabel for the disclosure indicator, ">",  for tappable cells
+        //
+            NSString *myDisclosureIndicatorBGcolorName; 
+            NSString *myDisclosureIndicatorText; 
+            UIColor  *colorOfGroupReportArrow; 
+            UIFont   *myDisclosureIndicatorFont; 
+
+            myDisclosureIndicatorText = @">"; 
+//            colorOfGroupReportArrow   = [UIColor blackColor];                 // blue background
+//            myDisclosureIndicatorFont = [UIFont     systemFontOfSize: 16.0f]; // make not bold
+            colorOfGroupReportArrow   = [UIColor lightGrayColor];                 // blue background
+            myDisclosureIndicatorFont = [UIFont fontWithName: @"MarkerFelt-Thin" size:  24.0]; // good
+
+            NSAttributedString *myNewCellAttributedText3 = [
+                [NSAttributedString alloc] initWithString: myDisclosureIndicatorText  // i.e.   @">"
+                                               attributes: @{            NSFontAttributeName : myDisclosureIndicatorFont,
+                                                               NSForegroundColorAttributeName: colorOfGroupReportArrow                }
+            ];
+
+            UILabel *myDisclosureIndicatorLabel        = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 12.0f, 32.0f)];
+            myDisclosureIndicatorLabel.attributedText  = myNewCellAttributedText3;
+            myDisclosureIndicatorLabel.backgroundColor = gbl_colorReportsBG; 
+        //
+        // end of  UILabel for the disclosure indicator, ">",  for tappable cells
+
+
+
+
+
+
 //    if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgbm"] ) {
     if ([gbl_currentMenuPrefixFromMatchRpt isEqualToString: @"gbm"] ) {
         if (indexPath.row == 0) {   // spacer
@@ -358,7 +391,10 @@ tn();
                 //
                 cell.indentationWidth = 12.0; // these 2 keep the name on screen when hit red round delete and delete button slides from right
                 cell.indentationLevel =  3;   // these 2 keep the name on screen when hit red round delete and delete button slides from right
-                });
+
+                cell.accessoryView                       = myDisclosureIndicatorLabel;
+                cell.accessoryType                       = UITableViewCellAccessoryDisclosureIndicator;
+            });
                 return cell;
         }
 //        if (indexPath.row == 7) {   // 2 lines  
@@ -397,8 +433,11 @@ tn();
                 //
                 cell.indentationWidth = 12.0; // these 2 keep the name on screen when hit red round delete and delete button slides from right
                 cell.indentationLevel =  3;   // these 2 keep the name on screen when hit red round delete and delete button slides from right
-                });
-                return cell;
+
+                cell.accessoryView                       = myDisclosureIndicatorLabel;
+                cell.accessoryType                       = UITableViewCellAccessoryDisclosureIndicator;
+            });
+            return cell;
         }
             cell.textLabel.numberOfLines             = 1; 
         if (indexPath.row == 7) {   // spacer   this makes bottom cells be  cell.textLabel.numberOfLines = 1; instead of 2 (above)
@@ -471,6 +510,9 @@ tn();
                 //
                 cell.indentationWidth = 12.0; // these 2 keep the name on screen when hit red round delete and delete button slides from right
                 cell.indentationLevel =  3;   // these 2 keep the name on screen when hit red round delete and delete button slides from right
+
+                cell.accessoryView                       = myDisclosureIndicatorLabel;
+                cell.accessoryType                       = UITableViewCellAccessoryDisclosureIndicator;
             });
             return cell;
         }
@@ -518,6 +560,9 @@ tn();
             //
             cell.indentationWidth = 12.0; // these 2 keep the name on screen when hit red round delete and delete button slides from right
             cell.indentationLevel =  3;   // these 2 keep the name on screen when hit red round delete and delete button slides from right
+
+            cell.accessoryView                       = myDisclosureIndicatorLabel;
+            cell.accessoryType                       = UITableViewCellAccessoryDisclosureIndicator;
         });
     }
     if (thisCellIsActive == 1) {
@@ -538,6 +583,9 @@ tn();
             //
             cell.indentationWidth = 12.0; // these 2 keep the name on screen when hit red round delete and delete button slides from right
             cell.indentationLevel =  3;   // these 2 keep the name on screen when hit red round delete and delete button slides from right
+
+            cell.accessoryView                       = myDisclosureIndicatorLabel;
+            cell.accessoryType                       = UITableViewCellAccessoryDisclosureIndicator;
         });
     }
 

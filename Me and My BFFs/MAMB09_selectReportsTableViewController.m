@@ -273,6 +273,49 @@ NSLog(@"in viewDidAppear()");
 
     if (thisCellIsActive == 1) {
 
+
+        // UILabel for the disclosure indicator, ">",  for tappable cells
+        //
+            NSString *myDisclosureIndicatorBGcolorName; 
+            NSString *myDisclosureIndicatorText; 
+            UIColor  *colorOfGroupReportArrow; 
+            UIFont   *myDisclosureIndicatorFont; 
+
+            myDisclosureIndicatorText = @">"; 
+
+    //                myDisclosureIndicatorBGcolorName = gbl_array_cellBGcolorName[indexPath.row];   // array set in  viewDidLoad
+    //        NSLog(@"myDisclosureIndicatorBGcolorName =%@",myDisclosureIndicatorBGcolorName );
+
+//            if ( [myDisclosureIndicatorBGcolorName isEqualToString: @"cRe2"] ) {
+//                colorOfGroupReportArrow   = [UIColor blackColor];                 // deepest red is pretty  dark
+//                myDisclosureIndicatorFont = [UIFont     systemFontOfSize: 16.0f]; // make not bold
+//            } else {
+//                colorOfGroupReportArrow   = [UIColor  grayColor];
+//                myDisclosureIndicatorFont = [UIFont boldSystemFontOfSize: 16.0f];
+//            }
+//
+//            colorOfGroupReportArrow   = [UIColor blackColor];                 // blue background
+//            myDisclosureIndicatorFont = [UIFont     systemFontOfSize: 16.0f]; // make not bold
+            colorOfGroupReportArrow   = [UIColor lightGrayColor];                 // blue background
+            myDisclosureIndicatorFont = [UIFont fontWithName: @"MarkerFelt-Thin" size:  24.0]; // good
+
+
+            NSAttributedString *myNewCellAttributedText3 = [
+                [NSAttributedString alloc] initWithString: myDisclosureIndicatorText  // i.e.   @">"
+                                               attributes: @{            NSFontAttributeName : myDisclosureIndicatorFont,
+                                                               NSForegroundColorAttributeName: colorOfGroupReportArrow                }
+            ];
+    //                                                                         NSFontAttributeName : [UIFont boldSystemFontOfSize: 16.0f],
+
+            UILabel *myDisclosureIndicatorLabel        = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 12.0f, 32.0f)];
+            myDisclosureIndicatorLabel.attributedText  = myNewCellAttributedText3;
+            myDisclosureIndicatorLabel.backgroundColor = gbl_colorReportsBG; 
+
+
+        //
+        // end of  UILabel for the disclosure indicator, ">",  for tappable cells
+
+
         if (   indexPath.row == 5     // 2 lines. old "My Best Match in Group" before 2 line version below with person name
             && [myPrefix isEqualToString: @"homp"]    // my best match (grpone)
         ) {
@@ -293,8 +336,11 @@ NSLog(@"in viewDidAppear()");
                 //
                 cell.indentationWidth = 12.0; // these 2 keep the name on screen when hit red round delete and delete button slides from right
                 cell.indentationLevel =  3;   // these 2 keep the name on screen when hit red round delete and delete button slides from right
-                });
-                return cell;  // row 4, homp
+
+                cell.accessoryView                       = myDisclosureIndicatorLabel;
+                cell.accessoryType                       = UITableViewCellAccessoryDisclosureIndicator;
+            });
+            return cell;  // row 4, homp
         }
 
         dispatch_async(dispatch_get_main_queue(), ^{            // <  active
@@ -314,6 +360,9 @@ NSLog(@"in viewDidAppear()");
             //
             cell.indentationWidth = 12.0; // these 2 keep the name on screen when hit red round delete and delete button slides from right
             cell.indentationLevel =  3;   // these 2 keep the name on screen when hit red round delete and delete button slides from right
+
+            cell.accessoryView                       = myDisclosureIndicatorLabel;
+            cell.accessoryType                       = UITableViewCellAccessoryDisclosureIndicator;
         });
     }
 

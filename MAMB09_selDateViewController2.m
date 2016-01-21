@@ -609,9 +609,38 @@ NSLog(@"in viewDidAppear()");
 } // didSelectRow
 
 
+-(bool) anySubViewScrolling: (UIView*)view
+{
+  NSLog(@"in anySubViewScrolling !!");
+    if( [ view isKindOfClass:[ UIScrollView class ] ] ) {
+        UIScrollView* scroll_view = (UIScrollView*) view;
+        if( scroll_view.dragging || scroll_view.decelerating ) return true;
+    }
+
+    for( UIView *sub_view in [ view subviews ] ) {
+        if( [ self anySubViewScrolling:sub_view ] ) return true;
+    }
+    return false;
+}
+
+
+
 - (void) actionGoToReport
 {
     NSLog(@"in actionGoToReport  in sel DATE");;
+
+
+    // if the pickerview is scrolling right now, return
+    //
+    BOOL aSubViewIsScrolling;
+//    aSubViewIsScrolling = [self anySubViewScrolling: self.view ];
+//    aSubViewIsScrolling = [self anySubViewScrolling: pickerView ];
+    aSubViewIsScrolling = [self anySubViewScrolling: self.outletFor_YMD_picker ];
+
+  NSLog(@"aSubViewIsScrolling =[%ld]",(long)aSubViewIsScrolling );
+    if(aSubViewIsScrolling == YES) return;
+
+
 
     // The report param selection has been made just now, so save it.
     //

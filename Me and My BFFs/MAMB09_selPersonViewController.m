@@ -329,6 +329,35 @@
     //NSLog(@"cwll=%@",cell);
 
     // Configure the cell...
+
+
+
+        // UILabel for the disclosure indicator, ">",  for tappable cells
+        //
+            NSString *myDisclosureIndicatorBGcolorName; 
+            NSString *myDisclosureIndicatorText; 
+            UIColor  *colorOfGroupReportArrow; 
+            UIFont   *myDisclosureIndicatorFont; 
+
+            myDisclosureIndicatorText = @">"; 
+            colorOfGroupReportArrow   = [UIColor lightGrayColor];                 // blue background
+            myDisclosureIndicatorFont = [UIFont fontWithName: @"MarkerFelt-Thin" size:  24.0]; // good
+//            myDisclosureIndicatorFont = [UIFont     systemFontOfSize: 16.0f]; // make not bold
+
+            NSAttributedString *myNewCellAttributedText3 = [
+                [NSAttributedString alloc] initWithString: myDisclosureIndicatorText  // i.e.   @">"
+                                               attributes: @{            NSFontAttributeName : myDisclosureIndicatorFont,
+                                                               NSForegroundColorAttributeName: colorOfGroupReportArrow                }
+            ];
+
+            UILabel *myDisclosureIndicatorLabel        = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 12.0f, 32.0f)];
+            myDisclosureIndicatorLabel.attributedText  = myNewCellAttributedText3;
+            myDisclosureIndicatorLabel.backgroundColor = gbl_colorReportsBG; 
+        //
+        // end of  UILabel for the disclosure indicator, ">",  for tappable cells
+
+
+
     
     UIFont *myNewFont =  [UIFont boldSystemFontOfSize: 17.0];
 
@@ -344,12 +373,18 @@
             cell.textLabel.text = [gbl_arrayPersonsToPickFrom   objectAtIndex:indexPath.row];
             //        cell.textLabel.font = [UIFont systemFontOfSize: 16.0];
             cell.textLabel.font = myNewFont;
+
+            cell.accessoryView  = myDisclosureIndicatorLabel;
+            cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
         }
         //    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"]) {   
         else {
             cell.textLabel.text = [gbl_arrayGroupsToPickFrom   objectAtIndex:indexPath.row];
             // cell.textLabel.font = [UIFont systemFontOfSize: 16.0];
             cell.textLabel.font = myNewFont;
+
+            cell.accessoryView  = myDisclosureIndicatorLabel;
+            cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
         }
     });
 
@@ -477,6 +512,8 @@
 
     [super viewDidAppear:animated];
     // [self.view reloadData]; // self.view is the table view if self is its controller
+
+    gbl_disclosureSetAlready = NO;
 
 // comment out like in  sel rpt
 //    

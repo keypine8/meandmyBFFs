@@ -95,6 +95,58 @@
     trn("in viewDidLoad in home");
 
 
+
+// try to reduce load time of first cal yr report   
+
+//UIWebView *webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 0, 320, 568)];
+//webView.delegate = self;   
+//
+//
+//    [self.webView setUserInteractionEnabled:NO];
+//    [self.webView loadHTMLString:finalString baseURL:nil];
+//
+//    UIWebView *webview=[[UIWebView alloc]initWithFrame:CGRectMake(0, 0, 1024,768)];
+//    NSString *url=@"http://www.google.com";
+//    NSURL *nsurl=[NSURL URLWithString:url];
+//    NSURLRequest *nsrequest=[NSURLRequest requestWithURL:nsurl];
+//    [webview loadRequest:nsrequest];
+//    [self.view addSubview:webview];
+//
+//
+
+//nbn(1);
+////    UIWebView *webview=[[UIWebView alloc]initWithFrame:CGRectMake(0, 0, 40, 40)];
+//    UIWebView *webview=[[UIWebView alloc]initWithFrame:CGRectMake(0, 0, 11, 11)];
+//nbn(2);
+////    NSString *stringForHTML = @"X";
+////    [webview loadHTMLString: stringForHTML   baseURL: nil];
+//    [webview loadHTMLString: [NSString stringWithFormat:@"<html><body>X</body></html>"]  baseURL: nil];
+//nbn(3);
+//    [self.view addSubview:webview];
+//nbn(5);
+//
+
+//    UIWebView *webview=[[UIWebView alloc]initWithFrame:CGRectMake(0, 0, 11, 11)];
+//    NSURLRequest *nsrequest=[NSURLRequest requestWithURL: nil];
+//    [webview loadRequest: nsrequest];
+
+
+//   UIWebView *webview =[[UIWebView alloc]initWithFrame:CGRectMake(0, 0, 11, 11)];
+//   NSString *someHTML = [webview stringByEvaluatingJavaScriptFromString:@""];   
+
+    // try to reduce load time of first cal yr report   
+    // this WORKED!
+    //
+tn();
+  NSLog(@"BEG  use javascript to  grab document.title - to try to reduce load time of first cal yr report   ");
+
+    UIWebView *webview = [[UIWebView alloc]initWithFrame:CGRectMake(0, 0, 11, 11)];
+    NSString *xtitle   = [webview stringByEvaluatingJavaScriptFromString:@"document.title"];  
+  NSLog(@"END  use javascript to  grab document.title - to try to reduce load time of first cal yr report   ");
+  NSLog(@"xtitle   =[%@]",xtitle   );
+    
+
+
     gbl_currentMenuPlusReportCode = @"HOME";  // also set in viewWillAppear for coming back to HOME from other places (INFO ptr)
   NSLog(@"gbl_currentMenuPlusReportCode =%@",gbl_currentMenuPlusReportCode );
 
@@ -825,6 +877,53 @@ nbn(7);
 //    [lblCellText sizeToFit];
 
 
+
+        // UILabel for the disclosure indicator, ">",  for tappable cells
+        //
+            NSString *myDisclosureIndicatorBGcolorName; 
+            NSString *myDisclosureIndicatorText; 
+            UIColor  *colorOfGroupReportArrow; 
+            UIFont   *myDisclosureIndicatorFont; 
+
+            myDisclosureIndicatorText = @">"; 
+//            colorOfGroupReportArrow   = [UIColor blackColor];                 // blue background
+//            colorOfGroupReportArrow   = [UIColor darkGrayColor];                 // blue background
+//            colorOfGroupReportArrow   = [UIColor grayColor];                 // blue background
+            colorOfGroupReportArrow   = [UIColor lightGrayColor];                 // blue background
+//            myDisclosureIndicatorFont = [UIFont     systemFontOfSize: 16.0f]; // make not bold
+//            myDisclosureIndicatorFont = [UIFont     systemFontOfSize: 24.0f]; // make not bold
+//            myDisclosureIndicatorFont = [UIFont     systemFontOfSize: 20.0f]; // make not bold
+//            myDisclosureIndicatorFont = [UIFont     boldSystemFontOfSize: 24.0f]; // make not bold
+//            myDisclosureIndicatorFont = [UIFont     boldSystemFontOfSize: 20.0f]; // make not bold
+//            myDisclosureIndicatorFont = [UIFont fontWithName: @"Menlo-bold" size:  24.0]; // no good
+//            myDisclosureIndicatorFont = [UIFont fontWithName: @"ArialRoundedMTBold" size:  24.0];
+//            myDisclosureIndicatorFont = [UIFont fontWithName: @"HelveticaNeue-ThinItalic" size:  24.0];
+//            myDisclosureIndicatorFont = [UIFont fontWithName: @"IowanOldStyle-Bold" size:  24.0];
+            myDisclosureIndicatorFont = [UIFont fontWithName: @"MarkerFelt-Thin" size:  24.0]; // good
+//            myDisclosureIndicatorFont = [UIFont fontWithName: @"MarkerFelt-Wide" size:  24.0]; // bad
+//            myDisclosureIndicatorFont = [UIFont fontWithName: @"SanFranciscoDisplay-Thin" size:  24.0]; 
+//            myDisclosureIndicatorFont = [UIFont fontWithName: @"SanFranciscoRounded-Bold" size:  16.0]; 
+//            myDisclosureIndicatorFont = [UIFont fontWithName: @"TimesNewRomanPS-BoldMT" size:  24.0]; // good
+//              myDisclosureIndicatorFont = [UIFont fontWithName: @"Superclarendon-Bold" size:  24.0]; // good
+//              myDisclosureIndicatorFont = [UIFont fontWithName: @"SnellRoundhand-Bold" size:  24.0]; // good
+//              myDisclosureIndicatorFont = [UIFont fontWithName: @"AvenirNextCondensed-Heavy" size:  24.0]; // good
+
+
+
+
+            NSAttributedString *myNewCellAttributedText3 = [
+                [NSAttributedString alloc] initWithString: myDisclosureIndicatorText  // i.e.   @">"
+                                               attributes: @{            NSFontAttributeName : myDisclosureIndicatorFont,
+                                                               NSForegroundColorAttributeName: colorOfGroupReportArrow                }
+            ];
+
+            UILabel *myDisclosureIndicatorLabel        = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 12.0f, 32.0f)];
+            myDisclosureIndicatorLabel.attributedText  = myNewCellAttributedText3;
+            myDisclosureIndicatorLabel.backgroundColor = gbl_colorReportsBG; 
+        //
+        // end of  UILabel for the disclosure indicator, ">",  for tappable cells
+
+
 //  NSLog(@"gbl_homeUseMODE =%@",gbl_homeUseMODE );
     dispatch_async(dispatch_get_main_queue(), ^{                        
 
@@ -848,6 +947,9 @@ nbn(7);
         cell.indentationLevel =  3;   // these 2 keep the name on screen when hit red round delete and delete button slides from right
 
         if ([gbl_homeUseMODE isEqualToString: @"edit mode"]) cell.tintColor = [UIColor blackColor];
+
+        cell.accessoryView                       = myDisclosureIndicatorLabel;
+        cell.accessoryType                       = UITableViewCellAccessoryDisclosureIndicator;
 //<.x for test create empty Launch screen shot  //  ALSO comment out between the 2  <.  above
 
     });

@@ -350,10 +350,29 @@ NSLog(@"currentScreenWidthHeight.height =%f",currentScreenWidthHeight.height );
     ];
 
 
+//<.>
+//I created UIView Class Extension and added this two functions. and when i want to disable view touch i just call [view makeExclusiveTouch];
+//
+//- (void) makeExclusiveTouchForViews:(NSArray*)views {
+//    for (UIView * view in views) {
+//        [view makeExclusiveTouch];
+//    }
+//}
+//
+//- (void) makeExclusiveTouch {
+//    self.multipleTouchEnabled = NO;
+//    self.exclusiveTouch = YES;
+//    [self makeExclusiveTouchForViews:self.subviews];
+//}
+//
+//<.>
+//
 
     self.pickerViewDateTime.delegate   = self;
     self.pickerViewDateTime.dataSource = self;
     self.pickerViewDateTime.hidden     =  NO;
+//    self.pickerViewDateTime.multipleTouchEnabled = NO;
+//    self.pickerViewDateTime.exclusiveTouch       = YES;
 
 
 //    self.pickerViewDateTime.inputAccessoryView =  gbl_ToolbarForBirthDate;
@@ -1957,6 +1976,21 @@ NSLog(@"end of  oncityInputViewKeyboardButton!"); tn();
 } // pressedCancel
 
 
+-(bool) anySubViewScrolling: (UIView*)view
+{
+  NSLog(@"in anySubViewScrolling !!");
+    if( [ view isKindOfClass:[ UIScrollView class ] ] ) {
+        UIScrollView* scroll_view = (UIScrollView*) view;
+        if( scroll_view.dragging || scroll_view.decelerating ) return true;
+    }
+
+    for( UIView *sub_view in [ view subviews ] ) {
+        if( [ self anySubViewScrolling:sub_view ] ) return true;
+    }
+    return false;
+}
+
+
 
 - (IBAction)pressedSaveDone:(id)sender
 {
@@ -1974,6 +2008,17 @@ nbn(700);
 
 
     MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // methods in appdele
+
+    // if the pickerview is scrolling right now, return
+    //
+    BOOL aSubViewIsScrolling;
+//    aSubViewIsScrolling = [self anySubViewScrolling: self.view ];
+    aSubViewIsScrolling = [self anySubViewScrolling: self.pickerViewDateTime ];
+
+  NSLog(@"aSubViewIsScrolling =[%ld]",(long)aSubViewIsScrolling );
+    if(aSubViewIsScrolling == YES) return;
+
+
 
     if ([gbl_fromHomeCurrentSelectionType isEqualToString: @"group" ] )
     { // group saveDone logic  --------- about 300 lines  --------------------------------------------------------------
@@ -2522,7 +2567,7 @@ nbn(510);
                     ////                                      NSBackgroundColorAttributeName: cell.textLabel.textColor
                     //                                      NSFontAttributeName: cell.textLabel.font,
                     //                                      NSBackgroundColorAttributeName: cell.textLabel.backgroundColor
-                    //                                      };
+                    //
                     //
                     //            NSMutableAttributedString *myAttributedTextLabelExplain = 
                     //                [[NSMutableAttributedString alloc] initWithString: allLabelExplaintext
@@ -2587,12 +2632,13 @@ nbn(1);
   NSLog(@"pressed   regular save");
                                                gbl_kindOfSave = @"regular save";   // or  "high security save"
   NSLog(@"gbl_kindOfSave 11 =[%@]",gbl_kindOfSave);
-sleep(5);
 //                                               [view dismissViewControllerAnimated: YES  completion: nil];
 //                [self.navigationController popViewControllerAnimated: YES]; // "Back" out of save dialogue
 //                [myActionSheet popViewControllerAnimated: YES]; // "Back" out of save dialogue
 
-//                                               [myActionSheet dismissViewControllerAnimated: YES  completion: nil];
+                                               [self doActualPersonSave ];
+
+                                               [myActionSheet dismissViewControllerAnimated: YES  completion: nil];
 
                                            }
                     ]
@@ -2607,11 +2653,12 @@ nbn(2);
   NSLog(@"pressed   high security save");
                                                gbl_kindOfSave = @"high security save";   // or  "regular save"
   NSLog(@"gbl_kindOfSave 12 =[%@]",gbl_kindOfSave);
+//                                               [self doMeInsideBlock ];
 
-sleep(5);
+                                               [self doActualPersonSave ];
+
+                                               [myActionSheet dismissViewControllerAnimated: YES  completion: nil];
 //                                               [self dismissViewControllerAnimated: YES completion: ^{   } ];
-
-//                                               [myActionSheet dismissViewControllerAnimated: YES  completion: nil];
                                            }
                     ]
                 ];
@@ -2621,51 +2668,55 @@ sleep(5);
             //    myActionSheet.view.backgroundColor = [UIColor greenColor];
             //    myActionSheet.view.backgroundColor = gbl_colorHomeBG;
             //    myActionSheet.view.tintColor =  [UIColor blackColor];  // colors choices
+            //                myActionSheet.view.backgroundColor = gbl_colorEditingBG;
 
-//                myActionSheet.view.backgroundColor = gbl_colorEditingBG;
-
-nbn(3);
 
                 // Present action sheet.
-//               [self presentViewController: myActionSheet animated: YES completion: nil];
-
-
-//
-//                dispatch_async(dispatch_get_main_queue(), ^{  
-//                dispatch_sync(dispatch_get_main_queue(), ^{     // use  SYNC  so pgm does not continue until this alert is dismissed
-//nbn(4);
-//                    id rootViewController = [UIApplication sharedApplication].delegate.window.rootViewController;
-//nbn(5);
-//                    if([rootViewController isKindOfClass:[UINavigationController class]])
-//                    {
-//nbn(6);
-//                       rootViewController=[((UINavigationController *)rootViewController).viewControllers objectAtIndex:0];
-//nbn(7);
-//                    }
-//nbn(8);
-////                [rootViewController presentViewController:alertController animated:YES completion:nil];
-//                    [rootViewController presentViewController: myActionSheet animated:YES completion:nil];
-//
-
-
+                //
 nbn(9);
                 [self presentViewController: myActionSheet animated: YES completion: nil];
-nbn(10);
-//                });
-//
-
-//                [self presentViewController: myActionSheet animated: YES completion: nil];
-nbn(11);
-
-
-
 
   NSLog(@"gbl_kindOfSave 1 =[%@]",gbl_kindOfSave);
-//                [self.navigationController popViewControllerAnimated: YES]; // "Back" out of save dialogue
+nbn(10);
+                return;
 
-  NSLog(@"gbl_kindOfSave 2 =[%@]",gbl_kindOfSave);
+        } // here editing changes have happened
 
-return; // for test  <.>
+
+    } // end of person  saveDone logic   ================================================================================
+
+//  NSLog(@"--- 000 -------------------------------------------------------");
+//  NSLog(@"            gbl_myname.isFirstResponder=%d",gbl_myname.isFirstResponder);
+//  NSLog(@"gbl_mycitySearchString.isFirstResponder=%d",gbl_mycitySearchString.isFirstResponder);
+//  NSLog(@"gbl_mybirthinformation.isFirstResponder=%d",gbl_mybirthinformation.isFirstResponder);
+//  NSLog(@"gbl_fieldTap_leaving  =%@",gbl_fieldTap_leaving );
+//  NSLog(@"gbl_fieldTap_goingto  =%@",gbl_fieldTap_goingto );
+//  NSLog(@"gbl_firstResponder_previous  =%@",gbl_firstResponder_previous );
+//  NSLog(@"gbl_firstResponder_current   =%@",gbl_firstResponder_current  );
+//  NSLog(@"---------------------------------------------------------------");
+//
+
+} // pressedSaveDone
+
+//- (void) doMeInsideBlock  // for test
+//{
+//  NSLog(@"do me method inside block");
+//}
+
+- (void) doActualPersonSave
+{
+    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
+
+                // before write of array data to file, disallow/ignore user interaction events
+                //
+
+//                if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] ==  NO) {  // suspend handling of touch-related events
+//                    [[UIApplication sharedApplication] beginIgnoringInteractionEvents];     // typically call this before an animation or transitiion.
+//      NSLog(@"ARE  IGnoring events");
+//                }
+                  [myappDelegate mamb_beginIgnoringInteractionEvents ];  // XXXXX  BEGIN  ignor #07   per before write + do back XXXXXXXXXXXX
+
+
 
                 // Actually do save of New Person   here
                 //
@@ -2750,16 +2801,6 @@ return; // for test  <.>
                 ];
       NSLog(@"myNewPersonRecord =[%@]",myNewPersonRecord );
                 
-
-                // before write of array data to file, disallow/ignore user interaction events
-                //
-
-//                if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] ==  NO) {  // suspend handling of touch-related events
-//                    [[UIApplication sharedApplication] beginIgnoringInteractionEvents];     // typically call this before an animation or transitiion.
-//      NSLog(@"ARE  IGnoring events");
-//                }
-                  [myappDelegate mamb_beginIgnoringInteractionEvents ];  // XXXXX  BEGIN  ignor #07   per before write + do back XXXXXXXXXXXX
-
 
 
                 // ONLY IF    [gbl_homeEditingState isEqualToString:  @"view or change" ] 
@@ -2861,23 +2902,8 @@ return; // for test  <.>
     //            gbl_lastSelectedPersonBeforeChange = gbl_DisplayName;   // like "~Dave"   used in YELLOW gbl_homeUseMODE "edit mode"
 
 
+} //  doActualPersonSave
 
-        } // here editing changes have happened
-
-
-    } // end of person  saveDone logic   ================================================================================
-
-  NSLog(@"--- 000 -------------------------------------------------------");
-  NSLog(@"            gbl_myname.isFirstResponder=%d",gbl_myname.isFirstResponder);
-  NSLog(@"gbl_mycitySearchString.isFirstResponder=%d",gbl_mycitySearchString.isFirstResponder);
-  NSLog(@"gbl_mybirthinformation.isFirstResponder=%d",gbl_mybirthinformation.isFirstResponder);
-  NSLog(@"gbl_fieldTap_leaving  =%@",gbl_fieldTap_leaving );
-  NSLog(@"gbl_fieldTap_goingto  =%@",gbl_fieldTap_goingto );
-  NSLog(@"gbl_firstResponder_previous  =%@",gbl_firstResponder_previous );
-  NSLog(@"gbl_firstResponder_current   =%@",gbl_firstResponder_current  );
-  NSLog(@"---------------------------------------------------------------");
-
-} // pressedSaveDone
 
 
 //
@@ -6717,4 +6743,23 @@ trn("!!!!!!!!!  END OF  didSelectRow in some  PICKER !!   !!!!!!!!!!!!!!!!!!!!!!
 
 
 //    NSArray *indexPathsToUpdate = [NSArray arrayWithObjects: indexPath_leaving, indexPath_goingto, nil];
+
+
+//
+//                dispatch_async(dispatch_get_main_queue(), ^x  
+//                dispatch_sync(dispatch_get_main_queue(), ^{     // use  SYNC  so pgm does not continue until this alert is dismissed
+//nbn(4);
+//                    id rootViewController = [UIApplication sharedApplication].delegate.window.rootViewController;
+//nbn(5);
+//                    if([rootViewController isKindOfClass:[UINavigationController class]])
+//                    {
+//nbn(6);
+//                       rootViewController=[((UINavigationController *)rootViewController).viewControllers objectAtIndex:0];
+//nbn(7);
+//                    }
+//nbn(8);
+////                [rootViewController presentViewController:alertController animated:YES completion:nil];
+//                    [rootViewController presentViewController: myActionSheet animated:YES completion:nil];
+//
+
 

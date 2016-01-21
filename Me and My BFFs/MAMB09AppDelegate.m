@@ -2393,12 +2393,12 @@ tn();  NSLog(@"at end of   mambReadLastEntityFile  myLastEntityDecoded=\n%@",myL
     CGRect myScreenBounds = [[UIScreen mainScreen] bounds];
     CGSize myScreenSize = myScreenBounds.size;
 
-    if ( NSFoundationVersionNumber <= NSFoundationVersionNumber_iOS_7_1 ) {  
-        UIInterfaceOrientation interfaceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
-        if ( UIInterfaceOrientationIsLandscape(interfaceOrientation) ) {
-            myScreenSize = CGSizeMake(myScreenSize.height, myScreenSize.width);
-        }
-    }
+//    if ( NSFoundationVersionNumber <= NSFoundationVersionNumber_iOS_7_1 ) {  
+//        UIInterfaceOrientation interfaceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
+//        if ( UIInterfaceOrientationIsLandscape(interfaceOrientation) ) {
+//            myScreenSize = CGSizeMake(myScreenSize.height, myScreenSize.width);
+//        }
+//    }
 
     return myScreenSize;
 }

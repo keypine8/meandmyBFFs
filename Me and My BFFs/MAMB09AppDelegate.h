@@ -87,6 +87,9 @@ CGFloat   gbl_heightForCompTable;
 NSInteger gbl_areInCompatibilityTable;  // 1=y,0=n
 NSInteger gbl_ThresholdshortTblLineLen;
 
+BOOL      gbl_disclosureSetAlready;
+
+
 // EDITING stuff
 //
 
@@ -472,7 +475,9 @@ NSString *gbl_TBLRPTS2_NAME_personB;     // of pair
 NSString *gbl_TBLRPTS2_NAME_personJust1; // for single person reports
 
 
-// FYI
+NSInteger gbl_numSectionIndexTitles; // for scroll bar    = mySectionIndexTitles.count;
+
+// FYI   mind map
 //
 // 21 rpts need  a person selection  (p)
 //  8 rpts need no person selection  (g  homg*)

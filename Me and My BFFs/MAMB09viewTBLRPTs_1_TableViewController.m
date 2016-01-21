@@ -233,7 +233,7 @@ NSLog(@"in numberOfRowsInSection in tblrpts 1");
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath: (NSIndexPath *)indexPath
 {
-tn();  NSLog(@"in cellForRowAtIndexPath in tblrpts 1 ");ki((int)indexPath.row);
+//tn();  NSLog(@"in cellForRowAtIndexPath in tblrpts 1 ");ki((int)indexPath.row);
     int myidx;
     char my_tmp_str[128];
     NSString *myCellContentsPSV;
@@ -2410,7 +2410,7 @@ bn(802);
         return cell;
 
     }  // end of new compatibility TBLRPT  report
-bn(603);
+//bn(603);
 
     // END of    new compatibility TBLRPT  report   $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
@@ -3156,8 +3156,10 @@ ksn(my_tmp_str);
                     colorOfGroupReportArrow   = [UIColor blackColor];                 // deepest red is pretty  dark
                     myDisclosureIndicatorFont = [UIFont     systemFontOfSize: 16.0f]; // make not bold
                 } else {
-                    colorOfGroupReportArrow   = [UIColor  grayColor];
-                    myDisclosureIndicatorFont = [UIFont boldSystemFontOfSize: 16.0f];
+//                    colorOfGroupReportArrow   = [UIColor  grayColor];
+//                    myDisclosureIndicatorFont = [UIFont boldSystemFontOfSize: 16.0f];
+                    colorOfGroupReportArrow   = [UIColor lightGrayColor];                 // blue background
+                    myDisclosureIndicatorFont = [UIFont fontWithName: @"MarkerFelt-Thin" size:  24.0]; // good
                 }
 
 
@@ -3650,8 +3652,10 @@ ksn(my_tmp_str);
                     colorOfGroupReportArrow   = [UIColor blackColor];                 // deepest red is pretty  dark
                     myDisclosureIndicatorFont = [UIFont     systemFontOfSize: 16.0f]; // make not bold
                 } else {
-                    colorOfGroupReportArrow   = [UIColor  grayColor];
-                    myDisclosureIndicatorFont = [UIFont boldSystemFontOfSize: 16.0f];
+//                    colorOfGroupReportArrow   = [UIColor  grayColor];
+//                    myDisclosureIndicatorFont = [UIFont boldSystemFontOfSize: 16.0f];
+                    colorOfGroupReportArrow   = [UIColor lightGrayColor];                 // blue background
+                    myDisclosureIndicatorFont = [UIFont fontWithName: @"MarkerFelt-Thin" size:  24.0]; // good
                 }
 
 
@@ -6851,39 +6855,69 @@ tn();trn("// set new gbl_currentMenuPlusReportCode    for info in next report");
 
     if (group_report_output_idx <= gbl_numRowsToTurnOnIndexBar) return nil;
 
+    // no section index for these
+    if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homppe"]   // home + personality
+        || [gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]   // home + compatibility
+    ) {
+        return nil;
+    }
+
 
 //    return[NSArray arrayWithObjects:@"A", @"B", @"C", @"D", @"E", @"F", @"G", @"H", @"I", @"J", @"K", @"L", @"M", @"N", @"O", @"P", @"Q", @"R", @"S", @"T", @"U", @"V", @"W", @"X", @"Y", @"Z", nil];
 //    return[NSArray arrayWithObjects:@"--", @" ", @" ", @" ", @" ", @" ", @"GGG", @" ", @" ", @" ", @" ", @" ", @"-", @"N", @"O", @"P", @"Q", @"R", @"S", @"T", @"U", @"V", @"W", @"XXX", @"Y", @"Z", @"--", nil];
 
-    return[NSArray arrayWithObjects:
-            @"--",
+//    return[NSArray arrayWithObjects:
+//            @"--",
+//         @" ", @" ", @" ", @" ",  @" ", @" ",
+//            @"20",
+//         @" ", @" ", @" ", @" ",  @" ", @" ",
+//            @"40",
+//         @" ", @" ", @" ", @" ",  @" ", @" ",
+//            @"60",
+//         @" ", @" ", @" ", @" ",  @" ", @" ",
+//            @"80",
+//         @" ", @" ", @" ", @" ",  @" ", @" ",
+//            @"==", nil ];
+//
+    NSArray *mySectionIndexTitles;
+    mySectionIndexTitles = [NSArray arrayWithObjects:  // 33 items  last index=32
+            @"TOP"
          @" ", @" ", @" ", @" ",  @" ", @" ",
-            @"20",
+            @"__",
          @" ", @" ", @" ", @" ",  @" ", @" ",
-            @"40",
+            @"__",
          @" ", @" ", @" ", @" ",  @" ", @" ",
-            @"60",
+            @"__",
          @" ", @" ", @" ", @" ",  @" ", @" ",
-            @"80",
-         @" ", @" ", @" ", @" ",  @" ", @" ",
-            @"==", nil ];
+            @"END", nil ];
+
+    gbl_numSectionIndexTitles = mySectionIndexTitles.count;
+  NSLog(@"gbl_numSectionIndexTitles =[%ld]",(long)gbl_numSectionIndexTitles );
+
+    return mySectionIndexTitles;
   }
 
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle: (NSString *)title 
                                                                     atIndex: (NSInteger)index  {
 
   NSLog(@"sectionForSectionIndexTitle!");
+  NSLog(@"title=[%@]",title);
+  NSLog(@"index=[%ld]",(long)index);
+
+nbn(1);
 //    NSInteger newRow = [self indexForFirstChar:title inArray:self.yourStringArray];
     NSInteger newRow;
     newRow = 0;
 
-    //    if ([title isEqualToString:@"  "])    // does not work when title = "  "
-    if ([title hasPrefix:@" "]) {
-        NSArray *myVisibleRows = [tableView indexPathsForVisibleRows];
-        NSIndexPath *myTopRow  = (NSIndexPath*)[myVisibleRows objectAtIndex:0];
-        return myTopRow.row;
-    }
+//    //    if ([title isEqualToString:@"  "])    // does not work when title = "  "
+//    if ([title hasPrefix:@" "]) {
+//        NSArray *myVisibleRows = [tableView indexPathsForVisibleRows];
+//        NSIndexPath *myTopRow  = (NSIndexPath*)[myVisibleRows objectAtIndex:0];
+//        return myTopRow.row;
+//    }
+//
 
+nbn(2);
     // no section index for these
     if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homppe"]   // home + personality
         || [gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]   // home + compatibility
@@ -6891,26 +6925,44 @@ tn();trn("// set new gbl_currentMenuPlusReportCode    for info in next report");
         return 0;
     }
 
+nbn(3);
 
-    // put up 20,40,60,80  scroll bar on right
+//    // put up 20,40,60,80  scroll bar on right
+//    //
+//    //    if ([title isEqualToString:@"__"]) newRow = 0;
+//    if ([title isEqualToString:@"--"]) newRow = 0;
+//    if ([title isEqualToString:@"20"]) newRow = (int) ( (20.0 / 100.0) * (double)group_report_output_idx );
+//    if ([title isEqualToString:@"40"]) newRow = (int) ( (40.0 / 100.0) * (double)group_report_output_idx );
+//    if ([title isEqualToString:@"60"]) newRow = (int) ( (60.0 / 100.0) * (double)group_report_output_idx );
+//    if ([title isEqualToString:@"80"]) newRow = (int) ( (80.0 / 100.0) * (double)group_report_output_idx );
+//    if ([title isEqualToString:@"=="]) newRow =              group_report_output_idx - 1;
+//  NSLog(@"newRow =%ld",(long)newRow );
+//
+
+    // put up top,25,50,75,bot  scroll bar on right
     //
     //    if ([title isEqualToString:@"__"]) newRow = 0;
-    if ([title isEqualToString:@"--"]) newRow = 0;
-    if ([title isEqualToString:@"20"]) newRow = (int) ( (20.0 / 100.0) * (double)group_report_output_idx );
-    if ([title isEqualToString:@"40"]) newRow = (int) ( (40.0 / 100.0) * (double)group_report_output_idx );
-    if ([title isEqualToString:@"60"]) newRow = (int) ( (60.0 / 100.0) * (double)group_report_output_idx );
-    if ([title isEqualToString:@"80"]) newRow = (int) ( (80.0 / 100.0) * (double)group_report_output_idx );
-    if ([title isEqualToString:@"=="]) newRow =              group_report_output_idx - 1;
-  NSLog(@"newRow =%ld",(long)newRow );
+    if ([title isEqualToString:@"TOP"]) newRow = 0;
+//    if ([title isEqualToString:@"___"]) newRow = (int) ( (25.0 / 100.0) * (double)group_report_output_idx );
+//    if ([title isEqualToString:@"__"])  newRow = (int) ( (50.0 / 100.0) * (double)group_report_output_idx );
+//    if ([title isEqualToString:@"_"])   newRow = (int) ( (75.0 / 100.0) * (double)group_report_output_idx );
+    if ([title isEqualToString:@"END"]) newRow = group_report_output_idx - 1;
+    if ([title isEqualToString:@" "])   newRow = ((double) (index + 1) / (double) gbl_numSectionIndexTitles ) * (double)group_report_output_idx;
+  NSLog(@"index + 1                 =[%ld]",(long)index + 1                 );
+  NSLog(@"gbl_numSectionIndexTitles =[%ld]",(long)gbl_numSectionIndexTitles );
+  NSLog(@"group_report_output_idx   =[%ld]",(long)group_report_output_idx );
+  NSLog(@"newRow                    =[%ld]",(long)newRow );
 
     NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow: newRow inSection: 0];
 
+nbn(4);
 
     dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
         [tableView scrollToRowAtIndexPath: newIndexPath atScrollPosition: UITableViewScrollPositionTop animated: YES];
 //        [tableView scrollToRowAtIndexPath: newIndexPath atScrollPosition: UITableViewScrollPositionMiddle animated: NO];
     });
 
+nbn(5);
     return index;
 }
 
