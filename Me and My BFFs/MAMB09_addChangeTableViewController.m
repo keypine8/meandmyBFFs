@@ -72,7 +72,7 @@
 //    char my_psv[128];
 //
 
-    NSString *fldName, *fldMth, *fldDay, *fldYear, *fldHour, *fldMin, *fldAmPm, *fldCity, *fldProv, *fldCountry;
+    NSString *fldName, *fldMth, *fldDay, *fldYear, *fldHour, *fldMin, *fldAmPm, *fldCity, *fldProv, *fldCountry, *fldKindOfSave;
     NSString *fldNameG;
 //    NSString *fldLongitude, *fldHoursDiff;
 
@@ -1158,16 +1158,25 @@ tn();
             //
 
             NSArray *fields = [gbl_fromHomeCurrentSelectionPSV componentsSeparatedByString: @"|"];
-            fldName      = fields[ 0];
-            fldMth       = fields[ 1];
-            fldDay       = fields[ 2];
-            fldYear      = fields[ 3];
-            fldHour      = fields[ 4];
-            fldMin       = fields[ 5];
-            fldAmPm      = fields[ 6];
-            fldCity      = fields[ 7];
-            fldProv      = fields[ 8];
-            fldCountry   = fields[ 9];
+            fldName      =  fields[ 0];
+            fldMth       =  fields[ 1];
+            fldDay       =  fields[ 2];
+            fldYear      =  fields[ 3];
+            fldHour      =  fields[ 4];
+            fldMin       =  fields[ 5];
+            fldAmPm      =  fields[ 6];
+            fldCity      =  fields[ 7];
+            fldProv      =  fields[ 8];
+            fldCountry   =  fields[ 9];
+            fldKindOfSave  = fields[10];;
+
+            if (   [fldKindOfSave  isEqualToString: @"hs" ] )
+            {
+                gbl_kindOfSave = @"high security save";  // this var is used throughout
+            } else {
+                gbl_kindOfSave = @"regular save";        // this var is used throughout
+            }
+
       NSLog(@"fldName   = [%@]",fldName);
       NSLog(@"fldMth    = [%@]",fldMth);
       NSLog(@"fldDay    = [%@]",fldDay);
@@ -1178,6 +1187,7 @@ tn();
       NSLog(@"fldCity   = [%@]",fldCity);
       NSLog(@"fldProv   = [%@]",fldProv);
       NSLog(@"fldCountry= [%@]",fldCountry);
+      NSLog(@"fldKindOfSave= [%@]",fldKindOfSave);
 
             if (   [gbl_homeUseMODE      isEqualToString: @"edit mode" ]
                 && [gbl_homeEditingState isEqualToString: @"view or change" ]
@@ -2530,6 +2540,16 @@ nbn(510);
                 // Actually do save of New Person   here");
 
 
+                // if person was saved with high security
+                // do not offer a  choice of kind of save (see below)
+                // 
+                if (   [gbl_kindOfSave isEqualToString:  @"high security save" ] )
+                {
+                    [self doActualPersonSave ];
+
+                    return;
+                }
+
                 // offer to save person with high security
                 //
                 NSString *saveTitle;
@@ -2550,7 +2570,7 @@ nbn(510);
                      nameInPossessiveForm = [NSString stringWithFormat: @"%@\'s", gbl_myname.text ];
                 }
 //                saveMsg = [NSString stringWithFormat: @"note:\n   The High Security Save prevents EVERYONE, including yourself and this device owner, from EVER seeing %@ birth date or city.\n\n", nameInPossessiveForm ];
-                saveMsg = [NSString stringWithFormat: @"note:\n   The High Security Save prevents EVERYONE, including yourself and this device owner, from EVER seeing %@\'s birth date or city.\n\n", gbl_myname.text ];
+                saveMsg = [NSString stringWithFormat: @"note:\n   The High Security Save prevents EVERYONE, including yourself and this device owner, from EVER seeing or changing %@\'s birth date or city.\n\n", gbl_myname.text ];
 
 
 
@@ -2887,6 +2907,7 @@ nbn(10);
 
                     // pop to root view controller (actually do the "Back" action)
                     // 
+
                     gbl_myname.text                  = gbl_initPromptName;
                     gbl_myCitySoFar                  = @"";
                     gbl_editingChangeNAMEHasOccurred = 0;
@@ -3979,6 +4000,7 @@ NSLog(@"in textFieldShouldReturn:");
 //    UIFont *myFontSmaller2 = [UIFont fontWithName: @"Menlo" size: 15.0];
 //    UIFont *myFontSmaller2 = [UIFont fontWithName: @"Menlo" size: 14.0];
     UIFont *myFontSmaller2 = [UIFont fontWithName: @"Menlo" size: 16.0];
+    UIFont *myFontSmaller14 = [UIFont fontWithName: @"Menlo" size: 14.0];
 
     // invisible button for taking away the disclosure indicator
     //
@@ -4122,12 +4144,101 @@ nbn(203);
   NSLog(@"fldCity        = [%@]",fldCity);
   NSLog(@"fldProv        = [%@]",fldProv);
   NSLog(@"fldCountry       [%@]",fldCountry);
+  NSLog(@"fldKindOfSave =[%@]",fldKindOfSave );
+  NSLog(@"gbl_kindOfSave =[%@]",gbl_kindOfSave );
   NSLog(@"gbl_enteredCity= [%@]",gbl_enteredCity);
   NSLog(@"gbl_enteredProv= [%@]",gbl_enteredProv);
   NSLog(@"gbl_enteredCoun= [%@]",gbl_enteredCoun);
-
+nbn(1);
         if ([gbl_homeEditingState isEqualToString: @"view or change" ] )
         {
+nbn(2);
+
+            if ([gbl_kindOfSave isEqualToString: @"high security save" ] )
+            {
+nbn(3);
+                // OVErrIDE displayed city info  here, if gbl_kindOfSave   is  "high security save"
+                //    put "Saved with High Security"
+
+        NSString *exceptionalSearchStr = [NSString stringWithFormat:@" %@",
+            gbl_initPromptCity  // is  gbl_initPromptCity  (@"Birth City or Town")  with LEADING SPACE  with LEADING SPACE
+        ];
+
+
+
+                    gbl_mycityprovcounLabel.attributedText =
+                 [[NSAttributedString alloc] initWithString: @" Saved with3High Security\n Saved with High Security\n Saved with High Security"
+                  attributes: @{ NSForegroundColorAttributeName:  [UIColor lightGrayColor] }
+                 ];
+
+
+//  NSLog(@"[gbl_mycityprovcounLabel.text =[%@]",gbl_mycityprovcounLabel.text );
+//  NSLog(@"gbl_initPromptCity =[%@]",gbl_initPromptCity );
+//            if ([gbl_mycityprovcounLabel.text hasPrefix: gbl_initPromptCity ] )  // is  @"Birth City or Town"
+            if ([gbl_mycityprovcounLabel.text hasPrefix: exceptionalSearchStr ] )
+            {
+                gbl_mycityprovcounLabel.textColor         = [UIColor lightGrayColor];
+//                gbl_mycityprovcounLabel.textColor         = gbl_colorPlaceHolderPrompt;
+////                gbl_mycityprovcounLabel.textColor    = gbl_colorPlaceHolderPrompt; // gray   too dark
+            } else {
+                gbl_mycityprovcounLabel.textColor         = [UIColor lightGrayColor];
+//                gbl_mycityprovcounLabel.textColor         = gbl_colorPlaceHolderPrompt;
+            }
+            gbl_mycityprovcounLabel.numberOfLines    = 0;
+            gbl_mycityprovcounLabel.tag              = 2;
+//            gbl_mycityprovcounLabel.font             = myFontSmaller2;
+            gbl_mybirthinformation.font                    = myFontSmaller14;
+//                    gbl_mycityprovcounLabel.font             = [UIFont fontWithName: @"Menlo" size: 10.0];
+
+
+            gbl_mycityprovcounLabel.textAlignment    = NSTextAlignmentLeft;
+
+//            gbl_mycityprovcounLabel.borderStyle              = UITextBorderStyleLine;
+// gbl_mycityprovcounLabel.layer.borderColor = [UIColor greenColor].CGColor;
+// gbl_mycityprovcounLabel.layer.borderColor = [UIColor lightGrayColor].CGColor;
+// gbl_mycityprovcounLabel.layer.borderColor = gbl_colorPlaceHolderPrompt;  // compile error
+  
+//  gbl_mycityprovcounLabel.layer.borderColor = (__bridge CGColorRef _Nullable)([UIColor colorWithRed:064.0/255.0 green:064.0/255.0 blue:064.0/255.0 alpha:1.0]); // gray   __bridge suggested by XCODE
+
+// gbl_mycityprovcounLabel.layer.borderColor = [UIColor lightGrayColor].CGColor;  // works, but too dak
+
+            gbl_mycityprovcounLabel.layer.borderColor  = [UIColor colorWithRed:224.0/255.0 green:224.0/255.0 blue:224.0/255.0 alpha:1.0].CGColor ; // gray
+
+            gbl_mycityprovcounLabel.layer.borderWidth  = 1.0;
+            gbl_mycityprovcounLabel.layer.cornerRadius = 8.0;
+
+
+//            gbl_mycityprovcounLabel.backgroundColor  = gbl_colorEditingBG;
+//            gbl_mycityprovcounLabel.backgroundColor  = [UIColor whiteColor];
+            gbl_mycityprovcounLabel.backgroundColor  =  gbl_colorEditingBGforInputField;
+
+            // If you want the clear button to be always visible,
+            // then you need to set the text field's clearButtonMode property to UITextFieldViewModeAlways. 
+//            gbl_mycityprovcounLabel.clearButtonMode  = UITextFieldViewModeAlways;
+//           gbl_mycitySearchString.clearButtonMode  = UITextFieldViewModeAlways;
+
+
+
+
+                dispatch_async(dispatch_get_main_queue(), ^{  
+
+            cell.userInteractionEnabled         = YES;
+            cell.selectionStyle                 = UITableViewCellSelectionStyleNone;
+            cell.contentView.backgroundColor    = gbl_colorEditingBG_current;
+//            cell.contentView.backgroundColor    = currentBGfieldColor;
+
+//            gbl_mycityprovcounLabel.text             = myTextCity;
+//                    gbl_mycityprovcounLabel.text            = @" Saved with3High Security\n Saved with High Security\n Saved with High Security";
+            [cell addSubview: gbl_mycityprovcounLabel ];
+
+
+                });
+
+nbn(5);
+                return cell;
+            }
+nbn(6);
+
 
             if (gbl_citySetLabelValue == 1 ) {  // 1=y,0=n  // set initial value  when first entering City in "edit mode"  yellow
                 gbl_citySetLabelValue  = 0;     // 1=y,0=n  // set initial value  when first entering City in "edit mode"  yellow
@@ -4140,6 +4251,7 @@ nbn(203);
         } else {  // is "add"
             myTextCity = [NSString stringWithFormat:@" %@\n %@\n %@", gbl_enteredCity, gbl_enteredProv, gbl_enteredCoun ];
         }
+
   NSLog(@"myTextCity =[%@]",myTextCity );
 
 //        UIColor *borderColor =  [UIColor lightGrayColor];  // too dark
@@ -4156,40 +4268,46 @@ nbn(203);
         ];
 
 
-        dispatch_async(dispatch_get_main_queue(), ^{            // <===  short line and long line
-
-            cell.userInteractionEnabled         = YES;
-            cell.selectionStyle                 = UITableViewCellSelectionStyleNone;
-            cell.contentView.backgroundColor    = gbl_colorEditingBG_current;
-//            cell.contentView.backgroundColor    = currentBGfieldColor;
 
             gbl_mycityprovcounLabel.text             = myTextCity;
 
-  NSLog(@"[gbl_mycityprovcounLabel.text =[%@]",gbl_mycityprovcounLabel.text );
-  NSLog(@"gbl_initPromptCity =[%@]",gbl_initPromptCity );
+//  NSLog(@"[gbl_mycityprovcounLabel.text =[%@]",gbl_mycityprovcounLabel.text );
+//  NSLog(@"gbl_initPromptCity =[%@]",gbl_initPromptCity );
 //            if ([gbl_mycityprovcounLabel.text hasPrefix: gbl_initPromptCity ] )  // is  @"Birth City or Town"
             if ([gbl_mycityprovcounLabel.text hasPrefix: exceptionalSearchStr ] )
             {
-nbn(23);
                 gbl_mycityprovcounLabel.textColor    = [UIColor grayColor];
 //                gbl_mycityprovcounLabel.textColor    = gbl_colorPlaceHolderPrompt; // gray   too dark
             } else {
-nbn(24);
                 gbl_mycityprovcounLabel.textColor    = [UIColor blackColor];
             }
             gbl_mycityprovcounLabel.numberOfLines    = 0;
             gbl_mycityprovcounLabel.tag              = 2;
-            gbl_mycityprovcounLabel.font             = myFontSmaller2;
+//            gbl_mycityprovcounLabel.font             = myFontSmaller2;
+            gbl_mybirthinformation.font                    = myFontSmaller14;
+//
             gbl_mycityprovcounLabel.textAlignment    = NSTextAlignmentLeft;
+
+//            gbl_mycityprovcounLabel.borderStyle              = UITextBorderStyleRoundedRect;
+//           gbl_mycityprovcounLabel.borderStyle              = UITextBorderStyleLine;
+//
 //            gbl_mycityprovcounLabel.backgroundColor  = gbl_colorEditingBG;
 //            gbl_mycityprovcounLabel.backgroundColor  = [UIColor whiteColor];
             gbl_mycityprovcounLabel.backgroundColor  =  gbl_colorEditingBGforInputField;
-//            gbl_mybirthinformation.backgroundColor          = currentBGfieldColor;
 
             // If you want the clear button to be always visible,
             // then you need to set the text field's clearButtonMode property to UITextFieldViewModeAlways. 
 //            gbl_mycityprovcounLabel.clearButtonMode  = UITextFieldViewModeAlways;
 //           gbl_mycitySearchString.clearButtonMode  = UITextFieldViewModeAlways;
+
+
+
+        dispatch_async(dispatch_get_main_queue(), ^{         
+
+            cell.userInteractionEnabled         = YES;
+            cell.selectionStyle                 = UITableViewCellSelectionStyleNone;
+            cell.contentView.backgroundColor    = gbl_colorEditingBG_current;
+//            cell.contentView.backgroundColor    = currentBGfieldColor;
 
             [cell addSubview: gbl_mycityprovcounLabel ];
 
@@ -4214,8 +4332,59 @@ nb(204);
      {
 nb(205);
   NSLog(@"date row                            DRAWING        CELL  having LABEl for  DATE/time of birth ");
-  NSLog(@"                                    gbl_lastInputFieldTapped=%@",gbl_lastInputFieldTapped);
-  NSLog(@"                                    gbl_pickerToUse9        =%@",gbl_pickerToUse );
+  NSLog(@"                                    gbl_lastInputFieldTapped=[%@]",gbl_lastInputFieldTapped);
+  NSLog(@"                                    gbl_pickerToUse9        =[%@]",gbl_pickerToUse );
+  NSLog(@"gbl_kindOfSave                                              =[%@]",gbl_kindOfSave);
+
+        // OVErrIDE displayed date info  here, if gbl_kindOfSave   is  "high security save"
+        //    put "Saved with High Security"
+        //
+        if ([gbl_kindOfSave isEqualToString: @"high security save" ] )
+        {
+
+nbn(21);
+
+    //            gbl_mybirthinformation.clearButtonMode          = UITextFieldViewModeWhileEditing ;
+    //            gbl_mybirthinformation.clearButtonMode          = UITextFieldViewModeAlways ;
+    //            gbl_mybirthinformation.keyboardType             = UIKeyboardTypeNamePhonePad; // for entering a person's name or phone number
+    //            gbl_mybirthinformation.backgroundColor          = gbl_colorEditing;
+    //            gbl_mybirthinformation.backgroundColor          = [UIColor yellowColor];
+                  gbl_mybirthinformation.backgroundColor = gbl_colorEditingBGforInputField;
+
+    //            gbl_mybirthinformation.font                     = myFont;
+//                gbl_mybirthinformation.font                     = myFontMiddle;
+                gbl_mybirthinformation.font                    = myFontSmaller14;
+             gbl_mybirthinformation.borderStyle              = UITextBorderStyleRoundedRect;
+//            gbl_mybirthinformation.borderStyle              = UITextBorderStyleLine;
+
+
+                gbl_mybirthinformation.textAlignment            = NSTextAlignmentLeft;
+                gbl_mybirthinformation.text                     = @" Saved with High Security";
+
+//                gbl_mybirthinformation.textColor                = [UIColor greenColor]; // is @"Birth Date and Time" 
+                gbl_mybirthinformation.textColor                = [UIColor lightGrayColor]; // is @"Birth Date and Time" 
+                gbl_mybirthinformation.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    //            gbl_mybirthinformation.tag                      = 6;
+                gbl_mybirthinformation.tag                      = 3;
+                gbl_mybirthinformation.autocapitalizationType   = UITextAutocapitalizationTypeNone;
+
+                gbl_mybirthinformation.autocorrectionType       = UITextAutocorrectionTypeNo;
+
+
+            dispatch_async(dispatch_get_main_queue(), ^{        
+
+    //            cell.textLabel.backgroundColor           = gbl_colorEditing;
+                cell.contentView.backgroundColor    = gbl_colorEditingBG_current;
+//                cell.userInteractionEnabled         = YES;
+                cell.userInteractionEnabled         = NO;
+                cell.selectionStyle                 = UITableViewCellSelectionStyleNone;
+
+                [cell addSubview: gbl_mybirthinformation ];
+            });
+
+            return cell;
+        }
+
 
         // right here,  determine if last field tapped is gbl_mybirthinformation field, if so become firstResponder to putup date picker
         // 
@@ -4251,12 +4420,9 @@ tn();trn("DATE field was drawn  hey   hey   hey   hey   hey   hey   hey   ");
 
   NSLog(@"gbl_selectedBirthInfo=%@",gbl_selectedBirthInfo);
 
-        dispatch_async(dispatch_get_main_queue(), ^{        
 
-//            cell.textLabel.backgroundColor           = gbl_colorEditing;
-            cell.contentView.backgroundColor    = gbl_colorEditingBG_current;
-            cell.userInteractionEnabled         = YES;
-            cell.selectionStyle                 = UITableViewCellSelectionStyleNone;
+
+
             gbl_mybirthinformation.autocorrectionType       = UITextAutocorrectionTypeNo;
 //            gbl_mybirthinformation.clearButtonMode          = UITextFieldViewModeWhileEditing ;
 //            gbl_mybirthinformation.clearButtonMode          = UITextFieldViewModeAlways ;
@@ -4284,6 +4450,15 @@ tn();trn("DATE field was drawn  hey   hey   hey   hey   hey   hey   hey   ");
             gbl_mybirthinformation.autocapitalizationType   = UITextAutocapitalizationTypeNone;
 
 
+
+
+        dispatch_async(dispatch_get_main_queue(), ^{        
+
+//            cell.textLabel.backgroundColor           = gbl_colorEditing;
+            cell.contentView.backgroundColor    = gbl_colorEditingBG_current;
+            cell.userInteractionEnabled         = YES;
+            cell.selectionStyle                 = UITableViewCellSelectionStyleNone;
+
             [cell addSubview: gbl_mybirthinformation ];
         });
 
@@ -4309,27 +4484,7 @@ nbn(206);
 
         gbl_mycitySearchString.delegate = self;
 
-        dispatch_async(dispatch_get_main_queue(), ^{            // <===  short line and long line
 
-//            cell.textLabel.backgroundColor           = gbl_colorEditing;
-            cell.contentView.backgroundColor    = gbl_colorEditingBG_current;
-            cell.selectionStyle                 = UITableViewCellSelectionStyleNone;
-
-
-//            gbl_mycitySearchString.placeholder              = @"City of Birth";
-//
-//  NSLog(@"gbl_cityPlaceHolderStr=%@",gbl_cityPlaceHolderStr);
-//            gbl_mycitySearchString.placeholder              = gbl_cityPlaceHolderStr;
-
-//            gbl_mycitySearchString.text              = gbl_cityPlaceHolderStr;
-
-
-
-//            [gbl_mycitySearchString setValue: [UIColor colorWithRed: 064.0/255.0    // use KVC
-//                                                  green: 064.0/255.0
-//                                                   blue: 064.0/255.0
-//                                                  alpha: 1.0         ]
-//                      forKeyPath: @"_placeholderLabel.textColor"];
 
             gbl_mycitySearchString.autocorrectionType       = UITextAutocorrectionTypeNo;
 
@@ -4360,6 +4515,31 @@ nbn(206);
             gbl_mycitySearchString.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
             gbl_mycitySearchString.tag                    = 2;  // no   USE TAG for gbl_mycityprovcounLabel because that's where people tap
             gbl_mycitySearchString.autocapitalizationType   = UITextAutocapitalizationTypeNone;
+
+        dispatch_async(dispatch_get_main_queue(), ^{            // <===  short line and long line
+
+//            cell.textLabel.backgroundColor           = gbl_colorEditing;
+            cell.contentView.backgroundColor    = gbl_colorEditingBG_current;
+            cell.userInteractionEnabled         = YES;
+            cell.selectionStyle                 = UITableViewCellSelectionStyleNone;
+
+
+
+//            gbl_mycitySearchString.placeholder              = @"City of Birth";
+//
+//  NSLog(@"gbl_cityPlaceHolderStr=%@",gbl_cityPlaceHolderStr);
+//            gbl_mycitySearchString.placeholder              = gbl_cityPlaceHolderStr;
+
+//            gbl_mycitySearchString.text              = gbl_cityPlaceHolderStr;
+
+
+
+//            [gbl_mycitySearchString setValue: [UIColor colorWithRed: 064.0/255.0    // use KVC
+//                                                  green: 064.0/255.0
+//                                                   blue: 064.0/255.0
+//                                                  alpha: 1.0         ]
+//                      forKeyPath: @"_placeholderLabel.textColor"];
+
 
             [cell addSubview: gbl_mycitySearchString ];
 
@@ -4433,6 +4613,47 @@ nbn(299);
     return 32.0;
 
 }  // ---------------------------------------------------------------------------------------------------------------------
+
+
+
+// willSelectRowAtIndexPath message is sent to the UITableView Delegate
+// after the user lifts their finger from a touch of a particular row
+// and before didSelectRowAtIndexPath.
+//
+// willSelectRowAtIndexPath allows you to either confirm that the particular row can be selected,
+// by returning the indexPath, or select a different row by providing an alternate indexPath.
+//
+//  Return nil if you do not want the row selected.
+//
+-(NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath: (NSIndexPath*)indexPath {
+tn();  
+    NSLog(@"willSelectRowAtIndexPath! in  add/change");
+    
+
+    // DISALLOW  SELECTION  in high security case (city and date when person was saved with high security)
+    //
+    //     if (indexPath.row == 3) {   // "LABEL" for  city,proc,coun  of Birth of Person
+    //         gbl_mycityprovcounLabel.tag         = 2;
+    //
+    //     if (indexPath.row == 5)     // "LABEl" for  time of birth information
+    //         gbl_mybirthinformation.tag          = 3;
+    //
+    UITableViewCell *myCell = [self.tableView  cellForRowAtIndexPath: indexPath];
+    NSInteger myTag         = myCell.tag;
+  NSLog(@"myTag         =[%ld]",(long)myTag         );
+  NSLog(@"indexPath.row =[%ld]",(long)indexPath.row );
+
+    if (   [gbl_kindOfSave isEqualToString:  @"high security save" ]
+        && (
+            indexPath.row == 3   ||   indexPath.row == 5
+        )
+    ) {
+        return nil;
+    }
+    
+    return(indexPath);  // allow selection by default
+
+} // willSelectRowAtIndexPath
 
 
 

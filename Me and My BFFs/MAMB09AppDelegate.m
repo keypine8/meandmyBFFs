@@ -59,6 +59,21 @@
           compatibleWithTraitCollection: nil
     ];
 
+//    gbl_blueDone   = [UIImage  imageNamed: @"bg_blueDone3.png" // [self.editButtonItem setBackgroundImage: gbl_BlueBG
+//    gbl_blueDone   = [UIImage  imageNamed: @"bg_blueDone5.png" // [self.editButtonItem setBackgroundImage: gbl_BlueBG
+    gbl_blueDone   = [UIImage  imageNamed: @"bg_blueDone6.png" // [self.editButtonItem setBackgroundImage: gbl_BlueBG
+                                 inBundle: nil
+            compatibleWithTraitCollection: nil
+    ];
+
+    gbl_yellowEdit   = [UIImage  imageNamed: @"bg_yellowEdit6.png" // [self.editButtonItem setBackgroundImage: gbl_BlueBG
+                                   inBundle: nil
+              compatibleWithTraitCollection: nil
+    ];
+    gbl_bgColor_blueDone   = [UIColor colorWithRed:235.0/255.0 green:245.0/255.0 blue:255.0/255.0 alpha:1.0]; 
+    gbl_bgColor_yellowEdit = [UIColor colorWithRed:255.0/255.0 green:253.0/255.0 blue:166.0/255.0 alpha:1.0];
+
+
 
 
 //    gbl_myname              = [[UITextField alloc] initWithFrame:CGRectMake(16, 8, 200, 30)]; // arg 1=x 2=y 3=width 4=height
@@ -162,6 +177,7 @@
 
 
      gbl_colorPlaceHolderPrompt = [UIColor colorWithRed:064.0/255.0 green:064.0/255.0 blue:064.0/255.0 alpha:1.0]; // gray
+//     gbl_colorCityLabelBorder = [UIColor colorWithRed:064.0/255.0 green:064.0/255.0 blue:064.0/255.0 alpha:1.0]; // gray
 
 
 //    gbl_colorEditing = [UIColor colorWithRed:230.0/255.0 green:242.0/255.0 blue:0.0/255.0 alpha:1.0]; // yellowy for edit

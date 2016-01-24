@@ -2154,7 +2154,111 @@ nbn(100);
 //            return cell;
 //        }
 //
+
         if (indexPath.row == 1) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                  // <=== title for blue home
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myTitleFont;
+//                cell.backgroundColor         = gbl_color_cHed;
+                cell.backgroundColor         = gbl_bgColor_blueDone;
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.text          = @"Blue Home is for Reports";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+            });
+            return cell;
+        }
+
+
+        if (indexPath.row == 2) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== blue text
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myFontOnSide;
+//                cell.backgroundColor         = gbl_color_cBgr;
+                cell.backgroundColor         = gbl_bgColor_blueDone;
+                cell.textLabel.numberOfLines = 0;
+//                cell.textLabel.text          = @"Look at reports for all the people and groups you have entered.";
+                cell.textLabel.text          = @"Look at reports for all of your people and groups.";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+            });
+            return cell;
+        }
+
+        if (indexPath.row == 3) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myFontOnSide;
+                cell.backgroundColor         = gbl_color_cBgr;
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.text          = @"";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+            });
+            return cell;
+        }
+
+
+        if (indexPath.row == 4) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== title for yellow home
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myTitleFont;
+//                cell.backgroundColor         = gbl_color_cHed;
+                cell.backgroundColor         = gbl_bgColor_yellowEdit;
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.text          = @"Yellow Home is for Editing";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+            });
+            return cell;
+        }
+
+        if (indexPath.row == 5) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== yellow text
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myFontOnSide;
+//                cell.backgroundColor         = gbl_color_cBgr;
+                cell.backgroundColor         = gbl_bgColor_yellowEdit;
+                cell.textLabel.numberOfLines = 0;
+//                cell.textLabel.text          = @"Entering people and group information and changing stuff is done from the YELLOW home";
+                cell.textLabel.text          = @"Enter people and groups and make changes in them.";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+            });
+            return cell;
+        }
+
+        if (indexPath.row == 6) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myFontOnSide;
+                cell.backgroundColor         = gbl_color_cBgr;
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.text          = @"";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+            });
+            return cell;
+        }
+
+
+
+
+
+
+        if (indexPath.row == 7) {
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== title for do stuff
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
@@ -2170,7 +2274,7 @@ nbn(100);
         }
 
 
-        if (indexPath.row == 2) {
+        if (indexPath.row == 8) {
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== do stuff text
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
@@ -2186,7 +2290,7 @@ nbn(100);
             return cell;
         }
 
-        if (indexPath.row == 3) {
+        if (indexPath.row == 9) {
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== title for report list
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
@@ -2203,7 +2307,7 @@ nbn(100);
 
 
 
-        if (indexPath.row == 4) {
+        if (indexPath.row == 10) {
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== report list 
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
@@ -2219,7 +2323,7 @@ nbn(100);
             return cell;
         }
 
-        if (indexPath.row == 5) {
+        if (indexPath.row == 11) {
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== title for Why Not ?
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
@@ -2234,7 +2338,7 @@ nbn(100);
             return cell;
         }
 
-        if (indexPath.row == 6) {
+        if (indexPath.row == 12) {
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== text for why not
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
@@ -2249,7 +2353,7 @@ nbn(100);
             return cell;
         }
 
-        if (indexPath.row ==  7) {                           // <=== disclaimer 
+        if (indexPath.row ==  13) {                           // <=== disclaimer 
             dispatch_async(dispatch_get_main_queue(), ^{  
 //                cell.textLabel.textColor     = [UIColor blackColor];
                 cell.textLabel.textColor     = [UIColor redColor]; 
@@ -2287,7 +2391,8 @@ nbn(100);
     if ([gbl_helpScreenDescription isEqualToString: @"calendar year"] ) { return 15; } 
     if ([gbl_helpScreenDescription isEqualToString: @"best year"    ] ) { return  7; } 
     if ([gbl_helpScreenDescription isEqualToString: @"best day"     ] ) { return  7; } 
-    if ([gbl_helpScreenDescription isEqualToString: @"HOME"         ] ) { return  8; } 
+//    if ([gbl_helpScreenDescription isEqualToString: @"HOME"         ] ) { return  8; } 
+    if ([gbl_helpScreenDescription isEqualToString: @"HOME"         ] ) { return  14; } 
     return 1;
 }
 
@@ -2297,21 +2402,29 @@ nbn(100);
 //  NSLog(@"in heightForRowAtIndexPath  INFO ");
 
     if (   [gbl_helpScreenDescription isEqualToString: @"HOME"] ) {
+
         if (indexPath.row ==   0) return     8.0;  // spacer
-//        if (indexPath.row ==   1) return    50.0;  // home preamble
-        if (indexPath.row ==   1) return    30.0;  // title for do stuff
+        if (indexPath.row ==   1) return    30.0;  // title for blue home
+        if (indexPath.row ==   2) return    30.0;  // text  for blue
+        if (indexPath.row ==   3) return    16.0;  // spacer
+        if (indexPath.row ==   4) return    30.0;  // title for yellow home
+        if (indexPath.row ==   5) return    30.0;  // text  for yellow
+        if (indexPath.row ==   6) return    32.0;  // spacer
+
+//        if (indexPath.row ==   5) return    16.0;  // spacer
+        if (indexPath.row ==   7) return    30.0;  // title for do stuff
 //        if (indexPath.row ==   2) return   150.0;  // text  for do stuff
 //        if (indexPath.row ==   2) return   170.0;  // text  for do stuff
-        if (indexPath.row ==   2) return   160.0;  // text  for do stuff
-        if (indexPath.row ==   3) return    30.0;  // title for report list
+        if (indexPath.row ==   8) return   160.0;  // text  for do stuff
+        if (indexPath.row ==   9) return    30.0;  // title for report list
 //        if (indexPath.row ==   4) return   170.0;  // report  list
-        if (indexPath.row ==   4) return   160.0;  // report  list
+        if (indexPath.row ==   10) return   160.0;  // report  list
 
-        if (indexPath.row ==   5) return    30.0;  // title for why not ?
+        if (indexPath.row ==   11) return    30.0;  // title for why not ?
 //        if (indexPath.row ==   6) return    90.0;  // text  for why not ?
-        if (indexPath.row ==   6) return    84.0;  // text  for why not ?
+        if (indexPath.row ==   12) return    84.0;  // text  for why not ?
 
-        if (indexPath.row ==   7) return    20.0;  // text for disclaimer
+        if (indexPath.row ==   13) return    20.0;  // text for disclaimer
 //<.>
     }
     if (   [gbl_helpScreenDescription isEqualToString: @"best day"] ) {

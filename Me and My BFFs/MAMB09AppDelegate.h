@@ -95,6 +95,11 @@ BOOL      gbl_disclosureSetAlready;
 
 UIImage *gbl_YellowBG ;
 UIImage *gbl_BlueBG ;
+UIImage *gbl_blueDone ;
+UIImage *gbl_yellowEdit ;
+UIColor *gbl_bgColor_blueDone;
+UIColor *gbl_bgColor_yellowEdit;
+
 
 //NSInteger addChangeViewJustEntered;  // 1=y,0=n
 NSInteger gbl_justEnteredAddChangeView;  // 1=y,0=n
@@ -104,6 +109,10 @@ NSInteger gbl_citySetLabelValue;    // 1=y,0=n  // set initial value  when first
 //NSInteger gbl_citySetValue;   // 1=y,0=n  // set initial value  when first entering City in "edit mode"  yellow
 NSInteger gbl_dateSetEditingValue;  // 1=y,0=n  // set initial values when first entering Date in "edit mode"  yellow
 
+
+// this is set when person record is saved in savedone button choice
+// also set when person record is read in   in addchange when method global var fldKindOfSave is also set
+// 
 NSString *gbl_kindOfSave;   // "regular save"  or  "high security save"
 
 

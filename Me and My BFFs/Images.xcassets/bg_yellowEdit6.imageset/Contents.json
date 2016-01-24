@@ -2,18 +2,18 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x",
-      "filename" : "bg_yellow_1x1.png"
+      "filename" : "bg_yellowEdit6.png",
+      "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "scale" : "2x",
-      "filename" : "bg_yellow_1x1-1.png"
+      "filename" : "bg_yellowEdit6-1.png",
+      "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "scale" : "3x",
-      "filename" : "bg_yellow_1x1-2.png"
+      "filename" : "by_yellowEdit6b.png",
+      "scale" : "3x"
     }
   ],
   "info" : {

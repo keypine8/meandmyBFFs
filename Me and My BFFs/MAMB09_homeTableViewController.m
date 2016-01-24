@@ -254,6 +254,31 @@ nbn(100);
             [self.editButtonItem setTitlePositionAdjustment: UIOffsetMake(-16.0f, 0.0f)  forBarMetrics: UIBarMetricsDefault]; // 
             
 
+//            self.editButtonItem.layer.borderWidth = 1.0f;
+//            self.editButtonItem.layer.borderColor = [UIColor lightGrayColor].CGColor;
+////            self.editButtonItem.layer.cornerRadius = 5.0f;
+//            self.editButtonItem.layer.cornerRadius = 8.0f;
+
+//<.>
+//            UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+//            [button setFrame:CGRectMake(0, 0, 50, 40)];
+//            [button setImage:[UIImage imageNamed:@"settings.png"] forState:UIControlStateNormal];
+//            button.layer.borderWidth = 1.0f;
+//            button.layer.borderColor = [UIColor lightGrayColor].CGColor;
+//            button.layer.cornerRadius = 5.0f;
+//
+//            button.layer.shadowColor = [UIColor lightGrayColor].CGColor;
+//            button.layer.shadowRadius = 4.0f;
+//            button.layer.shadowOpacity = .9;
+//            button.layer.shadowOffset = CGSizeZero;
+//            button.layer.masksToBounds = NO;
+//
+//
+//            UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+//
+//            self.navigationItem.leftBarButtonItem = leftItem;
+//<.>
+
 
 
 
@@ -313,7 +338,8 @@ nbn(100);
 
 
   NSLog(@"EDIT BUTTON 1   set yellow          ");
-            [self.editButtonItem setBackgroundImage: gbl_YellowBG          // edit mode bg color for button
+//            [self.editButtonItem setBackgroundImage: gbl_YellowBG          // edit mode bg color for button
+            [self.editButtonItem setBackgroundImage: gbl_yellowEdit          // edit mode bg color for button
                                            forState: UIControlStateNormal  
                                          barMetrics: UIBarMetricsDefault
             ];
@@ -403,6 +429,7 @@ nbn(100);
 //    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm PerRem  %@", [err01 localizedFailureReason]); }
 //    NSLog(@" FOR test   END   remove all regular named files   xxxxxxxxxx ");
 //    // end of   FOR test   remove all regular named files   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+//
 
 
 
@@ -1977,7 +2004,8 @@ nbn(300);
   NSLog(@"EDIT BUTTON 2   set blue   BG color");
         dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
 
-            [self.editButtonItem setBackgroundImage: gbl_BlueBG          // regular report mode bg color for button
+//            [self.editButtonItem setBackgroundImage: gbl_BlueBG          // regular report mode bg color for button
+            [self.editButtonItem setBackgroundImage: gbl_blueDone          // regular report mode bg color for button
                                            forState: UIControlStateNormal  
                                          barMetrics: UIBarMetricsDefault
             ];
@@ -2067,7 +2095,8 @@ nbn(311);
   NSLog(@"EDIT BUTTON 3   set yellow   BG color");
         dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
 
-            [self.editButtonItem setBackgroundImage: gbl_YellowBG          // regular report mode bg color for button
+//            [self.editButtonItem setBackgroundImage: gbl_YellowBG          // regular report mode bg color for button
+            [self.editButtonItem setBackgroundImage: gbl_yellowEdit          // edit mode bg color for button
                                            forState: UIControlStateNormal  
                                          barMetrics: UIBarMetricsDefault
             ];
@@ -2076,7 +2105,15 @@ nbn(311);
   NSLog(@"EDIT BUTTON 3   set title  edit tab");
 //            self.editButtonItem.title = @"Edit\t";  // pretty good
             self.editButtonItem.title = @"Edit";  // ok with no tab
-            [self.editButtonItem setTitlePositionAdjustment: UIOffsetMake(-12.0f, 0.0f)  forBarMetrics: UIBarMetricsDefault]; // 
+
+
+
+//            [self.editButtonItem setTitlePositionAdjustment: UIOffsetMake(-12.0f, 0.0f)  forBarMetrics: UIBarMetricsDefault]; // 
+//            [self.editButtonItem setTitlePositionAdjustment: UIOffsetMake(-8.0f, 0.0f)  forBarMetrics: UIBarMetricsDefault]; // 
+            [self.editButtonItem setTitlePositionAdjustment: UIOffsetMake(-16.0f, 0.0f)  forBarMetrics: UIBarMetricsDefault]; // 
+
+
+
         });
 
  
