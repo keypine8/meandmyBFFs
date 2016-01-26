@@ -61,7 +61,7 @@ char have_we_hit_beg_graph[5] = "NO"; /* signal to output grh and asp */
 /* #define APP_NAME "Astrology for Me" */
 /* #define APP_NAME "Astrology by Measurement" */
 /* #define APP_NAME "Me & My BFFs" */
-#define APP_NAME "Me and my BFFs"
+#define APP_NAME "\"Me and my BFFs\""
 /* #define APP_NAME "\"My BFFs and I\"" */
 /* file extension for group sharing will be ".mamb" */
 
@@ -225,7 +225,7 @@ char myss[64];
   }
   /* output the css, headings etc.
   */
-  if (strstr(gbl_ffnameHTML, "webview") != NULL) { // webview version
+  if (strstr(gbl_ffnameHTML, "webview") != NULL) {
     f_fnOutPutTopOfHtmlFile();  // webview version
   } else {
     f_fnBIGOutPutTopOfHtmlFile();
@@ -516,7 +516,6 @@ void f_fnOutPutTopOfHtmlFile(void) {  // webview version
 /*   f_fn_prtlin( "      margin-right: 0;"); */
 
   f_fn_prtlin( "    .myTitle {");              // webview version
-
   f_fn_prtlin( "      margin-top: 0.5em;");
   f_fn_prtlin( "      margin-bottom: 0.5em;");
   f_fn_prtlin( "      margin-left: 50%;");
@@ -557,11 +556,7 @@ void f_fnOutPutTopOfHtmlFile(void) {  // webview version
   f_fn_prtlin( "    }");
 
   f_fn_prtlin( "    .fromtodates {");
-
-//  f_fn_prtlin( "      margin-top: 0.5em;");
-//  f_fn_prtlin( "      margin-top: -1.0em;");
-  f_fn_prtlin( "      margin-top: -0.5em;");
-
+  f_fn_prtlin( "      margin-top: 0.5em;");
   f_fn_prtlin( "      margin-bottom: 0.1em;");
   //f_fn_prtlin( "      width: 250%;");
   f_fn_prtlin( "      width: 100%;");
@@ -699,7 +694,6 @@ void f_fnOutPutTopOfHtmlFile(void) {  // webview version
   f_fn_prtlin( "      border-collapse: collapse;");
   f_fn_prtlin( "      border-spacing: 0;");
   f_fn_prtlin( "      font-size: 120%;");
-  f_fn_prtlin( "      font-size: normal;"); //
   f_fn_prtlin( "    }");
 /* for table: */
 /*       border: 2px solid black; */
@@ -739,14 +733,6 @@ void f_fnOutPutTopOfHtmlFile(void) {  // webview version
 /*   f_fn_prtlin( "    .cRe2        { background-color:#ff6094; }"); */
 /*   f_fn_prtlin( "    .cRe2        { background-color:#ff3366; }"); */
 
-  /* only for year score table
-  */
-//tn();trn("set table colors #2! media small line 478");
-  f_fn_prtlin( "    .cGr2table   { background-color:#66ff33; }");
-  f_fn_prtlin( "    .cGretable   { background-color:#a8ff98; }");
-  f_fn_prtlin( "    .cNeutable   { background-color:#e5e2c7; }");
-  f_fn_prtlin( "    .cRedtable   { background-color:#ffb5c9; }");
-  f_fn_prtlin( "    .cRe2table   { background-color:#ff678f; }");
 
   f_fn_prtlin( "    .cGr2        { background-color:#66ff33; font-weight: bold; ");
   f_fn_prtlin("   white-space: pre  ; font-weight: bold; ");
@@ -760,12 +746,10 @@ void f_fnOutPutTopOfHtmlFile(void) {  // webview version
 /*   f_fn_prtlin( "      line-height: 70%;"); */
 /*   f_fn_prtlin( "      margin:0 auto;"); */
   f_fn_prtlin("    }");
-//  f_fn_prtlin( "    .cRed        { background-color:#ff98a8; font-weight: bold; ");
-  f_fn_prtlin( "    .cRed        { background-color:#ffb5c9; font-weight: bold; ");
+  f_fn_prtlin( "    .cRed        { background-color:#ff98a8; font-weight: bold; ");
   f_fn_prtlin("   white-space: pre  ; font-weight: bold; ");
   f_fn_prtlin("    }");
-//  f_fn_prtlin( "    .cRe2        { background-color:#ff4477; font-weight: bold; ");
-  f_fn_prtlin( "    .cRe2        { background-color:#ff678f; font-weight: bold; ");
+  f_fn_prtlin( "    .cRe2        { background-color:#ff4477; font-weight: bold; ");
   f_fn_prtlin("   white-space: pre  ; font-weight: bold; ");
   f_fn_prtlin("    }");
 
@@ -893,9 +877,6 @@ void f_fnOutPutTopOfHtmlFile(void) {  // webview version
   f_fn_prtlin( "      line-height: 70%;");
   f_fn_prtlin( "    }");
   f_fn_prtlin( "    .myTitle {");
-
-
-
   f_fn_prtlin( "      margin-top: 0.5em;");
   f_fn_prtlin( "      margin-bottom: 0.5em;");
   f_fn_prtlin( "      width: 100%;");
@@ -989,7 +970,6 @@ void f_fnOutPutTopOfHtmlFile(void) {  // webview version
   f_fn_prtlin( "      border-collapse: collapse;");
   f_fn_prtlin( "      border-spacing: 0;");
   f_fn_prtlin( "      font-size: 120%;");
-  f_fn_prtlin( "      font-weight: normal;");
   f_fn_prtlin( "    }");
   f_fn_prtlin( "    table.center {");
   f_fn_prtlin( "      margin-left:auto;");
@@ -1001,27 +981,16 @@ void f_fnOutPutTopOfHtmlFile(void) {  // webview version
   f_fn_prtlin( "      white-space: nowrap;");
   f_fn_prtlin( "      padding: 0;");
   f_fn_prtlin( "    }");
-  /* only for year score table
-  */
-//tn();trn("set table colors #3! media big  line 883");
-  f_fn_prtlin( "    .cGr2table   { background-color:#66ff33; }");
-  f_fn_prtlin( "    .cGretable   { background-color:#a8ff98; }");
-  f_fn_prtlin( "    .cNeutable   { background-color:#e5e2c7; }");
-  f_fn_prtlin( "    .cRedtable   { background-color:#ffb5c9; }");
-  f_fn_prtlin( "    .cRe2table   { background-color:#ff678f; }");
-
   f_fn_prtlin( "    .cGr2        { background-color:#66ff33; font-weight: bold; ");
   f_fn_prtlin( "   white-space: pre  ; font-weight: bold; ");
   f_fn_prtlin( "    }");
   f_fn_prtlin( "    .cGre        { background-color:#a8ff98; font-weight: bold; ");
   f_fn_prtlin( "   white-space: pre  ;font-weight: bold; ");
   f_fn_prtlin( "    }");
-//  f_fn_prtlin( "    .cRed        { background-color:#ff98a8; font-weight: bold; ");
-  f_fn_prtlin( "    .cRed        { background-color:#ffb5c9; font-weight: bold; ");
+  f_fn_prtlin( "    .cRed        { background-color:#ff98a8; font-weight: bold; ");
   f_fn_prtlin( "   white-space: pre  ; font-weight: bold; ");
   f_fn_prtlin( "    }");
-//  f_fn_prtlin( "    .cRe2        { background-color:#ff4477; font-weight: bold; ");
-  f_fn_prtlin( "    .cRe2        { background-color:#ff678f; font-weight: bold; ");
+  f_fn_prtlin( "    .cRe2        { background-color:#ff4477; font-weight: bold; ");
   f_fn_prtlin( "   white-space: pre  ; font-weight: bold; ");
   f_fn_prtlin( "    }");
   f_fn_prtlin( "    .row4        { background-color:#f8f0c0; }");
@@ -1153,15 +1122,16 @@ f_fn_prtlin("<link href=\"data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAAB0AA
 //  );
 //  f_fn_prtlin(writebuf);
 
-/*   f_fn_prtlin("<div class=\"spacer\"></div>"); */
-/*   f_fn_prtlin("<pre class=\"spacer\" class=\"myTitle\">"); */
 
-
-
-
+// 20160126   no more title in webview
 //
+///*   f_fn_prtlin("<div class=\"spacer\"></div>"); */
+///*   f_fn_prtlin("<pre class=\"spacer\" class=\"myTitle\">"); */
 //  f_fn_prtlin("<pre class=\"myTitle\">");
 //  gblWeAreInPREblockContent = 1; /* 1 = yes, 0 = no */
+//
+///*   sprintf(writebuf, "Calendar Year %s",  arr(2) ); */
+///*   f_fn_prtlin(writebuf); */
 //
 //  // want 5 sp left margin
 //  // then max 15 char name centred in 15 char field
@@ -1187,58 +1157,18 @@ f_fn_prtlin("<link href=\"data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAAB0AA
 //  else if (namelen1 == 15) sprintf(char15toprint, "%s", mynam); 
 //  else                    sprintf(char15toprint,"%s", mynam);
 //
+//  //  sprintf(writebuf, "     %s", arr(1) );     // just name
+//  //sprintf(writebuf, "     %s", char15toprint );  // just name
 //  sprintf(writebuf, "%s %s", gbl_year_for_fut, char15toprint );  // year todo  AND  name
 //
 //  f_fn_prtlin(writebuf);
 //  gblWeAreInPREblockContent = 0; 
 //  f_fn_prtlin("</pre>");
+///*   f_fn_prtlin("<div class=\"spacer\"></div>"); */
+///*   f_fn_prtlin("</pre></div>"); */
 //
-
-
-
-  // want 5 sp left margin
-  // then max 15 char name centred in 15 char field
-  // extra sp on left
-  long namelen1 = strlen(gbl_name_for_fut);
-  char mynam[32];
-  strcpy(mynam, gbl_name_for_fut);
-  char char15toprint[32];
-       if (namelen1 ==  1) sprintf(char15toprint, "       %s       ", mynam); 
-  else if (namelen1 ==  2) sprintf(char15toprint, "       %s      ", mynam); 
-  else if (namelen1 ==  3) sprintf(char15toprint, "      %s      ", mynam);
-  else if (namelen1 ==  4) sprintf(char15toprint, "      %s     ", mynam); 
-  else if (namelen1 ==  5) sprintf(char15toprint, "     %s     ", mynam); 
-  else if (namelen1 ==  6) sprintf(char15toprint, "     %s    ", mynam); 
-  else if (namelen1 ==  7) sprintf(char15toprint, "    %s    ", mynam); 
-  else if (namelen1 ==  8) sprintf(char15toprint, "    %s   ", mynam); 
-  else if (namelen1 ==  9) sprintf(char15toprint, "   %s   ", mynam); 
-  else if (namelen1 == 10) sprintf(char15toprint, "   %s  ", mynam); 
-  else if (namelen1 == 11) sprintf(char15toprint, "  %s  ", mynam); 
-  else if (namelen1 == 12) sprintf(char15toprint, "  %s ", mynam); 
-  else if (namelen1 == 13) sprintf(char15toprint, " %s ", mynam); 
-  else if (namelen1 == 14) sprintf(char15toprint, " %s", mynam); 
-  else if (namelen1 == 15) sprintf(char15toprint, "%s", mynam); 
-  else                    sprintf(char15toprint,"%s", mynam);
-
-/*  f_fn_prtlin(" <pre class=\"myTitle\"> "); */
-/*  gblWeAreInPREblockContent = 1;  1 = yes, 0 = no  */
-/*  sprintf(writebuf, "%s %s", gbl_year_for_fut, char15toprint );   year todo  AND  name */
-
-
-
-
-  sprintf(writebuf, "<pre class=\"myTitle\"> %s %s</pre>", gbl_year_for_fut, char15toprint );
-//  sprintf(writebuf, "<pre class=\"myTitle\"><span style=\"font-size: 1.5em; color: red;\"> %s %s</span></pre>", gbl_year_for_fut, char15toprint );
-//  sprintf(writebuf, "<pre class=\"myTitle\"><span style=\" color: red;\"> %s %s</span></pre>", gbl_year_for_fut, char15toprint );
-
-
-
-
-//tn();ksn(writebuf);
-  f_fn_prtlin(writebuf);
-/*  gblWeAreInPREblockContent = 0;  */
-/*  f_fn_prtlin("</pre>"); */
-
+//
+// 20160126   no more title in webview
 
 
 
@@ -1252,50 +1182,21 @@ f_fn_prtlin("<link href=\"data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAAB0AA
 }  /* end of f_fnOutPutTopOfHtmlFile(); */
 
 
-void fn_outputGrhAndAspects(void) { // webview
+void fn_outputGrhAndAspects(void) {
   int i;
   int have_printed_STRESS_line_already;
   int have_printed_OMG_line_already;
 /*   char myLastLine[8192]; */
   int num_OMG_printed;
 
-//trn(" in fn_outputGrhAndAspects() ");
+/* trn(" in fn_outputGrhAndAspects() "); */
 
   /* put white space before  graph start
    */
   if (gblIsThis1stGrhToOutput == 1) {  /* 0 false, 1 true */
     gblIsThis1stGrhToOutput = 0; 
 /*     f_fn_prtlin("  <pre><br>");          */
-
-
-//    f_fn_prtlin("   <div id=\"\" style=\"overflow: scroll; height: 100em; width: 100em;\"> ");         
-//    f_fn_prtlin("   <div id=\"\" style=\"overflow: scroll; height: 100em;\"> ");         
-//    f_fn_prtlin("   <div id=\"\" style=\"overflow: scroll; width: 100em;\"> ");         
-//    f_fn_prtlin("   <div id=\"\" style=\"overflow: scroll; width: 720%\"> ");         
-//<.>
-//    f_fn_prtlin("   <div id=\"\" style=\"overflow: scroll; height: 100ch; width: 100ch;\"> ");         
-//    f_fn_prtlin("   <div id=\"\" style=\"overflow: scroll; height: 100ch; width: 150ch;\"> ");         
-//    f_fn_prtlin("   <div id=\"\" style=\"overflow: scroll; width: 150ch;\"> ");         
-//<.>
-//    f_fn_prtlin("   <div id=\"\" style=\"overflow: scroll; height: 1500px; width: 4000;\"> ");         
-
-
-
     f_fn_prtlin("  <pre>");         
-//    f_fn_prtlin("  <pre style=\"overflow: scroll; width: 360%\">");         
-//    f_fn_prtlin("  <pre style=\"overflow: auto; width: 100%\">");         
-//    f_fn_prtlin("  <pre style=\"overflow: auto; font-size: 1.4em; width: 360%\">");         
-//    f_fn_prtlin("  <pre style=\"overflow: auto;  width: 720%\">");         
-//    f_fn_prtlin("  <pre style=\"overflow: auto; \">");         
-
-//    f_fn_prtlin("   <div id=\"\" style=\"overflow: scroll;\"> ");         
-//    f_fn_prtlin("   <div id=\"\" style=\"overflow: scroll; height: 100ch; width: 150ch;\"> ");         
-//    f_fn_prtlin("   <div id=\"\" style=\"overflow: scroll; height: 120rem; width: 300rem;\"> ");         
-//    f_fn_prtlin("   <div id=\"\" style=\"font-size: 1.5em; width: 360%; overflow: scroll;\"> ");         
-//    f_fn_prtlin("   <div id=\"\" style=\"font-size: 1.5em; width: 360%; \"> ");         
-
-
-
     gblWeAreInPREblockContent = 1;  /* true */
 //    f_fn_prtlin("<br>");         
   } else {
@@ -1463,12 +1364,104 @@ STRESS-|<span style="background-color:#FFBAC7; font-family: Andale Mono, Courier
       sprintf(writebuf, " %s<span class=\"cRed\">%s</span>", s2, s1); 
 
 
+//tn();
+//ksn("702");
+//ksn(writebuf);
       bracket_string_of("X", writebuf, "<span class=\"cRed\">", "</span>");
+//ksn(writebuf);
       bracket_string_of("#", writebuf, "<span class=\"cSky\">", "</span>");
-      scharswitch(writebuf, 'X', ' ');
-      scharswitch(writebuf, '#', ' ');
-      scharswitch(writebuf, '|', ' ');  /* sideline out */
+//ksn(writebuf);
 
+
+
+      // here writebuf is like this example:
+      //
+//_writebuf=[ <span class="cRed">XXXXXXXXXXXXXXXXXXXXX</span><span class="star">^</span><span class="cRed">XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</span><span class="cRed"> STRESS</span>]__
+      //
+
+      // fix bug where no "Stress" when bottom star on the graph is on the stress line
+      //
+      // if writebuf starts with " <span class="cRed">XXXXXXXX"
+      // change it to            " <span class="cRed"> STRESS "
+      //
+      char myprefix1[512];
+      char myprefix2[512];
+      char mybuff[2048];;
+      int  hasprefix;
+      char *myptr;
+      char *myptr2;
+      hasprefix = 1;  // default true
+      strcpy(myprefix1, " <span class=\"cRed\">XXXXXXXX");
+      strcpy(mybuff, writebuf);
+      myptr = &mybuff[0];
+      myptr2 = &myprefix1[0];
+      while(*myptr2) {
+          if(*myptr2++ != *myptr++)
+              hasprefix = 0;
+      }
+      if (hasprefix == 1) {   // replace "XXXXXXXX" with " STRESS "
+//tn();
+//trn(" hasprefix = YES");
+//ksn(myprefix1);
+//ksn(writebuf);
+         strcpy(myprefix2, " <span class=\"cRed\"> STRESS ");  
+//ksn(myprefix2);
+//ksn(&writebuf[strlen(myprefix1)]);
+         sprintf(mybuff, "%s%s", myprefix2, &writebuf[strlen(myprefix1)] );
+//ksn(mybuff);
+         strcpy(writebuf, mybuff);
+//ksn(writebuf);
+//b(900);
+      }
+      
+
+
+      // make red line on STRESS line
+      //
+//      scharswitch(writebuf, 'X', ' ');
+//      scharswitch(writebuf, 'X', '-');   // for test, try underscore
+//      scharswitch(writebuf, 'X', '^');   // for test, try
+//      scharswitch(writebuf, 'X', '=');   // for test, try
+//      scharswitch(writebuf, 'X', 'M');   // for test, try
+//      scharswitch(writebuf, 'X', 'o');   // for test, try 
+//      scharswitch(writebuf, 'X', ':');   // for test, try 
+
+//      scharswitch(writebuf, 'X', 'm');   // for test, try 
+//      scharswitch(writebuf, 'X', 'i');   // for test, try 
+//      scharswitch(writebuf, 'X', '-');   // for test, try
+//      scharswitch(writebuf, 'X', '-');   // for test, try
+//      scharswitch(writebuf, 'X', 'M');   // for test, try 
+      scharswitch(writebuf, 'X', 'm');   // for test, try 
+
+//      bracket_string_of("M", writebuf, "<span style=\"color:red;\">", "</span>");
+//      bracket_string_of("M", writebuf, "<span style=\"color: #ff0000;\">", "</span>");
+//      bracket_string_of("M", writebuf, "<span style=\"color: green;\">", "</span>");
+//      bracket_string_of("M", writebuf, "<span style=\"color: #FF0000;\">", "</span>");
+//      bracket_string_of("M", writebuf, "<span style=\"color: #Fuchsia;\">", "</span>");
+//      bracket_string_of(":", writebuf, "<span style=\"color: #DeepPink;\">", "</span>");
+//      bracket_string_of("M", writebuf, "<span style=\"color: OrangeRed;\">", "</span>");
+//      bracket_string_of("M", writebuf, "<span style=\"color: DeepPink;\">", "</span>");
+//      bracket_string_of("M", writebuf, "<span style=\"color: Red;\">", "</span>");
+
+//      bracket_string_of("m", writebuf, "<span style=\"color: RosyBrown;\">", "</span>");
+//      bracket_string_of("m", writebuf, "<span style=\"color: hotpink;\">", "</span>");
+//      bracket_string_of("m", writebuf, "<span style=\"color: red;\">", "</span>");
+//      bracket_string_of("-", writebuf, "<span style=\"color: red;\">", "</span>");
+//      bracket_string_of("M", writebuf, "<span style=\"color: red;\">", "</span>");
+      bracket_string_of("m", writebuf, "<span style=\"color: red;\">", "</span>");
+      //
+      // end of make red line on STRESS line
+
+
+
+//ksn(writebuf);
+      scharswitch(writebuf, '#', ' ');
+//ksn(writebuf);
+      scharswitch(writebuf, '|', ' ');  /* sideline out */
+//ksn(writebuf);
+
+//ksn("call prtin here");
+//tn();
 
       f_fn_prtlin(writebuf);
 
@@ -1681,10 +1674,6 @@ STRESS-|<span style="background-color:#FFBAC7; font-family: Andale Mono, Courier
   gbl_we_are_printing_graph = 0;
   gbl_do_readahead          = 0; // do readahead until bottom of graph is printed
 
-//    f_fn_prtlin("   <div id=\"\" style=\"overflow: scroll; height: 100em; width: 100em;\"> ");         
-//    f_fn_prtlin("   </div> ");         
-//<.>
-
   f_fn_prtlin("  </pre>\n\n");   /* end of graph */
 
   /* 2. read until [beg_aspects]  , which look like this:
@@ -1700,21 +1689,16 @@ STRESS-|<span style="background-color:#FFBAC7; font-family: Andale Mono, Courier
     if (strstr(doclin, "[beg_aspects]") != NULL) break;
   }
 
-  // webview version
-
 /*   f_fn_prtlin("  <h3><br><br>Important Periods</h3>"); */
 /*   f_fn_prtlin("  <h4>(they influence the graph above)<br><br><br></h4>"); */
 
 
   //f_fn_prtlin("<div class=\"explain\">");
-  f_fn_prtlin("<pre class=\"explain\" style=\"font-size: 1.8em;\">");
+  f_fn_prtlin("<pre class=\"explain\">");
   gblWeAreInPREblockContent = 1;  
 /*   f_fn_prtlin("           Important Periods"); */
-//  f_fn_prtlin("           Important Periods          ");
-//  f_fn_prtlin("    (they influence the graph above)\n");
-  f_fn_prtlin("                  Time Frames            ");
-  f_fn_prtlin("        that influence the graph above   \n");
-
+  f_fn_prtlin("           Important Periods          ");
+  f_fn_prtlin("    (they influence the graph above)\n");
   gblWeAreInPREblockContent = 0;  /* false */
   f_fn_prtlin("</pre>");
   //f_fn_prtlin("</div>");
@@ -1795,7 +1779,7 @@ STRESS-|<span style="background-color:#FFBAC7; font-family: Andale Mono, Courier
 
 
 
-  /* make table having stress score for the year    this is WEBVIEW
+  /* make table having stress score for the year
   *  but only if the person was alive for the whole calendar year
   */
   if (gbl_is_first_year_in_life == 0) {
@@ -1807,7 +1791,7 @@ STRESS-|<span style="background-color:#FFBAC7; font-family: Andale Mono, Courier
 //     sizeLongestFld = strlen(gbl_name_for_fut);
 //          if (sizeLongestFld ==  1) { strcpy(myleftmargin, "8.00em;"); }
 //     else if (sizeLongestFld ==  2) { strcpy(myleftmargin, "7.75em;"); }
-//     else if (sizeLongestFld ==  3) { strcpy(myleftmargin, "7.50em;"); } // cannot use this since myleftmargin overrides centering on big screens
+//     else if (sizeLongestFld ==  3) { strcpy(myleftmargin, "7.50em;"); }
 //     else if (sizeLongestFld ==  4) { strcpy(myleftmargin, "7.25em;"); } // s/b 7.0
 //     else if (sizeLongestFld ==  5) { strcpy(myleftmargin, "7.00em;"); }
 //     else if (sizeLongestFld ==  6) { strcpy(myleftmargin, "6.75em;"); }
@@ -1821,30 +1805,21 @@ STRESS-|<span style="background-color:#FFBAC7; font-family: Andale Mono, Courier
 //     else if (sizeLongestFld == 14) { strcpy(myleftmargin, "4.75em;"); }
 //     else if (sizeLongestFld == 15) { strcpy(myleftmargin, "4.50em;"); } //2.8
 //     else                           { strcpy(myleftmargin, "4.5em;"); }
-//
+//     "  <table class=\"trait\" style=\"margin-left: %s;\"> <tr> <th colspan=\"3\"> Score For %s </tr>",
+//     myleftmargin,
+//     gbl_year_for_fut
 
 
-    f_fn_prtlin("  <div><br></div>"); // this is WEBVIEW
-
-    // title and col header for table
-    //
-//old   sprintf(writebuf, "  <table class=\"trait\"> <tr> <th colspan=\"3\"> Score For %s </tr>", gbl_year_for_fut);
-//    f_fn_prtlin(writebuf);
-//    f_fn_prtlin("  <tr > <th>Person</th> <th>Score</th> <th></th></tr>");
-//
-
-// try margin,  email version table on left marg
-//    sprintf(writebuf, "  <table class=\"trait\" style=\"margin-left: %s\"> <tr> <th colspan=\"3\"><span style=\"font-weight: normal;\">HOW MUCH <span style=\"background-color: #a8ff98; \">  peace   </span><br>HOW MUCH <span style=\"background-color: #ffb5c9;\">  stress  </span></span></tr>"
-//        , myleftmargin
-//    );
-//    f_fn_prtlin(writebuf);
-
-    f_fn_prtlin("  <table class=\"trait\"> <tr> <th colspan=\"3\"><span style=\"font-weight: normal;\">How Much <span style=\"background-color: #a8ff98; \">  peace   </span><br>How Much <span style=\"background-color: #ffb5c9;\">  stress  </span></span></tr>");
-
-    sprintf(writebuf, "  <tr> <th colspan=\"3\"><span style=\"font-weight: normal\">In %s</span></tr>", gbl_year_for_fut);
+    //f_fn_prtlin("  <div><br><br><br></div>");
+    f_fn_prtlin("  <div><br></div>");
+    sprintf(writebuf,
+      "  <table class=\"trait\"> <tr> <th colspan=\"3\"> Score For %s </tr>",
+      gbl_year_for_fut
+    );
     f_fn_prtlin(writebuf);
-//tn();ksn(writebuf);
 
+
+    f_fn_prtlin("  <tr > <th>Person</th> <th>Score</th> <th></th></tr>");
 
 
     /* calibrate stress score for table */
@@ -1867,61 +1842,46 @@ STRESS-|<span style="background-color:#FFBAC7; font-family: Andale Mono, Courier
     if (gbl_YearStressScore >= 90) {
       write_calendar_day_score(gbl_name_for_fut, gbl_YearStressScore);
     }
-//    f_fn_prtlin("  <tr class=\"cGr2\"><td></td> <td> 90  </td> <td>Great</td> </tr>");
-    f_fn_prtlin("  <tr class=\"cGr2table\"><td></td> <td> 90  </td> <td>Great</td> </tr>");
+    f_fn_prtlin("  <tr class=\"cGr2\"><td></td> <td> 90  </td> <td>Great</td> </tr>");
     if (gbl_YearStressScore >= 75) {
       write_calendar_day_score(gbl_name_for_fut, gbl_YearStressScore);
     }
-//    f_fn_prtlin("  <tr class=\"cGre\"><td></td> <td> 75  </td> <td>Good</td> </tr>");
-    f_fn_prtlin("  <tr class=\"cGretable\"><td></td> <td> 75  </td> <td>Good</td> </tr>");
+    f_fn_prtlin("  <tr class=\"cGre\"><td></td> <td> 75  </td> <td>Good</td> </tr>");
 
     if ( gbl_YearStressScore  >= 75) {
-//      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
-//      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
-//      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
-      f_fn_prtlin("  <tr class=\"cNeutable\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
-      f_fn_prtlin("  <tr class=\"cNeutable\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
-      f_fn_prtlin("  <tr class=\"cNeutable\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
+      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
+      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
+      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
     }
     if ( gbl_YearStressScore  < 75  &&  gbl_YearStressScore >= 50 ) {
       write_calendar_day_score(gbl_name_for_fut, gbl_YearStressScore);
-//      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
-//      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
-      f_fn_prtlin("  <tr class=\"cNeutable\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
-      f_fn_prtlin("  <tr class=\"cNeutable\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
+      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
+      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
     }
       //   if ( gbl_YearStressScore  < 50  &&  gbl_YearStressScore >= 25 ) 
       if ( gbl_YearStressScore  < 50  &&  gbl_YearStressScore >  25 ) {
           
-//      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
-//      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
-      f_fn_prtlin("  <tr class=\"cNeutable\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
-      f_fn_prtlin("  <tr class=\"cNeutable\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
+      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
+      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
       write_calendar_day_score(gbl_name_for_fut, gbl_YearStressScore);
     }
         //  if ( gbl_YearStressScore <= 25 ) 
             if ( gbl_YearStressScore <  25 ) {
                 
-//      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
-//      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
-//      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
-      f_fn_prtlin("  <tr class=\"cNeutable\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
-      f_fn_prtlin("  <tr class=\"cNeutable\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
-      f_fn_prtlin("  <tr class=\"cNeutable\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
+      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
+      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
+      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
     }
 
     if (gbl_YearStressScore >  25)
       write_calendar_day_score(gbl_name_for_fut, gbl_YearStressScore);
-//    f_fn_prtlin("  <tr class=\"cRed\"><td></td> <td> 25  </td> <td>Stress</td> </tr>");
-    f_fn_prtlin("  <tr class=\"cRedtable\"><td></td> <td> 25  </td> <td>Stress</td> </tr>");
+    f_fn_prtlin("  <tr class=\"cRed\"><td></td> <td> 25  </td> <td>Stress</td> </tr>");
     if (gbl_YearStressScore >  10)
       write_calendar_day_score(gbl_name_for_fut, gbl_YearStressScore);
 
 
-//    f_fn_prtlin("  <tr class=\"cRe2\"><td></td> <td> 10  </td> <td>OMG</td> </tr>");
-    f_fn_prtlin("  <tr class=\"cRe2table\"><td></td> <td> 10  </td> <td>OMG</td> </tr>");
+    f_fn_prtlin("  <tr class=\"cRe2\"><td></td> <td> 10  </td> <td>OMG</td> </tr>");
     write_calendar_day_score(gbl_name_for_fut, gbl_YearStressScore); /* only writes if still unwritten */
-
 
     f_fn_prtlin("  </table>");
 
@@ -2135,7 +2095,6 @@ void f_fn_prtlin(char *lin) {
   char                   next_doclin[8192], current_prtlin[8192], thirdline[8192];
   char *ptr;
 //trn("wv");ki(gbl_do_readahead);ks(lin);
-//tn();ksn(lin);
 
   // ignore rubbish line
   if (strstr(lin, "raph]") != NULL) return;
@@ -2325,9 +2284,11 @@ void f_fn_prtlin(char *lin) {
    else if (strstr(lin, "STRESS") != NULL 
         &&  strstr(lin, "LEVELS") == NULL ) {          // 20150325 put "STRESS LEVELS" in graph title for webview
 
-/* tn();trn("doing STRESS  LABEl !!!!!!!!!!!!!!"); */
+//tn();trn("doing STRESS  LABEl !!!!!!!!!!!!!!");
      strcpy(gbl_benchmark_label, "STRESS");
      gbl_do_second_line =  insert_label_benchmark(writebuf, next_doclin);
+//kin(gbl_do_second_line );
+//tn();
    }
 
    else if (strstr(lin, "OMG") != NULL) {
@@ -2476,8 +2437,7 @@ void f_fn_prtlin(char *lin) {
     // 20121229  HARD CODE THIS LINE  (it worked)
     //  strcpy(p, " <span style=\"background-color:#ff4477\"> </span><span style=\"color:#ff4477\">---</span><span style=\"background-color:#ff4477\"> </span><span class=\"cRe2\">                                                                                                                                                                                   </span> ");
   // strcpy(p, " <span style=\"background-color:#ff4477\"> </span><span style=\"color:#ff4477\">---</span><span style=\"background-color:#ff4477\"> </span><span class=\"cRe2\">                                                                                                                                                                                   </span> ");
-//     strcpy(p, " <span style=\"background-color:#ff4477\"> </span><span style=\"color:#ff4477\">---</span><span style=\"background-color:#ff4477\"> </span><span class=\"cRe2\">                                                                                       </span> ");
-     strcpy(p, " <span style=\"background-color:#ff678f\"> </span><span style=\"color:#ff678f\">---</span><span style=\"background-color:#ff678f\"> </span><span class=\"cRe2\">                                                                                       </span> ");
+     strcpy(p, " <span style=\"background-color:#ff4477\"> </span><span style=\"color:#ff4477\">---</span><span style=\"background-color:#ff4477\"> </span><span class=\"cRe2\">                                                                                       </span> ");
 
     n = (int)strlen(p);
     fput(p, n, Fp_f_HTML_file);
@@ -2517,9 +2477,24 @@ void f_fn_prtlin(char *lin) {
   
 
   n = sprintf(p,"%s%s", lin, myEOL);
+//tn();trn("========================================================================================================================");
+//ksn(p);
+//trn("========================================================================================================================");
+//tn();
+
+
+  
+  // during bug bottom star is on stress line, get "-" in char postition 1 (should always be " ")
+  //
+  if (*p == '-') {   // global      char *p = &writebuf[0];
+//ksn("hey");
+      *p  = ' ';
+  }
+
+
+
   fput(p, n, Fp_f_HTML_file);        /* PRINT the line */
   strcpy(gbl_prtlin_lastline, p); /* save last line printed in gbl */
-
 
 /* trn("end of f_fn_prtlin()"); */
 } /* end of f_fn_prtlin() */
@@ -2533,8 +2508,7 @@ void f_fn_prtlin(char *lin) {
 */
 void f_docin_get(char *in_line)
 {
-//trn("in f_docin_get(char *in_line)"); 
-//tn();ksn(in_line);
+/* trn("in f_docin_get(char *in_line)"); */
 
 /*   static int times_thru; */
 /*   if (times_thru == 0) global_read_idx = 0; */
@@ -2810,10 +2784,6 @@ int make_calendar_day_html_file(   /* called from futdoc.c  */
   f_fn_prtlin( "    H5 { font-size:  70%; font-weight: normal; line-height: 30%; text-align: center;}");
 
   f_fn_prtlin( "    PRE {");
-
-//    f_fn_prtlin("   <div id=\"\" style=\"overflow: scroll; width: 720%\"> ");         
-//<.>
-
   f_fn_prtlin( "      text-align:  left;");
 /*   f_fn_prtlin( "      font-size:   90%;"); */
   f_fn_prtlin( "      display: inline-block;");
@@ -2828,14 +2798,7 @@ int make_calendar_day_html_file(   /* called from futdoc.c  */
   f_fn_prtlin( "      border-spacing: 0;");
 /*   f_fn_prtlin( "      line-height: 90%;"); */
 /*   f_fn_prtlin( "      font-size: 85%;"); */
-
-
-
-
   f_fn_prtlin( "      font-size: 75%;");
-
-
-
 
   f_fn_prtlin( "      border-spacing: 0;");
 /*       border-collapse: collapse; */
@@ -2867,7 +2830,6 @@ int make_calendar_day_html_file(   /* called from futdoc.c  */
   f_fn_prtlin( "    table {");
   f_fn_prtlin( "      border-collapse: collapse;");
   f_fn_prtlin( "      border-spacing: 0;");
-  f_fn_prtlin( "      font-weight: normal;");
   f_fn_prtlin( "    }");
   f_fn_prtlin( "    table.center {");
   f_fn_prtlin( "      margin-left:auto;");
@@ -2899,23 +2861,12 @@ int make_calendar_day_html_file(   /* called from futdoc.c  */
 /*   f_fn_prtlin( "    .cRe2        { background-color:#ff6094; }"); */
 /*   f_fn_prtlin( "    .cRe2        { background-color:#ff3366; }"); */
 
-  /* only for year score table
-  */
-//tn();trn("set table colors #5!  media small line 2721");
-  f_fn_prtlin( "    .cGr2table   { background-color:#66ff33; }");
-  f_fn_prtlin( "    .cGretable   { background-color:#a8ff98; }");
-  f_fn_prtlin( "    .cNeutable   { background-color:#e5e2c7; }");
-  f_fn_prtlin( "    .cRedtable   { background-color:#ffb5c9; }");
-  f_fn_prtlin( "    .cRe2table   { background-color:#ff678f; }");
-
 
   f_fn_prtlin( "    .cGr2        { background-color:#66ff33; }");
 /*   f_fn_prtlin( "    .cGre        { background-color:#84ff98; }"); */
   f_fn_prtlin( "    .cGre        { background-color:#a8ff98; }");
-//  f_fn_prtlin( "    .cRed        { background-color:#ff98a8; }");
-  f_fn_prtlin( "    .cRed        { background-color:#ffb5c9; }");
-//  f_fn_prtlin( "    .cRe2        { background-color:#ff4477; }");
-  f_fn_prtlin( "    .cRe2        { background-color:#ff678f; }");
+  f_fn_prtlin( "    .cRed        { background-color:#ff98a8; }");
+  f_fn_prtlin( "    .cRe2        { background-color:#ff4477; }");
 
 /*   f_fn_prtlin("    .cNeu        { background-color:#e1ddc3; }"); */
   f_fn_prtlin("    .cNeu        { background-color:#e5e2c7; }");
@@ -2981,9 +2932,7 @@ int make_calendar_day_html_file(   /* called from futdoc.c  */
 
   //f_fn_prtlin( "      font-size: 90%;");
 //  f_fn_prtlin( "      font-size: 1.5em;");
-//  f_fn_prtlin( "      font-size: 1.2em;");
-//  f_fn_prtlin( "      font-size: 0.8em;");
-  f_fn_prtlin( "      font-size: 1.1em;");
+  f_fn_prtlin( "      font-size: 1.2em;");
 
   f_fn_prtlin( "      padding: 10px; ");
 
@@ -3042,19 +2991,12 @@ int make_calendar_day_html_file(   /* called from futdoc.c  */
 //  f_fn_prtlin("  <h1>Calendar Day </h1>");
 //  f_fn_prtlin("  <h1>What Color is Today?</h1>");  // 20150215
 
-
-
-
-// now mailed version only has name in table
-//
-//  sprintf(writebuf, "   <h1>%s &nbsp%s %02d,  %d</h1>",
-//    fN_day_of_week[ day_of_week(itarget_mm, itarget_dd, itarget_yyyy) ],
-//    N_mth_cap[itarget_mm], 
-//    itarget_dd,
-//    itarget_yyyy   );
-//  f_fn_prtlin(writebuf);
-//
-  f_fn_prtlin("<div><br></div>"); 
+  sprintf(writebuf, "   <h1>%s &nbsp%s %02d,  %d</h1>",
+    fN_day_of_week[ day_of_week(itarget_mm, itarget_dd, itarget_yyyy) ],
+    N_mth_cap[itarget_mm], 
+    itarget_dd,
+    itarget_yyyy   );
+  f_fn_prtlin(writebuf);
 
 
 //  sprintf(writebuf, "  <h2><br><br>for <span class=\"cNam\">%s</span><br></h2>",
@@ -3074,37 +3016,15 @@ int make_calendar_day_html_file(   /* called from futdoc.c  */
   //f_fn_prtlin("  <table class=\"trait\"> <tr> <th colspan=\"3\"> How was your day?</th> </tr>");
   //f_fn_prtlin("  <table class=\"trait\"> <tr> <th colspan=\"3\"><span style=\"font-size:4m;\">   What Color is Today?  </span></th> </tr>");
 //  f_fn_prtlin("  <table class=\"trait\"> <tr> <th colspan=\"3\">&nbsp What Color is Today? &nbsp</th> </tr>");
-
-//  f_fn_prtlin("  <table class=\"trait\"> <tr> <th colspan=\"3\">What Color is the Day</th> </tr>");
-
-//  sprintf(writebuf, "  <table class=\"trait\"> <tr> <th colspan=\"3\">What Color is the Day<br>%s &nbsp%s %02d,  %d</th></tr>",
-  sprintf(writebuf, "  <table class=\"trait\"> <tr> <th colspan=\"3\">What Color is<br>%s &nbsp%s %02d,  %d?</th></tr>",
-    fN_day_of_week[ day_of_week(itarget_mm, itarget_dd, itarget_yyyy) ],
-    N_mth_cap[itarget_mm], 
-    itarget_dd,
-    itarget_yyyy 
-  );
-
-//  sprintf(writebuf, "   <h1>%s &nbsp%s %02d,  %d</h1>",
-//  sprintf(writebuf, "<tr><th colspan=\"3\">  <h1>%s &nbsp%s %02d,  %d</th></tr>",
-//  sprintf(writebuf, "<tr><th colspan=\"3\">  <h1>%s &nbsp%s %02d,  %d</th></tr>",
-//    fN_day_of_week[ day_of_week(itarget_mm, itarget_dd, itarget_yyyy) ],
-//    N_mth_cap[itarget_mm], 
-//    itarget_dd,
-//    itarget_yyyy   );
-  f_fn_prtlin(writebuf);
-
-
+  f_fn_prtlin("  <table class=\"trait\"> <tr> <th colspan=\"3\">&nbsp What Color is The Day? &nbsp</th> </tr>");
 
 //  f_fn_prtlin("<table class=\"trait\">" );
 //  f_fn_prtlin("  <div><br></div>");
 
-  //f_fn_prtlin("<div> <span style=\"font-size: 1.0em\"><br>produced by iPhone app Me and my BFFs</span><br><br><span style=\"font-size: 0.7em; font-weight: bold; color:#FF0000;\">This report is for entertainment purposes only.</span></div><div><br></div>");
+  //f_fn_prtlin("<div> <span style=\"font-size: 1.0em\"><br>produced by iPhone app \"Me and my BFFs\"</span><br><br><span style=\"font-size: 0.7em; font-weight: bold; color:#FF0000;\">This report is for entertainment purposes only.</span></div><div><br></div>");
   //f_fn_prtlin("  <tr > <th><span style=\"font-size: 0.65em; font-weight: normal; \">Person</span></th> <th><span style=\"font-size: 0.65em; font-weight: normal; \">Score</span></th> <th></th></tr>");
 //  f_fn_prtlin("  <tr > <th><span style=\"font-size: 0.7em; font-weight: normal; \">Person</span></th> <th><span style=\"font-size: 0.7em; font-weight: normal; \">Score</span></th> <th></th></tr>");
-
-  // col hdr
-//  f_fn_prtlin("  <tr > <th><span style=\"font-size: 0.8em; font-weight: normal; \">Person</span></th> <th><span style=\"font-size: 0.8em; font-weight: normal; \">Score</span></th> <th></th></tr>");
+  f_fn_prtlin("  <tr > <th><span style=\"font-size: 0.8em; font-weight: normal; \">Person</span></th> <th><span style=\"font-size: 0.8em; font-weight: normal; \">Score</span></th> <th></th></tr>");
 
 
   int worknum;  /* calibrate stress score for table */
@@ -3129,6 +3049,7 @@ int make_calendar_day_html_file(   /* called from futdoc.c  */
 //if (oij  == 5) PERCENTILE_RANK_SCORE = 75;
 //if (oij  == 6) PERCENTILE_RANK_SCORE = 90;
 //
+
 
 
 
@@ -3241,7 +3162,7 @@ int make_calendar_day_html_file(   /* called from futdoc.c  */
   f_fn_prtlin("<br>  This measures short-term influences  ");
 
 /*   f_fn_prtlin("  lasting a few hours or a day.<br>"); */
-  f_fn_prtlin("  lasting a few hours or a day or two.<br>");
+  f_fn_prtlin("  lasting a few hours.<br>");
 
 /*   f_fn_prtlin("  Long term influences are in the  "); */
 /*   f_fn_prtlin("  graphical report \"Calendar Year\" <br>"); */
@@ -3262,10 +3183,10 @@ int make_calendar_day_html_file(   /* called from futdoc.c  */
   //f_fn_prtlin("<h4><span style=\"background-color:#FFBAC7;\">&nbspThis report is for entertainment purposes only.&nbsp</span></h4>");
 
 
-  //f_fn_prtlin("<div> <span style=\"font-size: 1.0em\"><br>produced by iPhone app Me and my BFFs</span><br><br><span style=\"font-size: 0.9em; font-weight: bold; color:#FF0000;\">This report is for entertainment purposes only.</span></div><div><br></div>");
-  //f_fn_prtlin("<div> <span style=\"font-size: 0.8em\"><br>produced by iPhone app Me and my BFFs</span><br><span style=\"font-size: 0.8em; font-weight: bold; color:#FF0000;\">This report is for entertainment purposes only.</span></div><div><br></div>");
-  //f_fn_prtlin("<div> <span style=\"font-size: 0.5em\"><br>produced by iPhone app Me and my BFFs</span><br><span style=\"font-size: 0.5em; font-weight: bold; color:#FF0000;\">This report is for entertainment purposes only.</span></div><div><br></div>");
-  f_fn_prtlin("<div> <span style=\"font-size: 0.5em\"><br><br>produced by iPhone app Me and my BFFs</span><br><span style=\"font-size: 0.5em; font-weight: bold; color:#FF0000;\">This report is for entertainment purposes only.</span></div>");
+  //f_fn_prtlin("<div> <span style=\"font-size: 1.0em\"><br>produced by iPhone app \"Me and my BFFs\"</span><br><br><span style=\"font-size: 0.9em; font-weight: bold; color:#FF0000;\">This report is for entertainment purposes only.</span></div><div><br></div>");
+  //f_fn_prtlin("<div> <span style=\"font-size: 0.8em\"><br>produced by iPhone app \"Me and my BFFs\"</span><br><span style=\"font-size: 0.8em; font-weight: bold; color:#FF0000;\">This report is for entertainment purposes only.</span></div><div><br></div>");
+  //f_fn_prtlin("<div> <span style=\"font-size: 0.5em\"><br>produced by iPhone app \"Me and my BFFs\"</span><br><span style=\"font-size: 0.5em; font-weight: bold; color:#FF0000;\">This report is for entertainment purposes only.</span></div><div><br></div>");
+  f_fn_prtlin("<div> <span style=\"font-size: 0.5em\"><br><br>produced by iPhone app \"Me and my BFFs\"</span><br><span style=\"font-size: 0.5em; font-weight: bold; color:#FF0000;\">This report is for entertainment purposes only.</span></div>");
 
 
   f_fn_prtlin("</table>");
@@ -3296,34 +3217,23 @@ int make_calendar_day_html_file(   /* called from futdoc.c  */
 
 void write_calendar_day_score(char *pname, int istress_score) {
   char rowcolor[32];
-//tn();kin(istress_score);
+
 /* kin(gblCalDayScoreIsWritten); */
+
   if (gblCalDayScoreIsWritten == 1)  return;
 
-//ksn(gbl_ffnameHTML);
+  if (istress_score >= 90) strcpy(rowcolor, " class=\"cGr2\"");
+  if (istress_score <  90 &&
+      istress_score >= 75) strcpy(rowcolor, " class=\"cGre\"");
+  if (istress_score <  75 &&
+      istress_score >= 25) strcpy(rowcolor, " class=\"cNeu\"");
+  if (istress_score <= 25 &&
+      istress_score >  10) strcpy(rowcolor, " class=\"cRed\"");
+  if (istress_score <= 10) strcpy(rowcolor, " class=\"cRe2\"");
 
-  if (strstr(gbl_ffnameHTML, "webview") != NULL) { // webview version
-    if (istress_score >= 90) strcpy(rowcolor, " class=\"cGr2table\"");
-    if (istress_score <  90 &&
-        istress_score >= 75) strcpy(rowcolor, " class=\"cGretable\"");
-    if (istress_score <  75 &&
-        istress_score >= 25) strcpy(rowcolor, " class=\"cNeutable\"");
-    if (istress_score <= 25 &&
-        istress_score >  10) strcpy(rowcolor, " class=\"cRedtable\"");
-    if (istress_score <= 10) strcpy(rowcolor, " class=\"cRe2table\"");
-
-  } else {   // browser version
-    if (istress_score >= 90) strcpy(rowcolor, " class=\"cGr2\"");
-    if (istress_score <  90 &&
-        istress_score >= 75) strcpy(rowcolor, " class=\"cGre\"");
-    if (istress_score <  75 &&
-        istress_score >= 25) strcpy(rowcolor, " class=\"cNeu\"");
-    if (istress_score <= 25 &&
-        istress_score >  10) strcpy(rowcolor, " class=\"cRed\"");
-    if (istress_score <= 10) strcpy(rowcolor, " class=\"cRe2\"");
-  }
-
+/*   sprintf(writebuf, "  <tr><td> %s</td><td> %d  </td><td></td></tr>", pname, istress_score); */
   sprintf(writebuf, "  <tr %s><td> %s</td><td> %d  </td><td></td></tr>", rowcolor, pname, istress_score);
+
   f_fn_prtlin(writebuf);
 
   gblCalDayScoreIsWritten = 1;
@@ -3585,7 +3495,6 @@ void f_fnBIGOutPutTopOfHtmlFile(void) {
   f_fnBIG_prtlin( "      border-collapse: collapse;");
   f_fnBIG_prtlin( "      border-spacing: 0;");
   f_fnBIG_prtlin( "      font-size: 120%;");
-  f_fnBIG_prtlin( "      font-weight: normal;");
   f_fnBIG_prtlin( "    }");
 /* for table: */
 /*       border: 2px solid black; */
@@ -3626,23 +3535,12 @@ void f_fnBIGOutPutTopOfHtmlFile(void) {
 /*   f_fnBIG_prtlin( "    .cRe2        { background-color:#ff6094; }"); */
 /*   f_fnBIG_prtlin( "    .cRe2        { background-color:#ff3366; }"); */
 
-  /* only for year score table
-  */
-//tn();trn("set table colors #1!  BIG  f_fnBIGOutPutTopOfHtmlFile() ");
-  f_fnBIG_prtlin( "    .cGr2table   { background-color:#66ff33; }");
-  f_fnBIG_prtlin( "    .cGretable   { background-color:#a8ff98; }");
-  f_fnBIG_prtlin( "    .cNeutable   { background-color:#e5e2c7; }");
-  f_fnBIG_prtlin( "    .cRedtable   { background-color:#ffb5c9; }");
-  f_fnBIG_prtlin( "    .cRe2table   { background-color:#ff678f; }");
-
 
   f_fnBIG_prtlin( "    .cGr2        { background-color:#66ff33; font-weight: bold; }");
 /*   f_fnBIG_prtlin( "    .cGre        { background-color:#84ff98; }"); */
   f_fnBIG_prtlin( "    .cGre        { background-color:#a8ff98; font-weight: bold; }");
-//  f_fnBIG_prtlin( "    .cRed        { background-color:#ff98a8; font-weight: bold; }");
-  f_fnBIG_prtlin( "    .cRed        { background-color:#ffb5c9; font-weight: bold; }");
-//  f_fnBIG_prtlin( "    .cRe2        { background-color:#ff4477; font-weight: bold; }");
-  f_fnBIG_prtlin( "    .cRe2        { background-color:#ff678f; font-weight: bold; }");
+  f_fnBIG_prtlin( "    .cRed        { background-color:#ff98a8; font-weight: bold; }");
+  f_fnBIG_prtlin( "    .cRe2        { background-color:#ff4477; font-weight: bold; }");
 
 
   f_fnBIG_prtlin("    .row4        { background-color:#f8f0c0; }");
@@ -4098,6 +3996,9 @@ STRESS-|<span style="background-color:#FFBAC7; font-family: Andale Mono, Courier
 /*       continue; */
 /*     x */
 
+    // intercept 2nd OMG line  (happens when last * is right on line)
+    //
+
     /* color OMG line, but
     */
     if (strstr(doclin, "OMG") != NULL
@@ -4318,14 +4219,10 @@ STRESS-|<span style="background-color:#FFBAC7; font-family: Andale Mono, Courier
     if (strstr(doclin, "[beg_aspects]") != NULL) break;
   }
 
-  // browser version
-
 /*   f_fnBIG_prtlin("  <h4><span style=\"font-size: 85%; font-weight: normal\">"); */
 /*   f_fnBIG_prtlin("      (they influence the graph above)   </span><br><br><br></h4>"); */
-//  f_fnBIG_prtlin("  <h3>Important Periods</h3>");
-//  f_fnBIG_prtlin("  <h4>(they influence the graph above)<br><br><br></h4>");
-  f_fnBIG_prtlin("  <h3>Time Frames</h3>");
-  f_fnBIG_prtlin("  <h4>that influence the graph above<br><br><br></h4>");
+  f_fnBIG_prtlin("  <h3>Important Periods</h3>");
+  f_fnBIG_prtlin("  <h4>(they influence the graph above)<br><br><br></h4>");
 
 
 
@@ -4397,6 +4294,7 @@ STRESS-|<span style="background-color:#FFBAC7; font-family: Andale Mono, Courier
 *     stringBuffForStressScore   );
 * tn();b(112);ks(stringBuffForStressScore);
 #endif /* ifdef PUT_BACK_COMMENTED_OUT_STUFF ********************************/
+
 
 
 
@@ -4519,7 +4417,7 @@ STRESS-|<span style="background-color:#FFBAC7; font-family: Andale Mono, Courier
 //  f_fnBIG_prtlin(writebuf);
 //  f_fnBIG_prtlin("<h4><span style=\"background-color:#FFBAC7;\">&nbspThis report is for entertainment purposes only.&nbsp</span></h4>");
 
-  f_fn_prtlin("<div> <span style=\"font-size: 1.0em\"><br>produced by iPhone app Me and my BFFs</span><br><br><span style=\"font-size: 0.9em; font-weight: bold; color:#FF0000;\">This report is for entertainment purposes only.</span></div><div><br></div>");
+  f_fn_prtlin("<div> <span style=\"font-size: 1.0em\"><br>produced by iPhone app \"Me and my BFFs\"</span><br><br><span style=\"font-size: 0.9em; font-weight: bold; color:#FF0000;\">This report is for entertainment purposes only.</span></div><div><br></div>");
 
 
   f_fnBIG_prtlin("");
@@ -5001,8 +4899,7 @@ void f_fnBIG_prtlin(char *lin) {
        but must have --- for OMG in it */
 
     // 20121229  HARD CODE THIS LINE  (it worked)
-//     strcpy(p, " <span style=\"background-color:#ff4477\"> </span><span style=\"color:#ff4477\">---</span><span style=\"background-color:#ff4477\"> </span><span class=\"cRe2\">                                                                                                                                                                                   </span> ");
-     strcpy(p, " <span style=\"background-color:#ff678f\"> </span><span style=\"color:#ff678f\">---</span><span style=\"background-color:#ff678f\"> </span><span class=\"cRe2\">                                                                                                                                                                                   </span> ");
+     strcpy(p, " <span style=\"background-color:#ff4477\"> </span><span style=\"color:#ff4477\">---</span><span style=\"background-color:#ff4477\"> </span><span class=\"cRe2\">                                                                                                                                                                                   </span> ");
 
     n = (int)strlen(p);
     fput(p, n, Fp_f_HTML_file);
@@ -5105,10 +5002,10 @@ void f_fnBIG_prtlin(char *lin) {
 //
 int insert_label_benchmark(char *line_curr, char * line_next) {
 
-/* tn();trn("insert_label_benchmark() llllllllllllllllllllllllllllllllllllllllllllllllllllllll"); */
-/* ksn(gbl_benchmark_label); */
-/* ksn(line_curr); */
-/* ksn(line_next); */
+//tn();trn("insert_label_benchmark() llllllllllllllllllllllllllllllllllllllllllllllllllllllll"); 
+//ksn(gbl_benchmark_label); 
+//ksn(line_curr);
+//ksn(line_next); 
 
   int len_label, line_curr_is_good, line_next_is_good, linethird_is_good;
   char area_line_curr[16], area_line_next[16], area_linethird[16];
@@ -5146,16 +5043,23 @@ int insert_label_benchmark(char *line_curr, char * line_next) {
     mkstr(area_line_next, line_next +  27, line_next + 27 + (len_label + 2 - 1));
   }
 
-/* ksn(myspaces); */
+//ksn(myspaces); 
 /* ksn(my_Xs); */
 /* ksn(my_SHARPs); */
-/* ksn(area_line_curr); */
+//ksn(area_line_curr); 
 /* ksn(area_line_next); */
 /* ksn(area_linethird); */
 /* tn(); */
 
-  if (strcmp(area_line_curr, myspaces)  == 0 ) line_curr_is_good = 1;
-  else                                         line_curr_is_good = 0;
+  if (   strcmp(area_line_curr, myspaces  )  == 0
+      || strcmp(area_line_curr, " STRESS ")  == 0   // special case result of bug fix -bottom star on stress line
+     )
+  {
+    line_curr_is_good = 1;
+  }
+  else {
+    line_curr_is_good = 0;
+  }
 
   if (strcmp(area_line_next, my_Xs)     == 0 ||
       strcmp(area_line_next, myspaces)  == 0 || 
@@ -5169,7 +5073,7 @@ int insert_label_benchmark(char *line_curr, char * line_next) {
       strcmp(area_linethird, my_SHARPs) == 0 ) linethird_is_good= 1;
   else                                         linethird_is_good= 0;
 
-/* kin(line_curr_is_good); ki(line_next_is_good ); ki(linethird_is_good ); */
+//kin(line_curr_is_good); ki(line_next_is_good ); ki(linethird_is_good ); 
 
   retval_goodtogo = 0;  // default
   if (line_curr_is_good == 1 && line_next_is_good == 1 && linethird_is_good) {
@@ -5177,10 +5081,8 @@ int insert_label_benchmark(char *line_curr, char * line_next) {
 
     if (strcmp(gbl_benchmark_label, "GREAT")  == 0) strcpy(my_bg_color, "#66ff33");
     if (strcmp(gbl_benchmark_label, "GOOD")   == 0) strcpy(my_bg_color, "#a8ff98");
-//    if (strcmp(gbl_benchmark_label, "STRESS") == 0) strcpy(my_bg_color, "#ff98a8");
-    if (strcmp(gbl_benchmark_label, "STRESS") == 0) strcpy(my_bg_color, "#ffb5c9");
-//    if (strcmp(gbl_benchmark_label, "OMG")    == 0) strcpy(my_bg_color, "#ff4477");
-    if (strcmp(gbl_benchmark_label, "OMG")    == 0) strcpy(my_bg_color, "#ff678f");
+    if (strcmp(gbl_benchmark_label, "STRESS") == 0) strcpy(my_bg_color, "#ff98a8");
+    if (strcmp(gbl_benchmark_label, "OMG")    == 0) strcpy(my_bg_color, "#ff4477");
     
     // replace area_line_curr with the benchmark label and color
 
@@ -5201,7 +5103,8 @@ int insert_label_benchmark(char *line_curr, char * line_next) {
   } else {
     retval_goodtogo = 7;  // flag to run   void  change_last_7_chars()
   }
-/* kin(retval_goodtogo); */
+//kin(retval_goodtogo); 
+//tn();
   return retval_goodtogo;
 
 } // end of insert_label_benchmark()
@@ -5213,11 +5116,12 @@ int insert_label_benchmark(char *line_curr, char * line_next) {
 //   2. remove first char (is a sp)
 //   3. prepend this:  " <span style="color:#000000"> ----- </span>"
 void insert_minus_benchmark(char *line_to_change) {
-/* tn();trn("in insert_minus_benchmark() ,mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm"); */
-/* ksn(line_to_change); */
+
+//tn();trn("in insert_minus_benchmark() ,mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm"); 
+//ksn(line_to_change); 
   char changed_line[8192], part_before[8192], part_after[8192], part_new_front[8192], mywork[8192], my_text_color[32];
-  char my_minuses[32];
-//  char part_removed[128];
+  char my_minuses[1024];
+  char part_removed[1024];
   int  len_label;
   len_label = (int)strlen(gbl_benchmark_label);
   sfill(my_minuses,  len_label, '-'); 
@@ -5226,13 +5130,11 @@ void insert_minus_benchmark(char *line_to_change) {
 
   if (strcmp(gbl_benchmark_label, "GREAT")  == 0) strcpy(my_text_color, "#66ff33");
   if (strcmp(gbl_benchmark_label, "GOOD")   == 0) strcpy(my_text_color, "#a8ff98");
-//  if (strcmp(gbl_benchmark_label, "STRESS") == 0) strcpy(my_text_color, "#ff98a8");
-  if (strcmp(gbl_benchmark_label, "STRESS") == 0) strcpy(my_text_color, "#ffb5c9");
-//  if (strcmp(gbl_benchmark_label, "OMG")    == 0) strcpy(my_text_color, "#ff4477");
-  if (strcmp(gbl_benchmark_label, "OMG")    == 0) strcpy(my_text_color, "#ff678f");
+  if (strcmp(gbl_benchmark_label, "STRESS") == 0) strcpy(my_text_color, "#ff98a8");
+  if (strcmp(gbl_benchmark_label, "OMG")    == 0) strcpy(my_text_color, "#ff4477");
 
   
-  //strcpy(my_text_color, "#000000"); // for TEST to see  
+//strcpy(my_text_color, "#000000"); // for TEST to see  
 
 
   //   1. remove the len + 2 spaces altogether from line_to_change
@@ -5245,24 +5147,28 @@ void insert_minus_benchmark(char *line_to_change) {
 //  part_after[(int)strlen(part_after) - 1 - 7] = '\0';
 //tn();b(301);ks(part_after);
 
-//  mkstr(part_removed, line_to_change + 20 -1 +1, line_to_change  + 20 + (len_label + 2 - 1 + 1 -1));
-
   sprintf(mywork, "%s%s", part_before, part_after);
-// tn();trn("---------------------------------------------------------------------------");
-// ksn(part_before);
-// ksn(part_after);
-// trn("with spaces removed=");ks(mywork);
-// kin(strlen(line_to_change));
-// trn("strlen of 1sp at beg= [1]");
-// kin(strlen(part_before));
-// kin(strlen(part_removed));
-// kin(strlen(part_after));
-// ksn(line_to_change);
-// trn("is 1 sp at beg (not in graph)");
-// ksn(part_before);
-// ksn(part_removed);
-// ksn(part_after);
-// trn("---------------------------------------------------------------------------");tn();
+
+
+
+//tn();trn("---------------------------------------------------------------------------");
+//ksn(part_before);
+//ksn(part_after);
+//trn("with spaces removed=");ks(mywork);
+//kin(strlen(line_to_change));
+//trn("strlen of 1sp at beg= [1]");
+//kin(strlen(part_before));
+//mkstr(part_removed, line_to_change + 20 -1 +1, line_to_change  + 20 + (len_label + 2 - 1 + 1 -1));
+//kin(strlen(part_removed));
+//kin(strlen(part_after));
+//ksn(line_to_change);
+//trn("is 1 sp at beg (not in graph)");
+//ksn(part_before);
+//ksn(part_removed);
+//ksn(part_after);
+//trn("---------------------------------------------------------------------------");tn();
+//
+
 
 //<span style="background-color:#66ff33"> </span>
 
@@ -5276,8 +5182,8 @@ void insert_minus_benchmark(char *line_to_change) {
     my_text_color); 
 
   sprintf(changed_line, "%s%s", part_new_front, mywork);
-/* ksn(part_new_front); */
-/* ksn(changed_line);tn(); */
+//ksn(part_new_front);
+//ksn(changed_line);tn(); 
 
   strcpy(line_to_change, changed_line);  // return changed line
 

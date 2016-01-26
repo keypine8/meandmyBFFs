@@ -266,22 +266,49 @@
 //    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:120.0/255.0 blue:120.0/255.0 alpha:1.0]; // ok
 //
 
+//
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:096.0/255.0 blue:096.0/255.0 alpha:1.0]; // too dark (lines strong)
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:096.0/255.0 blue:048.0/255.0 alpha:1.0]; // too dark (lines strong)
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:112.0/255.0 blue:112.0/255.0 alpha:1.0]; // too dark (lines strong)
+//
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:160.0/255.0 blue:128.0/255.0 alpha:1.0]; // weird
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:192.0/255.0 blue:128.0/255.0 alpha:1.0]; // 
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:160.0/255.0 blue:160.0/255.0 alpha:1.0]; // no circles
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:140.0/255.0 blue:140.0/255.0 alpha:1.0]; // 
+//
+
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:192.0/255.0 blue:192.0/255.0 alpha:1.0]; // 
+
+    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0]; // can  see circles  gold
 
 
-    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0]; // can  see circles
+//<.> for test
+//    gbl_color_cRed  = [UIColor colorWithRed:255.0/255.0 green:181.0/255.0 blue:201.0/255.0 alpha:1.0]; // ffb5c9  gold
+//    gbl_color_cRe2  = [UIColor colorWithRed:255.0/255.0 green:123.0/255.0 blue:163.0/255.0 alpha:1.0]; //   NEW gold
+
+    gbl_colorforAddMembers = [UIColor colorWithRed:255.0/255.0 green:181.0/255.0 blue:201.0/255.0 alpha:1.0]; // ffb5c9  gold
+
+    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0]; // 
+    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:064.0/255.0 blue:064.0/255.0 alpha:1.0]; // too red too dark
+    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:096.0/255.0 blue:096.0/255.0 alpha:1.0]; // 
+    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:096.0/255.0 blue:048.0/255.0 alpha:1.0]; //
+    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:080.0/255.0 blue:048.0/255.0 alpha:1.0]; //
+    gbl_colorforDelMembers = [UIColor colorWithRed:192.0/255.0 green:096.0/255.0 blue:096.0/255.0 alpha:1.0]; // 
+    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:140.0/255.0 blue:140.0/255.0 alpha:1.0]; // x
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:160.0/255.0 blue:160.0/255.0 alpha:1.0]; // 
+    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:175.0/255.0 blue:175.0/255.0 alpha:1.0]; // x
+    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:123.0/255.0 blue:163.0/255.0 alpha:1.0]; // ffb5c9  gold
+
+//<.> for test
 
 
+//
+//// test green for fut good line
+//    gbl_colorforDelMembers = [UIColor colorWithRed:048.0/255.0 green:255.0/255.0 blue:048.0/255.0 alpha:1.0]; // can  see circles
+//    gbl_colorforDelMembers = [UIColor colorWithRed:024.0/255.0 green:255.0/255.0 blue:024.0/255.0 alpha:1.0]; // can  see circles
+//    gbl_colorforDelMembers = [UIColor colorWithRed:000.0/255.0 green:255.0/255.0 blue:000.0/255.0 alpha:1.0]; // can  see circles
+//
 
-    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:096.0/255.0 blue:096.0/255.0 alpha:1.0]; // too dark (lines strong)
-    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:096.0/255.0 blue:048.0/255.0 alpha:1.0]; // too dark (lines strong)
-    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:112.0/255.0 blue:112.0/255.0 alpha:1.0]; // too dark (lines strong)
-
-    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:160.0/255.0 blue:128.0/255.0 alpha:1.0]; // weird
-    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:192.0/255.0 blue:128.0/255.0 alpha:1.0]; // 
-    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:160.0/255.0 blue:160.0/255.0 alpha:1.0]; // no circles
-    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:140.0/255.0 blue:140.0/255.0 alpha:1.0]; // 
-
-    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:192.0/255.0 blue:192.0/255.0 alpha:1.0]; // 
 
 
     gbl_colorEditingBGforInputField = [UIColor colorWithRed:252.0/255.0 green:252.0/255.0 blue:252.0/255.0 alpha:1.0]; // white

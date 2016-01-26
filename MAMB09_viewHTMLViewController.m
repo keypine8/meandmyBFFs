@@ -659,6 +659,30 @@ tn();
                                                                   encoding: NSUTF8StringEncoding
                                                                      error: nil];
             NSArray *htmllines = [fileContents componentsSeparatedByCharactersInSet: newlineCharSet];
+
+//
+////<.>  for test
+//int printnextline;
+//printnextline = 0;
+//for (NSString *myline in htmllines ) {
+//    // log if contains STRESS, print  + line after
+//    NSString *findme = @"STRESS";
+//    if ([myline containsString: findme]  ||  printnextline == 1) {
+//        if (printnextline == 1)
+//        {
+//            printnextline  = 0;
+//            NSLog(@"myline=[%@]",myline);
+//        } else {
+//            printnextline  = 1;
+//            NSLog(@"myline=[%@]",myline);
+//        }
+//    }
+//}
+////<.>  for test
+//
+//
+
+
             NSMutableArray *htmllinesMut = [NSMutableArray arrayWithArray: htmllines ];
 
 

@@ -378,7 +378,7 @@ tn();
         if (indexPath.row == 4) {
             NSString *text_cGr2 = @" GREAT  ";
             NSString *text_cGre = @" GOOD   ";
-            NSString *text_cNeu = @" neutral  grey area (no label) ";
+            NSString *text_cNeu = @"          neutral gray area (no label)     ";
             NSString *text_cRed = @" STRESS ";
             NSString *text_cRe2 = @" OMG    ";
 
@@ -415,11 +415,16 @@ tn();
             //
             //       e.g.   range: NSMakeRange(0,9)  ];          // offset, length
             // 
+            NSRange range_whole = NSMakeRange(0, allLabelExplaintext.length);
             NSRange range_cGr2 = [allLabelExplaintext rangeOfString: text_cGr2];
             NSRange range_cGre = [allLabelExplaintext rangeOfString: text_cGre];
             NSRange range_cNeu = [allLabelExplaintext rangeOfString: text_cNeu];
             NSRange range_cRed = [allLabelExplaintext rangeOfString: text_cRed];
             NSRange range_cRe2 = [allLabelExplaintext rangeOfString: text_cRe2];
+
+            [myAttributedTextLabelExplain addAttribute: NSBackgroundColorAttributeName 
+                                                 value: gbl_color_cBgr 
+                                                 range: range_whole       ];
 
             [myAttributedTextLabelExplain addAttribute: NSBackgroundColorAttributeName 
                                                  value: gbl_color_cGr2 
@@ -471,12 +476,12 @@ tn();
                 cell.backgroundColor          = gbl_color_cBgr;
                 cell.textLabel.numberOfLines  = 0;
 //                cell.textLabel.numberOfLines  = 25;
-                cell.textLabel.text           = allLabelExplaintext; // for test
+//                cell.textLabel.text           = allLabelExplaintext; // for test
+                cell.textLabel.text           = @" "; // for test
                 cell.textLabel.attributedText = myAttributedTextLabelExplain;
-                cell.textLabel.textAlignment = NSTextAlignmentLeft;
-
                 cell.imageView.image          = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView           = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
             });
             return cell;
         }
@@ -545,7 +550,7 @@ tn();
                 cell.textLabel.font          = myTitleFont;
                 cell.backgroundColor         = gbl_color_cHed;
                 cell.textLabel.numberOfLines = 0;
-                cell.textLabel.text          = @"The 1 to 99 Score for the Whole Year";
+//                cell.textLabel.text          = @"The 1 to 99 Score for the Whole Year";
                 cell.textLabel.text          = @"Year Summary Score";
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
@@ -2485,10 +2490,10 @@ nbn(100);
         if (indexPath.row ==   1) return    60.0;  // intro string
         if (indexPath.row ==   2) return     8.0;  // spacer
         if (indexPath.row ==   3) return    30.0;  // title for Labels inside the Graph
-        if (indexPath.row ==   4) return   250.0;  // text  for Labels inside the Graph
+        if (indexPath.row ==   4) return   200.0;  // text  for Labels inside the Graph
         if (indexPath.row ==   5) return     8.0;  // spacer
         if (indexPath.row ==   6) return    30.0;  // title for Time Frame Influences
-        if (indexPath.row ==   7) return   300.0;  // text  for Time Frame Influences
+        if (indexPath.row ==   7) return   250.0;  // text  for Time Frame Influences
         if (indexPath.row ==   8) return     8.0;  // spacer
         if (indexPath.row ==   9) return    30.0;  // title for Score for the Year
         if (indexPath.row ==  10) return   150.0;  // text  for Score for the Year
