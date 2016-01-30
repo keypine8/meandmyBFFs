@@ -71,8 +71,8 @@ tn();
     // TWO-LINE NAV BAR TITLE     WARNING  this is a HOUSE OF CARDS   beware changing a thing (landscape goes to right a bit !? )
     //
 //        UIButton *myInvisibleButton             = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
-//        UIButton *myInvisibleButton       = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
-        UIButton *myInvisibleButton       = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 88, 88)];
+        UIButton *myInvisibleButton       = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+//        UIButton *myInvisibleButton       = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 88, 88)];
 
         myInvisibleButton.backgroundColor       = [UIColor clearColor];
         UIBarButtonItem *myInvisibleBtnNavItem  = [[UIBarButtonItem alloc] initWithCustomView: myInvisibleButton];
@@ -92,6 +92,9 @@ tn();
         mySelRptB_Label.textAlignment = NSTextAlignmentCenter; 
         mySelRptB_Label.text          = [NSString stringWithFormat:  @"%@\nand %@", 
                                          gbl_selectedCellPersonAname, gbl_selectedCellPersonBname ];
+        mySelRptB_Label.adjustsFontSizeToFitWidth = YES;
+        [mySelRptB_Label sizeToFit];
+
 
 //       [mySelRptB_Label sizeToFit];  // invisible button alone WORKS (with sizeToFit)
 

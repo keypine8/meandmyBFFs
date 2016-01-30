@@ -1019,17 +1019,30 @@ NSLog(@"in viewDidAppear()  in add/change   ");
 ////    return (interfaceOrientation == UIInterfaceOrientationPortrait) || (interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown);
 ////}
 //
-- (BOOL)shouldAutorotate {
-  NSLog(@"in ADD   shouldAutorotate !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-    return YES;
-}
-
-// - (NSUInteger)supportedInterfaceOrientations
+//- (BOOL)shouldAutorotate {
+//  NSLog(@"in ADD   shouldAutorotate !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//    return YES;
+//}
+//
+//// - (NSUInteger)supportedInterfaceOrientations
+//- (UIInterfaceOrientationMask)supportedInterfaceOrientations
+//{
+//  NSLog(@"in ADD   supportedInterfaceOrientations !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//    return UIInterfaceOrientationMaskPortrait;
+//}
+//
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
-  NSLog(@"in ADD   supportedInterfaceOrientations !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+  NSLog(@"in add/change supportedInterfaceOrientations !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//    return UIInterfaceOrientationMaskAll;
     return UIInterfaceOrientationMaskPortrait;
+
 }
+- (BOOL)shouldAutorotate {
+  NSLog(@"in HOME shouldAutorotate !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    return NO;  // means do not call supportedInterfaceOrientations
+}
+
 
 
 //    The viewController life cycle are 
@@ -1455,21 +1468,48 @@ tn();
 
             gbl_helpScreenDescription = @"view or change";
 
-            if ( [gbl_fromHomeCurrentSelectionType isEqualToString: @"person"] ) {
-                dispatch_async(dispatch_get_main_queue(), ^{  
-//                    [[self navigationItem] setTitle: [NSString stringWithFormat:@"%@  Details", gbl_lastSelectedPerson ] ];
-                    [[self navigationItem] setTitle: [NSString stringWithFormat:@"%@", gbl_lastSelectedPerson ] ];
+//            CGFloat myScreenWidth, myFontSize;  // determine font size
+//            myScreenWidth = self.view.bounds.size.width;
+//            if (        myScreenWidth >= 414.0)  { myFontSize = 16.0; }  // 6+ and 6s+  and bigger
+//            else if (   myScreenWidth  < 414.0   
+//                     && myScreenWidth  > 320.0)  { myFontSize = 16.0; }  // 6 and 6s
+//            else if (   myScreenWidth <= 320.0)  { myFontSize = 10.0; }  //  5s and 5 and 4s and smaller
+//            else                                 { myFontSize = 16.0; }  //  other ?
+//
 
-                });
+
+            // from  http://stackoverflow.com/questions/12677059/how-to-control-title-font-in-uinavigationbar-title
+            //
+            // UILabel *bigLabel = [[UILabel alloc] init];
+            //
+            // bigLabel.text                      = @"1111111122222233333344444455555556666777888899999000000";
+            // bigLabel.backgroundColor           = [UIColor clearColor];
+            // bigLabel.textColor                 = [UIColor whiteColor];
+            // bigLabel.font                      = [UIFont boldSystemFontOfSize:20];
+            // bigLabel.adjustsFontSizeToFitWidth = YES;
+            // [bigLabel sizeToFit];
+            //
+            // self.navigationItem.titleView = bigLabel;
+
+            UILabel *myNavBarLabel      = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 480.0, 44.0)];
+
+            myNavBarLabel.textColor     = [UIColor blackColor];
+            myNavBarLabel.textAlignment = NSTextAlignmentCenter; 
+            if ( [gbl_fromHomeCurrentSelectionType isEqualToString: @"person"] ) {
+                myNavBarLabel.text          = [NSString stringWithFormat:@"%@", gbl_lastSelectedPerson ];
             }
             if ( [gbl_fromHomeCurrentSelectionType isEqualToString: @"group"] ) {
-                dispatch_async(dispatch_get_main_queue(), ^{   
-//                [[self navigationItem] setTitle: gbl_lastSelectedGroup ];
-//                    [[self navigationItem] setTitle: [NSString stringWithFormat:@"%@  Details", gbl_lastSelectedGroup  ] ];
-                    [[self navigationItem] setTitle: [NSString stringWithFormat:@"%@", gbl_lastSelectedGroup  ] ];
-                });
+                myNavBarLabel.text          = [NSString stringWithFormat:@"%@", gbl_lastSelectedGroup ];
             }
-        }
+            myNavBarLabel.font          = [UIFont boldSystemFontOfSize: 17.0];
+            myNavBarLabel.adjustsFontSizeToFitWidth = YES;
+            [myNavBarLabel sizeToFit];
+nbn(33);
+
+            dispatch_async(dispatch_get_main_queue(), ^{  
+                self.navigationItem.titleView = myNavBarLabel; // myNavBarLabel.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
+            });
+        } // if ( [gbl_homeEditingState isEqualToString: @"view or change" ])   
 
 
 //

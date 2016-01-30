@@ -681,7 +681,7 @@ UIColor *gbl_color_cAplTop;  // color of top of iPhone screen  246,248,249
 UIColor *gbl_color_cAplBlue;  // tint of chevron and Back etc
 
 
-UIColor *gbl_color_cPerGreen;
+UIColor *gbl_color_cPerGreen; // used to be all green (see below)  now settled on color cNeu
 
 //gbl_color_cPerGreen5 = [UIColor colorWithRed:185.0/255.0 green:255.0/255.0 blue:130.0/255.0 alpha:1.0]; // b9ff82 // pretty light green 
 //gbl_color_cPerGreen4 = [UIColor colorWithRed:206.0/255.0 green:255.0/255.0 blue:160.0/255.0 alpha:1.0]; // ceffa0 // light green 
@@ -689,12 +689,15 @@ UIColor *gbl_color_cPerGreen;
 //gbl_color_cPerGreen2 = [UIColor colorWithRed:236.0/255.0 green:255.0/255.0 blue:211.0/255.0 alpha:1.0]; // ecffd3 // really light green 
 //gbl_color_cPerGreen1 = [UIColor colorWithRed:246.0/255.0 green:255.0/255.0 blue:230.0/255.0 alpha:1.0]; // f6ffe6 // really,really light green 
 //
-UIColor *gbl_color_cPerGreen5; 
-UIColor *gbl_color_cPerGreen4; 
-UIColor *gbl_color_cPerGreen3; 
+//UIColor *gbl_color_cPerGreen5; 
+//UIColor *gbl_color_cPerGreen4; 
+//UIColor *gbl_color_cPerGreen3; 
+//UIColor *gbl_color_cPerGreen2; 
+//UIColor *gbl_color_cPerGreen1;
+
 UIColor *gbl_color_cPerGreen2; 
 UIColor *gbl_color_cPerGreen1;
-
+UIColor *gbl_color_cAplDarkBlue;
 
 
 //
@@ -900,8 +903,11 @@ NSString *gbl_helpScreenDescription;
 //
 char  gbl_Cbuf_for_csv_person[128];
 char  gbl_Cbuf_for_pathToHTML_webview[4048];
-NSURL *gbl_URLtoHTML_forWebview;
-NSURL *gbl_URLtoHTML_forEmailing;
+NSString *gbl_OpathToHTML_webview;
+NSURL    *gbl_URLtoHTML_forWebview;
+
+NSURL    *gbl_URLtoHTML_forEmailing;
+
 // plus   gbl_lastSelectedDay giving yyyymmdd
 NSString *gbl_lastSelectedDayFormattedForEmail;          // Thu  Feb 12, 2015
 NSString *gbl_lastSelectedDayFormattedForTitle;          //      Feb 12, 2015

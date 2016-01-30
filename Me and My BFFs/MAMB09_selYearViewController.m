@@ -91,6 +91,8 @@
     mySelDate_Label.textColor     = [UIColor blackColor];
     mySelDate_Label.textAlignment = NSTextAlignmentCenter; 
     mySelDate_Label.text          = myNavBar2lineTitle;
+    mySelDate_Label.adjustsFontSizeToFitWidth = YES;
+    [mySelDate_Label sizeToFit];
 
     // TWO-LINE NAV BAR TITLE
     //

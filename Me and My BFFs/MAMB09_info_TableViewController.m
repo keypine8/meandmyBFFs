@@ -2235,7 +2235,7 @@ nbn(100);
                 cell.backgroundColor         = gbl_bgColor_yellowEdit;
                 cell.textLabel.numberOfLines = 0;
 //                cell.textLabel.text          = @"Entering people and group information and changing stuff is done from the YELLOW home";
-                cell.textLabel.text          = @"Enter people and groups and make changes in them.";
+                cell.textLabel.text          = @"Enter people and groups and make changes to them.";
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;

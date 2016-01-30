@@ -40,10 +40,36 @@
   NSLog(@"gbl_currentMenuPlusReportCode=%@",gbl_currentMenuPlusReportCode);
 
 
+    self.view.backgroundColor = gbl_colorSelParamForReports;
+
+
     self.outletFor_YMD_picker.delegate   = self;
     self.outletFor_YMD_picker.dataSource = self;
     
-    self.view.backgroundColor = gbl_colorSelParamForReports;
+
+//
+//// try to reduce size of pickerview
+////    CGSize pickerSize = [pickerView sizeThatFits:CGSizeZero];
+//    CGSize pickerSize = [self.outletFor_YMD_picker sizeThatFits: CGSizeZero];
+//
+////    UIView *pickerTransformView = [[UIView alloc] init];  
+////    UIView *pickerTransformView = [[UIView alloc] initWithFrame:CGRectMake(50, 100, 55, 44)];  // 3rd arg is horizontal length
+//
+//    UIView *pickerTransformView;
+////    pickerTransformView = [[UIView alloc] initWithFrame: CGRectMake(0.0f, 0.0f, pickerSize.width, pickerSize.height)];
+//    pickerTransformView = [[UIView alloc] initWithFrame: CGRectMake(50.0f, 600.0f, pickerSize.width, pickerSize.height)];
+//    pickerTransformView.transform = CGAffineTransformMakeScale(0.75f, 0.75f);
+//
+////    [pickerTransformView addSubview: pickerView];
+////    [self.view addSubview: pickerTransformView];
+////    [self.outletFor_YMD_picker addSubView: pickerTransformView  ];
+//
+//    [pickerTransformView addSubview: self.outletFor_YMD_picker ];
+//    [self.view addSubview: pickerTransformView];
+//
+
+
+
 
 
     //UIBarButtonItem *_goToReportButton=[[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"ReportArrow_06.png"] 
@@ -117,6 +143,9 @@
     mySelDate_Label.textColor     = [UIColor blackColor];
     mySelDate_Label.textAlignment = NSTextAlignmentCenter; 
     mySelDate_Label.text          = myNavBar2lineTitle;
+    mySelDate_Label.adjustsFontSizeToFitWidth = YES;
+    [mySelDate_Label sizeToFit];
+
 
     // TWO-LINE NAV BAR TITLE
     //
@@ -333,7 +362,7 @@ tn();tr("date fmt  date fmt  date fmt  date fmt  date fmt  date fmt  date fmt  "
         dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
             self.outletToSelecteDate.text = myInitDateFormatted;
         });
-
+nbn(1);
 
         
         // 2. INIT  PICKER roller values
@@ -346,15 +375,19 @@ tn();tr("date fmt  date fmt  date fmt  date fmt  date fmt  date fmt  date fmt  "
             // second last elt should be current year
             myIndex = 0;
         }
-        [self.outletFor_YMD_picker selectRow:myIndex inComponent: 0 animated:YES]; // This is how you manually SET(!!) a selection!
+//        [self.outletFor_YMD_picker selectRow:myIndex inComponent: 0 animated:YES]; // This is how you manually SET(!!) a selection!
+        [self.outletFor_YMD_picker selectRow:myIndex inComponent: 1 animated:YES]; // This is how you manually SET(!!) a selection!
 
+nbn(2);
         myIndex = initDD - 1; // initMM and initDD are "one-based" real m and d values
         if (myIndex == NSNotFound) {
             // second last elt should be current year
             myIndex = 0;
         }
-        [self.outletFor_YMD_picker selectRow:myIndex inComponent: 1 animated:YES]; // This is how you manually SET(!!) a selection!
+//        [self.outletFor_YMD_picker selectRow:myIndex inComponent: 1 animated:YES]; // This is how you manually SET(!!) a selection!
+        [self.outletFor_YMD_picker selectRow:myIndex inComponent: 2 animated:YES]; // This is how you manually SET(!!) a selection!
 
+nbn(3);
 
         NSString* myInitYear = [NSString stringWithFormat:@"%i", initYYYY];  // convert c int to NSString
         myIndex = [yearsToPickFrom2 indexOfObject: myInitYear];
@@ -362,8 +395,10 @@ tn();tr("date fmt  date fmt  date fmt  date fmt  date fmt  date fmt  date fmt  "
             // second last elt should be current year
             myIndex = yearsToPickFrom2.count - 2;
         }
-        [self.outletFor_YMD_picker selectRow:myIndex inComponent: 2 animated:YES]; // This is how you manually SET(!!) a selection!
+//        [self.outletFor_YMD_picker selectRow:myIndex inComponent: 2 animated:YES]; // This is how you manually SET(!!) a selection!
+        [self.outletFor_YMD_picker selectRow:myIndex inComponent: 3 animated:YES]; // This is how you manually SET(!!) a selection!
 
+nbn(4);
 
         // save initial settings for gbl_rollerLast_*
         //
@@ -427,17 +462,23 @@ NSLog(@"in viewDidAppear()");
 // returns the number of 'columns' to display
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
 {
-    return 3;  // y m d
+//    return 3;  // y m d
+    return 5;  // y m d
 } // numberOfComponentsInPickerView
 
 
 // returns the # of rows in each component..
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent: (NSInteger)component
 {
-    if (component == 0) return self.arrayMonths.count;
-    if (component == 1) return self.arrayDaysOfMonth.count;
-    if (component == 2) return yearsToPickFrom2.count;
+//    if (component == 0) return self.arrayMonths.count;
+//    if (component == 1) return self.arrayDaysOfMonth.count;
+//    if (component == 2) return yearsToPickFrom2.count;
     
+    if (component == 0) return 1;
+    if (component == 1) return self.arrayMonths.count;
+    if (component == 2) return self.arrayDaysOfMonth.count;
+    if (component == 3) return yearsToPickFrom2.count;
+    if (component == 4) return 1;
     return 0;
     //NSLog(@"yearsToPickFrom2.count;=%lu",(unsigned long)yearsToPickFrom2.count);
 } // numberOfRowsInComponent
@@ -449,6 +490,7 @@ NSLog(@"in viewDidAppear()");
 
 #pragma mark -  @protocol UIPickerViewDelegate   @optional
 
+
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow: (NSInteger)row
                                                    forComponent: (NSInteger)component
 {
@@ -459,14 +501,109 @@ NSLog(@"in viewDidAppear()");
 //NSLog(@"row=%ld",(long)row);
 //NSLog(@"component=%ld",(long)component);
 //
-    if (component == 0)  titleForRowRetval = [self.arrayMonths      objectAtIndex: row];
-    if (component == 1)  titleForRowRetval = [self.arrayDaysOfMonth objectAtIndex: row];
-    if (component == 2)  titleForRowRetval = [yearsToPickFrom2      objectAtIndex: row];
+//    if (component == 0)  titleForRowRetval = [self.arrayMonths      objectAtIndex: row];
+//    if (component == 1)  titleForRowRetval = [self.arrayDaysOfMonth objectAtIndex: row];
+//    if (component == 2)  titleForRowRetval = [yearsToPickFrom2      objectAtIndex: row];
+
+//    if (component == 0) return @"XX";
+    if (component == 0) return @"  ";
+    if (component == 1)  titleForRowRetval = [self.arrayMonths      objectAtIndex: row];
+    if (component == 2)  titleForRowRetval = [self.arrayDaysOfMonth objectAtIndex: row];
+    if (component == 3)  titleForRowRetval = [yearsToPickFrom2      objectAtIndex: row];
+//    if (component == 4) return @"XW";
+    if (component == 4) return @"  ";
 
 //NSLog(@"titleForRowRetval=%@",titleForRowRetval);
     return titleForRowRetval;
 
 } // titleForRow
+
+
+
+- (UIView *)pickerView:(UIPickerView *)pickerView viewForRow: (NSInteger)row
+                                                forComponent: (NSInteger)component
+                                                 reusingView: (UIView *) arg_view
+{
+//  NSLog(@"in viewForRow !!  in PICKER ");
+//  NSLog(@"in viewForRow !!  in PICKER    row=%ld",(long)row);
+//  NSLog(@"in viewForRow !!  in PICKER compon=%ld",(long)component);
+
+    UILabel *retvalUILabel = (id) arg_view;
+
+    if (!retvalUILabel) {
+        retvalUILabel= [[UILabel alloc] initWithFrame: CGRectMake(
+            0.0f,
+            0.0f,
+            [pickerView rowSizeForComponent: component].width,
+            [pickerView rowSizeForComponent: component].height
+            )
+        ];
+    }
+
+//    retvalUILabel.font = [UIFont systemFontOfSize: 14];
+//    retvalUILabel.font = [UIFont systemFontOfSize: 20];
+//    retvalUILabel.font = [UIFont systemFontOfSize: 24];
+    retvalUILabel.font = [UIFont systemFontOfSize: 21];
+
+    if (component == 0)  retvalUILabel.text = @"  ";
+    if (component == 1)  retvalUILabel.text = [self.arrayMonths       objectAtIndex: row];
+    if (component == 2)  retvalUILabel.text = [self.arrayDaysOfMonth  objectAtIndex: row];
+    if (component == 3)  retvalUILabel.text = [yearsToPickFrom2       objectAtIndex: row];
+    if (component == 4)  retvalUILabel.text = @"  ";
+//  NSLog(@"retvalUILabel.text =[%@]",retvalUILabel.text );
+
+//
+//     // for picker row:  attributed text in view (uilabel)
+//     //
+//
+//     // define string for view
+//     //
+//     NSString *myStringForView;
+//     myStringForView = retvalUILabel.text;
+//
+//
+//    // Define needed attributes for the entire allLabelExplaintext 
+//    NSDictionary *myNeededAttribs = @{
+//        //   e.g.
+//        ////                                      NSForegroundColorAttributeName: self.label.textColor,
+//        ////                                      NSBackgroundColorAttributeName: cell.textLabel.attributedText
+//        ////                                      NSBackgroundColorAttributeName: cell.textLabel.textColor
+//        //                                      NSFontAttributeName: cell.textLabel.font,
+//        //                                      NSBackgroundColorAttributeName: cell.textLabel.backgroundColor
+//        //                                      };
+//        //
+//        //            NSMutableAttributedString *myAttributedTextLabelExplain = 
+//        //                [[NSMutableAttributedString alloc] initWithString: allLabelExplaintext
+//        //                                                       attributes: myNeededAttribs     ];
+//        //
+////                NSBackgroundColorAttributeName: retvalUILabel.attributedText.backgroundColor
+////        NSBackgroundColorAttributeName: retvalUILabel.backgroundColor
+//          NSFontAttributeName: retvalUILabel.font
+//    };
+//    // define attributed string
+//    NSMutableAttributedString *myAttributedTextLabel = [
+//        [ NSMutableAttributedString alloc ] initWithString: myStringForView
+//                                                attributes: myNeededAttribs   
+//    ];
+//
+//    // set value of  attributed string
+//    [ myAttributedTextLabel addAttribute: NSBackgroundColorAttributeName 
+////                                           value: [UIColor yellowColor]
+//                                   value: gbl_colorEditingBG_current
+//
+//
+//                                   range: NSMakeRange(1, gbl_myCitySoFar.length)  // offset, length
+//    ];
+//
+//    // set value of attributedText property of retvalUILabel
+//    retvalUILabel.attributedText = myAttributedTextLabel;
+//
+
+
+    return retvalUILabel;
+
+} // viewForRow in  picker
+
 
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow: (NSInteger)row
@@ -488,21 +625,24 @@ NSLog(@"in viewDidAppear()");
         NSInteger indexInMths = [self.arrayMonths indexOfObject: gbl_rollerLast_mth];
         mm_format = [NSString stringWithFormat:@"%02d",  (int) (indexInMths + 1)];    // mm is one-base, arr idx is zero-based
 
-        if (component == 0) {
-            gbl_rollerLast_mth  = [self pickerView:  self.outletFor_YMD_picker  // like "Jan"
-                                       titleForRow: [self.outletFor_YMD_picker  selectedRowInComponent: 0 ]
-                                      forComponent: 0  ];
-            mm_format = [NSString stringWithFormat:@"%02d",  (int) (row + 1)];    // mm is one-base, row is zero-based
-        }
+//        if (component == 0) {
         if (component == 1) {
-            gbl_rollerLast_dd   = [self pickerView:  self.outletFor_YMD_picker 
+            gbl_rollerLast_mth  = [self pickerView:  self.outletFor_YMD_picker  // like "Jan"
+//                                       titleForRow: [self.outletFor_YMD_picker  selectedRowInComponent: 0 ]
+//                                      forComponent: 0  ];
                                        titleForRow: [self.outletFor_YMD_picker  selectedRowInComponent: 1 ]
                                       forComponent: 1  ];
+            mm_format = [NSString stringWithFormat:@"%02d",  (int) (row + 1)];    // mm is one-base, row is zero-based
         }
         if (component == 2) {
-            gbl_rollerLast_yyyy = [self pickerView:  self.outletFor_YMD_picker
+            gbl_rollerLast_dd   = [self pickerView:  self.outletFor_YMD_picker 
                                        titleForRow: [self.outletFor_YMD_picker  selectedRowInComponent: 2 ]
                                       forComponent: 2  ];
+        }
+        if (component == 3) {
+            gbl_rollerLast_yyyy = [self pickerView:  self.outletFor_YMD_picker
+                                       titleForRow: [self.outletFor_YMD_picker  selectedRowInComponent: 3 ]
+                                      forComponent: 3  ];
         }
 
 
@@ -532,7 +672,8 @@ NSLog(@"in viewDidAppear()");
 
                 // set the changed value on the day  roller
                 myNewIndex = rollerDD - 1;               // initMM and initDD are "one-based" real m and d values
-                [self.outletFor_YMD_picker selectRow:myNewIndex inComponent: 1 animated:YES]; // This is how you manually SET(!!) a selection!
+//                [self.outletFor_YMD_picker selectRow:myNewIndex inComponent: 1 animated:YES]; // This is how you manually SET(!!) a selection!
+                [self.outletFor_YMD_picker selectRow:myNewIndex inComponent: 2 animated:YES]; // This is how you manually SET(!!) a selection!
             }
 
 //            // 2) roller date  m d y  is before date of birth

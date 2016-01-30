@@ -579,7 +579,7 @@ tn();
         OpathToHTML_webview     = [NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_webview];
         pathToHTML_webview      = (char *) [OpathToHTML_webview cStringUsingEncoding:NSUTF8StringEncoding];
         
-
+ksn(pathToHTML_webview      );
         //URLtoHTML_forWebview = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_browser]];
         URLtoHTML_forWebview = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_webview]];
         URLtoHTML_forEmailing = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_browser]];
@@ -646,89 +646,106 @@ tn();
 
 
 
+//  get all the html lines into a NSString and a NSArray
 
-       do { // remove <title> in webview html file
-
-            // remove <title> in webview html file    (because using same html for webview and browser (for now) )
-            // <pre class="myTitle">2015 ~Aiden 89012f45 </pre>
-            // remove line beginning with    <pre class="myTitle">
-            // (title is now in uiwebview nav bar title)
-            //
             NSCharacterSet *newlineCharSet = [NSCharacterSet newlineCharacterSet];
-            NSString* fileContents    = [NSString stringWithContentsOfFile: OpathToHTML_webview
-                                                                  encoding: NSUTF8StringEncoding
-                                                                     error: nil];
-            NSArray *htmllines = [fileContents componentsSeparatedByCharactersInSet: newlineCharSet];
+            NSString* myHTML_FileContents    = [NSString stringWithContentsOfFile: OpathToHTML_webview
+                                                                         encoding: NSUTF8StringEncoding
+                                                                            error: nil];
+//            NSArray *htmllines = [fileContents componentsSeparatedByCharactersInSet: newlineCharSet];
+
+
+
 
 //
-////<.>  for test
-//int printnextline;
-//printnextline = 0;
-//for (NSString *myline in htmllines ) {
-//    // log if contains STRESS, print  + line after
-//    NSString *findme = @"STRESS";
-//    if ([myline containsString: findme]  ||  printnextline == 1) {
-//        if (printnextline == 1)
-//        {
-//            printnextline  = 0;
-//            NSLog(@"myline=[%@]",myline);
-//        } else {
-//            printnextline  = 1;
-//            NSLog(@"myline=[%@]",myline);
-//        }
-//    }
-//}
-////<.>  for test
+//  // 20160126   no more title in webview, so do not need this
+//
+//       do { // remove <title> in webview html file
+//
+//            // remove <title> in webview html file    (because using same html for webview and browser (for now) )
+//            // <pre class="myTitle">2015 ~Aiden 89012f45 </pre>
+//            // remove line beginning with    <pre class="myTitle">
+//            // (title is now in uiwebview nav bar title)
+//            //
+//            NSCharacterSet *newlineCharSet = [NSCharacterSet newlineCharacterSet];
+//            NSString* fileContents    = [NSString stringWithContentsOfFile: OpathToHTML_webview
+//                                                                  encoding: NSUTF8StringEncoding
+//                                                                     error: nil];
+//            NSArray *htmllines = [fileContents componentsSeparatedByCharactersInSet: newlineCharSet];
+//
+////
+//////<.>  for test
+////int printnextline;
+////printnextline = 0;
+////for (NSString *myline in htmllines ) {
+////    // log if contains STRESS, print  + line after
+////    NSString *findme = @"STRESS";
+////    if ([myline containsString: findme]  ||  printnextline == 1) {
+////        if (printnextline == 1)
+////        {
+////            printnextline  = 0;
+////            NSLog(@"myline=[%@]",myline);
+////        } else {
+////            printnextline  = 1;
+////            NSLog(@"myline=[%@]",myline);
+////        }
+////    }
+////}
+//////<.>  for test
+////
+////
 //
 //
-
-
-            NSMutableArray *htmllinesMut = [NSMutableArray arrayWithArray: htmllines ];
-
-
-            // NSMutableArray rearranges the indexes after adding or removing an object,
-            // so if we start with index 0, we'll be guaranteed an index out of bounds exception
-            // if even one object is removed during the iteration.
-            // So, we have to start from the back of the array, and
-            // only remove objects that have lower indexes than every index we've checked so far.
-            // http://stackoverflow.com/questions/19107905/removing-an-item-from-an-array-in-objective-c
-            NSInteger numlins = [htmllinesMut count];
-            NSString *currlin;
-            for (NSInteger myidx = (numlins - 1); myidx >= 0; myidx--) {
-               currlin = htmllinesMut[myidx];
-               if ([currlin hasPrefix: @"<pre class=\"myTitle\">"] ) {
-    //                [htmllinesMut removeObjectAtIndex: myidx];
-                    [htmllinesMut replaceObjectAtIndex:  myidx   withObject: @"<pre><br></pre>" ];
-                }
-            }
-
-            [gbl_sharedFM removeItemAtURL: URLtoHTML_forWebview error:&err03];
-
-            // Write array back  (overwrite original html file)
-
-            NSString *myarr2str = [htmllinesMut componentsJoinedByString:@"\n"];
-
-    //        [htmllinesMut writeToFile: OpathToHTML_webview atomically: YES];
-            [myarr2str writeToFile: OpathToHTML_webview atomically: YES
-                                                                  encoding: NSUTF8StringEncoding
-                                                                     error: nil
-            ];
-
-
-    //- (BOOL)writeToFile:(NSString *)path
-    //         atomically:(BOOL)useAuxiliaryFile
-    //           encoding:(NSStringEncoding)enc
-    //              error:(NSError **)error
-    //
-
-    //- (BOOL)writeToFile:(NSString *)path
-    //         atomically:(BOOL)useAuxiliaryFile
-    //           encoding:(NSStringEncoding)enc
-    //              error:(NSError **)error
-    //
-    //
-       } while (0); // end of remove <title> in webview html file
-
+//            NSMutableArray *htmllinesMut = [NSMutableArray arrayWithArray: htmllines ];
+//
+//
+//            // NSMutableArray rearranges the indexes after adding or removing an object,
+//            // so if we start with index 0, we'll be guaranteed an index out of bounds exception
+//            // if even one object is removed during the iteration.
+//            // So, we have to start from the back of the array, and
+//            // only remove objects that have lower indexes than every index we've checked so far.
+//            // http://stackoverflow.com/questions/19107905/removing-an-item-from-an-array-in-objective-c
+//            NSInteger numlins = [htmllinesMut count];
+//            NSString *currlin;
+//tn();nbn(899);
+//            for (NSInteger myidx = (numlins - 1); myidx >= 0; myidx--) {
+//               currlin = htmllinesMut[myidx];
+//               if ([currlin hasPrefix: @"<pre class=\"myTitle\">"] ) {
+//    //                [htmllinesMut removeObjectAtIndex: myidx];
+//tn();nbn(900);
+//                    [htmllinesMut replaceObjectAtIndex:  myidx   withObject: @"<pre><br></pre>" ];
+//                }
+//            }
+//
+//            [gbl_sharedFM removeItemAtURL: URLtoHTML_forWebview error:&err03];
+//
+//            // Write array back  (overwrite original html file)
+//
+//            NSString *myarr2str = [htmllinesMut componentsJoinedByString:@"\n"];
+//
+//    //        [htmllinesMut writeToFile: OpathToHTML_webview atomically: YES];
+//            [myarr2str writeToFile: OpathToHTML_webview atomically: YES
+//                                                                  encoding: NSUTF8StringEncoding
+//                                                                     error: nil
+//            ];
+//
+//
+//    //- (BOOL)writeToFile:(NSString *)path
+//    //         atomically:(BOOL)useAuxiliaryFile
+//    //           encoding:(NSStringEncoding)enc
+//    //              error:(NSError **)error
+//    //
+//
+//    //- (BOOL)writeToFile:(NSString *)path
+//    //         atomically:(BOOL)useAuxiliaryFile
+//    //           encoding:(NSStringEncoding)enc
+//    //              error:(NSError **)error
+//    //
+//    //
+//       } while (0); // end of remove <title> in webview html file
+//  // 20160126   no more title in webview
+//
+//
 
         //  for test   show all files in temp dir
         NSFileManager *manager = [NSFileManager defaultManager];
@@ -765,10 +782,42 @@ tn();
             //
             // old= [self.outletWebView ldoadRequest: HTML_URLrequest];
             //
+
+            //            dispatch_async(dispatch_get_main_queue(), ^(void){
+            //                [self.outletWebView loadRequest:HTML_URLrequest];
+            //            });
+
+            // loadRequest above   BUT,      DON’T USE THIS METHOD  (see below)
+            // https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIWebView_Class/#//apple_ref/occ/instm/UIWebView/loadHTMLString:baseURL:
+            //
+            // - (void)loadRequest:(NSURLRequest *)request
+            // Parameters   request	A URL request identifying the location of the content to load.
+            // Discussion     DON’T USE THIS METHOD     to load local HTML files; instead, use loadHTMLString:baseURL:.
+            // To stop this load, use the stopLoading method.
+            // To see whether the receiver is done loading the content, use the loading property.
+            //
+
+            // from     https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIWebView_Class/
+            //
+            // - (void)loadHTMLString: (NSString *)string
+            //                baseURL: (NSURL *)baseURL
+            // Parameters
+            //     string	The content for the main page.
+            //     baseURL	The base URL for the content.
+            // Discussion
+            //     To help you avoid being vulnerable to security attacks, BE SURE TO USE THIS METHOD TO LOAD LOCAL HTML FILES.
+            //     Don’t use loadRequest:.
+            //
+nbn(901);
             dispatch_async(dispatch_get_main_queue(), ^(void){
-                [self.outletWebView loadRequest:HTML_URLrequest];
+//              [self.outletWebView  loadRequest: HTML_URLrequest ];
+                [self.outletWebView  loadHTMLString: myHTML_FileContents  baseURL: nil];
+
             });
-        }
+nbn(902);
+
+        }  // show cal yr html
+
     }  // [gbl_currentMenuPlusReportCode hasSuffix: @"cy"] // calendar year report
 
     
@@ -884,6 +933,9 @@ tn();
         
         Ohtml_file_name_webview = [NSString stringWithUTF8String: html_file_name_webview ];
         OpathToHTML_webview     = [NSTemporaryDirectory() stringByAppendingPathComponent:  Ohtml_file_name_webview];
+
+        gbl_OpathToHTML_webview = OpathToHTML_webview;  // for what color load
+
         pathToHTML_webview      = (char *) [OpathToHTML_webview cStringUsingEncoding: NSUTF8StringEncoding];
 
 
@@ -1055,6 +1107,9 @@ NSLog(@"in viewDidAppear()");
         mySelRptB_Label.textColor     = [UIColor blackColor];
         mySelRptB_Label.textAlignment = NSTextAlignmentCenter; 
         mySelRptB_Label.text          = myNavBar2lineTitle;
+        mySelRptB_Label.adjustsFontSizeToFitWidth = YES;
+        [mySelRptB_Label sizeToFit];
+
 
         // TWO-LINE NAV BAR TITLE
         //
@@ -1256,16 +1311,18 @@ tn();    NSLog(@"in shareButtonAction!  in viewHTML   ");
         myEmailMessage = [NSString stringWithFormat: @"\n\"Most Down-to-earth Person in Group %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.", gbl_lastSelectedGroup ];
     }
 
-//    if ([gbl_currentMenuPlusReportCode hasSuffix: @"pe"])   // personality
-//    if (   [gbl_currentMenuPlusReportCode hasSuffix: @"pe"]      // personality report
-    if (   [gbl_currentMenuPlusReportCode hasSuffix: @"pe"] // per rpt gmappe,gmeppe,gmrppe,gmpppe,gmdppe homppe pbm1pe,pbm2pe gbm1pe,gbm2pe
-//        || [gbl_currentMenuPlusReportCode hasPrefix: @"homgm"]   // personality report  homgma,homgme,homgmr,homgmp,homgmd
-    ) {
-        myEmailMessage = [NSString stringWithFormat: @"\n\"Personality of %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.", gbl_person_name ];
-    }
-    if ([gbl_currentMenuPlusReportCode hasSuffix: @"co"]) {  //   @"Compatibility Potential"  hompco, pbmco, gbmco
-        myEmailMessage = [NSString stringWithFormat: @"\"Compatibility Potential of %@ and %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.", gbl_person_name, gbl_person_name2 ];
-    }
+//
+////    if ([gbl_currentMenuPlusReportCode hasSuffix: @"pe"])   // personality
+////    if (   [gbl_currentMenuPlusReportCode hasSuffix: @"pe"]      // personality report
+//    if (   [gbl_currentMenuPlusReportCode hasSuffix: @"pe"] // per rpt gmappe,gmeppe,gmrppe,gmpppe,gmdppe homppe pbm1pe,pbm2pe gbm1pe,gbm2pe
+////        || [gbl_currentMenuPlusReportCode hasPrefix: @"homgm"]   // personality report  homgma,homgme,homgmr,homgmp,homgmd
+//    ) {
+//        myEmailMessage = [NSString stringWithFormat: @"\n\"Personality of %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.", gbl_person_name ];
+//    }
+//    if ([gbl_currentMenuPlusReportCode hasSuffix: @"co"]) {  //   @"Compatibility Potential"  hompco, pbmco, gbmco
+//        myEmailMessage = [NSString stringWithFormat: @"\"Compatibility Potential of %@ and %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.", gbl_person_name, gbl_person_name2 ];
+//    }
+//
     if ([gbl_currentMenuPlusReportCode hasSuffix: @"cy"]) {  // @"Calendar Year"              hompcy and gbypcy
         myEmailMessage = [NSString stringWithFormat: @"\"Calendar Year %@ for %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.", gbl_lastSelectedYear, gbl_person_name
         ];
@@ -1905,6 +1962,26 @@ NSLog(@"Ok button pressed");
 //
     
 
+//<.>
+//            NSString* myWhatColorHTML_FileContents = [NSString stringWithContentsOfFile: OpathToHTML_webview
+//        
+//        Ohtml_file_name_webview = [NSString stringWithUTF8String:html_file_name_webview ];
+//        OpathToHTML_webview     = [NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_webview];
+//        pathToHTML_webview      = (char *) [OpathToHTML_webview cStringUsingEncoding:NSUTF8StringEncoding];
+//        
+//<.>
+//
+
+            //  get all the html lines into a NSString and a NSArray
+            //
+            NSCharacterSet *newlineCharSet = [NSCharacterSet newlineCharacterSet];
+            NSString* myWhatColorHTML_FileContents = [NSString stringWithContentsOfFile: gbl_OpathToHTML_webview
+                                                                               encoding: NSUTF8StringEncoding
+                                                                                  error: nil ];
+//            NSArray *htmllines = [fileContents componentsSeparatedByCharactersInSet: newlineCharSet];
+
+
+
 
     //if (retval == 0 && retval2 == 0) 
     if (retval == 0) {                   // retval = mamb_report_year_in_the_life (    /* in futdoc.o */
@@ -1950,7 +2027,8 @@ NSLog(@"Ok button pressed");
             dispatch_time_t mytime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)myDelayInSec);
 
             dispatch_after(mytime, dispatch_get_main_queue(), ^{                     // do after delay of  mytime
-                [self.outletWebView loadRequest: HTML_URLrequestForWhatColorReport];
+//                [self.outletWebView loadRequest: HTML_URLrequestForWhatColorReport];
+                [self.outletWebView  loadHTMLString: myWhatColorHTML_FileContents  baseURL: nil];
                 [self.view setUserInteractionEnabled: YES];                          // this works to disable user interaction for "mytime"
             });
         }
@@ -1959,7 +2037,8 @@ NSLog(@"Ok button pressed");
                                                           // = 0 (no delay on first show of screen)
 
             dispatch_async(dispatch_get_main_queue(), ^(void){  // UIWebView is part of UIKit, so you should operate on the main thread.
-                [self.outletWebView loadRequest: HTML_URLrequestForWhatColorReport];
+//                [self.outletWebView loadRequest: HTML_URLrequestForWhatColorReport];
+                [self.outletWebView  loadHTMLString: myWhatColorHTML_FileContents  baseURL: nil];
             });
         }                                                          
 

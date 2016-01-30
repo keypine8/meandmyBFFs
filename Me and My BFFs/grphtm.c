@@ -3159,13 +3159,16 @@ void put_top_of_html_group_rpt(char *group_name) {
 
     g_fn_prtlin( "    .cGr2        { background-color:#66ff33; }");
   /*   g_fn_prtlin( "    .cGre        { background-color:#84ff98; }"); */
-    g_fn_prtlin( "    .cGre        { background-color:#a8ff98; }");
+//    g_fn_prtlin( "    .cGre        { background-color:#a8ff98; }");
+    g_fn_prtlin( "    .cGre        { background-color:#c0ffc0; }");
 /*   g_fn_prtlin("    .cNeu        { background-color:#e1ddc3; }"); */
-    g_fn_prtlin("    .cNeu        { background-color:#e5e2c7; }");
+//    g_fn_prtlin("    .cNeu        { background-color:#e5e2c7; }");
+    g_fn_prtlin("    .cNeu        { background-color:#edebd8; }");
 //    g_fn_prtlin( "    .cRed        { background-color:#ff98a8; }");
     g_fn_prtlin( "    .cRed        { background-color:#ffb5c9; }");
 //    g_fn_prtlin( "    .cRe2        { background-color:#ff4477; }");
-    g_fn_prtlin( "    .cRe2        { background-color:#ff678f; }");
+//    g_fn_prtlin( "    .cRe2        { background-color:#ff678f; }");
+    g_fn_prtlin( "    .cRe2        { background-color:#ff7ba3; }");
   }
 
 
@@ -3499,15 +3502,18 @@ tn();trn("in put_top_of_just2_group_rpt()");
 
   g_fn_prtlin( "    .cGr2        { background-color:#66ff33; }");
 /*   g_fn_prtlin( "    .cGre        { background-color:#84ff98; }"); */
-  g_fn_prtlin( "    .cGre        { background-color:#a8ff98; }");
+//  g_fn_prtlin( "    .cGre        { background-color:#a8ff98; }");
+  g_fn_prtlin( "    .cGre        { background-color:#c0ffc0; }");
 //  g_fn_prtlin( "    .cRed        { background-color:#ff98a8; }");
   g_fn_prtlin( "    .cRed        { background-color:#ffb5c9; }");
 //  g_fn_prtlin( "    .cRe2        { background-color:#ff4477; }");
-  g_fn_prtlin( "    .cRe2        { background-color:#ff678f; }");
+//  g_fn_prtlin( "    .cRe2        { background-color:#ff678f; }");
+  g_fn_prtlin( "    .cRe2        { background-color:#ff7ba3; }");
 
 
 /*   g_fn_prtlin("    .cNeu        { background-color:#e1ddc3; }"); */
-  g_fn_prtlin("    .cNeu        { background-color:#e5e2c7; }");
+//  g_fn_prtlin("    .cNeu        { background-color:#e5e2c7; }");
+  g_fn_prtlin("    .cNeu        { background-color:#edebd8; }");
 
   g_fn_prtlin( "    .cHed        { background-color:#fcfce0; }");
   g_fn_prtlin( "    .cNam        { color:#3f3ffa;");

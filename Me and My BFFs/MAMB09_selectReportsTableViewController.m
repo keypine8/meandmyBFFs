@@ -70,9 +70,29 @@ tn(); NSLog(@"in sel Reports viewDidLoad!");
     //                   [NSCharacterSet characterSetWithCharactersInString:@"|"]];
     NSArray *arrSpecs = [gbl_fromHomeCurrentSelectionPSV componentsSeparatedByCharactersInSet:
                          [NSCharacterSet characterSetWithCharactersInString:@"|"]];
+
+
+    UIButton *myInvisibleButton       = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+//        UIButton *myInvisibleButton       = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+    myInvisibleButton.backgroundColor = [UIColor clearColor];
+    UIBarButtonItem *mySpacerNavItem  = [[UIBarButtonItem alloc] initWithCustomView: myInvisibleButton];
+    UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 55, 44)];  // 3rd arg is horizontal length
+    UIBarButtonItem *mySpacerForTitle = [[UIBarButtonItem alloc] initWithCustomView:spaceView];
+
+
+    UILabel *myNavBarLabel      = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 480.0, 44.0)];
+nbn(44);
+    myNavBarLabel.textColor     = [UIColor blackColor];
+    myNavBarLabel.textAlignment = NSTextAlignmentCenter; 
+    myNavBarLabel.text          = [NSString stringWithFormat:@"%@", arrSpecs[0] ];
+    myNavBarLabel.font          = [UIFont boldSystemFontOfSize: 17.0];
+    myNavBarLabel.adjustsFontSizeToFitWidth = YES;
+    [myNavBarLabel sizeToFit];
     
     dispatch_async(dispatch_get_main_queue(), ^{                                // <===  <.>
-        [[self navigationItem] setTitle: arrSpecs[0]];
+//        [[self navigationItem] setTitle: arrSpecs[0]];
+        self.navigationItem.titleView = myNavBarLabel; // myNavBarLabel.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
+        self.navigationItem.rightBarButtonItem =  mySpacerForTitle;
     });
     
     // NSLog(@"fromHomeCurrentEntity=%@",self.fromHomeCurrentEntity);                  // like "group" or "person"
@@ -254,6 +274,7 @@ NSLog(@"in viewDidAppear()");
         dispatch_async(dispatch_get_main_queue(), ^{        
             cell.textLabel.text                      = myNewCellText;  // --------------------------------------------------
             cell.textLabel.font                      = myNewFont ;
+            cell.textLabel.adjustsFontSizeToFitWidth = YES;
             cell.userInteractionEnabled              = NO;                           // no selection highlighting
             cell.accessoryView                       = myInvisibleButton;            // no right arrow on benchmark label
             cell.accessoryType                       = UITableViewCellAccessoryDisclosureIndicator;
@@ -324,6 +345,7 @@ NSLog(@"in viewDidAppear()");
             dispatch_async(dispatch_get_main_queue(), ^{            // <  active
                 cell.textLabel.text                      = myNewCellText;  // --------------------------------------------------
                 cell.textLabel.font                      = myNewFont ;
+                cell.textLabel.adjustsFontSizeToFitWidth = YES;
                 cell.userInteractionEnabled              = YES;                  
                 cell.accessoryType                       = UITableViewCellAccessoryDisclosureIndicator;
 
@@ -346,6 +368,7 @@ NSLog(@"in viewDidAppear()");
         dispatch_async(dispatch_get_main_queue(), ^{            // <  active
             cell.textLabel.text                      = myNewCellText;  // --------------------------------------------------
             cell.textLabel.font                      = myNewFont ;
+            cell.textLabel.adjustsFontSizeToFitWidth = YES;
             cell.userInteractionEnabled              = YES;                  
 //            cell.accessoryView                       = myDisclosureIndicatorLabel;
             cell.accessoryType                       = UITableViewCellAccessoryDisclosureIndicator;

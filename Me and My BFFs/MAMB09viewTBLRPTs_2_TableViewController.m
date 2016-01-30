@@ -1301,9 +1301,12 @@ for (id eltTst in gbl_compDataLines) { NSLog(@"    gbl_comp=%@", eltTst); }
 //        UIFont *perFontSmallest = [UIFont fontWithName: @"Menlo-bold" size: 11.0];
 
         UIFont *myPerFont;
-        UIFont *perFont_16  = [UIFont fontWithName: @"Menlo" size: 16.0];
-        UIFont *perFont_14  = [UIFont fontWithName: @"Menlo" size: 14.0];
-        UIFont *perFont_12  = [UIFont fontWithName: @"Menlo" size: 12.0];
+        UIFont *perFont_16  = [UIFont fontWithName: @"Menlo"      size: 16.0];
+        UIFont *perFont_16b = [UIFont fontWithName: @"Menlo-bold" size: 16.0];
+        UIFont *perFont_15b = [UIFont fontWithName: @"Menlo-bold" size: 15.0];
+        UIFont *perFont_14  = [UIFont fontWithName: @"Menlo"      size: 14.0];
+        UIFont *perFont_14b = [UIFont fontWithName: @"Menlo-bold" size: 14.0];
+        UIFont *perFont_12  = [UIFont fontWithName: @"Menlo"      size: 12.0];
         UIFont *perFont_11b = [UIFont fontWithName: @"Menlo-bold" size: 11.0];
         
 
@@ -1317,6 +1320,7 @@ for (id eltTst in gbl_compDataLines) { NSLog(@"    gbl_comp=%@", eltTst); }
         NSTextAlignment myalign;
         NSInteger       mynumlines;
         BOOL            myadjust;
+        NSString *colorFromCalc;
 
         mybgcolor         = [UIColor redColor]; // should not show up
         myalign           = NSTextAlignmentLeft;  // default
@@ -1333,49 +1337,216 @@ for (id eltTst in gbl_compDataLines) { NSLog(@"    gbl_comp=%@", eltTst); }
             mycode    = tmparr[0];
             mylin     = tmparr[1];
         }
-//  NSLog(@"mylin=[%@]",mylin);
+        if (tmparr.count > 2) {
+            colorFromCalc = tmparr[2];
+        }
+  NSLog(@"mylin=[%@]",mylin);
 
-//gbl_color_cNeu 
-//gbl_color_cBgr 
-//gbl_color_cHed
+
+//<.> old
+//        if ( [mycode isEqualToString: @"fill"] ) {
+//            myalign           = NSTextAlignmentCenter;
+//            mynumlines        = 1;    
+//            myadjust          = NO;
+//            mytextcolor       = [UIColor blackColor];
+////            myPerFont         = perFontNormal;
+//            myPerFont         = perFont_16;
+//
+//            if ( [mylin isEqualToString: @"filler line #1 at top"] ) {
+//                mylin             = @" ";
+//                mybgcolor         = gbl_color_cBgr ;
+//                gbl_heightCellPER = 8;
+//            }
+//            else if ( [mylin isEqualToString: @"before table head"] ) {
+//                mylin             = @" ";
+//                mybgcolor         = gbl_color_cHed ;
+//                gbl_heightCellPER = 8;
+//            }
+//            else if ( [mylin isEqualToString: @"after table head"] ) {
+//                mylin             = @" ";
+//                mybgcolor         = gbl_color_cHed ;
+//                gbl_heightCellPER = 8;
+//            }
+//            else if ( [mylin isEqualToString: @"before table foot"] ) {
+//                mylin             = @" ";
+//                mybgcolor         = gbl_color_cHed ;
+//                gbl_heightCellPER = 8;
+//            }
+//            else if ( [mylin isEqualToString: @"after table foot"] ) {
+//                mylin             = @" ";
+//                mybgcolor         = gbl_color_cHed ;
+//                gbl_heightCellPER = 8;
+//            }
+//            else if ( [mylin isEqualToString: @"before para"] ) {
+//                mylin             = @" ";
+//                mybgcolor         = gbl_color_cBgr ;
+////                gbl_heightCellPER = 16;
+////                gbl_heightCellPER = 12;
+//                gbl_heightCellPER = 15;
+//            }
+//            else if ( [mylin isEqualToString: @"before willpower"] ) {
+//                mylin             = @" ";
+//                mybgcolor         = gbl_color_cBgr ;
+//                gbl_heightCellPER = 24;
+//            }
+//            else if ( [mylin isEqualToString: @"in willpower at beg"] ) {
+//                mylin             = @" ";
+//                mybgcolor         = gbl_color_cHed ;
+//                gbl_heightCellPER = 8;
+//            }
+//            else if ( [mylin isEqualToString: @"in willpower at end"] ) {
+//                mylin             = @" ";
+//                mybgcolor         = gbl_color_cHed ;
+//                gbl_heightCellPER = 8;
+//            }
+//            else if ( [mylin isEqualToString: @"before produced by"] ) {
+//                mylin             = @" ";
+//                mybgcolor         = gbl_color_cBgr ;
+//                gbl_heightCellPER = 16;
+//            }
+//            else if ( [mylin isEqualToString: @"before entertainment"] ) {
+//                mylin             = @" ";
+//                mybgcolor         = gbl_color_cBgr ;
+//                gbl_heightCellPER = 4;
+//            }
+//        }
+//        if ( [mycode isEqualToString: @"head"] ) {
+//            myalign           = NSTextAlignmentCenter;
+//            mynumlines        = 1;    
+//            mybgcolor         = gbl_color_cHed ;
+////            gbl_heightCellPER = 16;
+////            gbl_heightCellPER = 20;
+//            gbl_heightCellPER = 16;
+//            myadjust          = YES;
+//            mytextcolor       = [UIColor blackColor];
+////            myPerFont         = perFontNormal;
+//            myPerFont         = perFont_14;
+//        }
+//        if ( [mycode isEqualToString: @"foot"] ) {
+//            myalign           = NSTextAlignmentCenter;
+//            mynumlines        = 1;    
+//            mybgcolor         = gbl_color_cHed ;
+////            gbl_heightCellPER = 16;
+////            gbl_heightCellPER = 18;
+//            gbl_heightCellPER = 16;
+//            myadjust          = YES;
+//            mytextcolor       = [UIColor blackColor];
+////            myPerFont         = perFontNormal;
+//            myPerFont         = perFont_14;
+//        }
+//        if ( [mycode isEqualToString: @"tabl"] ) {
+//            myalign           = NSTextAlignmentLeft;
+//            mynumlines        = 1;    
+//            mybgcolor         = gbl_color_cNeu ;
+////            gbl_heightCellPER = 24;
+//            gbl_heightCellPER = 20;
+//            myadjust          = YES;
+//            mytextcolor       = [UIColor blackColor];
+////            myPerFont         = perFontNormal;
+//            myPerFont         = perFont_16;
+//        }
+//        if ( [mycode isEqualToString: @"para"] ) {
+//            myalign           = NSTextAlignmentLeft;
+//            mynumlines        = 1;    
+//            mybgcolor         = gbl_color_cBgr ;
+////            gbl_heightCellPER = 16;
+////            gbl_heightCellPER = 20;
+//            gbl_heightCellPER = 18;
+//            myadjust          = NO;
+//            mytextcolor       = [UIColor blackColor];
+////            myPerFont         = perFontNormal;
+//            myPerFont         = perFont_16;
+//        }
+//        if ( [mycode isEqualToString: @"will"] ) {
+//            myalign           = NSTextAlignmentLeft;
+//            mynumlines        = 1;    
+//            mybgcolor         = gbl_color_cHed ;
+//            gbl_heightCellPER = 16;
+//            myadjust          = YES;
+//            mytextcolor       = [UIColor blackColor];
+////            myPerFont         = perFontNormal;
+//            myPerFont         = perFont_16;
+//        }
+//        if ( [mycode isEqualToString: @"prod"] ) {
+//            myalign           = NSTextAlignmentCenter;
+//            mynumlines        = 1;    
+//            mybgcolor         = gbl_color_cBgr ;
+//            gbl_heightCellPER = 16;
+//            myadjust          = YES;
+//            mytextcolor       = [UIColor blackColor];
+////            myPerFont         = perFontSmaller;
+//            myPerFont         = perFont_12;
+//        }
+//        if ( [mycode isEqualToString: @"purp"] ) {
+//            myalign           = NSTextAlignmentCenter;
+//            mynumlines        = 1;    
+//            mybgcolor         = gbl_color_cBgr ;
+//            gbl_heightCellPER = 16;
+//            myadjust          = YES;
+//            mytextcolor       = [UIColor redColor];
+////            myPerFont         = perFontSmallest;
+//            myPerFont         = perFont_11b;
+//        }
+//<.> old
+
+
+//<.> new
         if ( [mycode isEqualToString: @"fill"] ) {
             myalign           = NSTextAlignmentCenter;
             mynumlines        = 1;    
             myadjust          = NO;
             mytextcolor       = [UIColor blackColor];
-//            myPerFont         = perFontNormal;
             myPerFont         = perFont_16;
 
             if ( [mylin isEqualToString: @"filler line #1 at top"] ) {
                 mylin             = @" ";
                 mybgcolor         = gbl_color_cBgr ;
-                gbl_heightCellPER = 8;
+//                gbl_heightCellPER = 8;
+//                gbl_heightCellPER = 24  ;
+                gbl_heightCellPER = 16  ;
             }
             else if ( [mylin isEqualToString: @"before table head"] ) {
                 mylin             = @" ";
-                mybgcolor         = gbl_color_cHed ;
+//                mybgcolor         = gbl_color_cHed ;
+//                mybgcolor         = gbl_color_cPerGreen1;
+                mybgcolor         = gbl_color_cAplDarkBlue;
                 gbl_heightCellPER = 8;
             }
-            else if ( [mylin isEqualToString: @"after table head"] ) {
+            else if ( [mylin isEqualToString: @"after table head1"] ) {
                 mylin             = @" ";
-                mybgcolor         = gbl_color_cHed ;
+//                mybgcolor         = gbl_color_cHed ;
+                mybgcolor         = gbl_color_cAplDarkBlue;
+                gbl_heightCellPER = 4;
+            }
+            else if ( [mylin isEqualToString: @"after table head2"] ) {
+                mylin             = @" ";
+//                mybgcolor         = gbl_color_cHed ;
+                mybgcolor         = gbl_color_cPerGreen1;
                 gbl_heightCellPER = 8;
             }
-            else if ( [mylin isEqualToString: @"before table foot"] ) {
+            else if ( [mylin isEqualToString: @"before table foot1"] ) {
                 mylin             = @" ";
-                mybgcolor         = gbl_color_cHed ;
+//                mybgcolor         = gbl_color_cHed ;
+                mybgcolor         = gbl_color_cPerGreen1;
                 gbl_heightCellPER = 8;
+            }
+            else if ( [mylin isEqualToString: @"before table foot2"] ) {
+                mylin             = @" ";
+//                mybgcolor         = gbl_color_cHed ;
+                mybgcolor         = gbl_color_cAplDarkBlue;
+                gbl_heightCellPER = 4;
             }
             else if ( [mylin isEqualToString: @"after table foot"] ) {
                 mylin             = @" ";
-                mybgcolor         = gbl_color_cHed ;
+//                mybgcolor         = gbl_color_cHed ;
+                mybgcolor         = gbl_color_cAplDarkBlue;
                 gbl_heightCellPER = 8;
             }
             else if ( [mylin isEqualToString: @"before para"] ) {
                 mylin             = @" ";
                 mybgcolor         = gbl_color_cBgr ;
-//                gbl_heightCellPER = 16;
 //                gbl_heightCellPER = 12;
+//                gbl_heightCellPER = 18;
                 gbl_heightCellPER = 15;
             }
             else if ( [mylin isEqualToString: @"before willpower"] ) {
@@ -1405,38 +1576,62 @@ for (id eltTst in gbl_compDataLines) { NSLog(@"    gbl_comp=%@", eltTst); }
             }
         }
         if ( [mycode isEqualToString: @"head"] ) {
+//            myalign           = NSTextAlignmentCenter;
+//            mynumlines        = 1;    
+//            mybgcolor         = gbl_color_cHed ;
+////            gbl_heightCellPER = 16;
+////            gbl_heightCellPER = 20;
+//            gbl_heightCellPER = 16;
+//            myadjust          = YES;
+//            mytextcolor       = [UIColor blackColor];
+////            myPerFont         = perFont_16;
+//            myPerFont         = perFont_14;
+//
             myalign           = NSTextAlignmentCenter;
             mynumlines        = 1;    
-            mybgcolor         = gbl_color_cHed ;
+            mybgcolor         = gbl_color_cAplDarkBlue ;
 //            gbl_heightCellPER = 16;
 //            gbl_heightCellPER = 20;
             gbl_heightCellPER = 16;
+            gbl_heightCellPER = 17;
             myadjust          = YES;
-            mytextcolor       = [UIColor blackColor];
-//            myPerFont         = perFontNormal;
-            myPerFont         = perFont_14;
+            mytextcolor       = [UIColor whiteColor];
+//            mytextcolor       = [UIColor cyanColor];
+//            myPerFont         = perFont_16;
+//            myPerFont         = perFont_14b;
+            myPerFont         = perFont_16b;
+
         }
         if ( [mycode isEqualToString: @"foot"] ) {
             myalign           = NSTextAlignmentCenter;
             mynumlines        = 1;    
             mybgcolor         = gbl_color_cHed ;
+            mybgcolor         = gbl_color_cAplDarkBlue ;
 //            gbl_heightCellPER = 16;
-//            gbl_heightCellPER = 18;
             gbl_heightCellPER = 16;
+            gbl_heightCellPER = 20;
             myadjust          = YES;
             mytextcolor       = [UIColor blackColor];
-//            myPerFont         = perFontNormal;
-            myPerFont         = perFont_14;
+            mytextcolor       = [UIColor whiteColor];
+//            myPerFont         = perFont_16;
+//            myPerFont         = perFont_14b;
+            myPerFont         = perFont_15b;
         }
         if ( [mycode isEqualToString: @"tabl"] ) {
             myalign           = NSTextAlignmentLeft;
             mynumlines        = 1;    
-            mybgcolor         = gbl_color_cNeu ;
+//            mybgcolor         = gbl_color_cNeu ;
+//            mybgcolor         = gbl_color_cGre ;
+//            if ( [colorFromCalc  isEqualToString: @"cPerGreen1" ]) mybgcolor = gbl_color_cGr2; // from perhtm data fld 3 
+//            if ( [colorFromCalc  isEqualToString: @"cPerGreen2" ]) mybgcolor = gbl_color_cGre;
+            if ( [colorFromCalc  isEqualToString: @"cPerGreen1" ]) mybgcolor = gbl_color_cPerGreen1; // from perhtm data fld 3 
+            if ( [colorFromCalc  isEqualToString: @"cPerGreen2" ]) mybgcolor = gbl_color_cPerGreen2;
+
+
 //            gbl_heightCellPER = 24;
             gbl_heightCellPER = 20;
             myadjust          = YES;
             mytextcolor       = [UIColor blackColor];
-//            myPerFont         = perFontNormal;
             myPerFont         = perFont_16;
         }
         if ( [mycode isEqualToString: @"para"] ) {
@@ -1448,7 +1643,6 @@ for (id eltTst in gbl_compDataLines) { NSLog(@"    gbl_comp=%@", eltTst); }
             gbl_heightCellPER = 18;
             myadjust          = NO;
             mytextcolor       = [UIColor blackColor];
-//            myPerFont         = perFontNormal;
             myPerFont         = perFont_16;
         }
         if ( [mycode isEqualToString: @"will"] ) {
@@ -1458,7 +1652,6 @@ for (id eltTst in gbl_compDataLines) { NSLog(@"    gbl_comp=%@", eltTst); }
             gbl_heightCellPER = 16;
             myadjust          = YES;
             mytextcolor       = [UIColor blackColor];
-//            myPerFont         = perFontNormal;
             myPerFont         = perFont_16;
         }
         if ( [mycode isEqualToString: @"prod"] ) {
@@ -1468,7 +1661,6 @@ for (id eltTst in gbl_compDataLines) { NSLog(@"    gbl_comp=%@", eltTst); }
             gbl_heightCellPER = 16;
             myadjust          = YES;
             mytextcolor       = [UIColor blackColor];
-//            myPerFont         = perFontSmaller;
             myPerFont         = perFont_12;
         }
         if ( [mycode isEqualToString: @"purp"] ) {
@@ -1478,10 +1670,11 @@ for (id eltTst in gbl_compDataLines) { NSLog(@"    gbl_comp=%@", eltTst); }
             gbl_heightCellPER = 16;
             myadjust          = YES;
             mytextcolor       = [UIColor redColor];
-//            myPerFont         = perFontSmallest;
             myPerFont         = perFont_11b;
         }
 
+
+//<.> new
 
         dispatch_async(dispatch_get_main_queue(), ^{            // <===  short line and long line
             cell.textLabel.text                      = mylin;   // --------------------------------------------------
@@ -4435,8 +4628,9 @@ tn();
     if (   [gbl_currentMenuPlusReportCode hasSuffix: @"pe"]    //  personality
         || [gbl_currentMenuPlusReportCode hasSuffix: @"co"] )  //  grpof 2
     {
-         if (gbl_justLookedAtInfoScreen == 0 )  {
-            // try to get rid of tbl position in middle on startup
+//   20160127     took away use of   gbl_justLookedAtInfoScreen
+//         if (gbl_justLookedAtInfoScreen == 0 )  { //   20160127     took away use of   gbl_justLookedAtInfoScreen
+//            // try to get rid of tbl position in middle on startup //   20160127     took away use of   gbl_justLookedAtInfoScreen
 
 dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
 //            dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
@@ -4452,10 +4646,11 @@ dispatch_async(dispatch_get_main_queue(), ^{                                // <
              ];
 });  // reload
 
-         } 
-         if (gbl_justLookedAtInfoScreen == 1 )  {
-             gbl_justLookedAtInfoScreen = 0;  // no re-load
-         }
+//   20160127     took away use of   gbl_justLookedAtInfoScreen
+//         } 
+//         if (gbl_justLookedAtInfoScreen == 1 )  {
+//             gbl_justLookedAtInfoScreen = 0;  // no re-load
+//         }
     }
 
 

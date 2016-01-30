@@ -738,7 +738,8 @@ void f_fnOutPutTopOfHtmlFile(void) {  // webview version
   f_fn_prtlin("   white-space: pre  ; font-weight: bold; ");
   f_fn_prtlin("    }");
 /*   f_fn_prtlin( "    .cGre        { background-color:#84ff98; }"); */
-  f_fn_prtlin( "    .cGre        { background-color:#a8ff98; font-weight: bold; ");
+//  f_fn_prtlin( "    .cGre        { background-color:#a8ff98; font-weight: bold; ");
+  f_fn_prtlin( "    .cGre        { background-color:#c0ffc0; font-weight: bold; ");
   f_fn_prtlin("   white-space: pre  ;font-weight: bold; ");
 /*   f_fn_prtlin( "      font-family: Menlo, Andale Mono, Monospace, Courier New;"); */
 /*   f_fn_prtlin( "      font-weight: normal;"); */
@@ -746,10 +747,12 @@ void f_fnOutPutTopOfHtmlFile(void) {  // webview version
 /*   f_fn_prtlin( "      line-height: 70%;"); */
 /*   f_fn_prtlin( "      margin:0 auto;"); */
   f_fn_prtlin("    }");
-  f_fn_prtlin( "    .cRed        { background-color:#ff98a8; font-weight: bold; ");
+//  f_fn_prtlin( "    .cRed        { background-color:#ff98a8; font-weight: bold; ");
+  f_fn_prtlin( "    .cRed        { background-color:#ffb5c9; font-weight: bold; ");
   f_fn_prtlin("   white-space: pre  ; font-weight: bold; ");
   f_fn_prtlin("    }");
-  f_fn_prtlin( "    .cRe2        { background-color:#ff4477; font-weight: bold; ");
+//  f_fn_prtlin( "    .cRe2        { background-color:#ff4477; font-weight: bold; ");
+  f_fn_prtlin( "    .cRe2        { background-color:#ff7ba3; font-weight: bold; ");
   f_fn_prtlin("   white-space: pre  ; font-weight: bold; ");
   f_fn_prtlin("    }");
 
@@ -757,7 +760,9 @@ void f_fnOutPutTopOfHtmlFile(void) {  // webview version
   f_fn_prtlin("    .row4        { background-color:#f8f0c0; }");
 
 /*   f_fn_prtlin("    .cNeu        { background-color:#e1ddc3; }"); */
-  f_fn_prtlin("    .cNeu        { background-color:#e5e2c7; font-weight: bold; ");
+//  f_fn_prtlin("    .cNeu        { background-color:#e5e2c7; font-weight: bold; ");
+  f_fn_prtlin("    .cNeu        { background-color:#edebd8; font-weight: bold; ");
+//  f_fn_prtlin("    .cNeu        { background-color:#f5f4ea; font-weight: bold; ");
   f_fn_prtlin("   white-space: pre  ; ");
   f_fn_prtlin("    }");
 
@@ -984,17 +989,22 @@ void f_fnOutPutTopOfHtmlFile(void) {  // webview version
   f_fn_prtlin( "    .cGr2        { background-color:#66ff33; font-weight: bold; ");
   f_fn_prtlin( "   white-space: pre  ; font-weight: bold; ");
   f_fn_prtlin( "    }");
-  f_fn_prtlin( "    .cGre        { background-color:#a8ff98; font-weight: bold; ");
+//  f_fn_prtlin( "    .cGre        { background-color:#a8ff98; font-weight: bold; ");
+  f_fn_prtlin( "    .cGre        { background-color:#c0ffc0; font-weight: bold; ");
   f_fn_prtlin( "   white-space: pre  ;font-weight: bold; ");
   f_fn_prtlin( "    }");
-  f_fn_prtlin( "    .cRed        { background-color:#ff98a8; font-weight: bold; ");
+//  f_fn_prtlin( "    .cRed        { background-color:#ff98a8; font-weight: bold; ");
+  f_fn_prtlin( "    .cRed        { background-color:#ffb5c9; font-weight: bold; ");
   f_fn_prtlin( "   white-space: pre  ; font-weight: bold; ");
   f_fn_prtlin( "    }");
-  f_fn_prtlin( "    .cRe2        { background-color:#ff4477; font-weight: bold; ");
+//  f_fn_prtlin( "    .cRe2        { background-color:#ff4477; font-weight: bold; ");
+  f_fn_prtlin( "    .cRe2        { background-color:#ff7ba3; font-weight: bold; ");
   f_fn_prtlin( "   white-space: pre  ; font-weight: bold; ");
   f_fn_prtlin( "    }");
   f_fn_prtlin( "    .row4        { background-color:#f8f0c0; }");
-  f_fn_prtlin( "    .cNeu        { background-color:#e5e2c7; font-weight: bold; ");
+//  f_fn_prtlin( "    .cNeu        { background-color:#e5e2c7; font-weight: bold; ");
+  f_fn_prtlin( "    .cNeu        { background-color:#edebd8; font-weight: bold; ");
+//  f_fn_prtlin( "    .cNeu        { background-color:#f5f4ea; font-weight: bold; ");
   f_fn_prtlin( "   white-space: pre  ; ");
   f_fn_prtlin( "    }");
   f_fn_prtlin( "    .cSky        { background-color:#3f3ffa; font-weight: bold; ");
@@ -1779,47 +1789,59 @@ STRESS-|<span style="background-color:#FFBAC7; font-family: Andale Mono, Courier
 
 
 
+
+ // webview  webview  webview  webview  webview  webview  webview  webview  webview  webview  webview  webview  webview  webview  
+
+
+
   /* make table having stress score for the year
   *  but only if the person was alive for the whole calendar year
   */
   if (gbl_is_first_year_in_life == 0) {
 
 // cannot use this since myleftmargin overrides centering on big screens
-// 
-//     int sizeLongestFld;
-//     char myleftmargin[32];
-//     sizeLongestFld = strlen(gbl_name_for_fut);
-//          if (sizeLongestFld ==  1) { strcpy(myleftmargin, "8.00em;"); }
-//     else if (sizeLongestFld ==  2) { strcpy(myleftmargin, "7.75em;"); }
-//     else if (sizeLongestFld ==  3) { strcpy(myleftmargin, "7.50em;"); }
-//     else if (sizeLongestFld ==  4) { strcpy(myleftmargin, "7.25em;"); } // s/b 7.0
-//     else if (sizeLongestFld ==  5) { strcpy(myleftmargin, "7.00em;"); }
-//     else if (sizeLongestFld ==  6) { strcpy(myleftmargin, "6.75em;"); }
-//     else if (sizeLongestFld ==  7) { strcpy(myleftmargin, "6.50em;"); }
-//     else if (sizeLongestFld ==  8) { strcpy(myleftmargin, "6.25em;"); }
-//     else if (sizeLongestFld ==  9) { strcpy(myleftmargin, "6.00em;"); }
-//     else if (sizeLongestFld == 10) { strcpy(myleftmargin, "5.75em;"); }
-//     else if (sizeLongestFld == 11) { strcpy(myleftmargin, "5.50em;"); }
-//     else if (sizeLongestFld == 12) { strcpy(myleftmargin, "5.25em;"); }
-//     else if (sizeLongestFld == 13) { strcpy(myleftmargin, "5.00em;"); }
-//     else if (sizeLongestFld == 14) { strcpy(myleftmargin, "4.75em;"); }
-//     else if (sizeLongestFld == 15) { strcpy(myleftmargin, "4.50em;"); } //2.8
-//     else                           { strcpy(myleftmargin, "4.5em;"); }
-//     "  <table class=\"trait\" style=\"margin-left: %s;\"> <tr> <th colspan=\"3\"> Score For %s </tr>",
-//     myleftmargin,
-//     gbl_year_for_fut
+ // BUT,  webview  webview  webview  webview  webview  webview  webview  webview  webview  webview  webview  webview  webview  webview  
 
+nbn(401); 
+    int sizeLongestFld;
+    char myleftmargin[32];
+    sizeLongestFld = strlen(gbl_name_for_fut);
+         if (sizeLongestFld ==  1) { strcpy(myleftmargin, "8.00em;"); }
+    else if (sizeLongestFld ==  2) { strcpy(myleftmargin, "7.75em;"); }
+    else if (sizeLongestFld ==  3) { strcpy(myleftmargin, "7.50em;"); }
+    else if (sizeLongestFld ==  4) { strcpy(myleftmargin, "7.25em;"); } // s/b 7.0
+    else if (sizeLongestFld ==  5) { strcpy(myleftmargin, "7.00em;"); }
+    else if (sizeLongestFld ==  6) { strcpy(myleftmargin, "6.75em;"); }
+    else if (sizeLongestFld ==  7) { strcpy(myleftmargin, "6.50em;"); }
+    else if (sizeLongestFld ==  8) { strcpy(myleftmargin, "6.25em;"); }
+    else if (sizeLongestFld ==  9) { strcpy(myleftmargin, "6.00em;"); }
+    else if (sizeLongestFld == 10) { strcpy(myleftmargin, "5.75em;"); }
+    else if (sizeLongestFld == 11) { strcpy(myleftmargin, "5.50em;"); }
+    else if (sizeLongestFld == 12) { strcpy(myleftmargin, "5.25em;"); }
+    else if (sizeLongestFld == 13) { strcpy(myleftmargin, "5.00em;"); }
+    else if (sizeLongestFld == 14) { strcpy(myleftmargin, "4.75em;"); }
+    else if (sizeLongestFld == 15) { strcpy(myleftmargin, "4.50em;"); } //2.8
+    else                           { strcpy(myleftmargin, "4.5em;"); }
 
-    //f_fn_prtlin("  <div><br><br><br></div>");
     f_fn_prtlin("  <div><br></div>");
-    sprintf(writebuf,
-      "  <table class=\"trait\"> <tr> <th colspan=\"3\"> Score For %s </tr>",
+    sprintf(writebuf, "  <table class=\"trait\" style=\"margin-left: %s;\"> <tr> <th colspan=\"3\"> Score For %s </tr>",
+      myleftmargin,
       gbl_year_for_fut
     );
     f_fn_prtlin(writebuf);
 
+//
+//    //f_fn_prtlin("  <div><br><br><br></div>");
+//    f_fn_prtlin("  <div><br></div>");
+//    sprintf(writebuf,
+//      "  <table class=\"trait\"> <tr> <th colspan=\"3\"> Score For %s </tr>",
+//      gbl_year_for_fut
+//    );
+//    f_fn_prtlin(writebuf);
+//
 
     f_fn_prtlin("  <tr > <th>Person</th> <th>Score</th> <th></th></tr>");
+
 
 
     /* calibrate stress score for table */
@@ -2864,12 +2886,17 @@ int make_calendar_day_html_file(   /* called from futdoc.c  */
 
   f_fn_prtlin( "    .cGr2        { background-color:#66ff33; }");
 /*   f_fn_prtlin( "    .cGre        { background-color:#84ff98; }"); */
-  f_fn_prtlin( "    .cGre        { background-color:#a8ff98; }");
-  f_fn_prtlin( "    .cRed        { background-color:#ff98a8; }");
-  f_fn_prtlin( "    .cRe2        { background-color:#ff4477; }");
+//  f_fn_prtlin( "    .cGre        { background-color:#a8ff98; }");
+  f_fn_prtlin( "    .cGre        { background-color:#c0ffc0; }");
+//  f_fn_prtlin( "    .cRed        { background-color:#ff98a8; }");
+  f_fn_prtlin( "    .cRed        { background-color:#ffb5c9; }");
+//  f_fn_prtlin( "    .cRe2        { background-color:#ff4477; }");
+  f_fn_prtlin( "    .cRe2        { background-color:#ff7ba3; }");
 
 /*   f_fn_prtlin("    .cNeu        { background-color:#e1ddc3; }"); */
-  f_fn_prtlin("    .cNeu        { background-color:#e5e2c7; }");
+//  f_fn_prtlin("    .cNeu        { background-color:#e5e2c7; }");
+  f_fn_prtlin("    .cNeu        { background-color:#edebd8; }");
+//  f_fn_prtlin("    .cNeu        { background-color:#f5f4ea; }");
 
   f_fn_prtlin( "    .cSky        { background-color:#3f3ffa; }");
 
@@ -3538,15 +3565,20 @@ void f_fnBIGOutPutTopOfHtmlFile(void) {
 
   f_fnBIG_prtlin( "    .cGr2        { background-color:#66ff33; font-weight: bold; }");
 /*   f_fnBIG_prtlin( "    .cGre        { background-color:#84ff98; }"); */
-  f_fnBIG_prtlin( "    .cGre        { background-color:#a8ff98; font-weight: bold; }");
-  f_fnBIG_prtlin( "    .cRed        { background-color:#ff98a8; font-weight: bold; }");
-  f_fnBIG_prtlin( "    .cRe2        { background-color:#ff4477; font-weight: bold; }");
+//  f_fnBIG_prtlin( "    .cGre        { background-color:#a8ff98; font-weight: bold; }");
+  f_fnBIG_prtlin( "    .cGre        { background-color:#c0ffc0; font-weight: bold; }");
+//  f_fnBIG_prtlin( "    .cRed        { background-color:#ff98a8; font-weight: bold; }");
+  f_fnBIG_prtlin( "    .cRed        { background-color:#ffb5c9; font-weight: bold; }");
+//  f_fnBIG_prtlin( "    .cRe2        { background-color:#ff4477; font-weight: bold; }");
+  f_fnBIG_prtlin( "    .cRe2        { background-color:#ff7ba3; font-weight: bold; }");
 
 
   f_fnBIG_prtlin("    .row4        { background-color:#f8f0c0; }");
 
 /*   f_fnBIG_prtlin("    .cNeu        { background-color:#e1ddc3; }"); */
-  f_fnBIG_prtlin("    .cNeu        { background-color:#e5e2c7; font-weight: bold; }");
+//  f_fnBIG_prtlin("    .cNeu        { background-color:#e5e2c7; font-weight: bold; }");
+  f_fnBIG_prtlin("    .cNeu        { background-color:#edebd8; font-weight: bold; }");
+//  f_fnBIG_prtlin("    .cNeu        { background-color:#f5f4ea; font-weight: bold; }");
 
   f_fnBIG_prtlin("    .cSky        { background-color:#3f3ffa; font-weight: bold; }");
   f_fnBIG_prtlin( "   .star        { color:#f7ebd1; font-weight: bold; }");
@@ -5080,9 +5112,12 @@ int insert_label_benchmark(char *line_curr, char * line_next) {
     retval_goodtogo = 1;
 
     if (strcmp(gbl_benchmark_label, "GREAT")  == 0) strcpy(my_bg_color, "#66ff33");
-    if (strcmp(gbl_benchmark_label, "GOOD")   == 0) strcpy(my_bg_color, "#a8ff98");
-    if (strcmp(gbl_benchmark_label, "STRESS") == 0) strcpy(my_bg_color, "#ff98a8");
-    if (strcmp(gbl_benchmark_label, "OMG")    == 0) strcpy(my_bg_color, "#ff4477");
+//    if (strcmp(gbl_benchmark_label, "GOOD")   == 0) strcpy(my_bg_color, "#a8ff98");
+    if (strcmp(gbl_benchmark_label, "GOOD")   == 0) strcpy(my_bg_color, "#c0ffc0");
+//    if (strcmp(gbl_benchmark_label, "STRESS") == 0) strcpy(my_bg_color, "#ff98a8");
+    if (strcmp(gbl_benchmark_label, "STRESS") == 0) strcpy(my_bg_color, "#ffb5c9");
+//    if (strcmp(gbl_benchmark_label, "OMG")    == 0) strcpy(my_bg_color, "#ff4477");
+    if (strcmp(gbl_benchmark_label, "OMG")    == 0) strcpy(my_bg_color, "#ff7ba3");
     
     // replace area_line_curr with the benchmark label and color
 
@@ -5128,10 +5163,15 @@ void insert_minus_benchmark(char *line_to_change) {
   //my_minuses[0]             = ' ';    // put sp instead of '-' on first and last char
   //my_minuses[len_label - 1] = ' ';    // put sp instead of '-' on first and last char
 
+
   if (strcmp(gbl_benchmark_label, "GREAT")  == 0) strcpy(my_text_color, "#66ff33");
-  if (strcmp(gbl_benchmark_label, "GOOD")   == 0) strcpy(my_text_color, "#a8ff98");
-  if (strcmp(gbl_benchmark_label, "STRESS") == 0) strcpy(my_text_color, "#ff98a8");
-  if (strcmp(gbl_benchmark_label, "OMG")    == 0) strcpy(my_text_color, "#ff4477");
+//    if (strcmp(gbl_benchmark_label, "GOOD")   == 0) strcpy(my_text_color, "#a8ff98");
+  if (strcmp(gbl_benchmark_label, "GOOD")   == 0) strcpy(my_text_color, "#c0ffc0");
+//    if (strcmp(gbl_benchmark_label, "STRESS") == 0) strcpy(my_text_color, "#ff98a8");
+  if (strcmp(gbl_benchmark_label, "STRESS") == 0) strcpy(my_text_color, "#ffb5c9");
+//    if (strcmp(gbl_benchmark_label, "OMG")    == 0) strcpy(my_text_color, "#ff4477");
+  if (strcmp(gbl_benchmark_label, "OMG")    == 0) strcpy(my_text_color, "#ff7ba3");
+    
 
   
 //strcpy(my_text_color, "#000000"); // for TEST to see  

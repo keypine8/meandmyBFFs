@@ -111,7 +111,8 @@ tn();
         myNavBarLabel.textColor     = [UIColor blackColor];
         myNavBarLabel.textAlignment = NSTextAlignmentCenter; 
         myNavBarLabel.text          = myNavBar2lineTitle;
-
+        myNavBarLabel.adjustsFontSizeToFitWidth = YES;
+        [myNavBarLabel sizeToFit];
 
 //    =  [NSArray arrayWithObjects: 
 //                gbl_nameButtonToClearKeyboard, gbl_flexibleSpace,
@@ -446,6 +447,7 @@ NSLog(@"in viewDidAppear()");
         cell.textLabel.text = [gbl_arrayNewMembersToPickFrom   objectAtIndex:indexPath.row];
         //        cell.textLabel.font = [UIFont systemFontOfSize: 16.0];
         cell.textLabel.font = myNewFont;
+        cell.textLabel.adjustsFontSizeToFitWidth = YES;
     
         // PROBLEM  name slides left off screen when you hit red round delete "-" button
         //          and delete button slides from right into screen

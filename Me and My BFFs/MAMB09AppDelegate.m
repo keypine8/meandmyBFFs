@@ -18,7 +18,7 @@
 #define KEY_LAST_ENTITY_STR  @"myLastEntityStr"
 
 //#define DEFAULT_LAST_ENTITY  @"person|~Sophia|group|~Swim Team"    // for test  (testing has "~Anya 56789..." , not "~Anya"
-#define DEFAULT_LAST_ENTITY  @"person|~Abigail 012345|group|~Swim Team"    // for test  (testing has "~Anya 56789..." , not "~Anya"
+#define DEFAULT_LAST_ENTITY  @"person|~Abigail 012345|group|~Swim Team|"    // for test  (testing has "~Anya 56789..." , not "~Anya"
 
 
 //- (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window  // iOS 6
@@ -281,26 +281,27 @@
 
     gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0]; // can  see circles  gold
 
-
-//<.> for test
-//    gbl_color_cRed  = [UIColor colorWithRed:255.0/255.0 green:181.0/255.0 blue:201.0/255.0 alpha:1.0]; // ffb5c9  gold
-//    gbl_color_cRe2  = [UIColor colorWithRed:255.0/255.0 green:123.0/255.0 blue:163.0/255.0 alpha:1.0]; //   NEW gold
-
-    gbl_colorforAddMembers = [UIColor colorWithRed:255.0/255.0 green:181.0/255.0 blue:201.0/255.0 alpha:1.0]; // ffb5c9  gold
-
-    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0]; // 
-    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:064.0/255.0 blue:064.0/255.0 alpha:1.0]; // too red too dark
-    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:096.0/255.0 blue:096.0/255.0 alpha:1.0]; // 
-    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:096.0/255.0 blue:048.0/255.0 alpha:1.0]; //
-    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:080.0/255.0 blue:048.0/255.0 alpha:1.0]; //
-    gbl_colorforDelMembers = [UIColor colorWithRed:192.0/255.0 green:096.0/255.0 blue:096.0/255.0 alpha:1.0]; // 
-    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:140.0/255.0 blue:140.0/255.0 alpha:1.0]; // x
-//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:160.0/255.0 blue:160.0/255.0 alpha:1.0]; // 
-    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:175.0/255.0 blue:175.0/255.0 alpha:1.0]; // x
-    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:123.0/255.0 blue:163.0/255.0 alpha:1.0]; // ffb5c9  gold
-
-//<.> for test
-
+//
+////<.> for test   fut  colors
+////    gbl_color_cRed  = [UIColor colorWithRed:255.0/255.0 green:181.0/255.0 blue:201.0/255.0 alpha:1.0]; // ffb5c9  gold
+////    gbl_color_cRe2  = [UIColor colorWithRed:255.0/255.0 green:123.0/255.0 blue:163.0/255.0 alpha:1.0]; //   NEW gold
+//
+//    gbl_colorforAddMembers = [UIColor colorWithRed:255.0/255.0 green:181.0/255.0 blue:201.0/255.0 alpha:1.0]; // ffb5c9  gold
+//
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0]; // 
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:064.0/255.0 blue:064.0/255.0 alpha:1.0]; // too red too dark
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:096.0/255.0 blue:096.0/255.0 alpha:1.0]; // 
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:096.0/255.0 blue:048.0/255.0 alpha:1.0]; //
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:080.0/255.0 blue:048.0/255.0 alpha:1.0]; //
+//    gbl_colorforDelMembers = [UIColor colorWithRed:192.0/255.0 green:096.0/255.0 blue:096.0/255.0 alpha:1.0]; // 
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:140.0/255.0 blue:140.0/255.0 alpha:1.0]; // x
+////    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:160.0/255.0 blue:160.0/255.0 alpha:1.0]; // 
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:175.0/255.0 blue:175.0/255.0 alpha:1.0]; // x
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:123.0/255.0 blue:163.0/255.0 alpha:1.0]; // ffb5c9  gold
+//
+////<.> for test
+//
+//
 
 //
 //// test green for fut good line
@@ -321,13 +322,14 @@
 // [UIColor cyanColor];
 ;   // something else
 
-//    gbl_color_cGr2  = [UIColor colorWithRed:042.0/255.0 green:255.0/255.0 blue:021.0/255.0 alpha:1.0]; // 66ff33
+    gbl_color_cGr2  = [UIColor colorWithRed:042.0/255.0 green:255.0/255.0 blue:021.0/255.0 alpha:1.0]; // 66ff33  gold
 //    gbl_color_cGre  = [UIColor colorWithRed:168.0/255.0 green:255.0/255.0 blue:152.0/255.0 alpha:1.0]; // a8ff98
 //    gbl_color_cPerGreen  = [UIColor colorWithRed:166.0/255.0 green:247.0/255.0 blue:255.0/255.0 alpha:1.0]; // a6f7ff // light green for personality neutral color bg
 //    gbl_color_cPerGreen  = [UIColor colorWithRed:205.0/255.0 green:251.0/255.0 blue:255.0/255.0 alpha:1.0]; // cdfbff // light green for personality neutral color bg
 //    gbl_color_cPerGreen  = [UIColor colorWithRed:225.0/255.0 green:252.0/255.0 blue:255.0/255.0 alpha:1.0]; // e1fcff // light green for personality neutral color bg
 //    gbl_color_cPerGreen  = [UIColor colorWithRed:247.0/255.0 green:235.0/255.0 blue:209.0/255.0 alpha:1.0]; // f7ebd1
 //    gbl_color_cPerGreen  = [UIColor colorWithRed:229.0/255.0 green:226.0/255.0 blue:199.0/255.0 alpha:1.0]; // e5e2c7
+
 //    gbl_color_cPerGreen5 = [UIColor colorWithRed:185.0/255.0 green:255.0/255.0 blue:130.0/255.0 alpha:1.0]; // b9ff82 // pretty light green for personality neutral color bg
 //
 //    gbl_color_cPerGreen4 = [UIColor colorWithRed:206.0/255.0 green:255.0/255.0 blue:160.0/255.0 alpha:1.0]; // ceffa0 // light green for personality neutral color bg
@@ -335,7 +337,25 @@
 //
 //    gbl_color_cPerGreen2 = [UIColor colorWithRed:236.0/255.0 green:255.0/255.0 blue:211.0/255.0 alpha:1.0]; // ecffd3 // really light green for personality neutral color bg
 //    gbl_color_cPerGreen1 = [UIColor colorWithRed:246.0/255.0 green:255.0/255.0 blue:230.0/255.0 alpha:1.0]; // f6ffe6 // really,really light green for personality neutral color bg
+
+
+//    p_fn_prtlin( "    .cPerGreen1 {background-color: #66ff33;}");  // green
+//    p_fn_prtlin( "    .cPerGreen2 {background-color: #f0f5f0;}");  // whiteish
+
+//    gbl_color_cPerGreen1 = [UIColor colorWithRed:236.0/255.0 green:255.0/255.0 blue:211.0/255.0 alpha:1.0]; // ecffd3 // really light green for personality neutral color bg
+//    gbl_color_cPerGreen2 = [UIColor colorWithRed:240.0/255.0 green:245.0/255.0 blue:240.0/255.0 alpha:1.0]; // f0f5f0 // really light green for personality neutral color bg
 //
+//    gbl_colorReportsBG          = [UIColor colorWithRed:242./255.0 green:247./255.0 blue:255./255.0 alpha:1.0];  //  apple blue 2.5
+//    gbl_colorHomeBG = [UIColor colorWithRed:167.0/255.0 green:207.0/255.0 blue:252.0/255.0 alpha:1.0]; // test  mid of sail/baby blue slightly dark
+//    gbl_colorHomeBG = [UIColor colorWithRed:181.0/255.0 green:214.0/255.0 blue:252.0/255.0 alpha:1.0]; // test  sail    OK
+//    gbl_colorHomeBG = [UIColor colorWithRed:206.0/255.0 green:227.0/255.0 blue:252.0/255.0 alpha:1.0]; // test  Hawkes blue
+//    gbl_colorHomeBG = [UIColor colorWithRed:222.0/255.0 green:237.0/255.0 blue:252.0/255.0 alpha:1.0]; // test  mid    too light
+//    gbl_color_cAplBlue = [UIColor colorWithRed:000.0/255.0 green:128.0/255.0 blue:255.0/255.0 alpha:1.0]; // 0080ff  (blue text, chevron)
+
+
+
+
+
 
 
 //    gbl_myname.placeholder         = @"Name";
@@ -755,7 +775,6 @@
 
 
 
-    gbl_color_cGr2  = [UIColor colorWithRed:042.0/255.0 green:255.0/255.0 blue:021.0/255.0 alpha:1.0]; // 66ff33  gold
 //
 //    gbl_color_cGr2  = [UIColor colorWithRed:192.0/255.0 green:255.0/255.0 blue:192.0/255.0 alpha:1.0]; // 
 //    gbl_color_cGr2  = [UIColor colorWithRed:128.0/255.0 green:255.0/255.0 blue:128.0/255.0 alpha:1.0]; // 
@@ -765,32 +784,28 @@
 //    gbl_color_cGre  = [UIColor colorWithRed:168.0/255.0 green:255.0/255.0 blue:152.0/255.0 alpha:1.0]; // a8ff98  gold
 
 //    gbl_color_cGre  = [UIColor colorWithRed:223.0/255.0 green:255.0/255.0 blue:223.0/255.0 alpha:1.0]; // 
-    gbl_color_cGre  = [UIColor colorWithRed:192.0/255.0 green:255.0/255.0 blue:192.0/255.0 alpha:1.0]; //  NEW  gold
+    gbl_color_cGre  = [UIColor colorWithRed:192.0/255.0 green:255.0/255.0 blue:192.0/255.0 alpha:1.0]; // c0ffc0   NEW  gold
 
 
 
 
-//    gbl_color_cNeu  = [UIColor colorWithRed:229.0/255.0 green:226.0/255.0 blue:199.0/255.0 alpha:1.0]; // e5e2c7  gold
-    gbl_color_cNeu  = [UIColor colorWithRed:237.0/255.0 green:235.0/255.0 blue:216.0/255.0 alpha:1.0]; // edebd8
+//    gbl_color_cNeu  = [UIColor colorWithRed:229.0/255.0 green:226.0/255.0 blue:199.0/255.0 alpha:1.0]; // e5e2c7  old gold
 //    gbl_color_cNeu  = [UIColor colorWithRed:245.0/255.0 green:244.0/255.0 blue:234.0/255.0 alpha:1.0]; // f5f4ea
+      gbl_color_cNeu  = [UIColor colorWithRed:237.0/255.0 green:235.0/255.0 blue:216.0/255.0 alpha:1.0]; // edebd8  new gold
 
 
     // new reds    20150511
-    //
-//    gbl_color_cRed  = [UIColor colorWithRed:255.0/255.0 green:152.0/255.0 blue:168.0/255.0 alpha:1.0]; // ff98a8
-//    gbl_color_cRe2  = [UIColor colorWithRed:255.0/255.0 green:068.0/255.0 blue:119.0/255.0 alpha:1.0]; // ff4477
-
-
-
-    gbl_color_cRed  = [UIColor colorWithRed:255.0/255.0 green:181.0/255.0 blue:201.0/255.0 alpha:1.0]; // ffb5c9  gold
+    
+//    gbl_color_cRed  = [UIColor colorWithRed:255.0/255.0 green:152.0/255.0 blue:168.0/255.0 alpha:1.0]; // ff98a8 old gold
 //    gbl_color_cRed  = [UIColor colorWithRed:255.0/255.0 green:223.0/255.0 blue:223.0/255.0 alpha:1.0]; // 
 //    gbl_color_cRed  = [UIColor colorWithRed:255.0/255.0 green:192.0/255.0 blue:192.0/255.0 alpha:1.0]; // 
 //    gbl_color_cRed  = [UIColor colorWithRed:255.0/255.0 green:181.0/255.0 blue:201.0/255.0 alpha:1.0]; // ffb5c9  gold
+      gbl_color_cRed  = [UIColor colorWithRed:255.0/255.0 green:181.0/255.0 blue:201.0/255.0 alpha:1.0]; // ffb5c9  new gold
 
 
 
+//    gbl_color_cRe2  = [UIColor colorWithRed:255.0/255.0 green:068.0/255.0 blue:119.0/255.0 alpha:1.0]; // ff4477 old gold
 //    gbl_color_cRe2  = [UIColor colorWithRed:255.0/255.0 green:103.0/255.0 blue:143.0/255.0 alpha:1.0]; // ff678f  gold
-
 //    gbl_color_cRe2  = [UIColor colorWithRed:255.0/255.0 green:033.0/255.0 blue:033.0/255.0 alpha:1.0]; // 
 //    gbl_color_cRe2  = [UIColor colorWithRed:255.0/255.0 green:064.0/255.0 blue:064.0/255.0 alpha:1.0]; // 
 //    gbl_color_cRe2  = [UIColor colorWithRed:255.0/255.0 green:160.0/255.0 blue:160.0/255.0 alpha:1.0]; // 
@@ -802,12 +817,11 @@
 //    gbl_color_cRe2  = [UIColor colorWithRed:255.0/255.0 green:103.0/255.0 blue:143.0/255.0 alpha:1.0]; // ff678f  gold
 //    gbl_color_cRe2  = [UIColor colorWithRed:192.0/255.0 green:103.0/255.0 blue:143.0/255.0 alpha:1.0]; // 
 //    gbl_color_cRe2  = [UIColor colorWithRed:255.0/255.0 green:093.0/255.0 blue:123.0/255.0 alpha:1.0]; // 
-
 //    gbl_color_cRe2  = [UIColor colorWithRed:255.0/255.0 green:123.0/255.0 blue:163.0/255.0 alpha:1.0]; //  ok
 //    gbl_color_cRe2  = [UIColor colorWithRed:255.0/255.0 green:143.0/255.0 blue:188.0/255.0 alpha:1.0]; //  too pinky
 //    gbl_color_cRe2  = [UIColor colorWithRed:255.0/255.0 green:163.0/255.0 blue:188.0/255.0 alpha:1.0]; //  too light
 //    gbl_color_cRe2  = [UIColor colorWithRed:255.0/255.0 green:133.0/255.0 blue:173.0/255.0 alpha:1.0]; //  
-      gbl_color_cRe2  = [UIColor colorWithRed:255.0/255.0 green:123.0/255.0 blue:163.0/255.0 alpha:1.0]; //   NEW gold
+      gbl_color_cRe2  = [UIColor colorWithRed:255.0/255.0 green:123.0/255.0 blue:163.0/255.0 alpha:1.0]; //  ff7ba3 NEW gold
 
 
 
@@ -821,15 +835,37 @@
 
 //    // light green for personality neutral color bg  (alternate the two colors)
 //    gbl_color_cPerGreen  = [UIColor colorWithRed:211.0/255.0 green:255.0/255.0 blue:165.0/255.0 alpha:1.0]; // d3ffa5 // light green for personality neutral color bg
-    gbl_color_cPerGreen  = [UIColor colorWithRed:166.0/255.0 green:247.0/255.0 blue:255.0/255.0 alpha:1.0]; // a6f7ff // light green for personality neutral color bg
-    gbl_color_cPerGreen  = [UIColor colorWithRed:205.0/255.0 green:251.0/255.0 blue:255.0/255.0 alpha:1.0]; // cdfbff // light green for personality neutral color bg
-    gbl_color_cPerGreen  = [UIColor colorWithRed:225.0/255.0 green:252.0/255.0 blue:255.0/255.0 alpha:1.0]; // e1fcff // light green for personality neutral color bg
-    gbl_color_cPerGreen  = [UIColor colorWithRed:247.0/255.0 green:235.0/255.0 blue:209.0/255.0 alpha:1.0]; // f7ebd1
-    gbl_color_cPerGreen  = [UIColor colorWithRed:229.0/255.0 green:226.0/255.0 blue:199.0/255.0 alpha:1.0]; // e5e2c7
+//    gbl_color_cPerGreen  = [UIColor colorWithRed:166.0/255.0 green:247.0/255.0 blue:255.0/255.0 alpha:1.0]; // a6f7ff // light green for personality neutral color bg
+//    gbl_color_cPerGreen  = [UIColor colorWithRed:205.0/255.0 green:251.0/255.0 blue:255.0/255.0 alpha:1.0]; // cdfbff // light green for personality neutral color bg
+//    gbl_color_cPerGreen  = [UIColor colorWithRed:225.0/255.0 green:252.0/255.0 blue:255.0/255.0 alpha:1.0]; // e1fcff // light green for personality neutral color bg
+//    gbl_color_cPerGreen  = [UIColor colorWithRed:247.0/255.0 green:235.0/255.0 blue:209.0/255.0 alpha:1.0]; // f7ebd1
+//    gbl_color_cPerGreen  = [UIColor colorWithRed:229.0/255.0 green:226.0/255.0 blue:199.0/255.0 alpha:1.0]; // e5e2c7  make it all cNeu color
+//    gbl_color_cPerGreen  = [UIColor colorWithRed:229.0/255.0 green:226.0/255.0 blue:199.0/255.0 alpha:1.0]; // e5e2c7  make it all cNeu color
+    gbl_color_cPerGreen  = [UIColor colorWithRed:237.0/255.0 green:235.0/255.0 blue:216.0/255.0 alpha:1.0]; // edebd8  new gold  new cneu
+
 
 //    gbl_color_cPerGreen1 = [UIColor colorWithRed:211.0/255.0 green:255.0/255.0 blue:165.0/255.0 alpha:1.0]; // d3ffa5 // light green for personality neutral color bg
 //    gbl_color_cPerGreen2 = [UIColor colorWithRed:230.0/255.0 green:255.0/255.0 blue:204.0/255.0 alpha:1.0]; // e6ffcc // really light green for personality neutral color bg
 //
+
+
+// green/white alternate
+//    p_fn_prtlin( "    .cPerGreen1 {background-color: #66ff33;}");  // green
+//    p_fn_prtlin( "    .cPerGreen2 {background-color: #fafafa;}");  // whiteish
+//    gbl_color_cPerGreen1 = [UIColor colorWithRed:042.0/255.0 green:255.0/255.0 blue:021.0/255.0 alpha:1.0]; // 66ff33  (cgr2)
+//    gbl_color_cPerGreen2 = [UIColor colorWithRed:240.0/255.0 green:245.0/255.0 blue:240.0/255.0 alpha:1.0]; //  f0f5f0  whiteish
+
+
+    gbl_color_cAplDarkBlue = [UIColor colorWithRed:000.0/255.0 green:128.0/255.0 blue:255.0/255.0 alpha:1.0]; // 0080ff  (blue text, chevron)
+
+//    gbl_color_cPerGreen1 = [UIColor colorWithRed:000.0/255.0 green:128.0/255.0 blue:255.0/255.0 alpha:1.0]; // 0080ff  (blue text, chevron)
+//    gbl_color_cPerGreen1 = [UIColor colorWithRed:144.0/255.0 green:200.0/255.0 blue:255.0/255.0 alpha:1.0]; //        (mid blue) 
+//    gbl_color_cPerGreen2 = [UIColor colorWithRed:242.0/255.0 green:247.0/255.0 blue:255.0/255.0 alpha:1.0]; //        (light blue)
+
+    gbl_color_cPerGreen1 = [UIColor colorWithRed:242.0/255.0 green:247.0/255.0 blue:255.0/255.0 alpha:1.0]; // f2f7ff (light blue)
+//    gbl_color_cPerGreen2 = [UIColor colorWithRed:144.0/255.0 green:200.0/255.0 blue:255.0/255.0 alpha:1.0]; //        (mid blue) 
+    gbl_color_cPerGreen2 = [UIColor colorWithRed:160.0/255.0 green:216.0/255.0 blue:255.0/255.0 alpha:1.0]; // a0d8ff (mid blue) 
+
 
 //    gbl_color_cPerGreen5 = [UIColor colorWithRed:201.0/255.0 green:255.0/255.0 blue:145.0/255.0 alpha:1.0]; // c9ff91 // pretty light green for personality neutral color bg
 //    gbl_color_cPerGreen4 = [UIColor colorWithRed:211.0/255.0 green:255.0/255.0 blue:165.0/255.0 alpha:1.0]; // d3ffa5 // light green for personality neutral color bg
@@ -837,13 +873,11 @@
 //    gbl_color_cPerGreen2 = [UIColor colorWithRed:230.0/255.0 green:255.0/255.0 blue:204.0/255.0 alpha:1.0]; // e6ffcc // really light green for personality neutral color bg
 //    gbl_color_cPerGreen1 = [UIColor colorWithRed:240.0/255.0 green:255.0/255.0 blue:224.0/255.0 alpha:1.0]; // f0ffe0 // really,really light green for personality neutral color bg
 
-    gbl_color_cPerGreen5 = [UIColor colorWithRed:185.0/255.0 green:255.0/255.0 blue:130.0/255.0 alpha:1.0]; // b9ff82 // pretty light green for personality neutral color bg
-
-    gbl_color_cPerGreen4 = [UIColor colorWithRed:206.0/255.0 green:255.0/255.0 blue:160.0/255.0 alpha:1.0]; // ceffa0 // light green for personality neutral color bg
-    gbl_color_cPerGreen3 = [UIColor colorWithRed:223.0/255.0 green:255.0/255.0 blue:187.0/255.0 alpha:1.0]; // dfffbb // lightER green for personality neutral color bg
-
-    gbl_color_cPerGreen2 = [UIColor colorWithRed:236.0/255.0 green:255.0/255.0 blue:211.0/255.0 alpha:1.0]; // ecffd3 // really light green for personality neutral color bg
-    gbl_color_cPerGreen1 = [UIColor colorWithRed:246.0/255.0 green:255.0/255.0 blue:230.0/255.0 alpha:1.0]; // f6ffe6 // really,really light green for personality neutral color bg
+//    gbl_color_cPerGreen5 = [UIColor colorWithRed:185.0/255.0 green:255.0/255.0 blue:130.0/255.0 alpha:1.0]; // b9ff82 // pretty light green for personality neutral color bg
+//    gbl_color_cPerGreen4 = [UIColor colorWithRed:206.0/255.0 green:255.0/255.0 blue:160.0/255.0 alpha:1.0]; // ceffa0 // light green for personality neutral color bg
+//    gbl_color_cPerGreen3 = [UIColor colorWithRed:223.0/255.0 green:255.0/255.0 blue:187.0/255.0 alpha:1.0]; // dfffbb // lightER green for personality neutral color bg
+//    gbl_color_cPerGreen2 = [UIColor colorWithRed:236.0/255.0 green:255.0/255.0 blue:211.0/255.0 alpha:1.0]; // ecffd3 // really light green for personality neutral color bg
+//    gbl_color_cPerGreen1 = [UIColor colorWithRed:246.0/255.0 green:255.0/255.0 blue:230.0/255.0 alpha:1.0]; // f6ffe6 // really,really light green for personality neutral color bg
 
 
 //    gbl_color_cPerGreen1 = [UIColor colorWithRed:211.0/255.0 green:255.0/255.0 blue:165.0/255.0 alpha:1.0]; // d3ffa5 // light green for personality neutral color bg

@@ -64,19 +64,32 @@
 //
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
-
   NSLog(@"in HOME supportedInterfaceOrientations !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-    return UIInterfaceOrientationMaskAll;
+//    return UIInterfaceOrientationMaskAll;
+    return UIInterfaceOrientationMaskPortrait;
+
 }
 - (BOOL)shouldAutorotate {
   NSLog(@"in HOME shouldAutorotate !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-    return YES;
+    return NO;  // means do not call supportedInterfaceOrientations
 }
 
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+
+//    WWW width=[240.930176]
+//    MMM width=[217.023926]
+//
+//CGSize siz = [@"WWWWWWWWWWWWWWW" sizeWithAttributes: @{NSFontAttributeName: [UIFont systemFontOfSize:17.0f]}];
+//  NSLog(@"WWW width=[%f]",siz.width);
+//       siz = [@"MMMMMMMMMMMMMMM" sizeWithAttributes: @{NSFontAttributeName: [UIFont systemFontOfSize:17.0f]}];
+//  NSLog(@"MMM width=[%f]",siz.width);
+//
+
+
 
  [ self shouldAutorotate ];
  [ self supportedInterfaceOrientations ];
@@ -951,6 +964,23 @@ nbn(7);
         // end of  UILabel for the disclosure indicator, ">",  for tappable cells
 
 
+
+
+//        CGFloat myScreenWidth, myFontSize;  // determine font size
+//        if ([gbl_homeUseMODE isEqualToString: @"edit mode"]) {
+//nbn(20);
+//            myScreenWidth = self.view.bounds.size.width;
+//            if (        myScreenWidth >= 414.0)  { myFontSize = 17.0; }  // 6+ and 6s+  and bigger
+//            else if (   myScreenWidth  < 414.0   
+//                     && myScreenWidth  > 320.0)  { myFontSize = 17.0; }  // 6 and 6s
+//            else if (   myScreenWidth <= 320.0)  { myFontSize = 17.0; }  //  5s and 5 and 4s and smaller
+//            else                                 { myFontSize = 17.0; }  //  other ?
+//        } else {
+//            myFontSize = 17.0;
+//        }
+//
+
+
 //  NSLog(@"gbl_homeUseMODE =%@",gbl_homeUseMODE );
     dispatch_async(dispatch_get_main_queue(), ^{                        
 
@@ -962,6 +992,7 @@ nbn(7);
         cell.textLabel.text = nameOfGrpOrPer;
 
         cell.textLabel.font            = [UIFont boldSystemFontOfSize: 17.0];
+        cell.textLabel.adjustsFontSizeToFitWidth = YES;
         cell.accessoryType        = gbl_home_cell_AccessoryType;           // home mode edit    with tap giving record details
         cell.editingAccessoryType = gbl_home_cell_editingAccessoryType;    // home mode edit    with tap giving record details
 

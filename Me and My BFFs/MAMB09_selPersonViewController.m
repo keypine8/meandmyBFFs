@@ -89,6 +89,8 @@
         myNavBarLabel.textColor     = [UIColor blackColor];
         myNavBarLabel.textAlignment = NSTextAlignmentCenter; 
         myNavBarLabel.text          = myNavBar2lineTitle;
+        myNavBarLabel.adjustsFontSizeToFitWidth = YES;
+        [myNavBarLabel sizeToFit];
 
 
         if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]) {   // came from "Compatibility Paired With ..."
@@ -119,7 +121,7 @@
                 self.navigationItem.rightBarButtonItem =  mySpacerNavItem;
 //                self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: myFlexibleSpace ];
 //                self.navigationItem.leftBarButtonItems  = [self.navigationItem.leftBarButtonItems arrayByAddingObject: myFlexibleSpace ];
-                self.navigationItem.rightBarButtonItem =  mySpacerForTitle;
+//                self.navigationItem.rightBarButtonItem =  mySpacerForTitle;
                 [self.navigationController.navigationBar setTranslucent:NO];
 
 //              self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerForTitle];
@@ -373,6 +375,7 @@
             cell.textLabel.text = [gbl_arrayPersonsToPickFrom   objectAtIndex:indexPath.row];
             //        cell.textLabel.font = [UIFont systemFontOfSize: 16.0];
             cell.textLabel.font = myNewFont;
+            cell.textLabel.adjustsFontSizeToFitWidth = YES;
 
             cell.accessoryView  = myDisclosureIndicatorLabel;
             cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
@@ -382,6 +385,7 @@
             cell.textLabel.text = [gbl_arrayGroupsToPickFrom   objectAtIndex:indexPath.row];
             // cell.textLabel.font = [UIFont systemFontOfSize: 16.0];
             cell.textLabel.font = myNewFont;
+            cell.textLabel.adjustsFontSizeToFitWidth = YES;
 
             cell.accessoryView  = myDisclosureIndicatorLabel;
             cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;

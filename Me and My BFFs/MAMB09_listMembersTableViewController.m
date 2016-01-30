@@ -71,7 +71,8 @@ tn();
         UILabel *myNavBarLabel      = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 480.0, 44.0)];
 
         NSString *myNavBar2lineTitle;
-        myNavBar2lineTitle = [NSString stringWithFormat:  @"Current Members of\n Group  %@", gbl_lastSelectedGroup ];
+//        myNavBar2lineTitle = [NSString stringWithFormat:  @"Current Members of\n Group  %@", gbl_lastSelectedGroup ];
+        myNavBar2lineTitle = [NSString stringWithFormat:  @"Current Members of\n%@", gbl_lastSelectedGroup ];
 
         myNavBarLabel.numberOfLines = 2;
     //        myNavBarLabel.font          = [UIFont boldSystemFontOfSize: 16.0];
@@ -79,6 +80,8 @@ tn();
         myNavBarLabel.textColor     = [UIColor blackColor];
         myNavBarLabel.textAlignment = NSTextAlignmentCenter; 
         myNavBarLabel.text          = myNavBar2lineTitle;
+        myNavBarLabel.adjustsFontSizeToFitWidth = YES;
+        [myNavBarLabel sizeToFit];
 
 
         // TWO-LINE NAV BAR TITLE
@@ -495,6 +498,7 @@ tn();
         cell.textLabel.text = [gbl_arrayMembersToDisplay   objectAtIndex:indexPath.row];
         //        cell.textLabel.font = [UIFont systemFontOfSize: 16.0];
         cell.textLabel.font = myNewFont;
+        cell.textLabel.adjustsFontSizeToFitWidth = YES;
 
         // PROBLEM  name slides left off screen when you hit red round delete "-" button
         //          and delete button slides from right into screen

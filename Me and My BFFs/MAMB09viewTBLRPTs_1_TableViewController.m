@@ -288,9 +288,15 @@ NSLog(@"in numberOfRowsInSection in tblrpts 1");
 
 
 //nbn(300);
-    if ( [gbl_currentMenuPlusReportCode isEqualToString: @"homppe"] )  // -----------------------------------------------
-    {  //  new personality TBLRPT  report
-bn(301);
+    if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homppe"]   // -----------------------------------------------
+        || [gbl_currentMenuPlusReportCode isEqualToString: @"pbm1pe"]
+        || [gbl_currentMenuPlusReportCode isEqualToString: @"pbm2pe"]
+        || [gbl_currentMenuPlusReportCode isEqualToString: @"gbm1pe"]
+        || [gbl_currentMenuPlusReportCode isEqualToString: @"gbm2pe"]
+
+    ) {  //  new personality TBLRPT  report
+
+bn(601);
   NSLog(@"indexPath.row =[%ld]",indexPath.row );
   NSLog(@"gbl_perDataLines[indexPath.row]  [%@]",gbl_perDataLines[indexPath.row]  );
 
@@ -304,9 +310,12 @@ bn(301);
 
 //        UIFont *myPerFont        = [UIFont fontWithName: @"Menlo" size: 12.0];
         UIFont *myPerFont;
-        UIFont *perFont_16  = [UIFont fontWithName: @"Menlo" size: 16.0];
-        UIFont *perFont_14  = [UIFont fontWithName: @"Menlo" size: 14.0];
-        UIFont *perFont_12  = [UIFont fontWithName: @"Menlo" size: 12.0];
+        UIFont *perFont_16  = [UIFont fontWithName: @"Menlo"      size: 16.0];
+        UIFont *perFont_16b = [UIFont fontWithName: @"Menlo-bold" size: 16.0];
+        UIFont *perFont_15b = [UIFont fontWithName: @"Menlo-bold" size: 15.0];
+        UIFont *perFont_14  = [UIFont fontWithName: @"Menlo"      size: 14.0];
+        UIFont *perFont_14b = [UIFont fontWithName: @"Menlo-bold" size: 14.0];
+        UIFont *perFont_12  = [UIFont fontWithName: @"Menlo"      size: 12.0];
         UIFont *perFont_11b = [UIFont fontWithName: @"Menlo-bold" size: 11.0];
         
         NSCharacterSet *mySeps;
@@ -318,6 +327,7 @@ bn(301);
         NSTextAlignment myalign;
         NSInteger       mynumlines;
         BOOL            myadjust;
+        NSString *colorFromCalc;
 
         mybgcolor         = [UIColor redColor];
         myalign           = NSTextAlignmentLeft;  // default
@@ -334,13 +344,15 @@ bn(301);
             mycode    = tmparr[0];
             mylin     = tmparr[1];
         }
+        if (tmparr.count > 2) {
+            colorFromCalc = tmparr[2];
+        }
   NSLog(@"mylin=[%@]",mylin);
 
 //gbl_color_cNeu 
 //gbl_color_cBgr 
 //gbl_color_cHed
         if ( [mycode isEqualToString: @"fill"] ) {
-bn(3011);
             myalign           = NSTextAlignmentCenter;
             mynumlines        = 1;    
             myadjust          = NO;
@@ -348,29 +360,47 @@ bn(3011);
             myPerFont         = perFont_16;
 
             if ( [mylin isEqualToString: @"filler line #1 at top"] ) {
-bn(3012);
                 mylin             = @" ";
                 mybgcolor         = gbl_color_cBgr ;
-                gbl_heightCellPER = 8;
+//                gbl_heightCellPER = 8;
+//                gbl_heightCellPER = 24  ;
+                gbl_heightCellPER = 16  ;
             }
             else if ( [mylin isEqualToString: @"before table head"] ) {
                 mylin             = @" ";
-                mybgcolor         = gbl_color_cHed ;
+//                mybgcolor         = gbl_color_cHed ;
+//                mybgcolor         = gbl_color_cPerGreen1;
+                mybgcolor         = gbl_color_cAplDarkBlue;
                 gbl_heightCellPER = 8;
             }
-            else if ( [mylin isEqualToString: @"after table head"] ) {
+            else if ( [mylin isEqualToString: @"after table head1"] ) {
                 mylin             = @" ";
-                mybgcolor         = gbl_color_cHed ;
+//                mybgcolor         = gbl_color_cHed ;
+                mybgcolor         = gbl_color_cAplDarkBlue;
+                gbl_heightCellPER = 4;
+            }
+            else if ( [mylin isEqualToString: @"after table head2"] ) {
+                mylin             = @" ";
+//                mybgcolor         = gbl_color_cHed ;
+                mybgcolor         = gbl_color_cPerGreen1;
                 gbl_heightCellPER = 8;
             }
-            else if ( [mylin isEqualToString: @"before table foot"] ) {
+            else if ( [mylin isEqualToString: @"before table foot1"] ) {
                 mylin             = @" ";
-                mybgcolor         = gbl_color_cHed ;
+//                mybgcolor         = gbl_color_cHed ;
+                mybgcolor         = gbl_color_cPerGreen1;
                 gbl_heightCellPER = 8;
+            }
+            else if ( [mylin isEqualToString: @"before table foot2"] ) {
+                mylin             = @" ";
+//                mybgcolor         = gbl_color_cHed ;
+                mybgcolor         = gbl_color_cAplDarkBlue;
+                gbl_heightCellPER = 4;
             }
             else if ( [mylin isEqualToString: @"after table foot"] ) {
                 mylin             = @" ";
-                mybgcolor         = gbl_color_cHed ;
+//                mybgcolor         = gbl_color_cHed ;
+                mybgcolor         = gbl_color_cAplDarkBlue;
                 gbl_heightCellPER = 8;
             }
             else if ( [mylin isEqualToString: @"before para"] ) {
@@ -407,33 +437,58 @@ bn(3012);
             }
         }
         if ( [mycode isEqualToString: @"head"] ) {
+//            myalign           = NSTextAlignmentCenter;
+//            mynumlines        = 1;    
+//            mybgcolor         = gbl_color_cHed ;
+////            gbl_heightCellPER = 16;
+////            gbl_heightCellPER = 20;
+//            gbl_heightCellPER = 16;
+//            myadjust          = YES;
+//            mytextcolor       = [UIColor blackColor];
+////            myPerFont         = perFont_16;
+//            myPerFont         = perFont_14;
+//
             myalign           = NSTextAlignmentCenter;
             mynumlines        = 1;    
-            mybgcolor         = gbl_color_cHed ;
+            mybgcolor         = gbl_color_cAplDarkBlue ;
 //            gbl_heightCellPER = 16;
 //            gbl_heightCellPER = 20;
             gbl_heightCellPER = 16;
+            gbl_heightCellPER = 17;
             myadjust          = YES;
-            mytextcolor       = [UIColor blackColor];
+            mytextcolor       = [UIColor whiteColor];
+//            mytextcolor       = [UIColor cyanColor];
 //            myPerFont         = perFont_16;
-            myPerFont         = perFont_14;
+//            myPerFont         = perFont_14b;
+            myPerFont         = perFont_16b;
+
         }
         if ( [mycode isEqualToString: @"foot"] ) {
             myalign           = NSTextAlignmentCenter;
             mynumlines        = 1;    
             mybgcolor         = gbl_color_cHed ;
+            mybgcolor         = gbl_color_cAplDarkBlue ;
 //            gbl_heightCellPER = 16;
             gbl_heightCellPER = 16;
+            gbl_heightCellPER = 20;
             myadjust          = YES;
             mytextcolor       = [UIColor blackColor];
+            mytextcolor       = [UIColor whiteColor];
 //            myPerFont         = perFont_16;
-            myPerFont         = perFont_14;
+//            myPerFont         = perFont_14b;
+            myPerFont         = perFont_15b;
         }
         if ( [mycode isEqualToString: @"tabl"] ) {
             myalign           = NSTextAlignmentLeft;
             mynumlines        = 1;    
-            mybgcolor         = gbl_color_cNeu ;
+//            mybgcolor         = gbl_color_cNeu ;
 //            mybgcolor         = gbl_color_cGre ;
+//            if ( [colorFromCalc  isEqualToString: @"cPerGreen1" ]) mybgcolor = gbl_color_cGr2; // from perhtm data fld 3 
+//            if ( [colorFromCalc  isEqualToString: @"cPerGreen2" ]) mybgcolor = gbl_color_cGre;
+            if ( [colorFromCalc  isEqualToString: @"cPerGreen1" ]) mybgcolor = gbl_color_cPerGreen1; // from perhtm data fld 3 
+            if ( [colorFromCalc  isEqualToString: @"cPerGreen2" ]) mybgcolor = gbl_color_cPerGreen2;
+
+
 //            gbl_heightCellPER = 24;
             gbl_heightCellPER = 20;
             myadjust          = YES;
@@ -504,7 +559,7 @@ bn(3012);
 //                cell.contentView.backgroundColor           = gbl_thisCellBackGroundColor;  // see above x
         });
 
-bn(302);
+bn(602);
         return cell;
 
     }  // end of new personality TBLRPT  report
@@ -3871,7 +3926,7 @@ kdn(gbl_heightForCompTable );
 //    return 38.0;
     return 35.0; 
 
-}  // ---------------------------------------------------------------------------------------------------------------------
+}  // end of heightForRowAtIndexPath   ---------------------------------------------------------------------------------------------------
 
 
 
@@ -4618,7 +4673,9 @@ NSLog(@"gbl_TBLRPTS1_saveSelectedIndexPath.row=%ld",(long)gbl_TBLRPTS1_saveSelec
     ) {
 
             // try to get rid of tbl position in middle on startup
-nbn(451);
+//nbn(451);
+//  NSLog(@"gbl_justLookedAtInfoScreen=[%ld]",(long)gbl_justLookedAtInfoScreen);
+
             dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
 
 //                [self.tableView reloadData]; // self.view is the table view if self is its controller // try to get rid of tbl position in middle on startup
@@ -4640,8 +4697,10 @@ nbn(451);
 //
 //
 
-                if (gbl_justLookedAtInfoScreen == 0 )  {
-                   // try to get rid of tbl position in middle on startup
+//   20160127     took away use of   gbl_justLookedAtInfoScreen
+//                if (gbl_justLookedAtInfoScreen == 0 )  { //   20160127     took away use of   gbl_justLookedAtInfoScreen
+                   // try to get rid of tbl position in middle on startup //   20160127     took away use of   gbl_justLookedAtInfoScreen
+
        //            dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
        //                [self.tableView reloadData]; // self.view is the table view if self is its controller
        //           });
@@ -4654,10 +4713,11 @@ nbn(451);
                                                                  withRowAnimation: UITableViewRowAnimationNone // does a default unchangeable animation
                     ];
        
-                } 
-                if (gbl_justLookedAtInfoScreen == 1 )  {
-                    gbl_justLookedAtInfoScreen = 0;  // no re-load
-                }
+//   20160127     took away use of   gbl_justLookedAtInfoScreen
+//                } 
+//                if (gbl_justLookedAtInfoScreen == 1 )  {
+//                    gbl_justLookedAtInfoScreen = 0;  // no re-load
+//                }
            });
     }
 
@@ -4799,11 +4859,13 @@ nbn(405);
             }
 
             myNavBarLabel.text          = myNavBar2lineTitle;
+            myNavBarLabel.adjustsFontSizeToFitWidth = YES;
+            [myNavBarLabel sizeToFit];
 
             dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
                 self.navigationItem.titleView = myNavBarLabel; // myNavBarLabel.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
                 self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: shareButton];
-                self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerForTitle];
+//                self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerForTitle];
                 [self.navigationController.navigationBar setTranslucent:NO];
 
                 // How to hide iOS7 UINavigationBar 1px bottom line
@@ -6372,10 +6434,13 @@ nbn(599);
 
 -(IBAction)shareButtonAction:(id)sender
 {
+tn();    NSLog(@"in shareButtonAction!  in MAMB09viewTBLRPTs_1_TableViewController ");
+  NSLog(@"gbl_currentMenuPlusReportCode   =[%@]",gbl_currentMenuPlusReportCode       );
+  NSLog(@"gbl_pathToFileToBeEmailed       =[%@]",gbl_pathToFileToBeEmailed );
+    
+
     MFMailComposeViewController *myMailComposeViewController;
 
-tn();    NSLog(@"in shareButtonAction!  in MAMB09viewTBLRPTs_1_TableViewController ");
-    
     // Determine the file name and extension
     // NSArray *filepart = [gbl_pathToFileToBeEmailed componentsSeparatedByString:@"."];
     NSArray *fileparts = [gbl_pathToFileToBeEmailed componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"./"]];
@@ -6387,8 +6452,8 @@ tn();    NSLog(@"in shareButtonAction!  in MAMB09viewTBLRPTs_1_TableViewControll
     // Get the resource path and read the file using NSData
     // NSString *filePath = [[NSBundle mainBundle] pathForResource:filename ofType:extension];
     NSData *HTMLfileData = [NSData dataWithContentsOfFile: gbl_pathToFileToBeEmailed ];
-//NSLog(@"gbl_pathToFileToBeEmailed =%@",gbl_pathToFileToBeEmailed );
-//NSLog(@"HTMLfileData.length=%lu",(unsigned long)HTMLfileData.length);
+
+NSLog(@"HTMLfileData.length=%lu",(unsigned long)HTMLfileData.length);
 
 
     NSString *emailTitle = [NSString stringWithFormat: @"%@  from Me and my BFFs", filenameForAttachment];
@@ -6396,8 +6461,24 @@ tn();    NSLog(@"in shareButtonAction!  in MAMB09viewTBLRPTs_1_TableViewControll
     NSString *myEmailMessage;
     
     myEmailMessage = @"tester";
+    NSLog(@"emailTitle=%@",emailTitle);
     NSLog(@"myEmailMessage=%@",myEmailMessage);
     NSLog(@"extension=%@",extension);
+
+
+
+    if (   [gbl_currentMenuPlusReportCode hasSuffix: @"pe"] // per rpt gmappe,gmeppe,gmrppe,gmpppe,gmdppe homppe pbm1pe,pbm2pe gbm1pe,gbm2pe
+      //        || [gbl_currentMenuPlusReportCode hasPrefix: @"homgm"]   // personality report  homgma,homgme,homgmr,homgmp,homgmd
+    ) {
+        myEmailMessage = [NSString stringWithFormat: @"\n\"Personality of %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.", gbl_person_name ];
+    }
+    if ([gbl_currentMenuPlusReportCode hasSuffix: @"co"]) {  //   @"Compatibility Potential"  hompco, pbmco, gbmco
+        myEmailMessage = [NSString stringWithFormat: @"\"Compatibility Potential of %@ and %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.", gbl_person_name, gbl_person_name2 ];
+    }
+
+  NSLog(@"myEmailMessage =[%@]",myEmailMessage );
+
+
 
 
 //    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"])      // My Best Match in Group
@@ -6452,35 +6533,50 @@ tn();    NSLog(@"in shareButtonAction!  in MAMB09viewTBLRPTs_1_TableViewControll
     } else if ([extension isEqualToString:@"pdf"]) {
         mimeType = @"application/pdf";
     }
-    
+  NSLog(@"mimeType =[%@]",mimeType );
+
+nbn(300);    
     if ([MFMailComposeViewController canSendMail])
     {
+nbn(301);    
         myMailComposeViewController = [[MFMailComposeViewController alloc] init];
 
         NSLog(@"This device CAN send email");
 
          myMailComposeViewController.mailComposeDelegate = self;
+nbn(3011);    
         [myMailComposeViewController setSubject: emailTitle];
+nbn(302);    
         [myMailComposeViewController setMessageBody: myEmailMessage
                                              isHTML: NO];
+nbn(303);    
+  NSLog(@"toRecipients2=[%@]",toRecipients);
         [myMailComposeViewController setToRecipients: toRecipients];
+  NSLog(@"toRecipients3=[%@]",toRecipients);
+nbn(304);    
         [myMailComposeViewController setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+nbn(305);    
         [myMailComposeViewController addAttachmentData: HTMLfileData                // Add attachment
                                               mimeType: mimeType
                                               fileName: filenameForAttachment];
+nbn(306);    
         
         // Present mail view controller on screen
         //
         //[self presentModalViewController:myMailComposeViewController animated:YES completion:NULL];
 
 
+  NSLog(@"=[306! ]");
         dispatch_async(dispatch_get_main_queue(), ^(void){
                 [self presentViewController: myMailComposeViewController animated:YES completion:NULL];
             }
         );
+  NSLog(@"=[307! ]");
+nbn(307);    
     }
     else
     {
+nbn(308);    
 //        NSLog(@"This device cannot send email");
 //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Cannot send email"
 //                                                        message: @"Maybe email on this device is not set up."
@@ -6493,15 +6589,19 @@ tn();    NSLog(@"in shareButtonAction!  in MAMB09viewTBLRPTs_1_TableViewControll
                                                                        message: @"Maybe email on this device is not set up."
                                                                 preferredStyle: UIAlertControllerStyleAlert  ];
          
+nbn(309);    
         UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
                                                             style: UIAlertActionStyleDefault
                                                           handler: ^(UIAlertAction * action) {
             NSLog(@"Ok button pressed");
         } ];
          
+nbn(310);    
         [alert addAction:  okButton];
+nbn(311);    
 
         [self presentViewController: alert  animated: YES  completion: nil   ];
+nbn(312);    
     }
 } // shareButtonAction
 
@@ -6602,7 +6702,17 @@ tn();    NSLog(@"in shareButtonAction!  in MAMB09viewTBLRPTs_1_TableViewControll
            didFinishWithResult:(MFMailComposeResult)result
                          error:(NSError *)error
 {
+tn();
+  NSLog(@" in mailComposeController  in TBLRPTs 1!!");
+  NSLog(@"result         =[%ld]",(long)result);
+  NSLog(@"error          =[%ld]",(long)error);
+  NSLog(@"error msg      =[%@]", [error localizedDescription]);
+  NSLog(@"error.userInfo =[%@]", error.userInfo);
+  NSLog(@"error.domain   =[%@]", error.domain);
+
+nbn(500);
     if (error) {
+nbn(501);
         UIAlertController* alert = [UIAlertController alertControllerWithTitle: @"An error happened"
                                                                        message: [error localizedDescription]
                                                                 preferredStyle: UIAlertControllerStyleAlert  ];
@@ -6623,6 +6733,8 @@ NSLog(@"Ok button pressed");
             }
         );
     }
+
+nbn(502);
     switch (result)
     {
         case MFMailComposeResultCancelled: {
@@ -6687,19 +6799,28 @@ NSLog(@"Ok button pressed");
 
             break;
         }
-        default: { break; }
-    }
+nbn(503);
+        default: {
+nbn(504);
+            break;
+        }
+nbn(505);
+    }  // end of   switch (result)
+
+nbn(506);
     
     // Close the Mail Interface
 //    [self becomeFirstResponder];  // from http://stackoverflow.com/questions/14263690/need-help-dismissing-email-composer-screen-in-ios
 
     //[self dismissModalViewControllerAnimated:YES
 
+nbn(507);
     dispatch_async(dispatch_get_main_queue(), ^(void){
             [self dismissViewControllerAnimated:YES
                                      completion:NULL];
         }
     );
+nbn(508);
 
 } //  didFinishWithResult:(MFMailComposeResult)result
 
@@ -6918,6 +7039,7 @@ nbn(1);
 //
 
 nbn(2);
+  NSLog(@"gbl_currentMenuPlusReportCode =[%@]",gbl_currentMenuPlusReportCode );
     // no section index for these
     if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homppe"]   // home + personality
         || [gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]   // home + compatibility
@@ -6947,7 +7069,38 @@ nbn(3);
 //    if ([title isEqualToString:@"__"])  newRow = (int) ( (50.0 / 100.0) * (double)group_report_output_idx );
 //    if ([title isEqualToString:@"_"])   newRow = (int) ( (75.0 / 100.0) * (double)group_report_output_idx );
     if ([title isEqualToString:@"END"]) newRow = group_report_output_idx - 1;
-    if ([title isEqualToString:@" "])   newRow = ((double) (index + 1) / (double) gbl_numSectionIndexTitles ) * (double)group_report_output_idx;
+    if (   [title isEqualToString:@" "]
+        || [title isEqualToString:@"__"]
+    )   newRow = ((double) (index + 1) / (double) gbl_numSectionIndexTitles ) * (double)group_report_output_idx ;
+
+//    if ([title isEqualToString:@" "])
+//    {
+//        double dbl_index;
+//        double dbl_gbl_numSectionIndexTitles;
+//        double dbl_group_report_output_idx;
+//        double dbl_newRow;
+//        if ([title isEqualToString:@" "]) {
+//            dbl_newRow = ( (dbl_index + 1.0) /  gbl_numSectionIndexTitles ) * dbl_group_report_output_idx ;
+//kdn( dbl_index);
+//kdn( dbl_gbl_numSectionIndexTitles);
+//kdn( dbl_group_report_output_idx);
+//kdn( dbl_newRow);
+//       
+//            newRow = dbl_newRow;
+//  NSLog(@"newRow                    =[%ld]",(long)newRow );
+//
+//        }
+//    }
+//
+
+//  NSLog(@"(double) (index + 1)               =[%f]",(double) (index + 1) );
+//  NSLog(@"(double) gbl_numSectionIndexTitles =[%f]",(double) gbl_numSectionIndexTitles );
+//  NSLog(@"((double) (index + 1) / (double) gbl_numSectionIndexTitles)=[%f]",((double) (index + 1) / (double) gbl_numSectionIndexTitles));
+//
+//  NSLog(@"((double) (index + 1) / (double) gbl_numSectionIndexTitles ) * (double)group_report_output_idx =[%@]",(double) (((double) (index + 1) / (double) gbl_numSectionIndexTitles ) * (double)group_report_output_idx ) );
+//
+//  NSLog(@"(double)group_report_output_idx    =[%f]",(double)group_report_output_idx );
+
   NSLog(@"index + 1                 =[%ld]",(long)index + 1                 );
   NSLog(@"gbl_numSectionIndexTitles =[%ld]",(long)gbl_numSectionIndexTitles );
   NSLog(@"group_report_output_idx   =[%ld]",(long)group_report_output_idx );
