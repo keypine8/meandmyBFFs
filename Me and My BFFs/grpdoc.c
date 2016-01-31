@@ -1132,6 +1132,8 @@ trn("    for BEST DAY on ");
   /* =========  PUT HEADER LINES  ==============
   */
 
+  // here, build raw display data for tableview in cocoa -----------------------------------------------i-
+
   // put out line to represent spacer before column headers in cocoa
     *out_group_report_idx = *out_group_report_idx + 1;      /* put in cocoa table here */
     sprintf(gbl_my2_group_report_line, "%s", "cHed|top space||");

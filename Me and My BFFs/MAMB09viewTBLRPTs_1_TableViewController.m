@@ -3205,11 +3205,18 @@ ksn(my_tmp_str);
 
                 myDisclosureIndicatorText = @">"; 
 //                myDisclosureIndicatorBGcolorName = gbl_array_cellBGcolorName[indexPath.row];   // array set in  viewDidLoad
-//        NSLog(@"myDisclosureIndicatorBGcolorName =%@",myDisclosureIndicatorBGcolorName );
       
-                if ( [myDisclosureIndicatorBGcolorName isEqualToString: @"cRe2"] ) {
-                    colorOfGroupReportArrow   = [UIColor blackColor];                 // deepest red is pretty  dark
-                    myDisclosureIndicatorFont = [UIFont     systemFontOfSize: 16.0f]; // make not bold
+//  NSLog(@"myDisclosureIndicatorBGcolorName         =%@",myDisclosureIndicatorBGcolorName );
+//  NSLog(@"gbl_array_cellBGcolorName[indexPath.row] =[%@]",gbl_array_cellBGcolorName[indexPath.row] );
+//               myDisclosureIndicatorBGcolorName = gbl_array_cellBGcolorName[indexPath.row] ;   // array set in  viewDidLoad
+
+//                if ( [myDisclosureIndicatorBGcolorName isEqualToString: @"cRe2"] ) {
+                if ( [gbl_array_cellBGcolorName[indexPath.row]  isEqualToString: @"cRe2"] ) {
+
+//                    colorOfGroupReportArrow   = [UIColor blackColor];                 // deepest red is pretty  dark
+//                    myDisclosureIndicatorFont = [UIFont     systemFontOfSize: 16.0f]; // make not bold
+                    colorOfGroupReportArrow   = [UIColor grayColor];                 // deepest red is pretty  dark
+                    myDisclosureIndicatorFont = [UIFont fontWithName: @"MarkerFelt-Thin" size:  24.0]; // good
                 } else {
 //                    colorOfGroupReportArrow   = [UIColor  grayColor];
 //                    myDisclosureIndicatorFont = [UIFont boldSystemFontOfSize: 16.0f];
@@ -3703,9 +3710,16 @@ ksn(my_tmp_str);
                 myDisclosureIndicatorBGcolorName = gbl_array_cellBGcolorName[indexPath.row];   // array set in  viewDidLoad
 //        NSLog(@"myDisclosureIndicatorBGcolorName =%@",myDisclosureIndicatorBGcolorName );
       
-                if ( [myDisclosureIndicatorBGcolorName isEqualToString: @"cRe2"] ) {
-                    colorOfGroupReportArrow   = [UIColor blackColor];                 // deepest red is pretty  dark
-                    myDisclosureIndicatorFont = [UIFont     systemFontOfSize: 16.0f]; // make not bold
+      
+//  NSLog(@"myDisclosureIndicatorBGcolorName         =%@",myDisclosureIndicatorBGcolorName );
+//  NSLog(@"gbl_array_cellBGcolorName[indexPath.row] =[%@]",gbl_array_cellBGcolorName[indexPath.row] );
+//                if ( [myDisclosureIndicatorBGcolorName isEqualToString: @"cRe2"] ) {
+                if ( [gbl_array_cellBGcolorName[indexPath.row]  isEqualToString: @"cRe2"] ) {
+//                    colorOfGroupReportArrow   = [UIColor blackColor];                 // deepest red is pretty  dark
+//                    colorOfGroupReportArrow   = [UIColor darkGrayColor];                 // deepest red is pretty  dark
+                    colorOfGroupReportArrow   = [UIColor grayColor];                 // deepest red is pretty  dark
+//                    myDisclosureIndicatorFont = [UIFont     systemFontOfSize: 16.0f]; // make not bold
+                    myDisclosureIndicatorFont = [UIFont fontWithName: @"MarkerFelt-Thin" size:  24.0]; // good
                 } else {
 //                    colorOfGroupReportArrow   = [UIColor  grayColor];
 //                    myDisclosureIndicatorFont = [UIFont boldSystemFontOfSize: 16.0f];
@@ -5943,9 +5957,11 @@ tn();trn("DOING person in group ... in tblrpts 111111"); ks(html_file_name_brows
                    continue;
                 }
                 strcpy(my_buff, group_report_output_PSVs  +  i * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW
-    //tn();ki(i);ks(my_buff);
+tn();ki(i);ks(my_buff);
 
                 myCellContentsPSV     = [NSMutableString stringWithUTF8String: my_buff];  // convert c string to NSString
+//  NSLog(@"myCellContentsPSV     =[%@]",myCellContentsPSV     );
+
                 tmpArray3             = [myCellContentsPSV componentsSeparatedByCharactersInSet: mySeparators];
 
                 curr_cellBGcolorName    = tmpArray3[0];
@@ -5973,6 +5989,7 @@ tn();trn("DOING person in group ... in tblrpts 111111"); ks(html_file_name_brows
                 [gbl_array_cellPersonBname addObject: curr_cellPersonBname];
             }
         } while (false);   // populate  gbl_array_cellBGcolorName gbl_array_cellPersonAname gbl_array_cellPersonBname
+
 
 
 //        if (retval == 0) {

@@ -319,6 +319,7 @@ NSMutableArray *gbl_grp_CSVs_B;   // report call input
 //
 NSArray *gbl_perDataLines;   // used in tblrpts_1 (read in from webview . html file)
 NSArray *gbl_compDataLines;  // used in tblrpts_1 (read in from webview . html file)
+NSArray *gbl_traitDataLines;  // used in tblrpts_1 MOST trait reports   (read in from webview . html file)
 NSInteger gbl_heightCellPER;
 NSInteger gbl_heightCellCOMP;
 // endof per report stuff
@@ -329,6 +330,7 @@ NSInteger gbl_heightCellCOMP;
 NSString       *gbl_thisCellBackGroundColorName;
 UIColor        *gbl_thisCellBackGroundColor;
 NSMutableArray *gbl_array_cellBGcolorName;
+NSString       *gbl_traitCellBGcolorName;
 NSMutableArray *gbl_array_cellPersonAname;  // for passing to sel rpt B title
 NSMutableArray *gbl_array_cellPersonBname;  // for passing to sel rpt B title
 NSMutableArray *gbl_array_cellBGcolorName_B;
