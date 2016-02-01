@@ -330,7 +330,7 @@ NSInteger gbl_heightCellCOMP;
 NSString       *gbl_thisCellBackGroundColorName;
 UIColor        *gbl_thisCellBackGroundColor;
 NSMutableArray *gbl_array_cellBGcolorName;
-NSString       *gbl_traitCellBGcolorName;
+//NSString       *gbl_traitCellBGcolorName;
 NSMutableArray *gbl_array_cellPersonAname;  // for passing to sel rpt B title
 NSMutableArray *gbl_array_cellPersonBname;  // for passing to sel rpt B title
 NSMutableArray *gbl_array_cellBGcolorName_B;
@@ -665,6 +665,8 @@ UIColor *gbl_colorSelParamForReports;
 UIColor *gbl_colorEdit;
 
 UIView *gbl_myCellBgView;
+UIView *gbl_myCellBgView_cBgr;
+UIView *gbl_myCellBgView_cHed;
 NSInteger gbl_scrollViewIsDragging;
 UIColor *gbl_color_cBGforSelected;  // for highlight bar BG
 

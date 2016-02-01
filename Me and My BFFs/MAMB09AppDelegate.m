@@ -714,11 +714,19 @@
     //[gbl_myCellBgView setBackgroundColor:  gbl_color_cBGforSelected ];
 //[gbl_myCellBgView setBackgroundColor:  [UIColor lightTextColor] ];
 
+
+
     gbl_myCellBgView =[[UIView alloc] initWithFrame:CGRectZero];     // for highlight selected cell flash
     [gbl_myCellBgView setBackgroundColor:  [UIColor whiteColor] ];   // for highlight selected cell flash
 //[gbl_myCellBgView setBackgroundColor:  [UIColor lightTextColor] ];
 
+    gbl_myCellBgView_cBgr =[[UIView alloc] initWithFrame:CGRectZero];     // for highlight selected cell flash
+//    [gbl_myCellBgView_cBgr setBackgroundColor:  gbl_color_cBgr ];   // for highlight selected cell flash
+//    [gbl_myCellBgView_cBgr setBackgroundColor:  [UIColor redColor] ];   // for highlight selected cell flash
+    [gbl_myCellBgView_cBgr setBackgroundColor: [UIColor colorWithRed:247.0/255.0 green:235.0/255.0 blue:209.0/255.0 alpha:1.0]]; // f7ebd1 cBgr
 
+    gbl_myCellBgView_cHed =[[UIView alloc] initWithFrame:CGRectZero];     // for highlight selected cell flash
+    [gbl_myCellBgView_cBgr setBackgroundColor: [UIColor colorWithRed:252.0/255.0 green:252.0/255.0 blue:224.0/255.0 alpha:1.0]]; // fcfce0 cHed
 
 
     //  gbl_colorReportsBG           is for SELRPTs 1 and 2 and and select 2nd person

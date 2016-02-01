@@ -217,10 +217,14 @@ NSLog(@"in numberOfRowsInSection in tblrpts 1");
     } else if ( [gbl_currentMenuPlusReportCode isEqualToString: @"hompco"] ) {  //  new compatibility TBLRPT  report
         retint = gbl_compDataLines.count;
 
+//    } else if (   [gbl_currentMenuPlusReportCode       hasPrefix: @"homgm"] ) { // "Most" reports
+//        retint = group_report_output_idx + 1 + 3 + 1; // + 3 for 3 bottom cells  + 1 for filler before bottom 3
+//tn();kin(retint);
+//
     } else {
 
         // this might work for all 9 reports
-        retint = group_report_output_idx + 1 + 3; // + 3 for 3 bottom cells
+        retint = group_report_output_idx + 1 + 3 ; // + 3 for 3 bottom cells 
     }
 
   NSLog(@"retint=[%ld]",retint);
@@ -250,8 +254,12 @@ NSLog(@"in numberOfRowsInSection in tblrpts 1");
 //    UIFont *myFont = [UIFont fontWithName: @"Menlo" size: 16.0];
 
     UIFont *myFont_16  = [UIFont fontWithName: @"Menlo" size: 16.0];
+    UIFont *myFont_16b = [UIFont fontWithName: @"Menlo-bold" size: 16.0];
 //    UIFont *myFont_14  = [UIFont fontWithName: @"Menlo" size: 14.0];
     UIFont *myFont_12  = [UIFont fontWithName: @"Menlo" size: 12.0];
+    UIFont *myFont_12b = [UIFont fontWithName: @"Menlo-bold" size: 12.0];
+    UIFont *myFont_13b = [UIFont fontWithName: @"Menlo-bold" size: 13.0];
+    UIFont *myFont_14b = [UIFont fontWithName: @"Menlo-bold" size: 14.0];
 //    UIFont *myFont_11b = [UIFont fontWithName: @"Menlo-bold" size: 11.0];
 
 
@@ -305,7 +313,7 @@ bn(601);
         //    [[UIScrollView appearance] setBackgroundColor: gbl_color_cBgr ];  does not work
         UIView *aBackgroundView = [[UIView alloc] initWithFrame:CGRectZero] ;
         aBackgroundView.backgroundColor = gbl_color_cBgr ;
-        cell.backgroundView = aBackgroundView;
+        cell.backgroundView = aBackgroundView; // fixes   bg color of white on left and right
 
 
 //        UIFont *myPerFont        = [UIFont fontWithName: @"Menlo" size: 12.0];
@@ -2688,7 +2696,8 @@ tn();nbn(333);
 
 
             dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
-                cell.textLabel.font          = myFont_12;
+//                cell.textLabel.font          = myFont_12b;
+                cell.textLabel.font          = myFont_14b;
 //                cell.textLabel.numberOfLines = 5;
 //                cell.textLabel.numberOfLines = 7; 
                 cell.textLabel.numberOfLines = 0; 
@@ -2743,12 +2752,13 @@ tn();nbn(333);
             //myNewCellText                = @"    This report is for entertainment purposes only.  ";
             NSAttributedString *myNewCellAttributedText2 = [
                 [NSAttributedString alloc] initWithString:  @"       This report is for entertainment purposes only.  "
-                                               attributes: @{            NSFontAttributeName : [UIFont systemFontOfSize:11.0f],
+                                               attributes: @{            NSFontAttributeName : [UIFont boldSystemFontOfSize:11.0f],
                                                                NSForegroundColorAttributeName: [UIColor redColor]               }
             ];
 
             dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
-                cell.textLabel.font           = currentFontBolded;
+//                cell.textLabel.font           = currentFontBolded;
+//                cell.textLabel.font           = myFont_12b;
                 cell.textLabel.numberOfLines  = 1; 
                 cell.accessoryView            = myInvisibleButton;               // no right arrow on column labels
                 cell.userInteractionEnabled   = NO;
@@ -3350,6 +3360,25 @@ ksn(my_tmp_str);
         }  // end of Grab cell data,  but only if indexPath.row is still in array (3 extra footer cells)
 
 
+//        if (indexPath.row ==  group_report_output_idx + 1)
+//        {  // fill before FOOTER CELLS
+//            dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+//                cell.accessoryType           = UITableViewCellAccessoryNone;
+//                cell.accessoryView           = myInvisibleButton;            // no right arrow on benchmark label
+//                cell.textLabel.numberOfLines = 1; 
+//                cell.textLabel.textColor     = [UIColor blackColor];
+//                cell.textLabel.font          = myFont_16;
+//                cell.textLabel.text          = @" ";  // ------------------------------------------------------------
+//                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+//                cell.userInteractionEnabled  = NO;                           // no selection highlighting
+////                if ([gbl_currentMenuPlusReportCode hasPrefix: @"homgm"] )  cell.backgroundView =  nil;
+//            });
+//
+//            return cell;
+//        }  // fill before FOOTER CELLS
+//
+
+
         if (indexPath.row ==  group_report_output_idx + 1)
         {  // 1 of 3 FOOTER CELLS
 //trn("// 1 of 3 FOOTER CELLS");
@@ -3362,13 +3391,13 @@ ksn(my_tmp_str);
 //        [self.tableView setSeparatorColor:  [UIColor greenColor] ];
 
             dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
-                cell.textLabel.font          = myFont_12;
-//                cell.textLabel.numberOfLines = 5;
+                cell.textLabel.font          = myFont_12b;
+                cell.textLabel.numberOfLines = 5;
                 cell.accessoryView           = myInvisibleButton;               // no right arrow on column labels
                 cell.userInteractionEnabled  = NO;
 
 
-                if ([gbl_currentMenuPlusReportCode hasPrefix: @"homgm"]  // best day
+                if ([gbl_currentMenuPlusReportCode hasPrefix: @"homgm"]  
                 ) {
                     NSString *myMostWhat;
                     if      ([gbl_currentMenuPlusReportCode isEqualToString: @"homgma"]) { myMostWhat = @"Assertive"; }
@@ -3380,9 +3409,9 @@ ksn(my_tmp_str);
 //<.>
                     cell.textLabel.text          = [NSString stringWithFormat: @"                                      \n  The score measures \"how much\"\n  of the trait %@\n  each person has.\n                                      ",
                         myMostWhat ];
-
-                    cell.textLabel.numberOfLines = 5; 
-                    cell.textLabel.textAlignment = NSTextAlignmentCenter;
+//                    cell.textLabel.attributedText = nil;
+//                    cell.textLabel.numberOfLines = 5; 
+                    cell.textLabel.textAlignment  = NSTextAlignmentCenter;
 
 
                 } else if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgbd"]  // best day
@@ -3392,22 +3421,6 @@ ksn(my_tmp_str);
 
                     cell.textLabel.numberOfLines = 5; 
                     cell.textLabel.textAlignment = NSTextAlignmentCenter;
-
-//"                                          \n
-//x The score measures stress levels during  \n
-//x the day for each person in the group.    \n\n
-//x These are short-term influences lasting  \n
-//x just a few hours or a day or two long.   \n
-//x                                          \n"
-//
-
-//x                                   \n
-//x The score measures stress levels  \n
-//x on Mon, Jun 19, 2014              \n
-//x for each person in the group.     \n\n
-//x                                  x"
-//
-
 
 
                 } else if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgby"]  // best year
@@ -3420,30 +3433,10 @@ ksn(my_tmp_str);
                 }
 
 
-//"                                          \n
-//x The score measures stress levels during  \n
-
-//The score shows how much time the
-//person spends in the green zones and 
-//the red zones of the calendar year
-//graph over the whole year.
-//The score gives a general idea of how
-//favorable or challenging the year is.
-//
-//x                                          \n
-//x The score estimates how favorable or
-//x The score suggests how favorable or
-//x The score expresses how favorable or
-//x The score shows how favorable or
-//x The score affirms how favorable or how
-//
-//x The score reflects how long the person   \n
-//x spends in the green zones and red zones  \n
-//x in their graph for calendar year 2015.   \n
-//x The score tells how favorable or how
-//x challenging the year 2015 is overall.     
-//
-
+                if ([gbl_currentMenuPlusReportCode hasPrefix: @"homgm"] ) // MOST trait reports
+                {
+                    cell.textLabel.textColor     = [UIColor whiteColor];
+                }
             });
 
             return cell;
@@ -3455,18 +3448,87 @@ ksn(my_tmp_str);
 //trn("// 2 of 3 FOOTER CELLS");
 
             //        myNewCellText                = @"     Produced by iPhone App Me and my BFFs   ";
-            NSAttributedString *myNewCellAttributedText1 = [
-                [NSAttributedString alloc] initWithString: @"        Produced by iPhone App Me and my BFFs   "
-                                               attributes: @{            NSFontAttributeName : [UIFont systemFontOfSize:11.0f] }
-            ];
+            NSMutableAttributedString *myNewCellAttributedText1;
+
+            NSDictionary *myNeededAttribs = @{
+//                                      NSForegroundColorAttributeName: self.label.textColor,
+//                                      NSBackgroundColorAttributeName: cell.textLabel.attributedText
+//                                      NSBackgroundColorAttributeName: cell.textLabel.textColor
+                NSFontAttributeName            : [UIFont systemFontOfSize: 12.0f],
+                NSBackgroundColorAttributeName : [UIColor colorWithRed:247.0/255.0 green:235.0/255.0 blue:209.0/255.0 alpha:1.0], // f7ebd1  cbgr
+                NSForegroundColorAttributeName : [UIColor blackColor]
+//    gbl_color_cHed  = [UIColor colorWithRed:252.0/255.0 green:252.0/255.0 blue:224.0/255.0 alpha:1.0]; // fcfce0
+                };
+            
+            if ([gbl_currentMenuPlusReportCode hasPrefix: @"homgm"]  )  // only MOST trait reports
+            {
+//                myNewCellAttributedText1 = [
+//                    [NSAttributedString alloc] initWithString: @"        Produced by iPhone App Me and my BFFs   "
+//                                                   attributes: @{  
+//                                                       NSFontAttributeName            : [UIFont systemFontOfSize:11.0f],
+//                                                       NSBackgroundColorAttributeName : gbl_color_cHed
+//                                                   }
+//                ];
+
+
+
+                myNewCellAttributedText1 = 
+                    [[NSMutableAttributedString alloc] initWithString:  @"Produced by iPhone App Me and my BFFs"
+                                                           attributes: myNeededAttribs    
+                ];
+
+            } else {
+                myNewCellAttributedText1 = [
+                    [NSAttributedString alloc] initWithString: @"Produced by iPhone App Me and my BFFs"
+                                                           attributes: myNeededAttribs    
+                ];
+
+            }
 
             dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+
                 cell.textLabel.font           = myFont_16;
                 cell.textLabel.numberOfLines  = 1; 
                 cell.accessoryView            = myInvisibleButton;               // no right arrow on column labels
                 cell.userInteractionEnabled   = NO;
-                cell.textLabel.textAlignment = NSTextAlignmentCenter;
+
+//                cell.textLabel.text           = nil;
+//                cell.textLabel.text           = @"Produced by iPhone App Me and my BFFs";
                 cell.textLabel.attributedText = myNewCellAttributedText1;
+                cell.textLabel.textAlignment = NSTextAlignmentCenter;
+//                cell.textLabel.text = nil;
+
+//                cell.textLabel.backgroundColor = gbl_color_cHed; 
+//                cell.backgroundColor = gbl_color_cHed; 
+
+//                cell.backgroundView =  gbl_myCellBgView;
+//                cell.backgroundView =  gbl_myCellBgView_cBgr;
+
+//                if ([gbl_currentMenuPlusReportCode hasPrefix: @"homgm"] ) // MOST trait reports
+//                {
+//                    cell.textLabel.textColor       = [UIColor blackColor];
+//                }
+
+//                    cell.backgroundView            =  gbl_myCellBgView_cHed;
+//                cell.backgroundColor               = gbl_color_cHed; 
+//                cell.contentView.backgroundColor   = gbl_color_cHed;
+
+//            cell.userInteractionEnabled         = NO;
+//                cell.selectionStyle                 = UITableViewCellSelectionStyleNone;
+//                cell.contentView.backgroundColor   = gbl_color_cHed;
+
+//<.>
+//        dispatch_async(dispatch_get_main_queue(), ^{        
+//            cell.contentView.backgroundColor    = gbl_colorEditingBG_current;
+//            cell.selectionStyle                 = UITableViewCellSelectionStyleNone;
+//            cell.contentView.backgroundColor    = gbl_colorEditingBG_current;
+//        });
+//            cell.contentView.backgroundColor    = gbl_colorEditingBG_current;
+//            cell.userInteractionEnabled         = YES;
+//            cell.selectionStyle                 = UITableViewCellSelectionStyleNone;
+//<.>
+//
+
             });
 
             return cell;
@@ -3483,20 +3545,59 @@ ksn(my_tmp_str);
             UIFont *currentFontBolded = [myappDelegate boldFontWithFont: (UIFont *) currentFont];
 //  NSLog(@"currentFontBolded =%@",currentFontBolded );
 
-            //myNewCellText                = @"    This report is for entertainment purposes only.  ";
-            NSAttributedString *myNewCellAttributedText2 = [
-                [NSAttributedString alloc] initWithString:  @"       This report is for entertainment purposes only.  "
-                                               attributes: @{            NSFontAttributeName : [UIFont systemFontOfSize:11.0f],
-                                                               NSForegroundColorAttributeName: [UIColor redColor]               }
-            ];
+//
+//            //myNewCellText                = @"    This report is for entertainment purposes only.  ";
+//            NSAttributedString *myNewCellAttributedText2 = [
+//                [NSAttributedString alloc] initWithString:  @"       This report is for entertainment purposes only.  "
+//                                               attributes: @{            NSFontAttributeName : [UIFont systemFontOfSize:11.0f],
+//                                                               NSForegroundColorAttributeName: [UIColor redColor]               }
+//            ];
+//
+
+                NSDictionary *myNeededAttribs = @{
+//                                      NSForegroundColorAttributeName: self.label.textColor,
+//                                      NSBackgroundColorAttributeName: cell.textLabel.attributedText
+//                                      NSBackgroundColorAttributeName: cell.textLabel.textColor
+                    NSFontAttributeName            : [UIFont boldSystemFontOfSize: 11.0f],
+//                    NSBackgroundColorAttributeName : gbl_color_cHed
+//                    NSBackgroundColorAttributeName : [UIColor colorWithRed:252.0/255.0 green:252.0/255.0 blue:224.0/255.0 alpha:1.0]
+                    NSBackgroundColorAttributeName : [UIColor colorWithRed:247.0/255.0 green:235.0/255.0 blue:209.0/255.0 alpha:1.0] // f7ebd1  cbgr
+                };
+
+                NSMutableAttributedString *myNewCellAttributedText2;
+                myNewCellAttributedText2 = 
+//                    [[NSMutableAttributedString alloc] initWithString:  @"        Produced by iPhone App Me and my BFFs   "
+                    [[NSMutableAttributedString alloc] initWithString:   @"This report is for entertainment purposes only."
+                                                           attributes: myNeededAttribs    
+                ];
+
 
             dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
                 cell.textLabel.font           = currentFontBolded;
                 cell.textLabel.numberOfLines  = 1; 
                 cell.accessoryView            = myInvisibleButton;               // no right arrow on column labels
                 cell.userInteractionEnabled   = NO;
-                cell.textLabel.textAlignment = NSTextAlignmentCenter;
+
+//                cell.textLabel.text = nil;
                 cell.textLabel.attributedText = myNewCellAttributedText2;
+                cell.textLabel.textAlignment = NSTextAlignmentCenter;
+
+//                cell.textLabel.backgroundColor = gbl_color_cHed; 
+//                cell.backgroundColor = gbl_color_cHed; 
+//                cell.backgroundView =  gbl_myCellBgView_cBgr;
+
+//                cell.textLabel.backgroundColor = [UIColor whiteColor] ; 
+//                cell.backgroundColor           = [UIColor whiteColor] ;
+//                cell.backgroundView            =  gbl_myCellBgView;
+
+//                if ([gbl_currentMenuPlusReportCode hasPrefix: @"homgm"] ) // MOST trait reports
+//                {
+                    cell.textLabel.textColor     = [UIColor redColor];
+//                }
+
+//                    cell.backgroundView            =  gbl_myCellBgView_cHed;
+//                cell.backgroundColor               = gbl_color_cHed; 
+//                cell.contentView.backgroundColor   = gbl_color_cHed;
             });
 
             return cell;
@@ -3517,6 +3618,7 @@ ksn(my_tmp_str);
                 cell.textLabel.text          = @" ";  // ------------------------------------------------------------
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
                 cell.userInteractionEnabled  = NO;                           // no selection highlighting
+//                if ([gbl_currentMenuPlusReportCode hasPrefix: @"homgm"] )  cell.backgroundView =  nil;
             });
 
             return cell;
@@ -3524,9 +3626,7 @@ ksn(my_tmp_str);
         } // end of spacer row before col headers
 
         else if (indexPath.row == 1) {  // ONLY header line   (just 1)
-//tn();trn("in row 0  SPACER");
-            // this is spacer row between 'for ... \n in Group ...'  and col headers
-            //
+//tn();trn("in row 1  header");
 
             NSString *myNewCellText_HDR; 
             myNewCellText_HDR = [myOriginalCellText substringWithRange:NSMakeRange(0, myOriginalCellTextLen - 1)]; // zero-based
@@ -3538,13 +3638,22 @@ ksn(my_tmp_str);
 
             dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
                 cell.accessoryView                       = myInvisibleButton;            // no right arrow on benchmark label
-                cell.textLabel.textColor                 = [UIColor blackColor];
+
+//                cell.textLabel.textColor                 = [UIColor blackColor];
+                if ([gbl_currentMenuPlusReportCode hasPrefix: @"homgm"] ) // MOST trait reports
+                {
+                    cell.textLabel.textColor     = [UIColor whiteColor];
+                } else {
+                    cell.textLabel.textColor     = [UIColor blackColor];
+                }
+
                 cell.userInteractionEnabled              = YES;      // method just returns 
                 cell.textLabel.numberOfLines             = 1; 
-                cell.textLabel.font                      = myFont_16;
+                cell.textLabel.font                      = myFont_16b;
                 cell.textLabel.adjustsFontSizeToFitWidth = YES;
                 cell.textLabel.text                      = myNewCellText;  // ------------------------------------------------------------
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
+//                if ([gbl_currentMenuPlusReportCode hasPrefix: @"homgm"] )  cell.backgroundView =  nil;
             });
       
             return cell;
@@ -3695,6 +3804,7 @@ ksn(my_tmp_str);
                 cell.textLabel.textColor                 = [UIColor blackColor];
                 cell.textLabel.font                      = myFont_16;
                 cell.textLabel.adjustsFontSizeToFitWidth = YES;
+//                if ([gbl_currentMenuPlusReportCode hasPrefix: @"homgm"] )  cell.backgroundView =  nil;
             });
 
         } else {
@@ -3714,17 +3824,34 @@ ksn(my_tmp_str);
 //  NSLog(@"myDisclosureIndicatorBGcolorName         =%@",myDisclosureIndicatorBGcolorName );
 //  NSLog(@"gbl_array_cellBGcolorName[indexPath.row] =[%@]",gbl_array_cellBGcolorName[indexPath.row] );
 //                if ( [myDisclosureIndicatorBGcolorName isEqualToString: @"cRe2"] ) {
-                if ( [gbl_array_cellBGcolorName[indexPath.row]  isEqualToString: @"cRe2"] ) {
+
+
+                if ([gbl_currentMenuPlusReportCode hasPrefix: @"homgm"]  )  // only MOST trait reports
+                {
+                    if (   [gbl_array_cellBGcolorName[indexPath.row]  isEqualToString: @"cGre"]
+                        || [gbl_array_cellBGcolorName[indexPath.row]  isEqualToString: @"cRed"]
+                    ) {
+                        colorOfGroupReportArrow   = [UIColor grayColor];                 // deepest red is pretty  dark
+//                    myDisclosureIndicatorFont = [UIFont     systemFontOfSize: 16.0f]; // make not bold
+                        myDisclosureIndicatorFont = [UIFont fontWithName: @"MarkerFelt-Thin" size:  24.0]; // good
+                    } else {
+                        colorOfGroupReportArrow   = [UIColor lightGrayColor];                 // blue background
+                        myDisclosureIndicatorFont = [UIFont fontWithName: @"MarkerFelt-Thin" size:  24.0]; // good
+                    }
+                } else {
+
+                    if ( [gbl_array_cellBGcolorName[indexPath.row]  isEqualToString: @"cRe2"] ) {
 //                    colorOfGroupReportArrow   = [UIColor blackColor];                 // deepest red is pretty  dark
 //                    colorOfGroupReportArrow   = [UIColor darkGrayColor];                 // deepest red is pretty  dark
-                    colorOfGroupReportArrow   = [UIColor grayColor];                 // deepest red is pretty  dark
+                        colorOfGroupReportArrow   = [UIColor grayColor];                 // deepest red is pretty  dark
 //                    myDisclosureIndicatorFont = [UIFont     systemFontOfSize: 16.0f]; // make not bold
-                    myDisclosureIndicatorFont = [UIFont fontWithName: @"MarkerFelt-Thin" size:  24.0]; // good
-                } else {
+                        myDisclosureIndicatorFont = [UIFont fontWithName: @"MarkerFelt-Thin" size:  24.0]; // good
+                    } else {
 //                    colorOfGroupReportArrow   = [UIColor  grayColor];
 //                    myDisclosureIndicatorFont = [UIFont boldSystemFontOfSize: 16.0f];
-                    colorOfGroupReportArrow   = [UIColor lightGrayColor];                 // blue background
-                    myDisclosureIndicatorFont = [UIFont fontWithName: @"MarkerFelt-Thin" size:  24.0]; // good
+                        colorOfGroupReportArrow   = [UIColor lightGrayColor];                 // blue background
+                        myDisclosureIndicatorFont = [UIFont fontWithName: @"MarkerFelt-Thin" size:  24.0]; // good
+                    }
                 }
 
 
@@ -3739,17 +3866,29 @@ ksn(my_tmp_str);
                 myDisclosureIndicatorLabel.attributedText = myNewCellAttributedText3;
 
 
+                // set   myDisclosureIndicatorLabel.backgroundColor 
+                //
                 if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgma"]  // Most Assertive
                     || [gbl_currentMenuPlusReportCode       hasPrefix: @"homgme"]  // Most Emotional
                     || [gbl_currentMenuPlusReportCode       hasPrefix: @"homgmr"]  // Most Restless
                     || [gbl_currentMenuPlusReportCode       hasPrefix: @"homgmp"]  // Most Passionate
                     || [gbl_currentMenuPlusReportCode       hasPrefix: @"homgmd"]  // Most Down-to-earth
                 ) { 
-                    // for "Most" is  all light green color
-//                    if (indexPath.row % 2 == 0) myDisclosureIndicatorLabel.backgroundColor = gbl_color_cPerGreen4;
-//                    if (indexPath.row % 2 == 1) myDisclosureIndicatorLabel.backgroundColor = gbl_color_cPerGreen3;
-                     myDisclosureIndicatorLabel.backgroundColor = gbl_color_cPerGreen ;  // all the same color
-                     gbl_thisCellBackGroundColor                = gbl_color_cPerGreen ;  // all the same color
+//
+//                    // for "Most" is  all light green color
+////                    if (indexPath.row % 2 == 0) myDisclosureIndicatorLabel.backgroundColor = gbl_color_cPerGreen4;
+////                    if (indexPath.row % 2 == 1) myDisclosureIndicatorLabel.backgroundColor = gbl_color_cPerGreen3;
+//                     myDisclosureIndicatorLabel.backgroundColor = gbl_color_cPerGreen ;  // all the same color
+//                     gbl_thisCellBackGroundColor                = gbl_color_cPerGreen ;  // all the same color
+
+
+//                    myDisclosureIndicatorLabel.backgroundColor = gbl_thisCellBackGroundColor;  // see above
+                    NSString *cellcolor = gbl_array_cellBGcolorName[indexPath.row];
+                    if ( [cellcolor isEqualToString: @"cGr2"] ) myDisclosureIndicatorLabel.backgroundColor = gbl_color_cPerGreen1;
+                    if ( [cellcolor isEqualToString: @"cGre"] ) myDisclosureIndicatorLabel.backgroundColor = gbl_color_cPerGreen2;
+                    if ( [cellcolor isEqualToString: @"cNeu"] ) myDisclosureIndicatorLabel.backgroundColor = gbl_color_cPerGreen1;
+                    if ( [cellcolor isEqualToString: @"cRed"] ) myDisclosureIndicatorLabel.backgroundColor = gbl_color_cPerGreen2;
+                    if ( [cellcolor isEqualToString: @"cRe2"] ) myDisclosureIndicatorLabel.backgroundColor = gbl_color_cPerGreen1;
                 }
 
 //                if (   [gbl_currentMenuPlusReportCode       hasPrefix: @"homgby"]  // Best Year
@@ -3787,7 +3926,12 @@ ksn(my_tmp_str);
                 cell.textLabel.textColor                 = [UIColor blackColor];
                 cell.textLabel.font                      = myFont_16;
                 cell.textLabel.adjustsFontSizeToFitWidth = YES;
-                cell.textLabel.backgroundColor           = gbl_thisCellBackGroundColor;  // see above
+
+
+//                cell.textLabel.backgroundColor           = gbl_thisCellBackGroundColor;  // see above
+
+
+//                if ([gbl_currentMenuPlusReportCode hasPrefix: @"homgm"] )  cell.backgroundView =  nil;
             });
         }
 
@@ -3876,8 +4020,8 @@ kdn(gbl_heightForCompTable );
         if (indexPath.row == 2) return 21.0;  // col hdr 2
      
         if (indexPath.row == group_report_output_idx + 1) return 15.0 * 7;  // ftr 1
-        if (indexPath.row == group_report_output_idx + 2) return 15.0 ;     // ftr 2
-        if (indexPath.row == group_report_output_idx + 3) return 20.0 ;     // ftr 3
+        if (indexPath.row == group_report_output_idx + 2) return 30.0 ;     // ftr 2
+        if (indexPath.row == group_report_output_idx + 3) return  8.0 ;     // ftr 3
 
     } else if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgma"]      // group Most RPTs
                || [gbl_currentMenuPlusReportCode isEqualToString: @"homgme"]      
@@ -3885,13 +4029,18 @@ kdn(gbl_heightForCompTable );
                || [gbl_currentMenuPlusReportCode isEqualToString: @"homgmp"]
                || [gbl_currentMenuPlusReportCode isEqualToString: @"homgmd"]
     ) {
-        if (indexPath.row == 0) return  8.0;  // spacer
+        if (indexPath.row == 0) return  4.0;  // spacer
         if (indexPath.row == 1) return 24.0;  // col hdr 1
         if (indexPath.row == 2) return 32.0;  // col hdr 2   ??
      
         if (indexPath.row == group_report_output_idx + 1) return  70.0 ;  // ftr 1
-        if (indexPath.row == group_report_output_idx + 2) return  15.0 ;     // ftr 2   by
-        if (indexPath.row == group_report_output_idx + 3) return  20.0 ;     // ftr 3   entertainment
+
+//        if (indexPath.row == group_report_output_idx + 2) return  15.0 ;     // ftr 2   by
+        if (indexPath.row == group_report_output_idx + 2) return  30.0 ;     // ftr 2   by
+
+//        if (indexPath.row == group_report_output_idx + 3) return  20.0 ;     // ftr 3   entertainment
+//        if (indexPath.row == group_report_output_idx + 3) return  12.0 ;     // ftr 3   entertainment
+        if (indexPath.row == group_report_output_idx + 3) return  8.0 ;     // ftr 3   entertainment
 
     } else if (  [gbl_currentMenuPlusReportCode isEqualToString: @"homgby"]      // group Best RPT  best year
     ) {
@@ -3900,8 +4049,9 @@ kdn(gbl_heightForCompTable );
         if (indexPath.row == 2) return 32.0;  // col hdr 2   ??
      
         if (indexPath.row == group_report_output_idx + 1) return 70.0 ;  // ftr 1
-        if (indexPath.row == group_report_output_idx + 2) return 15.0 ;     // ftr 2   by
-        if (indexPath.row == group_report_output_idx + 3) return 20.0 ;     // ftr 3   entertainment
+//        if (indexPath.row == group_report_output_idx + 2) return 15.0 ;     // ftr 2   by
+        if (indexPath.row == group_report_output_idx + 2) return 30.0 ;     // ftr 2   by
+        if (indexPath.row == group_report_output_idx + 3) return  8.0 ;     // ftr 3   entertainment
 
     } else if (  [gbl_currentMenuPlusReportCode isEqualToString: @"homgbd"]      // group Best RPT  best day     
     ) {
@@ -3914,8 +4064,10 @@ kdn(gbl_heightForCompTable );
 //        if (indexPath.row == group_report_output_idx + 1) return 150.0 ;  // ftr 1
 //        if (indexPath.row == group_report_output_idx + 1) return 200.0 ;  // ftr 1
         if (indexPath.row == group_report_output_idx + 1) return  75.0 ;  // ftr 1
-        if (indexPath.row == group_report_output_idx + 2) return  15.0 ;     // ftr 2   by
-        if (indexPath.row == group_report_output_idx + 3) return  20.0 ;     // ftr 3   entertainment
+//        if (indexPath.row == group_report_output_idx + 2) return  15.0 ;     // ftr 2   by
+        if (indexPath.row == group_report_output_idx + 2) return  30.0 ;     // ftr 2   by
+//        if (indexPath.row == group_report_output_idx + 3) return  20.0 ;     // ftr 3   entertainment
+        if (indexPath.row == group_report_output_idx + 3) return  8.0 ;     // ftr 3   entertainment
      }
     
 //      else if ([gbl_currentMenuPlusReportCode hasPrefix: @"homgm"]  // best day
@@ -4000,7 +4152,8 @@ kdn(gbl_heightForCompTable );
     NSString *thisCellBGcolorName; 
 
     thisCellBGcolorName = gbl_array_cellBGcolorName[indexPath.row];   // array set in  viewDidLoad
-//  NSLog(@"thisCellBGcolorName =%@",thisCellBGcolorName );
+  NSLog(@"thisCellBGcolorName =%@",thisCellBGcolorName );
+  NSLog(@"indexPath.row =[%ld]",(long)indexPath.row );
 
 
     if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgma"]  // Most Assertive
@@ -4010,21 +4163,78 @@ kdn(gbl_heightForCompTable );
         || [gbl_currentMenuPlusReportCode       hasPrefix: @"homgmd"]  // Most Down-to-earth
     ) { 
         dispatch_async(dispatch_get_main_queue(), ^{            // <===  short line and long line
-            if ( [thisCellBGcolorName isEqualToString: @"cHed"] )  cell.backgroundColor = gbl_color_cHed;
-//            else if (indexPath.row % 2 == 0) cell.backgroundColor = gbl_color_cPerGreen4;   // for "Most" is  all light green color
-//            else if (indexPath.row % 2 == 1) cell.backgroundColor = gbl_color_cPerGreen3;   // for "Most" is  all light green color
-            else  cell.backgroundColor = gbl_color_cPerGreen;   // (same for every cell)  for "Most" is  all light green color
+
+//            if ( [thisCellBGcolorName isEqualToString: @"cHed"] )  cell.backgroundColor = gbl_color_cHed;
+////            else if (indexPath.row % 2 == 0) cell.backgroundColor = gbl_color_cPerGreen4;   // for "Most" is  all light green color
+////            else if (indexPath.row % 2 == 1) cell.backgroundColor = gbl_color_cPerGreen3;   // for "Most" is  all light green color
+//            else  cell.backgroundColor = gbl_color_cPerGreen;   // (same for every cell)  for "Most" is  all light green color
+
+
+
+            // =================================================================================================================
+//            if ( [thisCellBGcolorName isEqualToString: @"cHed"] )  cell.textLabel.backgroundColor = gbl_color_cAplDarkBlue;
+            if ( [thisCellBGcolorName isEqualToString: @"cHed"] ) { cell.textLabel.backgroundColor = gbl_color_cAplDarkBlue; }
+
+            if ( [thisCellBGcolorName isEqualToString: @"cGr2"] )  cell.textLabel.backgroundColor = gbl_color_cPerGreen1;
+            if ( [thisCellBGcolorName isEqualToString: @"cGre"] )  cell.textLabel.backgroundColor = gbl_color_cPerGreen2;
+            if ( [thisCellBGcolorName isEqualToString: @"cNeu"] )  cell.textLabel.backgroundColor = gbl_color_cPerGreen1;
+            if ( [thisCellBGcolorName isEqualToString: @"cRed"] )  cell.textLabel.backgroundColor = gbl_color_cPerGreen2;
+            if ( [thisCellBGcolorName isEqualToString: @"cRe2"] )  cell.textLabel.backgroundColor = gbl_color_cPerGreen1;
+
+            if ( [thisCellBGcolorName isEqualToString: @"cBgr"] )  cell.textLabel.backgroundColor = gbl_color_cBgr;
+            // =================================================================================================================
+            if ( [thisCellBGcolorName isEqualToString: @"cHed"] )  cell.backgroundColor = gbl_color_cAplDarkBlue;
+
+            if ( [thisCellBGcolorName isEqualToString: @"cGr2"] )  cell.backgroundColor = gbl_color_cPerGreen1;
+            if ( [thisCellBGcolorName isEqualToString: @"cGre"] )  cell.backgroundColor = gbl_color_cPerGreen2;
+            if ( [thisCellBGcolorName isEqualToString: @"cNeu"] )  cell.backgroundColor = gbl_color_cPerGreen1;
+            if ( [thisCellBGcolorName isEqualToString: @"cRed"] )  cell.backgroundColor = gbl_color_cPerGreen2;
+            if ( [thisCellBGcolorName isEqualToString: @"cRe2"] )  cell.backgroundColor = gbl_color_cPerGreen1;
+
+            if ( [thisCellBGcolorName isEqualToString: @"cBgr"] )  cell.backgroundColor = gbl_color_cBgr;
+            // =================================================================================================================
+
+            // set  MOST trait reports bottom colors  only
+            //
+
+            if ([gbl_currentMenuPlusReportCode hasPrefix: @"homgm"] ) {
+
+//                if (indexPath.row ==  group_report_output_idx + 1) {  //  @"fill after table"] )
+//                    cell.backgroundColor = gbl_color_cBgr;
+//                }
+                if (indexPath.row ==  group_report_output_idx + 1) {  // 1 of 3 FOOTER CELLS
+                    cell.backgroundColor = gbl_color_cAplDarkBlue;
+                }
+                if (indexPath.row ==  group_report_output_idx + 2) {  // 2 of 3 FOOTER CELLS
+                    cell.backgroundColor = gbl_color_cBgr;
+                }
+                if (indexPath.row ==  group_report_output_idx + 3) {  // 3 of 3 FOOTER CELLS
+                    cell.backgroundColor = gbl_color_cBgr;
+                } 
+            }
+
+
+
+//            // override cHed from "cHed" above
+//            if (indexPath.row ==  0) {  // filler at top
+//                cell.textLabel.backgroundColor = gbl_color_cBgr; 
+//            }
+//
+
+
         });
-    }
+   
+
+
 
 //    if (   [gbl_currentMenuPlusReportCode       hasPrefix: @"homgby"]  // Best Year
 //        || [gbl_currentMenuPlusReportCode       hasPrefix: @"homgbd"]  // Best Day
 //    )  
-    else {
+    } else {
         // doubling the bg color got rid of 1 pixel vertical line
 
         dispatch_async(dispatch_get_main_queue(), ^{            // <===  short line and long line
-
+            // =================================================================================================================
             if ( [thisCellBGcolorName isEqualToString: @"cHed"] )  cell.textLabel.backgroundColor = gbl_color_cHed;
 
             if ( [thisCellBGcolorName isEqualToString: @"cGr2"] )  cell.textLabel.backgroundColor = gbl_color_cGr2;
@@ -4034,8 +4244,7 @@ kdn(gbl_heightForCompTable );
             if ( [thisCellBGcolorName isEqualToString: @"cRe2"] )  cell.textLabel.backgroundColor = gbl_color_cRe2;
 
             if ( [thisCellBGcolorName isEqualToString: @"cBgr"] )  cell.textLabel.backgroundColor = gbl_color_cBgr;
-
-
+            // =================================================================================================================
             if ( [thisCellBGcolorName isEqualToString: @"cHed"] )  cell.backgroundColor = gbl_color_cHed;
 
             if ( [thisCellBGcolorName isEqualToString: @"cGr2"] )  cell.backgroundColor = gbl_color_cGr2;
@@ -4045,6 +4254,7 @@ kdn(gbl_heightForCompTable );
             if ( [thisCellBGcolorName isEqualToString: @"cRe2"] )  cell.backgroundColor = gbl_color_cRe2;
 
             if ( [thisCellBGcolorName isEqualToString: @"cBgr"] )  cell.backgroundColor = gbl_color_cBgr;
+            // =================================================================================================================
 
 
             if ( [thisCellBGcolorName isEqualToString: @"cNeu"] )  cell.textLabel.backgroundColor   = gbl_color_cNeu;
@@ -4052,36 +4262,46 @@ kdn(gbl_heightForCompTable );
 //            if ( [thisCellBGcolorName isEqualToString: @"cNeu"] )  cell.contentView.backgroundColor = gbl_color_cNeu;
 
 
+//            if ([gbl_currentMenuPlusReportCode hasPrefix: @"homgb"] ) {   // best year  and  best day
+                if (indexPath.row ==  group_report_output_idx + 1) {  // 1 of 3 FOOTER CELLS
+                    cell.backgroundColor = gbl_color_cHed;
+                }
+                if (indexPath.row ==  group_report_output_idx + 2) {  // 2 of 3 FOOTER CELLS
+                    cell.backgroundColor = gbl_color_cBgr;
+                }
+                if (indexPath.row ==  group_report_output_idx + 3) {  // 3 of 3 FOOTER CELLS
+                    cell.backgroundColor = gbl_color_cBgr;
+                } 
+//            }
+
+
         });
     }    // for "Best" use red/green color
 
 } // end of   willDisplayCell
-
-
-
 
 //- (void)tableView:(UITableView *)tableView willDisplayCell: (UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 //{ 
 //tn();  NSLog(@"willDisplayCell !");
 //    // get the Background Color for this cell
 //    //
-//    do {
+////    do {
+////
+////        gbl_thisCellBackGroundColorName = gbl_array_cellBGcolorName[indexPath.row];   // array set in  viewDidLoad
+////        if ( [gbl_thisCellBackGroundColorName isEqualToString: @"cHed"] )  gbl_thisCellBackGroundColor = gbl_color_cHed;
+////        if ( [gbl_thisCellBackGroundColorName isEqualToString: @"cGr2"] )  gbl_thisCellBackGroundColor = gbl_color_cGr2;
+////        if ( [gbl_thisCellBackGroundColorName isEqualToString: @"cGre"] )  gbl_thisCellBackGroundColor = gbl_color_cGre;
+////        if ( [gbl_thisCellBackGroundColorName isEqualToString: @"cNeu"] )  gbl_thisCellBackGroundColor = gbl_color_cNeu;
+////        if ( [gbl_thisCellBackGroundColorName isEqualToString: @"cRed"] )  gbl_thisCellBackGroundColor = gbl_color_cRed;
+////        if ( [gbl_thisCellBackGroundColorName isEqualToString: @"cRe2"] )  gbl_thisCellBackGroundColor = gbl_color_cRe2;
+////        if ( [gbl_thisCellBackGroundColorName isEqualToString: @"cBgr"] )  gbl_thisCellBackGroundColor = gbl_color_cBgr;
+////    } while (FALSE);
+////
 //
-//        gbl_thisCellBackGroundColorName = gbl_array_cellBGcolorName[indexPath.row];   // array set in  viewDidLoad
-//        if ( [gbl_thisCellBackGroundColorName isEqualToString: @"cHed"] )  gbl_thisCellBackGroundColor = gbl_color_cHed;
-//        if ( [gbl_thisCellBackGroundColorName isEqualToString: @"cGr2"] )  gbl_thisCellBackGroundColor = gbl_color_cGr2;
-//        if ( [gbl_thisCellBackGroundColorName isEqualToString: @"cGre"] )  gbl_thisCellBackGroundColor = gbl_color_cGre;
-//        if ( [gbl_thisCellBackGroundColorName isEqualToString: @"cNeu"] )  gbl_thisCellBackGroundColor = gbl_color_cNeu;
-//        if ( [gbl_thisCellBackGroundColorName isEqualToString: @"cRed"] )  gbl_thisCellBackGroundColor = gbl_color_cRed;
-//        if ( [gbl_thisCellBackGroundColorName isEqualToString: @"cRe2"] )  gbl_thisCellBackGroundColor = gbl_color_cRe2;
-//        if ( [gbl_thisCellBackGroundColorName isEqualToString: @"cBgr"] )  gbl_thisCellBackGroundColor = gbl_color_cBgr;
-//    } while (FALSE);
-//
-//    dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
-//        cell.textLabel.backgroundColor           = gbl_thisCellBackGroundColor;  // see above x
-//    });
+//    }
 //}
 //
+
 
 
 
