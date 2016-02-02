@@ -329,7 +329,7 @@ NSInteger gbl_heightCellCOMP;
 //
 NSString       *gbl_thisCellBackGroundColorName;
 UIColor        *gbl_thisCellBackGroundColor;
-NSMutableArray *gbl_array_cellBGcolorName;
+NSMutableArray *gbl_array_cellBGcolorName;      // has max group_report_output_idx + 1 entries (there are more rows on the report bottom)
 //NSString       *gbl_traitCellBGcolorName;
 NSMutableArray *gbl_array_cellPersonAname;  // for passing to sel rpt B title
 NSMutableArray *gbl_array_cellPersonBname;  // for passing to sel rpt B title

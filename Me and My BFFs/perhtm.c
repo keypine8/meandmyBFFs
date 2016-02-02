@@ -1773,7 +1773,7 @@ void p_fn_output_top_of_html_file(void)                        // browser view
 //    p_fn_prtlin( "    .cPerGreen1 {background-color: #e5e2c7;}");  // same as cNeu (new)  e5e2c7
 
 
-tn();trn("browser");
+//tn();trn("browser");
 // this is browser   browser   browser   browser   browser   browser   browser   browser   browser   browser   browser  
 
 
@@ -1943,8 +1943,8 @@ void p_docin_get(char *in_line)
 
   scharout(in_line,'\n');   /* remove newlines */
 
-tn(); kin(global_read_idx);
-ksn(in_line);
+//tn(); kin(global_read_idx);
+//ksn(in_line);
 
 } /* end of p_docin_get */
 
@@ -1994,7 +1994,7 @@ void p_fn_webview_aspect_text(char *aspect_code){
   /*   put_br_every_n(my_aspect_text, 65);  */
 //  put_br_every_n(my_aspect_text, 40);          // <=====----
 
-tn();ksn(my_aspect_text);
+//tn();ksn(my_aspect_text);
 
   // print lines in my_aspect_text wrapped to line_not_longer_than_this
   // 
@@ -2094,7 +2094,7 @@ tn();ksn(my_aspect_text);
 */
 void p_fn_prtlin_stars(char *starline)
 {
-tr("in p_fn_prtlin_stars()  ");
+//tr("in p_fn_prtlin_stars()  ");
 
   char *pBegStar;
   char *pEndStar;
@@ -2133,13 +2133,13 @@ tr("in p_fn_prtlin_stars()  ");
     afterStars
   ); 
 
-ksn(writebuf);
+//ksn(writebuf);
   p_fn_prtlin(writebuf);   /* write star line here */
 
 } /* end of p_fn_prtlin_stars() */
 
 void p_fn_prtlin(char *lin) {
-tr("in p_fn_prtlin()        ");
+//tr("in p_fn_prtlin()        ");
   char myEOL[8];
 /* tn();
 * tn();
@@ -2164,15 +2164,16 @@ tr("in p_fn_prtlin()        ");
 /* ksn(myEOL); */
   global_n = sprintf(global_p,"%s%s", lin, myEOL);
 
-ksn(global_p);
+//ksn(global_p);
   fput(global_p, global_n, Fp_p_HTML_file);
 /* b(35); */
 } 
 
+
 void p_fn_prtlin_aspect(char *lin) {  /* no \n at end  ( UNUSED ) */
-tr("in p_fn_prtlin_aspect() ");
+//tr("in p_fn_prtlin_aspect() ");
   global_n = sprintf(global_p,"%s", lin);
-ksn(global_p);
+//ksn(global_p);
   fput(global_p, global_n, Fp_p_HTML_file);
 }  
 

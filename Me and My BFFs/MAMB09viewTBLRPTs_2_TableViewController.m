@@ -1230,7 +1230,7 @@ for (id eltTst in gbl_compDataLines) { NSLog(@"    gbl_comp=%@", eltTst); }
         return  gbl_compDataLines.count;
 
     } else {
-        return (group_report_output_idx_B + 1 + 3); // + 3 for 3 bottom cells
+        return (group_report_output_idx_B + 1 + 3 + 1); // + 3 for 3 bottom cells
     }
 }
 
@@ -3799,6 +3799,26 @@ bn(802);
     }  // end of 3 of 3 FOOTER CELLS
 
 
+        else if (indexPath.row ==  group_report_output_idx_B + 4)
+        {  // 4 of 3 FOOTER CELLS
+trn("// 4 of 3 FOOTER CELLS");
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+                cell.accessoryType           = UITableViewCellAccessoryNone;
+                cell.accessoryView           = myInvisibleButton;            // no right arrow on benchmark label
+                cell.textLabel.numberOfLines = 1; 
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.textLabel.font          = myFont;
+                cell.textLabel.text          = @" ";  // ------------------------------------------------------------
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.userInteractionEnabled  = NO;                           // no selection highlighting
+//                if ([gbl_currentMenuPlusReportCode hasPrefix: @"homgm"] )  cell.backgroundView =  nil;
+            });
+
+trn("// END   END    4 of 3 FOOTER CELLS");
+            return cell;
+        }  // 4 of 3 FOOTER CELLS
+
+
     else if (indexPath.row == 0) {  // COLUMN HEADERS   SPACER   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 //tn();trn("in row 0  SPACER");
         // this is spacer row between 'for ... \n in Group ...'  and col headers
@@ -4356,9 +4376,14 @@ kdn(gbl_heightForCompTable );
         if (indexPath.row == 1) return 18.0;  // col hdr 1
         if (indexPath.row == 2) return 21.0;  // col hdr 2
  
+//    if (indexPath.row == group_report_output_idx_B + 1) return 15.0 * 7;  // ftr 1
+//    if (indexPath.row == group_report_output_idx_B + 2) return 15.0 ;     // ftr 2
+//    if (indexPath.row == group_report_output_idx_B + 3) return 20.0 ;     // ftr 3
+
     if (indexPath.row == group_report_output_idx_B + 1) return 15.0 * 7;  // ftr 1
-    if (indexPath.row == group_report_output_idx_B + 2) return 15.0 ;     // ftr 2
-    if (indexPath.row == group_report_output_idx_B + 3) return 20.0 ;     // ftr 3
+    if (indexPath.row == group_report_output_idx_B + 2) return 30.0 ;     // ftr 2
+    if (indexPath.row == group_report_output_idx_B + 3) return  8.0 ;     // ftr 3
+    if (indexPath.row == group_report_output_idx_B + 4) return 16.0 ;     // end fill
 
     return 35.0;
 
@@ -4482,11 +4507,8 @@ kdn(gbl_heightForCompTable );
 {
 //  NSLog(@"in willDisplayCell");
 
-//    if (   [gbl_currentMenuPlusReportCode hasSuffix: @"pe"]  
-//        || [gbl_currentMenuPlusReportCode hasSuffix: @"co"]  
-//    ) {
-//        return;
-//    }
+    NSString *thisCellBGcolorName; 
+
     if (   [gbl_currentMenuPlusReportCode hasSuffix: @"pe"]  
     ) {
         return;
@@ -4498,25 +4520,23 @@ kdn(gbl_heightForCompTable );
     }
 
 
-
-
-    //cell.backgroundColor = [UIColor colorWithRed:(116/255.0) green:(167/255.0) blue:(179/255.0) alpha:1.0];
-
-    NSString *thisCellBGcolorName; 
-    thisCellBGcolorName = gbl_array_cellBGcolorName_B[indexPath.row];   // array set in  viewDidLoad
-//  NSLog(@"thisCellBGcolorName =%@",thisCellBGcolorName );
-
-//    gbl_cre2Flag = 0;
-//nbn(200);        
-//tn();trn("befor set");kin(gbl_cre2Flag );
-//b(201);        
-//        if ( [thisCellBGcolorName isEqualToString: @"cRe2"] )  {
-//b(202);        
-//            gbl_cre2Flag = 1;
-//        }
-//b(203);        
-//tn();trn("after set");kin(gbl_cre2Flag );
 //
+//    thisCellBGcolorName = gbl_array_cellBGcolorName_B[indexPath.row];   // array set in  viewDidLoad
+////  NSLog(@"thisCellBGcolorName =%@",thisCellBGcolorName );
+//
+
+    if (indexPath.row  <=  gbl_array_cellBGcolorName.count -1 )  // is max idx number (0-based)
+    {
+//  NSLog(@"indexPath.row =[%ld]",(long)indexPath.row );
+        thisCellBGcolorName = gbl_array_cellBGcolorName[indexPath.row];   // array set in  viewDidLoad
+//  NSLog(@"thisCellBGcolorName =%@",thisCellBGcolorName );
+    } else {
+
+        cell.backgroundColor = gbl_color_cBgr;
+//  NSLog(@"   RETURN  because no bg color");
+
+        return;
+    }
 
 
     dispatch_async(dispatch_get_main_queue(), ^{            // <===  short line and long line
@@ -4533,8 +4553,30 @@ nbn(77);
         if ( [thisCellBGcolorName isEqualToString: @"cRed"] )  cell.backgroundColor = gbl_color_cRed;
         if ( [thisCellBGcolorName isEqualToString: @"cRe2"] )  cell.backgroundColor = gbl_color_cRe2;
         if ( [thisCellBGcolorName isEqualToString: @"cBgr"] )  cell.backgroundColor = gbl_color_cBgr;
+
+        if (indexPath.row ==  group_report_output_idx_B + 1) {  // 1 of 3 FOOTER CELLS
+            cell.backgroundColor = gbl_color_cHed;
+        }
+        if (indexPath.row ==  group_report_output_idx_B + 2) {  // fill 1
+            cell.backgroundColor = gbl_color_cBgr;
+        }
+        if (indexPath.row ==  group_report_output_idx_B + 3) {  // 2 of 3 FOOTER CELLS
+            cell.backgroundColor = gbl_color_cBgr;
+        }
+        if (indexPath.row ==  group_report_output_idx_B + 4) {  // fill 2
+            cell.backgroundColor = gbl_color_cBgr;
+        }
+        if (indexPath.row ==  group_report_output_idx_B + 5) {  // 3 of 3 FOOTER CELLS
+            cell.backgroundColor = gbl_color_cBgr;
+        } 
+        if (indexPath.row  >  group_report_output_idx_B + 5) {  // 3 of 3 FOOTER CELLS
+            cell.backgroundColor = gbl_color_cBgr;
+        } 
+
     });
-}
+
+} //  willDisplayCell: (UITableViewCell *)cell
+
 
 
 //- (void)layoutSubviews 
