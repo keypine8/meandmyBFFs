@@ -147,14 +147,76 @@
 
 
 
-     gbl_initPromptName = @"Name";
-     gbl_initPromptCity = @"Birth City or Town";
-     gbl_initPromptProv = @"State or Province";
-     gbl_initPromptCoun = @"Country";
-     gbl_initPromptDate = @"Birth Date and Time";
+    gbl_initPromptName = @"Name";
+    gbl_initPromptCity = @"Birth City or Town";
+    gbl_initPromptProv = @"State or Province";
+    gbl_initPromptCoun = @"Country";
+    gbl_initPromptDate = @"Birth Date and Time";
+
+     //
+     // more objects that can be alloc/inited here instead of ,for example, cellforrow every time
+     //
 
 
-
+// this does not work  app hangs in home (no data in cells)  cpu and mem go nuts  BUT it did work as lcl_ global
+//  NSLog(@"10!");
+//     
+//
+//
+//    // UILabel for the disclosure indicator, ">",  for tappable cells
+//    //
+////    NSString *myDisclosureIndicatorBGcolorName; 
+//    NSString *myDisclosureIndicatorText; 
+//    UIColor  *colorOfGroupReportArrow; 
+//    UIFont   *myDisclosureIndicatorFont; 
+//
+//    myDisclosureIndicatorText = @">"; 
+////            colorOfGroupReportArrow   = [UIColor blackColor];                 // blue background
+////            colorOfGroupReportArrow   = [UIColor darkGrayColor];                 // blue background
+////            colorOfGroupReportArrow   = [UIColor grayColor];                 // blue background
+//    colorOfGroupReportArrow   = [UIColor lightGrayColor];                 // blue background
+////            myDisclosureIndicatorFont = [UIFont     systemFontOfSize: 16.0f]; // make not bold
+////            myDisclosureIndicatorFont = [UIFont     systemFontOfSize: 24.0f]; // make not bold
+////            myDisclosureIndicatorFont = [UIFont     systemFontOfSize: 20.0f]; // make not bold
+////            myDisclosureIndicatorFont = [UIFont     boldSystemFontOfSize: 24.0f]; // make not bold
+////            myDisclosureIndicatorFont = [UIFont     boldSystemFontOfSize: 20.0f]; // make not bold
+////            myDisclosureIndicatorFont = [UIFont fontWithName: @"Menlo-bold" size:  24.0]; // no good
+////            myDisclosureIndicatorFont = [UIFont fontWithName: @"ArialRoundedMTBold" size:  24.0];
+////            myDisclosureIndicatorFont = [UIFont fontWithName: @"HelveticaNeue-ThinItalic" size:  24.0];
+////            myDisclosureIndicatorFont = [UIFont fontWithName: @"IowanOldStyle-Bold" size:  24.0];
+//    myDisclosureIndicatorFont = [UIFont fontWithName: @"MarkerFelt-Thin" size:  24.0]; // good
+////            myDisclosureIndicatorFont = [UIFont fontWithName: @"MarkerFelt-Wide" size:  24.0]; // bad
+////            myDisclosureIndicatorFont = [UIFont fontWithName: @"SanFranciscoDisplay-Thin" size:  24.0]; 
+////            myDisclosureIndicatorFont = [UIFont fontWithName: @"SanFranciscoRounded-Bold" size:  16.0]; 
+////            myDisclosureIndicatorFont = [UIFont fontWithName: @"TimesNewRomanPS-BoldMT" size:  24.0]; // good
+////              myDisclosureIndicatorFont = [UIFont fontWithName: @"Superclarendon-Bold" size:  24.0]; // good
+////              myDisclosureIndicatorFont = [UIFont fontWithName: @"SnellRoundhand-Bold" size:  24.0]; // good
+////              myDisclosureIndicatorFont = [UIFont fontWithName: @"AvenirNextCondensed-Heavy" size:  24.0]; // good
+//
+//  NSLog(@"11!");
+//
+//
+//
+//    NSAttributedString *myNewCellAttributedText3 = [
+//        [NSAttributedString alloc] initWithString: myDisclosureIndicatorText  // i.e.   @">"
+//                                       attributes: @{            NSFontAttributeName : myDisclosureIndicatorFont,
+//                                                       NSForegroundColorAttributeName: colorOfGroupReportArrow                }
+//    ];
+//  NSLog(@"12!");
+//
+//    gbl_disclosureIndicatorLabel                 = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 12.0f, 32.0f)];
+//  NSLog(@"13!");
+//    gbl_disclosureIndicatorLabel.attributedText  = myNewCellAttributedText3;
+//  NSLog(@"14!");
+//    gbl_disclosureIndicatorLabel.backgroundColor = gbl_colorReportsBG; 
+//  NSLog(@"15!");
+//    //
+//    // end of  UILabel for the disclosure indicator, ">",  for tappable cells
+//
+//
+//
+//
+  NSLog(@"20!");
 
         // Creating a UIColor with Preset Component Values [UIColor redColor]
         //    blackColor
@@ -175,6 +237,42 @@
         //
 
 
+     //  DI  Disclosure Indicator  colors
+     //
+//     gbl_colorDIfor_home = [UIColor colorWithRed:064.0/255.0 green:064.0/255.0 blue:064.0/255.0 alpha:1.0]; // gray
+//     gbl_colorDIfor_home = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0]; // gray
+//     gbl_colorDIfor_home = [UIColor colorWithRed:192.0/255.0 green:192.0/255.0 blue:192.0/255.0 alpha:1.0]; // gray
+//     gbl_colorDIfor_home = [UIColor colorWithRed:160.0/255.0 green:160.0/255.0 blue:160.0/255.0 alpha:1.0]; // gray
+//     gbl_colorDIfor_home = [UIColor colorWithRed:176.0/255.0 green:176.0/255.0 blue:176.0/255.0 alpha:1.0]; // gray
+//     gbl_colorDIfor_home = [UIColor colorWithRed:184.0/255.0 green:184.0/255.0 blue:184.0/255.0 alpha:1.0]; // gray
+     gbl_colorDIfor_home = [UIColor colorWithRed:192.0/255.0 green:192.0/255.0 blue:192.0/255.0 alpha:1.0]; // gray   gold #1
+
+
+     gbl_colorDIfor_cGr2 = [UIColor colorWithRed:064.0/255.0 green:064.0/255.0 blue:064.0/255.0 alpha:1.0]; // gray
+     gbl_colorDIfor_cGr2 = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0]; // gray
+     gbl_colorDIfor_cGr2 = [UIColor colorWithRed:160.0/255.0 green:160.0/255.0 blue:160.0/255.0 alpha:1.0]; // gray
+     gbl_colorDIfor_cGr2 = [UIColor colorWithRed:192.0/255.0 green:192.0/255.0 blue:192.0/255.0 alpha:1.0]; // gray
+
+     gbl_colorDIfor_cGr2 = [UIColor colorWithRed:160.0/255.0 green:192.0/255.0 blue:192.0/255.0 alpha:1.0]; // gray
+
+     gbl_colorDIfor_cGre = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0]; // gray
+     gbl_colorDIfor_cGre = [UIColor colorWithRed:160.0/255.0 green:160.0/255.0 blue:160.0/255.0 alpha:1.0]; // gray
+     gbl_colorDIfor_cGre = [UIColor colorWithRed:176.0/255.0 green:176.0/255.0 blue:176.0/255.0 alpha:1.0]; // gray
+     gbl_colorDIfor_cGre = [UIColor colorWithRed:192.0/255.0 green:192.0/255.0 blue:192.0/255.0 alpha:1.0]; // gray
+
+     gbl_colorDIfor_cNeu = [UIColor colorWithRed:192.0/255.0 green:192.0/255.0 blue:192.0/255.0 alpha:1.0]; // gray
+
+     gbl_colorDIfor_cRed = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0]; // gray
+     gbl_colorDIfor_cRed = [UIColor colorWithRed:144.0/255.0 green:144.0/255.0 blue:144.0/255.0 alpha:1.0]; // gray
+     gbl_colorDIfor_cRed = [UIColor colorWithRed:160.0/255.0 green:160.0/255.0 blue:160.0/255.0 alpha:1.0]; // gray
+     gbl_colorDIfor_cRed = [UIColor colorWithRed:176.0/255.0 green:176.0/255.0 blue:176.0/255.0 alpha:1.0]; // gray
+
+     gbl_colorDIfor_cRe2 = [UIColor colorWithRed:064.0/255.0 green:064.0/255.0 blue:064.0/255.0 alpha:1.0]; // gray
+     gbl_colorDIfor_cRe2 = [UIColor colorWithRed:160.0/255.0 green:160.0/255.0 blue:160.0/255.0 alpha:1.0]; // gray
+
+     gbl_colorDIfor_cRe2 = [UIColor colorWithRed:160.0/255.0 green:144.0/255.0 blue:160.0/255.0 alpha:1.0]; // gray
+     //
+     //  DI  Disclosure Indicator  colors
 
      gbl_colorPlaceHolderPrompt = [UIColor colorWithRed:064.0/255.0 green:064.0/255.0 blue:064.0/255.0 alpha:1.0]; // gray
 //     gbl_colorCityLabelBorder = [UIColor colorWithRed:064.0/255.0 green:064.0/255.0 blue:064.0/255.0 alpha:1.0]; // gray

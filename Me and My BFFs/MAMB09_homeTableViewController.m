@@ -24,7 +24,10 @@
 
 @interface MAMB09_homeTableViewController ()
 
+//@property (strong, nonatomic)  UILabel *lcl_disclosureIndicatorLabel;  // set in viewDidLoad
+
 @end
+
 
 
 @implementation MAMB09_homeTableViewController
@@ -79,6 +82,11 @@
 {
     [super viewDidLoad];
 
+    fopen_fpdb_for_debug();
+
+tn();
+  NSLog(@"in viewDidLoad  in HOME  HOME  ");
+
 
 //    WWW width=[240.930176]
 //    MMM width=[217.023926]
@@ -104,9 +112,6 @@
 
     // assign height of tableview rows here
     
-    fopen_fpdb_for_debug();
-    trn("in viewDidLoad in home");
-
 
 
 // try to reduce load time of first cal yr report   
@@ -157,6 +162,10 @@ tn();
     NSString *xtitle   = [webview stringByEvaluatingJavaScriptFromString:@"document.title"];  
   NSLog(@"END  use javascript to  grab document.title - to try to reduce load time of first cal yr report   ");
   NSLog(@"xtitle   =[%@]",xtitle   );
+    //
+    // this WORKED!
+
+
     
 
 
@@ -184,6 +193,42 @@ tn();
     // Uncomment the following line to preserve selection between presentations.
     //self.clearsSelectionOnViewWillAppear = NO;
     
+
+   
+//
+//        // UILabel for the disclosure indicator, ">",  for tappable cells
+//        //
+//        // set this up here since its used in cellForRow   over and over
+//        //
+////            NSString *myDisclosureIndicatorBGcolorName; 
+////            NSString *myDisclosureIndicatorText; 
+////            UIColor  *colorOfGroupReportArrow; 
+////            UIFont   *myDisclosureIndicatorFont; 
+//
+////            colorOfGroupReportArrow   = [UIColor lightGrayColor];                 // blue background
+////            colorOfGroupReportArrow   = [UIColor grayColor];                 // blue background
+////            colorOfGroupReportArrow   = [UIColor redColor];                 // blue background
+////            myDisclosureIndicatorFont = [UIFont fontWithName: @"MarkerFelt-Thin" size:  24.0]; // good
+//
+//tn();trn("arrow = red !");
+//            NSAttributedString *myNewCellAttributedText3 = [
+//                [NSAttributedString alloc] initWithString: @">"  
+//                                               attributes: @{
+//                        NSFontAttributeName :  [UIFont fontWithName: @"MarkerFelt-Thin" size:  24.0] ,  
+//                        NSForegroundColorAttributeName: [UIColor redColor ]  
+//                    }
+//            ];
+//
+//            _lcl_disclosureIndicatorLabel        = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 12.0f, 32.0f)];
+//            _lcl_disclosureIndicatorLabel.attributedText  = myNewCellAttributedText3;
+//            _lcl_disclosureIndicatorLabel.backgroundColor = gbl_colorReportsBG; 
+////            lcl_disclosureIndicatorLabel.backgroundColor = [UIColor redColor];      
+//        //
+//        // end of  UILabel for the disclosure indicator, ">",  for tappable cells
+//
+
+
+
 
 
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
@@ -384,7 +429,6 @@ nbn(100);
 //
 
 
-    
 
     [[NSNotificationCenter defaultCenter] addObserver: self  // run method doStuffOnEnteringForeground()  when entering Foreground
                                              selector: @selector(doStuffOnEnteringForeground)
@@ -580,7 +624,6 @@ ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
 
     // check for data corruption  (should not happen)
     //
-nbn(1);
     NSInteger myCorruptDataErrNum;
     do {
         myCorruptDataErrNum =  [myappDelegate mambCheckForCorruptData ];
@@ -697,7 +740,6 @@ nbn(1);
 //
 
 
-nbn(2);
             // want left-justified alert text for long msg
             //
             NSString *mymsg;
@@ -717,14 +759,12 @@ nbn(2);
 //            // myAlert.setValue(messageText, forKey: "attributedMessage")
 
 
-nbn(3);
 
             UIAlertController* myAlert = [UIAlertController alertControllerWithTitle: @"Found Corrupt Data"
                                                                            message: mymsg
                                                                     preferredStyle: UIAlertControllerStyleAlert  ];
              
             [myAlert setValue: myAttrMessage  forKey: @"attributedMessage" ];
-nbn(5);
 
             UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
                                                                 style: UIAlertActionStyleDefault
@@ -734,7 +774,6 @@ nbn(5);
              
             [myAlert addAction:  okButton];
 
-nbn(6);
             // was using this:
             //[self presentViewController: myAlert  animated: YES  completion: nil   ];
             //
@@ -744,7 +783,6 @@ nbn(6);
             //
             [self.navigationController presentViewController: myAlert  animated: YES  completion: nil ];
 
-nbn(7);
             // tried all these:
             //
             // To avoid getting the warning in a push navigation, you can directly use :
@@ -846,12 +884,12 @@ nbn(7);
     //if ([_mambCurrentEntity isEqualToString:@"person"]) return gbl_arrayPer.count;
     if ([gbl_lastSelectionType isEqualToString:@"group"]) 
     {
-  NSLog(@"return num groups=[%ld]",(long)gbl_arrayGrp.count);
+  NSLog(@"retint  return num groups=[%ld]",(long)gbl_arrayGrp.count);
         return gbl_arrayGrp.count;
     }
     if ([gbl_lastSelectionType isEqualToString:@"person"])
     {
-  NSLog(@"return num people=[%ld]",(long)gbl_arrayPer.count);
+  NSLog(@"retint  return num people=[%ld]",(long)gbl_arrayPer.count);
         return gbl_arrayPer.count;
     }
     return 0;
@@ -860,7 +898,8 @@ nbn(7);
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //  NSLog(@"in cellForRowAtIndexPath");
+  NSLog(@"in cellForRowAtIndexPath");
+  NSLog(@"indexPath.row =[%ld]",(long)indexPath.row );
 
     // create an NSString  we can use as the reuse identifier
     static NSString *CellIdentifier = @"MyCell1";
@@ -907,63 +946,6 @@ nbn(7);
 
 //    // make label for cell text
 //    //
-//    UILabel *lblCellText = [[UILabel alloc] init];
-//        lblCellText.numberOfLines = 1;
-//        lblCellText.font          = [UIFont boldSystemFontOfSize: 17.0];
-//        lblCellText.text          = nameOfGrpOrPer;
-//
-//    lblCellText.backgroundColor = [UIColor whiteColor];
-//
-//    [lblCellText sizeToFit];
-
-
-
-        // UILabel for the disclosure indicator, ">",  for tappable cells
-        //
-            NSString *myDisclosureIndicatorBGcolorName; 
-            NSString *myDisclosureIndicatorText; 
-            UIColor  *colorOfGroupReportArrow; 
-            UIFont   *myDisclosureIndicatorFont; 
-
-            myDisclosureIndicatorText = @">"; 
-//            colorOfGroupReportArrow   = [UIColor blackColor];                 // blue background
-//            colorOfGroupReportArrow   = [UIColor darkGrayColor];                 // blue background
-//            colorOfGroupReportArrow   = [UIColor grayColor];                 // blue background
-            colorOfGroupReportArrow   = [UIColor lightGrayColor];                 // blue background
-//            myDisclosureIndicatorFont = [UIFont     systemFontOfSize: 16.0f]; // make not bold
-//            myDisclosureIndicatorFont = [UIFont     systemFontOfSize: 24.0f]; // make not bold
-//            myDisclosureIndicatorFont = [UIFont     systemFontOfSize: 20.0f]; // make not bold
-//            myDisclosureIndicatorFont = [UIFont     boldSystemFontOfSize: 24.0f]; // make not bold
-//            myDisclosureIndicatorFont = [UIFont     boldSystemFontOfSize: 20.0f]; // make not bold
-//            myDisclosureIndicatorFont = [UIFont fontWithName: @"Menlo-bold" size:  24.0]; // no good
-//            myDisclosureIndicatorFont = [UIFont fontWithName: @"ArialRoundedMTBold" size:  24.0];
-//            myDisclosureIndicatorFont = [UIFont fontWithName: @"HelveticaNeue-ThinItalic" size:  24.0];
-//            myDisclosureIndicatorFont = [UIFont fontWithName: @"IowanOldStyle-Bold" size:  24.0];
-            myDisclosureIndicatorFont = [UIFont fontWithName: @"MarkerFelt-Thin" size:  24.0]; // good
-//            myDisclosureIndicatorFont = [UIFont fontWithName: @"MarkerFelt-Wide" size:  24.0]; // bad
-//            myDisclosureIndicatorFont = [UIFont fontWithName: @"SanFranciscoDisplay-Thin" size:  24.0]; 
-//            myDisclosureIndicatorFont = [UIFont fontWithName: @"SanFranciscoRounded-Bold" size:  16.0]; 
-//            myDisclosureIndicatorFont = [UIFont fontWithName: @"TimesNewRomanPS-BoldMT" size:  24.0]; // good
-//              myDisclosureIndicatorFont = [UIFont fontWithName: @"Superclarendon-Bold" size:  24.0]; // good
-//              myDisclosureIndicatorFont = [UIFont fontWithName: @"SnellRoundhand-Bold" size:  24.0]; // good
-//              myDisclosureIndicatorFont = [UIFont fontWithName: @"AvenirNextCondensed-Heavy" size:  24.0]; // good
-
-
-
-
-            NSAttributedString *myNewCellAttributedText3 = [
-                [NSAttributedString alloc] initWithString: myDisclosureIndicatorText  // i.e.   @">"
-                                               attributes: @{            NSFontAttributeName : myDisclosureIndicatorFont,
-                                                               NSForegroundColorAttributeName: colorOfGroupReportArrow                }
-            ];
-
-            UILabel *myDisclosureIndicatorLabel        = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 12.0f, 32.0f)];
-            myDisclosureIndicatorLabel.attributedText  = myNewCellAttributedText3;
-            myDisclosureIndicatorLabel.backgroundColor = gbl_colorReportsBG; 
-        //
-        // end of  UILabel for the disclosure indicator, ">",  for tappable cells
-
-
 
 
 //        CGFloat myScreenWidth, myFontSize;  // determine font size
@@ -980,8 +962,24 @@ nbn(7);
 //        }
 //
 
+            NSAttributedString *myNewCellAttributedText3 = [
+                [NSAttributedString alloc] initWithString: @">"  
+                                               attributes: @{
+                        NSFontAttributeName :  [UIFont fontWithName: @"MarkerFelt-Thin" size:  24.0] ,  
+//                        NSForegroundColorAttributeName: [UIColor grayColor ]  
+//                        NSForegroundColorAttributeName: [UIColor darkGrayColor ]  
+                        NSForegroundColorAttributeName: gbl_colorDIfor_home   
+                    }
+            ];
+
+            UILabel *myDisclosureIndicatorLabel        = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 12.0f, 32.0f)];
+            myDisclosureIndicatorLabel.attributedText  = myNewCellAttributedText3;
+            myDisclosureIndicatorLabel.backgroundColor = gbl_colorReportsBG; 
+
 
 //  NSLog(@"gbl_homeUseMODE =%@",gbl_homeUseMODE );
+
+  NSLog(@"before set access view");
     dispatch_async(dispatch_get_main_queue(), ^{                        
 
 //  cell.textLabel.text = @"";           // for test create empty Launch screen shot 
@@ -989,6 +987,7 @@ nbn(7);
 //  cell.editingAccessoryType = nil;     // for test create empty Launch screen shot
 
 // for test create empty Launch screen shot  //  ALSO comment out between her and  <.x  below
+
         cell.textLabel.text = nameOfGrpOrPer;
 
         cell.textLabel.font            = [UIFont boldSystemFontOfSize: 17.0];
@@ -1006,11 +1005,14 @@ nbn(7);
 
         if ([gbl_homeUseMODE isEqualToString: @"edit mode"]) cell.tintColor = [UIColor blackColor];
 
+//        cell.accessoryView                       = gbl_disclosureIndicatorLabel;
         cell.accessoryView                       = myDisclosureIndicatorLabel;
         cell.accessoryType                       = UITableViewCellAccessoryDisclosureIndicator;
+
 //<.x for test create empty Launch screen shot  //  ALSO comment out between the 2  <.  above
 
     });
+  NSLog(@"after set access view");
   
 
     return cell;
@@ -3378,4 +3380,68 @@ nbn(357);
 //    }
 //    // end of   highlight correct entity in seg control at top
 //
+
+//    // make label for cell text
+//    //
+//    UILabel *lblCellText = [[UILabel alloc] init];
+//        lblCellText.numberOfLines = 1;
+//        lblCellText.font          = [UIFont boldSystemFontOfSize: 17.0];
+//        lblCellText.text          = nameOfGrpOrPer;
+//
+//    lblCellText.backgroundColor = [UIColor whiteColor];
+//
+//    [lblCellText sizeToFit];
+
+
+          // move to appdel .m as   gbl_myDisclosureIndicatorLabel   did not work
+          // try move to viewDidLoad .m as   lcl_myDisclosureIndicatorLabel     DID work
+          //
+// try move to viewDidLoad .m as   lcl_myDisclosureIndicatorLabel   
+//        // UILabel for the disclosure indicator, ">",  for tappable cells
+//        //
+//            NSString *myDisclosureIndicatorBGcolorName; 
+//            NSString *myDisclosureIndicatorText; 
+//            UIColor  *colorOfGroupReportArrow; 
+//            UIFont   *myDisclosureIndicatorFont; 
+//
+//            myDisclosureIndicatorText = @">"; 
+////            colorOfGroupReportArrow   = [UIColor blackColor];                 // blue background
+////            colorOfGroupReportArrow   = [UIColor darkGrayColor];                 // blue background
+////            colorOfGroupReportArrow   = [UIColor grayColor];                 // blue background
+//            colorOfGroupReportArrow   = [UIColor lightGrayColor];                 // blue background
+////            myDisclosureIndicatorFont = [UIFont     systemFontOfSize: 16.0f]; // make not bold
+////            myDisclosureIndicatorFont = [UIFont     systemFontOfSize: 24.0f]; // make not bold
+////            myDisclosureIndicatorFont = [UIFont     systemFontOfSize: 20.0f]; // make not bold
+////            myDisclosureIndicatorFont = [UIFont     boldSystemFontOfSize: 24.0f]; // make not bold
+////            myDisclosureIndicatorFont = [UIFont     boldSystemFontOfSize: 20.0f]; // make not bold
+////            myDisclosureIndicatorFont = [UIFont fontWithName: @"Menlo-bold" size:  24.0]; // no good
+////            myDisclosureIndicatorFont = [UIFont fontWithName: @"ArialRoundedMTBold" size:  24.0];
+////            myDisclosureIndicatorFont = [UIFont fontWithName: @"HelveticaNeue-ThinItalic" size:  24.0];
+////            myDisclosureIndicatorFont = [UIFont fontWithName: @"IowanOldStyle-Bold" size:  24.0];
+//            myDisclosureIndicatorFont = [UIFont fontWithName: @"MarkerFelt-Thin" size:  24.0]; // good
+////            myDisclosureIndicatorFont = [UIFont fontWithName: @"MarkerFelt-Wide" size:  24.0]; // bad
+////            myDisclosureIndicatorFont = [UIFont fontWithName: @"SanFranciscoDisplay-Thin" size:  24.0]; 
+////            myDisclosureIndicatorFont = [UIFont fontWithName: @"SanFranciscoRounded-Bold" size:  16.0]; 
+////            myDisclosureIndicatorFont = [UIFont fontWithName: @"TimesNewRomanPS-BoldMT" size:  24.0]; // good
+////              myDisclosureIndicatorFont = [UIFont fontWithName: @"Superclarendon-Bold" size:  24.0]; // good
+////              myDisclosureIndicatorFont = [UIFont fontWithName: @"SnellRoundhand-Bold" size:  24.0]; // good
+////              myDisclosureIndicatorFont = [UIFont fontWithName: @"AvenirNextCondensed-Heavy" size:  24.0]; // good
+//
+//
+//
+//
+//            NSAttributedString *myNewCellAttributedText3 = [
+//                [NSAttributedString alloc] initWithString: myDisclosureIndicatorText  // i.e.   @">"
+//                                               attributes: @{            NSFontAttributeName : myDisclosureIndicatorFont,
+//                                                               NSForegroundColorAttributeName: colorOfGroupReportArrow                }
+//            ];
+//
+//            UILabel *myDisclosureIndicatorLabel        = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 12.0f, 32.0f)];
+//            myDisclosureIndicatorLabel.attributedText  = myNewCellAttributedText3;
+//            myDisclosureIndicatorLabel.backgroundColor = gbl_colorReportsBG; 
+//        //
+//        // end of  UILabel for the disclosure indicator, ">",  for tappable cells
+//
+
+
 

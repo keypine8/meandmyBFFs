@@ -12,6 +12,7 @@
 #import "mamblib.h"
 #import "MAMB09AppDelegate.h"   // to get globals
 
+
 @implementation MAMB09_selPersonViewController
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -131,33 +132,6 @@
         }
     } while (FALSE);
 
-//<.>
-//    // set up label for  self.navigationItem.titleView 
-//    //
-//    UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 11, 44)];  // 3rd arg is horizontal length
-//    UIBarButtonItem *mySpacerForTitle = [[UIBarButtonItem alloc] initWithCustomView:spaceView];
-//
-//    UILabel *mySelDate_Label      = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 480.0, 44.0)];
-//
-//    NSString *myNavBar2lineTitle  = [NSString stringWithFormat:  @"%@\nSelect Day", gbl_lastSelectedPerson ];
-//
-//    mySelDate_Label.numberOfLines = 2;
-////        mySelDate_Label.font          = [UIFont boldSystemFontOfSize: 16.0];
-//    mySelDate_Label.font          = [UIFont boldSystemFontOfSize: 14.0];
-//    mySelDate_Label.textColor     = [UIColor blackColor];
-//    mySelDate_Label.textAlignment = NSTextAlignmentCenter; 
-//    mySelDate_Label.text          = myNavBar2lineTitle;
-//
-//    // TWO-LINE NAV BAR TITLE
-//    //
-//    dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
-//        self.navigationItem.rightBarButtonItem = _goToReportButton;
-//        self.navigationItem.titleView           = mySelDate_Label; // mySelDate_Label.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
-//        self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerForTitle];
-//    });
-//
-//<.>
-//
 
  
     NSLog(@"gbl_fromHomeCurrentSelectionPSV =%@",gbl_fromHomeCurrentSelectionPSV);
@@ -333,31 +307,20 @@
     // Configure the cell...
 
 
-
         // UILabel for the disclosure indicator, ">",  for tappable cells
         //
-            NSString *myDisclosureIndicatorBGcolorName; 
-            NSString *myDisclosureIndicatorText; 
-            UIColor  *colorOfGroupReportArrow; 
-            UIFont   *myDisclosureIndicatorFont; 
-
-            myDisclosureIndicatorText = @">"; 
-            colorOfGroupReportArrow   = [UIColor lightGrayColor];                 // blue background
-            myDisclosureIndicatorFont = [UIFont fontWithName: @"MarkerFelt-Thin" size:  24.0]; // good
-//            myDisclosureIndicatorFont = [UIFont     systemFontOfSize: 16.0f]; // make not bold
-
             NSAttributedString *myNewCellAttributedText3 = [
-                [NSAttributedString alloc] initWithString: myDisclosureIndicatorText  // i.e.   @">"
-                                               attributes: @{            NSFontAttributeName : myDisclosureIndicatorFont,
-                                                               NSForegroundColorAttributeName: colorOfGroupReportArrow                }
+                [NSAttributedString alloc] initWithString: @">"  
+                                               attributes: @{
+                        NSFontAttributeName :  [UIFont fontWithName: @"MarkerFelt-Thin" size:  24.0] ,  
+                        NSForegroundColorAttributeName: gbl_colorDIfor_home   
+                    }
             ];
-
             UILabel *myDisclosureIndicatorLabel        = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 12.0f, 32.0f)];
             myDisclosureIndicatorLabel.attributedText  = myNewCellAttributedText3;
             myDisclosureIndicatorLabel.backgroundColor = gbl_colorReportsBG; 
         //
         // end of  UILabel for the disclosure indicator, ">",  for tappable cells
-
 
 
     

@@ -16,23 +16,17 @@
 
 @end
 
-//
-//    // buffer for C string input birthinfo CSVs    (length 64)     (for ALL GROUP REPORTS)
-//    //
-//    char group_report_input_birthinfo_CSVs[gbl_maxGrpBirthinfoCSVs * gbl_maxLenBirthinfoCSV];  // [250 * fixed length of 64]
-//    int  group_report_input_birthinfo_idx;
-//
-//    // buffer for C string output report line PSVs (length 64)     (for ALL GROUP REPORTS)
-//    //
-//    char group_report_output_PSVs[gbl_maxGrpRptLines * gbl_maxLenRptLinePSV];                  // [333 * fixed length of 64]
-//    int  group_report_output_idx;
-//
-    // is this now visible throughout  MAMB09viewTBLRPTs_1_TableViewController  ?
+
+
+    // globals to this source module
     //
-    char group_report_input_birthinfo_CSVs[250 * 64];  // [250 * fixed length of 64]
-    int  group_report_input_birthinfo_idx;
-    char group_report_output_PSVs[333 * 64];           // [333 * fixed length of 64]
-    int  group_report_output_idx;
+    // is this now visible throughout  MAMB09viewTBLRPTs_1_TableViewController  ?   YES
+    //
+    char lcl_group_report_input_birthinfo_CSVs[250 * 64];  // [250 * fixed length of 64]
+    int  lcl_group_report_input_birthinfo_idx;
+    char lcl_group_report_output_PSVs[333 * 64];           // [333 * fixed length of 64]
+    int  lcl_group_report_output_idx;
+
 
 
 @implementation MAMB09viewTBLRPTs_1_TableViewController
@@ -171,6 +165,35 @@
     } while (false); // set PSV and NAME values
 
 
+//
+//        // UILabel for the disclosure indicator, ">",  for tappable cells
+//        //
+//        // set this up here since its used in cellForRow   over and over
+//        //
+//            NSString *myDisclosureIndicatorBGcolorName; 
+//            NSString *myDisclosureIndicatorText; 
+//            UIColor  *colorOfGroupReportArrow; 
+//            UIFont   *myDisclosureIndicatorFont; 
+//
+//            myDisclosureIndicatorText = @">"; 
+////            colorOfGroupReportArrow   = [UIColor lightGrayColor];                 // blue background
+//            colorOfGroupReportArrow   = [UIColor redColor];                 // blue background
+//            myDisclosureIndicatorFont = [UIFont fontWithName: @"MarkerFelt-Thin" size:  24.0]; // good
+//
+//            NSAttributedString *myNewCellAttributedText3 = [
+//                [NSAttributedString alloc] initWithString: myDisclosureIndicatorText  // i.e.   @">"
+//                                               attributes: @{            NSFontAttributeName : myDisclosureIndicatorFont,
+//                                                               NSForegroundColorAttributeName: colorOfGroupReportArrow                }
+//            ];
+//
+//            UILabel *lcl_disclosureIndicatorLabel        = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 12.0f, 32.0f)];
+//            lcl_disclosureIndicatorLabel.attributedText  = myNewCellAttributedText3;
+//            lcl_disclosureIndicatorLabel.backgroundColor = gbl_colorReportsBG; 
+//        //
+//        // end of  UILabel for the disclosure indicator, ">",  for tappable cells
+//
+
+
 } // end of  viewDidLoad  in TBLRPT_1
 
 
@@ -218,7 +241,7 @@ NSLog(@"in numberOfRowsInSection in tblrpts 1");
         retint = gbl_compDataLines.count;
 
 //    } else if (   [gbl_currentMenuPlusReportCode       hasPrefix: @"homgm"] ) { // "Most" reports
-//        retint = group_report_output_idx + 1 + 3 + 1; // + 3 for 3 bottom cells  + 1 for filler before bottom 3
+//        retint = lcl_group_report_output_idx + 1 + 3 + 1; // + 3 for 3 bottom cells  + 1 for filler before bottom 3
 //tn();kin(retint);
 //
 
@@ -229,12 +252,12 @@ NSLog(@"in numberOfRowsInSection in tblrpts 1");
                || [gbl_currentMenuPlusReportCode isEqualToString: @"homgbm" ] // grpall  Best Match in Group ...
                || [gbl_currentMenuPlusReportCode       hasPrefix: @"gbm"    ] // grpall  Best Match in Group ... 
     ) {
-        retint = group_report_output_idx + 1 + 3 + 2 + 1; // + 3 for 3 bottom cells + 2 for 2 fill cells inbetween   +1 for very bottom space
+        retint = lcl_group_report_output_idx + 1 + 3 + 2 + 1; // + 3 for 3 bottom cells + 2 for 2 fill cells inbetween   +1 for very bottom space
     
     } else {
 
         // this might work for all 9 reports
-        retint = group_report_output_idx + 1 + 3 + 1 ; // + 3 for 3 bottom cells   +1 for very bottom space
+        retint = lcl_group_report_output_idx + 1 + 3 + 1 ; // + 3 for 3 bottom cells   +1 for very bottom space
     }
 
   NSLog(@"retint=[%ld]",retint);
@@ -2512,7 +2535,7 @@ bn(802);
 
     // get the Background Color for this cell
     //
-//    if (indexPath.row  <=  group_report_output_idx )  // is max idx number (0-based)
+//    if (indexPath.row  <=  lcl_group_report_output_idx )  // is max idx number (0-based)
     if (indexPath.row  <=  gbl_array_cellBGcolorName.count -1 )  // is max idx number (0-based)
     {
         do {
@@ -2576,17 +2599,17 @@ bn(802);
 
 //tn();tr("row row row row row row row = ");NSLog(@"indexPath.row=%ld", indexPath.row);
 
-//tn();kin(group_report_output_idx);
+//tn();kin(lcl_group_report_output_idx);
 
 
         // Grab cell data,  but only if indexPath.row is still in array (3 extra footer cells)
         //
-        if (indexPath.row <= group_report_output_idx) {
+        if (indexPath.row <= lcl_group_report_output_idx) {
 
             myidx = (int)indexPath.row;
 
 
-            strcpy(my_tmp_str, group_report_output_PSVs  +  myidx * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+            strcpy(my_tmp_str, lcl_group_report_output_PSVs  +  myidx * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
 
 //ksn(my_tmp_str);
             myCellContentsPSV     = [NSString stringWithUTF8String: my_tmp_str];  // convert c string to NSString
@@ -2615,7 +2638,7 @@ bn(802);
 
 
 
-        if (indexPath.row ==  group_report_output_idx + 1)    // THIS   is for  GRPONE and GRPALL (approx 650 lines)
+        if (indexPath.row ==  lcl_group_report_output_idx + 1)    // THIS   is for  GRPONE and GRPALL (approx 650 lines)
         {  // 1 of 3 FOOTER CELLS       goodrelationship
 //trn("// 1 of 3 FOOTER CELLS");
 
@@ -2732,7 +2755,7 @@ tn();nbn(333);
             return cell;
         }  // end of 1 of 3 FOOTER CELLS
 
-        else if (indexPath.row ==  group_report_output_idx + 2)  // fill before "Produced by ..."
+        else if (indexPath.row ==  lcl_group_report_output_idx + 2)  // fill before "Produced by ..."
         {  
             dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
                 cell.textLabel.numberOfLines  = 1; 
@@ -2748,8 +2771,8 @@ tn();nbn(333);
             return cell;
         }  
 
-//        else if (indexPath.row ==  group_report_output_idx + 2)
-        else if (indexPath.row ==  group_report_output_idx + 3)
+//        else if (indexPath.row ==  lcl_group_report_output_idx + 2)
+        else if (indexPath.row ==  lcl_group_report_output_idx + 3)
         {  // 2 of 3 FOOTER CELLS
 //trn("// 2 of 3 FOOTER CELLS");
 
@@ -2775,7 +2798,7 @@ tn();nbn(333);
         }  // end of 2 of 3 FOOTER CELLS
 
 
-        else if (indexPath.row ==  group_report_output_idx + 4)  // fill before "... Entertainment Purposes ..."
+        else if (indexPath.row ==  lcl_group_report_output_idx + 4)  // fill before "... Entertainment Purposes ..."
         {  
             dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
                 cell.textLabel.numberOfLines  = 1; 
@@ -2791,8 +2814,8 @@ tn();nbn(333);
             return cell;
         }  
 
-//        else if (indexPath.row ==  group_report_output_idx + 3)
-        else if (indexPath.row ==  group_report_output_idx + 5)
+//        else if (indexPath.row ==  lcl_group_report_output_idx + 3)
+        else if (indexPath.row ==  lcl_group_report_output_idx + 5)
         {  // 3 of 3 FOOTER CELLS
 //trn("// 3 of 3 FOOTER CELLS");
 
@@ -2828,7 +2851,7 @@ tn();nbn(333);
         }  // end of 3 of 3 FOOTER CELLS
 
 
-        else if (indexPath.row ==  group_report_output_idx + 6)
+        else if (indexPath.row ==  lcl_group_report_output_idx + 6)
         {  // 6 of 5 FOOTER CELLS
             dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
 
@@ -2934,7 +2957,7 @@ trn("in row = 1   1st hdr line");
                 for (int myidx = 3; myidx <= 9; myidx++) {  // now both grpone and grpall have   line with "top space" - legacy + hdr1 + hdr2 --- start with idx 3
 
 //kin(myidx);
-                    strcpy(my_tmp_str, group_report_output_PSVs  +  myidx * (int)gbl_maxLenRptLinePSV);  
+                    strcpy(my_tmp_str, lcl_group_report_output_PSVs  +  myidx * (int)gbl_maxLenRptLinePSV);  
 //ks(my_tmp_str);
 
                     if (strstr(my_tmp_str, "90  Great")     != NULL 
@@ -3292,65 +3315,31 @@ ksn(my_tmp_str);
 
         } else {
 
+
             // UILabel for the disclosure indicator, ">",  for tappable cells
             //
-                NSString *myDisclosureIndicatorBGcolorName; 
-                NSString *myDisclosureIndicatorText; 
-                UIColor  *colorOfGroupReportArrow; 
-                UIFont   *myDisclosureIndicatorFont; 
+//lcl_disclosureIndicatorlabel
+                UIColor *myIndicatorColor;
 
-                myDisclosureIndicatorText = @">"; 
-//                myDisclosureIndicatorBGcolorName = gbl_array_cellBGcolorName[indexPath.row];   // array set in  viewDidLoad
-      
-//  NSLog(@"myDisclosureIndicatorBGcolorName         =%@",myDisclosureIndicatorBGcolorName );
-//  NSLog(@"gbl_array_cellBGcolorName[indexPath.row] =[%@]",gbl_array_cellBGcolorName[indexPath.row] );
-//               myDisclosureIndicatorBGcolorName = gbl_array_cellBGcolorName[indexPath.row] ;   // array set in  viewDidLoad
-
-//                if ( [myDisclosureIndicatorBGcolorName isEqualToString: @"cRe2"] ) 
-
-                if (indexPath.row  <=  group_report_output_idx )  // is max idx number (0-based)
-                {
-                    if ( [gbl_array_cellBGcolorName[indexPath.row]  isEqualToString: @"cRe2"] ) {
-
-//                    colorOfGroupReportArrow   = [UIColor blackColor];                 // deepest red is pretty  dark
-//                    myDisclosureIndicatorFont = [UIFont     systemFontOfSize: 16.0f]; // make not bold
-                        colorOfGroupReportArrow   = [UIColor grayColor];                 // deepest red is pretty  dark
-                        myDisclosureIndicatorFont = [UIFont fontWithName: @"MarkerFelt-Thin" size:  24.0]; // good
-                    } else {
-//                    colorOfGroupReportArrow   = [UIColor  grayColor];
-//                    myDisclosureIndicatorFont = [UIFont boldSystemFontOfSize: 16.0f];
-                        colorOfGroupReportArrow   = [UIColor lightGrayColor];                 // blue background
-                        myDisclosureIndicatorFont = [UIFont fontWithName: @"MarkerFelt-Thin" size:  24.0]; // good
-                    }
-                }
-
+                NSString *cellcolor = gbl_array_cellBGcolorName[indexPath.row];
+                if ( [cellcolor isEqualToString: @"cGr2"] ) myIndicatorColor = gbl_colorDIfor_cGr2;
+                if ( [cellcolor isEqualToString: @"cGre"] ) myIndicatorColor = gbl_colorDIfor_cGre; 
+                if ( [cellcolor isEqualToString: @"cNeu"] ) myIndicatorColor = gbl_colorDIfor_cNeu; 
+                if ( [cellcolor isEqualToString: @"cRed"] ) myIndicatorColor = gbl_colorDIfor_cRed; 
+                if ( [cellcolor isEqualToString: @"cRe2"] ) myIndicatorColor = gbl_colorDIfor_cRe2; 
 
                 NSAttributedString *myNewCellAttributedText3 = [
-                    [NSAttributedString alloc] initWithString: myDisclosureIndicatorText  // i.e.   @">"
-                                                   attributes: @{            NSFontAttributeName : myDisclosureIndicatorFont,
-                                                                   NSForegroundColorAttributeName: colorOfGroupReportArrow                }
+                    [NSAttributedString alloc] initWithString: @">"  
+                                                   attributes: @{
+                            NSFontAttributeName :  [UIFont fontWithName: @"MarkerFelt-Thin" size:  24.0] ,  
+                            NSForegroundColorAttributeName: myIndicatorColor
+                        }
                 ];
-//                                                                         NSFontAttributeName : [UIFont boldSystemFontOfSize: 16.0f],
-
-                UILabel *myDisclosureIndicatorLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 12.0f, 32.0f)];
-                myDisclosureIndicatorLabel.attributedText = myNewCellAttributedText3;
-
-
-
-//                if ( [myDisclosureIndicatorBGcolorName isEqualToString: @"cHed"] )  myDisclosureIndicatorLabel.backgroundColor = gbl_color_cHed;
-//                if ( [myDisclosureIndicatorBGcolorName isEqualToString: @"cGr2"] )  myDisclosureIndicatorLabel.backgroundColor = gbl_color_cGr2;
-//                if ( [myDisclosureIndicatorBGcolorName isEqualToString: @"cGre"] )  myDisclosureIndicatorLabel.backgroundColor = gbl_color_cGre;
-//                if ( [myDisclosureIndicatorBGcolorName isEqualToString: @"cNeu"] )  myDisclosureIndicatorLabel.backgroundColor = gbl_color_cNeu;
-//                if ( [myDisclosureIndicatorBGcolorName isEqualToString: @"cRed"] )  myDisclosureIndicatorLabel.backgroundColor = gbl_color_cRed;
-//                if ( [myDisclosureIndicatorBGcolorName isEqualToString: @"cRe2"] )  myDisclosureIndicatorLabel.backgroundColor = gbl_color_cRe2;
-//                if ( [myDisclosureIndicatorBGcolorName isEqualToString: @"cBgr"] )  myDisclosureIndicatorLabel.backgroundColor = gbl_color_cBgr;
-//
+                UILabel *myDisclosureIndicatorLabel        = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 12.0f, 32.0f)];
+                myDisclosureIndicatorLabel.attributedText  = myNewCellAttributedText3;
                 myDisclosureIndicatorLabel.backgroundColor = gbl_thisCellBackGroundColor;  // see above
-
-
             //
             // end of  UILabel for the disclosure indicator, ">",  for tappable cells
-
 
 
             dispatch_async(dispatch_get_main_queue(), ^{            // <===  short line and long line
@@ -3417,12 +3406,12 @@ tn();trn("// ALL of THIS   is for  MOST and BEST  group reports");
 
         // Grab cell data,  but only if indexPath.row is still in array (3 extra footer cells)
         //
-        if (indexPath.row <= group_report_output_idx) {
+        if (indexPath.row <= lcl_group_report_output_idx) {
 
             myidx = (int)indexPath.row;
 
 
-            strcpy(my_tmp_str, group_report_output_PSVs  +  myidx * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+            strcpy(my_tmp_str, lcl_group_report_output_PSVs  +  myidx * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
 
 //ksn(my_tmp_str);
             myCellContentsPSV     = [NSString stringWithUTF8String: my_tmp_str];  // convert c string to NSString
@@ -3450,7 +3439,7 @@ tn();trn("// ALL of THIS   is for  MOST and BEST  group reports");
         }  // end of Grab cell data,  but only if indexPath.row is still in array (3 extra footer cells)
 
 
-//        if (indexPath.row ==  group_report_output_idx + 1)
+//        if (indexPath.row ==  lcl_group_report_output_idx + 1)
 //        {  // fill before FOOTER CELLS
 //            dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
 //                cell.accessoryType           = UITableViewCellAccessoryNone;
@@ -3469,7 +3458,7 @@ tn();trn("// ALL of THIS   is for  MOST and BEST  group reports");
 //
 
 
-        if (indexPath.row ==  group_report_output_idx + 1)
+        if (indexPath.row ==  lcl_group_report_output_idx + 1)
         {  // 1 of 3 FOOTER CELLS
 trn("// 1 of 3 FOOTER CELLS");
 
@@ -3533,7 +3522,7 @@ trn("// 1 of 3 FOOTER CELLS");
         }  // end of 1 of 3 FOOTER CELLS
 
 
-        else if (indexPath.row ==  group_report_output_idx + 2)
+        else if (indexPath.row ==  lcl_group_report_output_idx + 2)
         {  // 2 of 3 FOOTER CELLS
 trn("// 2 of 3 FOOTER CELLS");
 
@@ -3624,7 +3613,7 @@ trn("// 2 of 3 FOOTER CELLS");
             return cell;
         }  // end of 2 of 3 FOOTER CELLS
 
-        else if (indexPath.row ==  group_report_output_idx + 3)
+        else if (indexPath.row ==  lcl_group_report_output_idx + 3)
         {  // 3 of 3 FOOTER CELLS
 trn("// 3 of 3 FOOTER CELLS");
 
@@ -3694,7 +3683,7 @@ trn("// 3 of 3 FOOTER CELLS");
 
         }  // end of 3 of 3 FOOTER CELLS
 
-        else if (indexPath.row ==  group_report_output_idx + 4)
+        else if (indexPath.row ==  lcl_group_report_output_idx + 4)
         {  // 4 of 3 FOOTER CELLS
 trn("// 4 of 3 FOOTER CELLS");
             dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
@@ -3940,7 +3929,7 @@ nbn(12);
 
                 myDisclosureIndicatorText = @">"; 
 
-//                if (indexPath.row  <=  group_report_output_idx )  // is max idx number (0-based)
+//                if (indexPath.row  <=  lcl_group_report_output_idx )  // is max idx number (0-based)
                 if (indexPath.row  <=  gbl_array_cellBGcolorName.count -1 )  // is max idx number (0-based)
                 {
                     myDisclosureIndicatorBGcolorName = gbl_array_cellBGcolorName[indexPath.row];   // array set in  viewDidLoad
@@ -3948,35 +3937,29 @@ nbn(12);
 //        NSLog(@"myDisclosureIndicatorBGcolorName =%@",myDisclosureIndicatorBGcolorName );
       
       
-nbn(14);
 //  NSLog(@"myDisclosureIndicatorBGcolorName         =%@",myDisclosureIndicatorBGcolorName );
 //  NSLog(@"gbl_array_cellBGcolorName[indexPath.row] =[%@]",gbl_array_cellBGcolorName[indexPath.row] );
 //                if ( [myDisclosureIndicatorBGcolorName isEqualToString: @"cRe2"] ) {
 
 
-//                if (indexPath.row  <=  group_report_output_idx )  // is max idx number (0-based)
+//                if (indexPath.row  <=  lcl_group_report_output_idx )  // is max idx number (0-based)
                 if (indexPath.row  <=  gbl_array_cellBGcolorName.count -1 )  // is max idx number (0-based)
                 {
-nbn(141);
                     if ([gbl_currentMenuPlusReportCode hasPrefix: @"homgm"]  )  // only MOST trait reports
                     {
-nbn(142);
                         if (   [gbl_array_cellBGcolorName[indexPath.row]  isEqualToString: @"cGre"]
                             || [gbl_array_cellBGcolorName[indexPath.row]  isEqualToString: @"cRed"]
                         ) {
-nbn(143);
                             colorOfGroupReportArrow   = [UIColor grayColor];                 // deepest red is pretty  dark
     //                    myDisclosureIndicatorFont = [UIFont     systemFontOfSize: 16.0f]; // make not bold
                             myDisclosureIndicatorFont = [UIFont fontWithName: @"MarkerFelt-Thin" size:  24.0]; // good
                         } else {
-nbn(144);
                             colorOfGroupReportArrow   = [UIColor lightGrayColor];                 // blue background
                             myDisclosureIndicatorFont = [UIFont fontWithName: @"MarkerFelt-Thin" size:  24.0]; // good
                         }
                     } else {
 
                         if ( [gbl_array_cellBGcolorName[indexPath.row]  isEqualToString: @"cRe2"] ) {
-nbn(145);
     //                    colorOfGroupReportArrow   = [UIColor blackColor];                 // deepest red is pretty  dark
     //                    colorOfGroupReportArrow   = [UIColor darkGrayColor];                 // deepest red is pretty  dark
                             colorOfGroupReportArrow   = [UIColor grayColor];                 // deepest red is pretty  dark
@@ -3985,14 +3968,12 @@ nbn(145);
                         } else {
     //                    colorOfGroupReportArrow   = [UIColor  grayColor];
     //                    myDisclosureIndicatorFont = [UIFont boldSystemFontOfSize: 16.0f];
-nbn(146);
                             colorOfGroupReportArrow   = [UIColor lightGrayColor];                 // blue background
                             myDisclosureIndicatorFont = [UIFont fontWithName: @"MarkerFelt-Thin" size:  24.0]; // good
                         }
                     }
                 }
 
-nbn(14);
 
                 NSAttributedString *myNewCellAttributedText3 = [
                     [NSAttributedString alloc] initWithString: myDisclosureIndicatorText  // i.e.   @">"
@@ -4000,12 +3981,12 @@ nbn(14);
                                                                    NSForegroundColorAttributeName: colorOfGroupReportArrow                }
                 ];
 //                                                                         NSFontAttributeName : [UIFont boldSystemFontOfSize: 16.0f],
+                UILabel *myDisclosureIndicatorLabel        = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 12.0f, 32.0f)];
+                myDisclosureIndicatorLabel.attributedText  = myNewCellAttributedText3;
+                myDisclosureIndicatorLabel.backgroundColor = gbl_thisCellBackGroundColor;  // see above
 
-                UILabel *myDisclosureIndicatorLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 12.0f, 32.0f)];
-                myDisclosureIndicatorLabel.attributedText = myNewCellAttributedText3;
 
-
-                // set   myDisclosureIndicatorLabel.backgroundColor 
+                // set   lcl_disclosureIndicatorLabel.backgroundColor 
                 //
                 if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgma"]  // Most Assertive
                     || [gbl_currentMenuPlusReportCode       hasPrefix: @"homgme"]  // Most Emotional
@@ -4013,17 +3994,6 @@ nbn(14);
                     || [gbl_currentMenuPlusReportCode       hasPrefix: @"homgmp"]  // Most Passionate
                     || [gbl_currentMenuPlusReportCode       hasPrefix: @"homgmd"]  // Most Down-to-earth
                 ) { 
-//
-//                    // for "Most" is  all light green color
-////                    if (indexPath.row % 2 == 0) myDisclosureIndicatorLabel.backgroundColor = gbl_color_cPerGreen4;
-////                    if (indexPath.row % 2 == 1) myDisclosureIndicatorLabel.backgroundColor = gbl_color_cPerGreen3;
-//                     myDisclosureIndicatorLabel.backgroundColor = gbl_color_cPerGreen ;  // all the same color
-//                     gbl_thisCellBackGroundColor                = gbl_color_cPerGreen ;  // all the same color
-
-
-//                    myDisclosureIndicatorLabel.backgroundColor = gbl_thisCellBackGroundColor;  // see above
-
-//                    if (indexPath.row  <=  group_report_output_idx )  // is max idx number (0-based)
                     if (indexPath.row  <=  gbl_array_cellBGcolorName.count -1 )  // is max idx number (0-based)
                     {
                         NSString *cellcolor = gbl_array_cellBGcolorName[indexPath.row];
@@ -4032,28 +4002,31 @@ nbn(14);
                         if ( [cellcolor isEqualToString: @"cNeu"] ) myDisclosureIndicatorLabel.backgroundColor = gbl_color_cPerGreen1;
                         if ( [cellcolor isEqualToString: @"cRed"] ) myDisclosureIndicatorLabel.backgroundColor = gbl_color_cPerGreen2;
                         if ( [cellcolor isEqualToString: @"cRe2"] ) myDisclosureIndicatorLabel.backgroundColor = gbl_color_cPerGreen1;
-                    }
-                }
 
-//                if (   [gbl_currentMenuPlusReportCode       hasPrefix: @"homgby"]  // Best Year
-//                    || [gbl_currentMenuPlusReportCode       hasPrefix: @"homgbd"]  // Best Day
-//                    || [gbl_currentMenuPlusReportCode       hasPrefix: @"homgbd"]  // Best Day
-//                )     // for "Best" use red/green color
-                 else {
-//                    if ( [myDisclosureIndicatorBGcolorName isEqualToString: @"cHed"] )  myDisclosureIndicatorLabel.backgroundColor = gbl_color_cHed;
-//                    if ( [myDisclosureIndicatorBGcolorName isEqualToString: @"cGr2"] )  myDisclosureIndicatorLabel.backgroundColor = gbl_color_cGr2;
-//                    if ( [myDisclosureIndicatorBGcolorName isEqualToString: @"cGre"] )  myDisclosureIndicatorLabel.backgroundColor = gbl_color_cGre;
-//                    if ( [myDisclosureIndicatorBGcolorName isEqualToString: @"cNeu"] )  myDisclosureIndicatorLabel.backgroundColor = gbl_color_cNeu;
-//                    if ( [myDisclosureIndicatorBGcolorName isEqualToString: @"cRed"] )  myDisclosureIndicatorLabel.backgroundColor = gbl_color_cRed;
-//                    if ( [myDisclosureIndicatorBGcolorName isEqualToString: @"cRe2"] )  myDisclosureIndicatorLabel.backgroundColor = gbl_color_cRe2;
-//                    if ( [myDisclosureIndicatorBGcolorName isEqualToString: @"cBgr"] )  myDisclosureIndicatorLabel.backgroundColor = gbl_color_cBgr;
-//
+        // UILabel for the disclosure indicator, ">",  for tappable cells
+        //
+            NSAttributedString *myNewCellAttributedText3 = [
+                [NSAttributedString alloc] initWithString: @">"  
+                                               attributes: @{
+                        NSFontAttributeName :  [UIFont fontWithName: @"MarkerFelt-Thin" size:  24.0] ,  
+                        NSForegroundColorAttributeName: gbl_colorDIfor_home   
+                    }
+            ];
+            UILabel *myDisclosureIndicatorLabel        = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 12.0f, 32.0f)];
+            myDisclosureIndicatorLabel.attributedText  = myNewCellAttributedText3;
+            myDisclosureIndicatorLabel.backgroundColor = gbl_colorReportsBG; 
+        //
+        // end of  UILabel for the disclosure indicator, ">",  for tappable cells
+
+                    }
+
+                } else {
+
                     myDisclosureIndicatorLabel.backgroundColor = gbl_thisCellBackGroundColor;  // see above
                 }
             //
             // end of  UILabel for the disclosure indicator, ">",  for tappable cells
 
-nbn(100);
 
             dispatch_async(dispatch_get_main_queue(), ^{            // <===  short line and long line
                 cell.textLabel.text                      = myNewCellText;  // --------------------------------------------------
@@ -4077,7 +4050,6 @@ nbn(100);
 
 //                if ([gbl_currentMenuPlusReportCode hasPrefix: @"homgm"] )  cell.backgroundView =  nil;
             });
-nbn(101);
         }
 
 trn("// end of  tableView cellForRowAtIndexPath: (NSIndexPath *)indexPath");
@@ -4169,19 +4141,12 @@ trn("// end of  tableView cellForRowAtIndexPath: (NSIndexPath *)indexPath");
         // assign heights to rows beyond the number of data rows
         //
 
-
-//        if (indexPath.row == group_report_output_idx + 1) return 15.0 * 7;  // ftr 1
-//        if (indexPath.row == group_report_output_idx + 2) return 16.0 ;     // ftr 2
-////        if (indexPath.row == group_report_output_idx + 3) return  8.0 ;     // ftr 3
-//        if (indexPath.row == group_report_output_idx + 3) return 16.0 ;     // ftr 3
-//
-
-        if (indexPath.row == group_report_output_idx + 1) return 15.0 * 7;  // ftr 1
-        if (indexPath.row == group_report_output_idx + 2) return 16.0 ;     // fill 1 of 2
-        if (indexPath.row == group_report_output_idx + 3) return 16.0 ;     // ftr 2
-        if (indexPath.row == group_report_output_idx + 4) return  4.0 ;     // fill 2 of 2
-        if (indexPath.row == group_report_output_idx + 5) return 16.0 ;     // ftr 3
-        if (indexPath.row == group_report_output_idx + 6) return 16.0 ;     // fill 3
+        if (indexPath.row == lcl_group_report_output_idx + 1) return 15.0 * 7;  // ftr 1
+        if (indexPath.row == lcl_group_report_output_idx + 2) return 16.0 ;     // fill 1 of 2
+        if (indexPath.row == lcl_group_report_output_idx + 3) return 16.0 ;     // ftr 2
+        if (indexPath.row == lcl_group_report_output_idx + 4) return  4.0 ;     // fill 2 of 2
+        if (indexPath.row == lcl_group_report_output_idx + 5) return 16.0 ;     // ftr 3
+        if (indexPath.row == lcl_group_report_output_idx + 6) return 16.0 ;     // fill 3
 
     } else if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgma"]      // group Most RPTs
                || [gbl_currentMenuPlusReportCode isEqualToString: @"homgme"]      
@@ -4198,14 +4163,14 @@ trn("// end of  tableView cellForRowAtIndexPath: (NSIndexPath *)indexPath");
         // assign heights to rows beyond the number of data rows
         //
 
-        if (indexPath.row == group_report_output_idx + 1) return  70.0 ;  // ftr 1
+        if (indexPath.row == lcl_group_report_output_idx + 1) return  70.0 ;  // ftr 1
 
-//        if (indexPath.row == group_report_output_idx + 2) return  15.0 ;     // ftr 2   by
-        if (indexPath.row == group_report_output_idx + 2) return  30.0 ;     // ftr 2   by
+//        if (indexPath.row == lcl_group_report_output_idx + 2) return  15.0 ;     // ftr 2   by
+        if (indexPath.row == lcl_group_report_output_idx + 2) return  30.0 ;     // ftr 2   by
 
-//        if (indexPath.row == group_report_output_idx + 3) return  20.0 ;     // ftr 3   entertainment
-//        if (indexPath.row == group_report_output_idx + 3) return  12.0 ;     // ftr 3   entertainment
-        if (indexPath.row == group_report_output_idx + 3) return  8.0 ;     // ftr 3   entertainment
+//        if (indexPath.row == lcl_group_report_output_idx + 3) return  20.0 ;     // ftr 3   entertainment
+//        if (indexPath.row == lcl_group_report_output_idx + 3) return  12.0 ;     // ftr 3   entertainment
+        if (indexPath.row == lcl_group_report_output_idx + 3) return  8.0 ;     // ftr 3   entertainment
 
     } else if (  [gbl_currentMenuPlusReportCode isEqualToString: @"homgby"]      // group Best RPT  best year
     ) {
@@ -4218,11 +4183,11 @@ trn("// end of  tableView cellForRowAtIndexPath: (NSIndexPath *)indexPath");
         // assign heights to rows beyond the number of data rows
         //
 
-        if (indexPath.row == group_report_output_idx + 1) return 70.0 ;  // ftr 1
-//        if (indexPath.row == group_report_output_idx + 2) return 15.0 ;     // ftr 2   by
-        if (indexPath.row == group_report_output_idx + 2) return 30.0 ;     // ftr 2   by
-        if (indexPath.row == group_report_output_idx + 3) return  8.0 ;     // ftr 3   entertainment
-        if (indexPath.row == group_report_output_idx + 4) return 16.0 ;     // fill 16 at end
+        if (indexPath.row == lcl_group_report_output_idx + 1) return 70.0 ;  // ftr 1
+//        if (indexPath.row == lcl_group_report_output_idx + 2) return 15.0 ;     // ftr 2   by
+        if (indexPath.row == lcl_group_report_output_idx + 2) return 30.0 ;     // ftr 2   by
+        if (indexPath.row == lcl_group_report_output_idx + 3) return  8.0 ;     // ftr 3   entertainment
+        if (indexPath.row == lcl_group_report_output_idx + 4) return 16.0 ;     // fill 16 at end
 
     } else if (  [gbl_currentMenuPlusReportCode isEqualToString: @"homgbd"]      // group Best RPT  best day     
     ) {
@@ -4236,16 +4201,16 @@ trn("// end of  tableView cellForRowAtIndexPath: (NSIndexPath *)indexPath");
         //
 
 
-//        if (indexPath.row == group_report_output_idx + 1) return 15.0 * 7;  // ftr 1
-//        if (indexPath.row == group_report_output_idx + 1) return 15.0 * 8.0;  // ftr 1
-//        if (indexPath.row == group_report_output_idx + 1) return 150.0 ;  // ftr 1
-//        if (indexPath.row == group_report_output_idx + 1) return 200.0 ;  // ftr 1
-        if (indexPath.row == group_report_output_idx + 1) return  75.0 ;  // ftr 1
-//        if (indexPath.row == group_report_output_idx + 2) return  15.0 ;     // ftr 2   by
-        if (indexPath.row == group_report_output_idx + 2) return  30.0 ;     // ftr 2   by
-//        if (indexPath.row == group_report_output_idx + 3) return  20.0 ;     // ftr 3   entertainment
-        if (indexPath.row == group_report_output_idx + 3) return  8.0 ;     // ftr 3   entertainment
-        if (indexPath.row == group_report_output_idx + 4) return 16.0 ;     // fill 16 at end
+//        if (indexPath.row == lcl_group_report_output_idx + 1) return 15.0 * 7;  // ftr 1
+//        if (indexPath.row == lcl_group_report_output_idx + 1) return 15.0 * 8.0;  // ftr 1
+//        if (indexPath.row == lcl_group_report_output_idx + 1) return 150.0 ;  // ftr 1
+//        if (indexPath.row == lcl_group_report_output_idx + 1) return 200.0 ;  // ftr 1
+        if (indexPath.row == lcl_group_report_output_idx + 1) return  75.0 ;  // ftr 1
+//        if (indexPath.row == lcl_group_report_output_idx + 2) return  15.0 ;     // ftr 2   by
+        if (indexPath.row == lcl_group_report_output_idx + 2) return  30.0 ;     // ftr 2   by
+//        if (indexPath.row == lcl_group_report_output_idx + 3) return  20.0 ;     // ftr 3   entertainment
+        if (indexPath.row == lcl_group_report_output_idx + 3) return  8.0 ;     // ftr 3   entertainment
+        if (indexPath.row == lcl_group_report_output_idx + 4) return 16.0 ;     // fill 16 at end
      }
     
     
@@ -4315,7 +4280,7 @@ trn("// end of  tableView cellForRowAtIndexPath: (NSIndexPath *)indexPath");
 
 
 
-//    if (indexPath.row  <=  group_report_output_idx )  // is max idx number (0-based)
+//    if (indexPath.row  <=  lcl_group_report_output_idx )  // is max idx number (0-based)
     if (indexPath.row  <=  gbl_array_cellBGcolorName.count -1 )  // is max idx number (0-based)
     {
   NSLog(@"indexPath.row =[%ld]",(long)indexPath.row );
@@ -4373,22 +4338,22 @@ trn("// end of  tableView cellForRowAtIndexPath: (NSIndexPath *)indexPath");
 
             if ([gbl_currentMenuPlusReportCode hasPrefix: @"homgm"] ) {
 
-//                if (indexPath.row ==  group_report_output_idx + 1) {  //  @"fill after table"] )
+//                if (indexPath.row ==  lcl_group_report_output_idx + 1) {  //  @"fill after table"] )
 //                    cell.backgroundColor = gbl_color_cBgr;
 //                }
-                if (indexPath.row ==  group_report_output_idx + 1) {  // 1 of 3 FOOTER CELLS
+                if (indexPath.row ==  lcl_group_report_output_idx + 1) {  // 1 of 3 FOOTER CELLS
                     cell.backgroundColor = gbl_color_cAplDarkBlue;
                 }
-                if (indexPath.row ==  group_report_output_idx + 2) {  // 2 of 3 FOOTER CELLS
+                if (indexPath.row ==  lcl_group_report_output_idx + 2) {  // 2 of 3 FOOTER CELLS
                     cell.backgroundColor = gbl_color_cBgr;
                 }
-                if (indexPath.row ==  group_report_output_idx + 3) {  // 3 of 3 FOOTER CELLS
+                if (indexPath.row ==  lcl_group_report_output_idx + 3) {  // 3 of 3 FOOTER CELLS
                     cell.backgroundColor = gbl_color_cBgr;
                 } 
-                if (indexPath.row ==  group_report_output_idx + 4) {  //   // bottom space
+                if (indexPath.row ==  lcl_group_report_output_idx + 4) {  //   // bottom space
                     cell.backgroundColor = gbl_color_cBgr;
                 } 
-                if (indexPath.row  >  group_report_output_idx + 4) {  //   // bottom space
+                if (indexPath.row  >  lcl_group_report_output_idx + 4) {  //   // bottom space
                     cell.backgroundColor = gbl_color_cBgr;
                 } 
             }
@@ -4442,22 +4407,22 @@ trn("// end of  tableView cellForRowAtIndexPath: (NSIndexPath *)indexPath");
 //            if ( [thisCellBGcolorName isEqualToString: @"cNeu"] )  cell.contentView.backgroundColor = gbl_color_cNeu;
 
 
-            if (indexPath.row ==  group_report_output_idx + 1) {  // 1 of 3 FOOTER CELLS
+            if (indexPath.row ==  lcl_group_report_output_idx + 1) {  // 1 of 3 FOOTER CELLS
                 cell.backgroundColor = gbl_color_cHed;
             }
-            if (indexPath.row ==  group_report_output_idx + 2) {  // fill 1
+            if (indexPath.row ==  lcl_group_report_output_idx + 2) {  // fill 1
                 cell.backgroundColor = gbl_color_cBgr;
             }
-            if (indexPath.row ==  group_report_output_idx + 3) {  // 2 of 3 FOOTER CELLS
+            if (indexPath.row ==  lcl_group_report_output_idx + 3) {  // 2 of 3 FOOTER CELLS
                 cell.backgroundColor = gbl_color_cBgr;
             }
-            if (indexPath.row ==  group_report_output_idx + 4) {  // fill 2
+            if (indexPath.row ==  lcl_group_report_output_idx + 4) {  // fill 2
                 cell.backgroundColor = gbl_color_cBgr;
             }
-            if (indexPath.row ==  group_report_output_idx + 5) {  // 3 of 3 FOOTER CELLS
+            if (indexPath.row ==  lcl_group_report_output_idx + 5) {  // 3 of 3 FOOTER CELLS
                 cell.backgroundColor = gbl_color_cBgr;
             } 
-            if (indexPath.row ==  group_report_output_idx + 6) {  // bottom space
+            if (indexPath.row ==  lcl_group_report_output_idx + 6) {  // bottom space
                 cell.backgroundColor = gbl_color_cBgr;
             } 
 
@@ -4711,9 +4676,9 @@ trn("// end of  tableView cellForRowAtIndexPath: (NSIndexPath *)indexPath");
         if (indexPath.row == 0 )                            return NO;   // no selection on header1 (sp)
         if (indexPath.row == 1 )                            return NO;   // no selection on header2
         if (indexPath.row == 2 )                            return NO;   // no selection on header3
-        if (indexPath.row ==  group_report_output_idx + 1)  return NO;   // 1 of 3 FOOTER CELLS
-        if (indexPath.row ==  group_report_output_idx + 2)  return NO;   // 2 of 3 FOOTER CELLS
-        if (indexPath.row ==  group_report_output_idx + 3)  return NO;   // 3 of 3 FOOTER CELLS
+        if (indexPath.row ==  lcl_group_report_output_idx + 1)  return NO;   // 1 of 3 FOOTER CELLS
+        if (indexPath.row ==  lcl_group_report_output_idx + 2)  return NO;   // 2 of 3 FOOTER CELLS
+        if (indexPath.row ==  lcl_group_report_output_idx + 3)  return NO;   // 3 of 3 FOOTER CELLS
     }
 
     if (  [gbl_currentMenuPlusReportCode isEqualToString: @"homgma"]      // group Most RPTs
@@ -4727,9 +4692,9 @@ trn("// end of  tableView cellForRowAtIndexPath: (NSIndexPath *)indexPath");
         if (indexPath.row == 0 )                            return NO;   // no selection on header1 (sp)
         if (indexPath.row == 1 )                            return NO;   // no selection on header2
 //        if (indexPath.row == 2 )                            return NO;   // no selection on header3  --> no hdr 2
-        if (indexPath.row ==  group_report_output_idx + 1)  return NO;   // 1 of 3 FOOTER CELLS
-        if (indexPath.row ==  group_report_output_idx + 2)  return NO;   // 2 of 3 FOOTER CELLS
-        if (indexPath.row ==  group_report_output_idx + 3)  return NO;   // 3 of 3 FOOTER CELLS
+        if (indexPath.row ==  lcl_group_report_output_idx + 1)  return NO;   // 1 of 3 FOOTER CELLS
+        if (indexPath.row ==  lcl_group_report_output_idx + 2)  return NO;   // 2 of 3 FOOTER CELLS
+        if (indexPath.row ==  lcl_group_report_output_idx + 3)  return NO;   // 3 of 3 FOOTER CELLS
     }
     
     return YES;
@@ -4804,9 +4769,9 @@ NSLog(@"indexPath.row=%ld",(long)indexPath.row);
         if (indexPath.row == 0 )                            return nil;  // no selection on header1 (sp)
         if (indexPath.row == 1 )                            return nil;  // no selection on header2
         if (indexPath.row == 2 )                            return nil;  // no selection on header3
-        if (indexPath.row ==  group_report_output_idx + 1)  return nil;  // 1 of 3 FOOTER CELLS
-        if (indexPath.row ==  group_report_output_idx + 2)  return nil;  // 2 of 3 FOOTER CELLS
-        if (indexPath.row ==  group_report_output_idx + 3)  return nil;  // 3 of 3 FOOTER CELLS
+        if (indexPath.row ==  lcl_group_report_output_idx + 1)  return nil;  // 1 of 3 FOOTER CELLS
+        if (indexPath.row ==  lcl_group_report_output_idx + 2)  return nil;  // 2 of 3 FOOTER CELLS
+        if (indexPath.row ==  lcl_group_report_output_idx + 3)  return nil;  // 3 of 3 FOOTER CELLS
     }
     if (  [gbl_currentMenuPlusReportCode isEqualToString: @"homgma"]      // group Most RPTs
       ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgme"]      
@@ -4819,9 +4784,9 @@ NSLog(@"indexPath.row=%ld",(long)indexPath.row);
         if (indexPath.row == 0 )                            return nil;  // no selection on header1 (sp)
         if (indexPath.row == 1 )                            return nil;  // no selection on header2
 //        if (indexPath.row == 2 )                            return nil;  // no selection on header3  ---> no hdr 2
-        if (indexPath.row ==  group_report_output_idx + 1)  return nil;  // 1 of 3 FOOTER CELLS
-        if (indexPath.row ==  group_report_output_idx + 2)  return nil;  // 2 of 3 FOOTER CELLS
-        if (indexPath.row ==  group_report_output_idx + 3)  return nil;  // 3 of 3 FOOTER CELLS
+        if (indexPath.row ==  lcl_group_report_output_idx + 1)  return nil;  // 1 of 3 FOOTER CELLS
+        if (indexPath.row ==  lcl_group_report_output_idx + 2)  return nil;  // 2 of 3 FOOTER CELLS
+        if (indexPath.row ==  lcl_group_report_output_idx + 3)  return nil;  // 3 of 3 FOOTER CELLS
     }
 
     return indexPath; // By default, allow row to be selected
@@ -6079,18 +6044,18 @@ NSLog(@"gbl_TBLRPTS1_saveSelectedIndexPath.row=%ld",(long)gbl_TBLRPTS1_saveSelec
         // convert  NSArray gbl_grp_CSVs  (one NSString CSV for each member of the group)
         // into     a C array of strings for the C report function call mamb_report_person_in_group() -  my_mamb_csv_arr
         //
-        //     char group_report_input_birthinfo_CSVs[gbl_maxGrpBirthinfoCSVs * gbl_maxLenBirthinfoCSV];  // [250 * fixed length of 64]
+        //     char lcl_group_report_input_birthinfo_CSVs[gbl_maxGrpBirthinfoCSVs * gbl_maxLenBirthinfoCSV];  // [250 * fixed length of 64]
         //
         // avoid malloc by this char buffer  to hold max lines of fixed length
-        // char group_report_input_birthinfo_CSVs[gbl_maxGrpBirthinfoCSVs * gbl_maxLenBirthinfoCSV];  // [250 * fixed length of 64]
-        // int  group_report_input_birthinfo_idx;
+        // char lcl_group_report_input_birthinfo_CSVs[gbl_maxGrpBirthinfoCSVs * gbl_maxLenBirthinfoCSV];  // [250 * fixed length of 64]
+        // int  lcl_group_report_input_birthinfo_idx;
         //
 //        char *my_mamb_csv_arr[gbl_maxGrpBirthinfoCSVs];
         char *my_mamb_csv_arr[gbl_MAX_personsInGroup];  // 250
 
         int num_input_csvs;
         num_input_csvs = (int)gbl_grp_CSVs.count;
-        group_report_input_birthinfo_idx =  -1;  // zero-based  init
+        lcl_group_report_input_birthinfo_idx =  -1;  // zero-based  init
 
         for(int i = 0; i < num_input_csvs; i++) {  
 
@@ -6098,17 +6063,17 @@ NSLog(@"gbl_TBLRPTS1_saveSelectedIndexPath.row=%ld",(long)gbl_TBLRPTS1_saveSelec
           const char *cstr = s.UTF8String;        //get cstring
 
           // index of next spot in buffer
-          group_report_input_birthinfo_idx = group_report_input_birthinfo_idx + 1; 
+          lcl_group_report_input_birthinfo_idx = lcl_group_report_input_birthinfo_idx + 1; 
 
           // get ptr to next 64-byte slot in buffer
           char *my_ptr_in_buff;
-          my_ptr_in_buff = group_report_input_birthinfo_CSVs + group_report_input_birthinfo_idx * gbl_maxLenBirthinfoCSV;
+          my_ptr_in_buff = lcl_group_report_input_birthinfo_CSVs + lcl_group_report_input_birthinfo_idx * gbl_maxLenBirthinfoCSV;
 
           // copy cstr into that spot
           strcpy(my_ptr_in_buff, cstr); 
 
           // put ptr to that spot into c array of strings
-          my_mamb_csv_arr[group_report_input_birthinfo_idx] = my_ptr_in_buff;
+          my_mamb_csv_arr[lcl_group_report_input_birthinfo_idx] = my_ptr_in_buff;
         }
 
 //for (int kkk=0; kkk <= num_input_csvs -1; kkk++) {
@@ -6161,36 +6126,36 @@ tn();trn("calling  mamb_report_whole_group() ...");
             retval = mamb_report_whole_group(  /* in grpdoc.o */
               pathToHTML_browser,          // path to html_file
               tmp_grp_name,                // group_name */
-              my_mamb_csv_arr,             // from   group_report_input_birthinfo_CSVs
+              my_mamb_csv_arr,             // from   lcl_group_report_input_birthinfo_CSVs
               num_input_csvs,              // num_persons_in_grp xxzz
               "",  // instructions,  sprintf(instructions_for_top_bot, "top_this_many=|%d|bot_this_many=|%d|", top_this_many, bot_this_many);
               "",                  /* buffer for string_for_table_only  */
-              group_report_output_PSVs,    // array of output report data
-              &group_report_output_idx     // ptr to int having last index written
+              lcl_group_report_output_PSVs,    // array of output report data
+              &lcl_group_report_output_idx     // ptr to int having last index written
             );
 //kin(retval);
-//kin(group_report_output_idx);
+//kin(lcl_group_report_output_idx);
 //char my_tst_str[128];
-//strcpy(my_tst_str, group_report_output_PSVs  +  0 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
-//tr("group_report_output_PSVs  idx=0");ksn(my_tst_str);
-//strcpy(my_tst_str, group_report_output_PSVs  +  1 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
-//tr("group_report_output_PSVs  idx=1");ksn(my_tst_str);
-//strcpy(my_tst_str, group_report_output_PSVs  +  2 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
-//tr("group_report_output_PSVs  idx=2");ksn(my_tst_str);
-//strcpy(my_tst_str, group_report_output_PSVs  +  3 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
-//tr("group_report_output_PSVs  idx=3");ksn(my_tst_str);
-//strcpy(my_tst_str, group_report_output_PSVs  +  4 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
-//tr("group_report_output_PSVs  idx=4");ksn(my_tst_str);
-//strcpy(my_tst_str, group_report_output_PSVs  +  5 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
-//tr("group_report_output_PSVs  idx=5");ksn(my_tst_str);
-//strcpy(my_tst_str, group_report_output_PSVs  +  6 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
-//tr("group_report_output_PSVs  idx=6");ksn(my_tst_str);
-//strcpy(my_tst_str, group_report_output_PSVs  +  7 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
-//tr("group_report_output_PSVs  idx=7");ksn(my_tst_str);
-//strcpy(my_tst_str, group_report_output_PSVs  +  8 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
-//tr("group_report_output_PSVs  idx=8");ksn(my_tst_str);
-//strcpy(my_tst_str, group_report_output_PSVs  +  9 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
-//tr("group_report_output_PSVs  idx=9");ksn(my_tst_str);
+//strcpy(my_tst_str, lcl_group_report_output_PSVs  +  0 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("lcl_group_report_output_PSVs  idx=0");ksn(my_tst_str);
+//strcpy(my_tst_str, lcl_group_report_output_PSVs  +  1 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("lcl_group_report_output_PSVs  idx=1");ksn(my_tst_str);
+//strcpy(my_tst_str, lcl_group_report_output_PSVs  +  2 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("lcl_group_report_output_PSVs  idx=2");ksn(my_tst_str);
+//strcpy(my_tst_str, lcl_group_report_output_PSVs  +  3 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("lcl_group_report_output_PSVs  idx=3");ksn(my_tst_str);
+//strcpy(my_tst_str, lcl_group_report_output_PSVs  +  4 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("lcl_group_report_output_PSVs  idx=4");ksn(my_tst_str);
+//strcpy(my_tst_str, lcl_group_report_output_PSVs  +  5 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("lcl_group_report_output_PSVs  idx=5");ksn(my_tst_str);
+//strcpy(my_tst_str, lcl_group_report_output_PSVs  +  6 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("lcl_group_report_output_PSVs  idx=6");ksn(my_tst_str);
+//strcpy(my_tst_str, lcl_group_report_output_PSVs  +  7 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("lcl_group_report_output_PSVs  idx=7");ksn(my_tst_str);
+//strcpy(my_tst_str, lcl_group_report_output_PSVs  +  8 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("lcl_group_report_output_PSVs  idx=8");ksn(my_tst_str);
+//strcpy(my_tst_str, lcl_group_report_output_PSVs  +  9 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("lcl_group_report_output_PSVs  idx=9");ksn(my_tst_str);
 //trn("in cocoa  returning from call of   mamb_report_whole_group() ...");
 //tn();
 //
@@ -6259,37 +6224,37 @@ tn();trn("DOING person in group ... in tblrpts 111111"); ks(html_file_name_brows
             retval = mamb_report_person_in_group(  /* in grpdoc.o */
               pathToHTML_browser,          // path to html_file
               tmp_grp_name,                // group_name */
-              my_mamb_csv_arr,             // from   group_report_input_birthinfo_CSVs
+              my_mamb_csv_arr,             // from   lcl_group_report_input_birthinfo_CSVs
               num_input_csvs,              // num_persons_in_grp xxzz
               csv_kingpin,                 // csv_compare_everyone_with,
-              group_report_output_PSVs,    // array of output report data
-              &group_report_output_idx,    // ptr to int having last index written
+              lcl_group_report_output_PSVs,    // array of output report data
+              &lcl_group_report_output_idx,    // ptr to int having last index written
               (int)gbl_kingpinIsInGroup
             );
 
 //kin(retval);
-//kin(group_report_output_idx);
+//kin(lcl_group_report_output_idx);
 //char my_tst_str[128];
-//strcpy(my_tst_str, group_report_output_PSVs  +  0 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
-//tr("grpone group_report_output_PSVs  idx=0");ksn(my_tst_str);
-//strcpy(my_tst_str, group_report_output_PSVs  +  1 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
-//tr("grpone group_report_output_PSVs  idx=1");ksn(my_tst_str);
-//strcpy(my_tst_str, group_report_output_PSVs  +  2 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
-//tr("grpone group_report_output_PSVs  idx=2");ksn(my_tst_str);
-//strcpy(my_tst_str, group_report_output_PSVs  +  3 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
-//tr("grpone group_report_output_PSVs  idx=3");ksn(my_tst_str);
-//strcpy(my_tst_str, group_report_output_PSVs  +  4 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
-//tr("grpone group_report_output_PSVs  idx=4");ksn(my_tst_str);
-//strcpy(my_tst_str, group_report_output_PSVs  +  5 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
-//tr("grpone group_report_output_PSVs  idx=5");ksn(my_tst_str);
-//strcpy(my_tst_str, group_report_output_PSVs  +  6 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
-//tr("grpone group_report_output_PSVs  idx=6");ksn(my_tst_str);
-//strcpy(my_tst_str, group_report_output_PSVs  +  7 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
-//tr("grpone group_report_output_PSVs  idx=7");ksn(my_tst_str);
-//strcpy(my_tst_str, group_report_output_PSVs  +  8 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
-//tr("grpone group_report_output_PSVs  idx=8");ksn(my_tst_str);
-//strcpy(my_tst_str, group_report_output_PSVs  +  9 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
-//tr("grpone group_report_output_PSVs  idx=9");ksn(my_tst_str);
+//strcpy(my_tst_str, lcl_group_report_output_PSVs  +  0 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("grpone lcl_group_report_output_PSVs  idx=0");ksn(my_tst_str);
+//strcpy(my_tst_str, lcl_group_report_output_PSVs  +  1 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("grpone lcl_group_report_output_PSVs  idx=1");ksn(my_tst_str);
+//strcpy(my_tst_str, lcl_group_report_output_PSVs  +  2 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("grpone lcl_group_report_output_PSVs  idx=2");ksn(my_tst_str);
+//strcpy(my_tst_str, lcl_group_report_output_PSVs  +  3 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("grpone lcl_group_report_output_PSVs  idx=3");ksn(my_tst_str);
+//strcpy(my_tst_str, lcl_group_report_output_PSVs  +  4 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("grpone lcl_group_report_output_PSVs  idx=4");ksn(my_tst_str);
+//strcpy(my_tst_str, lcl_group_report_output_PSVs  +  5 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("grpone lcl_group_report_output_PSVs  idx=5");ksn(my_tst_str);
+//strcpy(my_tst_str, lcl_group_report_output_PSVs  +  6 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("grpone lcl_group_report_output_PSVs  idx=6");ksn(my_tst_str);
+//strcpy(my_tst_str, lcl_group_report_output_PSVs  +  7 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("grpone lcl_group_report_output_PSVs  idx=7");ksn(my_tst_str);
+//strcpy(my_tst_str, lcl_group_report_output_PSVs  +  8 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("grpone lcl_group_report_output_PSVs  idx=8");ksn(my_tst_str);
+//strcpy(my_tst_str, lcl_group_report_output_PSVs  +  9 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("grpone lcl_group_report_output_PSVs  idx=9");ksn(my_tst_str);
 //trn("in cocoa  returning from call of   grpone ...");
 //tn();
 //
@@ -6299,7 +6264,7 @@ tn();trn("DOING person in group ... in tblrpts 111111"); ks(html_file_name_brows
 //ksn(tmp_grp_name);
 //kin(num_input_csvs);
 //ksn(csv_kingpin);
-//kin(group_report_output_idx);
+//kin(lcl_group_report_output_idx);
 //kin(retval);
 //
             if (retval != 0) {tn(); trn("non-zero retval from mamb_report_person_in_group()");}
@@ -6313,7 +6278,7 @@ tn();trn("DOING person in group ... in tblrpts 111111"); ks(html_file_name_brows
         do {  // populate  gbl_array_cellBGcolorName gbl_array_cellPersonAname gbl_array_cellPersonBname
 //tn();trn("// populate  gbl_array_cellBGcolorName gbl_array_cellPersonAname gbl_array_cellPersonBname");
 
-            // now that we have group_report_output_PSVs, grab all BG color for all tableview cells
+            // now that we have lcl_group_report_output_PSVs, grab all BG color for all tableview cells
             // and put into   NSArray *gbl_array_cellBGcolorName;
             //
             char my_buff[256];
@@ -6339,25 +6304,25 @@ tn();trn("DOING person in group ... in tblrpts 111111"); ks(html_file_name_brows
             gbl_array_cellPersonAname = [[NSMutableArray alloc] init];  // init  array
             gbl_array_cellPersonBname = [[NSMutableArray alloc] init];  // init  array 
 
-    //tn();kin(group_report_output_idx);
+    //tn();kin(lcl_group_report_output_idx);
 
             NSString *myHedColor = @"cHed";
 
-            for (int i=0; i <= group_report_output_idx + 3; i++) {  // group_report_output_idx = last index written
+            for (int i=0; i <= lcl_group_report_output_idx + 3; i++) {  // lcl_group_report_output_idx = last index written
 
-                if (i == group_report_output_idx + 1) {
+                if (i == lcl_group_report_output_idx + 1) {
                    [gbl_array_cellBGcolorName addObject: myHedColor];  //  footer line 1  // add the BG colors of the 3 footer cells
                    continue;
                 }
-                if (i == group_report_output_idx + 2) {
+                if (i == lcl_group_report_output_idx + 2) {
                    [gbl_array_cellBGcolorName addObject: myHedColor];  //  footer line 2
                    continue;
                 }
-                if (i == group_report_output_idx + 3) {
+                if (i == lcl_group_report_output_idx + 3) {
                    [gbl_array_cellBGcolorName addObject: myHedColor];  //  footer line 3
                    continue;
                 }
-                strcpy(my_buff, group_report_output_PSVs  +  i * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW
+                strcpy(my_buff, lcl_group_report_output_PSVs  +  i * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW
 tn();ki(i);ks(my_buff);
 
                 myCellContentsPSV     = [NSMutableString stringWithUTF8String: my_buff];  // convert c string to NSString
@@ -6554,17 +6519,17 @@ NSLog(@"gbl_pathToFileToBeEmailed=%@",gbl_pathToFileToBeEmailed);
         // convert  NSArray gbl_grp_CSVs  (one NSString CSV for each member of the group)
         // into     a C array of strings for the C report function call mamb_report_person_in_group() -  my_mamb_csv_arr
         //
-        //     char group_report_input_birthinfo_CSVs[gbl_maxGrpBirthinfoCSVs * gbl_maxLenBirthinfoCSV];  // [250 * fixed length of 64]
+        //     char lcl_group_report_input_birthinfo_CSVs[gbl_maxGrpBirthinfoCSVs * gbl_maxLenBirthinfoCSV];  // [250 * fixed length of 64]
         //
         // avoid malloc by this char buffer  to hold max lines of fixed length
-        // char group_report_input_birthinfo_CSVs[gbl_maxGrpBirthinfoCSVs * gbl_maxLenBirthinfoCSV];  // [250 * fixed length of 64]
-        // int  group_report_input_birthinfo_idx;
+        // char lcl_group_report_input_birthinfo_CSVs[gbl_maxGrpBirthinfoCSVs * gbl_maxLenBirthinfoCSV];  // [250 * fixed length of 64]
+        // int  lcl_group_report_input_birthinfo_idx;
         //
 //        char *my_mamb_csv_arr[gbl_maxGrpBirthinfoCSVs];
         char *my_mamb_csv_arr[gbl_MAX_personsInGroup];  // 250
         int num_input_csvs;
         num_input_csvs = (int)gbl_grp_CSVs.count;
-        group_report_input_birthinfo_idx =  -1;  // zero-based  init
+        lcl_group_report_input_birthinfo_idx =  -1;  // zero-based  init
 
         for(int i = 0; i < num_input_csvs; i++) {  
 
@@ -6572,17 +6537,17 @@ NSLog(@"gbl_pathToFileToBeEmailed=%@",gbl_pathToFileToBeEmailed);
           const char *cstr = s.UTF8String;        //get cstring
 
           // index of next spot in buffer
-          group_report_input_birthinfo_idx = group_report_input_birthinfo_idx + 1; 
+          lcl_group_report_input_birthinfo_idx = lcl_group_report_input_birthinfo_idx + 1; 
 
           // get ptr to next 64-byte slot in buffer
           char *my_ptr_in_buff;
-          my_ptr_in_buff = group_report_input_birthinfo_CSVs + group_report_input_birthinfo_idx * gbl_maxLenBirthinfoCSV;
+          my_ptr_in_buff = lcl_group_report_input_birthinfo_CSVs + lcl_group_report_input_birthinfo_idx * gbl_maxLenBirthinfoCSV;
 
           // copy cstr into that spot
           strcpy(my_ptr_in_buff, cstr); 
 
           // put ptr to that spot into c array of strings
-          my_mamb_csv_arr[group_report_input_birthinfo_idx] = my_ptr_in_buff;
+          my_mamb_csv_arr[lcl_group_report_input_birthinfo_idx] = my_ptr_in_buff;
         }
 
 //for (int kkk=0; kkk <= num_input_csvs -1; kkk++) {
@@ -6637,8 +6602,8 @@ tn();
               my_mamb_csv_arr,        /* in_csv_person_arr[] */
               num_input_csvs,         /* num_persons_in_grp */
               trait_name_for_C_call,  /* assertive, emotional, etc 6 of them, see above  */
-              group_report_output_PSVs,    // array of output report data
-              &group_report_output_idx     // ptr to int having last index written
+              lcl_group_report_output_PSVs,    // array of output report data
+              &lcl_group_report_output_idx     // ptr to int having last index written
             );
 
             tn();trn("finished doing  trait rank ...");  ks(pathToHTML_browser);
@@ -6673,8 +6638,8 @@ tn();
                yyyy_todo,           /* calendar year */
 //               out_group_report_PSVs,   /* array of output report data to pass to cocoa */
 //               &out_group_report_idx       /* ptr to int having last index written */
-               group_report_output_PSVs,    // array of output report data
-               &group_report_output_idx     // ptr to int having last index written
+               lcl_group_report_output_PSVs,    // array of output report data
+               &lcl_group_report_output_idx     // ptr to int having last index written
              );
 
              if (retval != 0) {tn(); trn("non-zero retval from mamb_report_best_year()");}
@@ -6707,8 +6672,8 @@ tn();
                yyyymmdd_todo,           /* day to do */
 //               out_group_report_PSVs,   /* array of output report data to pass to cocoa */
 //               &out_group_report_idx       /* ptr to int having last index written */
-               group_report_output_PSVs,    // array of output report data
-               &group_report_output_idx     // ptr to int having last index written
+               lcl_group_report_output_PSVs,    // array of output report data
+               &lcl_group_report_output_idx     // ptr to int having last index written
              );
 
              if (retval != 0) {tn(); trn("non-zero retval from mamb_report_best_day ()");}
@@ -6717,33 +6682,33 @@ tn();
 
 
         //kin(retval);
-kin(group_report_output_idx);
+kin(lcl_group_report_output_idx);
 //char my_tst_str[128];
-//strcpy(my_tst_str, group_report_output_PSVs  +  0 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
-//tr("group_report_output_PSVs  idx=0");ksn(my_tst_str);
-//strcpy(my_tst_str, group_report_output_PSVs  +  1 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
-//tr("group_report_output_PSVs  idx=1");ksn(my_tst_str);
-//strcpy(my_tst_str, group_report_output_PSVs  +  2 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
-//tr("group_report_output_PSVs  idx=2");ksn(my_tst_str);
-//strcpy(my_tst_str, group_report_output_PSVs  +  3 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
-//tr("group_report_output_PSVs  idx=3");ksn(my_tst_str);
-//strcpy(my_tst_str, group_report_output_PSVs  +  4 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
-//tr("group_report_output_PSVs  idx=4");ksn(my_tst_str);
-//strcpy(my_tst_str, group_report_output_PSVs  +  5 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
-//tr("group_report_output_PSVs  idx=5");ksn(my_tst_str);
-//strcpy(my_tst_str, group_report_output_PSVs  +  6 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
-//tr("group_report_output_PSVs  idx=6");ksn(my_tst_str);
-//strcpy(my_tst_str, group_report_output_PSVs  +  7 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
-//tr("group_report_output_PSVs  idx=7");ksn(my_tst_str);
-//strcpy(my_tst_str, group_report_output_PSVs  +  8 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
-//tr("group_report_output_PSVs  idx=8");ksn(my_tst_str);
-//strcpy(my_tst_str, group_report_output_PSVs  +  9 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
-//tr("group_report_output_PSVs  idx=9");ksn(my_tst_str);
+//strcpy(my_tst_str, lcl_group_report_output_PSVs  +  0 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("lcl_group_report_output_PSVs  idx=0");ksn(my_tst_str);
+//strcpy(my_tst_str, lcl_group_report_output_PSVs  +  1 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("lcl_group_report_output_PSVs  idx=1");ksn(my_tst_str);
+//strcpy(my_tst_str, lcl_group_report_output_PSVs  +  2 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("lcl_group_report_output_PSVs  idx=2");ksn(my_tst_str);
+//strcpy(my_tst_str, lcl_group_report_output_PSVs  +  3 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("lcl_group_report_output_PSVs  idx=3");ksn(my_tst_str);
+//strcpy(my_tst_str, lcl_group_report_output_PSVs  +  4 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("lcl_group_report_output_PSVs  idx=4");ksn(my_tst_str);
+//strcpy(my_tst_str, lcl_group_report_output_PSVs  +  5 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("lcl_group_report_output_PSVs  idx=5");ksn(my_tst_str);
+//strcpy(my_tst_str, lcl_group_report_output_PSVs  +  6 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("lcl_group_report_output_PSVs  idx=6");ksn(my_tst_str);
+//strcpy(my_tst_str, lcl_group_report_output_PSVs  +  7 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("lcl_group_report_output_PSVs  idx=7");ksn(my_tst_str);
+//strcpy(my_tst_str, lcl_group_report_output_PSVs  +  8 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("lcl_group_report_output_PSVs  idx=8");ksn(my_tst_str);
+//strcpy(my_tst_str, lcl_group_report_output_PSVs  +  9 * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+//tr("lcl_group_report_output_PSVs  idx=9");ksn(my_tst_str);
 //trn("returning from call of   mamb_report_trait_rank() ...");
 //tn();
 //
 
-       do { // now that we have group_report_output_PSVs, grab all BG color for all tableview cells
+       do { // now that we have lcl_group_report_output_PSVs, grab all BG color for all tableview cells
             // and put into   NSArray *gbl_array_cellBGcolorName;
             //
 //tn();trn("doing color save !!!!!!!");
@@ -6770,38 +6735,38 @@ kin(group_report_output_idx);
             gbl_array_cellPersonAname = [[NSMutableArray alloc] init];  // init  array
             gbl_array_cellPersonBname = [[NSMutableArray alloc] init];  // init  array 
 
-//tn();kin(group_report_output_idx);
+//tn();kin(lcl_group_report_output_idx);
 
             NSString *myHedColor = @"cPlaceHolder";  // never used,  just a placeholder
 
-//            for (int i=0; i <= group_report_output_idx + 3; i++) {  // group_report_output_idx = last index written
-            for (int i=0; i <= group_report_output_idx + 1 + 3 + 2; i++) {  // group_report_output_idx = last index written
+//            for (int i=0; i <= lcl_group_report_output_idx + 3; i++) {  // lcl_group_report_output_idx = last index written
+            for (int i=0; i <= lcl_group_report_output_idx + 1 + 3 + 2; i++) {  // lcl_group_report_output_idx = last index written
 
-                if (i == group_report_output_idx + 1) {
+                if (i == lcl_group_report_output_idx + 1) {
                    [gbl_array_cellBGcolorName addObject: myHedColor];  //  footer line 1  // add the BG colors of the 3 footer cells
                    continue;
                 }
-                if (i == group_report_output_idx + 2) {
+                if (i == lcl_group_report_output_idx + 2) {
                    [gbl_array_cellBGcolorName addObject: myHedColor];  //  footer line 2
                    continue;
                 }
-                if (i == group_report_output_idx + 3) {
+                if (i == lcl_group_report_output_idx + 3) {
                    [gbl_array_cellBGcolorName addObject: myHedColor];  //  footer line 3
                    continue;
                 }
-                if (i == group_report_output_idx + 4) {
+                if (i == lcl_group_report_output_idx + 4) {
                    [gbl_array_cellBGcolorName addObject: myHedColor];  //  footer line 3
                    continue;
                 }
-                if (i == group_report_output_idx + 5) {
+                if (i == lcl_group_report_output_idx + 5) {
                    [gbl_array_cellBGcolorName addObject: myHedColor];  //  footer line 3
                    continue;
                 }
-                if (i == group_report_output_idx + 6) {
+                if (i == lcl_group_report_output_idx + 6) {
                    [gbl_array_cellBGcolorName addObject: myHedColor];  //  footer line 3
                    continue;
                 }
-                strcpy(my_buff, group_report_output_PSVs  +  i * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW
+                strcpy(my_buff, lcl_group_report_output_PSVs  +  i * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW
 tn();ki(i);ks(my_buff);
 
                 myCellContentsPSV     = [NSMutableString stringWithUTF8String: my_buff];  // convert c string to NSString
@@ -6842,7 +6807,7 @@ tn();ki(i);ks(my_buff);
                 [gbl_array_cellPersonAname addObject: curr_cellPersonAname];
                 [gbl_array_cellPersonBname addObject: curr_cellPersonBname];
             }
-       } while(false);   // now that we have group_report_output_PSVs, grab all BG color for all tableview cells
+       } while(false);   // now that we have lcl_group_report_output_PSVs, grab all BG color for all tableview cells
 
 
 
@@ -7401,7 +7366,7 @@ tn();trn("// set new gbl_currentMenuPlusReportCode    for info in next report");
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
 
 
-    if (group_report_output_idx <= gbl_numRowsToTurnOnIndexBar) return nil;
+    if (lcl_group_report_output_idx <= gbl_numRowsToTurnOnIndexBar) return nil;
 
     // no section index for these
     if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homppe"]   // home + personality
@@ -7452,7 +7417,6 @@ tn();trn("// set new gbl_currentMenuPlusReportCode    for info in next report");
   NSLog(@"title=[%@]",title);
   NSLog(@"index=[%ld]",(long)index);
 
-//nbn(1);
 //    NSInteger newRow = [self indexForFirstChar:title inArray:self.yourStringArray];
     NSInteger newRow;
     newRow = 0;
@@ -7480,11 +7444,11 @@ tn();trn("// set new gbl_currentMenuPlusReportCode    for info in next report");
 //    //
 //    //    if ([title isEqualToString:@"__"]) newRow = 0;
 //    if ([title isEqualToString:@"--"]) newRow = 0;
-//    if ([title isEqualToString:@"20"]) newRow = (int) ( (20.0 / 100.0) * (double)group_report_output_idx );
-//    if ([title isEqualToString:@"40"]) newRow = (int) ( (40.0 / 100.0) * (double)group_report_output_idx );
-//    if ([title isEqualToString:@"60"]) newRow = (int) ( (60.0 / 100.0) * (double)group_report_output_idx );
-//    if ([title isEqualToString:@"80"]) newRow = (int) ( (80.0 / 100.0) * (double)group_report_output_idx );
-//    if ([title isEqualToString:@"=="]) newRow =              group_report_output_idx - 1;
+//    if ([title isEqualToString:@"20"]) newRow = (int) ( (20.0 / 100.0) * (double)lcl_group_report_output_idx );
+//    if ([title isEqualToString:@"40"]) newRow = (int) ( (40.0 / 100.0) * (double)lcl_group_report_output_idx );
+//    if ([title isEqualToString:@"60"]) newRow = (int) ( (60.0 / 100.0) * (double)lcl_group_report_output_idx );
+//    if ([title isEqualToString:@"80"]) newRow = (int) ( (80.0 / 100.0) * (double)lcl_group_report_output_idx );
+//    if ([title isEqualToString:@"=="]) newRow =              lcl_group_report_output_idx - 1;
 //  NSLog(@"newRow =%ld",(long)newRow );
 //
 
@@ -7492,25 +7456,25 @@ tn();trn("// set new gbl_currentMenuPlusReportCode    for info in next report");
     //
     //    if ([title isEqualToString:@"__"]) newRow = 0;
     if ([title isEqualToString:@"TOP"]) newRow = 0;
-//    if ([title isEqualToString:@"___"]) newRow = (int) ( (25.0 / 100.0) * (double)group_report_output_idx );
-//    if ([title isEqualToString:@"__"])  newRow = (int) ( (50.0 / 100.0) * (double)group_report_output_idx );
-//    if ([title isEqualToString:@"_"])   newRow = (int) ( (75.0 / 100.0) * (double)group_report_output_idx );
-    if ([title isEqualToString:@"END"]) newRow = group_report_output_idx - 1;
+//    if ([title isEqualToString:@"___"]) newRow = (int) ( (25.0 / 100.0) * (double)lcl_group_report_output_idx );
+//    if ([title isEqualToString:@"__"])  newRow = (int) ( (50.0 / 100.0) * (double)lcl_group_report_output_idx );
+//    if ([title isEqualToString:@"_"])   newRow = (int) ( (75.0 / 100.0) * (double)lcl_group_report_output_idx );
+    if ([title isEqualToString:@"END"]) newRow = lcl_group_report_output_idx - 1;
     if (   [title isEqualToString:@" "]
         || [title isEqualToString:@"__"]
-    )   newRow = ((double) (index + 1) / (double) gbl_numSectionIndexTitles ) * (double)group_report_output_idx ;
+    )   newRow = ((double) (index + 1) / (double) gbl_numSectionIndexTitles ) * (double)lcl_group_report_output_idx ;
 
 //    if ([title isEqualToString:@" "])
 //    {
 //        double dbl_index;
 //        double dbl_gbl_numSectionIndexTitles;
-//        double dbl_group_report_output_idx;
+//        double dbl_lcl_group_report_output_idx;
 //        double dbl_newRow;
 //        if ([title isEqualToString:@" "]) {
-//            dbl_newRow = ( (dbl_index + 1.0) /  gbl_numSectionIndexTitles ) * dbl_group_report_output_idx ;
+//            dbl_newRow = ( (dbl_index + 1.0) /  gbl_numSectionIndexTitles ) * dbl_lcl_group_report_output_idx ;
 //kdn( dbl_index);
 //kdn( dbl_gbl_numSectionIndexTitles);
-//kdn( dbl_group_report_output_idx);
+//kdn( dbl_lcl_group_report_output_idx);
 //kdn( dbl_newRow);
 //       
 //            newRow = dbl_newRow;
@@ -7524,13 +7488,13 @@ tn();trn("// set new gbl_currentMenuPlusReportCode    for info in next report");
 //  NSLog(@"(double) gbl_numSectionIndexTitles =[%f]",(double) gbl_numSectionIndexTitles );
 //  NSLog(@"((double) (index + 1) / (double) gbl_numSectionIndexTitles)=[%f]",((double) (index + 1) / (double) gbl_numSectionIndexTitles));
 //
-//  NSLog(@"((double) (index + 1) / (double) gbl_numSectionIndexTitles ) * (double)group_report_output_idx =[%@]",(double) (((double) (index + 1) / (double) gbl_numSectionIndexTitles ) * (double)group_report_output_idx ) );
+//  NSLog(@"((double) (index + 1) / (double) gbl_numSectionIndexTitles ) * (double)lcl_group_report_output_idx =[%@]",(double) (((double) (index + 1) / (double) gbl_numSectionIndexTitles ) * (double)lcl_group_report_output_idx ) );
 //
-//  NSLog(@"(double)group_report_output_idx    =[%f]",(double)group_report_output_idx );
+//  NSLog(@"(double)lcl_group_report_output_idx    =[%f]",(double)lcl_group_report_output_idx );
 
   NSLog(@"index + 1                 =[%ld]",(long)index + 1                 );
   NSLog(@"gbl_numSectionIndexTitles =[%ld]",(long)gbl_numSectionIndexTitles );
-  NSLog(@"group_report_output_idx   =[%ld]",(long)group_report_output_idx );
+  NSLog(@"lcl_group_report_output_idx   =[%ld]",(long)lcl_group_report_output_idx );
   NSLog(@"newRow                    =[%ld]",(long)newRow );
 
     NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow: newRow inSection: 0];
@@ -8409,7 +8373,6 @@ tn();trn("// set new gbl_currentMenuPlusReportCode    for info in next report");
 //                NSRange searchReturnRange = [myStringNoAttr  rangeOfString: toFind  options: 0  range: searchRange];
 //                if (searchReturnRange.location != NSNotFound) {
 //                    // If found, searchReturnRange contains the range of the current iteration
-//nbn(111);
 ////                    [ myAttrString  addAttribute: NSForegroundColorAttributeName
 ////                                           value: gbl_color_cBgr 
 ////                                           range: NSMakeRange(searchReturnRange.location, 1)

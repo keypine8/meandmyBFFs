@@ -20,6 +20,7 @@
 @end
 
 
+
 @implementation MAMB09_selectReportsTableViewController
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -99,6 +100,7 @@ nbn(44);
 //    NSLog(@"gbl_fromHomeCurrentSelectionPSV =%@",gbl_fromHomeCurrentSelectionPSV);
 //    NSLog(@"gbl_fromHomeCurrentSelectionType=%@",gbl_fromHomeCurrentSelectionType);
 //    NSLog(@"gbl_fromHomeCurrentEntity=%@",gbl_fromHomeCurrentEntity);
+
 
 } /* viewDidLoad */
 
@@ -297,42 +299,16 @@ NSLog(@"in viewDidAppear()");
 
         // UILabel for the disclosure indicator, ">",  for tappable cells
         //
-            NSString *myDisclosureIndicatorBGcolorName; 
-            NSString *myDisclosureIndicatorText; 
-            UIColor  *colorOfGroupReportArrow; 
-            UIFont   *myDisclosureIndicatorFont; 
-
-            myDisclosureIndicatorText = @">"; 
-
-    //                myDisclosureIndicatorBGcolorName = gbl_array_cellBGcolorName[indexPath.row];   // array set in  viewDidLoad
-    //        NSLog(@"myDisclosureIndicatorBGcolorName =%@",myDisclosureIndicatorBGcolorName );
-
-//            if ( [myDisclosureIndicatorBGcolorName isEqualToString: @"cRe2"] ) {
-//                colorOfGroupReportArrow   = [UIColor blackColor];                 // deepest red is pretty  dark
-//                myDisclosureIndicatorFont = [UIFont     systemFontOfSize: 16.0f]; // make not bold
-//            } else {
-//                colorOfGroupReportArrow   = [UIColor  grayColor];
-//                myDisclosureIndicatorFont = [UIFont boldSystemFontOfSize: 16.0f];
-//            }
-//
-//            colorOfGroupReportArrow   = [UIColor blackColor];                 // blue background
-//            myDisclosureIndicatorFont = [UIFont     systemFontOfSize: 16.0f]; // make not bold
-            colorOfGroupReportArrow   = [UIColor lightGrayColor];                 // blue background
-            myDisclosureIndicatorFont = [UIFont fontWithName: @"MarkerFelt-Thin" size:  24.0]; // good
-
-
             NSAttributedString *myNewCellAttributedText3 = [
-                [NSAttributedString alloc] initWithString: myDisclosureIndicatorText  // i.e.   @">"
-                                               attributes: @{            NSFontAttributeName : myDisclosureIndicatorFont,
-                                                               NSForegroundColorAttributeName: colorOfGroupReportArrow                }
+                [NSAttributedString alloc] initWithString: @">"  
+                                               attributes: @{
+                        NSFontAttributeName :  [UIFont fontWithName: @"MarkerFelt-Thin" size:  24.0] ,  
+                        NSForegroundColorAttributeName: gbl_colorDIfor_home   
+                    }
             ];
-    //                                                                         NSFontAttributeName : [UIFont boldSystemFontOfSize: 16.0f],
-
             UILabel *myDisclosureIndicatorLabel        = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 12.0f, 32.0f)];
             myDisclosureIndicatorLabel.attributedText  = myNewCellAttributedText3;
             myDisclosureIndicatorLabel.backgroundColor = gbl_colorReportsBG; 
-
-
         //
         // end of  UILabel for the disclosure indicator, ">",  for tappable cells
 

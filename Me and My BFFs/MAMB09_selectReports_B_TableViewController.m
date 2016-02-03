@@ -158,6 +158,7 @@ tn();
         gbl_currentMenuPrefixFromMatchRpt = @"gbm";   //    gbl_mambReports = // all reports in all report selection menus, "homp*" "homg*" "gbm*" or "pbm*" 
     }
 
+
 } // end of viewdidload
 
 
@@ -301,33 +302,50 @@ tn();
 
 
 
+//
+//        // UILabel for the disclosure indicator, ">",  for tappable cells
+//        //
+//            NSString *myDisclosureIndicatorBGcolorName; 
+//            NSString *myDisclosureIndicatorText; 
+//            UIColor  *colorOfGroupReportArrow; 
+//            UIFont   *myDisclosureIndicatorFont; 
+//
+//            myDisclosureIndicatorText = @">"; 
+////            colorOfGroupReportArrow   = [UIColor blackColor];                 // blue background
+////            myDisclosureIndicatorFont = [UIFont     systemFontOfSize: 16.0f]; // make not bold
+//            colorOfGroupReportArrow   = [UIColor lightGrayColor];                 // blue background
+//            myDisclosureIndicatorFont = [UIFont fontWithName: @"MarkerFelt-Thin" size:  24.0]; // good
+//
+//            NSAttributedString *myNewCellAttributedText3 = [
+//                [NSAttributedString alloc] initWithString: myDisclosureIndicatorText  // i.e.   @">"
+//                                               attributes: @{            NSFontAttributeName : myDisclosureIndicatorFont,
+//                                                               NSForegroundColorAttributeName: colorOfGroupReportArrow                }
+//            ];
+//
+//            lcl_disclosureIndicatorLabel.attributedText  = myNewCellAttributedText3;
+//            lcl_disclosureIndicatorLabel.backgroundColor = gbl_colorReportsBG; 
+//        //
+//        // end of  UILabel for the disclosure indicator, ">",  for tappable cells
+//
+
 
         // UILabel for the disclosure indicator, ">",  for tappable cells
         //
-            NSString *myDisclosureIndicatorBGcolorName; 
-            NSString *myDisclosureIndicatorText; 
-            UIColor  *colorOfGroupReportArrow; 
-            UIFont   *myDisclosureIndicatorFont; 
-
-            myDisclosureIndicatorText = @">"; 
-//            colorOfGroupReportArrow   = [UIColor blackColor];                 // blue background
-//            myDisclosureIndicatorFont = [UIFont     systemFontOfSize: 16.0f]; // make not bold
-            colorOfGroupReportArrow   = [UIColor lightGrayColor];                 // blue background
-            myDisclosureIndicatorFont = [UIFont fontWithName: @"MarkerFelt-Thin" size:  24.0]; // good
-
             NSAttributedString *myNewCellAttributedText3 = [
-                [NSAttributedString alloc] initWithString: myDisclosureIndicatorText  // i.e.   @">"
-                                               attributes: @{            NSFontAttributeName : myDisclosureIndicatorFont,
-                                                               NSForegroundColorAttributeName: colorOfGroupReportArrow                }
+                [NSAttributedString alloc] initWithString: @">"  
+                                               attributes: @{
+                        NSFontAttributeName :  [UIFont fontWithName: @"MarkerFelt-Thin" size:  24.0] ,  
+//                        NSForegroundColorAttributeName: [UIColor grayColor ]  
+//                        NSForegroundColorAttributeName: [UIColor darkGrayColor ]  
+                        NSForegroundColorAttributeName: gbl_colorDIfor_home   
+                    }
             ];
 
             UILabel *myDisclosureIndicatorLabel        = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 12.0f, 32.0f)];
             myDisclosureIndicatorLabel.attributedText  = myNewCellAttributedText3;
             myDisclosureIndicatorLabel.backgroundColor = gbl_colorReportsBG; 
-        //
+
         // end of  UILabel for the disclosure indicator, ">",  for tappable cells
-
-
 
 
 
@@ -564,7 +582,7 @@ tn();
             cell.indentationWidth = 12.0; // these 2 keep the name on screen when hit red round delete and delete button slides from right
             cell.indentationLevel =  3;   // these 2 keep the name on screen when hit red round delete and delete button slides from right
 
-            cell.accessoryView                       = myDisclosureIndicatorLabel;
+//            cell.accessoryView                       = myDisclosureIndicatorLabel;
             cell.accessoryType                       = UITableViewCellAccessoryDisclosureIndicator;
         });
     }

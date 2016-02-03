@@ -53,6 +53,7 @@ NSString *gbl_homeEditingState; // if gbl_homeUseMODE = "edit mode"    then can 
 //
 // THE THREE  "FIELDS"  =======================================================
 
+// UILabel *gbl_disclosureIndicatorLabel;  // set in appdel .m   DID NOT WORK moved setting from appdel .m to each lcl_
 
 
 NSInteger gbl_justLookedAtInfoScreen;
@@ -145,6 +146,13 @@ NSString *gbl_initPromptProv;
 NSString *gbl_initPromptCoun;
 NSString *gbl_initPromptDate;
 UIColor  *gbl_colorPlaceHolderPrompt; // gray
+
+UIColor  *gbl_colorDIfor_home;
+UIColor  *gbl_colorDIfor_cGr2;
+UIColor  *gbl_colorDIfor_cGre;
+UIColor  *gbl_colorDIfor_cNeu;
+UIColor  *gbl_colorDIfor_cRed;
+UIColor  *gbl_colorDIfor_cRe2;
 
     // there are 3 possible  toolbar looks  For City inputView  accessory
     //
