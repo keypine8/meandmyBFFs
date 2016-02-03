@@ -1782,7 +1782,8 @@ void p_fn_output_top_of_html_file(void)                        // browser view
 //    p_fn_prtlin( "    .cPerGreen2 {background-color: #f0f5f0;}");  // whiteish
 
     p_fn_prtlin( "    .cAplDarkBlue {background-color: #0080ff;}");  // dark blue chevron color
-    p_fn_prtlin( "    .cPerGreen1 {background-color:   #f2f7ff;}");  // light blue
+//    p_fn_prtlin( "    .cPerGreen1 {background-color:   #f2f7ff;}");  // light blue
+    p_fn_prtlin( "    .cPerGreen1 {background-color:   #f0f8ff;}");  // light blue
     p_fn_prtlin( "    .cPerGreen2 {background-color:   #a0d8ff;}");  // mid blue
 
 

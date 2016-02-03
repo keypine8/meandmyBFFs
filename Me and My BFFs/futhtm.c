@@ -734,7 +734,8 @@ void f_fnOutPutTopOfHtmlFile(void) {  // webview version
 /*   f_fn_prtlin( "    .cRe2        { background-color:#ff3366; }"); */
 
 
-  f_fn_prtlin( "    .cGr2        { background-color:#66ff33; font-weight: bold; ");
+//  f_fn_prtlin( "    .cGr2        { background-color:#66ff33; font-weight: bold; ");
+  f_fn_prtlin( "    .cGr2        { background-color:#80ff40; font-weight: bold; ");
   f_fn_prtlin("   white-space: pre  ; font-weight: bold; ");
   f_fn_prtlin("    }");
 /*   f_fn_prtlin( "    .cGre        { background-color:#84ff98; }"); */
@@ -986,7 +987,8 @@ void f_fnOutPutTopOfHtmlFile(void) {  // webview version
   f_fn_prtlin( "      white-space: nowrap;");
   f_fn_prtlin( "      padding: 0;");
   f_fn_prtlin( "    }");
-  f_fn_prtlin( "    .cGr2        { background-color:#66ff33; font-weight: bold; ");
+//  f_fn_prtlin( "    .cGr2        { background-color:#66ff33; font-weight: bold; ");
+  f_fn_prtlin( "    .cGr2        { background-color:#80ff40; font-weight: bold; ");
   f_fn_prtlin( "   white-space: pre  ; font-weight: bold; ");
   f_fn_prtlin( "    }");
 //  f_fn_prtlin( "    .cGre        { background-color:#a8ff98; font-weight: bold; ");
@@ -2884,7 +2886,8 @@ int make_calendar_day_html_file(   /* called from futdoc.c  */
 /*   f_fn_prtlin( "    .cRe2        { background-color:#ff3366; }"); */
 
 
-  f_fn_prtlin( "    .cGr2        { background-color:#66ff33; }");
+//  f_fn_prtlin( "    .cGr2        { background-color:#66ff33; }");
+  f_fn_prtlin( "    .cGr2        { background-color:#80ff40; }");
 /*   f_fn_prtlin( "    .cGre        { background-color:#84ff98; }"); */
 //  f_fn_prtlin( "    .cGre        { background-color:#a8ff98; }");
   f_fn_prtlin( "    .cGre        { background-color:#c0ffc0; }");
@@ -3563,7 +3566,8 @@ void f_fnBIGOutPutTopOfHtmlFile(void) {
 /*   f_fnBIG_prtlin( "    .cRe2        { background-color:#ff3366; }"); */
 
 
-  f_fnBIG_prtlin( "    .cGr2        { background-color:#66ff33; font-weight: bold; }");
+//  f_fnBIG_prtlin( "    .cGr2        { background-color:#66ff33; font-weight: bold; }");
+  f_fnBIG_prtlin( "    .cGr2        { background-color:#80ff40; font-weight: bold; }");
 /*   f_fnBIG_prtlin( "    .cGre        { background-color:#84ff98; }"); */
 //  f_fnBIG_prtlin( "    .cGre        { background-color:#a8ff98; font-weight: bold; }");
   f_fnBIG_prtlin( "    .cGre        { background-color:#c0ffc0; font-weight: bold; }");
@@ -5111,7 +5115,8 @@ int insert_label_benchmark(char *line_curr, char * line_next) {
   if (line_curr_is_good == 1 && line_next_is_good == 1 && linethird_is_good) {
     retval_goodtogo = 1;
 
-    if (strcmp(gbl_benchmark_label, "GREAT")  == 0) strcpy(my_bg_color, "#66ff33");
+//    if (strcmp(gbl_benchmark_label, "GREAT")  == 0) strcpy(my_bg_color, "#66ff33");
+    if (strcmp(gbl_benchmark_label, "GREAT")  == 0) strcpy(my_bg_color, "#80ff40");
 //    if (strcmp(gbl_benchmark_label, "GOOD")   == 0) strcpy(my_bg_color, "#a8ff98");
     if (strcmp(gbl_benchmark_label, "GOOD")   == 0) strcpy(my_bg_color, "#c0ffc0");
 //    if (strcmp(gbl_benchmark_label, "STRESS") == 0) strcpy(my_bg_color, "#ff98a8");
@@ -5164,7 +5169,8 @@ void insert_minus_benchmark(char *line_to_change) {
   //my_minuses[len_label - 1] = ' ';    // put sp instead of '-' on first and last char
 
 
-  if (strcmp(gbl_benchmark_label, "GREAT")  == 0) strcpy(my_text_color, "#66ff33");
+//  if (strcmp(gbl_benchmark_label, "GREAT")  == 0) strcpy(my_text_color, "#66ff33");
+  if (strcmp(gbl_benchmark_label, "GREAT")  == 0) strcpy(my_text_color, "#80ff40");
 //    if (strcmp(gbl_benchmark_label, "GOOD")   == 0) strcpy(my_text_color, "#a8ff98");
   if (strcmp(gbl_benchmark_label, "GOOD")   == 0) strcpy(my_text_color, "#c0ffc0");
 //    if (strcmp(gbl_benchmark_label, "STRESS") == 0) strcpy(my_text_color, "#ff98a8");

@@ -3157,7 +3157,8 @@ void put_top_of_html_group_rpt(char *group_name) {
 
   } else {
 
-    g_fn_prtlin( "    .cGr2        { background-color:#66ff33; }");
+//    g_fn_prtlin( "    .cGr2        { background-color:#66ff33; }");
+    g_fn_prtlin( "    .cGr2        { background-color:#80ff40; }");
   /*   g_fn_prtlin( "    .cGre        { background-color:#84ff98; }"); */
 //    g_fn_prtlin( "    .cGre        { background-color:#a8ff98; }");
     g_fn_prtlin( "    .cGre        { background-color:#c0ffc0; }");
@@ -3500,7 +3501,8 @@ tn();trn("in put_top_of_just2_group_rpt()");
 /*   g_fn_prtlin( "    .cRe2        { background-color:#ff3366; }"); */
 
 
-  g_fn_prtlin( "    .cGr2        { background-color:#66ff33; }");
+//  g_fn_prtlin( "    .cGr2        { background-color:#66ff33; }");
+  g_fn_prtlin( "    .cGr2        { background-color:#80ff40; }");
 /*   g_fn_prtlin( "    .cGre        { background-color:#84ff98; }"); */
 //  g_fn_prtlin( "    .cGre        { background-color:#a8ff98; }");
   g_fn_prtlin( "    .cGre        { background-color:#c0ffc0; }");

@@ -263,13 +263,14 @@ tn();  NSLog(@"in cellForRowAtIndexPath in tblrpts 1 ");ki((int)indexPath.row);
 //    UIFont *myFont = [UIFont fontWithName: @"Menlo" size: 20.0];
 //    UIFont *myFont = [UIFont fontWithName: @"Menlo" size: 16.0];
 
-    UIFont *myFont_16  = [UIFont fontWithName: @"Menlo" size: 16.0];
+    UIFont *myFont_16  = [UIFont fontWithName: @"Menlo"      size: 16.0];
     UIFont *myFont_16b = [UIFont fontWithName: @"Menlo-bold" size: 16.0];
 //    UIFont *myFont_14  = [UIFont fontWithName: @"Menlo" size: 14.0];
     UIFont *myFont_11b = [UIFont fontWithName: @"Menlo-bold" size: 11.0];
-    UIFont *myFont_12  = [UIFont fontWithName: @"Menlo" size: 12.0];
+    UIFont *myFont_12  = [UIFont fontWithName: @"Menlo"      size: 12.0];
     UIFont *myFont_12b = [UIFont fontWithName: @"Menlo-bold" size: 12.0];
     UIFont *myFont_13b = [UIFont fontWithName: @"Menlo-bold" size: 13.0];
+    UIFont *myFont_14  = [UIFont fontWithName: @"Menlo"      size: 14.0];
     UIFont *myFont_14b = [UIFont fontWithName: @"Menlo-bold" size: 14.0];
 //    UIFont *myFont_11b = [UIFont fontWithName: @"Menlo-bold" size: 11.0];
 
@@ -2712,7 +2713,8 @@ tn();nbn(333);
 
             dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
 //                cell.textLabel.font          = myFont_12b;
-                cell.textLabel.font          = myFont_14b;
+//                cell.textLabel.font          = myFont_14b;
+                cell.textLabel.font          = myFont_14;
 //                cell.textLabel.numberOfLines = 5;
 //                cell.textLabel.numberOfLines = 7; 
                 cell.textLabel.numberOfLines = 0; 
