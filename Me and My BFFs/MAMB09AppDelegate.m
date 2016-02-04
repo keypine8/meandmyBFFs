@@ -492,6 +492,7 @@
 //    [UIBarButtonItem.appearance setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics: UIBarMetricsCompact];     // make all "Back" buttons have just the arrow
 
 
+
     // did not work
     ////    UIImage *myImageADD2 = [[UIImage imageNamed: @"iconPlusAddGreenBig_66.png"]
     //    UIImage *myImageADD2 = [[UIImage imageNamed: @"iconPlusAddGreenBig_66"]
@@ -945,6 +946,7 @@
 //    gbl_color_textRe2  = [UIColor colorWithRed:034.0/255.0 green:034.0/255.0 blue:102.0/255.0 alpha:1.0]; // 222266  FOR TEST
 
     // color of top of iPhone screen  246,248,249
+    gbl_color_cMacHighlight  = [UIColor colorWithRed:038.0/255.0 green:140.0/255.0 blue:251.0/255.0 alpha:1.0]; // 268cfb or 038,140,251
     gbl_color_cAplTop  = [UIColor colorWithRed:248.0/255.0 green:248.0/255.0 blue:248.0/255.0 alpha:1.0]; // f8f8f8 or 246,248,249
     gbl_color_cAplBlue = [UIColor colorWithRed:000.0/255.0 green:128.0/255.0 blue:255.0/255.0 alpha:1.0]; // 0080ff  (blue text, chevron)
 
@@ -989,14 +991,17 @@
 //    gbl_color_cPerGreen1 = [UIColor colorWithRed:248.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0]; // (light blue)
 //    gbl_color_cPerGreen1 = [UIColor colorWithRed:252.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0]; // (light blue)
     gbl_color_cPerGreen1 = [UIColor colorWithRed:240.0/255.0 green:248.0/255.0 blue:255.0/255.0 alpha:1.0]; // f0f8ff (light blue) gold #2
+//    gbl_color_cPerGreen1 = [UIColor colorWithRed:224.0/255.0 green:236.0/255.0 blue:255.0/255.0 alpha:1.0]; //
+//    gbl_color_cPerGreen1 = [UIColor colorWithRed:232.0/255.0 green:240.0/255.0 blue:255.0/255.0 alpha:1.0]; // 
 
 
 
 //e.g.      gbl_colorHomeBG      = [UIColor colorWithRed:230.0/255.0 green:242.0/255.0 blue:254.0/255.0 alpha:1.0]; // gold  10160114
 
 
-//    gbl_color_cPerGreen2 = [UIColor colorWithRed:144.0/255.0 green:200.0/255.0 blue:255.0/255.0 alpha:1.0]; //        (mid blue) 
-    gbl_color_cPerGreen2 = [UIColor colorWithRed:160.0/255.0 green:216.0/255.0 blue:255.0/255.0 alpha:1.0]; // a0d8ff (mid blue) 
+//    gbl_color_cPerGreen2 = [UIColor colorWithRed:144.0/255.0 green:200.0/255.0 blue:255.0/255.0 alpha:1.0]; // 90c8ff (mid blue) gold #1
+//    gbl_color_cPerGreen2 = [UIColor colorWithRed:160.0/255.0 green:216.0/255.0 blue:255.0/255.0 alpha:1.0]; //
+    gbl_color_cPerGreen2 = [UIColor colorWithRed:192.0/255.0 green:224.0/255.0 blue:255.0/255.0 alpha:1.0]; //  c0e0ff  gold #2
 
 
 //    gbl_color_cPerGreen5 = [UIColor colorWithRed:201.0/255.0 green:255.0/255.0 blue:145.0/255.0 alpha:1.0]; // c9ff91 // pretty light green for personality neutral color bg

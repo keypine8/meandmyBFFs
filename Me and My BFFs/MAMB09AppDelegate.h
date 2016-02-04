@@ -688,7 +688,7 @@ UIColor *gbl_color_cRe2;
 
 //UIColor *gbl_color_textRe2; // [UIColor colorWithRed:034.0/255.0 green:034.0/255.0 blue:102.0/255.0 alpha:1.0]; // 222266  FOR TEST
 //NSInteger gbl_cre2Flag;
-
+UIColor *gbl_color_cMacHighlight;
 UIColor *gbl_color_cAplTop;  // color of top of iPhone screen  246,248,249
 UIColor *gbl_color_cAplBlue;  // tint of chevron and Back etc
 

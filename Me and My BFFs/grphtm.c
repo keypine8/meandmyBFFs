@@ -3152,8 +3152,10 @@ void put_top_of_html_group_rpt(char *group_name) {
 //    g_fn_prtlin( "    .cPerGreen1 {background-color: #ceffa0;}");  
 //    g_fn_prtlin( "    .cPerGreen2 {background-color: #dfffbb;}"); 
 
-    g_fn_prtlin( "    .cPerGreen1 {background-color: #d3ffa5;}");  // same
-    g_fn_prtlin( "    .cPerGreen2 {background-color: #d3ffa5;}"); // same
+//    g_fn_prtlin( "    .cPerGreen1 {background-color: #d3ffa5;}");  // same
+    g_fn_prtlin( "    .cPerGreen1 {background-color: #f0f8ff;}");  // same
+//    g_fn_prtlin( "    .cPerGreen2 {background-color: #d3ffa5;}"); // same
+    g_fn_prtlin( "    .cPerGreen2 {background-color: #c0e0ff;}"); // same
 
   } else {
 

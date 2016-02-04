@@ -270,7 +270,7 @@ NSLog(@"in numberOfRowsInSection in tblrpts 1");
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath: (NSIndexPath *)indexPath
 {
-tn();  NSLog(@"in cellForRowAtIndexPath in tblrpts 1 ");ki((int)indexPath.row);
+//tn();  NSLog(@"in cellForRowAtIndexPath in tblrpts 1 ");ki((int)indexPath.row);
     int myidx;
     char my_tmp_str[128];
     NSString *myCellContentsPSV;
@@ -345,7 +345,7 @@ tn();  NSLog(@"in cellForRowAtIndexPath in tblrpts 1 ");ki((int)indexPath.row);
 
         // fixes   bg color of white on left and right
         //    [[UIScrollView appearance] setBackgroundColor: gbl_color_cBgr ];  does not work
-        UIView *aBackgroundView = [[UIView alloc] initWithFrame:CGRectZero] ;
+        UIView *aBackgroundView = [[UIView alloc] initWithFrame: CGRectZero] ;
         aBackgroundView.backgroundColor = gbl_color_cBgr ;
         cell.backgroundView = aBackgroundView; // fixes   bg color of white on left and right
 
@@ -2561,21 +2561,6 @@ bn(802);
 //
 
 
-// silly
-//    if (cell.selected) { // Maintain selected state
-//        [self.tableView selectRowAtIndexPath: indexPath   // puts highlight on remembered row
-//                                    animated: YES
-//                              scrollPosition: UITableViewScrollPositionNone];
-//    }
-//    else {              // Maintain deselected state
-//        [self.tableView deselectRowAtIndexPath: indexPath
-//                                      animated: NO];
-//    }
-//
-
-
-
-
 // ALL of THIS   is for  GRPONE and GRPALL (approx 650 lines)
 //
     if (   [gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"]  // grpone  My Best Match in Group ... grpone
@@ -2829,7 +2814,6 @@ tn();nbn(333);
             //myNewCellText                = @"    This report is for entertainment purposes only.  ";
             NSAttributedString *myNewCellAttributedText2 = [
                 [NSAttributedString alloc] initWithString:  @"       This report is for entertainment purposes only.  "
-//                                               attributes: @{            NSFontAttributeName : [UIFont boldSystemFontOfSize:11.0f],
                                                attributes: @{            NSFontAttributeName : myFont_11b,
                                                                NSForegroundColorAttributeName: [UIColor redColor]               }
             ];
@@ -4258,7 +4242,7 @@ trn("// end of  tableView cellForRowAtIndexPath: (NSIndexPath *)indexPath");
 - (void)tableView:(UITableView *)tableView willDisplayCell: (UITableViewCell *)cell
                                          forRowAtIndexPath: (NSIndexPath *)indexPath 
 {
-  NSLog(@"in willDisplayCell");
+//  NSLog(@"in willDisplayCell");
     //cell.backgroundColor = [UIColor colorWithRed:(116/255.0) green:(167/255.0) blue:(179/255.0) alpha:1.0];
 
     if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homppe"]  
@@ -4283,13 +4267,13 @@ trn("// end of  tableView cellForRowAtIndexPath: (NSIndexPath *)indexPath");
 //    if (indexPath.row  <=  lcl_group_report_output_idx )  // is max idx number (0-based)
     if (indexPath.row  <=  gbl_array_cellBGcolorName.count -1 )  // is max idx number (0-based)
     {
-  NSLog(@"indexPath.row =[%ld]",(long)indexPath.row );
+//  NSLog(@"indexPath.row =[%ld]",(long)indexPath.row );
         thisCellBGcolorName = gbl_array_cellBGcolorName[indexPath.row];   // array set in  viewDidLoad
-  NSLog(@"thisCellBGcolorName =%@",thisCellBGcolorName );
+//  NSLog(@"thisCellBGcolorName =%@",thisCellBGcolorName );
     } else {
 
         cell.backgroundColor = gbl_color_cBgr;
-  NSLog(@"   RETURN  because no bg color");
+//  NSLog(@"   RETURN  because no bg color");
 
         return;
     }
@@ -4451,7 +4435,6 @@ trn("// end of  tableView cellForRowAtIndexPath: (NSIndexPath *)indexPath");
 ////
 //
 //    }
-//}
 //
 
 
