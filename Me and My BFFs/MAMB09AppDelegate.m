@@ -66,6 +66,7 @@
             compatibleWithTraitCollection: nil
     ];
 
+//  gbl_yellowEdit   = [UIImage  imageNamed: @"bg_yellowEdit6b_blu1.png" // [self.editButtonItem setBackgroundImage: gbl_BlueBG  try blue border
     gbl_yellowEdit   = [UIImage  imageNamed: @"bg_yellowEdit6.png" // [self.editButtonItem setBackgroundImage: gbl_BlueBG
                                    inBundle: nil
               compatibleWithTraitCollection: nil
@@ -477,8 +478,7 @@
 
     // make all "Back" buttons have just the arrow
     //
-
-
+    [UIBarButtonItem.appearance setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics: UIBarMetricsDefault];     // make all "Back" buttons have just the arrow
 
 
 //   [UIBarButtonItem.appearance setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -45) forBarMetrics:UIBarMetricsDefault];     // make all "Back" buttons have just the arrow
@@ -486,10 +486,8 @@
     //    [UIBarButtonItem.appearance setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics: UIBarMetricsLandscapePhone];     // make all "Back" buttons have just the arrow
 //    [UIBarButtonItem.appearance setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics: UIBarMetricsDefault];     // make all "Back" buttons have just the arrow
 
-
-    [UIBarButtonItem.appearance setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics: UIBarMetricsDefault];     // make all "Back" buttons have just the arrow
-
 //    [UIBarButtonItem.appearance setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics: UIBarMetricsCompact];     // make all "Back" buttons have just the arrow
+
 
 
 
@@ -868,6 +866,8 @@
 
 
 
+
+    gbl_colorHomeBG      = [UIColor colorWithRed:230.0/255.0 green:230.0/255.0 blue:254.0/255.0 alpha:1.0]; //  try darker for grp
     gbl_colorHomeBG      = [UIColor colorWithRed:230.0/255.0 green:242.0/255.0 blue:254.0/255.0 alpha:1.0]; // gold  10160114
 
 
@@ -974,6 +974,11 @@
 //    gbl_color_cPerGreen2 = [UIColor colorWithRed:240.0/255.0 green:245.0/255.0 blue:240.0/255.0 alpha:1.0]; //  f0f5f0  whiteish
 
 
+     // FYI
+     // edit button stroke  240,240,0   fill  255,255,166
+     // done button stroke              fill                 
+
+    // official apl  color of chevron, plus sign etc    is  3,122,255
     gbl_color_cAplDarkBlue = [UIColor colorWithRed:000.0/255.0 green:128.0/255.0 blue:255.0/255.0 alpha:1.0]; // 0080ff  (blue text, chevron)
 
 //    gbl_color_cPerGreen1 = [UIColor colorWithRed:000.0/255.0 green:128.0/255.0 blue:255.0/255.0 alpha:1.0]; // 0080ff  (blue text, chevron)
@@ -2118,6 +2123,18 @@ tn();  NSLog(@"at end of   mambReadLastEntityFile  myLastEntityDecoded=\n%@",myL
     // Games should use this method to pause the game.
 
     NSLog(@"in applicationWillResignActive()  in appdelegate");
+
+
+  NSLog(@"[[UIApplication sharedApplication] isIgnoringInteractionEvents] =[%d]",[[UIApplication sharedApplication] isIgnoringInteractionEvents] );
+      // testing - came here on rapid fire tapping Person/Group on home screen  (one time only)
+      // here, maybe user can tap on home screen app icon to come back ?
+
+//
+//    // Called as part of the transition from the background to the inactive state;
+//    // here you can undo many of the changes made on entering the background.
+//    UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
+//    [navigationController popToRootViewControllerAnimated: YES];
+//
 
 
     NSLog(@"finished  applicationWillResignActive()  in appdelegate");

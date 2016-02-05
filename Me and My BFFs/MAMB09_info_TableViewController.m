@@ -113,8 +113,21 @@ tn();
       ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgby"]    //  from best year
     ) {
         gbl_helpScreenDescription = @"calendar year";
+
+        // try to fix title on right side
+        //
+//        CGRect frame    = CGRectMake(0, 0, 0, 44);
+//        UILabel *Tlabel = [[UILabel alloc]initWithFrame:frame];
+//        Tlabel.text     = @"Long-term Stress Levels";
+//        [Tlabel sizeToFit];
+
         dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+             
             [[self navigationItem] setTitle: @"Long-term Stress Levels"];
+//             self.navigationItem.titleView = Tlabel;
+//self.navigationController.navigationBar.topItem.backBarButtonItem = nil;
+
+    self.navigationItem.backBarButtonItem.title=@"";
         });
     }
 
@@ -283,16 +296,23 @@ tn();
 //    UIImage *myImageTwoThings        = [UIImage  imageNamed: @"twoThings_info3.png"   inBundle: nil compatibleWithTraitCollection: nil ];
 //    UIImage *myImageWillpower        = [UIImage  imageNamed: @"willpower_info2.png"   inBundle: nil compatibleWithTraitCollection: nil ];
 //    UIImage *myImagePersonality      = [UIImage  imageNamed: @"person_info6.png"      inBundle: nil compatibleWithTraitCollection: nil ];
-    UIImage *myImagePersonality      = [UIImage  imageNamed: @"person_info8.png"      inBundle: nil compatibleWithTraitCollection: nil ];
+//    UIImage *myImagePersonality      = [UIImage  imageNamed: @"person_info8.png"      inBundle: nil compatibleWithTraitCollection: nil ];
+    UIImage *myImagePersonality      = [UIImage  imageNamed: @"person_info10.png"      inBundle: nil compatibleWithTraitCollection: nil ];
 //    UIImage *myImageCategories3      = [UIImage  imageNamed: @"categories3_info3.png" inBundle: nil compatibleWithTraitCollection: nil ];
 //    UIImage *myImageCategories3      = [UIImage  imageNamed: @"categories3_info9.png" inBundle: nil compatibleWithTraitCollection: nil ];
 //    UIImage *myImageCategories3      = [UIImage  imageNamed: @"categories5.png" inBundle: nil compatibleWithTraitCollection: nil ];
     UIImage *myImageCategories3      = [UIImage  imageNamed: @"categories3_6.png" inBundle: nil compatibleWithTraitCollection: nil ];
 //    UIImage *myImageTwoThings        = [UIImage  imageNamed: @"twoThings_info5.png"   inBundle: nil compatibleWithTraitCollection: nil ];
     UIImage *myImageTwoThings        = [UIImage  imageNamed: @"twoThings_info8.png"   inBundle: nil compatibleWithTraitCollection: nil ];
-    UIImage *myImageWillpower        = [UIImage  imageNamed: @"willpower_info3.png"   inBundle: nil compatibleWithTraitCollection: nil ];
-    UIImage *myImageDestiny          = [UIImage  imageNamed: @"overcomDestiny_info2.png"   inBundle: nil compatibleWithTraitCollection: nil ];
+//    UIImage *myImageWillpower        = [UIImage  imageNamed: @"willpower_info3.png"   inBundle: nil compatibleWithTraitCollection: nil ];
+    UIImage *myImageWillpower        = [UIImage  imageNamed: @"willpower_info5.png"   inBundle: nil compatibleWithTraitCollection: nil ];
+
+//    UIImage *myImageDestiny          = [UIImage  imageNamed: @"overcomDestiny_info2.png"   inBundle: nil compatibleWithTraitCollection: nil ];
+    UIImage *myImageDestiny          = [UIImage  imageNamed: @"overcomDestiny_info3.png"   inBundle: nil compatibleWithTraitCollection: nil ];
+
     UIImage *myImageTraits           = [UIImage  imageNamed: @"overcomTraits_info2.png"    inBundle: nil compatibleWithTraitCollection: nil ];
+
+    UIImage *myIconmamb           = [UIImage  imageNamed: @"icon_mamb09_0064.png"    inBundle: nil compatibleWithTraitCollection: nil ];
 
 
 //    UIFont *myFont       = [UIFont fontWithName: @"Menlo-bold" size: 12.0];
@@ -311,6 +331,15 @@ tn();
     NSString *myTextLabelTextAddOn;  // depends on report
 
     // =================================================================================================================================
+    // house of cards rules look like this:
+    //   if there is an image, have text = some string not nil
+    //                cell.textLabel.text          = @" ";
+    //                cell.imageView.image = myImageDestiny;
+    //   on spacer cells have this:
+    //                cell.textLabel.text          = nil;
+    //                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+    //                cell.backgroundView          = nil ;
+    //
     if (  [gbl_helpScreenDescription isEqualToString: @"calendar year"] )
     {
         if (indexPath.row == 0) {
@@ -321,6 +350,7 @@ tn();
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text          = @"";
+                cell.textLabel.attributedText = nil;
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -493,9 +523,9 @@ tn();
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text          = nil;
-                cell.textLabel.textAlignment = NSTextAlignmentLeft;
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
             });
             return cell;
         }
@@ -506,10 +536,11 @@ tn();
                 cell.textLabel.font          = myTitleFont;
                 cell.backgroundColor         = gbl_color_cHed;
                 cell.textLabel.numberOfLines = 0;
-                cell.textLabel.text          = @"Time Frame Influences";
-                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+//                cell.textLabel.text          = @"Time Frame Influences";
+                cell.textLabel.text          = @"Time Frame Hills and Valleys";
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
             });
             return cell;
         }
@@ -521,7 +552,9 @@ tn();
                 cell.textLabel.font          = myFont;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
-                cell.textLabel.text          = @"A starting date and ending date tell when the inluence for that time frame is working.  The influence will be favorable or challenging.\n\nChallenging influences look like a valley or letter \"u\" on the graph.\nFrom the start of the time frame the influence gradually falls down to it's lowest point at the middle of the time frame.  From there, it gradually rises up until it reaches the end of the time frame.\n\nFavorable influences look like a hill or letter \"n\" on the graph.\nFrom the beginning of the time frame the influence gradually rises up to it's highest point at the middle of the time frame.  From there, it gradually falls down until it reaches the end of the time frame.";
+//                cell.textLabel.text          = @"A starting date and ending date tell when the inluence for that time frame is working.  The influence will be favorable or challenging.\n\nChallenging influences look like a valley or letter \"u\" on the graph.\nFrom the start of the time frame the influence gradually falls down to it's lowest point at the middle of the time frame.  From there, it gradually rises up until it reaches the end of the time frame.\n\nFavorable influences look like a hill or letter \"n\" on the graph.\nFrom the beginning of the time frame the influence gradually rises up to it's highest point at the middle of the time frame.  From there, it gradually falls down until it reaches the end of the time frame.";
+//                cell.textLabel.text          = @"A starting date and ending date tell when the inluence for that time frame is working.  The influence will be favorable or challenging.\n\nChallenging influences look like a valley on the graph.\nFrom the start of the time frame the graph gradually falls down to it's lowest point at the middle of the time frame.  From there, the graph gradually rises up until it reaches the end of the time frame.\n\nFavorable influences look like a hill on the graph.\nFrom the beginning of the time frame the graph gradually rises up to it's highest point at the middle of the time frame.  From there, the graph gradually falls down until it reaches the end of the time frame.";
+                cell.textLabel.text          = @"A starting date and ending date tell when the influence for that time frame is working.  The influence is favorable or challenging.\n\nA time frame with a favorable influence looks like a hill on the graph.\n\nA time frame with a challenging influence looks like a valley on the graph.\n";
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -560,7 +593,7 @@ tn();
         }
         if (indexPath.row == 10) {
 
-            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== text  for whole year score
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== text  for year summary score
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
                 cell.textLabel.font          = myFont;
@@ -578,7 +611,8 @@ tn();
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
                 cell.textLabel.font          = myFontOnSide;
-                cell.backgroundColor         = gbl_color_cBgr;
+//                cell.backgroundColor         = gbl_color_cBgr;
+                cell.backgroundColor         = [UIColor blueColor];
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text          = nil;
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
@@ -594,11 +628,21 @@ tn();
                 cell.textLabel.font          = myFontOnSide;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;   // 0 means unlimited number of lines
-                cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
-                cell.textLabel.text          = nil;
-                cell.imageView.image         = nil;
+//                cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
 
-                cell.backgroundView = [[UIImageView alloc] initWithImage: myImageDestiny] ;
+
+//                cell.textLabel.text          = nil;
+//                cell.imageView.image         = nil;
+//                cell.backgroundView = [[UIImageView alloc] initWithImage: myImageDestiny] ;
+                cell.textLabel.text          = @" ";
+cell.imageView.frame = CGRectMake(0.0f, 0.0f, 120.0f, 44.0f);
+cell.imageView.contentMode = UIViewContentModeScaleAspectFit;
+//                cell.imageView.image = myImageDestiny;
+                cell.imageView.image = myIconmamb;
+
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+
             });
             return cell;
         }
@@ -607,7 +651,8 @@ tn();
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
                 cell.textLabel.font          = myFontOnSide;
-                cell.backgroundColor         = gbl_color_cBgr;
+//                cell.backgroundColor         = gbl_color_cBgr;
+                cell.backgroundColor         = [UIColor cyanColor];
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text          = nil;
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
@@ -631,7 +676,7 @@ tn();
             });
             return cell;
         }
-
+              // end of calendar year
 
 
 //"
@@ -954,7 +999,7 @@ nbn(100);
             });
             return cell;
         }
-        if (indexPath.row == 12) {                            // <=== two things image
+        if (indexPath.row == 12) {                            // <=== willpower image
             dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
                 cell.textLabel.textColor     = [UIColor blackColor]; // black textcolor HAS TO BE FIRST, then cell.userInteractionEnabled = NO;
                 cell.userInteractionEnabled  = NO;                   // black textcolor HAS TO BE FIRST, then cell.userInteractionEnabled = NO;
@@ -1530,7 +1575,7 @@ nbn(100);
                 cell.textLabel.numberOfLines = 0;   // 0 means unlimited number of lines
                 cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
 //                cell.textLabel.text          =  @"Each TRAIT is a general catgegory of interest in a person.\n\nEach SCORE for a trait measures \"how much\" of that trait the person has.\n\nA really low score or really high score is neither good nor bad.  The score just measures how much of that trait the person has.";
-                cell.textLabel.text          =  @"Each TRAIT is a general catgegory of interest in a person.\n\nEach SCORE for a trait measures \"how much\" of that trait the person has.\n\nScores go from 1 to 99.\nA score of 88 is higher than 88% of all scores in the world\nA score of 11 is higher than 11% of all scores in the world\n\nA really low score or really high score is neither favorable nor challenging. That's why the scores are not shown with the colors green/red because those colors mean favorable/challenging.";
+                cell.textLabel.text          =  @"Each TRAIT is a general catgegory of interest in a person.\n\nEach SCORE for a trait measures \"how much\" of that trait the person has.\n\nScores go from 1 to 99.\nA score of 88 is higher than 88% of all scores in the world\nA score of 11 is higher than 11% of all scores in the world\n\nA really low score or really high score is neither favorable nor challenging. That's why the scores are not shown with green and red colors because those colors mean favorable/challenging.";
 //
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
@@ -1683,10 +1728,16 @@ nbn(100);
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;   // 0 means unlimited number of lines
                 cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
-                cell.textLabel.text          = nil;
-                cell.imageView.image         = nil;
 
-                cell.backgroundView = [[UIImageView alloc] initWithImage: myImageTraits] ;
+//                cell.textLabel.text          = nil;
+                cell.textLabel.text          = @" ";
+
+//                cell.imageView.image         = nil;
+                cell.imageView.image = myImageTraits;
+
+                cell.backgroundView          = nil ;
+//                cell.backgroundView = [[UIImageView alloc] initWithImage: myImageTraits] ;
+
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
             });
             return cell;
@@ -1855,10 +1906,14 @@ nbn(100);
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;   // 0 means unlimited number of lines
                 cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
-                cell.textLabel.text          = nil;
-                cell.imageView.image         = nil;
 
-                cell.backgroundView = [[UIImageView alloc] initWithImage: myImageTraits] ;
+//                cell.textLabel.text          = nil;
+//                cell.imageView.image         = nil;
+//                cell.backgroundView = [[UIImageView alloc] initWithImage: myImageTraits] ;
+                cell.textLabel.text          = @" ";
+                cell.imageView.image = myImageTraits;
+                cell.backgroundView          = nil ;
+
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
             });
             return cell;
@@ -1967,7 +2022,7 @@ nbn(100);
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;   // 0 means unlimited number of lines
                 cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
-                cell.textLabel.text          = nil;
+                cell.textLabel.text          = @" ";
                 cell.imageView.image         = nil;
 
                 cell.backgroundView = [[UIImageView alloc] initWithImage: myImageDestiny] ;
@@ -2120,7 +2175,7 @@ nbn(100);
             return cell;
         }
 
-    } // end of gbl_helpScreenDescription   "best year"
+    } // end of gbl_helpScreenDescription   "best day"
 
     if (  [gbl_helpScreenDescription isEqualToString: @"HOME"] )
     { 
@@ -2467,7 +2522,9 @@ nbn(100);
         if (indexPath.row ==  6) return    30.0;  // title for quality of personality traits
         if (indexPath.row ==  7) return    82.0;  // text for quality
 //        if (indexPath.row ==  8) return     8.0;  // spacer
-        if (indexPath.row ==  8) return    55.0;  // image for overcome traits
+//        if (indexPath.row ==  8) return    55.0;  // image for overcome traits
+//        if (indexPath.row ==  8) return    75.0;  // image for overcome traits
+        if (indexPath.row ==  8) return    60.0;  // image for overcome traits
         if (indexPath.row ==  9) return     8.0;  // spacer
         if (indexPath.row == 10) return    20.0;  // text for disclaimer
     }
@@ -2493,12 +2550,16 @@ nbn(100);
         if (indexPath.row ==   4) return   200.0;  // text  for Labels inside the Graph
         if (indexPath.row ==   5) return     8.0;  // spacer
         if (indexPath.row ==   6) return    30.0;  // title for Time Frame Influences
-        if (indexPath.row ==   7) return   250.0;  // text  for Time Frame Influences
+//        if (indexPath.row ==   7) return   250.0;  // text  for Time Frame Influences
+        if (indexPath.row ==   7) return   150.0;  // text  for Time Frame Influences
         if (indexPath.row ==   8) return     8.0;  // spacer
         if (indexPath.row ==   9) return    30.0;  // title for Score for the Year
         if (indexPath.row ==  10) return   150.0;  // text  for Score for the Year
         if (indexPath.row ==  11) return     8.0;  // spacer
+
         if (indexPath.row ==  12) return    55.0;  // image for overcome destiny
+//        if (indexPath.row ==  12) return    75.0;  // image for overcome destiny
+
         if (indexPath.row ==  13) return     8.0;  // spacer
         if (indexPath.row ==  14) return    20.0;  // text for disclaimer
         return 40;
@@ -2642,7 +2703,20 @@ nbn(100);
         [myMAMBicon setEnabled:NO];
 //        myMAMBicon.userInteractionEnabled = NO;
 
+
         self.navigationItem.rightBarButtonItem = myMAMBicon;
+//
+//        // try to fix title listing to right
+//        if (    [gbl_currentMenuPlusReportCode isEqualToString: @"hompcy" ]
+//            ||  [gbl_currentMenuPlusReportCode isEqualToString: @"hompwc" ] ) 
+//        {
+//            //   navigationItem.rightBarButtonItems = @[rightA, rightB]
+//            self.navigationItem.rightBarButtonItems = @[gbl_flexibleSpace, gbl_flexibleSpace, gbl_flexibleSpace, myMAMBicon];
+//        } else {
+//            self.navigationItem.rightBarButtonItem = myMAMBicon;
+//        }
+//
+
 
 
 //    NSLog(@"END OF  in INFO  viewWillAppear!");

@@ -2,18 +2,16 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x",
-      "filename" : "willpower_info.png"
+      "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "scale" : "2x",
-      "filename" : "willpower_info-1.png"
+      "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "scale" : "3x",
-      "filename" : "willpower_info-2.png"
+      "filename" : "bg_yellowEdit6b_blu1.png",
+      "scale" : "3x"
     }
   ],
   "info" : {

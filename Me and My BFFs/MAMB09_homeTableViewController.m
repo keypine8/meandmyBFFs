@@ -1118,7 +1118,7 @@ ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
 
 //   DELETE METHOD  DELETE METHOD  DELETE METHOD  DELETE METHOD  DELETE METHOD  DELETE METHOD  DELETE METHOD  DELETE METHOD DELETE METHOD
 //
-- (void)tableView:(UITableView *)tableView commitEditingStyle: (UITableViewCellEditingStyle)  editingStyle
+- (void)tableView:(UITableView *)tableView commitEditingStyle: (UITableViewCellEditingStyle)  editingStyle  // DELETE METHOD, DELETE METHOD
                                             forRowAtIndexPath: (NSIndexPath *)                indexPath
 {
 tn();
@@ -1372,14 +1372,100 @@ tn();
 
 
 
-- (IBAction)actionSwitchEntity:(id)sender {  // segemented control on home page
+- (IBAction)actionSwitchEntity:(id)sender   // segemented control on home page   select person  or  group
+{  // segemented control on home page   select person  or  group
     NSLog(@"in actionSwitchEntity() in home!");
 
-    NSLog(@"gbl_LastSelectedPerson=%@",gbl_lastSelectedPerson);
-    NSLog(@"gbl_LastSelectedGroup=%@" ,gbl_lastSelectedGroup);
-    NSLog(@"gbl_lastSelectionType=%@" ,gbl_lastSelectionType);
-    NSLog(@"gbl_currentMenuPrefixFromHome=%@",gbl_currentMenuPrefixFromHome);
+//    NSLog(@"gbl_LastSelectedPerson=%@",gbl_lastSelectedPerson);
+//    NSLog(@"gbl_LastSelectedGroup=%@" ,gbl_lastSelectedGroup);
+//    NSLog(@"gbl_lastSelectionType=%@" ,gbl_lastSelectionType);
+//    NSLog(@"gbl_currentMenuPrefixFromHome=%@",gbl_currentMenuPrefixFromHome);
 
+//    if ([gbl_lastSelectionType isEqualToString:@"group"]) {
+//        // NSLog(@"change grp to per!");
+//        //_mambCurrentSelectionType = @"person";
+//        gbl_fromHomeCurrentEntity        = @"person";
+//        gbl_fromHomeCurrentSelectionType = @"person";
+//        gbl_lastSelectionType            = @"person";
+//        gbl_currentMenuPrefixFromHome              = @"homp"; 
+//    } else if ([gbl_lastSelectionType isEqualToString:@"person"]){
+//        // NSLog(@"change per to grp!");
+//        //_mambCurrentSelectionType = @"person";
+//        gbl_fromHomeCurrentEntity        = @"group";
+//        gbl_fromHomeCurrentSelectionType = @"group";
+//        gbl_lastSelectionType            = @"group";
+//        gbl_currentMenuPrefixFromHome              = @"homg"; 
+//    }
+////    NSLog(@"gbl_fromHomeCurrentEntity        =%@",gbl_fromHomeCurrentEntity        );
+////    NSLog(@"gbl_fromHomeCurrentSelectionType =%@",gbl_fromHomeCurrentSelectionType );
+////    NSLog(@"gbl_lastSelectionType            =%@",gbl_lastSelectionType            );
+////    NSLog(@"gbl_currentMenuPrefixFromHome              =%@",gbl_currentMenuPrefixFromHome);
+//
+//
+
+//    [self putHighlightOnCorrectRow ];  // does not work here (too long to investigate)
+
+
+    //
+    //        // change  from group data on screen to person data   or vice-versa
+    //        // but, disable user interaction for "mytime"
+    //        // to prevent machine-gun pounding on next or prev key
+    //        //
+    //        MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
+    //        [myappDelegate mamb_beginIgnoringInteractionEvents ];
+    //        if (gbl_shouldUseDelayOnBackwardForeward == 1) {  // = 1 (0.5 sec  on what color update)
+    //                                                          // = 0 (no delay on first show of screen)
+    //            [self.view setUserInteractionEnabled: NO];                              // this works to disable user interaction for "mytime"
+    //
+    //            int64_t myDelayInSec   = 0.5 * (double)NSEC_PER_SEC;
+    //            dispatch_time_t mytime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)myDelayInSec);
+    //
+    //            dispatch_after(mytime, dispatch_get_main_queue(), ^{                     // do after delay of  mytime
+    //
+    //// DO STUFF HERE
+    //                [self.outletWebView  loadHTMLString: myWhatColorHTML_FileContents  baseURL: nil];
+    //// DO STUFF HERE
+    //
+    //                [self.view setUserInteractionEnabled: YES];                          // this works to disable user interaction for "mytime"
+    //            });
+    //        }
+    //        [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.0 ];    // after arg seconds
+    //
+
+
+    // change  from group data on screen to person data   or vice-versa
+    // but, disable user interaction for "mytime"   (0.33 sec)
+    // to prevent machine-gun pounding on next or prev key
+    //
+
+
+    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [myappDelegate mamb_beginIgnoringInteractionEvents ];
+
+    if ([gbl_fromHomeCurrentEntity isEqualToString: @"group"]) {
+        _segEntityOutlet.selectedSegmentIndex = 0;
+        _segEntityOutlet.userInteractionEnabled = YES;
+        [_segEntityOutlet setEnabled: NO forSegmentAtIndex: 1];  // disable selection of "Person"
+        _segEntityOutlet.userInteractionEnabled = NO;
+    }
+    if ([gbl_fromHomeCurrentEntity isEqualToString: @"person"]) {
+        _segEntityOutlet.selectedSegmentIndex = 1;
+
+        _segEntityOutlet.userInteractionEnabled = YES;
+        [_segEntityOutlet setEnabled: NO forSegmentAtIndex: 0];  // disable selection of "Group"
+        _segEntityOutlet.userInteractionEnabled = NO;
+    }
+
+
+//    int64_t myDelayInSec   = 0.5 * (double)NSEC_PER_SEC;
+//    int64_t myDelayInSec   = 2.5 * (double)NSEC_PER_SEC;
+//    int64_t myDelayInSec   = 0.5 * (double)NSEC_PER_SEC;
+    int64_t myDelayInSec   = 0.33 * (double)NSEC_PER_SEC;
+    dispatch_time_t mytime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)myDelayInSec);
+
+    dispatch_after(mytime, dispatch_get_main_queue(), ^{                     // do after delay of  mytime
+
+        //// start DO STUFF HERE
 
     if ([gbl_lastSelectionType isEqualToString:@"group"]) {
         // NSLog(@"change grp to per!");
@@ -1396,104 +1482,119 @@ tn();
         gbl_lastSelectionType            = @"group";
         gbl_currentMenuPrefixFromHome              = @"homg"; 
     }
-    NSLog(@"gbl_fromHomeCurrentEntity        =%@",gbl_fromHomeCurrentEntity        );
-    NSLog(@"gbl_fromHomeCurrentSelectionType =%@",gbl_fromHomeCurrentSelectionType );
-    NSLog(@"gbl_lastSelectionType            =%@",gbl_lastSelectionType            );
-    NSLog(@"gbl_currentMenuPrefixFromHome              =%@",gbl_currentMenuPrefixFromHome);
+//    NSLog(@"gbl_fromHomeCurrentEntity        =%@",gbl_fromHomeCurrentEntity        );
+//    NSLog(@"gbl_fromHomeCurrentSelectionType =%@",gbl_fromHomeCurrentSelectionType );
+//    NSLog(@"gbl_lastSelectionType            =%@",gbl_lastSelectionType            );
+//    NSLog(@"gbl_currentMenuPrefixFromHome              =%@",gbl_currentMenuPrefixFromHome);
 
 
-    if ([gbl_lastSelectionType isEqualToString:@"group"])  _segEntityOutlet.selectedSegmentIndex = 0; // highlight correct entity in seg ctrl
-    if ([gbl_lastSelectionType isEqualToString:@"person"]) _segEntityOutlet.selectedSegmentIndex = 1; // highlight correct entity in seg ctrl
+    if ([gbl_lastSelectionType isEqualToString: @"group"])  _segEntityOutlet.selectedSegmentIndex = 0; // highlight correct entity in seg ctrl
+    if ([gbl_lastSelectionType isEqualToString: @"person"]) _segEntityOutlet.selectedSegmentIndex = 1; // highlight correct entity in seg ctrl
+
+    [self.view setUserInteractionEnabled:  NO];                              // this works to disable user interaction for "mytime"
 
 
-//    [self putHighlightOnCorrectRow ];  // does not work here (too long to investigate)
-
-    // highlight correct entity in seg control at top
-    //
     NSString *nameOfGrpOrPer;
     NSInteger idxGrpOrPer;
     NSArray *arrayGrpOrper;
     idxGrpOrPer = -1;   // zero-based idx
 
-    if ([gbl_fromHomeCurrentEntity isEqualToString:@"group"]) {
-        _segEntityOutlet.selectedSegmentIndex = 0;
+        if ([gbl_fromHomeCurrentEntity isEqualToString: @"group"]) {
 
-        // NSLog(@"reload table here!");
-        [self.tableView reloadData];
 
-        // highlight lastEntity row in tableview
-        //
-        
-        // find index of _mambCurrentSelection (like "~Family") in gbl_arrayGrp
-        for (id eltGrp in gbl_arrayGrp) {
-          idxGrpOrPer = idxGrpOrPer + 1;
-          //NSLog(@"idxGrpOrPer =%ld", (long)idxGrpOrPer );
-          //NSLog(@"eltGrp=%@", eltGrp);
+            // NSLog(@"reload table here!");
+            [self.tableView reloadData];
 
-          NSCharacterSet *mySeparators = [NSCharacterSet characterSetWithCharactersInString:@"|"];
-          arrayGrpOrper  = [eltGrp componentsSeparatedByCharactersInSet: mySeparators];
-          nameOfGrpOrPer = arrayGrpOrper[0];  // name is 1st fld
+            // highlight lastEntity row in tableview
+            //
+            
+            // find index of _mambCurrentSelection (like "~Family") in gbl_arrayGrp
+            for (id eltGrp in gbl_arrayGrp) {
+              idxGrpOrPer = idxGrpOrPer + 1;
+              //NSLog(@"idxGrpOrPer =%ld", (long)idxGrpOrPer );
+              //NSLog(@"eltGrp=%@", eltGrp);
 
-          //if ([nameOfGrpOrPer isEqualToString: _mambCurrentSelection]) 
-          if ([nameOfGrpOrPer isEqualToString: gbl_lastSelectedGroup]) {
-            break;
-          }
-        }  // search thru gbl_arrayGrp
-        NSLog(@"FOUND !=%ld", (long)idxGrpOrPer);
+              NSCharacterSet *mySeparators = [NSCharacterSet characterSetWithCharactersInString: @"|"];
+              arrayGrpOrper  = [eltGrp componentsSeparatedByCharactersInSet:  mySeparators];
+              nameOfGrpOrPer = arrayGrpOrper[0];  // name is 1st fld
 
-        // get the indexpath of row num idxGrpOrPer in tableview
-        //   assumes index of entity in gbl_array Per or Grp
-        //   is the same as its index (row) in the tableview
-        NSIndexPath *foundIndexPath = [NSIndexPath indexPathForRow:idxGrpOrPer inSection:0];
-
-//tn();trn("SCROLL 333333333333333333333333333333333333333333333333333333333");
-        // select the row in UITableView
-        // This puts in the light grey "highlight" indicating selection
-        [self.tableView selectRowAtIndexPath: foundIndexPath 
-                                    animated: YES
-                              scrollPosition: UITableViewScrollPositionNone];
-        //[self.tableView scrollToNearestSelectedRowAtScrollPosition: foundIndexPath.row 
-        [self.tableView scrollToNearestSelectedRowAtScrollPosition: UITableViewScrollPositionMiddle
-                                                          animated: YES];
-    }
-    if ([gbl_fromHomeCurrentEntity isEqualToString:@"person"]) {
-        _segEntityOutlet.selectedSegmentIndex = 1;
-
-        // NSLog(@"reload table here!");
-        [self.tableView reloadData];
-
-        // highlight lastEntity row in tableview
-        //
-
-        // find index of _mambCurrentSelection (like "~Dave") in gbl_arrayPer
-        for (id eltPer in gbl_arrayPer) {
-            idxGrpOrPer = idxGrpOrPer + 1;
-            //NSLog(@"idxGrpOrPer =%ld", (long)idxGrpOrPer );
-            //NSLog(@"eltPer=%@", eltPer);
-            NSCharacterSet *mySeparators = [NSCharacterSet characterSetWithCharactersInString:@"|"];
-            arrayGrpOrper  = [eltPer componentsSeparatedByCharactersInSet: mySeparators];
-            nameOfGrpOrPer = arrayGrpOrper[0];  // name is 1st fld
-
-            //if ([nameOfGrpOrPer isEqualToString: _mambCurrentSelection]) 
-            if ([nameOfGrpOrPer isEqualToString: gbl_lastSelectedPerson]) {
+              //if ([nameOfGrpOrPer isEqualToString:  _mambCurrentSelection]) 
+              if ([nameOfGrpOrPer isEqualToString:  gbl_lastSelectedGroup]) {
                 break;
-            }
-        } // search thru gbl_arrayPer
-        NSLog(@"FOUND !=%ld", (long)idxGrpOrPer);
+              }
+            }  // search thru gbl_arrayGrp
+            NSLog(@"FOUND !=%ld", (long)idxGrpOrPer);
 
-        // get the indexpath of row num idxGrpOrPer in tableview
-        NSIndexPath *foundIndexPath = [NSIndexPath indexPathForRow:idxGrpOrPer inSection:0];
+            // get the indexpath of row num idxGrpOrPer in tableview
+            //   assumes index of entity in gbl_array Per or Grp
+            //   is the same as its index (row) in the tableview
+            NSIndexPath *foundIndexPath = [NSIndexPath indexPathForRow: idxGrpOrPer inSection:0];
 
-//tn();trn("SCROLL 444444444444444444444444444444444444444444444444444444444");
-        // select the row in UITableView
-        // This puts in the light grey "highlight" indicating selection
-        [self.tableView selectRowAtIndexPath: foundIndexPath 
-                                    animated: YES
-                              scrollPosition: UITableViewScrollPositionNone];
-        //[self.tableView scrollToNearestSelectedRowAtScrollPosition: foundIndexPath.row 
-        [self.tableView scrollToNearestSelectedRowAtScrollPosition: UITableViewScrollPositionMiddle
-                                                          animated: YES];
-    }
+    //tn();trn("SCROLL 333333333333333333333333333333333333333333333333333333333");
+            // select the row in UITableView
+            // This puts in the light grey "highlight" indicating selection
+            [self.tableView selectRowAtIndexPath:  foundIndexPath   // This puts in the light grey "highlight" indicating selection
+                                        animated:  YES
+                                  scrollPosition:  UITableViewScrollPositionNone];
+            //[self.tableView scrollToNearestSelectedRowAtScrollPosition:  foundIndexPath.row 
+            [self.tableView scrollToNearestSelectedRowAtScrollPosition:  UITableViewScrollPositionMiddle
+                                                              animated:  YES];
+        }
+        if ([gbl_fromHomeCurrentEntity isEqualToString: @"person"]) {
+
+
+            // NSLog(@"reload table here!");
+            [self.tableView reloadData];
+
+            // highlight lastEntity row in tableview
+            //
+
+            // find index of _mambCurrentSelection (like "~Dave") in gbl_arrayPer
+            for (id eltPer in gbl_arrayPer) {
+                idxGrpOrPer = idxGrpOrPer + 1;
+                //NSLog(@"idxGrpOrPer =%ld", (long)idxGrpOrPer );
+                //NSLog(@"eltPer=%@", eltPer);
+                NSCharacterSet *mySeparators = [NSCharacterSet characterSetWithCharactersInString: @"|"];
+                arrayGrpOrper  = [eltPer componentsSeparatedByCharactersInSet:  mySeparators];
+                nameOfGrpOrPer = arrayGrpOrper[0];  // name is 1st fld
+
+                //if ([nameOfGrpOrPer isEqualToString:  _mambCurrentSelection]) 
+                if ([nameOfGrpOrPer isEqualToString:  gbl_lastSelectedPerson]) {
+                    break;
+                }
+            } // search thru gbl_arrayPer
+            NSLog(@"FOUND !=%ld", (long)idxGrpOrPer);
+
+            // get the indexpath of row num idxGrpOrPer in tableview
+            NSIndexPath *foundIndexPath = [NSIndexPath indexPathForRow:idxGrpOrPer inSection:0];
+
+    //tn();trn("SCROLL 444444444444444444444444444444444444444444444444444444444");
+            // select the row in UITableView
+            // This puts in the light grey "highlight" indicating selection
+            [self.tableView selectRowAtIndexPath: foundIndexPath 
+                                        animated: YES
+                                  scrollPosition: UITableViewScrollPositionNone];
+            //[self.tableView scrollToNearestSelectedRowAtScrollPosition: foundIndexPath.row 
+            [self.tableView scrollToNearestSelectedRowAtScrollPosition: UITableViewScrollPositionMiddle
+                                                              animated: YES];
+        }
+
+        //// end DO STUFF HERE
+
+//    _segEntityOutlet.userInteractionEnabled = YES;
+
+    _segEntityOutlet.userInteractionEnabled = YES;
+    [_segEntityOutlet setEnabled: YES forSegmentAtIndex: 0];  // enable selection of "Group"
+    [_segEntityOutlet setEnabled: YES forSegmentAtIndex: 1];  // enable selection of "Person"
+
+
+    [self.view setUserInteractionEnabled: YES];                          // this works to disable user interaction for "mytime"
+
+    }); // do after delay of  mytime
+
+
+    [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.0 ];    // after arg seconds
+
 
 
 } // end of   (IBAction)actionSwitchEntity:(id)sender {  // segemented control on home page
@@ -2009,19 +2110,32 @@ tn();trn("in doStuffOnEnteringForeground()   NOTIFICATION method     lastEntity 
 //
 // You can also call this method from your own code (or modify the value of your view controller’s editing property) to toggle between modes.
 //
-- (void)setEditing: (BOOL)flag
+- (void)setEditing: (BOOL)flag // editButtomItem AUTOMATICALLY TOGGLES BETWEEN AN Edit(flag=y) & Done(flag=n) BUTTON AND CALLS setEditing
           animated: (BOOL)animated
 {
-
 tn();  NSLog(@"setEditing !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
   NSLog(@"=%d",flag);
   NSLog(@"=%d",animated);
+
+
+    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [myappDelegate mamb_beginIgnoringInteractionEvents ];
+
+//    int64_t myDelayInSec   = 2.33 * (double)NSEC_PER_SEC;
+    int64_t myDelayInSec   = 0.33 * (double)NSEC_PER_SEC;
+    dispatch_time_t mytime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)myDelayInSec);
+
+    dispatch_after(mytime, dispatch_get_main_queue(), ^{                     // do after delay of  mytime
+
+        //// start DO STUFF HERE
+
 
     [super setEditing: flag animated: animated];
 
 
 
-    if (flag == YES){ // Change views to edit mode.
+
+    if (flag == YES) { // Change views to edit mode.
 
 
   NSLog(@"EDIT BUTTON 2    ");
@@ -2080,8 +2194,10 @@ nbn(300);
         gbl_home_cell_editingAccessoryType = UITableViewCellAccessoryDetailButton; // home mode edit    with tap giving record details
 
     
-        [self.tableView reloadData];
+        [self.tableView reloadData]; // reload to    edit mode    reload reload reload reload reload reload ");
+
 //tn();trn("reload to    edit mode    reload reload reload reload reload reload ");
+
 
 //
 ////        self.editButtonItem.tintColor = [UIColor redColor];   // colors text
@@ -2112,9 +2228,14 @@ nbn(300);
 //        }
 
 
-    } // Change views to edit mode.
+nbn(4);
+    [self putHighlightOnCorrectRow ];
+nbn(5);
 
-    else { // Save the changes if needed and change the views to noneditable.
+
+        // Change views to   edit mode.
+    } else { // Save the changes if needed and change the views to noneditable.
+        // Change views from edit mode.
 
   NSLog(@"EDIT BUTTON 3 ");
   NSLog(@"gbl_homeUseMODE 1   =[%@]",gbl_homeUseMODE );
@@ -2140,11 +2261,9 @@ nbn(311);
             self.editButtonItem.title = @"Edit";  // ok with no tab
 
 
-
 //            [self.editButtonItem setTitlePositionAdjustment: UIOffsetMake(-12.0f, 0.0f)  forBarMetrics: UIBarMetricsDefault]; // 
 //            [self.editButtonItem setTitlePositionAdjustment: UIOffsetMake(-8.0f, 0.0f)  forBarMetrics: UIBarMetricsDefault]; // 
             [self.editButtonItem setTitlePositionAdjustment: UIOffsetMake(-16.0f, 0.0f)  forBarMetrics: UIBarMetricsDefault]; // 
-
 
 
         });
@@ -2165,7 +2284,8 @@ nbn(311);
         gbl_home_cell_AccessoryType        = UITableViewCellAccessoryDisclosureIndicator; // home mode regular with tap giving report list
         gbl_home_cell_editingAccessoryType = UITableViewCellAccessoryNone;                // home mode regular with tap giving report list
 
-        [self.tableView reloadData];
+        [self.tableView reloadData]; // reload to regular mode    reload reload reload reload reload reload ");
+
 //        tn();trn("reload to regular mode    reload reload reload reload reload reload ");
 
 // forget all special colors
@@ -2185,12 +2305,30 @@ nbn(311);
 //            self.navigationItem.leftBarButtonItems = myMutableLeftItems;
 //        });
 //
-    }
 
+nbn(9);
     [self putHighlightOnCorrectRow ];
+nbn(10);
 
 
-} // end of  setEditing: (BOOL)flag animated: (BOOL)animated
+    } // Change views from edit mode.
+
+
+        //// end DO STUFF HERE
+
+
+
+    [self.view setUserInteractionEnabled: YES];                          // this works to disable user interaction for "mytime"
+
+    }); // do after delay of  mytime
+
+
+    [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.0 ];    // after arg seconds
+
+//    [self putHighlightOnCorrectRow ];
+
+
+} // end of  setEditing: (BOOL)flag   animated: (BOOL)animated
 
 
 

@@ -55,6 +55,18 @@
     NSLog(@"in viewHTML viewDidLoad!");
 
 
+
+
+    // http://stackoverflow.com/questions/18912638/custom-image-for-uinavigation-back-button-in-ios-7
+    UIImage *backBtn = [UIImage imageNamed:@"iconRightArrowBlue_66"];
+    backBtn = [backBtn imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal];
+    self.navigationItem.backBarButtonItem.title=@"x";
+    self.navigationController.navigationBar.backIndicatorImage = backBtn;
+    self.navigationController.navigationBar.backIndicatorTransitionMaskImage = backBtn;
+
+
+
+
 //            dispatch_async(dispatch_get_main_queue(), ^(void){
 //    [self.outletWebView  loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"about:blank"]]];  // 1st time still slow
 //            });
@@ -502,7 +514,9 @@ tn();
         
 
         dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
-            [[self navigationItem] setTitle:  @"Calendar Year    "];
+//            [[self navigationItem] setTitle:  @"Calendar Year    "];
+//            [[self navigationItem] setTitle:  @"Calendar Year"];
+            [[self navigationItem] setTitle:  @" "];  // this fixes title in info screen being too far right (not centered)
         });
 
         sfill(stringBuffForStressScore, 60, ' ');
@@ -901,10 +915,11 @@ nbn(902);
 
         // nav bar title using name of person
         //
-        NSString *myNameForTitleOnNavBar = [NSString stringWithUTF8String: psvName ];  // convert c string to NSString
-        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
-            [[self navigationItem] setTitle: myNameForTitleOnNavBar ];
-        });
+        [[self navigationItem] setTitle:  @" "];  // this fixes title in info screen being too far right (not centered)
+//        NSString *myNameForTitleOnNavBar = [NSString stringWithUTF8String: psvName ];  // convert c string to NSString
+//        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+//            [[self navigationItem] setTitle: myNameForTitleOnNavBar ];
+//        });
 
 
         

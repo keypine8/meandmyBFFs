@@ -53,7 +53,7 @@ NSString *gbl_homeEditingState; // if gbl_homeUseMODE = "edit mode"    then can 
 //
 // THE THREE  "FIELDS"  =======================================================
 
-// UILabel *gbl_disclosureIndicatorLabel;  // set in appdel .m   DID NOT WORK moved setting from appdel .m to each lcl_
+// UILabel *gbl_disclosureIndicatorLa®bel;  // set in appdel .m   DID NOT WORK moved setting from appdel .m to each lcl_
 
 
 NSInteger gbl_justLookedAtInfoScreen;
