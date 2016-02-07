@@ -343,7 +343,9 @@ tn();
 
             UILabel *myDisclosureIndicatorLabel        = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 12.0f, 32.0f)];
             myDisclosureIndicatorLabel.attributedText  = myNewCellAttributedText3;
-            myDisclosureIndicatorLabel.backgroundColor = gbl_colorReportsBG; 
+//            myDisclosureIndicatorLabel.backgroundColor = gbl_colorReportsBG; 
+            myDisclosureIndicatorLabel.backgroundColor = gbl_colorHomeBG; 
+
 
         // end of  UILabel for the disclosure indicator, ">",  for tappable cells
 
@@ -619,7 +621,9 @@ tn();
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     
     [self.tableView setBackgroundView:nil];
-    [self.tableView setBackgroundColor: gbl_colorReportsBG];
+//    [self.tableView setBackgroundColor: gbl_colorReportsBG];
+    [self.tableView setBackgroundColor: gbl_colorHomeBG];
+
     cell.backgroundColor = [UIColor clearColor];
 }
 
@@ -996,7 +1000,8 @@ tn(); NSLog(@"gbl_currentMenuPlusReportCode in rptsel BBB =%@",gbl_currentMenuPl
         lblSection0.numberOfLines   = 1;
         lblSection0.font            = [UIFont boldSystemFontOfSize: 14.0];
         lblSection0.text            = [NSString stringWithFormat: @"in Group   %@", gbl_lastSelectedGroup];
-        lblSection0.backgroundColor = [UIColor whiteColor];
+//        lblSection0.backgroundColor = [UIColor whiteColor];
+        lblSection0.backgroundColor = gbl_colorNavBarBG;
 
         [lblSection0 sizeToFit];
 

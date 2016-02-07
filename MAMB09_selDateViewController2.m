@@ -40,7 +40,9 @@
   NSLog(@"gbl_currentMenuPlusReportCode=%@",gbl_currentMenuPlusReportCode);
 
 
-    self.view.backgroundColor = gbl_colorSelParamForReports;
+//    self.view.backgroundColor = gbl_colorSelParamForReports;
+    if ([gbl_lastSelectionType isEqualToString:@"person"]) [self.view setBackgroundColor: gbl_colorHomeBG_per];
+    if ([gbl_lastSelectionType isEqualToString:@"group" ]) [self.view setBackgroundColor: gbl_colorHomeBG_grp];
 
 
     self.outletFor_YMD_picker.delegate   = self;
@@ -73,6 +75,7 @@
 
 
     //UIBarButtonItem *_goToReportButton=[[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"ReportArrow_06.png"] 
+
 //    UIBarButtonItem *_goToReportButton=[[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"rounded_rectB_144"] 
 //    UIBarButtonItem *_goToReportButton=[[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"ReportArrow_09.png"] 
     //UIImage *myImage = [[UIImage imageNamed: @"ReportArrow_09.png"]
@@ -91,8 +94,8 @@
 
  
     // UIImage *myImage = [[UIImage imageNamed: @"forwardArrow_029.png"]
-    UIImage *myImage = [[UIImage imageNamed: @"iconLeftArrowBlue_66"]
-                     imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal ];
+    // UIImage *myImage = [[UIImage imageNamed: @"iconLeftArrowBlue_66"]
+    //                     imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal ];
 
 // for test
 //        UIImage *myImage = [[UIImage imageNamed: @"iconPlusAddGreenBig_66.png"]
@@ -116,6 +119,12 @@
 //        UIImage *myImage = [[UIImage imageNamed: @"forwardArrow_01.png"]
 //        UIImage *myImage = [UIImage imageNamed: @"forwardArrow_01.png" inBundle: nil compatibleWithTraitCollection: nil ];
 
+//     UIImage *myImage = [[UIImage imageNamed: @"forwardArrow_029.png"]
+//     UIImage *myImage = [[UIImage imageNamed: @"iconLeftArrowBlue_66"]
+     UIImage *myImage = [[UIImage imageNamed: @"iconChevronRight_66"]
+                      imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal ];
+
+//        UIBarButtonItem *_goToReportButton = [[UIBarButtonItem alloc]initWithImage: gbl_chevronRight
         UIBarButtonItem *_goToReportButton = [[UIBarButtonItem alloc]initWithImage: myImage
                                                                              style: UIBarButtonItemStylePlain 
                                                                             target: self 
@@ -360,9 +369,36 @@ tn();tr("date fmt  date fmt  date fmt  date fmt  date fmt  date fmt  date fmt  "
         //
 
         dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
-            self.outletToSelecteDate.text = myInitDateFormatted;
+//            self.outletToSelecteDate.text = myInitDateFormatted;
+
+            if ([gbl_lastSelectionType isEqualToString:@"person"]) {
+                NSMutableAttributedString *myAttrDate;
+                myAttrDate = [[NSMutableAttributedString alloc] initWithString: myInitDateFormatted
+                    attributes : @{
+        //                  NSParagraphStyleAttributeName : myParagraphStyle,
+        //                   NSBackgroundColorAttributeName : gbl_color_cRed,
+        //               NSForegroundColorAttributeName : gbl_colorDIfor_home,
+                       NSForegroundColorAttributeName : [UIColor grayColor],
+                                  NSFontAttributeName : [UIFont boldSystemFontOfSize: 30.0]
+                    }
+                ];
+                self.outletToSelecteDate.attributedText = myAttrDate;
+            }
+            if ([gbl_lastSelectionType isEqualToString:@"group" ]) {
+                NSMutableAttributedString *myAttrDate;
+                myAttrDate = [[NSMutableAttributedString alloc] initWithString: myInitDateFormatted
+                    attributes : @{
+        //                  NSParagraphStyleAttributeName : myParagraphStyle,
+        //                   NSBackgroundColorAttributeName : gbl_color_cRed,
+        //               NSForegroundColorAttributeName : gbl_colorDIfor_home,
+                       NSForegroundColorAttributeName : [UIColor darkGrayColor],
+                                  NSFontAttributeName : [UIFont boldSystemFontOfSize: 30.0]
+                    }
+                ];
+                self.outletToSelecteDate.attributedText = myAttrDate;
+            }
+
         });
-nbn(1);
 
         
         // 2. INIT  PICKER roller values
@@ -378,7 +414,6 @@ nbn(1);
 //        [self.outletFor_YMD_picker selectRow:myIndex inComponent: 0 animated:YES]; // This is how you manually SET(!!) a selection!
         [self.outletFor_YMD_picker selectRow:myIndex inComponent: 1 animated:YES]; // This is how you manually SET(!!) a selection!
 
-nbn(2);
         myIndex = initDD - 1; // initMM and initDD are "one-based" real m and d values
         if (myIndex == NSNotFound) {
             // second last elt should be current year
@@ -387,7 +422,6 @@ nbn(2);
 //        [self.outletFor_YMD_picker selectRow:myIndex inComponent: 1 animated:YES]; // This is how you manually SET(!!) a selection!
         [self.outletFor_YMD_picker selectRow:myIndex inComponent: 2 animated:YES]; // This is how you manually SET(!!) a selection!
 
-nbn(3);
 
         NSString* myInitYear = [NSString stringWithFormat:@"%i", initYYYY];  // convert c int to NSString
         myIndex = [yearsToPickFrom2 indexOfObject: myInitYear];
@@ -497,6 +531,10 @@ NSLog(@"in viewDidAppear()");
     NSString *titleForRowRetval;
     titleForRowRetval =  @"component not 0,1, or 2";
 
+
+    [[pickerView.subviews objectAtIndex:1] setBackgroundColor: gbl_colorDIfor_home];  // selection indicator lines
+    [[pickerView.subviews objectAtIndex:2] setBackgroundColor: gbl_colorDIfor_home];
+    
 //    trn("in titleForRow in MAMB09_sel DATE Controller2 ");ki(component);ki(row);
 //NSLog(@"row=%ld",(long)row);
 //NSLog(@"component=%ld",(long)component);
@@ -527,6 +565,9 @@ NSLog(@"in viewDidAppear()");
 //  NSLog(@"in viewForRow !!  in PICKER ");
 //  NSLog(@"in viewForRow !!  in PICKER    row=%ld",(long)row);
 //  NSLog(@"in viewForRow !!  in PICKER compon=%ld",(long)component);
+
+    [[pickerView.subviews objectAtIndex:1] setBackgroundColor: gbl_colorDIfor_home];  // selection indicator lines
+    [[pickerView.subviews objectAtIndex:2] setBackgroundColor: gbl_colorDIfor_home];
 
     UILabel *retvalUILabel = (id) arg_view;
 
@@ -744,7 +785,35 @@ NSLog(@"in viewDidAppear()");
 
 
         dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
-            self.outletToSelecteDate.text = myFormattedStr;
+//            self.outletToSelecteDate.text = myFormattedStr;
+
+            if ([gbl_lastSelectionType isEqualToString:@"person"]) {
+                NSMutableAttributedString *myAttrDate;
+                myAttrDate = [[NSMutableAttributedString alloc] initWithString: myFormattedStr
+                    attributes : @{
+        //                  NSParagraphStyleAttributeName : myParagraphStyle,
+        //                   NSBackgroundColorAttributeName : gbl_color_cRed,
+        //               NSForegroundColorAttributeName : gbl_colorDIfor_home,
+                       NSForegroundColorAttributeName : [UIColor grayColor],
+                                  NSFontAttributeName : [UIFont boldSystemFontOfSize: 30.0]
+                    }
+                ];
+                self.outletToSelecteDate.attributedText = myAttrDate;
+            }
+            if ([gbl_lastSelectionType isEqualToString:@"group" ]) {
+                NSMutableAttributedString *myAttrDate;
+                myAttrDate = [[NSMutableAttributedString alloc] initWithString: myFormattedStr
+                    attributes : @{
+        //                  NSParagraphStyleAttributeName : myParagraphStyle,
+        //                   NSBackgroundColorAttributeName : gbl_color_cRed,
+        //               NSForegroundColorAttributeName : gbl_colorDIfor_home,
+                       NSForegroundColorAttributeName : [UIColor darkGrayColor],
+                                  NSFontAttributeName : [UIFont boldSystemFontOfSize: 30.0]
+                    }
+                ];
+                self.outletToSelecteDate.attributedText = myAttrDate;
+            }
+
         });
 
 } // didSelectRow

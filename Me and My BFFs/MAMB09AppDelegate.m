@@ -1,4 +1,5 @@
 //
+
 //  MAMB09AppDelegate.m
 //  Me and My BFFs
 //
@@ -33,8 +34,39 @@
     
 
     // Override point for customization after application launch.
+//    [[UINavigationBar appearance] setTranslucent: NO ];  // set all navigation bars to opaque
 
-    [[UINavigationBar appearance] setTranslucent: NO ];  // set all navigation bars to opaque
+
+
+//
+//                [UINavigationController.navigationBar setBackgroundImage: [UIImage new]       // 1. of 2
+//                                                             forBarPosition: UIBarPositionAny
+//                                                                 barMetrics: UIBarMetricsDefault];
+//                //
+//                [self.navigationController.navigationBar setShadowImage: [UIImage new]];   
+//                //
+//                self.navigationController.navigationBar.backgroundColor = [UIColor redColor];  // 2. of 2
+//
+
+
+
+//  [[UINavigationBar appearance] setTranslucent: NO];                      // works
+//  [[UINavigationBar appearance] setBackGroundColor: [UIColor redColor] ]; // works
+
+    gbl_colorNavBarBG = [UIColor colorWithRed:255.0/255.0 green:244.0/255.0 blue:228.0/255.0 alpha:1.0]; // GOLD light brown 
+//    gbl_colorNavBarBG = [UIColor redColor];
+
+    [[UINavigationBar appearance]  setTranslucent: NO];
+    [[UINavigationBar appearance] setBarTintColor:
+//  [UIColor lightGrayColor]
+// [UIColor colorWithRed:242.0/255.0 green:247.0/255.0 blue:255.0/255.0 alpha:1.0] // light blue
+// [UIColor colorWithRed:255.0/255.0 green:232.0/255.0 blue:216.0/255.0 alpha:1.0]  // light brown 
+// [UIColor colorWithRed:255.0/255.0 green:248.0/255.0 blue:232.0/255.0 alpha:1.0]  // too light brown 
+// [UIColor colorWithRed:255.0/255.0 green:240.0/255.0 blue:224.0/255.0 alpha:1.0]  //  light brown 
+// [UIColor colorWithRed:255.0/255.0 green:202.0/255.0 blue:192.0/255.0 alpha:1.0]  // light brown 
+// [UIColor colorWithRed:255.0/255.0 green:244.0/255.0 blue:228.0/255.0 alpha:1.0]  // GOLD light brown 
+        gbl_colorNavBarBG   // light brown 
+    ];
 
     // set font and size for all Nav Bars
     //  see addchange 
@@ -43,6 +75,17 @@
     // to access global method in appDelegate .h and .m
     //MAMB09AppDelegate *gbl_myappDelegate=[[UIApplication sharedApplication] delegate];
 
+
+//    gbl_chevronRight = [UIImage  imageNamed: @"iconRightArrowBlue_66.png" 
+    gbl_chevronRight = [UIImage  imageNamed: @"iconChevronRight_66.png" 
+                                   inBundle: nil
+              compatibleWithTraitCollection: nil
+    ];
+//    gbl_chevronRight = [UIImage  imageNamed: @"iconLeftArrowBlue_66.png" 
+    gbl_chevronLeft  = [UIImage  imageNamed: @"iconChevronLeft_66.png" 
+                                   inBundle: nil
+              compatibleWithTraitCollection: nil
+    ];
 
     // EDITING stuff
     //
@@ -61,13 +104,15 @@
 
 //    gbl_blueDone   = [UIImage  imageNamed: @"bg_blueDone3.png" // [self.editButtonItem setBackgroundImage: gbl_BlueBG
 //    gbl_blueDone   = [UIImage  imageNamed: @"bg_blueDone5.png" // [self.editButtonItem setBackgroundImage: gbl_BlueBG
-    gbl_blueDone   = [UIImage  imageNamed: @"bg_blueDone6.png" // [self.editButtonItem setBackgroundImage: gbl_BlueBG
+//    gbl_blueDone   = [UIImage  imageNamed: @"bg_blueDone6.png" // [self.editButtonItem setBackgroundImage: gbl_BlueBG
+    gbl_blueDone   = [UIImage  imageNamed: @"bg_blueDone7.png" // [self.editButtonItem setBackgroundImage: gbl_BlueBG
                                  inBundle: nil
             compatibleWithTraitCollection: nil
     ];
 
 //  gbl_yellowEdit   = [UIImage  imageNamed: @"bg_yellowEdit6b_blu1.png" // [self.editButtonItem setBackgroundImage: gbl_BlueBG  try blue border
-    gbl_yellowEdit   = [UIImage  imageNamed: @"bg_yellowEdit6.png" // [self.editButtonItem setBackgroundImage: gbl_BlueBG
+//    gbl_yellowEdit   = [UIImage  imageNamed: @"bg_yellowEdit6.png" // [self.editButtonItem setBackgroundImage: gbl_BlueBG
+    gbl_yellowEdit   = [UIImage  imageNamed: @"bg_yellowEdit7.png" // [self.editButtonItem setBackgroundImage: gbl_BlueBG
                                    inBundle: nil
               compatibleWithTraitCollection: nil
     ];
@@ -792,8 +837,8 @@
     
     // UIColor uses a 0-1 instead of 0-255 system so you just need to convert it like so:
     //
-    gbl_colorReportsBG          = [UIColor alloc];
-    gbl_colorSelParamForReports = [UIColor alloc];
+//    gbl_colorReportsBG          = [UIColor alloc];  use gbl_colorHomeBG instead 
+//    gbl_colorSelParamForReports = [UIColor alloc];
     
 
     // color for highlight on selected tableview rows
@@ -850,9 +895,9 @@
     // this is lighter than home 230/242
     // gbl_colorReportsBG = [UIColor colorWithRed:238.0/255.0 green:247.0/255.0 blue:255.0/255.0 alpha:1.0];  // eef7ff apple blue 2.5  <---
 
-    gbl_colorReportsBG = [UIColor colorWithRed:225.0/255.0 green:238.0/255.0 blue:255.0/255.0 alpha:1.0];  // little darker than home 230/242
-
-    gbl_colorSelParamForReports = gbl_colorReportsBG;  // these are for SELRPTs sceens and select 2nd person
+//    gbl_colorReportsBG = [UIColor colorWithRed:225.0/255.0 green:238.0/255.0 blue:255.0/255.0 alpha:1.0];  // little darker than home 230/242
+//    gbl_colorSelParamForReports = gbl_colorReportsBG;  // these are for SELRPTs sceens and select 2nd person
+//    gbl_colorSelParamForReports = gbl_colorHomeBG;  // these are for SELRPTs sceens and select 2nd person
 
 
 
@@ -864,17 +909,92 @@
 
 
 
+//    gbl_colorHomeBG      = [UIColor colorWithRed:230.0/255.0 green:242.0/255.0 blue:254.0/255.0 alpha:1.0]; // gold  10160114
+//    gbl_colorHomeBG_save = gbl_colorHomeBG ;  // in order to put back after editing mode color
+    
+
+//    gbl_color_cMacHighlight  = [UIColor colorWithRed:038.0/255.0 green:140.0/255.0 blue:251.0/255.0 alpha:1.0]; // 268cfb or 038,140,251
+//    gbl_color_cAplTop  = [UIColor colorWithRed:248.0/255.0 green:248.0/255.0 blue:248.0/255.0 alpha:1.0]; // f8f8f8 or 246,248,249
+//    gbl_color_cAplDarkBlue = [UIColor colorWithRed:000.0/255.0 green:128.0/255.0 blue:255.0/255.0 alpha:1.0]; // 0080ff  (blue text, chevron)
+
+
+    gbl_colorHomeBG_per  = [UIColor colorWithRed:230.0/255.0 green:242.0/255.0 blue:254.0/255.0 alpha:1.0]; //
+    gbl_colorHomeBG_per  = [UIColor colorWithRed:238.0/255.0 green:246.0/255.0 blue:254.0/255.0 alpha:1.0]; //
+    gbl_colorHomeBG_per  = [UIColor colorWithRed:238.0/255.0 green:238.0/255.0 blue:254.0/255.0 alpha:1.0]; //
+    gbl_colorHomeBG_per  = [UIColor colorWithRed:228.0/255.0 green:238.0/255.0 blue:254.0/255.0 alpha:1.0]; //
+    gbl_colorHomeBG_per  = [UIColor colorWithRed:240.0/255.0 green:248.0/255.0 blue:255.0/255.0 alpha:1.0]; //  
+    gbl_colorHomeBG_per  = [UIColor colorWithRed:230.0/255.0 green:242.0/255.0 blue:255.0/255.0 alpha:1.0]; //  
+    gbl_colorHomeBG_per  = [UIColor colorWithRed:226.0/255.0 green:242.0/255.0 blue:255.0/255.0 alpha:1.0]; //  
+    gbl_colorHomeBG_per  = [UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:255.0/255.0 alpha:1.0]; //  
+    gbl_colorHomeBG_per  = [UIColor colorWithRed:230.0/255.0 green:242.0/255.0 blue:254.0/255.0 alpha:1.0]; //  
+
+    gbl_colorHomeBG_per  = [UIColor colorWithRed:176.0/255.0 green:176.0/255.0 blue:176.0/255.0 alpha:1.0]; //  
+    gbl_colorHomeBG_per  = [UIColor colorWithRed:0xf5/255.0 green:0xf5/255.0 blue:0xdc/255.0 alpha:1.0]; //  
+    gbl_colorHomeBG_per  = [UIColor colorWithRed:0xde/255.0 green:0xb8/255.0 blue:0x87/255.0 alpha:1.0]; //
+
+    gbl_colorHomeBG_per  = [UIColor colorWithRed:0xcd/255.0 green:0x85/255.0 blue:0x3f/255.0 alpha:1.0]; //  peru
+    gbl_colorHomeBG_per  = [UIColor colorWithRed:205.0/255.0 green:133.0/255.0 blue:63.0/255.0 alpha:1.0]; //  peru
+    gbl_colorHomeBG_per  = [UIColor colorWithRed:205.0/255.0 green:133.0/255.0 blue:63.0/255.0 alpha:1.0]; //  peru
+    gbl_colorHomeBG_per  = [UIColor colorWithRed:225.0/255.0 green:146.0/255.0 blue:70.0/255.0 alpha:1.0]; //  lighter peru
+    gbl_colorHomeBG_per  = [UIColor colorWithRed:247.0/255.0 green:165.0/255.0 blue:85.0/255.0 alpha:1.0]; //  lighter peru
+    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:225.0/255.0 blue:167.0/255.0 alpha:1.0]; // lighter burlywood
+    gbl_colorHomeBG_per  = [UIColor colorWithRed:225.0/255.0 green:200.0/255.0 blue:167.0/255.0 alpha:1.0]; // lighter burlywood
+
+    // FYI  gbl_colorSepara  for apple is c8c7cc  200,199,204
+    //
+    gbl_colorSepara_per  = [UIColor colorWithRed:160.0/255.0 green:160.0/255.0 blue:167.0/255.0 alpha:1.0]; // cell separator color
+
+
+    //  try different color for grp
+    gbl_colorHomeBG_grp  = [UIColor colorWithRed:250.0/255.0 green:252.0/255.0 blue:255.0/255.0 alpha:1.0]; // 
+    gbl_colorHomeBG_grp  = [UIColor colorWithRed:242.0/255.0 green:230.0/255.0 blue:254.0/255.0 alpha:1.0]; //  purple
+    gbl_colorHomeBG_grp  = [UIColor colorWithRed:230.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0]; //  greeny
+    gbl_colorHomeBG_grp  = [UIColor colorWithRed:242.0/255.0 green:230.0/255.0 blue:230.0/255.0 alpha:1.0]; //  reddy
+    gbl_colorHomeBG_grp  = [UIColor colorWithRed:242.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0]; //  yellowy
+    gbl_colorHomeBG_grp  = [UIColor colorWithRed:242.0/255.0 green:242.0/255.0 blue:242.0/255.0 alpha:1.0]; //  gray
+    gbl_colorHomeBG_grp  = [UIColor colorWithRed:242.0/255.0 green:242.0/255.0 blue:248.0/255.0 alpha:1.0]; //  
+    gbl_colorHomeBG_grp  = [UIColor colorWithRed:222.0/255.0 green:240.0/255.0 blue:248.0/255.0 alpha:1.0]; // 
+    gbl_colorHomeBG_grp  = [UIColor colorWithRed:233.0/255.0 green:252.0/255.0 blue:255.0/255.0 alpha:1.0]; // 
+
+    gbl_colorHomeBG_grp  = [UIColor colorWithRed:128.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0]; // 
+    gbl_colorHomeBG_grp  = [UIColor colorWithRed:192.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0]; // 
+    gbl_colorHomeBG_grp  = [UIColor colorWithRed:224.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0]; // 
+    gbl_colorHomeBG_grp  = [UIColor colorWithRed:240.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0]; // 
+    gbl_colorHomeBG_grp  = [UIColor colorWithRed:232.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0]; //  ok robins egg
+    gbl_colorHomeBG_grp  = [UIColor colorWithRed:232.0/255.0 green:252.0/255.0 blue:255.0/255.0 alpha:1.0]; // ok
+    gbl_colorHomeBG_grp  = [UIColor colorWithRed:232.0/255.0 green:247.0/255.0 blue:255.0/255.0 alpha:1.0]; // ok
+
+    gbl_colorHomeBG_grp  = [UIColor colorWithRed:232.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0]; //  ok robins egg
+    gbl_colorHomeBG_grp  = [UIColor colorWithRed:230.0/255.0 green:242.0/255.0 blue:255.0/255.0 alpha:1.0]; //  
+
+    gbl_colorHomeBG_grp  = [UIColor colorWithRed:246.0/255.0 green:248.0/255.0 blue:249.0/255.0 alpha:1.0]; //  
+    gbl_colorHomeBG_grp  = [UIColor colorWithRed:246.0/255.0 green:248.0/255.0 blue:255.0/255.0 alpha:1.0]; //  
+    gbl_colorHomeBG_grp  = [UIColor colorWithRed:248.0/255.0 green:252.0/255.0 blue:255.0/255.0 alpha:1.0]; //  
+    gbl_colorHomeBG_grp  = [UIColor colorWithRed:246.0/255.0 green:248.0/255.0 blue:255.0/255.0 alpha:1.0]; //  
+
+    gbl_colorHomeBG_grp  = [UIColor colorWithRed:222.0/255.0 green:234.0/255.0 blue:248.0/255.0 alpha:1.0]; //  
+    gbl_colorHomeBG_grp  = [UIColor colorWithRed:210.0/255.0 green:226.0/255.0 blue:248.0/255.0 alpha:1.0]; //  
+
+    gbl_colorHomeBG_grp  = [UIColor colorWithRed:192.0/255.0 green:192.0/255.0 blue:192.0/255.0 alpha:1.0]; //  c0
+    gbl_colorHomeBG_grp  = [UIColor colorWithRed:0xff/255.0 green:0xf6/255.0 blue:0x8f/255.0 alpha:1.0]; //  
+    gbl_colorHomeBG_grp  = [UIColor colorWithRed:0xde/255.0 green:0xb8/255.0 blue:0x87/255.0 alpha:1.0]; // burlywood
+    gbl_colorHomeBG_grp  = [UIColor colorWithRed:222.0/255.0 green:184.0/255.0 blue:135.0/255.0 alpha:1.0]; // burlywood
+    gbl_colorHomeBG_grp  = [UIColor colorWithRed:242.0/255.0 green:205.0/255.0 blue:150.0/255.0 alpha:1.0]; // lighter burlywood
+    gbl_colorHomeBG_grp  = [UIColor colorWithRed:255.0/255.0 green:225.0/255.0 blue:167.0/255.0 alpha:1.0]; // lighter burlywood
+    gbl_colorHomeBG_grp  = [UIColor colorWithRed:222.0/255.0 green:184.0/255.0 blue:135.0/255.0 alpha:1.0]; // burlywood
+    gbl_colorHomeBG_grp  = [UIColor colorWithRed:139.0/255.0 green:115.0/255.0 blue:085.0/255.0 alpha:1.0]; // burlywood
+    gbl_colorHomeBG_grp  = [UIColor colorWithRed:181.0/255.0 green:128.0/255.0 blue:095.0/255.0 alpha:1.0]; // burlywood
+    gbl_colorHomeBG_grp  = [UIColor colorWithRed:199.0/255.0 green:141.0/255.0 blue:105.0/255.0 alpha:1.0]; // burlywood
+    gbl_colorHomeBG_grp  = [UIColor colorWithRed:207.0/255.0 green:155.0/255.0 blue:115.0/255.0 alpha:1.0]; // burlywood brown
+
+    // try lighter brown
+    gbl_colorHomeBG_grp  = [UIColor colorWithRed:222.0/255.0 green:184.0/255.0 blue:135.0/255.0 alpha:1.0]; // burlywood brown
 
 
 
-    gbl_colorHomeBG      = [UIColor colorWithRed:230.0/255.0 green:230.0/255.0 blue:254.0/255.0 alpha:1.0]; //  try darker for grp
-    gbl_colorHomeBG      = [UIColor colorWithRed:230.0/255.0 green:242.0/255.0 blue:254.0/255.0 alpha:1.0]; // gold  10160114
-
-
-
-
-    gbl_colorHomeBG_save = gbl_colorHomeBG ;  // in order to put back after editing mode color
-
+    // FYI  gbl_colorSepara  for apple is c8c7cc  200,199,204
+    //
+    gbl_colorSepara_grp  = [UIColor colorWithRed:215.0/255.0 green:215.0/255.0 blue:220.0/255.0 alpha:1.0]; // cell separator color
 
 //    gbl_color_cBGforSelected  = [UIColor colorWithRed: 255.0/255.0 green: 204.0/255.0 blue: 153.0/255.0 alpha:1.0]; // ffcc99
 //    gbl_color_cBGforSelected  = [UIColor colorWithRed: 255.0/255.0 green: 226.0/255.0 blue: 175.0/255.0 alpha:1.0]; // ffe2af
@@ -1001,7 +1121,6 @@
 
 
 
-//e.g.      gbl_colorHomeBG      = [UIColor colorWithRed:230.0/255.0 green:242.0/255.0 blue:254.0/255.0 alpha:1.0]; // gold  10160114
 
 
 //    gbl_color_cPerGreen2 = [UIColor colorWithRed:144.0/255.0 green:200.0/255.0 blue:255.0/255.0 alpha:1.0]; // 90c8ff (mid blue) gold #1

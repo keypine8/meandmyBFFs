@@ -3998,7 +3998,9 @@ nbn(12);
             ];
             UILabel *myDisclosureIndicatorLabel        = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 12.0f, 32.0f)];
             myDisclosureIndicatorLabel.attributedText  = myNewCellAttributedText3;
-            myDisclosureIndicatorLabel.backgroundColor = gbl_colorReportsBG; 
+//            myDisclosureIndicatorLabel.backgroundColor = gbl_colorReportsBG; 
+            myDisclosureIndicatorLabel.backgroundColor = gbl_colorHomeBG; 
+
         //
         // end of  UILabel for the disclosure indicator, ">",  for tappable cells
 
@@ -4575,8 +4577,9 @@ trn("// end of  tableView cellForRowAtIndexPath: (NSIndexPath *)indexPath");
         //        lblSection0.backgroundColor =  gbl_color_cHed;  
         //        lblSection0.backgroundColor = gbl_color_cAplTop;
         //        lblSection0.backgroundColor = [UIColor redColor];   for test
-        lblSection0.backgroundColor = [UIColor whiteColor];
 
+//        lblSection0.backgroundColor = [UIColor whiteColor];
+        lblSection0.backgroundColor = gbl_colorNavBarBG;
         [lblSection0 sizeToFit];
 
         // make same font bold

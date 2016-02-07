@@ -52,7 +52,9 @@ tn(); NSLog(@"in sel Reports viewDidLoad!");
 
 
     // http://stackoverflow.com/questions/18912638/custom-image-for-uinavigation-back-button-in-ios-7
-    UIImage *backBtn = [UIImage imageNamed:@"iconRightArrowBlue_66"];
+    //    UIImage *backBtn = [UIImage imageNamed:@"iconRightArrowBlue_66"];
+    UIImage *backBtn = gbl_chevronLeft;
+
     backBtn = [backBtn imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal];
     self.navigationItem.backBarButtonItem.title=@"";
     self.navigationController.navigationBar.backIndicatorImage = backBtn;
@@ -308,7 +310,8 @@ NSLog(@"in viewDidAppear()");
             ];
             UILabel *myDisclosureIndicatorLabel        = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 12.0f, 32.0f)];
             myDisclosureIndicatorLabel.attributedText  = myNewCellAttributedText3;
-            myDisclosureIndicatorLabel.backgroundColor = gbl_colorReportsBG; 
+            myDisclosureIndicatorLabel.backgroundColor = gbl_colorHomeBG; 
+
         //
         // end of  UILabel for the disclosure indicator, ">",  for tappable cells
 
@@ -373,7 +376,10 @@ NSLog(@"in viewDidAppear()");
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     
     [self.tableView setBackgroundView:nil];
-    [self.tableView setBackgroundColor: gbl_colorReportsBG];
+//    [self.tableView setBackgroundColor: gbl_colorReportsBG];
+    [self.tableView setBackgroundColor: gbl_colorHomeBG];
+
+
     cell.backgroundColor = [UIColor clearColor];
 
 }

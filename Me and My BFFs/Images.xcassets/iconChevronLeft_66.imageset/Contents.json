@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "bg_yellowEdit6.png",
+      "filename" : "iconChevronLeft_44.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "bg_yellowEdit6-1.png",
+      "filename" : "iconChevronLeft_44-1.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "bg_yellowEdit6b.png",
+      "filename" : "iconChevronLeft_66.png",
       "scale" : "3x"
     }
   ],

@@ -42,7 +42,8 @@ tn();
     //
     // http://stackoverflow.com/questions/18912638/custom-image-for-uinavigation-back-button-in-ios-7
 //    UIImage *backBtn = [UIImage imageNamed:@"iconPlusAddGreenBig_66"];
-    UIImage *backBtn = [UIImage imageNamed:@"iconRightArrowBlue_66"]; // actually left arrow
+//    UIImage *backBtn = [UIImage imageNamed:@"iconRightArrowBlue_66"]; // actually left arrow
+    UIImage *backBtn = gbl_chevronLeft;
     backBtn = [backBtn imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal];
     self.navigationItem.backBarButtonItem.title=@"";
     self.navigationController.navigationBar.backIndicatorImage = backBtn;

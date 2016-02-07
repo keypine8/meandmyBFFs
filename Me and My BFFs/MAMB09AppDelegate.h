@@ -100,6 +100,8 @@ UIImage *gbl_blueDone ;
 UIImage *gbl_yellowEdit ;
 UIColor *gbl_bgColor_blueDone;
 UIColor *gbl_bgColor_yellowEdit;
+UIImage *gbl_chevronRight ;
+UIImage *gbl_chevronLeft  ;
 
 
 //NSInteger addChangeViewJustEntered;  // 1=y,0=n
@@ -660,7 +662,13 @@ NSMutableArray *gbl_homeLeftItemsWithAddButton;
 NSMutableArray *gbl_homeLeftItemsWithNoAddButton;
 
 UIColor *gbl_colorHomeBG;
-UIColor *gbl_colorHomeBG_save;  // in order to put back after editing mode color
+UIColor *gbl_colorNavBarBG;
+//UIColor *gbl_colorHomeBG_save;  // in order to put back after editing mode color
+UIColor *gbl_colorHomeBG_grp;
+UIColor *gbl_colorHomeBG_per;
+UIColor *gbl_colorSepara_per;  // cell separator color
+UIColor *gbl_colorSepara_grp;  // cell separator color
+
 UIColor *gbl_colorEditButton_save;  // in order to put back after editing mode color
 UIColor *gbl_colorEditingBG;
 UIColor *gbl_colorEditingBG_current;  // is now yellow or blue for add a record screen  (addChange view)
@@ -668,8 +676,8 @@ UIColor *gbl_colorEditingBGforInputField;
 UIColor *gbl_colorforAddMembers;
 UIColor *gbl_colorforDelMembers;
 
-UIColor *gbl_colorReportsBG;
-UIColor *gbl_colorSelParamForReports;
+//UIColor *gbl_colorReportsBG;  // NO   use this instead ==>  UIColor *gbl_colorHomeBG;
+//UIColor *gbl_colorSelParamForReports;
 UIColor *gbl_colorEdit;
 
 UIView *gbl_myCellBgView;

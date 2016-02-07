@@ -23,7 +23,9 @@
     self.outletYearPicker.delegate = self;
     self.outletYearPicker.dataSource = self;
     
-    self.view.backgroundColor = gbl_colorSelParamForReports;
+//    self.view.backgroundColor = gbl_colorSelParamForReports;
+    if ([gbl_lastSelectionType isEqualToString:@"person"]) [self.view setBackgroundColor: gbl_colorHomeBG_per];
+    if ([gbl_lastSelectionType isEqualToString:@"group" ]) [self.view setBackgroundColor: gbl_colorHomeBG_grp];
     // self.outletYearPicker.backgroundColor = [UIColor whiteColor];
     
 
@@ -40,14 +42,18 @@
 
     // set up navigation bar  right button  ">" in image format
     // UIImage *myImage = [[UIImage imageNamed: @"forwardArrow_029.png"]
-    UIImage *myImage = [[UIImage imageNamed: @"iconLeftArrowBlue_66"]
-                     imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal ];
+    // UIImage *myImage = [[UIImage imageNamed: @"iconLeftArrowBlue_66"]
+    //                     imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal ];
 
 //        UIImage *myImage = [[UIImage imageNamed: @"forwardArrow_01.png"]
 //        UIImage *myImage = [UIImage imageNamed: @"forwardArrow_01.png" inBundle: nil compatibleWithTraitCollection: nil ];
 
 
+//    UIImage *myImage = [[UIImage imageNamed: @"iconLeftArrowBlue_66"]
+    UIImage *myImage = [[UIImage imageNamed: @"iconChevronRight_66"]
+                     imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal ];
 
+//    UIBarButtonItem *_goToReportButton = [[UIBarButtonItem alloc]initWithImage: gbl_chevronRight
     UIBarButtonItem *_goToReportButton = [[UIBarButtonItem alloc]initWithImage: myImage
                                                                          style: UIBarButtonItemStylePlain 
                                                                         target: self 
@@ -179,15 +185,74 @@
 
         if (psvRememberedYear == NULL || [psvRememberedYear intValue] == 0) {
             gbl_lastSelectedYear           = [@(gbl_currentYearInt) stringValue];
-            dispatch_async(dispatch_get_main_queue(), ^{                                // <===  <.>
+//  NSLog(@"gbl_colorDIfor_home=[%@]",gbl_colorDIfor_home);
+
+            dispatch_async(dispatch_get_main_queue(), ^{
+                    if ([gbl_lastSelectionType isEqualToString:@"person"]) {
+                        NSMutableAttributedString *myAttrYear;
+                        myAttrYear = [[NSMutableAttributedString alloc] initWithString:  [@(gbl_currentYearInt) stringValue]
+                            attributes : @{
+                //                  NSParagraphStyleAttributeName : myParagraphStyle,
+                //                   NSBackgroundColorAttributeName : gbl_color_cRed,
+                //               NSForegroundColorAttributeName : gbl_colorDIfor_home,
+                               NSForegroundColorAttributeName : [UIColor grayColor],
+                                          NSFontAttributeName : [UIFont boldSystemFontOfSize: 36.0]
+                            }
+                        ];
+                        self.outletYearSelected.attributedText = myAttrYear;
+                    }
+                    if ([gbl_lastSelectionType isEqualToString:@"group" ]) {
+                        NSMutableAttributedString *myAttrYear;
+                        myAttrYear = [[NSMutableAttributedString alloc] initWithString:   [@(gbl_currentYearInt) stringValue]
+                            attributes : @{
+                //                  NSParagraphStyleAttributeName : myParagraphStyle,
+                //                   NSBackgroundColorAttributeName : gbl_color_cRed,
+                //               NSForegroundColorAttributeName : gbl_colorDIfor_home,
+                               NSForegroundColorAttributeName : [UIColor darkGrayColor],
+                                          NSFontAttributeName : [UIFont boldSystemFontOfSize: 36.0]
+                            }
+                        ];
+                        self.outletYearSelected.attributedText = myAttrYear;
+                    }
+
                 // self.outletPickedYear.text = [@(gbl_currentYearInt) stringValue];
-                self.outletYearSelected.text = [@(gbl_currentYearInt) stringValue];
+//                self.outletYearSelected.text = [@(gbl_currentYearInt) stringValue];
+//                self.outletYearSelected.textColor = gbl_colorDIfor_home;
+//                [self.outletYearSelected setTextColor: gbl_colorDIfor_home];
             });
         } else {   
-            gbl_lastSelectedYear           = psvRememberedYear;
+//            gbl_lastSelectedYear           = psvRememberedYear;
             dispatch_async(dispatch_get_main_queue(), ^{                                // <===  <.>
-                //self.outletPickedYear.text = psvRememberedYear;
-                self.outletYearSelected.text = psvRememberedYear;
+
+                if ([gbl_lastSelectionType isEqualToString:@"person"]) {
+                    NSMutableAttributedString *myAttrYear;
+                    myAttrYear = [[NSMutableAttributedString alloc] initWithString: psvRememberedYear
+                        attributes : @{
+            //                  NSParagraphStyleAttributeName : myParagraphStyle,
+            //                   NSBackgroundColorAttributeName : gbl_color_cRed,
+            //               NSForegroundColorAttributeName : gbl_colorDIfor_home,
+                           NSForegroundColorAttributeName : [UIColor grayColor],
+                                      NSFontAttributeName : [UIFont boldSystemFontOfSize: 36.0]
+                        }
+                    ];
+                    self.outletYearSelected.attributedText = myAttrYear;
+                }
+                if ([gbl_lastSelectionType isEqualToString:@"group" ]) {
+                    NSMutableAttributedString *myAttrYear;
+                    myAttrYear = [[NSMutableAttributedString alloc] initWithString: psvRememberedYear
+                        attributes : @{
+            //                  NSParagraphStyleAttributeName : myParagraphStyle,
+            //                   NSBackgroundColorAttributeName : gbl_color_cRed,
+            //               NSForegroundColorAttributeName : gbl_colorDIfor_home,
+                           NSForegroundColorAttributeName : [UIColor darkGrayColor],
+                                      NSFontAttributeName : [UIFont boldSystemFontOfSize: 36.0]
+                        }
+                    ];
+                    self.outletYearSelected.attributedText = myAttrYear;
+                }
+
+//                self.outletYearSelected.text = psvRememberedYear;
+//                self.outletYearSelected.textColor = gbl_colorDIfor_home;
             });
         }
         
@@ -372,6 +437,8 @@ NSLog(@"in viewDidAppear()");
 - (NSString*)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component   // opt
 {
     // NSLog(@"picker in titleForRow!");
+    [[pickerView.subviews objectAtIndex:1] setBackgroundColor: gbl_colorDIfor_home];  // selection indicator lines
+    [[pickerView.subviews objectAtIndex:2] setBackgroundColor: gbl_colorDIfor_home];
     
     return [yearsToPickFrom objectAtIndex: row];
 }
@@ -390,12 +457,45 @@ NSLog(@"in viewDidAppear()");
     //   NSLog(@"[_outletToYearPicker selectedRowInComponent:0]=%ld",(long)[_outletToYearPicker selectedRowInComponent:0]);
     
     gbl_lastSelectedYear = [self pickerView: _outletYearPicker
-                                titleForRow: [_outletYearPicker selectedRowInComponent:0]
+                                titleForRow: [_outletYearPicker selectedRowInComponent: 0]
                                forComponent: 0
     ];
     
     // self.outletPickedYear.text = gbl_lastSelectedYear;
-    self.outletYearSelected.text = gbl_lastSelectedYear;
+
+    dispatch_async(dispatch_get_main_queue(), ^{                                // <===  <.>
+//        self.outletYearSelected.text      = gbl_lastSelectedYear;
+//        self.outletYearSelected.textColor = gbl_colorDIfor_home;
+
+
+        if ([gbl_lastSelectionType isEqualToString:@"person"]) {
+            NSMutableAttributedString *myAttrYear;
+            myAttrYear = [[NSMutableAttributedString alloc] initWithString: gbl_lastSelectedYear
+                attributes : @{
+    //                  NSParagraphStyleAttributeName : myParagraphStyle,
+    //                   NSBackgroundColorAttributeName : gbl_color_cRed,
+    //               NSForegroundColorAttributeName : gbl_colorDIfor_home,
+                   NSForegroundColorAttributeName : [UIColor grayColor],
+                              NSFontAttributeName : [UIFont boldSystemFontOfSize: 36.0]
+                }
+            ];
+            self.outletYearSelected.attributedText = myAttrYear;
+        }
+        if ([gbl_lastSelectionType isEqualToString:@"group" ]) {
+            NSMutableAttributedString *myAttrYear;
+            myAttrYear = [[NSMutableAttributedString alloc] initWithString: gbl_lastSelectedYear
+                attributes : @{
+    //                  NSParagraphStyleAttributeName : myParagraphStyle,
+    //                   NSBackgroundColorAttributeName : gbl_color_cRed,
+    //               NSForegroundColorAttributeName : gbl_colorDIfor_home,
+                   NSForegroundColorAttributeName : [UIColor darkGrayColor],
+                              NSFontAttributeName : [UIFont boldSystemFontOfSize: 36.0]
+                }
+            ];
+            self.outletYearSelected.attributedText = myAttrYear;
+        }
+
+    });
 
 
 //    // now, in gbl_arrayPer , update array idx gbl_fromHomeCurrentSelectionArrayIdx with the  new Remembered Year

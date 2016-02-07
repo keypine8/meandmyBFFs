@@ -272,11 +272,13 @@ nbn(100);
   NSLog(@"EDIT BUTTON 1   set title  edit tab");
 //            self.editButtonItem.title = @"Ed2t\t";  // pretty good
             self.editButtonItem.title = @"Edit";  // ok with no tab
-//            self.editButtonItem.title = @"\tEdit\t";  // pretty good
-//            self.editButtonItem.title = @"\sEdit\s";  // pretty good
-//            self.editButtonItem.title = @"\sEdit\s";  // pretty good  // fits all on 4s
-//            self.editButtonItem.title = @"Editsss";  // pretty good  // too big by 1
-//            self.editButtonItem.title = @"Edit";  // right adjusted
+
+UIView *tmpView = (UIView *)[self.editButtonItem performSelector:@selector(view)];
+
+//            self.editButtonItem.view.layer.backgroundColor = [[UIColor clearColor] CGColor];
+            tmpView.layer.backgroundColor = [[UIColor clearColor] CGColor];
+
+
 
         // [myButton.titleLabel setTextAlignment: NSTextAlignmentCenter];
 //        [self.editButtonItem.titleLabel setTextAlignment: NSTextAlignmentCenter];
@@ -350,6 +352,13 @@ nbn(100);
           self.navigationItem.rightBarButtonItems =   // "editButtonItem" is magic Apple functionality
               [self.navigationItem.rightBarButtonItems arrayByAddingObject: self.editButtonItem]; //editButtonItem=ADD apple-provided EDIT BUTTON
 
+
+
+//  [[UINavigationBar appearance] setTranslucent: NO];
+//  [[UINavigationBar appearance] setTintColor: [UIColor redColor] ];
+
+//  [[UINavigationBar appearance]  setTranslucent: NO];
+//  [[UINavigationBar appearance] setBarTintColor: [UIColor redColor] ];
 
 
 //        self.navigationItem.rightBarButtonItems =
@@ -927,11 +936,12 @@ ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
     NSString *currentLine, *nameOfGrpOrPer;
 
     if ([gbl_lastSelectionType isEqualToString:@"group"]) {
+        gbl_colorDIfor_home = gbl_colorSepara_grp ;
         currentLine = [gbl_arrayGrp objectAtIndex:indexPath.row];
     } else {
-        //if ([_mambCurrentEntity isEqualToString:@"person"]) 
         if ([gbl_lastSelectionType isEqualToString:@"person"]) {
             currentLine = [gbl_arrayPer objectAtIndex:indexPath.row];
+            gbl_colorDIfor_home = gbl_colorSepara_per ;
         } else {
             currentLine = @"Unknown|";
         }
@@ -962,6 +972,8 @@ ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
 //        }
 //
 
+            // make label for Disclosure Indicator   ">"
+            //
             NSAttributedString *myNewCellAttributedText3 = [
                 [NSAttributedString alloc] initWithString: @">"  
                                                attributes: @{
@@ -974,7 +986,8 @@ ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
 
             UILabel *myDisclosureIndicatorLabel        = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 12.0f, 32.0f)];
             myDisclosureIndicatorLabel.attributedText  = myNewCellAttributedText3;
-            myDisclosureIndicatorLabel.backgroundColor = gbl_colorReportsBG; 
+            if ([gbl_lastSelectionType isEqualToString:@"group"])  myDisclosureIndicatorLabel.backgroundColor = gbl_colorHomeBG_grp; 
+            if ([gbl_lastSelectionType isEqualToString:@"person"]) myDisclosureIndicatorLabel.backgroundColor = gbl_colorHomeBG_per; 
 
 
 //  NSLog(@"gbl_homeUseMODE =%@",gbl_homeUseMODE );
@@ -1048,8 +1061,12 @@ ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     
     [self.tableView setBackgroundView:nil];
+
     //    [self.tableView setBackgroundColor: gbl_colorReportsBG];
-    [self.tableView setBackgroundColor: gbl_colorHomeBG];
+    //    [self.tableView setBackgroundColor: gbl_colorHomeBG];
+    if ([gbl_lastSelectionType isEqualToString:@"person"]) [self.tableView setBackgroundColor: gbl_colorHomeBG_per];
+    if ([gbl_lastSelectionType isEqualToString:@"group" ]) [self.tableView setBackgroundColor: gbl_colorHomeBG_grp];
+
     cell.backgroundColor = [UIColor clearColor];
 }
 
@@ -1463,7 +1480,7 @@ tn();
     int64_t myDelayInSec   = 0.33 * (double)NSEC_PER_SEC;
     dispatch_time_t mytime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)myDelayInSec);
 
-    dispatch_after(mytime, dispatch_get_main_queue(), ^{                     // do after delay of  mytime
+    dispatch_after(mytime, dispatch_get_main_queue(), ^{       // do after delay of mytime    dispatch    dispatch    dispatch   dispatch  
 
         //// start DO STUFF HERE
 
@@ -1473,14 +1490,19 @@ tn();
         gbl_fromHomeCurrentEntity        = @"person";
         gbl_fromHomeCurrentSelectionType = @"person";
         gbl_lastSelectionType            = @"person";
-        gbl_currentMenuPrefixFromHome              = @"homp"; 
+        gbl_currentMenuPrefixFromHome    = @"homp"; 
+        gbl_colorHomeBG                  = gbl_colorHomeBG_per;
+        self.tableView.separatorColor    = gbl_colorSepara_per;
     } else if ([gbl_lastSelectionType isEqualToString:@"person"]){
         // NSLog(@"change per to grp!");
         //_mambCurrentSelectionType = @"person";
         gbl_fromHomeCurrentEntity        = @"group";
         gbl_fromHomeCurrentSelectionType = @"group";
         gbl_lastSelectionType            = @"group";
-        gbl_currentMenuPrefixFromHome              = @"homg"; 
+        gbl_currentMenuPrefixFromHome    = @"homg"; 
+        gbl_colorHomeBG                  = gbl_colorHomeBG_grp;
+        self.tableView.separatorColor    = gbl_colorSepara_grp;
+
     }
 //    NSLog(@"gbl_fromHomeCurrentEntity        =%@",gbl_fromHomeCurrentEntity        );
 //    NSLog(@"gbl_fromHomeCurrentSelectionType =%@",gbl_fromHomeCurrentSelectionType );
@@ -2275,7 +2297,10 @@ nbn(311);
 //            self.navigationItem.leftBarButtonItems = gbl_homeLeftItemsWithNoAddButton;
 //        });
 
-        gbl_colorHomeBG                = gbl_colorHomeBG_save;  // in order to put back after editing mode color
+//        gbl_colorHomeBG                = gbl_colorHomeBG_save;  // in order to put back after editing mode color
+
+        if ([gbl_lastSelectionType isEqualToString:@"person"]) gbl_colorHomeBG = gbl_colorHomeBG_per;
+        if ([gbl_lastSelectionType isEqualToString:@"group" ]) gbl_colorHomeBG = gbl_colorHomeBG_grp;
         self.tableView.backgroundColor = gbl_colorHomeBG;       // WORKS
 
         // UITableViewCellAccessoryDisclosureIndicator,    tapping the cell triggers a push action

@@ -77,6 +77,13 @@ tn();
     self.tableView.backgroundColor = gbl_color_cBgr;   // WORKS
 
 
+//
+////[self.navigationController.navigationBar setBarTintColor:[UIColor greenColor]];
+//[self.navigationController.navigationBar setBarTintColor:[UIColor whiteColor]];
+//[self.navigationController.navigationBar setTranslucent: NO];
+//
+
+
     gbl_tblrpts2_ShouldAddToNavBar = 1; // init to prevent  multiple programatic adds of nav bar items
 
 
@@ -160,7 +167,8 @@ nbn(501);
                 //
                 [self.navigationController.navigationBar setShadowImage: [UIImage new]];   
                 //
-                self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];  // 2. of 2
+//                self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];  // 2. of 2
+                self.navigationController.navigationBar.backgroundColor = gbl_colorNavBarBG;  // 2. of 2
                 //
                 // end of  How to hide iOS7 UINavigationBar 1px bottom line
 
@@ -221,7 +229,8 @@ nbn(501);
                 //
                 [self.navigationController.navigationBar setShadowImage: [UIImage new]];   
                 //
-                self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];  // 2. of 2
+//                self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];  // 2. of 2
+                self.navigationController.navigationBar.backgroundColor = gbl_colorNavBarBG;  // 2. of 2
                 //
                 // end of  How to hide iOS7 UINavigationBar 1px bottom line
 
@@ -258,7 +267,8 @@ nbn(501);
             //
             [self.navigationController.navigationBar setShadowImage: [UIImage new]];
             //
-            self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];
+//            self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];
+            self.navigationController.navigationBar.backgroundColor = gbl_colorNavBarBG;  // 2. of 2
             //
             // end of  How to hide iOS7 UINavigationBar 1px bottom line
 
@@ -1501,6 +1511,7 @@ for (id eltTst in gbl_compDataLines) { NSLog(@"    gbl_comp=%@", eltTst); }
             if ( [mylin isEqualToString: @"filler line #1 at top"] ) {
                 mylin             = @" ";
                 mybgcolor         = gbl_color_cBgr ;
+                mybgcolor         = [UIColor greenColor] ;
 //                gbl_heightCellPER = 8;
 //                gbl_heightCellPER = 24  ;
                 gbl_heightCellPER = 16  ;
@@ -4411,6 +4422,8 @@ kdn(gbl_heightForCompTable );
 
     if (   [gbl_currentMenuPlusReportCode isEqualToString: @"gbm2bm"]       // my Best Match in Group ... (personB)
         || [gbl_currentMenuPlusReportCode isEqualToString: @"pbm2bm"]       // my Best Match in Group ... (personB)
+        || [gbl_currentMenuPlusReportCode isEqualToString: @"gbm1bm"]       // my Best Match in Group ... (personA)
+        || [gbl_currentMenuPlusReportCode isEqualToString: @"pbm1bm"]       // my Best Match in Group ... (personA)
     ) {
         return 34.0;   // MY Best Match in Group ...   2 lines
     }
@@ -4477,7 +4490,8 @@ kdn(gbl_heightForCompTable );
 //lblSection0.backgroundColor =  gbl_color_cHed;  
 //        lblSection0.backgroundColor = gbl_color_cAplTop;
         //        lblSection0.backgroundColor = [UIColor redColor];   for test
-        lblSection0.backgroundColor = [UIColor whiteColor];
+//        lblSection0.backgroundColor = [UIColor whiteColor];
+        lblSection0.backgroundColor = gbl_colorNavBarBG;
 
         [lblSection0 sizeToFit];
 
