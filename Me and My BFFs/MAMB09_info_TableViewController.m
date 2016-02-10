@@ -112,6 +112,7 @@ tn();
       ||  [gbl_currentMenuPlusReportCode isEqualToString: @"gbypcy"] 
       ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgby"]    //  from best year
     ) {
+        
         gbl_helpScreenDescription = @"calendar year";
 
         // try to fix title on right side
@@ -2177,6 +2178,7 @@ nbn(100);
 
     } // end of gbl_helpScreenDescription   "best day"
 
+
     if (  [gbl_helpScreenDescription isEqualToString: @"HOME"] )
     { 
 
@@ -2221,9 +2223,12 @@ nbn(100);
                 cell.userInteractionEnabled  = NO;
                 cell.textLabel.font          = myTitleFont;
 //                cell.backgroundColor         = gbl_color_cHed;
-                cell.backgroundColor         = gbl_bgColor_blueDone;
+//                cell.backgroundColor         = gbl_bgColor_blueDoneH;
+                cell.backgroundColor         = gbl_bgColor_brownDone;
                 cell.textLabel.numberOfLines = 0;
-                cell.textLabel.text          = @"Blue Home is for Reports";
+                //                cell.textLabel.text          = @"Blue Home is for Reports";
+//                cell.textLabel.text          = @"Brown Home is for Reports";
+                cell.textLabel.text          = @"Brown is for Reports";
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -2238,10 +2243,12 @@ nbn(100);
                 cell.userInteractionEnabled  = NO;
                 cell.textLabel.font          = myFontOnSide;
 //                cell.backgroundColor         = gbl_color_cBgr;
-                cell.backgroundColor         = gbl_bgColor_blueDone;
+//                cell.backgroundColor         = gbl_bgColor_blueDone;
+                cell.backgroundColor         = gbl_bgColor_brownDone;
                 cell.textLabel.numberOfLines = 0;
 //                cell.textLabel.text          = @"Look at reports for all the people and groups you have entered.";
-                cell.textLabel.text          = @"Look at reports for all of your people and groups.";
+//                cell.textLabel.text          = @"Look at reports for all of your people and groups.";
+                cell.textLabel.text          = @"Look at reports for the people and groups you have added.";
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -2273,7 +2280,8 @@ nbn(100);
 //                cell.backgroundColor         = gbl_color_cHed;
                 cell.backgroundColor         = gbl_bgColor_yellowEdit;
                 cell.textLabel.numberOfLines = 0;
-                cell.textLabel.text          = @"Yellow Home is for Editing";
+//                cell.textLabel.text          = @"Yellow Home is for Editing";
+                cell.textLabel.text          = @"Yellow is for Editing";
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -2463,7 +2471,7 @@ nbn(100);
 
     if (   [gbl_helpScreenDescription isEqualToString: @"HOME"] ) {
 
-        if (indexPath.row ==   0) return     8.0;  // spacer
+        if (indexPath.row ==   0) return    16.0;  // spacer
         if (indexPath.row ==   1) return    30.0;  // title for blue home
         if (indexPath.row ==   2) return    30.0;  // text  for blue
         if (indexPath.row ==   3) return    16.0;  // spacer
@@ -2717,12 +2725,20 @@ nbn(100);
 //        }
 //
 
+        self.tableView.allowsSelection = NO;   // see shouldHighlightRowAtIndexPath just below
+
 
 
 //    NSLog(@"END OF  in INFO  viewWillAppear!");
 
 
 } // end of   viewWillAppear
+
+
+- (BOOL)tableView:(UITableView *)tableView  shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return NO;
+}
 
 
 - (void)viewDidAppear:(BOOL)animated

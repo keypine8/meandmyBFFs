@@ -144,7 +144,10 @@ nbn(501);
             personNameOfJustTapped = [gbl_PSVtappedPerson_fromGRP componentsSeparatedByString:@"|"][0]; // get field #1 (name) (zero-based)
 
             myNavBar2lineTitle          = [NSString stringWithFormat:  @"%@\n%@", myNavBarTitle, personNameOfJustTapped ];  // set earlier
+
             myNavBarLabel.text          = myNavBar2lineTitle;
+            myNavBarLabel.adjustsFontSizeToFitWidth = YES;
+            [myNavBarLabel sizeToFit];
 
             dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
                 self.navigationItem.titleView = myNavBarLabel; // myNavBarLabel.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
@@ -167,8 +170,8 @@ nbn(501);
                 //
                 [self.navigationController.navigationBar setShadowImage: [UIImage new]];   
                 //
-//                self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];  // 2. of 2
-                self.navigationController.navigationBar.backgroundColor = gbl_colorNavBarBG;  // 2. of 2
+                self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];  // 2. of 2
+//               self.navigationController.navigationBar.backgroundColor = gbl_colorNavBarBG;  // 2. of 2
                 //
                 // end of  How to hide iOS7 UINavigationBar 1px bottom line
 
@@ -207,6 +210,8 @@ nbn(501);
                 gbl_TBLRPTS2_NAME_personB
             ]; 
             myNavBarLabel.text          = myNavBar2lineTitle;
+            myNavBarLabel.adjustsFontSizeToFitWidth = YES;
+            [myNavBarLabel sizeToFit];
 
             dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
                 self.navigationItem.titleView = myNavBarLabel; // myNavBarLabel.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
@@ -230,7 +235,7 @@ nbn(501);
                 [self.navigationController.navigationBar setShadowImage: [UIImage new]];   
                 //
 //                self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];  // 2. of 2
-                self.navigationController.navigationBar.backgroundColor = gbl_colorNavBarBG;  // 2. of 2
+//              self.navigationController.navigationBar.backgroundColor = gbl_colorNavBarBG;  // 2. of 2
                 //
                 // end of  How to hide iOS7 UINavigationBar 1px bottom line
 
@@ -268,7 +273,7 @@ nbn(501);
             [self.navigationController.navigationBar setShadowImage: [UIImage new]];
             //
 //            self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];
-            self.navigationController.navigationBar.backgroundColor = gbl_colorNavBarBG;  // 2. of 2
+//          self.navigationController.navigationBar.backgroundColor = gbl_colorNavBarBG;  // 2. of 2
             //
             // end of  How to hide iOS7 UINavigationBar 1px bottom line
 
@@ -1511,7 +1516,7 @@ for (id eltTst in gbl_compDataLines) { NSLog(@"    gbl_comp=%@", eltTst); }
             if ( [mylin isEqualToString: @"filler line #1 at top"] ) {
                 mylin             = @" ";
                 mybgcolor         = gbl_color_cBgr ;
-                mybgcolor         = [UIColor greenColor] ;
+//                mybgcolor         = [UIColor greenColor] ;
 //                gbl_heightCellPER = 8;
 //                gbl_heightCellPER = 24  ;
                 gbl_heightCellPER = 16  ;
@@ -3611,7 +3616,8 @@ bn(802);
             cell.textLabel.numberOfLines             = 1; 
             cell.textLabel.textColor                 = mytextcolor;
             cell.textLabel.font                      = myCompFont;
-            cell.textLabel.adjustsFontSizeToFitWidth = NO;
+//            cell.textLabel.adjustsFontSizeToFitWidth = NO;
+            cell.textLabel.adjustsFontSizeToFitWidth = YES;
             cell.textLabel.backgroundColor           = mybgcolor;
 //            cell.textLabel.attributedText            = nil;  // order matters- pipes DO NOT appear if this line is here
             cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
@@ -4490,8 +4496,8 @@ kdn(gbl_heightForCompTable );
 //lblSection0.backgroundColor =  gbl_color_cHed;  
 //        lblSection0.backgroundColor = gbl_color_cAplTop;
         //        lblSection0.backgroundColor = [UIColor redColor];   for test
-//        lblSection0.backgroundColor = [UIColor whiteColor];
-        lblSection0.backgroundColor = gbl_colorNavBarBG;
+        lblSection0.backgroundColor = [UIColor whiteColor];
+        //        lblSection0.backgroundColor = gbl_colorNavBarBG;
 
         [lblSection0 sizeToFit];
 

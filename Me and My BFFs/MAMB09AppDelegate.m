@@ -53,11 +53,16 @@
 //  [[UINavigationBar appearance] setTranslucent: NO];                      // works
 //  [[UINavigationBar appearance] setBackGroundColor: [UIColor redColor] ]; // works
 
-    gbl_colorNavBarBG = [UIColor colorWithRed:255.0/255.0 green:244.0/255.0 blue:228.0/255.0 alpha:1.0]; // GOLD light brown 
+
+
+// back arrow chevron gave problems, so go back to white
+//    gbl_colorNavBarBG = [UIColor colorWithRed:255.0/255.0 green:244.0/255.0 blue:228.0/255.0 alpha:1.0]; // GOLD light brown 
 //    gbl_colorNavBarBG = [UIColor redColor];
 
+
+
     [[UINavigationBar appearance]  setTranslucent: NO];
-    [[UINavigationBar appearance] setBarTintColor:
+//   [[UINavigationBar appearance] setBarTintColor:
 //  [UIColor lightGrayColor]
 // [UIColor colorWithRed:242.0/255.0 green:247.0/255.0 blue:255.0/255.0 alpha:1.0] // light blue
 // [UIColor colorWithRed:255.0/255.0 green:232.0/255.0 blue:216.0/255.0 alpha:1.0]  // light brown 
@@ -65,8 +70,8 @@
 // [UIColor colorWithRed:255.0/255.0 green:240.0/255.0 blue:224.0/255.0 alpha:1.0]  //  light brown 
 // [UIColor colorWithRed:255.0/255.0 green:202.0/255.0 blue:192.0/255.0 alpha:1.0]  // light brown 
 // [UIColor colorWithRed:255.0/255.0 green:244.0/255.0 blue:228.0/255.0 alpha:1.0]  // GOLD light brown 
-        gbl_colorNavBarBG   // light brown 
-    ];
+//        gbl_colorNavBarBG   // light brown
+//  ];
 
     // set font and size for all Nav Bars
     //  see addchange 
@@ -76,16 +81,18 @@
     //MAMB09AppDelegate *gbl_myappDelegate=[[UIApplication sharedApplication] delegate];
 
 
-//    gbl_chevronRight = [UIImage  imageNamed: @"iconRightArrowBlue_66.png" 
-    gbl_chevronRight = [UIImage  imageNamed: @"iconChevronRight_66.png" 
-                                   inBundle: nil
-              compatibleWithTraitCollection: nil
-    ];
 //    gbl_chevronRight = [UIImage  imageNamed: @"iconLeftArrowBlue_66.png" 
-    gbl_chevronLeft  = [UIImage  imageNamed: @"iconChevronLeft_66.png" 
-                                   inBundle: nil
-              compatibleWithTraitCollection: nil
-    ];
+//    gbl_chevronRight = [UIImage  imageNamed: @"iconChevronRight_66.png" 
+//                                   inBundle: nil
+//              compatibleWithTraitCollection: nil
+//    ];
+
+
+//    gbl_chevronRight = [UIImage  imageNamed: @"iconRightArrowBlue_66.png" 
+//    gbl_chevronLeft  = [UIImage  imageNamed: @"iconChevronLeft_66.png" 
+//                                   inBundle: nil
+//              compatibleWithTraitCollection: nil
+//    ];
 
     // EDITING stuff
     //
@@ -105,19 +112,29 @@
 //    gbl_blueDone   = [UIImage  imageNamed: @"bg_blueDone3.png" // [self.editButtonItem setBackgroundImage: gbl_BlueBG
 //    gbl_blueDone   = [UIImage  imageNamed: @"bg_blueDone5.png" // [self.editButtonItem setBackgroundImage: gbl_BlueBG
 //    gbl_blueDone   = [UIImage  imageNamed: @"bg_blueDone6.png" // [self.editButtonItem setBackgroundImage: gbl_BlueBG
-    gbl_blueDone   = [UIImage  imageNamed: @"bg_blueDone7.png" // [self.editButtonItem setBackgroundImage: gbl_BlueBG
+//    gbl_blueDone   = [UIImage  imageNamed: @"bg_blueDone7.png" // [self.editButtonItem setBackgroundImage: gbl_BlueBG
+//                                 inBundle: nil
+//            compatibleWithTraitCollection: nil
+//    ];
+    gbl_brownDone   = [UIImage  imageNamed: @"bg_brownDone8.png" // [self.editButtonItem setBackgroundImage: gbl_BlueBG
                                  inBundle: nil
             compatibleWithTraitCollection: nil
     ];
 
 //  gbl_yellowEdit   = [UIImage  imageNamed: @"bg_yellowEdit6b_blu1.png" // [self.editButtonItem setBackgroundImage: gbl_BlueBG  try blue border
 //    gbl_yellowEdit   = [UIImage  imageNamed: @"bg_yellowEdit6.png" // [self.editButtonItem setBackgroundImage: gbl_BlueBG
-    gbl_yellowEdit   = [UIImage  imageNamed: @"bg_yellowEdit7.png" // [self.editButtonItem setBackgroundImage: gbl_BlueBG
+//    gbl_yellowEdit   = [UIImage  imageNamed: @"bg_yellowEdit7.png" // [self.editButtonItem setBackgroundImage: gbl_BlueBG
+    gbl_yellowEdit   = [UIImage  imageNamed: @"bg_yellowEdit8.png" // [self.editButtonItem setBackgroundImage: gbl_BlueBG
                                    inBundle: nil
               compatibleWithTraitCollection: nil
     ];
-    gbl_bgColor_blueDone   = [UIColor colorWithRed:235.0/255.0 green:245.0/255.0 blue:255.0/255.0 alpha:1.0]; 
-    gbl_bgColor_yellowEdit = [UIColor colorWithRed:255.0/255.0 green:253.0/255.0 blue:166.0/255.0 alpha:1.0];
+
+
+    // ONLY used in info
+//    gbl_bgColor_blueDone   = [UIColor colorWithRed:235.0/255.0 green:245.0/255.0 blue:255.0/255.0 alpha:1.0]; 
+//    gbl_bgColor_blueDone   = [UIColor colorWithRed:235.0/255.0 green:245.0/255.0 blue:255.0/255.0 alpha:1.0]; 
+    gbl_bgColor_brownDone  = [UIColor colorWithRed:225.0/255.0 green:200.0/255.0 blue:167.0/255.0 alpha:1.0]; // lighter burlywood  info
+    gbl_bgColor_yellowEdit = [UIColor colorWithRed:255.0/255.0 green:253.0/255.0 blue:166.0/255.0 alpha:1.0]; // ONLY used in info
 
 
 
@@ -204,66 +221,6 @@
      //
 
 
-// this does not work  app hangs in home (no data in cells)  cpu and mem go nuts  BUT it did work as lcl_ global
-//  NSLog(@"10!");
-//     
-//
-//
-//    // UILabel for the disclosure indicator, ">",  for tappable cells
-//    //
-////    NSString *myDisclosureIndicatorBGcolorName; 
-//    NSString *myDisclosureIndicatorText; 
-//    UIColor  *colorOfGroupReportArrow; 
-//    UIFont   *myDisclosureIndicatorFont; 
-//
-//    myDisclosureIndicatorText = @">"; 
-////            colorOfGroupReportArrow   = [UIColor blackColor];                 // blue background
-////            colorOfGroupReportArrow   = [UIColor darkGrayColor];                 // blue background
-////            colorOfGroupReportArrow   = [UIColor grayColor];                 // blue background
-//    colorOfGroupReportArrow   = [UIColor lightGrayColor];                 // blue background
-////            myDisclosureIndicatorFont = [UIFont     systemFontOfSize: 16.0f]; // make not bold
-////            myDisclosureIndicatorFont = [UIFont     systemFontOfSize: 24.0f]; // make not bold
-////            myDisclosureIndicatorFont = [UIFont     systemFontOfSize: 20.0f]; // make not bold
-////            myDisclosureIndicatorFont = [UIFont     boldSystemFontOfSize: 24.0f]; // make not bold
-////            myDisclosureIndicatorFont = [UIFont     boldSystemFontOfSize: 20.0f]; // make not bold
-////            myDisclosureIndicatorFont = [UIFont fontWithName: @"Menlo-bold" size:  24.0]; // no good
-////            myDisclosureIndicatorFont = [UIFont fontWithName: @"ArialRoundedMTBold" size:  24.0];
-////            myDisclosureIndicatorFont = [UIFont fontWithName: @"HelveticaNeue-ThinItalic" size:  24.0];
-////            myDisclosureIndicatorFont = [UIFont fontWithName: @"IowanOldStyle-Bold" size:  24.0];
-//    myDisclosureIndicatorFont = [UIFont fontWithName: @"MarkerFelt-Thin" size:  24.0]; // good
-////            myDisclosureIndicatorFont = [UIFont fontWithName: @"MarkerFelt-Wide" size:  24.0]; // bad
-////            myDisclosureIndicatorFont = [UIFont fontWithName: @"SanFranciscoDisplay-Thin" size:  24.0]; 
-////            myDisclosureIndicatorFont = [UIFont fontWithName: @"SanFranciscoRounded-Bold" size:  16.0]; 
-////            myDisclosureIndicatorFont = [UIFont fontWithName: @"TimesNewRomanPS-BoldMT" size:  24.0]; // good
-////              myDisclosureIndicatorFont = [UIFont fontWithName: @"Superclarendon-Bold" size:  24.0]; // good
-////              myDisclosureIndicatorFont = [UIFont fontWithName: @"SnellRoundhand-Bold" size:  24.0]; // good
-////              myDisclosureIndicatorFont = [UIFont fontWithName: @"AvenirNextCondensed-Heavy" size:  24.0]; // good
-//
-//  NSLog(@"11!");
-//
-//
-//
-//    NSAttributedString *myNewCellAttributedText3 = [
-//        [NSAttributedString alloc] initWithString: myDisclosureIndicatorText  // i.e.   @">"
-//                                       attributes: @{            NSFontAttributeName : myDisclosureIndicatorFont,
-//                                                       NSForegroundColorAttributeName: colorOfGroupReportArrow                }
-//    ];
-//  NSLog(@"12!");
-//
-//    gbl_disclosureIndicatorLabel                 = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 12.0f, 32.0f)];
-//  NSLog(@"13!");
-//    gbl_disclosureIndicatorLabel.attributedText  = myNewCellAttributedText3;
-//  NSLog(@"14!");
-//    gbl_disclosureIndicatorLabel.backgroundColor = gbl_colorReportsBG; 
-//  NSLog(@"15!");
-//    //
-//    // end of  UILabel for the disclosure indicator, ">",  for tappable cells
-//
-//
-//
-//
-  NSLog(@"20!");
-
         // Creating a UIColor with Preset Component Values [UIColor redColor]
         //    blackColor
         //    darkGrayColor
@@ -337,11 +294,16 @@
 //    gbl_colorEditing = [UIColor colorWithRed:229.0/255.0 green:198.0/255.0 blue:166.0/255.0 alpha:1.0]; // browny for edit
 
 //    gbl_color_cGre  = [UIColor colorWithRed:168.0/255.0 green:255.0/255.0 blue:152.0/255.0 alpha:1.0]; // a8ff98
-    gbl_colorEditingBG = [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:150.0/255.0 alpha:1.0]; // yellowy for edit
+//    gbl_colorEditingBG = [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:150.0/255.0 alpha:1.0]; // yellowy for edit
+//
+//    gbl_colorEditingBG = [UIColor colorWithRed:240.0/255.0 green:230.0/255.0 blue:140.0/255.0 alpha:1.0]; // khaki
+//    gbl_colorEditingBG = [UIColor colorWithRed:255.0/255.0 green:246.0/255.0 blue:143.0/255.0 alpha:1.0]; // khaki1
+    gbl_colorEditingBG = [UIColor colorWithRed:247.0/255.0 green:238.0/255.0 blue:140.0/255.0 alpha:1.0]; // khaki1 darker  GOLD
 
 
 
-
+    // add members color
+    //
 //    gbl_colorforAddMembers = [UIColor colorWithRed:150.0/255.0 green:255.0/255.0 blue:150.0/255.0 alpha:1.0]; // greeny for add member
 //    gbl_colorforAddMembers = [UIColor colorWithRed:200.0/255.0 green:255.0/255.0 blue:150.0/255.0 alpha:1.0]; // greeny for add member
 //    gbl_colorforAddMembers = [UIColor colorWithRed:230.0/255.0 green:255.0/255.0 blue:150.0/255.0 alpha:1.0]; // greeny for add member
@@ -354,8 +316,7 @@
 //    gbl_colorforAddMembers = [UIColor colorWithRed:150.0/255.0 green:255.0/255.0 blue:150.0/255.0 alpha:1.0]; // greeny for add member
 //    gbl_colorforAddMembers = [UIColor colorWithRed:175.0/255.0 green:255.0/255.0 blue:175.0/255.0 alpha:1.0]; // greeny for add member
 //
-    // add members color
-    //
+
 //    gbl_colorforAddMembers = [UIColor colorWithRed:200.0/255.0 green:255.0/255.0 blue:200.0/255.0 alpha:1.0]; // greeny for add member
 //
 //    gbl_colorforAddMembers = [UIColor colorWithRed:033.0/255.0 green:128.0/255.0 blue:033.0/255.0 alpha:1.0]; // way dark
@@ -369,7 +330,34 @@
 //    gbl_colorforAddMembers = [UIColor colorWithRed:128.0/255.0 green:255.0/255.0 blue:128.0/255.0 alpha:1.0]; //  not bad
 //
 
-    gbl_colorforAddMembers = [UIColor colorWithRed:160.0/255.0 green:255.0/255.0 blue:160.0/255.0 alpha:1.0]; //  
+//    gbl_colorforAddMembers = [UIColor colorWithRed:160.0/255.0 green:255.0/255.0 blue:160.0/255.0 alpha:1.0]; //  GOLD #1
+//    gbl_colorforAddMembers = [UIColor colorWithRed:128.0/255.0 green:255.0/255.0 blue:128.0/255.0 alpha:1.0]; //  
+//    gbl_colorforAddMembers = [UIColor colorWithRed:016.0/255.0 green:255.0/255.0 blue:096.0/255.0 alpha:1.0]; //  
+//    gbl_colorforAddMembers = [UIColor colorWithRed:048.0/255.0 green:255.0/255.0 blue:000.0/255.0 alpha:1.0]; //  
+//    gbl_colorforAddMembers = [UIColor colorWithRed:000.0/255.0 green:255.0/255.0 blue:000.0/255.0 alpha:1.0]; //  
+//    gbl_colorforAddMembers = [UIColor colorWithRed:064.0/255.0 green:192.0/255.0 blue:064.0/255.0 alpha:1.0]; //  
+//    gbl_colorforAddMembers = [UIColor colorWithRed:096.0/255.0 green:192.0/255.0 blue:096.0/255.0 alpha:1.0]; //  
+//    gbl_colorforAddMembers = [UIColor colorWithRed:064.0/255.0 green:192.0/255.0 blue:064.0/255.0 alpha:1.0]; //  
+//    gbl_colorforAddMembers = [UIColor colorWithRed:064.0/255.0 green:224.0/255.0 blue:064.0/255.0 alpha:1.0]; //  
+//    gbl_colorforAddMembers = [UIColor colorWithRed:096.0/255.0 green:192.0/255.0 blue:096.0/255.0 alpha:1.0]; //  
+//    gbl_colorforAddMembers = [UIColor colorWithRed:096.0/255.0 green:224.0/255.0 blue:096.0/255.0 alpha:1.0]; //  
+//    gbl_colorforAddMembers = [UIColor colorWithRed:096.0/255.0 green:192.0/255.0 blue:096.0/255.0 alpha:1.0]; //  
+//    gbl_colorforAddMembers = [UIColor colorWithRed:128.0/255.0 green:192.0/255.0 blue:128.0/255.0 alpha:1.0]; //  
+//
+//    gbl_colorforAddMembers = [UIColor colorWithRed:112.0/255.0 green:224.0/255.0 blue:112.0/255.0 alpha:1.0]; //  
+//    gbl_colorforAddMembers = [UIColor colorWithRed:112.0/255.0 green:160.0/255.0 blue:112.0/255.0 alpha:1.0]; // 
+//    gbl_colorforAddMembers = [UIColor colorWithRed:112.0/255.0 green:176.0/255.0 blue:112.0/255.0 alpha:1.0]; // 
+//    gbl_colorforAddMembers = [UIColor colorWithRed:112.0/255.0 green:168.0/255.0 blue:112.0/255.0 alpha:1.0]; // 
+//    gbl_colorforAddMembers = [UIColor colorWithRed:112.0/255.0 green:192.0/255.0 blue:112.0/255.0 alpha:1.0]; //  GOLD #2
+//
+//    gbl_colorforAddMembers = [UIColor colorWithRed:112.0/255.0 green:184.0/255.0 blue:112.0/255.0 alpha:1.0]; //  GOLD #4  see below for #5
+//    gbl_colorforAddMembers = [UIColor colorWithRed:112.0/255.0 green:184.0/255.0 blue:112.0/255.0 alpha:1.0]; //  GOLD #6  see below for #5
+//    gbl_colorforAddMembers = [UIColor colorWithRed:112.0/255.0 green:204.0/255.0 blue:112.0/255.0 alpha:1.0]; //
+//    gbl_colorforAddMembers = [UIColor colorWithRed:096.0/255.0 green:204.0/255.0 blue:096.0/255.0 alpha:1.0]; //
+//    gbl_colorforAddMembers = [UIColor colorWithRed:064.0/255.0 green:164.0/255.0 blue:064.0/255.0 alpha:1.0]; //
+//    gbl_colorforAddMembers = [UIColor colorWithRed:128.0/255.0 green:164.0/255.0 blue:128.0/255.0 alpha:1.0]; //
+
+    gbl_colorforAddMembers = [UIColor colorWithRed:144.0/255.0 green:188.0/255.0 blue:144.0/255.0 alpha:1.0]; //  GOLD #7
 
 
     // del members color
@@ -423,7 +411,33 @@
 
 //    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:192.0/255.0 blue:192.0/255.0 alpha:1.0]; // 
 
-    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0]; // can  see circles  gold
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0]; // can  see circles  GOLD #1
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:072.0/255.0 blue:100.0/255.0 alpha:1.0]; // ok best  TRY
+
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:040.0/255.0 blue:112.0/255.0 alpha:1.0]; // new GOLD #2
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:040.0/255.0 blue:096.0/255.0 alpha:1.0]; // 
+//    gbl_colorforDelMembers = [UIColor colorWithRed:240.0/255.0 green:040.0/255.0 blue:096.0/255.0 alpha:1.0]; // 
+//    gbl_colorforDelMembers = [UIColor colorWithRed:236.0/255.0 green:080.0/255.0 blue:111.0/255.0 alpha:1.0]; // 
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:080.0/255.0 blue:111.0/255.0 alpha:1.0]; // 
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:064.0/255.0 blue:096.0/255.0 alpha:1.0]; // 
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:032.0/255.0 blue:096.0/255.0 alpha:1.0]; // 
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:080.0/255.0 blue:100.0/255.0 alpha:1.0]; // 
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:040.0/255.0 blue:096.0/255.0 alpha:1.0]; // 
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:064.0/255.0 blue:096.0/255.0 alpha:1.0]; //
+//    gbl_colorforDelMembers = [UIColor colorWithRed:224.0/255.0 green:064.0/255.0 blue:080.0/255.0 alpha:1.0]; //  GOLD #3  flatter,darker
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:064.0/255.0 blue:080.0/255.0 alpha:1.0]; //  
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:064.0/255.0 blue:096.0/255.0 alpha:1.0]; //  
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:080.0/255.0 blue:112.0/255.0 alpha:1.0]; //  
+//
+
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:080.0/255.0 blue:112.0/255.0 alpha:1.0]; //  GOLD #4 see below for #5
+//    // too saturated
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:112.0/255.0 blue:152.0/255.0 alpha:1.0]; //  
+//    gbl_colorforDelMembers = [UIColor colorWithRed:224.0/255.0 green:112.0/255.0 blue:152.0/255.0 alpha:1.0]; //  
+//    gbl_colorforDelMembers = [UIColor colorWithRed:224.0/255.0 green:112.0/255.0 blue:136.0/255.0 alpha:1.0]; //
+//    gbl_colorforDelMembers = [UIColor colorWithRed:224.0/255.0 green:112.0/255.0 blue:120.0/255.0 alpha:1.0]; // 
+
+    gbl_colorforDelMembers = [UIColor colorWithRed:224.0/255.0 green:140.0/255.0 blue:140.0/255.0 alpha:1.0]; // GOLD #7
 
 //
 ////<.> for test   fut  colors
@@ -918,27 +932,83 @@
 //    gbl_color_cAplDarkBlue = [UIColor colorWithRed:000.0/255.0 green:128.0/255.0 blue:255.0/255.0 alpha:1.0]; // 0080ff  (blue text, chevron)
 
 
-    gbl_colorHomeBG_per  = [UIColor colorWithRed:230.0/255.0 green:242.0/255.0 blue:254.0/255.0 alpha:1.0]; //
-    gbl_colorHomeBG_per  = [UIColor colorWithRed:238.0/255.0 green:246.0/255.0 blue:254.0/255.0 alpha:1.0]; //
-    gbl_colorHomeBG_per  = [UIColor colorWithRed:238.0/255.0 green:238.0/255.0 blue:254.0/255.0 alpha:1.0]; //
-    gbl_colorHomeBG_per  = [UIColor colorWithRed:228.0/255.0 green:238.0/255.0 blue:254.0/255.0 alpha:1.0]; //
-    gbl_colorHomeBG_per  = [UIColor colorWithRed:240.0/255.0 green:248.0/255.0 blue:255.0/255.0 alpha:1.0]; //  
-    gbl_colorHomeBG_per  = [UIColor colorWithRed:230.0/255.0 green:242.0/255.0 blue:255.0/255.0 alpha:1.0]; //  
-    gbl_colorHomeBG_per  = [UIColor colorWithRed:226.0/255.0 green:242.0/255.0 blue:255.0/255.0 alpha:1.0]; //  
-    gbl_colorHomeBG_per  = [UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:255.0/255.0 alpha:1.0]; //  
-    gbl_colorHomeBG_per  = [UIColor colorWithRed:230.0/255.0 green:242.0/255.0 blue:254.0/255.0 alpha:1.0]; //  
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:230.0/255.0 green:242.0/255.0 blue:254.0/255.0 alpha:1.0]; //
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:238.0/255.0 green:246.0/255.0 blue:254.0/255.0 alpha:1.0]; //
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:238.0/255.0 green:238.0/255.0 blue:254.0/255.0 alpha:1.0]; //
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:228.0/255.0 green:238.0/255.0 blue:254.0/255.0 alpha:1.0]; //
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:240.0/255.0 green:248.0/255.0 blue:255.0/255.0 alpha:1.0]; //  
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:230.0/255.0 green:242.0/255.0 blue:255.0/255.0 alpha:1.0]; //  
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:226.0/255.0 green:242.0/255.0 blue:255.0/255.0 alpha:1.0]; //  
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:255.0/255.0 alpha:1.0]; //  
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:230.0/255.0 green:242.0/255.0 blue:254.0/255.0 alpha:1.0]; //  
+//
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:176.0/255.0 green:176.0/255.0 blue:176.0/255.0 alpha:1.0]; //  
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:0xf5/255.0 green:0xf5/255.0 blue:0xdc/255.0 alpha:1.0]; //  
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:0xde/255.0 green:0xb8/255.0 blue:0x87/255.0 alpha:1.0]; //
+//
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:0xcd/255.0 green:0x85/255.0 blue:0x3f/255.0 alpha:1.0]; //  peru
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:205.0/255.0 green:133.0/255.0 blue:63.0/255.0 alpha:1.0]; //  peru
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:205.0/255.0 green:133.0/255.0 blue:63.0/255.0 alpha:1.0]; //  peru
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:225.0/255.0 green:146.0/255.0 blue:70.0/255.0 alpha:1.0]; //  lighter peru
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:247.0/255.0 green:165.0/255.0 blue:85.0/255.0 alpha:1.0]; //  lighter peru
+//
+    gbl_colorHomeBG_per  = [UIColor colorWithRed:225.0/255.0 green:200.0/255.0 blue:167.0/255.0 alpha:1.0]; // lighter burlywood   GOLD per
 
-    gbl_colorHomeBG_per  = [UIColor colorWithRed:176.0/255.0 green:176.0/255.0 blue:176.0/255.0 alpha:1.0]; //  
-    gbl_colorHomeBG_per  = [UIColor colorWithRed:0xf5/255.0 green:0xf5/255.0 blue:0xdc/255.0 alpha:1.0]; //  
-    gbl_colorHomeBG_per  = [UIColor colorWithRed:0xde/255.0 green:0xb8/255.0 blue:0x87/255.0 alpha:1.0]; //
+    // try new reds
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:032.0/255.0 blue:128.0/255.0 alpha:1.0]; // 
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:064.0/255.0 blue:096.0/255.0 alpha:1.0]; // 
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:240.0/255.0 green:032.0/255.0 blue:096.0/255.0 alpha:1.0]; // 
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:032.0/255.0 blue:096.0/255.0 alpha:1.0]; // good red
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:032.0/255.0 blue:096.0/255.0 alpha:1.0]; // good red
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:044.0/255.0 blue:123.0/255.0 alpha:1.0]; // 
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:040.0/255.0 blue:112.0/255.0 alpha:1.0]; // best
+//
 
-    gbl_colorHomeBG_per  = [UIColor colorWithRed:0xcd/255.0 green:0x85/255.0 blue:0x3f/255.0 alpha:1.0]; //  peru
-    gbl_colorHomeBG_per  = [UIColor colorWithRed:205.0/255.0 green:133.0/255.0 blue:63.0/255.0 alpha:1.0]; //  peru
-    gbl_colorHomeBG_per  = [UIColor colorWithRed:205.0/255.0 green:133.0/255.0 blue:63.0/255.0 alpha:1.0]; //  peru
-    gbl_colorHomeBG_per  = [UIColor colorWithRed:225.0/255.0 green:146.0/255.0 blue:70.0/255.0 alpha:1.0]; //  lighter peru
-    gbl_colorHomeBG_per  = [UIColor colorWithRed:247.0/255.0 green:165.0/255.0 blue:85.0/255.0 alpha:1.0]; //  lighter peru
-    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:225.0/255.0 blue:167.0/255.0 alpha:1.0]; // lighter burlywood
-    gbl_colorHomeBG_per  = [UIColor colorWithRed:225.0/255.0 green:200.0/255.0 blue:167.0/255.0 alpha:1.0]; // lighter burlywood
+    // try  colors for delete members
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0]; // 
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:096.0/255.0 blue:096.0/255.0 alpha:1.0]; //
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:112.0/255.0 blue:128.0/255.0 alpha:1.0]; //
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:096.0/255.0 blue:128.0/255.0 alpha:1.0]; //
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:096.0/255.0 blue:140.0/255.0 alpha:1.0]; //
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:064.0/255.0 blue:140.0/255.0 alpha:1.0]; //
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:080.0/255.0 blue:140.0/255.0 alpha:1.0]; // good
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:090.0/255.0 blue:140.0/255.0 alpha:1.0]; // 
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:070.0/255.0 blue:140.0/255.0 alpha:1.0]; // 
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:080.0/255.0 blue:140.0/255.0 alpha:1.0]; // good
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:080.0/255.0 blue:133.0/255.0 alpha:1.0]; // 
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:110.0/255.0 blue:133.0/255.0 alpha:1.0]; // 
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:110.0/255.0 blue:160.0/255.0 alpha:1.0]; // 
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:096.0/255.0 blue:096.0/255.0 alpha:1.0]; // 
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0]; // 
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:080.0/255.0 blue:140.0/255.0 alpha:1.0]; // good
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:080.0/255.0 blue:124.0/255.0 alpha:1.0]; // 
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:040.0/255.0 blue:124.0/255.0 alpha:1.0]; // 
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:064.0/255.0 blue:140.0/255.0 alpha:1.0]; // 
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:080.0/255.0 blue:140.0/255.0 alpha:1.0]; // good
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:088.0/255.0 blue:154.0/255.0 alpha:1.0]; // 
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:100.0/255.0 blue:140.0/255.0 alpha:1.0]; // 
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:110.0/255.0 blue:150.0/255.0 alpha:1.0]; // 
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:080.0/255.0 blue:140.0/255.0 alpha:1.0]; // good
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:100.0/255.0 blue:133.0/255.0 alpha:1.0]; // 
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:111.0/255.0 blue:133.0/255.0 alpha:1.0]; // 
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:080.0/255.0 blue:140.0/255.0 alpha:1.0]; // good
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:090.0/255.0 blue:140.0/255.0 alpha:1.0]; // 
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:128.0/255.0 blue:140.0/255.0 alpha:1.0]; // 
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:080.0/255.0 blue:120.0/255.0 alpha:1.0]; // good2
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:080.0/255.0 blue:130.0/255.0 alpha:1.0]; // 
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:080.0/255.0 blue:140.0/255.0 alpha:1.0]; // good
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:080.0/255.0 blue:120.0/255.0 alpha:1.0]; // good2
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:080.0/255.0 blue:110.0/255.0 alpha:1.0]; // good3
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:088.0/255.0 blue:120.0/255.0 alpha:1.0]; // 
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:072.0/255.0 blue:100.0/255.0 alpha:1.0]; // ok best
+//
+
+
+    // try  colors for done button
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:225.0/255.0 blue:190.0/255.0 alpha:1.0]; // very lighter burlywood
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:236.0/255.0 blue:200.0/255.0 alpha:1.0]; // very lighter burlywood
+//    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:230.0/255.0 blue:200.0/255.0 alpha:1.0]; // very lighter burlywood
+
 
     // FYI  gbl_colorSepara  for apple is c8c7cc  200,199,204
     //
@@ -946,49 +1016,49 @@
 
 
     //  try different color for grp
-    gbl_colorHomeBG_grp  = [UIColor colorWithRed:250.0/255.0 green:252.0/255.0 blue:255.0/255.0 alpha:1.0]; // 
-    gbl_colorHomeBG_grp  = [UIColor colorWithRed:242.0/255.0 green:230.0/255.0 blue:254.0/255.0 alpha:1.0]; //  purple
-    gbl_colorHomeBG_grp  = [UIColor colorWithRed:230.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0]; //  greeny
-    gbl_colorHomeBG_grp  = [UIColor colorWithRed:242.0/255.0 green:230.0/255.0 blue:230.0/255.0 alpha:1.0]; //  reddy
-    gbl_colorHomeBG_grp  = [UIColor colorWithRed:242.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0]; //  yellowy
-    gbl_colorHomeBG_grp  = [UIColor colorWithRed:242.0/255.0 green:242.0/255.0 blue:242.0/255.0 alpha:1.0]; //  gray
-    gbl_colorHomeBG_grp  = [UIColor colorWithRed:242.0/255.0 green:242.0/255.0 blue:248.0/255.0 alpha:1.0]; //  
-    gbl_colorHomeBG_grp  = [UIColor colorWithRed:222.0/255.0 green:240.0/255.0 blue:248.0/255.0 alpha:1.0]; // 
-    gbl_colorHomeBG_grp  = [UIColor colorWithRed:233.0/255.0 green:252.0/255.0 blue:255.0/255.0 alpha:1.0]; // 
+//    gbl_colorHomeBG_grp  = [UIColor colorWithRed:250.0/255.0 green:252.0/255.0 blue:255.0/255.0 alpha:1.0]; // 
+//    gbl_colorHomeBG_grp  = [UIColor colorWithRed:242.0/255.0 green:230.0/255.0 blue:254.0/255.0 alpha:1.0]; //  purple
+//    gbl_colorHomeBG_grp  = [UIColor colorWithRed:230.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0]; //  greeny
+//    gbl_colorHomeBG_grp  = [UIColor colorWithRed:242.0/255.0 green:230.0/255.0 blue:230.0/255.0 alpha:1.0]; //  reddy
+//    gbl_colorHomeBG_grp  = [UIColor colorWithRed:242.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0]; //  yellowy
+//    gbl_colorHomeBG_grp  = [UIColor colorWithRed:242.0/255.0 green:242.0/255.0 blue:242.0/255.0 alpha:1.0]; //  gray
+//    gbl_colorHomeBG_grp  = [UIColor colorWithRed:242.0/255.0 green:242.0/255.0 blue:248.0/255.0 alpha:1.0]; //  
+//    gbl_colorHomeBG_grp  = [UIColor colorWithRed:222.0/255.0 green:240.0/255.0 blue:248.0/255.0 alpha:1.0]; // 
+//    gbl_colorHomeBG_grp  = [UIColor colorWithRed:233.0/255.0 green:252.0/255.0 blue:255.0/255.0 alpha:1.0]; // 
+//
+//    gbl_colorHomeBG_grp  = [UIColor colorWithRed:128.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0]; // 
+//    gbl_colorHomeBG_grp  = [UIColor colorWithRed:192.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0]; // 
+//    gbl_colorHomeBG_grp  = [UIColor colorWithRed:224.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0]; // 
+//    gbl_colorHomeBG_grp  = [UIColor colorWithRed:240.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0]; // 
+//    gbl_colorHomeBG_grp  = [UIColor colorWithRed:232.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0]; //  ok robins egg
+//    gbl_colorHomeBG_grp  = [UIColor colorWithRed:232.0/255.0 green:252.0/255.0 blue:255.0/255.0 alpha:1.0]; // ok
+//    gbl_colorHomeBG_grp  = [UIColor colorWithRed:232.0/255.0 green:247.0/255.0 blue:255.0/255.0 alpha:1.0]; // ok
+//
+//    gbl_colorHomeBG_grp  = [UIColor colorWithRed:232.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0]; //  ok robins egg
+//    gbl_colorHomeBG_grp  = [UIColor colorWithRed:230.0/255.0 green:242.0/255.0 blue:255.0/255.0 alpha:1.0]; //  
+//
+//    gbl_colorHomeBG_grp  = [UIColor colorWithRed:246.0/255.0 green:248.0/255.0 blue:249.0/255.0 alpha:1.0]; //  
+//    gbl_colorHomeBG_grp  = [UIColor colorWithRed:246.0/255.0 green:248.0/255.0 blue:255.0/255.0 alpha:1.0]; //  
+//    gbl_colorHomeBG_grp  = [UIColor colorWithRed:248.0/255.0 green:252.0/255.0 blue:255.0/255.0 alpha:1.0]; //  
+//    gbl_colorHomeBG_grp  = [UIColor colorWithRed:246.0/255.0 green:248.0/255.0 blue:255.0/255.0 alpha:1.0]; //  
+//
+//    gbl_colorHomeBG_grp  = [UIColor colorWithRed:222.0/255.0 green:234.0/255.0 blue:248.0/255.0 alpha:1.0]; //  
+//    gbl_colorHomeBG_grp  = [UIColor colorWithRed:210.0/255.0 green:226.0/255.0 blue:248.0/255.0 alpha:1.0]; //  
+//
+//    gbl_colorHomeBG_grp  = [UIColor colorWithRed:192.0/255.0 green:192.0/255.0 blue:192.0/255.0 alpha:1.0]; //  c0
+//    gbl_colorHomeBG_grp  = [UIColor colorWithRed:0xff/255.0 green:0xf6/255.0 blue:0x8f/255.0 alpha:1.0]; //  
+//    gbl_colorHomeBG_grp  = [UIColor colorWithRed:0xde/255.0 green:0xb8/255.0 blue:0x87/255.0 alpha:1.0]; // burlywood
+//    gbl_colorHomeBG_grp  = [UIColor colorWithRed:222.0/255.0 green:184.0/255.0 blue:135.0/255.0 alpha:1.0]; // burlywood
+//    gbl_colorHomeBG_grp  = [UIColor colorWithRed:242.0/255.0 green:205.0/255.0 blue:150.0/255.0 alpha:1.0]; // lighter burlywood
+//    gbl_colorHomeBG_grp  = [UIColor colorWithRed:255.0/255.0 green:225.0/255.0 blue:167.0/255.0 alpha:1.0]; // lighter burlywood
+//    gbl_colorHomeBG_grp  = [UIColor colorWithRed:222.0/255.0 green:184.0/255.0 blue:135.0/255.0 alpha:1.0]; // burlywood
+//    gbl_colorHomeBG_grp  = [UIColor colorWithRed:139.0/255.0 green:115.0/255.0 blue:085.0/255.0 alpha:1.0]; // burlywood
+//    gbl_colorHomeBG_grp  = [UIColor colorWithRed:181.0/255.0 green:128.0/255.0 blue:095.0/255.0 alpha:1.0]; // burlywood
+//    gbl_colorHomeBG_grp  = [UIColor colorWithRed:199.0/255.0 green:141.0/255.0 blue:105.0/255.0 alpha:1.0]; // burlywood
+//    gbl_colorHomeBG_grp  = [UIColor colorWithRed:207.0/255.0 green:155.0/255.0 blue:115.0/255.0 alpha:1.0]; // burlywood brown
+//
 
-    gbl_colorHomeBG_grp  = [UIColor colorWithRed:128.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0]; // 
-    gbl_colorHomeBG_grp  = [UIColor colorWithRed:192.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0]; // 
-    gbl_colorHomeBG_grp  = [UIColor colorWithRed:224.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0]; // 
-    gbl_colorHomeBG_grp  = [UIColor colorWithRed:240.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0]; // 
-    gbl_colorHomeBG_grp  = [UIColor colorWithRed:232.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0]; //  ok robins egg
-    gbl_colorHomeBG_grp  = [UIColor colorWithRed:232.0/255.0 green:252.0/255.0 blue:255.0/255.0 alpha:1.0]; // ok
-    gbl_colorHomeBG_grp  = [UIColor colorWithRed:232.0/255.0 green:247.0/255.0 blue:255.0/255.0 alpha:1.0]; // ok
-
-    gbl_colorHomeBG_grp  = [UIColor colorWithRed:232.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0]; //  ok robins egg
-    gbl_colorHomeBG_grp  = [UIColor colorWithRed:230.0/255.0 green:242.0/255.0 blue:255.0/255.0 alpha:1.0]; //  
-
-    gbl_colorHomeBG_grp  = [UIColor colorWithRed:246.0/255.0 green:248.0/255.0 blue:249.0/255.0 alpha:1.0]; //  
-    gbl_colorHomeBG_grp  = [UIColor colorWithRed:246.0/255.0 green:248.0/255.0 blue:255.0/255.0 alpha:1.0]; //  
-    gbl_colorHomeBG_grp  = [UIColor colorWithRed:248.0/255.0 green:252.0/255.0 blue:255.0/255.0 alpha:1.0]; //  
-    gbl_colorHomeBG_grp  = [UIColor colorWithRed:246.0/255.0 green:248.0/255.0 blue:255.0/255.0 alpha:1.0]; //  
-
-    gbl_colorHomeBG_grp  = [UIColor colorWithRed:222.0/255.0 green:234.0/255.0 blue:248.0/255.0 alpha:1.0]; //  
-    gbl_colorHomeBG_grp  = [UIColor colorWithRed:210.0/255.0 green:226.0/255.0 blue:248.0/255.0 alpha:1.0]; //  
-
-    gbl_colorHomeBG_grp  = [UIColor colorWithRed:192.0/255.0 green:192.0/255.0 blue:192.0/255.0 alpha:1.0]; //  c0
-    gbl_colorHomeBG_grp  = [UIColor colorWithRed:0xff/255.0 green:0xf6/255.0 blue:0x8f/255.0 alpha:1.0]; //  
-    gbl_colorHomeBG_grp  = [UIColor colorWithRed:0xde/255.0 green:0xb8/255.0 blue:0x87/255.0 alpha:1.0]; // burlywood
-    gbl_colorHomeBG_grp  = [UIColor colorWithRed:222.0/255.0 green:184.0/255.0 blue:135.0/255.0 alpha:1.0]; // burlywood
-    gbl_colorHomeBG_grp  = [UIColor colorWithRed:242.0/255.0 green:205.0/255.0 blue:150.0/255.0 alpha:1.0]; // lighter burlywood
-    gbl_colorHomeBG_grp  = [UIColor colorWithRed:255.0/255.0 green:225.0/255.0 blue:167.0/255.0 alpha:1.0]; // lighter burlywood
-    gbl_colorHomeBG_grp  = [UIColor colorWithRed:222.0/255.0 green:184.0/255.0 blue:135.0/255.0 alpha:1.0]; // burlywood
-    gbl_colorHomeBG_grp  = [UIColor colorWithRed:139.0/255.0 green:115.0/255.0 blue:085.0/255.0 alpha:1.0]; // burlywood
-    gbl_colorHomeBG_grp  = [UIColor colorWithRed:181.0/255.0 green:128.0/255.0 blue:095.0/255.0 alpha:1.0]; // burlywood
-    gbl_colorHomeBG_grp  = [UIColor colorWithRed:199.0/255.0 green:141.0/255.0 blue:105.0/255.0 alpha:1.0]; // burlywood
-    gbl_colorHomeBG_grp  = [UIColor colorWithRed:207.0/255.0 green:155.0/255.0 blue:115.0/255.0 alpha:1.0]; // burlywood brown
-
-    // try lighter brown
-    gbl_colorHomeBG_grp  = [UIColor colorWithRed:222.0/255.0 green:184.0/255.0 blue:135.0/255.0 alpha:1.0]; // burlywood brown
+    gbl_colorHomeBG_grp  = [UIColor colorWithRed:222.0/255.0 green:184.0/255.0 blue:135.0/255.0 alpha:1.0]; // burlywood brown  GOLD grp
 
 
 
@@ -1059,6 +1129,14 @@
 //    gbl_color_cRe2  = [UIColor colorWithRed:255.0/255.0 green:163.0/255.0 blue:188.0/255.0 alpha:1.0]; //  too light
 //    gbl_color_cRe2  = [UIColor colorWithRed:255.0/255.0 green:133.0/255.0 blue:173.0/255.0 alpha:1.0]; //  
       gbl_color_cRe2  = [UIColor colorWithRed:255.0/255.0 green:123.0/255.0 blue:163.0/255.0 alpha:1.0]; //  ff7ba3 NEW gold
+
+
+
+
+//    gbl_colorforAddMembers = gbl_color_cGre;                                                                  // cGre          GOLD #5
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:181.0/255.0 blue:201.0/255.0 alpha:1.0]; // cRed lighter
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:233.0/255.0 blue:228.0/255.0 alpha:1.0]; // cRed lighter
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:222.0/255.0 blue:228.0/255.0 alpha:1.0]; // cRed lighter  GOlD #5
 
 
 
@@ -3585,4 +3663,64 @@ tn();
 //        {
 //            NSLog(@"allowedCharacters does not contain typed char");
 //        }
+
+
+// this does not work  app hangs in home (no data in cells)  cpu and mem go nuts  BUT it did work as lcl_ global
+//  NSLog(@"10!");
+//     
+//
+//
+//    // UILabel for the disclosure indicator, ">",  for tappable cells
+//    //
+////    NSString *myDisclosureIndicatorBGcolorName; 
+//    NSString *myDisclosureIndicatorText; 
+//    UIColor  *colorOfGroupReportArrow; 
+//    UIFont   *myDisclosureIndicatorFont; 
+//
+//    myDisclosureIndicatorText = @">"; 
+////            colorOfGroupReportArrow   = [UIColor blackColor];                 // blue background
+////            colorOfGroupReportArrow   = [UIColor darkGrayColor];                 // blue background
+////            colorOfGroupReportArrow   = [UIColor grayColor];                 // blue background
+//    colorOfGroupReportArrow   = [UIColor lightGrayColor];                 // blue background
+////            myDisclosureIndicatorFont = [UIFont     systemFontOfSize: 16.0f]; // make not bold
+////            myDisclosureIndicatorFont = [UIFont     systemFontOfSize: 24.0f]; // make not bold
+////            myDisclosureIndicatorFont = [UIFont     systemFontOfSize: 20.0f]; // make not bold
+////            myDisclosureIndicatorFont = [UIFont     boldSystemFontOfSize: 24.0f]; // make not bold
+////            myDisclosureIndicatorFont = [UIFont     boldSystemFontOfSize: 20.0f]; // make not bold
+////            myDisclosureIndicatorFont = [UIFont fontWithName: @"Menlo-bold" size:  24.0]; // no good
+////            myDisclosureIndicatorFont = [UIFont fontWithName: @"ArialRoundedMTBold" size:  24.0];
+////            myDisclosureIndicatorFont = [UIFont fontWithName: @"HelveticaNeue-ThinItalic" size:  24.0];
+////            myDisclosureIndicatorFont = [UIFont fontWithName: @"IowanOldStyle-Bold" size:  24.0];
+//    myDisclosureIndicatorFont = [UIFont fontWithName: @"MarkerFelt-Thin" size:  24.0]; // good
+////            myDisclosureIndicatorFont = [UIFont fontWithName: @"MarkerFelt-Wide" size:  24.0]; // bad
+////            myDisclosureIndicatorFont = [UIFont fontWithName: @"SanFranciscoDisplay-Thin" size:  24.0]; 
+////            myDisclosureIndicatorFont = [UIFont fontWithName: @"SanFranciscoRounded-Bold" size:  16.0]; 
+////            myDisclosureIndicatorFont = [UIFont fontWithName: @"TimesNewRomanPS-BoldMT" size:  24.0]; // good
+////              myDisclosureIndicatorFont = [UIFont fontWithName: @"Superclarendon-Bold" size:  24.0]; // good
+////              myDisclosureIndicatorFont = [UIFont fontWithName: @"SnellRoundhand-Bold" size:  24.0]; // good
+////              myDisclosureIndicatorFont = [UIFont fontWithName: @"AvenirNextCondensed-Heavy" size:  24.0]; // good
+//
+//  NSLog(@"11!");
+//
+//
+//
+//    NSAttributedString *myNewCellAttributedText3 = [
+//        [NSAttributedString alloc] initWithString: myDisclosureIndicatorText  // i.e.   @">"
+//                                       attributes: @{            NSFontAttributeName : myDisclosureIndicatorFont,
+//                                                       NSForegroundColorAttributeName: colorOfGroupReportArrow                }
+//    ];
+//  NSLog(@"12!");
+//
+//    gbl_disclosureIndicatorLabel                 = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 12.0f, 32.0f)];
+//  NSLog(@"13!");
+//    gbl_disclosureIndicatorLabel.attributedText  = myNewCellAttributedText3;
+//  NSLog(@"14!");
+//    gbl_disclosureIndicatorLabel.backgroundColor = gbl_colorReportsBG; 
+//  NSLog(@"15!");
+//    //
+//    // end of  UILabel for the disclosure indicator, ">",  for tappable cells
+//
+//
+//
+//
 

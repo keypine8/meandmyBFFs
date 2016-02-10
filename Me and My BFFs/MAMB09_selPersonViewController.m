@@ -313,7 +313,8 @@
                 [NSAttributedString alloc] initWithString: @">"  
                                                attributes: @{
                         NSFontAttributeName :  [UIFont fontWithName: @"MarkerFelt-Thin" size:  24.0] ,  
-                        NSForegroundColorAttributeName: gbl_colorDIfor_home   
+//                        NSForegroundColorAttributeName: gbl_colorDIfor_home   
+                        NSForegroundColorAttributeName: [UIColor grayColor]   
                     }
             ];
             UILabel *myDisclosureIndicatorLabel        = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 12.0f, 32.0f)];

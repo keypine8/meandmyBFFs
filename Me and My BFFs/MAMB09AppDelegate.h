@@ -96,12 +96,14 @@ BOOL      gbl_disclosureSetAlready;
 
 UIImage *gbl_YellowBG ;
 UIImage *gbl_BlueBG ;
-UIImage *gbl_blueDone ;
+//UIImage *gbl_blueDone ;
+UIImage *gbl_brownDone ;
 UIImage *gbl_yellowEdit ;
-UIColor *gbl_bgColor_blueDone;
+//UIColor *gbl_bgColor_blueDone;
+UIColor *gbl_bgColor_brownDone;
 UIColor *gbl_bgColor_yellowEdit;
-UIImage *gbl_chevronRight ;
-UIImage *gbl_chevronLeft  ;
+//UIImage *gbl_chevronRight ;
+//UIImage *gbl_chevronLeft  ;
 
 
 //NSInteger addChangeViewJustEntered;  // 1=y,0=n
@@ -662,7 +664,7 @@ NSMutableArray *gbl_homeLeftItemsWithAddButton;
 NSMutableArray *gbl_homeLeftItemsWithNoAddButton;
 
 UIColor *gbl_colorHomeBG;
-UIColor *gbl_colorNavBarBG;
+//UIColor *gbl_colorNavBarBG;
 //UIColor *gbl_colorHomeBG_save;  // in order to put back after editing mode color
 UIColor *gbl_colorHomeBG_grp;
 UIColor *gbl_colorHomeBG_per;

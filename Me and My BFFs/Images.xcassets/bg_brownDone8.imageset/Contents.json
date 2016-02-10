@@ -2,18 +2,18 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x",
-      "filename" : "twoThings_info5-1.png"
+      "filename" : "bg_brownDone8.png",
+      "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "scale" : "2x",
-      "filename" : "twoThings_info5.png"
+      "filename" : "bg_brownDone8-1.png",
+      "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "scale" : "3x",
-      "filename" : "twoThings_info5-2.png"
+      "filename" : "bg_brownDone8b.png",
+      "scale" : "3x"
     }
   ],
   "info" : {

@@ -152,6 +152,8 @@ tn();
 //   UIWebView *webview =[[UIWebView alloc]initWithFrame:CGRectMake(0, 0, 11, 11)];
 //   NSString *someHTML = [webview stringByEvaluatingJavaScriptFromString:@""];   
 
+
+
     // try to reduce load time of first cal yr report   
     // this WORKED!
     //
@@ -166,8 +168,19 @@ tn();
     // this WORKED!
 
 
-    
 
+
+    // doStuffOnEnteringForeground sets these 3 from lastEntityStr
+    //
+    //   gbl_fromHomeCurrentEntity        
+    //   gbl_fromHomeCurrentSelectionType
+    //   gbl_lastSelectionType          
+    //
+//    gbl_fromHomeCurrentEntity        = @"person";  // set default on startup
+//    gbl_fromHomeCurrentSelectionType = @"person";  // set default on startup
+//    gbl_lastSelectionType            = @"person";  // set default on startup
+
+    
 
     gbl_currentMenuPlusReportCode = @"HOME";  // also set in viewWillAppear for coming back to HOME from other places (INFO ptr)
   NSLog(@"gbl_currentMenuPlusReportCode =%@",gbl_currentMenuPlusReportCode );
@@ -184,9 +197,6 @@ tn();
     gbl_home_cell_AccessoryType        = UITableViewCellAccessoryDisclosureIndicator; // home mode regular with tap giving report list
     gbl_home_cell_editingAccessoryType = UITableViewCellAccessoryNone;                // home mode regular with tap giving report list
 
-    gbl_fromHomeCurrentEntity        = @"person";  // set default on startup
-    gbl_fromHomeCurrentSelectionType = @"person";  // set default on startup
-    gbl_lastSelectionType            = @"person";  // set default on startup
     gbl_currentMenuPrefixFromHome    = @"homp";    // set default on startup
 
 
@@ -907,8 +917,8 @@ ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  NSLog(@"in cellForRowAtIndexPath");
-  NSLog(@"indexPath.row =[%ld]",(long)indexPath.row );
+//  NSLog(@"in cellForRowAtIndexPath");
+//  NSLog(@"indexPath.row =[%ld]",(long)indexPath.row );
 
     // create an NSString  we can use as the reuse identifier
     static NSString *CellIdentifier = @"MyCell1";
@@ -980,7 +990,8 @@ ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
                         NSFontAttributeName :  [UIFont fontWithName: @"MarkerFelt-Thin" size:  24.0] ,  
 //                        NSForegroundColorAttributeName: [UIColor grayColor ]  
 //                        NSForegroundColorAttributeName: [UIColor darkGrayColor ]  
-                        NSForegroundColorAttributeName: gbl_colorDIfor_home   
+//                        NSForegroundColorAttributeName: gbl_colorDIfor_home   
+                        NSForegroundColorAttributeName: [UIColor grayColor ]  
                     }
             ];
 
@@ -992,7 +1003,7 @@ ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
 
 //  NSLog(@"gbl_homeUseMODE =%@",gbl_homeUseMODE );
 
-  NSLog(@"before set access view");
+//  NSLog(@"before set access view");
     dispatch_async(dispatch_get_main_queue(), ^{                        
 
 //  cell.textLabel.text = @"";           // for test create empty Launch screen shot 
@@ -1025,7 +1036,7 @@ ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
 //<.x for test create empty Launch screen shot  //  ALSO comment out between the 2  <.  above
 
     });
-  NSLog(@"after set access view");
+//  NSLog(@"after set access view");
   
 
     return cell;
@@ -1064,8 +1075,10 @@ ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
 
     //    [self.tableView setBackgroundColor: gbl_colorReportsBG];
     //    [self.tableView setBackgroundColor: gbl_colorHomeBG];
-    if ([gbl_lastSelectionType isEqualToString:@"person"]) [self.tableView setBackgroundColor: gbl_colorHomeBG_per];
-    if ([gbl_lastSelectionType isEqualToString:@"group" ]) [self.tableView setBackgroundColor: gbl_colorHomeBG_grp];
+
+    if (     [gbl_homeUseMODE isEqualToString: @"edit mode" ] ) [self.tableView setBackgroundColor: gbl_colorEditingBG];
+    else if ([gbl_lastSelectionType isEqualToString:@"person"]) [self.tableView setBackgroundColor: gbl_colorHomeBG_per];
+    else if ([gbl_lastSelectionType isEqualToString:@"group" ]) [self.tableView setBackgroundColor: gbl_colorHomeBG_grp];
 
     cell.backgroundColor = [UIColor clearColor];
 }
@@ -1477,7 +1490,8 @@ tn();
 //    int64_t myDelayInSec   = 0.5 * (double)NSEC_PER_SEC;
 //    int64_t myDelayInSec   = 2.5 * (double)NSEC_PER_SEC;
 //    int64_t myDelayInSec   = 0.5 * (double)NSEC_PER_SEC;
-    int64_t myDelayInSec   = 0.33 * (double)NSEC_PER_SEC;
+//    int64_t myDelayInSec   = 0.33 * (double)NSEC_PER_SEC;
+    int64_t myDelayInSec   = 0.38 * (double)NSEC_PER_SEC;
     dispatch_time_t mytime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)myDelayInSec);
 
     dispatch_after(mytime, dispatch_get_main_queue(), ^{       // do after delay of mytime    dispatch    dispatch    dispatch   dispatch  
@@ -1553,14 +1567,24 @@ tn();
             NSIndexPath *foundIndexPath = [NSIndexPath indexPathForRow: idxGrpOrPer inSection:0];
 
     //tn();trn("SCROLL 333333333333333333333333333333333333333333333333333333333");
-            // select the row in UITableView
-            // This puts in the light grey "highlight" indicating selection
-            [self.tableView selectRowAtIndexPath:  foundIndexPath   // This puts in the light grey "highlight" indicating selection
-                                        animated:  YES
-                                  scrollPosition:  UITableViewScrollPositionNone];
-            //[self.tableView scrollToNearestSelectedRowAtScrollPosition:  foundIndexPath.row 
-            [self.tableView scrollToNearestSelectedRowAtScrollPosition:  UITableViewScrollPositionMiddle
-                                                              animated:  YES];
+
+            dispatch_async(dispatch_get_main_queue(), ^{                                 // <===  
+
+                // select the row in UITableView
+                // This puts in the light grey "highlight" indicating selection
+                [self.tableView selectRowAtIndexPath:  foundIndexPath   // This puts in the light grey "highlight" indicating selection
+                                            animated:  YES
+                                      scrollPosition:  UITableViewScrollPositionNone];
+                //[self.tableView scrollToNearestSelectedRowAtScrollPosition:  foundIndexPath.row 
+                [self.tableView scrollToNearestSelectedRowAtScrollPosition:  UITableViewScrollPositionMiddle
+                                                                  animated:  YES];
+
+                if ( [gbl_homeUseMODE isEqualToString: @"edit mode" ] ) {
+//                    self.view.backgroundColor     = gbl_colorEditingBG;
+                    [self.tableView setBackgroundColor: gbl_colorEditingBG];
+                }
+            });
+
         }
         if ([gbl_fromHomeCurrentEntity isEqualToString: @"person"]) {
 
@@ -1591,14 +1615,21 @@ tn();
             NSIndexPath *foundIndexPath = [NSIndexPath indexPathForRow:idxGrpOrPer inSection:0];
 
     //tn();trn("SCROLL 444444444444444444444444444444444444444444444444444444444");
-            // select the row in UITableView
-            // This puts in the light grey "highlight" indicating selection
-            [self.tableView selectRowAtIndexPath: foundIndexPath 
-                                        animated: YES
-                                  scrollPosition: UITableViewScrollPositionNone];
-            //[self.tableView scrollToNearestSelectedRowAtScrollPosition: foundIndexPath.row 
-            [self.tableView scrollToNearestSelectedRowAtScrollPosition: UITableViewScrollPositionMiddle
-                                                              animated: YES];
+            dispatch_async(dispatch_get_main_queue(), ^{                                 // <===  
+                // select the row in UITableView
+                // This puts in the light grey "highlight" indicating selection
+                [self.tableView selectRowAtIndexPath: foundIndexPath 
+                                            animated: YES
+                                      scrollPosition: UITableViewScrollPositionNone];
+                //[self.tableView scrollToNearestSelectedRowAtScrollPosition: foundIndexPath.row 
+                [self.tableView scrollToNearestSelectedRowAtScrollPosition: UITableViewScrollPositionMiddle
+                                                                  animated: YES];
+
+                if ( [gbl_homeUseMODE isEqualToString: @"edit mode" ] ) {
+//                    self.view.backgroundColor     = gbl_colorEditingBG;
+                    [self.tableView setBackgroundColor: gbl_colorEditingBG];
+                }
+            });
         }
 
         //// end DO STUFF HERE
@@ -1740,6 +1771,7 @@ NSLog(@"in viewDidAppear()  in HOME");
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath: (NSIndexPath *) indexPath
 {
   NSLog(@"in HOME  didSelectRowAtIndexPath ");
+  NSLog(@"gbl_colorHomeBG=[%@]",gbl_colorHomeBG);
 
     // selecting home row in yellow "edit mode" gives you  view or change mode
     //
@@ -1951,21 +1983,37 @@ tn();trn("in doStuffOnEnteringForeground()   NOTIFICATION method     lastEntity 
 
     gbl_lastSelectionType            = _arr[0];  //  group OR person or pair
     gbl_fromHomeCurrentSelectionType = _arr[0];  //  group OR person or pair
-    NSLog(@"gbl_lastSelectionType=%@",gbl_lastSelectionType);
-    NSLog(@"gbl_fromHomeCurrentSelectionType =%@",gbl_fromHomeCurrentSelectionType );
+    gbl_fromHomeCurrentEntity        = _arr[0];  //  group OR person or pair
+
+//    NSLog(@"gbl_lastSelectionType=%@",gbl_lastSelectionType);
+//    NSLog(@"gbl_fromHomeCurrentSelectionType =%@",gbl_fromHomeCurrentSelectionType );
+//    NSLog(@"gbl_fromHomeCurrentEntity        =[%@]",gbl_fromHomeCurrentEntity        );
+
+
+//    if ([gbl_lastSelectionType isEqualToString:@"person"]) gbl_colorHomeBG = gbl_colorHomeBG_per;
+//    if ([gbl_lastSelectionType isEqualToString:@"group" ]) gbl_colorHomeBG = gbl_colorHomeBG_grp;
+//    self.tableView.backgroundColor = gbl_colorHomeBG;       // WORKS
+//  NSLog(@"gbl_colorHomeBG=[%@]",gbl_colorHomeBG);
+
     
     if ([gbl_lastSelectionType isEqualToString:@"group"]) {
       gbl_lastSelectedGroup  =  _arr[1];  // like "~Swim Team"
       gbl_lastSelectedPerson =  _arr[3];  // like "~Dave"
+      gbl_colorHomeBG        = gbl_colorHomeBG_grp;
       gbl_currentMenuPrefixFromHome    = @"homg";
     }
     if ([gbl_lastSelectionType isEqualToString:@"person"]) {
       gbl_lastSelectedPerson =  _arr[1];  // like "~Dave"
       gbl_lastSelectedGroup  =  _arr[3];  // like "~Swim Team"
+      gbl_colorHomeBG        = gbl_colorHomeBG_per;
       gbl_currentMenuPrefixFromHome    = @"homp";
     }
+
+    self.tableView.backgroundColor = gbl_colorHomeBG;       // WORKS
+
     NSLog(@"in doStuffOnEnteringForeground gbl_lastSelectedPerson=%@", gbl_lastSelectedPerson);
     NSLog(@"in doStuffOnEnteringForeground gbl_lastSelectedGroup =%@", gbl_lastSelectedGroup );
+//    NSLog(@"gbl_colorHomeBG                                      =[%@]",gbl_colorHomeBG);
 
 
     if ([gbl_lastSelectionType isEqualToString:@"group"])  _segEntityOutlet.selectedSegmentIndex = 0; // highlight correct entity in seg ctrl
@@ -2144,7 +2192,8 @@ tn();  NSLog(@"setEditing !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     [myappDelegate mamb_beginIgnoringInteractionEvents ];
 
 //    int64_t myDelayInSec   = 2.33 * (double)NSEC_PER_SEC;
-    int64_t myDelayInSec   = 0.33 * (double)NSEC_PER_SEC;
+//    int64_t myDelayInSec   = 0.33 * (double)NSEC_PER_SEC;
+    int64_t myDelayInSec   = 0.38 * (double)NSEC_PER_SEC;
     dispatch_time_t mytime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)myDelayInSec);
 
     dispatch_after(mytime, dispatch_get_main_queue(), ^{                     // do after delay of  mytime
@@ -2157,7 +2206,7 @@ tn();  NSLog(@"setEditing !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
 
 
-    if (flag == YES) { // Change views to edit mode.
+    if (flag == YES) { // Change views to edit mode.   USER TAPPED EDIT BUTTON HERE
 
 
   NSLog(@"EDIT BUTTON 2    ");
@@ -2170,11 +2219,15 @@ nbn(300);
 
 //  NSLog(@"gbl_homeLeftItemsWithAddButton=%@",gbl_homeLeftItemsWithAddButton);
 //  NSLog(@"gbl_homeLeftItemsWithNoAddButton=%@",gbl_homeLeftItemsWithNoAddButton);
-  NSLog(@"EDIT BUTTON 2   set blue   BG color");
+  NSLog(@"EDIT BUTTON 2   set yellow   BG color");
+
+  NSLog(@"gbl_colorEditingBG=[%@]",gbl_colorEditingBG);
+
         dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
 
 //            [self.editButtonItem setBackgroundImage: gbl_BlueBG          // regular report mode bg color for button
-            [self.editButtonItem setBackgroundImage: gbl_blueDone          // regular report mode bg color for button
+//            [self.editButtonItem setBackgroundImage: gbl_blueDone          // regular report mode bg color for button
+            [self.editButtonItem setBackgroundImage: gbl_brownDone          // regular report mode bg color for button
                                            forState: UIControlStateNormal  
                                          barMetrics: UIBarMetricsDefault
             ];
@@ -2185,6 +2238,8 @@ nbn(300);
             self.editButtonItem.title = @"Done";  // ok with no tab
             [self.editButtonItem setTitlePositionAdjustment: UIOffsetMake(-8.0f, 0.0f)  forBarMetrics: UIBarMetricsDefault]; // 
 
+            self.view.backgroundColor     = gbl_colorEditingBG;
+
         });
 
 
@@ -2192,10 +2247,10 @@ nbn(300);
 //    self.navigationController.navigationBar.barTintColor =  gbl_colorEditing;  does whole nav bar
 
 
-        self.view.backgroundColor     = gbl_colorEditingBG;
 
         gbl_colorHomeBG               = gbl_colorEditingBG;  // temporary color for editing 
 
+nbn(3);
 //        self.segmentedControl.backgroundColor = gbl_colorEditingBG;     // [UIColor cb_Grey3Color];
 //        self.segEntityOutlet.backgroundColor = gbl_colorEditingBG;     
 
@@ -2254,9 +2309,10 @@ nbn(4);
     [self putHighlightOnCorrectRow ];
 nbn(5);
 
-
         // Change views to   edit mode.
-    } else { // Save the changes if needed and change the views to noneditable.
+
+    } else { // Save the changes if needed and change the views to noneditable.   USER TAPPED  DONE BUTTON HERE
+
         // Change views from edit mode.
 
   NSLog(@"EDIT BUTTON 3 ");
@@ -2268,7 +2324,7 @@ nbn(5);
 nbn(311);
 
 
-  NSLog(@"EDIT BUTTON 3   set yellow   BG color");
+  NSLog(@"EDIT BUTTON 3   set home non-edit   BG color");
         dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
 
 //            [self.editButtonItem setBackgroundImage: gbl_YellowBG          // regular report mode bg color for button
@@ -2287,6 +2343,11 @@ nbn(311);
 //            [self.editButtonItem setTitlePositionAdjustment: UIOffsetMake(-8.0f, 0.0f)  forBarMetrics: UIBarMetricsDefault]; // 
             [self.editButtonItem setTitlePositionAdjustment: UIOffsetMake(-16.0f, 0.0f)  forBarMetrics: UIBarMetricsDefault]; // 
 
+//            self.view.backgroundColor     = gbl_colorEditingBG;
+
+            if (     [gbl_homeUseMODE isEqualToString: @"edit mode" ] ) [self.tableView setBackgroundColor: gbl_colorEditingBG];
+            else if ([gbl_lastSelectionType isEqualToString:@"person"]) [self.tableView setBackgroundColor: gbl_colorHomeBG_per];
+            else if ([gbl_lastSelectionType isEqualToString:@"group" ]) [self.tableView setBackgroundColor: gbl_colorHomeBG_grp];
 
         });
 
@@ -2579,56 +2640,58 @@ nbn(3);
     else
     { // this is "regular mode"  as opposed to "edit mode"
 
-        // check for not enough group members  to do a report
+        if ([gbl_fromHomeCurrentEntity isEqualToString:@"group"])  {
+            // check for not enough group members  to do a report
 
-        // search in  gbl_arrayMem  for   gbl_lastSelectedGroup
-        // count how many members
-        // if not at least 2 members,  alert and return
-        //
-  NSLog(@"gbl_lastSelectedGroup =[%@]",gbl_lastSelectedGroup );
-
-        NSInteger member_cnt;
-        NSString *prefixStr = [NSString stringWithFormat: @"%@|", gbl_lastSelectedGroup ];
-
-        member_cnt = 0;
-        for (NSString *element in gbl_arrayMem) {
-            if ([element hasPrefix: prefixStr]) {
-                member_cnt = member_cnt + 1;
-            }
-        }
-
-  NSLog(@"prefixStr  =[%@]",prefixStr );
-  NSLog(@"member_cnt =[%ld]",(long) member_cnt );
-
-        if (member_cnt  <  2) {
-
-            // here info is missing
-            NSString *missingMsg;
-            
-            if (member_cnt == 0) missingMsg = [ NSString stringWithFormat:
-                @"A group report needs\nat least 2 members.\n\nGroup \"%@\" has %ld members.",
-                gbl_lastSelectedGroup, member_cnt
-            ];
-//            UIAlertController* myAlert = [UIAlertController alertControllerWithTitle: @"Need more Group Members"
-            UIAlertController* myAlert = [UIAlertController alertControllerWithTitle: @"Not enough Group Members"
-                                                                             message: missingMsg
-                                                                      preferredStyle: UIAlertControllerStyleAlert  ];
-             
-            UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
-                                                                style: UIAlertActionStyleDefault
-                                                              handler: ^(UIAlertAction * action) {
-                    NSLog(@"Ok button pressed");
-                }
-            ];
-             
-            [myAlert addAction:  okButton];
-
-            // cannot goto report list   because of missing information > stay in this screen
+            // search in  gbl_arrayMem  for   gbl_lastSelectedGroup
+            // count how many members
+            // if not at least 2 members,  alert and return
             //
-            [self presentViewController: myAlert  animated: YES  completion: nil   ];
+      NSLog(@"gbl_lastSelectedGroup =[%@]",gbl_lastSelectedGroup );
 
-            return;  // cannot got rpt list   because of missing information > stay in this screen
-        }
+            NSInteger member_cnt;
+            NSString *prefixStr = [NSString stringWithFormat: @"%@|", gbl_lastSelectedGroup ];
+
+            member_cnt = 0;
+            for (NSString *element in gbl_arrayMem) {
+                if ([element hasPrefix: prefixStr]) {
+                    member_cnt = member_cnt + 1;
+                }
+            }
+
+      NSLog(@"prefixStr  =[%@]",prefixStr );
+      NSLog(@"member_cnt =[%ld]",(long) member_cnt );
+
+            if (member_cnt  <  2) {
+
+                // here info is missing
+                NSString *missingMsg;
+                
+                if (member_cnt == 0) missingMsg = [ NSString stringWithFormat:
+                    @"A group report needs\nat least 2 members.\n\nGroup \"%@\" has %ld members.",
+                    gbl_lastSelectedGroup, member_cnt
+                ];
+    //            UIAlertController* myAlert = [UIAlertController alertControllerWithTitle: @"Need more Group Members"
+                UIAlertController* myAlert = [UIAlertController alertControllerWithTitle: @"Not enough Group Members"
+                                                                                 message: missingMsg
+                                                                          preferredStyle: UIAlertControllerStyleAlert  ];
+                 
+                UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                                    style: UIAlertActionStyleDefault
+                                                                  handler: ^(UIAlertAction * action) {
+                        NSLog(@"Ok button pressed");
+                    }
+                ];
+                 
+                [myAlert addAction:  okButton];
+
+                // cannot goto report list   because of missing information > stay in this screen
+                //
+                [self presentViewController: myAlert  animated: YES  completion: nil   ];
+
+                return;  // cannot got rpt list   because of missing information > stay in this screen
+            }
+        } // if we are in group, check for enough members for a report
 
         MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
         [myappDelegate mamb_beginIgnoringInteractionEvents ];

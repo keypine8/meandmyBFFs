@@ -52,9 +52,12 @@ tn(); NSLog(@"in sel Reports viewDidLoad!");
 
 
     // http://stackoverflow.com/questions/18912638/custom-image-for-uinavigation-back-button-in-ios-7
-    //    UIImage *backBtn = [UIImage imageNamed:@"iconRightArrowBlue_66"];
-    UIImage *backBtn = gbl_chevronLeft;
+//    UIImage *backBtn = [UIImage imageNamed:@"iconRightArrowBlue_66"];
+    //    UIImage *backBtn = gbl_chevronLeft;
+    UIImage *backBtn = [UIImage imageNamed:@"iconChevronLeft_66.png"];
 
+//    backBtn = [backBtn imageWithRenderingMode: UIImageRenderingModeAlwaysTemplate];   NO  blue square
+//    backBtn = [backBtn imageWithRenderingMode: UIImageRenderingModeAutomatic];
     backBtn = [backBtn imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal];
     self.navigationItem.backBarButtonItem.title=@"";
     self.navigationController.navigationBar.backIndicatorImage = backBtn;
@@ -305,7 +308,8 @@ NSLog(@"in viewDidAppear()");
                 [NSAttributedString alloc] initWithString: @">"  
                                                attributes: @{
                         NSFontAttributeName :  [UIFont fontWithName: @"MarkerFelt-Thin" size:  24.0] ,  
-                        NSForegroundColorAttributeName: gbl_colorDIfor_home   
+//                        NSForegroundColorAttributeName: gbl_colorDIfor_home   
+                        NSForegroundColorAttributeName: [UIColor grayColor]   
                     }
             ];
             UILabel *myDisclosureIndicatorLabel        = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 12.0f, 32.0f)];

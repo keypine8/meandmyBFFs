@@ -21,6 +21,14 @@ CGFloat myCurrentScreenHeight;
 CGFloat myCurrentNavbarHeight;
 CGFloat myCurrentStatusbarHeight;
 
+
+// no selection at all,  just show members
+- (BOOL)tableView:(UITableView *)tableView  shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return NO;  // no selection at all,  just show members
+}
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -38,12 +46,17 @@ tn();
 //    [self.tableView setBackgroundColor: gbl_colorReportsBG];
     [self.tableView setBackgroundColor: gbl_colorEditingBG ];
 
+
+//    self.tableView.allowsSelection = NO;   // see shouldHighlightRowAtIndexPath just below
+
+
     // set up left arrow for "Back" button
     //
     // http://stackoverflow.com/questions/18912638/custom-image-for-uinavigation-back-button-in-ios-7
 //    UIImage *backBtn = [UIImage imageNamed:@"iconPlusAddGreenBig_66"];
 //    UIImage *backBtn = [UIImage imageNamed:@"iconRightArrowBlue_66"]; // actually left arrow
-    UIImage *backBtn = gbl_chevronLeft;
+// UIImage *backBtn = gbl_chevronLeft;
+    UIImage *backBtn = [UIImage imageNamed:@"iconChevronLeft_66"]; // actually left arrow
     backBtn = [backBtn imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal];
     self.navigationItem.backBarButtonItem.title=@"";
     self.navigationController.navigationBar.backIndicatorImage = backBtn;

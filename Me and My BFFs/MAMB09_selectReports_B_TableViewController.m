@@ -335,9 +335,9 @@ tn();
                 [NSAttributedString alloc] initWithString: @">"  
                                                attributes: @{
                         NSFontAttributeName :  [UIFont fontWithName: @"MarkerFelt-Thin" size:  24.0] ,  
-//                        NSForegroundColorAttributeName: [UIColor grayColor ]  
 //                        NSForegroundColorAttributeName: [UIColor darkGrayColor ]  
-                        NSForegroundColorAttributeName: gbl_colorDIfor_home   
+//                        NSForegroundColorAttributeName: gbl_colorDIfor_home   
+                        NSForegroundColorAttributeName: [UIColor grayColor ]  
                     }
             ];
 
@@ -1000,8 +1000,8 @@ tn(); NSLog(@"gbl_currentMenuPlusReportCode in rptsel BBB =%@",gbl_currentMenuPl
         lblSection0.numberOfLines   = 1;
         lblSection0.font            = [UIFont boldSystemFontOfSize: 14.0];
         lblSection0.text            = [NSString stringWithFormat: @"in Group   %@", gbl_lastSelectedGroup];
-//        lblSection0.backgroundColor = [UIColor whiteColor];
-        lblSection0.backgroundColor = gbl_colorNavBarBG;
+        lblSection0.backgroundColor = [UIColor whiteColor];
+//       lblSection0.backgroundColor = gbl_colorNavBarBG;
 
         [lblSection0 sizeToFit];
 

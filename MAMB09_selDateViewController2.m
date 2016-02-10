@@ -368,6 +368,22 @@ tn();tr("date fmt  date fmt  date fmt  date fmt  date fmt  date fmt  date fmt  "
         //        NSString *yearString = [myFormatter stringFromDate:[NSDate date]];
         //
 
+        UIFont *myFontForDate;
+        if (   self.view.bounds.size.width >= 414.0        // 6+ and 6s+  and bigger
+        ) {
+            myFontForDate = [UIFont boldSystemFontOfSize: 30.0];
+        }
+        else if (   self.view.bounds.size.width  < 414.0    // 6 and 6s
+                 && self.view.bounds.size.width  > 320.0
+        ) {
+            myFontForDate = [UIFont boldSystemFontOfSize: 24.0];
+        }
+        else if (   self.view.bounds.size.width <= 320.0   //  5s and 5 and 4s and smaller
+        ) {
+            myFontForDate = [UIFont boldSystemFontOfSize: 21.0];
+        }
+
+
         dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
 //            self.outletToSelecteDate.text = myInitDateFormatted;
 
@@ -379,7 +395,8 @@ tn();tr("date fmt  date fmt  date fmt  date fmt  date fmt  date fmt  date fmt  "
         //                   NSBackgroundColorAttributeName : gbl_color_cRed,
         //               NSForegroundColorAttributeName : gbl_colorDIfor_home,
                        NSForegroundColorAttributeName : [UIColor grayColor],
-                                  NSFontAttributeName : [UIFont boldSystemFontOfSize: 30.0]
+//                                  NSFontAttributeName : [UIFont boldSystemFontOfSize: 30.0]
+                                  NSFontAttributeName : myFontForDate
                     }
                 ];
                 self.outletToSelecteDate.attributedText = myAttrDate;
@@ -392,7 +409,8 @@ tn();tr("date fmt  date fmt  date fmt  date fmt  date fmt  date fmt  date fmt  "
         //                   NSBackgroundColorAttributeName : gbl_color_cRed,
         //               NSForegroundColorAttributeName : gbl_colorDIfor_home,
                        NSForegroundColorAttributeName : [UIColor darkGrayColor],
-                                  NSFontAttributeName : [UIFont boldSystemFontOfSize: 30.0]
+//                                  NSFontAttributeName : [UIFont boldSystemFontOfSize: 30.0]
+                                  NSFontAttributeName : myFontForDate
                     }
                 ];
                 self.outletToSelecteDate.attributedText = myAttrDate;
@@ -784,6 +802,22 @@ NSLog(@"in viewDidAppear()");
 
 
 
+        UIFont *myFontForDate;
+        if (   self.view.bounds.size.width >= 414.0        // 6+ and 6s+  and bigger
+        ) {
+            myFontForDate = [UIFont boldSystemFontOfSize: 30.0];
+        }
+        else if (   self.view.bounds.size.width  < 414.0    // 6 and 6s
+                 && self.view.bounds.size.width  > 320.0
+        ) {
+            myFontForDate = [UIFont boldSystemFontOfSize: 24.0];
+        }
+        else if (   self.view.bounds.size.width <= 320.0   //  5s and 5 and 4s and smaller
+        ) {
+            myFontForDate = [UIFont boldSystemFontOfSize: 21.0];
+        }
+
+
         dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
 //            self.outletToSelecteDate.text = myFormattedStr;
 
@@ -795,7 +829,8 @@ NSLog(@"in viewDidAppear()");
         //                   NSBackgroundColorAttributeName : gbl_color_cRed,
         //               NSForegroundColorAttributeName : gbl_colorDIfor_home,
                        NSForegroundColorAttributeName : [UIColor grayColor],
-                                  NSFontAttributeName : [UIFont boldSystemFontOfSize: 30.0]
+//                                  NSFontAttributeName : [UIFont boldSystemFontOfSize: 30.0]
+                                  NSFontAttributeName : myFontForDate
                     }
                 ];
                 self.outletToSelecteDate.attributedText = myAttrDate;
@@ -808,7 +843,8 @@ NSLog(@"in viewDidAppear()");
         //                   NSBackgroundColorAttributeName : gbl_color_cRed,
         //               NSForegroundColorAttributeName : gbl_colorDIfor_home,
                        NSForegroundColorAttributeName : [UIColor darkGrayColor],
-                                  NSFontAttributeName : [UIFont boldSystemFontOfSize: 30.0]
+//                                  NSFontAttributeName : [UIFont boldSystemFontOfSize: 30.0]
+                                  NSFontAttributeName : myFontForDate
                     }
                 ];
                 self.outletToSelecteDate.attributedText = myAttrDate;

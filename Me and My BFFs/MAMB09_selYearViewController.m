@@ -221,7 +221,7 @@
 //                [self.outletYearSelected setTextColor: gbl_colorDIfor_home];
             });
         } else {   
-//            gbl_lastSelectedYear           = psvRememberedYear;
+            gbl_lastSelectedYear           = psvRememberedYear;
             dispatch_async(dispatch_get_main_queue(), ^{                                // <===  <.>
 
                 if ([gbl_lastSelectionType isEqualToString:@"person"]) {
