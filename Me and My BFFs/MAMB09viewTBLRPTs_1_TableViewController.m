@@ -314,122 +314,16 @@ NSLog(@"in numberOfRowsInSection in tblrpts 1");
     
 
 
-//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: CellIdentifier];
 
-//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: nil];  // try no reuse at all  (NO constantly creates new cells)
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: CellIdentifier];
+//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: nil];  // try no re-use at all
 //    UITableViewCell *cell;
 //    cell = nil;
 
-    // test see what's happening
-//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: CellIdentifier];
-//    if (cell) {
-//  NSLog(@"REUSING CELL  cell.textLabel.text     =[%@]",cell.textLabel.text );
-//  NSLog(@"REUSING CELL  cell.textLabel.attributedText     =[%@]",cell.textLabel.attributedText );
-//        NSInteger numsubviews;
-//        numsubviews = 0;
-//        for (UIView *mysubview in  cell.contentView.subviews  ) {
-//            numsubviews = numsubviews + 1;
-//  NSLog(@"mysubview =[%@]",mysubview );
-//  NSLog(@"mysubview.tag =[%ld]",(long)mysubview.tag );
-//
-//            UILabel *tmpLabel = (UILabel *) [mysubview viewWithTag: 411 ]; 
-//            if (tmpLabel == nil) {
-//  NSLog(@" this cell subview has some other  tag  not star tag");
-//            } else  {
-//  NSLog(@" this cell subview has a tag = 411!");
-//            }
-//        }
-//        if (numsubviews >0 ) {
-////  NSLog(@" CELL TO BE REUSED   HAS cell.contentView  SUBVIEWS numbering =[%ld]", (long)numsubviews);
-//
-//        } else {
-//  NSLog(@" CELL TO BE REUSED   HAS  NO  cell.contentView  SUBVIEWS    go ahead and reuse it" );
-//        }
-//    }
-//
-
-    UITableViewCell *cell;
-    while ( TRUE )    // find a reusable cell not having tag = 411 (star line)
-    {
-        cell = [tableView dequeueReusableCellWithIdentifier: CellIdentifier];
-
-        if (cell == nil) {
-  NSLog(@" NO REUSABLE CELLS !");
-            break;   // no reusable cells,  go and create one
-        }
-
-        if (cell != nil) {  // check out this candidate cell for reuse possibility
-
-  NSLog(@" CELL TO BE REUSED (candidate) cell.textLabel.text              =[%@]",cell.textLabel.text );
-  NSLog(@" CELL TO BE REUSED (candidate) cell.textLabel.attributedText    =[%@]",cell.textLabel.attributedText );
-
-            // DO NOT REUSE this cell if it has a subview with tag = 411 (bug).
-            // Keep looking until the reuse cell is ok.
-            //
-            BOOL cellHasTag_411;  // 411 signifies stars lines
-
-            for (UIView *mysubview in  cell.contentView.subviews  ) {
-//  NSLog(@"mysubview =[%@]",mysubview );
-//  NSLog(@"mysubview.tag =[%ld]",(long)mysubview.tag );
-
-                if (mysubview.tag == 411 ) {
-                    cellHasTag_411 = YES;
-                    break;
-                } else {
-                    cellHasTag_411 = NO;
-                }
-            }
-            if (cellHasTag_411 == YES) {
-  NSLog(@" CELL TO BE REUSED  (candidate)  HAS SUBVIEW with tag=411, keep looking" );
-                continue;  // searching for non=411 cell to reuse in the while(true)
-            }
-            if (cellHasTag_411 == NO ) {
-  NSLog(@" CELL TO BE REUSED  (candidate)  HAS NO SUBVIEW with tag=411,  go ahead and REUSE IT" );
-                break;                   // this cell has  NO  subview with tag=411, so go ahead and reuse it (cell != nil)
-            }
-
-        } // check out candidate cell for reuse
-
-    }  // find a reusable cell not having tag = 411 (star line)
-
-
-    // this show that cell is  NEVER  = nil  here   why ???   log never says "CREATED  a NEW CELL! CCCCCCCCC"
-    //
-    //if (cell == nil)
-    //  NSLog(@"CELL NIL  YES");
-    //if (cell != nil)
-    //  NSLog(@"CELL NIL   NO");
-    //
-
-
-//    if (cell) {
-//  NSLog(@"REUSING CELL  cell.textLabel.text     =[%@]",cell.textLabel.text );
-//  NSLog(@"REUSING CELL  cell.textLabel.attributedText     =[%@]",cell.textLabel.attributedText );
-//        NSInteger numsubviews;
-//
-//        // find out how many subviews
-//        //
-//        numsubviews = 0;
-//        do {
-//        } while TRUE;
-//         
-//        for (UIView *mysubview in  cell.contentView.subviews  ) {
-//            numsubviews = numsubviews + 1;
-//        }
-//        if (numsubviews >0 ) {
-//  NSLog(@" CELL TO BE REUSED   HAS cell.contentView  SUBVIEWS numbering =[%ld]", (long)numsubviews);
-//
-//        } else {
-//  NSLog(@" CELL TO BE REUSED   HAS  NO  cell.contentView  SUBVIEWS" );
-//        }
-//    }
-//<.>
-//
 
     // if there are no cells to be reused, create a new cell
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-  NSLog(@"CREATED  a NEW CELL! CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC");
     }
     //  int rkheight = cell.frame.size.height ;   // is = 44
     //  kin(rkheight);
@@ -721,15 +615,12 @@ bn(602);
     //
 //nbn(600);
     if ( [gbl_currentMenuPlusReportCode isEqualToString: @"hompco"] )
-    {  //  new compatibility TBLRPT  report    
-
+    { 
 //       gbl_compIsInHowBig = 0;   // DEFAULT setting
 
             UIButton *myInvisibleButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
             [UIButton buttonWithType: UIButtonTypeCustom];
             myInvisibleButton.backgroundColor = [UIColor clearColor];
-
-            UILabel *myInvisibleLabel  = [[UILabel alloc]  initWithFrame: CGRectZero ];
 
 //bn(601);
 //  NSLog(@"indexPath.row =[%ld]",indexPath.row );
@@ -748,14 +639,13 @@ bn(602);
         //    [[UIScrollView appearance] setBackgroundColor: gbl_color_cBgr ];  does not work
         UIView *aBackgroundView = [[UIView alloc] initWithFrame:CGRectZero] ;
         aBackgroundView.backgroundColor = gbl_color_cBgr ;
-//        cell.backgroundView = aBackgroundView;
+        cell.backgroundView = aBackgroundView;
 
 
         UIFont *myCompFont;
 
         UIFont *compFont_16 ;
         UIFont *compFont_14 ;
-        UIFont *compFont_13 ;
         UIFont *compFont_12 ;
         UIFont *compFont_11b;
 
@@ -781,7 +671,6 @@ bn(602);
 //              compFont_14  = [UIFont fontWithName: @"Menlo" size: 12.5]; // too big still
 //            compFont_14  = [UIFont fontWithName: @"Menlo" size: 12.0];
 
-            compFont_13  = [UIFont fontWithName: @"Menlo" size: 13.0];
             compFont_12  = [UIFont fontWithName: @"Menlo" size: 12.0];
 //            compFont_12  = [UIFont fontWithName: @"Menlo" size: 11.0];
 //            compFont_12  = [UIFont fontWithName: @"Menlo" size:  9.0];
@@ -797,7 +686,6 @@ bn(602);
         ) {
             compFont_16  = [UIFont fontWithName: @"Menlo" size: 14.0];
             compFont_14  = [UIFont fontWithName: @"Menlo" size: 12.0];
-            compFont_13  = [UIFont fontWithName: @"Menlo" size: 11.0];
             compFont_12  = [UIFont fontWithName: @"Menlo" size: 10.0];
             compFont_11b = [UIFont fontWithName: @"Menlo-bold" size: 10.0];
         }
@@ -809,7 +697,6 @@ bn(602);
 //            compFont_11b = [UIFont fontWithName: @"Menlo-bold" size:  10.0];
             compFont_16  = [UIFont fontWithName: @"Menlo" size: 13.0];
             compFont_14  = [UIFont fontWithName: @"Menlo" size: 11.0];
-            compFont_13  = [UIFont fontWithName: @"Menlo" size: 10.0];
             compFont_12  = [UIFont fontWithName: @"Menlo" size:  9.0];
             compFont_11b = [UIFont fontWithName: @"Menlo-bold" size:  9.0];
         }
@@ -844,8 +731,8 @@ bn(602);
         mySeps    = [NSCharacterSet characterSetWithCharactersInString:  @"|"];
 
  tn();
-        mywrk     = gbl_compDataLines[indexPath.row];  
   NSLog(@"mywrk=[%@]",mywrk);
+        mywrk     = gbl_compDataLines[indexPath.row];  
 
         tmparr    = [mywrk  componentsSeparatedByCharactersInSet: mySeps];
         if (tmparr.count > 1) {
@@ -865,8 +752,7 @@ bn(6011);
             mynumlines        = 1;    
             myadjust          = NO;
             mytextcolor       = [UIColor blackColor];
-//            myCompFont         = compFont_16;
-            myCompFont         = compFont_14;
+            myCompFont         = compFont_16;
 
             if ( [mylin isEqualToString: @"filler line #1 at top"] ) {
 bn(6012);
@@ -962,12 +848,8 @@ bn(6012);
             else if ( [mylin isEqualToString: @"before para"] ) {
                 mylin             = @" ";
                 mybgcolor         = gbl_color_cBgr ;
+//                gbl_heightCellCOMP = 16;
                 gbl_heightCellCOMP = 12;
-//nbn(500);
-//                mylin             = @"XXX01234567890XXX";
-//                mybgcolor         = [UIColor cyanColor] ;
-//                gbl_heightCellCOMP = 12;
-//nbn(501);
             }
 
             // lin=[fill|before goodrelationship]__
@@ -1204,7 +1086,6 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
 
             dispatch_async(dispatch_get_main_queue(), ^{                                // <===  comp  table header
 //                cell.textLabel.text                      = mylin;  // plain text not used
-                cell.textLabel.text                      = @" ";  // plain text not used
 //                cell.textLabel.attributedText            = myAttrString;  // order matters- pipes appear if this line is here
 //                cell.textLabel.adjustsFontSizeToFitWidth = myadjust;
 //                cell.textLabel.adjustsFontSizeToFitWidth = NO;
@@ -1221,9 +1102,7 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
                 cell.textLabel.backgroundColor           = mybgcolor;
                 cell.textLabel.attributedText            = myAttrString;  // order matters- pipes DO NOT appear if this line is here
                 cell.imageView.image                     = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
-//                cell.backgroundView                      = nil ;
-                cell.backgroundView                      = aBackgroundView;
-//               [cell.contentView addSubview: myInvisibleLabel ];
+                cell.backgroundView                      = nil ;
             });
 
             CGRect rect = [ myAttrString boundingRectWithSize: CGSizeMake(300, 10000)
@@ -1344,6 +1223,7 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
                         }
                     }
 
+//                    if( [myscore isEqualToString: @"50"] ) { mybgcolorfortableline = gbl_color_cNeu; gbltmpstr = @"50  Average  ";}
                     if( [myscore isEqualToString: @"50"] ) {
                         mybgcolorfortableline = gbl_color_cNeu;
                         if (      [myspace isEqualToString: @"space above"] ) {
@@ -1570,7 +1450,7 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
             }
 
             // NOTE: this is copied from "tabl|"
-            NSMutableAttributedString *myAttrString2;    // for cell text
+            NSMutableAttributedString *myAttrString;    // for cell text
 //            NSMutableAttributedString *myAttrSpace;     // for cell text
 //            NSString                  *myStringNoAttr;  // for work string
 
@@ -1598,7 +1478,7 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
 
 //NSAttributedString *labelText = [[NSAttributedString alloc] initWithString :  myNSString
 //       *myAttrString = [[NSAttributedString alloc] initWithString : mylin   // myNSString
-       myAttrString2 = [[NSMutableAttributedString alloc] initWithString : mylin   // myNSString
+       myAttrString = [[NSMutableAttributedString alloc] initWithString : mylin   // myNSString
            attributes : @{
                NSParagraphStyleAttributeName : paragraphStyle,
 //                         NSFontAttributeName : compFont_16 
@@ -1613,44 +1493,44 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
 
 
 
-//            [myAttrString2 addAttribute: NSForegroundColorAttributeName value: gbl_color_cBgr
-            [myAttrString2 addAttribute: NSBackgroundColorAttributeName value: mybgcolorfortableline
-                                                                       range: NSMakeRange(0, myAttrString2.length)];
+//            [myAttrString addAttribute: NSForegroundColorAttributeName value: gbl_color_cBgr
+            [myAttrString addAttribute: NSBackgroundColorAttributeName value: mybgcolorfortableline
+                                                                       range: NSMakeRange(0, myAttrString.length)];
 
 
-//            [myAttrString2 addAttribute: NSForegroundColorAttributeName value: mybgcolorfortableline  // [UIColor redColor]
-            [myAttrString2 addAttribute: NSForegroundColorAttributeName value: gbl_color_cBgr
+//            [myAttrString addAttribute: NSForegroundColorAttributeName value: mybgcolorfortableline  // [UIColor redColor]
+            [myAttrString addAttribute: NSForegroundColorAttributeName value: gbl_color_cBgr
                                                                        range: NSMakeRange(0,1)];
-            [myAttrString2 addAttribute: NSBackgroundColorAttributeName value: gbl_color_cBgr
+            [myAttrString addAttribute: NSBackgroundColorAttributeName value: gbl_color_cBgr
                                                                        range: NSMakeRange(0,1)];
 
-//            [myAttrString2 addAttribute: NSForegroundColorAttributeName value: [UIColor redColor]  // for test
+//            [myAttrString addAttribute: NSForegroundColorAttributeName value: [UIColor redColor]  // for test
 //                                                                       range: NSMakeRange(0,1)];
-//            [myAttrString2 addAttribute: NSBackgroundColorAttributeName value: [UIColor greenColor]  // for test
+//            [myAttrString addAttribute: NSBackgroundColorAttributeName value: [UIColor greenColor]  // for test
 //                                                                       range: NSMakeRange(0,1)];
 
-            [myAttrString2 addAttribute: NSForegroundColorAttributeName value: [UIColor blackColor]
-                                                                       range: NSMakeRange(1,myAttrString2.length - 2)];
+            [myAttrString addAttribute: NSForegroundColorAttributeName value: [UIColor blackColor]
+                                                                       range: NSMakeRange(1,myAttrString.length - 2)];
 
-//            [myAttrString2 addAttribute: NSForegroundColorAttributeName value: gbl_color_cBgr
-//                                                                       range: NSMakeRange(myAttrString2.length - 1, 1)];
-//            [myAttrString2 addAttribute: NSBackgroundColorAttributeName value: gbl_color_cBgr
-//                                                                       range: NSMakeRange(myAttrString2.length - 1, 1)];
+//            [myAttrString addAttribute: NSForegroundColorAttributeName value: gbl_color_cBgr
+//                                                                       range: NSMakeRange(myAttrString.length - 1, 1)];
+//            [myAttrString addAttribute: NSBackgroundColorAttributeName value: gbl_color_cBgr
+//                                                                       range: NSMakeRange(myAttrString.length - 1, 1)];
 
-            [myAttrString2 addAttribute: NSForegroundColorAttributeName value: gbl_color_cBgr   // foreground
-                                                                       range: NSMakeRange(myAttrString2.length - 1, 1)];
-            [myAttrString2 addAttribute: NSBackgroundColorAttributeName value: gbl_color_cBgr   // background
-                                                                       range: NSMakeRange(myAttrString2.length - 1, 1)];
+            [myAttrString addAttribute: NSForegroundColorAttributeName value: gbl_color_cBgr   // foreground
+                                                                       range: NSMakeRange(myAttrString.length - 1, 1)];
+            [myAttrString addAttribute: NSBackgroundColorAttributeName value: gbl_color_cBgr   // background
+                                                                       range: NSMakeRange(myAttrString.length - 1, 1)];
 
-//            [myAttrString2 addAttribute: NSForegroundColorAttributeName value: mybgcolorfortableline  //[UIColor redColor]
-//            [myAttrString2 addAttribute: NSForegroundColorAttributeName value: gbl_color_cBgr  // [UIColor redColor]
-//                                                                       range: NSMakeRange(myAttrString2.length - 1, 1)];
+//            [myAttrString addAttribute: NSForegroundColorAttributeName value: mybgcolorfortableline  //[UIColor redColor]
+//            [myAttrString addAttribute: NSForegroundColorAttributeName value: gbl_color_cBgr  // [UIColor redColor]
+//                                                                       range: NSMakeRange(myAttrString.length - 1, 1)];
 
 
-//            [myAttrString2 addAttribute: NSForegroundColorAttributeName value: [UIColor redColor]   // for test
-//                                                                       range: NSMakeRange(myAttrString2.length - 1, 1)];
-//            [myAttrString2 addAttribute: NSBackgroundColorAttributeName value: [UIColor greenColor]   // for test
-//                                                                       range: NSMakeRange(myAttrString2.length - 1, 1)];
+//            [myAttrString addAttribute: NSForegroundColorAttributeName value: [UIColor redColor]   // for test
+//                                                                       range: NSMakeRange(myAttrString.length - 1, 1)];
+//            [myAttrString addAttribute: NSBackgroundColorAttributeName value: [UIColor greenColor]   // for test
+//                                                                       range: NSMakeRange(myAttrString.length - 1, 1)];
 
 
             UIButton *myInvisibleButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
@@ -1661,7 +1541,6 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
 
             dispatch_async(dispatch_get_main_queue(), ^{               // <===  comp pair
                 // do not set text
-                cell.textLabel.text                      = @" ";  // plain text not used
                 cell.textLabel.textAlignment             = NSTextAlignmentCenter;
                 cell.userInteractionEnabled              = NO;
 //                cell.accessoryView                       = nil;   // use accessoryType setting   // have right arrow on column labels
@@ -1672,12 +1551,9 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
                 cell.textLabel.font                      = myCompFont;
                 cell.textLabel.adjustsFontSizeToFitWidth = myadjust;
                 cell.textLabel.backgroundColor           = mybgcolor;
-                cell.textLabel.attributedText            = myAttrString2;
+                cell.textLabel.attributedText            = myAttrString;
                 cell.imageView.image                     = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
-//                cell.backgroundView                      = nil ;
-//                cell.backgroundView                      = aBackgroundView;
-                cell.backgroundView                      = myInvisibleLabel ;
-//               [cell.contentView addSubview: myInvisibleLabel ];
+                cell.backgroundView                      = nil ;
 
             });
             //<.> gold below, but above workd
@@ -1697,7 +1573,7 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
             //<.>
             //
 
-                   rect = [ myAttrString2 boundingRectWithSize: CGSizeMake(300, 10000)
+                   rect = [ myAttrString boundingRectWithSize: CGSizeMake(300, 10000)
 //                                                      options: NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
 //                                                      options:NSStringDrawingUsesDeviceMetrics | NSStringDrawingUsesFontLeading
                                                       options:NSStringDrawingUsesDeviceMetrics | NSStringDrawingUsesDeviceMetrics  // these give NO grey lines (notice booboo)
@@ -1794,7 +1670,7 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
 
 //<.>  attrstr apple bug in ios 8 prevents this
 //        if (areInPlusesLine == 1)
-//           // here we have +++ line
+//        {   // here we have +++ line
 //nbn(22);
 //nbn(221);
 //                NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
@@ -1882,7 +1758,7 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
 //nbn(23);
 //NSLog(@"cell=[%@]",cell);
 //                return cell;   //     special case cell      special case       special case       special case      special case   
-//             // here we have +++ 
+//            } // here we have +++ 
 ////<.>
 //
 
@@ -1919,33 +1795,6 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
         }
 
 
-        // "how big" section   input data
-        //
-        // lin=[fill|filler before how big]__
-        // lin=[fill|before how big header]__
-        // lin=[howbighdr| HOW BIG]__
-        // lin=[howbighdr| are the   favorable influences    +++++  ]__
-        // lin=[howbighdr| and the   chalenging influences   -----  ]__
-        // lin=[howbighdr| in the 3 categories below]__
-        // lin=[fill|after how big header]__
-        // lin=[catlabel| CLOSENESS ]__
-        // lin=[stars|        easy ++++++++++++++++++++++++++++++                                                 ]__
-        // lin=[stars|   difficult ----------                                                                     ]__
-        // lin=[fill|after personal stars]__
-        // lin=[catlabel| FROM ~EMMA's POINT OF VIEW ]__
-        // lin=[stars|        easy +++++++++++++++++++++++++++++++++                                              ]__
-        // lin=[stars|   difficult ----------------------------------------------------                           ]__
-        // lin=[fill|after personA ptofview]__
-        // lin=[catlabel| FROM ~ANYA's POINT OF VIEW ]__
-        // lin=[stars|        easy +++++++++++++++++++++++++++++                                                  ]__
-        // lin=[stars|   difficult --------------------------------------------------------------                 ]__
-        // lin=[fill|after personB ptofview]__
-        // lin=[howbigftr| good indicators are a full line of pluses]__
-        // lin=[howbigftr| and double the pluses compared to minues ]__
-        // lin=[fill|after howbigftr]__
-        // lin=[fill|filler after how big]__
-        // lin=[fill|filler before paras]__
-        //
         if ( [mycode isEqualToString: @"stars"] )  // start stars
         {   // start stars
 
@@ -2379,106 +2228,42 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
 
 
 
-//<.>
-//        dispatch_async(dispatch_get_main_queue(), ^{            // <=== comp  stars
-//// old
-//////            cell.textLabel.text                      = mylin; 
-//////            cell.textLabel.adjustsFontSizeToFitWidth = myadjust;
-//////            cell.textLabel.textAlignment = NSTextAlignmentLeft;
-////            cell.textLabel.textAlignment = NSTextAlignmentCenter;
-////            cell.textLabel.textAlignment             = myalign;
-////
-////            cell.userInteractionEnabled              = NO;
-////
-////            cell.accessoryView                       = nil;   // use accessoryType setting   // have right arrow on column labels
-//////            cell.accessoryType                       = UITableViewCellAccessoryDisclosureIndicator;
-////
-//////            cell.accessoryView                       = myDisclosureIndicatorLabel;
-//////            cell.accessoryType                       = UITableViewCellAccessoryDisclosureIndicator;
-////            cell.accessoryType                       = UITableViewCellAccessoryNone;
-////
-////            cell.textLabel.numberOfLines             = mynumlines; 
-////            cell.textLabel.textColor                 = mytextcolor;
-////            cell.textLabel.font                      = compFont_12;
-//////            cell.textLabel.adjustsFontSizeToFitWidth = YES;
-////            cell.textLabel.backgroundColor           = mybgcolor;
-//////                cell.contentView.backgroundColor           = gbl_thisCellBackGroundColor;  // see above x
-////
-//
-//// new
-////            [cell.contentView addSubview: label0];
-////            [cell.contentView addSubview: label1];
-////            [cell.contentView addSubview: label2];
-////            [cell.contentView addSubview: label21];  // white space after stars
-////            [cell.contentView addSubview: label3];
-//
-//            cell.textLabel.text                      = mylin; 
-////            cell.textLabel.text                      = nil;   // this prevents  text bleed
+        dispatch_async(dispatch_get_main_queue(), ^{            // <=== comp  stars
+// old
+////            cell.textLabel.text                      = mylin; 
 ////            cell.textLabel.adjustsFontSizeToFitWidth = myadjust;
+////            cell.textLabel.textAlignment = NSTextAlignmentLeft;
+//            cell.textLabel.textAlignment = NSTextAlignmentCenter;
 //            cell.textLabel.textAlignment             = myalign;
+//
 //            cell.userInteractionEnabled              = NO;
-////            cell.accessoryView                       = nil;   // use accessoryType setting   // have right arrow on column labels
-//            cell.accessoryView                       = myInvisibleButton;               // no right arrow on column labels
+//
+//            cell.accessoryView                       = nil;   // use accessoryType setting   // have right arrow on column labels
+////            cell.accessoryType                       = UITableViewCellAccessoryDisclosureIndicator;
+//
+////            cell.accessoryView                       = myDisclosureIndicatorLabel;
+////            cell.accessoryType                       = UITableViewCellAccessoryDisclosureIndicator;
 //            cell.accessoryType                       = UITableViewCellAccessoryNone;
-////            cell.textLabel.numberOfLines             = 1; 
-//            cell.textLabel.numberOfLines             = 0; 
+//
+//            cell.textLabel.numberOfLines             = mynumlines; 
 //            cell.textLabel.textColor                 = mytextcolor;
 //            cell.textLabel.font                      = compFont_12;
-//            cell.textLabel.adjustsFontSizeToFitWidth = NO;
-////            cell.textLabel.backgroundColor           = mybgcolor;
-//            cell.textLabel.backgroundColor           = myRedGreenColor;
-////            cell.textLabel.attributedText            = myAttrString;  // order matters- pipes DO NOT appear if this line is here
-//            cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
-//            cell.backgroundView          = nil ;
-//        });
-//bn(802);
-//        return cell;
-//<.>
+////            cell.textLabel.adjustsFontSizeToFitWidth = YES;
+//            cell.textLabel.backgroundColor           = mybgcolor;
+////                cell.contentView.backgroundColor           = gbl_thisCellBackGroundColor;  // see above x
 //
 
+// new
+//            [cell.contentView addSubview: label0];
+//            [cell.contentView addSubview: label1];
+//            [cell.contentView addSubview: label2];
+//            [cell.contentView addSubview: label21];  // white space after stars
+//            [cell.contentView addSubview: label3];
 
-
-//        UILabel *myStarsLabel= [[UILabel alloc] initWithFrame:CGRectMake(0,0,cell.frame.size.width,cell.frame.size.height)];
-//        UILabel *myStarsLabel= [[UILabel alloc] initWithFrame: CGRectMake(0, 0, cell.frame.size.width - 32.0, cell.frame.size.height) ];
-        UILabel *myStarsLabel= [[UILabel alloc] initWithFrame: CGRectMake(0, 0, cell.frame.size.width, cell.frame.size.height) ];
-//        UIButton *myStarsLabel= [[UILabel alloc] initWithFrame: CGRectMake(0, 0, cell.frame.size.width, cell.frame.size.height) ];
-
-
-//NSMutableAttributedString *myAttStr = [[NSMutableAttributedString alloc]initWithAttributedString:self.userLabel.attributedText];
-NSMutableAttributedString *myAttrStr5 = [[NSMutableAttributedString alloc]initWithString: mylin];
-nbn(200);
-//[myAttrStr5 addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Helvetica Neue" size:21] range:NSMakeRange(0, self.userLabel.length)];
-[myAttrStr5 addAttribute:NSBackgroundColorAttributeName value:[UIColor whiteColor] range:NSMakeRange(3, mylin.length - 3)];
-nbn(201);
-[myAttrStr5 addAttribute:NSBackgroundColorAttributeName value:[UIColor greenColor] range:NSMakeRange(3,  7)];
-nbn(202);
-[myAttrStr5 addAttribute:NSBackgroundColorAttributeName value:[UIColor lightGrayColor] range:NSMakeRange(10, mylin.length - 20)];
-nbn(203);
-[myAttrStr5 addAttribute:NSBackgroundColorAttributeName value:[UIColor cyanColor] range:NSMakeRange(mylin.length - 19, 5)];
-nbn(205);
-
-//        myStarsLabel.text            = mylin;
-//        myStarsLabel.title            = mylin;
-        myStarsLabel.font            = compFont_13;
-//        myStarsLabel.backgroundColor = [UIColor cyanColor] ;
-
-//        myStarsLabel.backgroundColor = gbl_colorHomeBG_per ;
-//        myStarsLabel.backgroundColor = gbl_color_cBgr ;
-        myStarsLabel.attributedText  = myAttrStr5;
-        myStarsLabel.tag             = 411;
-  NSLog(@"myStarsLabel.tag             =[%ld]",(long) myStarsLabel.tag             );
-
-
-        dispatch_async(dispatch_get_main_queue(), ^{            // <=== comp  stars
-
-//            cell.textLabel.text                      = mylin; 
-            cell.textLabel.text                      = nil;   // this prevents  text bleed
-//            cell.textLabel.text                      = @" ";
-
+            cell.textLabel.text                      = mylin; 
+//            cell.textLabel.text                      = nil;   // this prevents  text bleed
 //            cell.textLabel.adjustsFontSizeToFitWidth = myadjust;
-//            cell.textLabel.textAlignment             = myalign;
-            cell.textLabel.textAlignment             = NSTextAlignmentCenter;
-
+            cell.textLabel.textAlignment             = myalign;
             cell.userInteractionEnabled              = NO;
 //            cell.accessoryView                       = nil;   // use accessoryType setting   // have right arrow on column labels
             cell.accessoryView                       = myInvisibleButton;               // no right arrow on column labels
@@ -2486,25 +2271,15 @@ nbn(205);
 //            cell.textLabel.numberOfLines             = 1; 
             cell.textLabel.numberOfLines             = 0; 
             cell.textLabel.textColor                 = mytextcolor;
-//            cell.textLabel.font                      = compFont_12;
-            cell.textLabel.font                      = myCompFont;
+            cell.textLabel.font                      = compFont_12;
             cell.textLabel.adjustsFontSizeToFitWidth = NO;
 //            cell.textLabel.backgroundColor           = mybgcolor;
-//            cell.textLabel.backgroundColor           = myRedGreenColor;
-            cell.textLabel.backgroundColor           = nil;
-//            cell.textLabel.attributedText            = myAttrStr5;  // order matters- pipes DO NOT appear if this line is here
-            cell.textLabel.attributedText            = nil;  // order matters- pipes DO NOT appear if this line is here
-//            cell.textLabel.attributedText            = myAttrStr5;  // order matters- pipes DO NOT appear if this line is here
+            cell.textLabel.backgroundColor           = myRedGreenColor;
+//            cell.textLabel.attributedText            = myAttrString;  // order matters- pipes DO NOT appear if this line is here
+            cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
             cell.backgroundView          = nil ;
-//            cell.backgroundView                      = aBackgroundView;
-//            cell.backgroundView                      = aBackgroundView;
-
-
-            [cell.contentView addSubview: myStarsLabel];
-//            [cell.textLabel addSubview: myStarsLabel];
-
         });
-
+bn(802);
         return cell;
 
 
@@ -2707,17 +2482,7 @@ nbn(205);
             myCompFont = compFont_11b;
         }
 
-tn();
-  NSLog(@" PRINT CELL   COMP Fall thru ");
-  NSLog(@"row =[%ld]",(long)indexPath.row);
-  NSLog(@"mylin=[%@]",mylin);
-  NSLog(@"mytextcolor=[%@]",mytextcolor);
-  NSLog(@"mynumlines=[%ld]",(long)mynumlines);
-  NSLog(@"myCompFont=[%@]",myCompFont);
-  NSLog(@"mybgcolor=[%@]",mybgcolor);
-  NSLog(@"=========================================================");
 
-tn();
         dispatch_async(dispatch_get_main_queue(), ^{            // <===  comp fall thru
             cell.textLabel.text                      = mylin;   // --------------------------------------------------
 //            cell.textLabel.adjustsFontSizeToFitWidth = myadjust;
@@ -2735,12 +2500,7 @@ tn();
             cell.textLabel.backgroundColor           = mybgcolor;
 //            cell.textLabel.attributedText            = nil;  // order matters- pipes DO NOT appear if this line is here
             cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
-//            cell.backgroundView          = nil ;
-            cell.backgroundView                      = aBackgroundView;
-
-//            [cell.contentView addSubview: myStarsLabel];
-//            [cell.contentView addSubview: myInvisibleLabel ];
-
+            cell.backgroundView          = nil ;
         });
 
 //bn(602);
@@ -4312,7 +4072,7 @@ trn("// end of  tableView cellForRowAtIndexPath: (NSIndexPath *)indexPath");
 //  NSLog(@"gbl_heightCellPER=[%ld]",(long)gbl_heightCellPER);
         return gbl_heightCellPER;  
     }
-    if ( [gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]  //  new compatibility TBLRPT  report
+    if ( [gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]  //  new personality TBLRPT  report
     ) {
 
 //NSAttributedString *attrStr = ... // your attributed string
@@ -5664,10 +5424,10 @@ NSLog(@"gbl_TBLRPTS1_saveSelectedIndexPath.row=%ld",(long)gbl_TBLRPTS1_saveSelec
 
 
 
-    // run grpof2 report   compatibility
+    // run grpof2 report
     // load new grpof2 TBLRPT  report data from URLtoHTML_forWebview into array gbl_compDataLines 
     //
-    if ( [gbl_currentMenuPlusReportCode isEqualToString: @"hompco"] )  // grpof2 // new compatibility report  (just 2)
+    if ( [gbl_currentMenuPlusReportCode isEqualToString: @"hompco"] )  // grpof2 // compatibility report  (just 2)
     {
 
 //    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]) 
@@ -6595,7 +6355,7 @@ tn();ki(i);ks(my_buff);
 //            
 //            
 //             /* here, go and look at html report */
-//             // [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"about:blank"]]];  // ?clean for reuse
+//             // [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"about:blank"]]];  // ?clean for re-use
 //             
 //             self.outletWebView.scalesPageToFit = YES;
 //             
@@ -8370,7 +8130,7 @@ tn();trn("// set new gbl_currentMenuPlusReportCode    for info in next report");
 ////            
 ////            
 ////             /* here, go and look at html report */
-////             // [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"about:blank"]]];  // ?clean for reuse
+////             // [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"about:blank"]]];  // ?clean for re-use
 ////             
 ////             self.outletWebView.scalesPageToFit = YES;
 ////             
@@ -8539,7 +8299,7 @@ tn();trn("// set new gbl_currentMenuPlusReportCode    for info in next report");
         //            
         //            
         //            /* here, go and look at html report */
-        //            // [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"about:blank"]]];  // ?clean for reuse
+        //            // [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"about:blank"]]];  // ?clean for re-use
         //            
         //            self.outletWebView.scalesPageToFit = YES;
         //            
