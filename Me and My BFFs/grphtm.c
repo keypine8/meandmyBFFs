@@ -732,14 +732,20 @@ gbl_db_code = 1;
     g_fn_prtlin(writebuf);
     sprintf(writebuf, "fill|before how big header");
     g_fn_prtlin(writebuf);
-    sprintf(writebuf, "howbighdr|   How Big");
+//  sprintf(writebuf, "howbighdr|   How Big");
+    sprintf(writebuf, "howbighdr|     How Big");
     g_fn_prtlin(writebuf);
-    sprintf(writebuf, "howbighdr|   are the  favorable   influences  +++  ");
+//    sprintf(writebuf, "howbighdr|   are the  favorable   influences  +++  ");
+//    sprintf(writebuf, "howbighdr|     are the favorable   influences +++  ");
+    sprintf(writebuf, "howbighdr|     are the favorable   influences ++  ");
     g_fn_prtlin(writebuf);
-    sprintf(writebuf, "howbighdr|   and the  challenging influences  ---  ");
+//    sprintf(writebuf, "howbighdr|   and the  challenging influences  ---  ");
+//    sprintf(writebuf, "howbighdr|     and the challenging influences ---  ");
+    sprintf(writebuf, "howbighdr|     and the challenging influences --  ");
 //    sprintf(writebuf, "howbighdr| and the   challenging influences  qqqqq  ");
     g_fn_prtlin(writebuf);
-    sprintf(writebuf, "howbighdr|   in the 3 categories below");
+//    sprintf(writebuf, "howbighdr|   in the 3 categories below");
+    sprintf(writebuf, "howbighdr|     in the 3 categories below?");
     g_fn_prtlin(writebuf);
     sprintf(writebuf, "fill|after how big header");
     g_fn_prtlin(writebuf);
@@ -762,7 +768,8 @@ gbl_db_code = 1;
 
   // this is webview version
 
-    sprintf(category_text, "%s", " 1. CLOSENESS ");
+//    sprintf(category_text, "%s", " 1. CLOSENESS ");
+    sprintf(category_text, "%s", "    Closeness ");
 
     put_category_label(category_text, (int)strlen(category_text)); 
 
@@ -812,7 +819,8 @@ tn();tr("closeness doclin=");ksn(doclin);
     // this is webview version  wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
 
 
-    mylen = sprintf(category_text, " 2. FROM %s's POINT OF VIEW ", beg_aview_name );
+//    mylen = sprintf(category_text, " 2. FROM %s's POINT OF VIEW ", beg_aview_name );
+    mylen = sprintf(category_text, "    From %s's Point of View ", beg_aview_name );
 //    sprintf(category_text, " FROM %s's POINT OF VIEW ", beg_aview_name );
     put_category_label(category_text, mylen); 
 
@@ -848,7 +856,8 @@ tn();tr("closeness doclin=");ksn(doclin);
     s = &beg_bview_name[0];
     for (; *s; ++s) *s = toupper( (int) *s);
 
-    mylen = sprintf(category_text, " 3. FROM %s's POINT OF VIEW ", beg_bview_name );
+//    mylen = sprintf(category_text, " 3. FROM %s's POINT OF VIEW ", beg_bview_name );
+    mylen = sprintf(category_text, "    From %s's Point of View ", beg_bview_name );
 //    sprintf(category_text, " FROM %s's POINT OF VIEW ", beg_bview_name );
     put_category_label(category_text, mylen); 
 
@@ -898,9 +907,13 @@ tn();tr("closeness doclin=");ksn(doclin);
 
 //    sprintf(writebuf, "howbigftr|   Good indicators are a full line of +++ ");
 //    sprintf(writebuf, "howbigftr|   Good indicator is a full line of +++ ");
-    sprintf(writebuf, "howbigftr|   Good signs are a full line of +++ ");
+//  sprintf(writebuf, "howbigftr|   Good signs are a full line of +++ ");
+//    sprintf(writebuf, "howbigftr|     Good signs are a full line of +++ ");
+    sprintf(writebuf, "howbigftr|     Good signs are a full line of ++ ");
     g_fn_prtlin(writebuf);
-    sprintf(writebuf, "howbigftr|   and double the +++ compared to  --- ");
+//  sprintf(writebuf, "howbigftr|   and double the +++ compared to  --- ");
+//    sprintf(writebuf, "howbigftr|     and double the +++ compared to --- ");
+    sprintf(writebuf, "howbigftr|     and double the ++ compared to -- ");
     g_fn_prtlin(writebuf);
     sprintf(writebuf, "fill|after howbigftr");
     g_fn_prtlin(writebuf);

@@ -101,6 +101,7 @@ UIImage *gbl_brownDone ;
 UIImage *gbl_yellowEdit ;
 //UIColor *gbl_bgColor_blueDone;
 UIColor *gbl_bgColor_brownDone;
+UIColor *gbl_bgColor_brownHdr;
 UIColor *gbl_bgColor_yellowEdit;
 //UIImage *gbl_chevronRight ;
 //UIImage *gbl_chevronLeft  ;
