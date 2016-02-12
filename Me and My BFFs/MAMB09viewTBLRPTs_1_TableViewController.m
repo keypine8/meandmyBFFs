@@ -194,6 +194,9 @@
 //
 
 
+
+
+
 } // end of  viewDidLoad  in TBLRPT_1
 
 
@@ -4094,7 +4097,7 @@ trn("// end of  tableView cellForRowAtIndexPath: (NSIndexPath *)indexPath");
             if (gbl_heightForCompTable > 30.0) {
                 gbl_heightForCompTable =  gbl_heightForCompTable  /  2.0; // MAGIC FIX 15+15 on 6+, possibly 6 - fixes hdr
             }
-            gbl_heightForCompTable =  ceilf(gbl_heightForCompTable);
+            gbl_heightForCompTable =  ceilf(gbl_heightForCompTable); // ceilf  gets rid of side lines
 //kdn(gbl_heightForCompTable );
 
   NSLog(@"return CELL HEIGHT 1 is [%f]", gbl_heightForCompTable );
@@ -4604,47 +4607,49 @@ trn("// end of  tableView cellForRowAtIndexPath: (NSIndexPath *)indexPath");
 
 /*
 // Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
+//- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+//    // Return NO if you do not want the specified item to be editable.
+//    return YES;
+//}
 */
 
 /*
 // Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
+//- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+//    if (editingStyle == UITableViewCellEditingStyleDelete) {
+//        // Delete the row from the data source
+//        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+//    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
+//        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+//    }   
+//}
 */
 
 /*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
+//// Override to support rearranging the table view.
+//- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
+//}
 */
 
 /*
 // Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
+//- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+//    // Return NO if you do not want the item to be re-orderable.
+//    return YES;
+//}
 */
 
 /*
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
+//- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+//    // Get the new view controller using [segue destinationViewController].
+//    // Pass the selected object to the new view controller.
+//}
+//
 */
+
 
 - (BOOL)tableView:(UITableView *)tableView  shouldHighlightRowAtIndexPath: (NSIndexPath *)indexPath
 {
@@ -4996,6 +5001,7 @@ tn();trn("just tapped on row in TBLRPTS_1");
 //      gbl_selectedRownumTBLRPT_1 = -1; // FLAG to not highlight menu row on first entering selrpts_B
 //  }
 //
+
 } // viewWillDisappear
 
 
@@ -6377,6 +6383,10 @@ tn();ki(i);ks(my_buff);
 //        }
 //
 
+
+
+
+
     }  // END of   all BEST MATCH ... reports  ======================================================================================
 
 // END  of GUTS of ViewDidLoad (called only once) moved to ViewWillAppear (called each time becomes visible)
@@ -6794,6 +6804,7 @@ tn();ki(i);ks(my_buff);
                 [gbl_array_cellPersonBname addObject: curr_cellPersonBname];
             }
        } while(false);   // now that we have lcl_group_report_output_PSVs, grab all BG color for all tableview cells
+
 
 
 

@@ -1013,6 +1013,7 @@
     // FYI  gbl_colorSepara  for apple is c8c7cc  200,199,204
     //
     gbl_colorSepara_per  = [UIColor colorWithRed:160.0/255.0 green:160.0/255.0 blue:167.0/255.0 alpha:1.0]; // cell separator color
+//    gbl_colorSepara_per  = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:144.0/255.0 alpha:1.0]; // cell separator color
 
 
     //  try different color for grp

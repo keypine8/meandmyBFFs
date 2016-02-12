@@ -200,6 +200,10 @@ tn();
     gbl_currentMenuPrefixFromHome    = @"homp";    // set default on startup
 
 
+
+        //// start DO STUFF HERE
+
+
     // Uncomment the following line to preserve selection between presentations.
     //self.clearsSelectionOnViewWillAppear = NO;
     
@@ -1009,8 +1013,18 @@ ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
 //  cell.textLabel.text = @"";           // for test create empty Launch screen shot 
 //  cell.accessoryType        = nil;      // for test create empty Launch screen shot
 //  cell.editingAccessoryType = nil;     // for test create empty Launch screen shot
+  //
+  // For instance let's say your app supports iPhones > 4s, so iPhone: 4s, 5, 5s, 6 and 6plus.
+  // Make sure to make launch-images which have the following dimensions:
+  //         iPhone4s    =  640 ×  960
+  //         iPhone5, 5s =  640 × 1136
+  //         iPhone6     =  750 x 1334
+  //         iPhone6plus = 1242 x 2208
+  //
 
-// for test create empty Launch screen shot  //  ALSO comment out between her and  <.x  below
+
+//  ALSO for test only    comment out between her and  <.x  below
+// for test create empty Launch screen shot by commenting out from here to <.x
 
         cell.textLabel.text = nameOfGrpOrPer;
 
@@ -1033,7 +1047,8 @@ ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
         cell.accessoryView                       = myDisclosureIndicatorLabel;
         cell.accessoryType                       = UITableViewCellAccessoryDisclosureIndicator;
 
-//<.x for test create empty Launch screen shot  //  ALSO comment out between the 2  <.  above
+  //<.x for test create empty Launch screen shot  //  ALSO comment out between the 2  <.  above
+
 
     });
 //  NSLog(@"after set access view");
@@ -1497,7 +1512,6 @@ tn();
     dispatch_after(mytime, dispatch_get_main_queue(), ^{       // do after delay of mytime    dispatch    dispatch    dispatch   dispatch  
 
         //// start DO STUFF HERE
-
     if ([gbl_lastSelectionType isEqualToString:@"group"]) {
         // NSLog(@"change grp to per!");
         //_mambCurrentSelectionType = @"person";
@@ -1985,9 +1999,9 @@ tn();trn("in doStuffOnEnteringForeground()   NOTIFICATION method     lastEntity 
     gbl_fromHomeCurrentSelectionType = _arr[0];  //  group OR person or pair
     gbl_fromHomeCurrentEntity        = _arr[0];  //  group OR person or pair
 
-//    NSLog(@"gbl_lastSelectionType=%@",gbl_lastSelectionType);
-//    NSLog(@"gbl_fromHomeCurrentSelectionType =%@",gbl_fromHomeCurrentSelectionType );
-//    NSLog(@"gbl_fromHomeCurrentEntity        =[%@]",gbl_fromHomeCurrentEntity        );
+    NSLog(@"gbl_lastSelectionType=%@",gbl_lastSelectionType);
+    NSLog(@"gbl_fromHomeCurrentSelectionType =%@",gbl_fromHomeCurrentSelectionType );
+    NSLog(@"gbl_fromHomeCurrentEntity        =[%@]",gbl_fromHomeCurrentEntity        );
 
 
 //    if ([gbl_lastSelectionType isEqualToString:@"person"]) gbl_colorHomeBG = gbl_colorHomeBG_per;
@@ -1995,18 +2009,21 @@ tn();trn("in doStuffOnEnteringForeground()   NOTIFICATION method     lastEntity 
 //    self.tableView.backgroundColor = gbl_colorHomeBG;       // WORKS
 //  NSLog(@"gbl_colorHomeBG=[%@]",gbl_colorHomeBG);
 
+
     
     if ([gbl_lastSelectionType isEqualToString:@"group"]) {
-      gbl_lastSelectedGroup  =  _arr[1];  // like "~Swim Team"
-      gbl_lastSelectedPerson =  _arr[3];  // like "~Dave"
-      gbl_colorHomeBG        = gbl_colorHomeBG_grp;
+      gbl_lastSelectedGroup            = _arr[1];  // like "~Swim Team"
+      gbl_lastSelectedPerson           = _arr[3];  // like "~Dave"
+      gbl_colorHomeBG                  = gbl_colorHomeBG_grp;
       gbl_currentMenuPrefixFromHome    = @"homg";
+      self.tableView.separatorColor    = gbl_colorSepara_grp;
     }
     if ([gbl_lastSelectionType isEqualToString:@"person"]) {
-      gbl_lastSelectedPerson =  _arr[1];  // like "~Dave"
-      gbl_lastSelectedGroup  =  _arr[3];  // like "~Swim Team"
-      gbl_colorHomeBG        = gbl_colorHomeBG_per;
+      gbl_lastSelectedPerson           = _arr[1];  // like "~Dave"
+      gbl_lastSelectedGroup            = _arr[3];  // like "~Swim Team"
+      gbl_colorHomeBG                  = gbl_colorHomeBG_per;
       gbl_currentMenuPrefixFromHome    = @"homp";
+      self.tableView.separatorColor    = gbl_colorSepara_per;
     }
 
     self.tableView.backgroundColor = gbl_colorHomeBG;       // WORKS

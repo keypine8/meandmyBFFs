@@ -205,7 +205,7 @@ nbn(501);
             myNavBarLabel.textColor     = [UIColor blackColor];
             myNavBarLabel.textAlignment = NSTextAlignmentCenter; 
 
-            myNavBar2lineTitle          = [NSString stringWithFormat:  @"%@\n%@",
+            myNavBar2lineTitle          = [NSString stringWithFormat:  @"%@\n &%@",
                 gbl_TBLRPTS2_NAME_personA, 
                 gbl_TBLRPTS2_NAME_personB
             ]; 
@@ -1871,7 +1871,7 @@ for (id eltTst in gbl_compDataLines) { NSLog(@"    gbl_comp=%@", eltTst); }
 //                mybgcolor         = [UIColor redColor];
                 gbl_heightCellCOMP = 18;
             }
-            else if ( [mylin isEqualToString: @"before table head"] ) {
+            else if ( [mylin isEqualToString: @"before table head"] ) {  // co
                 mylin             = @" ";
                 mybgcolor         = gbl_color_cHed ;
 //                mybgcolor         = gbl_color_cGre ;
@@ -2056,8 +2056,8 @@ for (id eltTst in gbl_compDataLines) { NSLog(@"    gbl_comp=%@", eltTst); }
             } else {
                 mybgcolor         = [UIColor cyanColor];
 //                gbl_heightForCompTable = 18.0;
-//                gbl_heightForCompTable = 16.0;
-                gbl_heightForCompTable = 2.0;
+//                gbl_heightForCompTable = 2.0;
+                gbl_heightForCompTable = 16.0;
                 thisIsHeaderSpace      = 0;
             }
 
@@ -4356,9 +4356,13 @@ trn("// END   END    4 of 3 FOOTER CELLS");
         if (gbl_areInCompatibilityTable == 1)
         {
 
-nb(40);kdn(gbl_heightForCompTable );
-            if (gbl_heightForCompTable > 30.0) gbl_heightForCompTable =  gbl_heightForCompTable  /  2.0; // MAGIC FIX 15+15 on 6+, possibly 6 - fixes hdr
-kdn(gbl_heightForCompTable );
+//nb(40);kdn(gbl_heightForCompTable );
+            if (gbl_heightForCompTable > 30.0) {
+                gbl_heightForCompTable =  gbl_heightForCompTable  /  2.0; // MAGIC FIX 15+15 on 6+, possibly 6 - fixes hdr
+            }
+            gbl_heightForCompTable =  ceilf(gbl_heightForCompTable);  // gets rid of side lines
+
+//kdn(gbl_heightForCompTable );
 
   NSLog(@"return CELL HEIGHT 1 is [%f]", gbl_heightForCompTable );
             return (gbl_heightForCompTable ); 
@@ -4423,7 +4427,8 @@ kdn(gbl_heightForCompTable );
     ) {
         // return 34.0;
         // return 0.0;
-        return 0.01f;
+//        return 0.01f;
+        return 0.0;
     }
 
     if (   [gbl_currentMenuPlusReportCode isEqualToString: @"gbm2bm"]       // my Best Match in Group ... (personB)

@@ -717,6 +717,17 @@ tn();
      [self.navigationController.navigationBar.layer removeAllAnimations];  // stop the nav bar title stutter l to r
 
 
+
+  NSLog(@"selrpt B  in viewwill");
+    dispatch_async(dispatch_get_main_queue(), ^{                                // <===  <.>
+        if ([gbl_lastSelectionType isEqualToString:@"group"]) {
+            self.tableView.separatorColor    = gbl_colorSepara_grp;
+        } else if ([gbl_lastSelectionType isEqualToString:@"person"]){
+            self.tableView.separatorColor    = gbl_colorSepara_per;
+        }
+    });
+
+
     // for B level reports - no remembering for B level reports EXCEPT for returning to this menu)
 
     // Now  highlight the  remembered last report selection 

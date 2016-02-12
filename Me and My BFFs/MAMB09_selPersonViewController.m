@@ -82,6 +82,9 @@
 //        if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"])    // came from "My Best Match in Group ..."
         else {
             myNavBar2lineTitle = [NSString stringWithFormat: @"%@\nSelect Group",  gbl_lastSelectedPerson ];
+//            myNavBar2lineTitle = [NSString stringWithFormat: @"%@\nFind Best Match in Group ...",  gbl_lastSelectedPerson ];
+//            myNavBar2lineTitle = [NSString stringWithFormat: @"%@\nSelect Best Match Group",  gbl_lastSelectedPerson ];
+
         }
 
         myNavBarLabel.numberOfLines = 2;
@@ -395,6 +398,18 @@
 
 -(void) viewWillAppear:(BOOL)animated {
     //NSLog(@"in viewWillAppear!");
+
+
+
+  NSLog(@"selPerson   in viewwill");
+    dispatch_async(dispatch_get_main_queue(), ^{                                // <===  <.>
+        if ([gbl_lastSelectionType isEqualToString:@"group"]) {
+            self.tableView.separatorColor    = gbl_colorSepara_grp;
+        } else if ([gbl_lastSelectionType isEqualToString:@"person"]){
+            self.tableView.separatorColor    = gbl_colorSepara_per;
+        }
+    });
+
 
     [self.tableView reloadData];  // moved reloaddata from viewdidappear (flashing highlight on selected row)
 

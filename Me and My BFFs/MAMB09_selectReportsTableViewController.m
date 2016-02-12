@@ -111,6 +111,8 @@ nbn(44);
 
 
 
+
+
 - (void)viewDidAppear:(BOOL)animated
 {
 NSLog(@"in viewDidAppear()");
@@ -205,6 +207,8 @@ NSLog(@"in viewDidAppear()");
     }
 
     // Configure the cell...
+
+
 
 //    UIFont *myNewFont = [UIFont systemFontOfSize: 16.0];
 //    cell.textLabel.font            = [UIFont boldSystemFontOfSize: 17.0];
@@ -518,6 +522,18 @@ NSLog(@"in viewDidAppear()");
 -(void) viewWillAppear:(BOOL)animated {
     NSLog(@"in viewWillAppear  in rpt sel!");
 
+
+
+  NSLog(@"selrpt   in viewwill");
+    dispatch_async(dispatch_get_main_queue(), ^{                                // <===  <.>
+        if ([gbl_lastSelectionType isEqualToString:@"group"]) {
+            self.tableView.separatorColor    = gbl_colorSepara_grp;
+        } else if ([gbl_lastSelectionType isEqualToString:@"person"]){
+            self.tableView.separatorColor    = gbl_colorSepara_per;
+        }
+    });
+
+
     NSString *myLastReportCodeSelected;
 
     MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // to access global methods in appDelegate.m
@@ -531,9 +547,7 @@ NSLog(@"in viewDidAppear()");
                                                           fromRememberCategory: (NSString *) @"rptsel"  ]; 
 
     NSLog(@"myLastReportCodeSelected =%@",myLastReportCodeSelected );
-nbn(71);
     if (myLastReportCodeSelected  &&  myLastReportCodeSelected.length != 0) {
-nbn(72);
         // find the last report  3-char code   in   gbl_mambReports
         //    (the index of that  equals  the index of the row in tableview to highlight)
         BOOL foundRptArrEltWithCode;
@@ -560,10 +574,9 @@ nbn(72);
         if ([myLastReportCodeSelected hasPrefix: @"gbm" ]) myOffsetRptCodeTbl = 19;
         if ([myLastReportCodeSelected hasPrefix: @"pbm" ]) myOffsetRptCodeTbl = 27;
         foundIdx = foundIdx - myOffsetRptCodeTbl ;   //  MAGIC HERE mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm !
-tn();kin(foundIdx);
+//tn();kin(foundIdx);
 
         if (foundRptArrEltWithCode == YES) {
-nbn(73);
 
             // use found foundIdx to get  found  indexPath
             NSIndexPath *foundIndexPath = [NSIndexPath indexPathForRow: foundIdx   inSection: 0];
@@ -578,17 +591,12 @@ nbn(73);
 
 
             if (foundIndexPath) {
-nbn(74);
                 [self.tableView selectRowAtIndexPath: foundIndexPath  // puts highlight on remembered row
                                             animated: YES
                                       scrollPosition: UITableViewScrollPositionNone];
-nbn(75);
             }
-nbn(76);
         }
-nbn(77);
     } // myLastReportCodeSelected exists
-nbn(78);
 
 } // viewWillAppear
 
