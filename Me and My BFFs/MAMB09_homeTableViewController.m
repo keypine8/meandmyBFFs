@@ -1655,13 +1655,21 @@ tn();
     [_segEntityOutlet setEnabled: YES forSegmentAtIndex: 1];  // enable selection of "Person"
 
 
-    [self.view setUserInteractionEnabled: YES];                          // this works to disable user interaction for "mytime"
+    [self.view setUserInteractionEnabled: YES];      
 
-    }); // do after delay of  mytime
+    [self sectionIndexTitlesForTableView: self.tableView ];  // set up sectionindex or not after switch
+//nbn(145);
+//    [self.tableView reloadSectionIndexTitles];
+
+
+    }); // do after delay of  mytime // this works to disable user interaction for "mytime"
 
 
     [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.0 ];    // after arg seconds
 
+//nbn(146);
+//    [self.tableView reloadSectionIndexTitles];
+//nbn(147);
 
 
 } // end of   (IBAction)actionSwitchEntity:(id)sender {  // segemented control on home page
@@ -1981,6 +1989,36 @@ tn();trn("in doStuffOnEnteringForeground()   NOTIFICATION method     lastEntity 
 //    NSString *gbl_appDocDirStr = [gbl_appDocDirURL path];
     
     
+        //    gbl_numRowsToTurnOnIndexBar    = 90;
+        //
+        // CGFloat   gbl_heightForScreen;  // 6+  = 736.0 x 414  and 6s+  (self.view.bounds.size.width) and height
+        //                                 // 6s  = 667.0 x 375  and 6
+        //                                 // 5s  = 568.0 x 320  and 5 
+        //                                 // 4s  = 480.0 x 320  and 5 
+        //
+        //  NSLog(@"self.view.bounds.size.height  =[%f]",self.view.bounds.size.height  );
+        if (   self.view.bounds.size.width >= 414.0        // 6+ and 6s+  and bigger
+        ) {
+            gbl_numRowsToTurnOnIndexBar    = 50;  
+            gbl_numRowsToTurnOnIndexBar    = 20;   // for test
+        }
+        else if (   self.view.bounds.size.width  < 414.0    // 6 and 6s
+                 && self.view.bounds.size.width  > 320.0
+        ) {
+            gbl_numRowsToTurnOnIndexBar    = 45;
+            gbl_numRowsToTurnOnIndexBar    = 20;   // for test
+        }
+        else if (   self.view.bounds.size.width <= 320.0   //  5s and 5 and 4s and smaller
+        ) {
+            gbl_numRowsToTurnOnIndexBar    = 38;
+            gbl_numRowsToTurnOnIndexBar    = 20;   // for test
+        }
+        else if (   self.view.bounds.size.width <= 320.0   // ??
+        ) {
+            gbl_numRowsToTurnOnIndexBar    = 33;
+        }
+
+    
     // lastEntity stuff  to (1) highlight correct entity in seg control at top and (2) highlight correct person-or-group
     //
     //
@@ -2060,66 +2098,100 @@ tn();trn("in doStuffOnEnteringForeground()   NOTIFICATION method     lastEntity 
 // iPhone UITableView. How do turn on the single letter alphabetical list like the Music App?
 //
 //
-- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
+{
+    //   NSMutableArray *myEmptyArray = [NSMutableArray array];
+    NSInteger myCountOfRows;
+    myCountOfRows = 0;
 
 
-    if ([gbl_lastSelectionType isEqualToString:@"group"])  {
-        if (gbl_arrayGrp.count <= gbl_numRowsToTurnOnIndexBar) return nil;
-
+    if ([gbl_lastSelectionType isEqualToString:@"group"])   myCountOfRows = gbl_arrayGrp.count;
+    if ([gbl_lastSelectionType isEqualToString:@"person"])  myCountOfRows = gbl_arrayPer.count;
+nbn(160);
+  NSLog(@"myCountOfRows              =[%ld]", (long)myCountOfRows );
+  NSLog(@"gbl_numRowsToTurnOnIndexBar=[%ld]", (long)gbl_numRowsToTurnOnIndexBar);
+    if (myCountOfRows <= gbl_numRowsToTurnOnIndexBar) {
+nbn(161);
+//        return myEmptyArray ;  // no sectionindex
+        return nil ;  // no sectionindex
     }
-    if ([gbl_lastSelectionType isEqualToString:@"person"])  {
-        if (gbl_arrayPer.count <= gbl_numRowsToTurnOnIndexBar) return nil;
-    }
+nbn(162);
+
+    NSArray *mySectionIndexTitles;
+    mySectionIndexTitles = [NSArray arrayWithObjects:  // 33 items  last index=32
+//            @"TOP",
+//         @" ", @" ", @" ", @" ",  @" ", @" ",
+//            @"__",
+//         @" ", @" ", @" ", @" ",  @" ", @" ",
+//            @"__",
+//         @" ", @" ", @" ", @" ",  @" ", @" ",
+//            @"__",
+//         @" ", @" ", @" ", @" ",  @" ", @" ",
+//            @"END", nil ];
+//
 
 
-
-//    return[NSArray arrayWithObjects:@"A", @"B", @"C", @"D", @"E", @"F", @"G", @"H", @"I", @"J", @"K", @"L", @"M", @"N", @"O", @"P", @"Q", @"R", @"S", @"T", @"U", @"V", @"W", @"X", @"Y", @"Z", nil];
-//    return[NSArray arrayWithObjects:@"--", @" ", @" ", @" ", @" ", @" ", @"GGG", @" ", @" ", @" ", @" ", @" ", @"-", @"N", @"O", @"P", @"Q", @"R", @"S", @"T", @"U", @"V", @"W", @"XXX", @"Y", @"Z", @"--", nil];
-
-    return[NSArray arrayWithObjects:
+            @"TOP",
+         @" ", @" ", @" ", @" ",  @" ",
             @"__",
-         @" ", @" ", @" ", @" ",  @" ", @" ",
-            @"20",
-         @" ", @" ", @" ", @" ",  @" ", @" ",
-            @"40",
-         @" ", @" ", @" ", @" ",  @" ", @" ",
-            @"60",
-         @" ", @" ", @" ", @" ",  @" ", @" ",
-            @"80",
-         @" ", @" ", @" ", @" ",  @" ", @" ",
-            @"==", nil ];
-  }
+         @" ", @" ", @" ", @" ",  @" ",
+            @"__",
+         @" ", @" ", @" ", @" ",  @" ",
+            @"__",
+         @" ", @" ", @" ", @" ",  @" ",
+            @"END",  @" ",  @" ", @"x", nil ];
 
-- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index {
+    gbl_numSectionIndexTitles = mySectionIndexTitles.count;
 
-  NSLog(@"sectionForSectionIndexTitle!");
-//    NSInteger newRow = [self indexForFirstChar:title inArray:self.yourStringArray];
+    return mySectionIndexTitles;
+
+} // end of sectionIndexTitlesForTableView
+
+
+
+- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
+{
+
+  NSLog(@"sectionForSectionIndexTitle!  in HOME");
     NSInteger newRow;
     newRow = 0;
-  NSLog(@"title=%@",title);
 
-    if ([gbl_lastSelectionType isEqualToString:@"group"])  {
-//        newRow = [self indexForFirstChar: title inArray: gbl_arrayGrp ];
-        if ([title isEqualToString:@"__"]) newRow = 0;
-//        if ([title isEqualToString:@"20"]) newRow = (20 / 100) * gbl_arrayGrp.count;
-//        if ([title isEqualToString:@"40"]) newRow = (40 / 100) * gbl_arrayGrp.count;
-//        if ([title isEqualToString:@"60"]) newRow = (60 / 100) * gbl_arrayGrp.count;
-//        if ([title isEqualToString:@"80"]) newRow = (80 / 100) * gbl_arrayGrp.count;
+//    if ([gbl_lastSelectionType isEqualToString:@"group"])  {
+//        if ([title isEqualToString:@"__"]) newRow = 0;
+//        if ([title isEqualToString:@"20"]) newRow = (int) ( (20.0 / 100.0) * (double)gbl_arrayGrp.count );
+//        if ([title isEqualToString:@"40"]) newRow = (int) ( (40.0 / 100.0) * (double)gbl_arrayGrp.count );
+//        if ([title isEqualToString:@"60"]) newRow = (int) ( (60.0 / 100.0) * (double)gbl_arrayGrp.count );
+//        if ([title isEqualToString:@"80"]) newRow = (int) ( (80.0 / 100.0) * (double)gbl_arrayGrp.count );
+//        if ([title isEqualToString:@"=="]) newRow =              gbl_arrayGrp.count - 1;
+//    }
+//    if ([gbl_lastSelectionType isEqualToString:@"person"])  {
+//        if ([title isEqualToString:@"__"]) newRow = 0;
+//        if ([title isEqualToString:@"20"]) newRow = (int) ( (20.0 / 100.0) * (double)gbl_arrayPer.count );
+//        if ([title isEqualToString:@"40"]) newRow = (int) ( (40.0 / 100.0) * (double)gbl_arrayPer.count );
+//        if ([title isEqualToString:@"60"]) newRow = (int) ( (60.0 / 100.0) * (double)gbl_arrayPer.count );
+//        if ([title isEqualToString:@"80"]) newRow = (int) ( (80.0 / 100.0) * (double)gbl_arrayPer.count );
+//        if ([title isEqualToString:@"=="]) newRow =              gbl_arrayPer.count - 1;
+//    }
 //
-        if ([title isEqualToString:@"20"]) newRow = (int) ( (20.0 / 100.0) * (double)gbl_arrayGrp.count );
-        if ([title isEqualToString:@"40"]) newRow = (int) ( (40.0 / 100.0) * (double)gbl_arrayGrp.count );
-        if ([title isEqualToString:@"60"]) newRow = (int) ( (60.0 / 100.0) * (double)gbl_arrayGrp.count );
-        if ([title isEqualToString:@"80"]) newRow = (int) ( (80.0 / 100.0) * (double)gbl_arrayGrp.count );
-        if ([title isEqualToString:@"=="]) newRow =              gbl_arrayGrp.count - 1;
+
+    NSInteger myCountOfRows;
+    if ([gbl_lastSelectionType isEqualToString:@"group"])  {
+        myCountOfRows = gbl_arrayGrp.count;
     }
     if ([gbl_lastSelectionType isEqualToString:@"person"])  {
-//        newRow = [self indexForFirstChar: title inArray: gbl_arrayPer ];
-        if ([title isEqualToString:@"__"]) newRow = 0;
-        if ([title isEqualToString:@"20"]) newRow = (int) ( (20.0 / 100.0) * (double)gbl_arrayPer.count );
-        if ([title isEqualToString:@"40"]) newRow = (int) ( (40.0 / 100.0) * (double)gbl_arrayPer.count );
-        if ([title isEqualToString:@"60"]) newRow = (int) ( (60.0 / 100.0) * (double)gbl_arrayPer.count );
-        if ([title isEqualToString:@"80"]) newRow = (int) ( (80.0 / 100.0) * (double)gbl_arrayPer.count );
-        if ([title isEqualToString:@"=="]) newRow =              gbl_arrayPer.count - 1;
+        myCountOfRows = gbl_arrayPer.count;
+    }
+
+    if ([title isEqualToString:@"TOP"]) newRow = 0;
+    if ([title isEqualToString:@"END"]) newRow = myCountOfRows - 1;
+    if (   [title isEqualToString:@" "]
+        || [title isEqualToString:@"__"]
+    )   newRow = ((double) (index + 1) / (double) gbl_numSectionIndexTitles ) * (double)myCountOfRows ;
+
+    if (   [title isEqualToString:@"x"] )
+    {  // position at row last used  (highlight row)
+nbn(151);
+        [self putHighlightOnCorrectRow ];
     }
 
     NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow: newRow inSection: 0];
@@ -2128,7 +2200,9 @@ tn();trn("in doStuffOnEnteringForeground()   NOTIFICATION method     lastEntity 
     [tableView scrollToRowAtIndexPath: newIndexPath atScrollPosition: UITableViewScrollPositionMiddle animated: NO];
 
     return index;
-}
+
+} // sectionForSectionIndexTitle
+
 
 //
 //// Return the index for the location of the first item in an array that begins with a certain character

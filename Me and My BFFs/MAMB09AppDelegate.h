@@ -61,7 +61,10 @@ NSInteger gbl_justLookedAtInfoScreen;
 NSInteger gbl_justAddedPersonRecord;
 NSInteger gbl_justAddedGroupRecord;
 
-NSString *gbl_doA_pe_co_reload ;  // either  @"do the reload only the first time"] OR @"this is not reset until app startup"; (reload only once per session)
+// A is for tblrpts_1,  B is for tblrpts_2
+//
+NSString *gbl_do_A_pe_co_reload ;  // either  @"do the reload only the first time"] OR @"this is not reset until app startup"; (reload only once per session)
+NSString *gbl_do_B_pe_co_reload ;  // either  @"do the reload only the first time"] OR @"this is not reset until app startup"; (reload only once per session)
 
 NSInteger gbl_starsNSInteger;
 NSString *gbl_starsNSString;

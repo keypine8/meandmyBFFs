@@ -5269,6 +5269,34 @@ NSLog(@"gbl_TBLRPTS1_saveSelectedIndexPath.row=%ld",(long)gbl_TBLRPTS1_saveSelec
                                                object: nil
     ];
 
+//    
+//        //    gbl_numRowsToTurnOnIndexBar    = 90;
+//        //
+//        // CGFloat   gbl_heightForScreen;  // 6+  = 736.0 x 414  and 6s+  (self.view.bounds.size.width) and height
+//        //                                 // 6s  = 667.0 x 375  and 6
+//        //                                 // 5s  = 568.0 x 320  and 5 
+//        //                                 // 4s  = 480.0 x 320  and 5 
+//        //
+//        //  NSLog(@"self.view.bounds.size.height  =[%f]",self.view.bounds.size.height  );
+//        if (   self.view.bounds.size.width >= 414.0        // 6+ and 6s+  and bigger
+//        ) {
+//            gbl_numRowsToTurnOnIndexBar    = 50;
+//        }
+//        else if (   self.view.bounds.size.width  < 414.0    // 6 and 6s
+//                 && self.view.bounds.size.width  > 320.0
+//        ) {
+//            gbl_numRowsToTurnOnIndexBar    = 45;
+//        }
+//        else if (   self.view.bounds.size.width <= 320.0   //  5s and 5 and 4s and smaller
+//        ) {
+//            gbl_numRowsToTurnOnIndexBar    = 38;
+//        }
+//        else if (   self.view.bounds.size.width <= 320.0   //  5s and 5 and 4s and smaller
+//        ) {
+//            gbl_numRowsToTurnOnIndexBar    = 33;
+//        }
+//
+
 
 
     gbl_areInCompatibilityTable = 0;
@@ -5282,11 +5310,11 @@ NSLog(@"gbl_TBLRPTS1_saveSelectedIndexPath.row=%ld",(long)gbl_TBLRPTS1_saveSelec
         || [gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]
 //<.>
     ) {
-  NSLog(@"per pco  RELOAD ? 2");
-        if ([ gbl_doA_pe_co_reload isEqualToString: @"do the reload only the first time"] )
+  NSLog(@"per pco  RELOAD A ? 2");
+        if ([ gbl_do_A_pe_co_reload isEqualToString: @"do the reload only the first time"] )
         {
-  NSLog(@"per pco  RELOAD ?   DO IT");
-              gbl_doA_pe_co_reload = @"this is not reset until app startup";
+  NSLog(@"per pco  RELOAD A   DO IT");
+              gbl_do_A_pe_co_reload = @"this is not reset until app startup";
 
             // try to get rid of tbl position in middle on startup
 //nbn(451);
@@ -7592,7 +7620,7 @@ tn();trn("// set new gbl_currentMenuPlusReportCode    for info in next report");
 
   } 
 
-}
+} // prepareforsegue
 
 
 //
@@ -7608,11 +7636,11 @@ nbn(29);
   NSLog(@"lcl_group_report_output_idx =[%d]",lcl_group_report_output_idx );
   NSLog(@"gbl_numRowsToTurnOnIndexBar =[%ld]",(long)gbl_numRowsToTurnOnIndexBar);
 
-    NSMutableArray *myEmptyArray = [NSMutableArray array];
-  NSLog(@"myEmptyArray =[%@]",myEmptyArray );
-
+    //NSMutableArray *myEmptyArray = [NSMutableArray array];
 
     NSInteger myCountOfRows;
+    myCountOfRows = 0;
+
 
     if (       [gbl_currentMenuPlusReportCode isEqualToString: @"homppe"])  // home + personality
     {
@@ -7629,8 +7657,8 @@ nbn(29);
 //    if (lcl_group_report_output_idx <= gbl_numRowsToTurnOnIndexBar) {
     if (myCountOfRows <= gbl_numRowsToTurnOnIndexBar) {
 nbn(30);
-//        return nil;
-        return myEmptyArray ;
+        return nil;
+        //     return myEmptyArray ;
     }
 
 nbn(31);
@@ -7666,7 +7694,9 @@ nbn(33);
 //
     NSArray *mySectionIndexTitles;
     mySectionIndexTitles = [NSArray arrayWithObjects:  // 33 items  last index=32
-            @"TOP"
+//            @"___",
+//         @"^", @" ", @" ", @" ",  @" ", @" ",
+            @"TOP",
          @" ", @" ", @" ", @" ",  @" ", @" ",
             @"__",
          @" ", @" ", @" ", @" ",  @" ", @" ",
@@ -7675,6 +7705,8 @@ nbn(33);
             @"__",
          @" ", @" ", @" ", @" ",  @" ", @" ",
             @"END", nil ];
+//         @" ", @" ", @" ", @" ",  @" ", @"|",
+//            @"---", nil ];
 
     gbl_numSectionIndexTitles = mySectionIndexTitles.count;
   NSLog(@"gbl_numSectionIndexTitles =[%ld]",(long)gbl_numSectionIndexTitles );
@@ -7754,10 +7786,12 @@ nbn(33);
 //    if ([title isEqualToString:@"__"])  newRow = (int) ( (50.0 / 100.0) * (double)lcl_group_report_output_idx );
 //    if ([title isEqualToString:@"_"])   newRow = (int) ( (75.0 / 100.0) * (double)lcl_group_report_output_idx );
 //    if ([title isEqualToString:@"END"]) newRow = lcl_group_report_output_idx - 1;
+
     if ([title isEqualToString:@"END"]) newRow = myCountOfRows - 1;
     if (   [title isEqualToString:@" "]
         || [title isEqualToString:@"__"]
     )   newRow = ((double) (index + 1) / (double) gbl_numSectionIndexTitles ) * (double)myCountOfRows ;
+
 //    )   newRow = ((double) (index + 1) / (double) gbl_numSectionIndexTitles ) * (double)lcl_group_report_output_idx ;
 
 //    if ([title isEqualToString:@" "])

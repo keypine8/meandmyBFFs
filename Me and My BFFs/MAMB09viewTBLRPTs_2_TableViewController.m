@@ -4673,7 +4673,8 @@ tn();
 } // end of myDidChangeOrientation
 
 
--(void) viewWillAppear:(BOOL)animated {
+-(void) viewWillAppear:(BOOL)animated
+{
     NSLog(@"in TBLRPTs 2  viewWillAppear!");
 
     [super viewWillAppear: animated];
@@ -4686,6 +4687,33 @@ tn();
                                                object: nil
     ];
 
+//    done in home
+//        //    gbl_numRowsToTurnOnIndexBar    = 90;
+//        //
+//        // CGFloat   gbl_heightForScreen;  // 6+  = 736.0 x 414  and 6s+  (self.view.bounds.size.width) and height
+//        //                                 // 6s  = 667.0 x 375  and 6
+//        //                                 // 5s  = 568.0 x 320  and 5 
+//        //                                 // 4s  = 480.0 x 320  and 5 
+//        //
+//        //  NSLog(@"self.view.bounds.size.height  =[%f]",self.view.bounds.size.height  );
+//        if (   self.view.bounds.size.width >= 414.0        // 6+ and 6s+  and bigger
+//        ) {
+//            gbl_numRowsToTurnOnIndexBar    = 50;
+//        }
+//        else if (   self.view.bounds.size.width  < 414.0    // 6 and 6s
+//                 && self.view.bounds.size.width  > 320.0
+//        ) {
+//            gbl_numRowsToTurnOnIndexBar    = 45;
+//        }
+//        else if (   self.view.bounds.size.width <= 320.0   //  5s and 5 and 4s and smaller
+//        ) {
+//            gbl_numRowsToTurnOnIndexBar    = 38;
+//        }
+//        else if (   self.view.bounds.size.width <= 320.0   //  5s and 5 and 4s and smaller
+//        ) {
+//            gbl_numRowsToTurnOnIndexBar    = 33;
+//        }
+
 
 
     // this reload re-positions report with line 1 at top of screen
@@ -4695,11 +4723,21 @@ tn();
     if (   [gbl_currentMenuPlusReportCode hasSuffix: @"pe"]    //  personality
         || [gbl_currentMenuPlusReportCode hasSuffix: @"co"] )  //  grpof 2
     {
+
+
+  NSLog(@"per pco  RELOAD B ? 2");
+        if ([ gbl_do_B_pe_co_reload isEqualToString: @"do the reload only the first time"] )
+        {
+  NSLog(@"per pco  RELOAD B   DO IT");
+            gbl_do_B_pe_co_reload = @"this is not reset until app startup";
+
+
+
 //   20160127     took away use of   gbl_justLookedAtInfoScreen
 //         if (gbl_justLookedAtInfoScreen == 0 )  { //   20160127     took away use of   gbl_justLookedAtInfoScreen
 //            // try to get rid of tbl position in middle on startup //   20160127     took away use of   gbl_justLookedAtInfoScreen
 
-dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+               dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
 //            dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
 //                [self.tableView reloadData]; // self.view is the table view if self is its controller
 //           });
@@ -4711,7 +4749,8 @@ dispatch_async(dispatch_get_main_queue(), ^{                                // <
              [self.tableView reloadSections: [NSIndexSet indexSetWithIndex: 0]  
                                                           withRowAnimation: UITableViewRowAnimationNone // does a default unchangeable animation
              ];
-});  // reload
+            });  // reload
+        }
 
 //   20160127     took away use of   gbl_justLookedAtInfoScreen
 //         } 
@@ -5336,59 +5375,139 @@ NSLog(@"Ok button pressed");
 {
 
 
-    if (group_report_output_idx_B <= gbl_numRowsToTurnOnIndexBar) return nil;
+//    if (group_report_output_idx_B <= gbl_numRowsToTurnOnIndexBar) return nil;
+//
+//    return[NSArray arrayWithObjects:
+//            @"__",
+//         @" ", @" ", @" ", @" ",  @" ", @" ",
+//            @"20",
+//         @" ", @" ", @" ", @" ",  @" ", @" ",
+//            @"40",
+//         @" ", @" ", @" ", @" ",  @" ", @" ",
+//            @"60",
+//         @" ", @" ", @" ", @" ",  @" ", @" ",
+//            @"80",
+//         @" ", @" ", @" ", @" ",  @" ", @" ",
+//            @"==", nil ];
 
-//    return[NSArray arrayWithObjects:@"A", @"B", @"C", @"D", @"E", @"F", @"G", @"H", @"I", @"J", @"K", @"L", @"M", @"N", @"O", @"P", @"Q", @"R", @"S", @"T", @"U", @"V", @"W", @"X", @"Y", @"Z", nil];
-//    return[NSArray arrayWithObjects:@"--", @" ", @" ", @" ", @" ", @" ", @"GGG", @" ", @" ", @" ", @" ", @" ", @"-", @"N", @"O", @"P", @"Q", @"R", @"S", @"T", @"U", @"V", @"W", @"XXX", @"Y", @"Z", @"--", nil];
+    //NSMutableArray *myEmptyArray = [NSMutableArray array];
 
-    return[NSArray arrayWithObjects:
+    NSInteger myCountOfRows;
+
+//    if (       [gbl_currentMenuPlusReportCode isEqualToString: @"homppe"])  // home + personality
+//    } else if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompco"])  // home + compatibility
+    if (        [gbl_currentMenuPlusReportCode       hasSuffix: @"pe"])   // personality
+    {
+          myCountOfRows = gbl_perDataLines.count;
+    } else if ( [gbl_currentMenuPlusReportCode       hasSuffix: @"co"])   // grpof2
+    {
+          myCountOfRows = gbl_compDataLines.count;
+    } else {
+          myCountOfRows = group_report_output_idx_B;
+    }
+  NSLog(@"myCountOfRows B =[%ld]", (long)myCountOfRows );
+
+
+//    if (lcl_group_report_output_idx <= gbl_numRowsToTurnOnIndexBar) {
+    if (myCountOfRows <= gbl_numRowsToTurnOnIndexBar) {
+nbn(40);
+        return nil;
+    }
+
+nbn(41);
+    NSArray *mySectionIndexTitles;
+    mySectionIndexTitles = [NSArray arrayWithObjects:  // 33 items  last index=32
+            @"TOP"
+         @" ", @" ", @" ", @" ",  @" ", @" ",
             @"__",
          @" ", @" ", @" ", @" ",  @" ", @" ",
-            @"20",
+            @"__",
          @" ", @" ", @" ", @" ",  @" ", @" ",
-            @"40",
+            @"__",
          @" ", @" ", @" ", @" ",  @" ", @" ",
-            @"60",
-         @" ", @" ", @" ", @" ",  @" ", @" ",
-            @"80",
-         @" ", @" ", @" ", @" ",  @" ", @" ",
-            @"==", nil ];
+            @"END", nil ];
+
+    gbl_numSectionIndexTitles = mySectionIndexTitles.count;
+  NSLog(@"gbl_numSectionIndexTitles B =[%ld]",(long)gbl_numSectionIndexTitles );
+
+    return mySectionIndexTitles;
 
   } // sectionIndexTitlesForTableView
 
 
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle: (NSString *)title 
-                                                                    atIndex: (NSInteger)index  {
+                                                                    atIndex: (NSInteger)index 
+{
 
   NSLog(@"sectionForSectionIndexTitle!");
 //    NSInteger newRow = [self indexForFirstChar:title inArray:self.yourStringArray];
     NSInteger newRow;
     newRow = 0;
+//
+//    // no section index for these
+//    if (   [gbl_currentMenuPlusReportCode       hasSuffix: @"pe"]    // personality
+//        || [gbl_currentMenuPlusReportCode       hasSuffix: @"co"]    // grpof2
+//    ) {
+//        return 0;
+//    }
 
-    // no section index for these
-    if (   [gbl_currentMenuPlusReportCode       hasSuffix: @"pe"]    // personality
-        || [gbl_currentMenuPlusReportCode       hasSuffix: @"co"]    // grpof2
-    ) {
-        return 0;
+//
+//    //    if ([title isEqualToString:@"  "])    // does not work when title = "  "
+//    if ([title hasPrefix:@" "]) {
+//        NSArray *myVisibleRows = [tableView indexPathsForVisibleRows];
+//        NSIndexPath *myTopRow  = (NSIndexPath*)[myVisibleRows objectAtIndex:0];
+//        return myTopRow.row;
+//    }
+//
+
+//
+//    if ([title isEqualToString:@"__"]) newRow = 0;
+//    if ([title isEqualToString:@"20"]) newRow = (int) ( (20.0 / 100.0) * (double)group_report_output_idx_B );
+//    if ([title isEqualToString:@"40"]) newRow = (int) ( (40.0 / 100.0) * (double)group_report_output_idx_B );
+//    if ([title isEqualToString:@"60"]) newRow = (int) ( (60.0 / 100.0) * (double)group_report_output_idx_B );
+//    if ([title isEqualToString:@"80"]) newRow = (int) ( (80.0 / 100.0) * (double)group_report_output_idx_B );
+//    if ([title isEqualToString:@"=="]) newRow =                                  group_report_output_idx_B - 1;
+//  NSLog(@"newRow =%ld",(long)newRow );
+//
+//    NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow: newRow inSection: 0];
+//
+//
+//    dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+//        [tableView scrollToRowAtIndexPath: newIndexPath atScrollPosition: UITableViewScrollPositionTop animated: YES];
+////        [tableView scrollToRowAtIndexPath: newIndexPath atScrollPosition: UITableViewScrollPositionMiddle animated: NO];
+//    });
+//
+//    return index;
+//
+
+
+    // put up top,25,50,75,bot  scroll bar on right
+    //
+    NSInteger myCountOfRows;
+
+//    if (       [gbl_currentMenuPlusReportCode isEqualToString: @"homppe"])  // home + personality
+    if (        [gbl_currentMenuPlusReportCode       hasSuffix: @"pe"])   // personality
+    {
+          myCountOfRows = gbl_perDataLines.count;
+    } else if ( [gbl_currentMenuPlusReportCode       hasSuffix: @"co"])   // grpof2
+    {
+          myCountOfRows = gbl_compDataLines.count;
+    } else {
+          myCountOfRows = group_report_output_idx_B;
     }
+  NSLog(@"myCountOfRows =[%ld]", (long)myCountOfRows );
 
 
-    //    if ([title isEqualToString:@"  "])    // does not work when title = "  "
-    if ([title hasPrefix:@" "]) {
-        NSArray *myVisibleRows = [tableView indexPathsForVisibleRows];
-        NSIndexPath *myTopRow  = (NSIndexPath*)[myVisibleRows objectAtIndex:0];
-        return myTopRow.row;
-    }
+    if ([title isEqualToString:@"END"]) newRow = myCountOfRows - 1;
+    if (   [title isEqualToString:@" "]
+        || [title isEqualToString:@"__"]
+    )   newRow = ((double) (index + 1) / (double) gbl_numSectionIndexTitles ) * (double)myCountOfRows ;
 
 
-
-    if ([title isEqualToString:@"__"]) newRow = 0;
-    if ([title isEqualToString:@"20"]) newRow = (int) ( (20.0 / 100.0) * (double)group_report_output_idx_B );
-    if ([title isEqualToString:@"40"]) newRow = (int) ( (40.0 / 100.0) * (double)group_report_output_idx_B );
-    if ([title isEqualToString:@"60"]) newRow = (int) ( (60.0 / 100.0) * (double)group_report_output_idx_B );
-    if ([title isEqualToString:@"80"]) newRow = (int) ( (80.0 / 100.0) * (double)group_report_output_idx_B );
-    if ([title isEqualToString:@"=="]) newRow =                                  group_report_output_idx_B - 1;
-  NSLog(@"newRow =%ld",(long)newRow );
+  NSLog(@"index + 1                 =[%ld]",(long)index + 1                 );
+  NSLog(@"gbl_numSectionIndexTitles =[%ld]",(long)gbl_numSectionIndexTitles );
+  NSLog(@"group_report_output_idx_B =[%ld]",(long)group_report_output_idx_B);
+  NSLog(@"newRow                    =[%ld]",(long)newRow );
 
     NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow: newRow inSection: 0];
 
@@ -5399,7 +5518,10 @@ NSLog(@"Ok button pressed");
     });
 
     return index;
-}
+
+} // sectionForSectionIndexTitle
+
+
 
 
 

@@ -32,8 +32,11 @@
 {
     NSLog(@"in didFinishLaunchingWithOptions()  in appdelegate");
     
-    // ensure a per and pco reload only first time
-    gbl_doA_pe_co_reload = @"do the reload only the first time"; // after 1st reload, set to  @"this is not reset until app startup";
+
+    // ensure a per and pco reload only first time  A=tblrpts_1  B=tblrpts_2  
+    gbl_do_A_pe_co_reload = @"do the reload only the first time"; // after 1st reload, set to  @"this is not reset until app startup";
+    gbl_do_B_pe_co_reload = @"do the reload only the first time"; // after 1st reload, set to  @"this is not reset until app startup";
+
 
     // Override point for customization after application launch.
 //    [[UINavigationBar appearance] setTranslucent: NO ];  // set all navigation bars to opaque
@@ -602,8 +605,9 @@
                                      //   example: 128 "cGre"/"cRe2" |  "  1  Anya_   Liz_       90  Great"
 
     gbl_earliestYear = 1850;     // minimum birthyear (privacy)
-    
-    gbl_numRowsToTurnOnIndexBar    = 90;
+
+
+
     gbl_numCitiesToTriggerPicklist = 25;
 
     gbl_haveSetUpHomeNavButtons    =  0;      // beginning default is no   0=n, 1=y
