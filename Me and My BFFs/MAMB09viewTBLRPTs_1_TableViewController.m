@@ -5273,9 +5273,20 @@ NSLog(@"gbl_TBLRPTS1_saveSelectedIndexPath.row=%ld",(long)gbl_TBLRPTS1_saveSelec
 
     gbl_areInCompatibilityTable = 0;
 
+
+    // do a reload for these, but only the first time in a session
+    //
+  NSLog(@"per pco  RELOAD ?");
+
     if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homppe"]    // home + personality
         || [gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]
+//<.>
     ) {
+  NSLog(@"per pco  RELOAD ? 2");
+        if ([ gbl_doA_pe_co_reload isEqualToString: @"do the reload only the first time"] )
+        {
+  NSLog(@"per pco  RELOAD ?   DO IT");
+              gbl_doA_pe_co_reload = @"this is not reset until app startup";
 
             // try to get rid of tbl position in middle on startup
 //nbn(451);
@@ -5323,7 +5334,8 @@ NSLog(@"gbl_TBLRPTS1_saveSelectedIndexPath.row=%ld",(long)gbl_TBLRPTS1_saveSelec
 //                if (gbl_justLookedAtInfoScreen == 1 )  {
 //                    gbl_justLookedAtInfoScreen = 0;  // no re-load
 //                }
-           });
+            });
+        }
     }
 
 
@@ -7587,18 +7599,54 @@ tn();trn("// set new gbl_currentMenuPlusReportCode    for info in next report");
 // iPhone UITableView. How do turn on the single letter alphabetical list like the Music App?
 //
 //
-- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
+{
+  NSLog(@"in sectionIndexTitlesForTableView  !");
+  NSLog(@"gbl_currentMenuPlusReportCode =[%@]",gbl_currentMenuPlusReportCode );
+
+nbn(29);
+  NSLog(@"lcl_group_report_output_idx =[%d]",lcl_group_report_output_idx );
+  NSLog(@"gbl_numRowsToTurnOnIndexBar =[%ld]",(long)gbl_numRowsToTurnOnIndexBar);
+
+    NSMutableArray *myEmptyArray = [NSMutableArray array];
+  NSLog(@"myEmptyArray =[%@]",myEmptyArray );
 
 
-    if (lcl_group_report_output_idx <= gbl_numRowsToTurnOnIndexBar) return nil;
+    NSInteger myCountOfRows;
 
-    // no section index for these
-    if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homppe"]   // home + personality
-        || [gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]   // home + compatibility
-    ) {
-        return nil;
+    if (       [gbl_currentMenuPlusReportCode isEqualToString: @"homppe"])  // home + personality
+    {
+          myCountOfRows = gbl_perDataLines.count;
+    } else if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompco"])  // home + compatibility
+    {
+          myCountOfRows = gbl_compDataLines.count;
+    } else {
+          myCountOfRows = lcl_group_report_output_idx;
+    }
+  NSLog(@"myCountOfRows =[%ld]", (long)myCountOfRows );
+
+
+//    if (lcl_group_report_output_idx <= gbl_numRowsToTurnOnIndexBar) {
+    if (myCountOfRows <= gbl_numRowsToTurnOnIndexBar) {
+nbn(30);
+//        return nil;
+        return myEmptyArray ;
     }
 
+nbn(31);
+
+//
+//    // no section index for these
+//    if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homppe"]   // home + personality
+//        || [gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]   // home + compatibility
+//    ) {
+//nbn(32);
+//
+////        return nil;
+//        return myEmptyArray ;
+//    }
+//
+nbn(33);
 
 //    return[NSArray arrayWithObjects:@"A", @"B", @"C", @"D", @"E", @"F", @"G", @"H", @"I", @"J", @"K", @"L", @"M", @"N", @"O", @"P", @"Q", @"R", @"S", @"T", @"U", @"V", @"W", @"X", @"Y", @"Z", nil];
 //    return[NSArray arrayWithObjects:@"--", @" ", @" ", @" ", @" ", @" ", @"GGG", @" ", @" ", @" ", @" ", @" ", @"-", @"N", @"O", @"P", @"Q", @"R", @"S", @"T", @"U", @"V", @"W", @"XXX", @"Y", @"Z", @"--", nil];
@@ -7632,12 +7680,17 @@ tn();trn("// set new gbl_currentMenuPlusReportCode    for info in next report");
   NSLog(@"gbl_numSectionIndexTitles =[%ld]",(long)gbl_numSectionIndexTitles );
 
     return mySectionIndexTitles;
-  }
+
+} // sectionIndexTitlesForTableView
+
+
+
 
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle: (NSString *)title 
-                                                                    atIndex: (NSInteger)index  {
+                                                                    atIndex: (NSInteger)index 
+{
 
-  NSLog(@"sectionForSectionIndexTitle!");
+  NSLog(@"in sectionForSectionIndexTitle!");
   NSLog(@"title=[%@]",title);
   NSLog(@"index=[%ld]",(long)index);
 
@@ -7655,12 +7708,15 @@ tn();trn("// set new gbl_currentMenuPlusReportCode    for info in next report");
 
 //nbn(2);
   NSLog(@"gbl_currentMenuPlusReportCode =[%@]",gbl_currentMenuPlusReportCode );
-    // no section index for these
-    if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homppe"]   // home + personality
-        || [gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]   // home + compatibility
-    ) {
-        return 0;
-    }
+
+//
+//    // no section index for these
+//    if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homppe"]   // home + personality
+//        || [gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]   // home + compatibility
+//    ) {
+//        return 0;
+//    }
+//
 
 //nbn(3);
 
@@ -7679,14 +7735,30 @@ tn();trn("// set new gbl_currentMenuPlusReportCode    for info in next report");
     // put up top,25,50,75,bot  scroll bar on right
     //
     //    if ([title isEqualToString:@"__"]) newRow = 0;
+    
+    NSInteger myCountOfRows;
+
+    if (       [gbl_currentMenuPlusReportCode isEqualToString: @"homppe"])  // home + personality
+    {
+          myCountOfRows = gbl_perDataLines.count;
+    } else if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompco"])  // home + compatibility
+    {
+          myCountOfRows = gbl_compDataLines.count;
+    } else {
+          myCountOfRows = lcl_group_report_output_idx;
+    }
+  NSLog(@"myCountOfRows =[%ld]", (long)myCountOfRows );
+
     if ([title isEqualToString:@"TOP"]) newRow = 0;
 //    if ([title isEqualToString:@"___"]) newRow = (int) ( (25.0 / 100.0) * (double)lcl_group_report_output_idx );
 //    if ([title isEqualToString:@"__"])  newRow = (int) ( (50.0 / 100.0) * (double)lcl_group_report_output_idx );
 //    if ([title isEqualToString:@"_"])   newRow = (int) ( (75.0 / 100.0) * (double)lcl_group_report_output_idx );
-    if ([title isEqualToString:@"END"]) newRow = lcl_group_report_output_idx - 1;
+//    if ([title isEqualToString:@"END"]) newRow = lcl_group_report_output_idx - 1;
+    if ([title isEqualToString:@"END"]) newRow = myCountOfRows - 1;
     if (   [title isEqualToString:@" "]
         || [title isEqualToString:@"__"]
-    )   newRow = ((double) (index + 1) / (double) gbl_numSectionIndexTitles ) * (double)lcl_group_report_output_idx ;
+    )   newRow = ((double) (index + 1) / (double) gbl_numSectionIndexTitles ) * (double)myCountOfRows ;
+//    )   newRow = ((double) (index + 1) / (double) gbl_numSectionIndexTitles ) * (double)lcl_group_report_output_idx ;
 
 //    if ([title isEqualToString:@" "])
 //    {
@@ -7732,8 +7804,10 @@ tn();trn("// set new gbl_currentMenuPlusReportCode    for info in next report");
 
 //nbn(5);
     return index;
-}
 
+} // sectionForSectionIndexTitle
+
+                                                                    
 
 @end
 

@@ -45,6 +45,7 @@ NSString *gbl_homeEditingState; // if gbl_homeUseMODE = "edit mode"    then can 
 // no, i think  // if gbl_homeUseMODE = "regular mode" then can be "add" or nil                for tapped person or group
 
 
+
 // THE THREE  "FIELDS"  =======================================================
 //
 //     UITextField *gbl_myname;              // for add new person or group
@@ -60,6 +61,7 @@ NSInteger gbl_justLookedAtInfoScreen;
 NSInteger gbl_justAddedPersonRecord;
 NSInteger gbl_justAddedGroupRecord;
 
+NSString *gbl_doA_pe_co_reload ;  // either  @"do the reload only the first time"] OR @"this is not reset until app startup"; (reload only once per session)
 
 NSInteger gbl_starsNSInteger;
 NSString *gbl_starsNSString;

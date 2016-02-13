@@ -32,6 +32,8 @@
 {
     NSLog(@"in didFinishLaunchingWithOptions()  in appdelegate");
     
+    // ensure a per and pco reload only first time
+    gbl_doA_pe_co_reload = @"do the reload only the first time"; // after 1st reload, set to  @"this is not reset until app startup";
 
     // Override point for customization after application launch.
 //    [[UINavigationBar appearance] setTranslucent: NO ];  // set all navigation bars to opaque
