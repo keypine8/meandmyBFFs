@@ -10,7 +10,8 @@
 //#import <UITableViewController.h>
 
 
-@interface MAMB09_homeTableViewController : UITableViewController
+@interface MAMB09_homeTableViewController : UITableViewController < UIGestureRecognizerDelegate >
+
 
 @property (strong, nonatomic) IBOutlet UITableView *outletToHomeTableview;
 

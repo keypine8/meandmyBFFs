@@ -1717,6 +1717,7 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
 
 
             myadjust          = NO;
+//            mytextcolor       = [UIColor whiteColor];
             mytextcolor       = [UIColor blackColor];
 //            myCompFont         = myFont_14;
             myCompFont         = compFont_14;
@@ -2382,28 +2383,60 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
   NSLog(@"starnew myDisplayString =[%@]",myDisplayString );
 
             myDisplayString = [NSString stringWithFormat: @"%@%@%@", @"     ", myDisplayString, @"     "];   // prepend + append 5 spaces
+//nbn(1);  // hung when gbl_bgColor_brownHdr set to other gbl_color in appdel .m
+//NSRange myrang;
+//myrang = NSMakeRange(  0, 40 + 5 + 5 );
+//myrang = NSMakeRange(  0, 40 + 5 + 5 );
+//nbn(11);
+//  NSLog(@"myrang=[%@]",myrang);
+//  NSLog(@"myrang.location =[%ld]",(long)myrang.location );
+//  NSLog(@"myrang.length   =[%ld]",(long)myrang.length   );
+//nbn(12);
+//myrang = NSMakeRange(  0, 50);
+//  NSLog(@"myrang2=[%@]",myrang);
+//
 
             myDisplayStringAttributed = [[NSMutableAttributedString alloc] initWithString: myDisplayString ];
+
            [myDisplayStringAttributed addAttribute: NSBackgroundColorAttributeName
                                              value: [UIColor whiteColor]
                                              range: NSMakeRange(  0, 40 + 5 + 5)
             ];
+//  NSLog(@"myDisplayStringAttributed =[%@]",myDisplayStringAttributed );
+//nbn(2);
+//myrang = NSMakeRange(  0, 5);
+//NSUInteger myloc;
+//NSUInteger mylen;
+//myloc = myrang.location;
+//mylen = myrang.length;
+//  NSLog(@"myloc =[%ld]",(long)myloc );
+//  NSLog(@"mylen =[%ld]",(long)mylen );
+//nbn(21);
+//  NSLog(@"myrang=[%@]",myrang);
+//nbn(22);
+//
+
            [myDisplayStringAttributed addAttribute: NSBackgroundColorAttributeName
-//                                             value: gbl_colorHomeBG_grp
                                              value: gbl_bgColor_brownHdr
                                              range: NSMakeRange(  0,  5)
             ];
+//                                             range: NSMakeRange(  myloc,  mylen)
+//                                             range: (NSRange) myrang
+//                                             range: NSMakeRange(  0,  5)
+nbn(3);
            [myDisplayStringAttributed addAttribute: NSBackgroundColorAttributeName
                                              value: gbl_color_cGre
                                              range: NSMakeRange(  0 + 5, numflds)
             ];
+nbn(4);
            [myDisplayStringAttributed addAttribute: NSBackgroundColorAttributeName
-//                                             value: gbl_colorHomeBG_grp
                                              value: gbl_bgColor_brownHdr
                                              range: NSMakeRange( 40 + 5,  5)
             ];
+nbn(5);
             // [string addAttribute:NSForegroundColorAttributeName value:[UIColor greenColor] range:NSMakeRange(5,6)];
         }
+nbn(6);
 
         flds    = [mylin componentsSeparatedByString: @"-"];
         numflds = [flds count] -1;
@@ -5307,14 +5340,12 @@ NSLog(@"gbl_TBLRPTS1_saveSelectedIndexPath.row=%ld",(long)gbl_TBLRPTS1_saveSelec
   NSLog(@"per pco  RELOAD ?");
 
     if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homppe"]    // home + personality
-        || [gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]
-//<.>
     ) {
-  NSLog(@"per pco  RELOAD A ? 2");
-        if ([ gbl_do_A_pe_co_reload isEqualToString: @"do the reload only the first time"] )
+  NSLog(@"per RELOAD A ? 2");
+        if ([ gbl_do_A_per_reload isEqualToString: @"do the reload only the first time"] )
         {
-  NSLog(@"per pco  RELOAD A   DO IT");
-              gbl_do_A_pe_co_reload = @"this is not reset until app startup";
+  NSLog(@"per RELOAD A   DO IT");
+              gbl_do_A_per_reload = @"this is not reset until app startup";
 
             // try to get rid of tbl position in middle on startup
 //nbn(451);
@@ -5364,7 +5395,25 @@ NSLog(@"gbl_TBLRPTS1_saveSelectedIndexPath.row=%ld",(long)gbl_TBLRPTS1_saveSelec
 //                }
             });
         }
-    }
+    } // homppe
+
+    if (   [gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]    // home grpof2
+    ) {
+  NSLog(@"pco RELOAD A ? 2");
+        if ([ gbl_do_A_co__reload isEqualToString: @"do the reload only the first time"] )
+        {
+  NSLog(@"pco RELOAD A   DO IT");
+            gbl_do_A_co__reload = @"this is not reset until app startup";
+
+            // try to get rid of tbl position in middle on startup
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+                    [self.tableView reloadSections: [NSIndexSet indexSetWithIndex: 0]  
+                                                                 withRowAnimation: UITableViewRowAnimationNone // does a default unchangeable animation
+                    ];
+            });
+        }
+
+    } // hompco
 
 
 
@@ -7644,10 +7693,12 @@ nbn(29);
 
     if (       [gbl_currentMenuPlusReportCode isEqualToString: @"homppe"])  // home + personality
     {
-          myCountOfRows = gbl_perDataLines.count;
+//          myCountOfRows = gbl_perDataLines.count;
+          return nil;
     } else if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompco"])  // home + compatibility
     {
-          myCountOfRows = gbl_compDataLines.count;
+//          myCountOfRows = gbl_compDataLines.count;
+          return nil;
     } else {
           myCountOfRows = lcl_group_report_output_idx;
     }

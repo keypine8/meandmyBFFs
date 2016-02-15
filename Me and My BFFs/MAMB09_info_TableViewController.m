@@ -316,24 +316,33 @@ tn();
     UIImage *myIconmamb           = [UIImage  imageNamed: @"icon_mamb09_0064.png"    inBundle: nil compatibleWithTraitCollection: nil ];
 
 
+
 //    UIFont *myFont       = [UIFont fontWithName: @"Menlo-bold" size: 12.0];
     UIFont *myFont       = [UIFont fontWithName: @"Menlo-bold" size: 11.0];
 //    UIFont *myFont       = [UIFont fontWithName: @"Menlo"      size: 12.0];
 
-    UIFont *myFontOnSide = [UIFont fontWithName: @"Menlo-bold" size: 10.0];
 //    UIFont *myFontOnSide = [UIFont fontWithName: @"Menlo"      size: 10.0];
+//    UIFont *myFontOnSide = [UIFont fontWithName: @"Menlo-bold" size: 10.0];
+//    UIFont *myFontOnSide = [UIFont fontWithName: @"Menlo-bold" size: 11.0];
+    UIFont *myFontOnSide = [UIFont fontWithName: @"Menlo-bold" size: 12.0];
+
+
 
 //    UIFont *myTitleFont  = [UIFont fontWithName: @"Menlo-bold" size: 13.1];
-    UIFont *myTitleFont  = [UIFont fontWithName: @"Menlo-bold" size: 14.5];
+//    UIFont *myTitleFont  = [UIFont fontWithName: @"Menlo-bold" size: 14.5];
+    UIFont *myTitleFont  = [UIFont fontWithName: @"Menlo-bold" size: 15.5];
 
 //    UIFont *myDisclaimerFont= [UIFont fontWithName: @"Menlo-bold" size:  8.0];
     UIFont *myDisclaimerFont= [UIFont fontWithName: @"Menlo-bold" size:  9.0];
+
+
+    UIFont *myFontForSwitch  = [UIFont fontWithName: @"Menlo-bold" size: 16.0];
 
     NSString *myTextLabelTextAddOn;  // depends on report
 
     // =================================================================================================================================
     // house of cards rules look like this:
-    //   if there is an image, have text = some string not nil
+    //   if there is an image, have text = some string (not = nil)
     //                cell.textLabel.text          = @" ";
     //                cell.imageView.image = myImageDestiny;
     //   on spacer cells have this:
@@ -2193,6 +2202,7 @@ nbn(100);
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
             });
             return cell;
         }
@@ -2232,6 +2242,7 @@ nbn(100);
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
             });
             return cell;
         }
@@ -2252,6 +2263,7 @@ nbn(100);
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
             });
             return cell;
         }
@@ -2267,6 +2279,7 @@ nbn(100);
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
             });
             return cell;
         }
@@ -2285,6 +2298,7 @@ nbn(100);
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
             });
             return cell;
         }
@@ -2302,6 +2316,7 @@ nbn(100);
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
             });
             return cell;
         }
@@ -2317,6 +2332,7 @@ nbn(100);
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
             });
             return cell;
         }
@@ -2337,6 +2353,7 @@ nbn(100);
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
             });
             return cell;
         }
@@ -2354,6 +2371,7 @@ nbn(100);
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
             });
             return cell;
         }
@@ -2369,6 +2387,7 @@ nbn(100);
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
             });
             return cell;
         }
@@ -2387,6 +2406,7 @@ nbn(100);
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
             });
             return cell;
         }
@@ -2402,6 +2422,7 @@ nbn(100);
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
             });
             return cell;
         }
@@ -2417,11 +2438,88 @@ nbn(100);
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
             });
             return cell;
         }
 
-        if (indexPath.row ==  13) {                           // <=== disclaimer 
+
+        if (indexPath.row == 13) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== title for example data
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myTitleFont;
+                cell.backgroundColor         = gbl_color_cHed;
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.text          = @"Example Data";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
+            });
+            return cell;
+        }
+
+        if (indexPath.row == 14) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                 // <=== text for example data 
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myFontOnSide;
+                cell.backgroundColor         = gbl_color_cBgr;
+                cell.textLabel.numberOfLines = 0;
+//                cell.textLabel.text          = @"Example people and groups have names starting with \"~\".\n\nThe example data lets you explore all the different reports and how the app works before you enter any new people or groups yourself.\n\nWhen you want to enter a new person go to the home screen.  You can tell the home screen because it has the black, red and yellow app icon on the top left.  Tap \"+\" beside it to add a new person.\n\nAfter a while, you might want to not see the example data.  Check the \"hide example data\" checkbox below.";
+                cell.textLabel.text          = @"Example people and groups have names starting with \"~\".\n\nThe example data lets you explore all the different reports and how the app works before you enter any new people or groups yourself.\n\nWhen you want to enter a new person go to the home screen.  You can tell the home screen because it has the app icon on the top left.  Tap \"+\" beside it to add a new person.\n\nAfter a while, you might want to not see the example data.  If so, set the \"Show Example Data\" switch below to off (gray).";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
+            });
+            return cell;
+        }
+
+
+        UISwitch *mySwitchView = [[UISwitch alloc] initWithFrame:CGRectZero];
+        [mySwitchView setOn: YES animated: NO];
+        [mySwitchView           addTarget: self
+                                   action: @selector(showExampleDataSwitchChanged: )
+                         forControlEvents: UIControlEventValueChanged
+        ];
+        mySwitchView.enabled = YES;
+//        myViewController.view.frame = CGRectMake(0, 100, myViewController.view.frame.size.width, myViewController.view.frame.size.height);  
+        mySwitchView.frame = CGRectMake(180, 10, cell.frame.size.width, cell.frame.size.height);  
+
+        if (indexPath.row == 15) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                 // <=== text for example data 
+                cell.textLabel.textColor     = [UIColor blackColor];
+//                cell.userInteractionEnabled  = NO;
+                cell.userInteractionEnabled  = YES;
+//                cell.textLabel.font          = myFontOnSide;
+//                cell.textLabel.font          = myFontOnSide;
+                cell.textLabel.font          = myTitleFont;
+
+//                cell.backgroundColor         = gbl_color_cBgr;
+//                cell.backgroundColor         = gbl_color_cHed;
+//                cell.backgroundColor         = [UIColor lightGrayColor];
+                cell.backgroundColor         = gbl_bgColor_brownDone;
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.text          = @"      Show Example Data";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+
+//                cell.accessoryType = UITableViewCellAccessoryCheckmark;
+//                cell.accessoryType = UITableViewCellAccessoryNone;
+
+                cell.accessoryView = mySwitchView;
+//                [cell addSubview: mySwitchView];
+
+
+            });
+            return cell;
+        }
+
+
+        if (indexPath.row ==  16) {                           // <=== disclaimer 
             dispatch_async(dispatch_get_main_queue(), ^{  
 //                cell.textLabel.textColor     = [UIColor blackColor];
                 cell.textLabel.textColor     = [UIColor redColor]; 
@@ -2433,6 +2531,7 @@ nbn(100);
                 cell.imageView.image         = nil;
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentCenter;
+                cell.accessoryView = nil;
 
             });
             return cell;
@@ -2445,6 +2544,43 @@ nbn(100);
     return cell;
 
 } // end of  cellForRowAtIndexPath:(NSIndexPath *)indexPath
+
+
+- (void) showExampleDataSwitchChanged: (id)sender {
+    UISwitch* mySwitchControl = sender;
+    NSLog( @"The switch is %@", mySwitchControl.on ? @"ON" : @"OFF" );
+
+    if (mySwitchControl.on == YES) {
+
+        gbl_showExampleData = @"yes";
+
+//        [sender setThumbTintColor:[UIColor redColor]];
+//        [sender setBackgroundColor:[UIColor cyanColor] ];
+//        [sender setOnTintColor:[UIColor blackColor]];
+
+        [sender setThumbTintColor:[UIColor whiteColor]];
+//        [sender setBackgroundColor:[UIColor clearColor] ];
+//        [sender setOnTintColor:[UIColor greenColor]];
+    }
+    if (mySwitchControl.on ==  NO) {
+
+        gbl_showExampleData = @"no";
+
+//        [sender setTintColor:[UIColor   cyanColor]];
+//        [sender setThumbTintColor:[UIColor blueColor]];
+//        [sender setBackgroundColor:[UIColor blackColor] ];
+
+//        [sender setTintColor:[UIColor   lightGrayColor]];   // outline of sw=0
+//        [sender setTintColor:[UIColor   blackColor]];   // outline of sw=0
+        [sender setTintColor:[UIColor   lightGrayColor]];   // outline of sw=0
+        [sender setThumbTintColor:[UIColor lightGrayColor]];
+//        [sender setThumbTintColor:[UIColor clearColor]];
+//        [sender setBackgroundColor:[UIColor clearColor] ];
+
+//        [sender setBackgroundColor:[UIColor redColor] ];
+    }
+
+} // showExampleDataSwitchChanged
 
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -2460,7 +2596,8 @@ nbn(100);
     if ([gbl_helpScreenDescription isEqualToString: @"best year"    ] ) { return  7; } 
     if ([gbl_helpScreenDescription isEqualToString: @"best day"     ] ) { return  7; } 
 //    if ([gbl_helpScreenDescription isEqualToString: @"HOME"         ] ) { return  8; } 
-    if ([gbl_helpScreenDescription isEqualToString: @"HOME"         ] ) { return  14; } 
+//    if ([gbl_helpScreenDescription isEqualToString: @"HOME"         ] ) { return  14; } 
+    if ([gbl_helpScreenDescription isEqualToString: @"HOME"         ] ) { return  17; } 
     return 1;
 }
 
@@ -2490,9 +2627,14 @@ nbn(100);
 
         if (indexPath.row ==   11) return    30.0;  // title for why not ?
 //        if (indexPath.row ==   6) return    90.0;  // text  for why not ?
-        if (indexPath.row ==   12) return    84.0;  // text  for why not ?
+//        if (indexPath.row ==   12) return    84.0;  // text  for why not ?
+        if (indexPath.row ==   12) return    94.0;  // text  for why not ?
 
-        if (indexPath.row ==   13) return    20.0;  // text for disclaimer
+        if (indexPath.row ==   13) return    30.0;  // title for Example Data
+        if (indexPath.row ==   14) return   175.0;  // text  for Example Data
+        if (indexPath.row ==   15) return    50.0;  // check box for "Show Example Data"
+
+        if (indexPath.row ==   16) return    30.0;  // text for disclaimer
 //<.>
     }
     if (   [gbl_helpScreenDescription isEqualToString: @"best day"] ) {

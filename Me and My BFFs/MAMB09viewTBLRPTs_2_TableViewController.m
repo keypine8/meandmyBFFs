@@ -1759,14 +1759,65 @@ for (id eltTst in gbl_compDataLines) { NSLog(@"    gbl_comp=%@", eltTst); }
         UIFont *compFont_16 ;
         UIFont *compFont_14 ;
         UIFont *compFont_12 ;
+        UIFont *compFont_12b;
         UIFont *compFont_11b;
+        UIFont *compFont_Stars;
+        UIFont *compFont_Paras;
 
-        // CGFloat   gbl_heightForScreen;  // 6+  = 736.0 x 414  and 6s+  (self.view.bounds.size.width) and height
-        //                                 // 6s  = 667.0 x 375  and 6
-        //                                 // 5s  = 568.0 x 320  and 5 
-        //                                 // 4s  = 480.0 x 320  and 5 
-        //
-        //  NSLog(@"self.view.bounds.size.height  =[%f]",self.view.bounds.size.height  );
+//
+//        // CGFloat   gbl_heightForScreen;  // 6+  = 736.0 x 414  and 6s+  (self.view.bounds.size.width) and height
+//        //                                 // 6s  = 667.0 x 375  and 6
+//        //                                 // 5s  = 568.0 x 320  and 5 
+//        //                                 // 4s  = 480.0 x 320  and 5 
+//        //
+//        //  NSLog(@"self.view.bounds.size.height  =[%f]",self.view.bounds.size.height  );
+//        if (   self.view.bounds.size.width >= 414.0        // 6+ and 6s+  and bigger
+//        ) {
+////            compFont_16  = [UIFont fontWithName: @"Menlo" size: 16.0];
+////            compFont_14  = [UIFont fontWithName: @"Menlo" size: 14.0];
+////            compFont_12  = [UIFont fontWithName: @"Menlo" size: 12.0];
+////            compFont_11b = [UIFont fontWithName: @"Menlo-bold" size: 11.0];
+//
+//
+//            compFont_16  = [UIFont fontWithName: @"Menlo" size: 16.0];
+//
+//            compFont_14  = [UIFont fontWithName: @"Menlo" size: 14.0];
+////            compFont_14  = [UIFont fontWithName: @"Menlo" size: 10.0];
+////              compFont_14  = [UIFont fontWithName: @"Menlo" size: 13.0]; // too big still
+////              compFont_14  = [UIFont fontWithName: @"Menlo" size: 12.5]; // too big still
+////            compFont_14  = [UIFont fontWithName: @"Menlo" size: 12.0];
+//
+//            compFont_12  = [UIFont fontWithName: @"Menlo" size: 12.0];
+////            compFont_12  = [UIFont fontWithName: @"Menlo" size: 11.0];
+////            compFont_12  = [UIFont fontWithName: @"Menlo" size:  9.0];
+////            compFont_12  = [UIFont fontWithName: @"Menlo" size: 14.0];
+////            compFont_12  = [UIFont fontWithName: @"Menlo" size: 13.0];
+////            compFont_12  = [UIFont fontWithName: @"Menlo" size: 15.0];
+//
+//            compFont_11b = [UIFont fontWithName: @"Menlo-bold" size: 11.0];
+//
+//        }
+//        else if (   self.view.bounds.size.width  < 414.0    // 6 and 6s
+//                 && self.view.bounds.size.width  > 320.0
+//        ) {
+//            compFont_16  = [UIFont fontWithName: @"Menlo" size: 14.0];
+//            compFont_14  = [UIFont fontWithName: @"Menlo" size: 12.0];
+//            compFont_12  = [UIFont fontWithName: @"Menlo" size: 10.0];
+//            compFont_11b = [UIFont fontWithName: @"Menlo-bold" size: 10.0];
+//        }
+//        else if (   self.view.bounds.size.width <= 320.0   //  5s and 5 and 4s and smaller
+//        ) {
+////            compFont_16  = [UIFont fontWithName: @"Menlo" size: 12.0];
+////            compFont_14  = [UIFont fontWithName: @"Menlo" size: 10.0];
+////            compFont_12  = [UIFont fontWithName: @"Menlo" size:  8.0];
+////            compFont_11b = [UIFont fontWithName: @"Menlo-bold" size:  10.0];
+//            compFont_16  = [UIFont fontWithName: @"Menlo" size: 13.0];
+//            compFont_14  = [UIFont fontWithName: @"Menlo" size: 11.0];
+//            compFont_12  = [UIFont fontWithName: @"Menlo" size:  9.0];
+//            compFont_11b = [UIFont fontWithName: @"Menlo-bold" size:  9.0];
+//        }
+//
+
         if (   self.view.bounds.size.width >= 414.0        // 6+ and 6s+  and bigger
         ) {
 //            compFont_16  = [UIFont fontWithName: @"Menlo" size: 16.0];
@@ -1784,6 +1835,7 @@ for (id eltTst in gbl_compDataLines) { NSLog(@"    gbl_comp=%@", eltTst); }
 //            compFont_14  = [UIFont fontWithName: @"Menlo" size: 12.0];
 
             compFont_12  = [UIFont fontWithName: @"Menlo" size: 12.0];
+            compFont_12b = [UIFont fontWithName: @"Menlo-bold" size: 12.0];
 //            compFont_12  = [UIFont fontWithName: @"Menlo" size: 11.0];
 //            compFont_12  = [UIFont fontWithName: @"Menlo" size:  9.0];
 //            compFont_12  = [UIFont fontWithName: @"Menlo" size: 14.0];
@@ -1791,6 +1843,8 @@ for (id eltTst in gbl_compDataLines) { NSLog(@"    gbl_comp=%@", eltTst); }
 //            compFont_12  = [UIFont fontWithName: @"Menlo" size: 15.0];
 
             compFont_11b = [UIFont fontWithName: @"Menlo-bold" size: 11.0];
+            compFont_Stars = [UIFont fontWithName: @"Menlo" size: 12.0];
+            compFont_Paras = [UIFont fontWithName: @"Menlo" size: 14.0];
 
         }
         else if (   self.view.bounds.size.width  < 414.0    // 6 and 6s
@@ -1799,7 +1853,14 @@ for (id eltTst in gbl_compDataLines) { NSLog(@"    gbl_comp=%@", eltTst); }
             compFont_16  = [UIFont fontWithName: @"Menlo" size: 14.0];
             compFont_14  = [UIFont fontWithName: @"Menlo" size: 12.0];
             compFont_12  = [UIFont fontWithName: @"Menlo" size: 10.0];
+            compFont_12b = [UIFont fontWithName: @"Menlo_bold" size: 10.0];
             compFont_11b = [UIFont fontWithName: @"Menlo-bold" size: 10.0];
+nbn(33);
+//            compFont_Stars = [UIFont fontWithName: @"Menlo" size: 14.0]; // too big
+//            compFont_Stars = [UIFont fontWithName: @"Menlo" size: 13.0]; // too big
+            compFont_Stars = [UIFont fontWithName: @"Menlo" size: 11.0]; // gold 
+//            compFont_Paras = [UIFont fontWithName: @"Menlo" size: 14.0]; // too big
+            compFont_Paras = [UIFont fontWithName: @"Menlo" size: 13.0]; // too0 big
         }
         else if (   self.view.bounds.size.width <= 320.0   //  5s and 5 and 4s and smaller
         ) {
@@ -1810,7 +1871,15 @@ for (id eltTst in gbl_compDataLines) { NSLog(@"    gbl_comp=%@", eltTst); }
             compFont_16  = [UIFont fontWithName: @"Menlo" size: 13.0];
             compFont_14  = [UIFont fontWithName: @"Menlo" size: 11.0];
             compFont_12  = [UIFont fontWithName: @"Menlo" size:  9.0];
+            compFont_12b = [UIFont fontWithName: @"Menlo-bold" size:  9.0];
             compFont_11b = [UIFont fontWithName: @"Menlo-bold" size:  9.0];
+//            compFont_Stars = [UIFont fontWithName: @"Menlo" size: 11.0]; // too big
+//            compFont_Stars = [UIFont fontWithName: @"Menlo" size: 10.0]; // too big
+            compFont_Stars = [UIFont fontWithName: @"Menlo" size:  9.0]; // OK 
+//            compFont_Paras = [UIFont fontWithName: @"Menlo" size: 12.0]; // too big
+//            compFont_Paras = [UIFont fontWithName: @"Menlo" size: 10.0]; // fits
+//            compFont_Paras = [UIFont fontWithName: @"Menlo" size: 11.0]; //  too big
+            compFont_Paras = [UIFont fontWithName: @"Menlo" size: 10.5]; // fits
         }
 
         
@@ -1834,7 +1903,7 @@ for (id eltTst in gbl_compDataLines) { NSLog(@"    gbl_comp=%@", eltTst); }
 
 //        UIColor *mybgcolortouse;
 
-        mybgcolor         = [UIColor brownColor];
+        mybgcolor         = [UIColor redColor];
         myalign           = NSTextAlignmentLeft;  // default
         mynumlines        = 1;                    // default
         myadjust          = YES;                  // default
@@ -1873,9 +1942,9 @@ for (id eltTst in gbl_compDataLines) { NSLog(@"    gbl_comp=%@", eltTst); }
             }
             else if ( [mylin isEqualToString: @"before table head"] ) {  // co
                 mylin             = @" ";
-                mybgcolor         = gbl_color_cHed ;
 //                mybgcolor         = gbl_color_cGre ;
 //                mybgcolor         = gbl_color_cNeu ;
+                mybgcolor         = gbl_color_cRe2 ;   // fix ?
                 gbl_heightCellCOMP = 8;
             }
             else if ( [mylin isEqualToString: @"after table head"] ) {
@@ -1902,7 +1971,9 @@ for (id eltTst in gbl_compDataLines) { NSLog(@"    gbl_comp=%@", eltTst); }
             else if ( [mylin isEqualToString: @"before how big header"] ) {
 //                gbl_compIsInHowBig = 1;
                 mylin             = @" ";
-                mybgcolor         = gbl_color_cHed ;
+//                mybgcolor         = gbl_color_cHed ;
+                mybgcolor         = gbl_bgColor_brownHdr;  // light light burlywood
+
 //                mybgcolor         = gbl_color_cNeu ;
                 gbl_heightCellCOMP = 3;
             }
@@ -1917,7 +1988,8 @@ for (id eltTst in gbl_compDataLines) { NSLog(@"    gbl_comp=%@", eltTst); }
             // 
             else if ( [mylin isEqualToString: @"after how big header"] ) {
                 mylin             = @" ";
-                mybgcolor         = gbl_color_cHed ;
+//                mybgcolor         = gbl_color_cHed ;
+                mybgcolor         = gbl_bgColor_brownHdr;  // light light burlywood
 //                mybgcolor         = gbl_color_cNeu ;
 //                mybgcolor         = gbl_color_cBgr ;
                 gbl_heightCellCOMP = 8;
@@ -1926,7 +1998,8 @@ for (id eltTst in gbl_compDataLines) { NSLog(@"    gbl_comp=%@", eltTst); }
                      || [mylin isEqualToString: @"after personA ptofview"]
             ) {
                 mylin             = @" ";
-                mybgcolor         = gbl_color_cHed ;
+//                mybgcolor         = gbl_color_cHed ;
+                mybgcolor         = gbl_bgColor_brownHdr;  // light light burlywood
 //                mybgcolor         = gbl_color_cBgr ;
 //                mybgcolor         = gbl_color_cNeu ;
                 gbl_heightCellCOMP =  8;
@@ -1934,15 +2007,18 @@ for (id eltTst in gbl_compDataLines) { NSLog(@"    gbl_comp=%@", eltTst); }
             else if (   [mylin isEqualToString: @"after personB ptofview"]
             ) {
                 mylin             = @" ";
-                mybgcolor         = gbl_color_cHed ;
+//                mybgcolor         = gbl_color_cHed ;
+                mybgcolor         = gbl_bgColor_brownHdr;  // light light burlywood
 //                mybgcolor         = gbl_color_cBgr ;
 //                mybgcolor         = gbl_color_cNeu ;
-                gbl_heightCellCOMP =  8;
+//                gbl_heightCellCOMP =  8;
+                gbl_heightCellCOMP = 18;
             }
             else if ( [mylin isEqualToString: @"after howbigftr"] ) {
                 mylin             = @" ";
 //                mybgcolor         = gbl_color_cNeu ;
-                mybgcolor         = gbl_color_cHed ;
+//                mybgcolor         = gbl_color_cHed ;
+                mybgcolor         = gbl_bgColor_brownHdr;  // light light burlywood
                 gbl_heightCellCOMP =  4;
             }
             else if ( [mylin isEqualToString: @"filler after how big"] ) {
@@ -1976,9 +2052,10 @@ for (id eltTst in gbl_compDataLines) { NSLog(@"    gbl_comp=%@", eltTst); }
             }
             else if ( [mylin isEqualToString: @"in goodrelationship at beg"] ) {
                 mylin             = @" ";
-                mybgcolor         = gbl_color_cBgr ;
+//                mybgcolor         = gbl_color_cBgr ;
 //                mybgcolor         = gbl_color_cNeu ;
-                gbl_heightCellCOMP = 12;
+                mybgcolor         = gbl_color_cHed ;
+                gbl_heightCellCOMP =  4;
             }
             else if ( [mylin isEqualToString: @"in goodrelationship at end"] ) {
                 mylin             = @" ";
@@ -2049,12 +2126,12 @@ for (id eltTst in gbl_compDataLines) { NSLog(@"    gbl_comp=%@", eltTst); }
   NSLog(@"mylin hdr=[%@]",mylin);
             NSInteger thisIsHeaderSpace;
             if ([mylin hasPrefix: @"space "]) {
-                mybgcolor         = [UIColor blueColor];
+//                mybgcolor         = [UIColor blueColor];
                 gbl_heightForCompTable = 2.0;
                 thisIsHeaderSpace      = 1;
                mylin = @" ";
             } else {
-                mybgcolor         = [UIColor cyanColor];
+//                mybgcolor         = [UIColor cyanColor];
 //                gbl_heightForCompTable = 18.0;
 //                gbl_heightForCompTable = 2.0;
                 gbl_heightForCompTable = 16.0;
@@ -2240,7 +2317,9 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
             gbl_areInCompatibilityTable = 0;
             myalign           = NSTextAlignmentCenter;
             mynumlines        = 1;    
-            mybgcolor         = gbl_color_cHed ;
+//            mybgcolor         = gbl_color_cHed ;
+            mybgcolor         = gbl_colorHomeBG_per ;
+
 //            gbl_heightCellPER = 16;
             gbl_heightCellCOMP = 18;
             myadjust          = YES;
@@ -2340,7 +2419,6 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
 
 //                    if( [myscore isEqualToString: @"50"] ) { mybgcolorfortableline = gbl_color_cNeu; gbltmpstr = @"50  Average  ";}
                     if( [myscore isEqualToString: @"50"] ) {
-nbn(70);
                         mybgcolorfortableline = gbl_color_cNeu;
                         if (      [myspace isEqualToString: @"space above"] ) {
                             gbltmpstr              = @"             ";
@@ -2431,7 +2509,6 @@ nbn(70);
                         }
                     }
                     if( [myscore isEqualToString: @"50"] ) {
-nbn(75);
                         mybgcolorfortableline = gbl_color_cNeu;
                         if (      [myspace isEqualToString: @"space above"] ) {
                             gbltmpstr              = @"             ";
@@ -2560,7 +2637,6 @@ nbn(75);
                     sco >= 75    )  mybgcolorfortableline = gbl_color_cGre;
                 if( sco <  75 &&
                     sco >  25    ) {
-nbn(76);
                     mybgcolorfortableline = gbl_color_cNeu;
                 }
                 if( sco <= 25 &&
@@ -2712,7 +2788,7 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
             } else {
                 ;   // gbl_heightForCompTable  already set        NSLog(@"string does not contain bla");
             }
-kdn(gbl_heightForCompTable );
+//kdn(gbl_heightForCompTable );
 
   NSLog(@"end of tabl|     ");
 
@@ -2756,36 +2832,54 @@ kdn(gbl_heightForCompTable );
 
             myalign           = NSTextAlignmentLeft;
             mynumlines        = 1;    
-            mybgcolor         = gbl_color_cHed ;
+//            mybgcolor         = gbl_color_cHed ;
 //            mybgcolor         = gbl_color_cNeu ;
-            gbl_heightCellCOMP = 18;
+            mybgcolor         = gbl_bgColor_brownHdr;  // light light burlywood
+
+//            gbl_heightCellCOMP = 18;
+            if (   self.view.bounds.size.width >= 414.0        // 6+ and 6s+  and bigger
+            ) {
+                gbl_heightCellCOMP = 18;  
+            }
+            else if (   self.view.bounds.size.width  < 414.0    // 6 and 6s
+                     && self.view.bounds.size.width  > 320.0
+            ) {
+                gbl_heightCellCOMP = 16; 
+            }
+            else if (   self.view.bounds.size.width <= 320.0   //  5s and 5 and 4s and smaller
+            ) {
+                gbl_heightCellCOMP = 14;
+            }
+
+
             myadjust          = NO;
             mytextcolor       = [UIColor blackColor];
 //            myCompFont         = myFont_14;
             myCompFont         = compFont_14;
-nbn(20); trn(" in howbighdr");
-  NSLog(@"mylin=[%@]",mylin);
+//nbn(20); trn(" in howbighdr");
+//  NSLog(@"mylin=[%@]",mylin);
 
-            NSInteger areInPlusesLine;
-            areInPlusesLine = 0;
-            NSInteger areInMinusesLine;
-            areInMinusesLine = 0;
-  NSLog(@"areInPlusesLine   =[%ld]",areInPlusesLine  );
-  NSLog(@"areInMinusesLine  =[%ld]",areInMinusesLine  );
-
-            const char *cString = [mylin UTF8String];
-
-//            if (   [mylin rangeOfString: @"+++"   options: NSCaseInsensitiveSearch ].location == NSNotFound) areInMinusesLine = 1;
-//            if (   [mylin rangeOfString: @"qqq"   options: NSCaseInsensitiveSearch ].location == NSNotFound) areInPlusesLine  = 1;
-//            if (   [mylin rangeOfString: @"+++"   options: NSLiteralSearch ].location == NSNotFound) 
-            if (strstr(cString, "+++") != NULL )  areInPlusesLine  = 1;
-            if (strstr(cString, "---") != NULL )  areInMinusesLine = 1;
-
-  NSLog(@"areInPlusesLine   =[%ld]",areInPlusesLine  );
-  NSLog(@"areInMinusesLine  =[%ld]",areInMinusesLine  );
-
-        if (areInPlusesLine  == 1) mybgcolor         = gbl_color_cGre ;
-        if (areInMinusesLine == 1) mybgcolor         = gbl_color_cRed ;
+//            NSInteger areInPlusesLine;
+//            areInPlusesLine = 0;
+//            NSInteger areInMinusesLine;
+//            areInMinusesLine = 0;
+//  NSLog(@"areInPlusesLine   =[%ld]",areInPlusesLine  );
+//  NSLog(@"areInMinusesLine  =[%ld]",areInMinusesLine  );
+//
+//            const char *cString = [mylin UTF8String];
+//
+////            if (   [mylin rangeOfString: @"+++"   options: NSCaseInsensitiveSearch ].location == NSNotFound) areInMinusesLine = 1;
+////            if (   [mylin rangeOfString: @"qqq"   options: NSCaseInsensitiveSearch ].location == NSNotFound) areInPlusesLine  = 1;
+////            if (   [mylin rangeOfString: @"+++"   options: NSLiteralSearch ].location == NSNotFound) 
+//            if (strstr(cString, "+++") != NULL )  areInPlusesLine  = 1;
+//            if (strstr(cString, "---") != NULL )  areInMinusesLine = 1;
+//
+//  NSLog(@"areInPlusesLine   =[%ld]",areInPlusesLine  );
+//  NSLog(@"areInMinusesLine  =[%ld]",areInMinusesLine  );
+//
+//        if (areInPlusesLine  == 1) mybgcolor         = gbl_color_cGre ;
+//        if (areInMinusesLine == 1) mybgcolor         = gbl_color_cRed ;
+//
 
 
 //<.>  attrstr apple bug in ios 8 prevents this
@@ -2892,9 +2986,25 @@ nbn(20); trn(" in howbighdr");
 
             myalign           = NSTextAlignmentLeft;
             mynumlines        = 1;    
-            mybgcolor         = gbl_color_cHed ;
+//            mybgcolor         = gbl_color_cHed ;
 //            mybgcolor         = gbl_color_cNeu ;
-            gbl_heightCellCOMP = 18;
+            mybgcolor         = gbl_bgColor_brownHdr;  // light light burlywood
+
+//            gbl_heightCellCOMP = 18;
+            if (   self.view.bounds.size.width >= 414.0        // 6+ and 6s+  and bigger
+            ) {
+                gbl_heightCellCOMP = 18;  
+            }
+            else if (   self.view.bounds.size.width  < 414.0    // 6 and 6s
+                     && self.view.bounds.size.width  > 320.0
+            ) {
+                gbl_heightCellCOMP = 16; 
+            }
+            else if (   self.view.bounds.size.width <= 320.0   //  5s and 5 and 4s and smaller
+            ) {
+                gbl_heightCellCOMP = 14;
+            }
+
             myadjust          = NO;
             mytextcolor       = [UIColor blackColor];
             myCompFont         = compFont_14;
@@ -2905,9 +3015,10 @@ nbn(20); trn(" in howbighdr");
 
             myalign           = NSTextAlignmentLeft;
             mynumlines        = 1;    
-            mybgcolor         = gbl_color_cHed ;
 //            mybgcolor         = gbl_color_cBgr ;
 //            mybgcolor         = gbl_color_cNeu ;
+//            mybgcolor         = gbl_color_cHed ;
+            mybgcolor         = gbl_bgColor_brownHdr;  // light light burlywood
             gbl_heightCellCOMP = 18;
             myadjust          = NO;
             mytextcolor       = [UIColor blackColor];
@@ -2993,15 +3104,40 @@ nbn(20); trn(" in howbighdr");
             mybgcolor         = gbl_color_cHed;
             myalign           = NSTextAlignmentLeft;
             mynumlines        = 1;    
+
 //            gbl_heightCellCOMP = 18;
 //            gbl_heightCellCOMP = 15;  // get pipes to join
 //            gbl_heightCellCOMP = 10;  // get pipes to join
 //            gbl_heightCellCOMP = 13;  // get pipes to join
 //            gbl_heightCellCOMP = 12;  // get pipes to join
-            gbl_heightCellCOMP = 11;  // get pipes to join
+//            gbl_heightCellCOMP = 11;  // get pipes to join
+            // PROBLEM had gaps in star lines on  4s,  so reduce height
+            //
+            //            gbl_heightCellCOMP = 11;  // get pipes to join
+            // CGFloat   gbl_heightForScreen;  // 6+  = 736.0 x 414  and 6s+  (self.view.bounds.size.width) and height
+            //                                 // 6s  = 667.0 x 375  and 6
+            //                                 // 5s  = 568.0 x 320  and 5 
+            //                                 // 4s  = 480.0 x 320  and 5 
+            //
+            //  NSLog(@"self.view.bounds.size.height  =[%f]",self.view.bounds.size.height  );
+            if (   self.view.bounds.size.width >= 414.0        // 6+ and 6s+  and bigger
+            ) {
+                gbl_heightCellCOMP = 11;  // get pipes to join
+            }
+            else if (   self.view.bounds.size.width  < 414.0    // 6 and 6s
+                     && self.view.bounds.size.width  > 320.0
+            ) {
+                gbl_heightCellCOMP = 11;  // get pipes to join
+            }
+            else if (   self.view.bounds.size.width <= 320.0   //  5s and 5 and 4s and smaller
+            ) {
+                gbl_heightCellCOMP = 10;  //  had gaps on 4s
+            }
+
             myadjust          = NO;
 //            myCompFont         = compFont_14;
-            myCompFont         = compFont_12;
+//            myCompFont         = compFont_12;  now have compfont_stars
+
 
             // you can simply calculate UILabel width for string size,try this simple code for set UILabel size
             // Single line, no wrapping;
@@ -3347,6 +3483,87 @@ nbn(20); trn(" in howbighdr");
         ];
 
 
+        // magic number 40 is max num + or - here
+        //
+        NSString *myPluses  = [@"" stringByPaddingToLength:40 withString: @"+" startingAtIndex:0] ;
+        NSString *myMinuses = [@"" stringByPaddingToLength:40 withString: @"-" startingAtIndex:0] ;
+        NSString *mySpaces  = [@"" stringByPaddingToLength:40 withString: @" " startingAtIndex:0] ;
+
+        NSString *myPlusesBase  = [NSString stringWithFormat: @"%@%@", myPluses,  mySpaces ];
+        NSString *myMinusesBase = [NSString stringWithFormat: @"%@%@", myMinuses, mySpaces ];
+        NSString *myDisplayString;
+        NSMutableAttributedString *myDisplayStringAttributed;
+
+        // get the count of plus signs in mylin
+        //
+        NSArray *flds;  NSInteger numflds;
+
+  NSLog(@"starnew mylin  =[%@]",mylin);
+        flds    = [mylin componentsSeparatedByString: @"+"];
+//  NSLog(@"flds           =[%@]",flds);
+        numflds = [flds count] -1;
+  NSLog(@"starnew numflds=[%ld]",(long)numflds);
+
+        if (numflds > 0) {  // got pluses here
+            myDisplayString = [myPlusesBase substringWithRange: NSMakeRange( 40 - numflds, 40) ];
+  NSLog(@"starnew myDisplayString =[%@]",myDisplayString );
+
+            myDisplayString = [NSString stringWithFormat: @"%@%@%@", @"     ", myDisplayString, @"     "];   // prepend + append 5 spaces
+
+            myDisplayStringAttributed = [[NSMutableAttributedString alloc] initWithString: myDisplayString ];
+           [myDisplayStringAttributed addAttribute: NSBackgroundColorAttributeName
+                                             value: [UIColor whiteColor]
+                                             range: NSMakeRange(  0, 40 + 5 + 5)
+            ];
+           [myDisplayStringAttributed addAttribute: NSBackgroundColorAttributeName
+//                                             value: gbl_colorHomeBG_grp
+                                             value: gbl_bgColor_brownHdr
+                                             range: NSMakeRange(  0,  5)
+            ];
+           [myDisplayStringAttributed addAttribute: NSBackgroundColorAttributeName
+                                             value: gbl_color_cGre
+                                             range: NSMakeRange(  0 + 5, numflds)
+            ];
+           [myDisplayStringAttributed addAttribute: NSBackgroundColorAttributeName
+//                                             value: gbl_colorHomeBG_grp
+                                             value: gbl_bgColor_brownHdr
+                                             range: NSMakeRange( 40 + 5,  5)
+            ];
+            // [string addAttribute:NSForegroundColorAttributeName value:[UIColor greenColor] range:NSMakeRange(5,6)];
+        }
+
+        flds    = [mylin componentsSeparatedByString: @"-"];
+        numflds = [flds count] -1;
+        if (numflds > 0) {  // got minuses here
+            myDisplayString = [myMinusesBase substringWithRange: NSMakeRange( 40 - numflds, 40) ];
+
+            myDisplayString = [NSString stringWithFormat: @"%@%@%@", @"     ", myDisplayString, @"     "];   // prepend + append 5 spaces
+
+            myDisplayStringAttributed = [[NSMutableAttributedString alloc] initWithString: myDisplayString ];
+           [myDisplayStringAttributed addAttribute: NSBackgroundColorAttributeName
+                                             value: [UIColor whiteColor]
+                                             range: NSMakeRange(  0, 40 + 5 + 5)
+            ];
+           [myDisplayStringAttributed addAttribute: NSBackgroundColorAttributeName
+//                                             value: gbl_colorHomeBG_grp
+                                             value: gbl_bgColor_brownHdr
+                                             range: NSMakeRange(  0,  5)
+            ];
+           [myDisplayStringAttributed addAttribute: NSBackgroundColorAttributeName
+                                             value: gbl_color_cRed
+                                             range: NSMakeRange(  0 + 5, numflds)
+            ];
+           [myDisplayStringAttributed addAttribute: NSBackgroundColorAttributeName
+//                                             value: gbl_colorHomeBG_grp
+                                             value: gbl_bgColor_brownHdr
+                                             range: NSMakeRange( 40 + 5,  5)
+            ];
+        }
+
+
+
+
+
 
         dispatch_async(dispatch_get_main_queue(), ^{            // <=== comp  stars
 // old
@@ -3390,12 +3607,20 @@ nbn(20); trn(" in howbighdr");
             cell.accessoryType                       = UITableViewCellAccessoryNone;
 //            cell.textLabel.numberOfLines             = 1; 
             cell.textLabel.numberOfLines             = 0; 
-            cell.textLabel.textColor                 = mytextcolor;
-            cell.textLabel.font                      = compFont_12;
+//            cell.textLabel.textColor                 = mytextcolor;
+            cell.textLabel.textColor                 = [UIColor grayColor];
+
+//            cell.textLabel.font                      = compFont_12;
+            cell.textLabel.font                      = compFont_Stars;
+
             cell.textLabel.adjustsFontSizeToFitWidth = NO;
 //            cell.textLabel.backgroundColor           = mybgcolor;
-            cell.textLabel.backgroundColor           = myRedGreenColor;
+//            cell.textLabel.backgroundColor           = myRedGreenColor;
+            cell.textLabel.backgroundColor           = [UIColor clearColor];
+
 //            cell.textLabel.attributedText            = myAttrString;  // order matters- pipes DO NOT appear if this line is here
+            cell.textLabel.attributedText            =  myDisplayStringAttributed ;
+
             cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
             cell.backgroundView          = nil ;
         });
@@ -3440,7 +3665,8 @@ bn(802);
             myadjust          = NO;
             mytextcolor       = [UIColor blackColor];
 //            myCompFont         = compFont_16;
-            myCompFont         = compFont_14;
+//            myCompFont         = compFont_14;
+            myCompFont         = compFont_Paras;
 
         } // end of "para|"
 
@@ -3486,7 +3712,8 @@ bn(802);
             myCompFont         = compFont_12;
 //            gbl_heightCellCOMP = 18;
 //            gbl_heightCellCOMP = 12;
-            gbl_heightCellCOMP = 15;
+//            gbl_heightCellCOMP = 15;
+            gbl_heightCellCOMP = 12;
         }
 
 //            myalign           = NSTextAlignmentLeft;
@@ -3578,8 +3805,8 @@ bn(802);
             mynumlines        = 1;    
             mybgcolor         = gbl_color_cBgr ;
 //            mybgcolor         = [UIColor yellowColor];
-//            gbl_heightCellCOMP = 16;
-            gbl_heightCellCOMP = 18;
+//            gbl_heightCellCOMP = 18;
+            gbl_heightCellCOMP = 16;
 //            myadjust          = YES;
             myadjust          = NO;
             mytextcolor       = [UIColor blackColor];
@@ -3591,8 +3818,8 @@ bn(802);
             mynumlines        = 1;    
             mybgcolor         = gbl_color_cBgr ;
 //            mybgcolor         = [UIColor lightGrayColor];
-//            gbl_heightCellCOMP = 16;
-            gbl_heightCellCOMP = 18;
+//            gbl_heightCellCOMP = 18;
+            gbl_heightCellCOMP = 16;
 //            myadjust          = YES;
             myadjust          = NO;
             mytextcolor       = [UIColor redColor];
@@ -3617,7 +3844,9 @@ bn(802);
             cell.textLabel.textColor                 = mytextcolor;
             cell.textLabel.font                      = myCompFont;
 //            cell.textLabel.adjustsFontSizeToFitWidth = NO;
-            cell.textLabel.adjustsFontSizeToFitWidth = YES;
+//            cell.textLabel.adjustsFontSizeToFitWidth = YES;
+            cell.textLabel.adjustsFontSizeToFitWidth = NO;
+
             cell.textLabel.backgroundColor           = mybgcolor;
 //            cell.textLabel.attributedText            = nil;  // order matters- pipes DO NOT appear if this line is here
             cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
@@ -4726,31 +4955,84 @@ tn();
 
 
   NSLog(@"per pco  RELOAD B ? 2");
-        if ([ gbl_do_B_pe_co_reload isEqualToString: @"do the reload only the first time"] )
+
+  NSLog(@"gbl_do_B_per_reload =[%@]",gbl_do_B_per_reload );
+  NSLog(@"gbl_do_B_co__reload =[%@]",gbl_do_B_co__reload );
+
+//        if ([ gbl_do_B_pe_co_reload isEqualToString: @"do the reload only the first time"] )
+//        {
+//  NSLog(@"per pco  RELOAD B   DO IT");
+//            gbl_do_B_pe_co_reload = @"this is not reset until app startup";
+//
+//
+//
+////   20160127     took away use of   gbl_justLookedAtInfoScreen
+////         if (gbl_justLookedAtInfoScreen == 0 )  { //   20160127     took away use of   gbl_justLookedAtInfoScreen
+////            // try to get rid of tbl position in middle on startup //   20160127     took away use of   gbl_justLookedAtInfoScreen
+//
+//               dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+////            dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+////                [self.tableView reloadData]; // self.view is the table view if self is its controller
+////           });
+//
+////            [self.tableView reloadSections: [NSIndexSet indexSetWithIndex: 0]   withRowAnimation: UITableViewRowAnimationAutomatic];
+////            [self.tableView reloadSections: [NSIndexSet indexSetWithIndex: 0]   withRowAnimation: UITableViewRowAnimationRight];
+////            [self.tableView reloadSections: [NSIndexSet indexSetWithIndex: 0]   withRowAnimation: UITableViewRowAnimationBottom];
+////            [self.tableView reloadSections: [NSIndexSet indexSetWithIndex: 0]   withRowAnimation: UITableViewRowAnimationMiddle];
+//             [self.tableView reloadSections: [NSIndexSet indexSetWithIndex: 0]  
+//                                                          withRowAnimation: UITableViewRowAnimationNone // does a default unchangeable animation
+//             ];
+//            });  // reload
+//        } else {
+//  NSLog(@"per pco  RELOAD B   DID NOT  DO IT");
+//        }
+//
+
+    if (   [gbl_currentMenuPlusReportCode hasSuffix: @"co"])  //  grpof 2
+    {
+  NSLog(@"co RELOAD B ? 2");
+        if ([ gbl_do_B_co__reload isEqualToString: @"do the reload only the first time"] )
         {
-  NSLog(@"per pco  RELOAD B   DO IT");
-            gbl_do_B_pe_co_reload = @"this is not reset until app startup";
+  NSLog(@"co RELOAD B   DO IT");
+            gbl_do_B_co__reload = @"this is not reset until app startup";
 
-
-
-//   20160127     took away use of   gbl_justLookedAtInfoScreen
-//         if (gbl_justLookedAtInfoScreen == 0 )  { //   20160127     took away use of   gbl_justLookedAtInfoScreen
-//            // try to get rid of tbl position in middle on startup //   20160127     took away use of   gbl_justLookedAtInfoScreen
-
-               dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
-//            dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
-//                [self.tableView reloadData]; // self.view is the table view if self is its controller
-//           });
-
-//            [self.tableView reloadSections: [NSIndexSet indexSetWithIndex: 0]   withRowAnimation: UITableViewRowAnimationAutomatic];
-//            [self.tableView reloadSections: [NSIndexSet indexSetWithIndex: 0]   withRowAnimation: UITableViewRowAnimationRight];
-//            [self.tableView reloadSections: [NSIndexSet indexSetWithIndex: 0]   withRowAnimation: UITableViewRowAnimationBottom];
-//            [self.tableView reloadSections: [NSIndexSet indexSetWithIndex: 0]   withRowAnimation: UITableViewRowAnimationMiddle];
-             [self.tableView reloadSections: [NSIndexSet indexSetWithIndex: 0]  
-                                                          withRowAnimation: UITableViewRowAnimationNone // does a default unchangeable animation
-             ];
-            });  // reload
+            // try to get rid of tbl position in middle on startup
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+                    [self.tableView reloadSections: [NSIndexSet indexSetWithIndex: 0]  
+                                                                 withRowAnimation: UITableViewRowAnimationNone // does a default unchangeable animation
+                    ];
+            });
         }
+
+    } // suffix co
+    else {
+  NSLog(@"co RELOAD B  DID NOT  DO IT");
+    }
+
+    if (   [gbl_currentMenuPlusReportCode hasSuffix: @"pe"])  //  personality in B
+    {
+  NSLog(@"per RELOAD B ? 2");
+        if ([ gbl_do_B_per_reload isEqualToString: @"do the reload only the first time"] )
+        {
+  NSLog(@"per RELOAD B   DO IT");
+            gbl_do_B_per_reload = @"this is not reset until app startup";
+
+            // try to get rid of tbl position in middle on startup
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+                    [self.tableView reloadSections: [NSIndexSet indexSetWithIndex: 0]  
+                                                                 withRowAnimation: UITableViewRowAnimationNone // does a default unchangeable animation
+                    ];
+            });
+        }
+
+    } // suffix co
+    else {
+  NSLog(@"per RELOAD B  DID NOT  DO IT");
+    }
+
+
+
+
 
 //   20160127     took away use of   gbl_justLookedAtInfoScreen
 //         } 
@@ -5398,10 +5680,11 @@ NSLog(@"Ok button pressed");
 //    } else if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompco"])  // home + compatibility
     if (        [gbl_currentMenuPlusReportCode       hasSuffix: @"pe"])   // personality
     {
-          myCountOfRows = gbl_perDataLines.count;
+          return nil;
     } else if ( [gbl_currentMenuPlusReportCode       hasSuffix: @"co"])   // grpof2
     {
-          myCountOfRows = gbl_compDataLines.count;
+//          myCountOfRows = gbl_compDataLines.count;
+          return nil;
     } else {
           myCountOfRows = group_report_output_idx_B;
     }

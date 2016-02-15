@@ -28,6 +28,7 @@
 
 @end
 
+//UITapGestureRecognizer *doubleTapGesture;   // used gbl_
 
 
 @implementation MAMB09_homeTableViewController
@@ -78,6 +79,14 @@
 }
 
 
+//- (void) processDoubleTap
+- (void) processDoubleTap:(UITapGestureRecognizer *)sender
+{
+  NSLog(@"GOT A DOUBLE tap");
+  [self putHighlightOnCorrectRow ];
+}
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -87,6 +96,20 @@
 tn();
   NSLog(@"in viewDidLoad  in HOME  HOME  ");
 
+
+    // add a method (processDoubleTap) to run on double tap
+    //
+    gbl_doubleTapGestureRecognizer = [
+       [UITapGestureRecognizer alloc] initWithTarget: self 
+                                              action: @selector( processDoubleTap: )
+    ];
+    [gbl_doubleTapGestureRecognizer    setNumberOfTapsRequired: 2];
+    [gbl_doubleTapGestureRecognizer setNumberOfTouchesRequired: 1];
+    gbl_doubleTapGestureRecognizer.delaysTouchesBegan = YES;       // for uitableview
+    [self.tableView addGestureRecognizer: gbl_doubleTapGestureRecognizer ];
+
+
+//    gbl_lastClick = [[[NSDate alloc] init] timeIntervalSince1970];
 
 //    WWW width=[240.930176]
 //    MMM width=[217.023926]
@@ -108,6 +131,8 @@ tn();
     self.tableView.allowsSelectionDuringEditing = YES;
 
     [self.navigationController.navigationBar setTranslucent: NO];
+//     self.navigationController.navigationBar.barTintColor = [UIColor blueColor] ;
+     self.navigationController.navigationBar.barTintColor = gbl_color_cAplTop;
 
 
     // assign height of tableview rows here
@@ -287,7 +312,7 @@ nbn(100);
 //            self.editButtonItem.title = @"Ed2t\t";  // pretty good
             self.editButtonItem.title = @"Edit";  // ok with no tab
 
-UIView *tmpView = (UIView *)[self.editButtonItem performSelector:@selector(view)];
+            UIView *tmpView = (UIView *)[self.editButtonItem performSelector:@selector(view)];
 
 //            self.editButtonItem.view.layer.backgroundColor = [[UIColor clearColor] CGColor];
             tmpView.layer.backgroundColor = [[UIColor clearColor] CGColor];
@@ -855,6 +880,9 @@ ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
     for (NSString *fil in docFiles2) { NSLog(@"doc fil=%@",fil); }
     // for test  LOOK AT all files in doc dir
 
+nbn(45);
+    [self sectionIndexTitlesForTableView: self.tableView ];  // set up sectionindex or not after switch
+
 
 } // - (void)viewDidLoad
 
@@ -965,6 +993,7 @@ ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
     _arr = [currentLine componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"|"]];
     nameOfGrpOrPer = _arr[0];
     //NSLog(@"nameOfGrpOrPer=%@",nameOfGrpOrPer);
+
 
     // NSLog(@"gbl_home_cell_AccessoryType=[%d]",gbl_home_cell_AccessoryType);
 
@@ -1501,6 +1530,48 @@ tn();
         _segEntityOutlet.userInteractionEnabled = NO;
     }
 
+//self.segmentedControl.tintColor = [UIColor cb_Grey1Color];
+//self.segmentedControl.backgroundColor = [UIColor cb_Grey3Color];
+// _segEntityOutlet.tintColor = [UIColor greenColor];
+// _segEntityOutlet.backgroundColor = [UIColor cyanColor];
+// _segEntityOutlet.tintColor = gbl_color_cAplTop;
+
+  // _segEntityOutlet.backgroundColor = gbl_color_cAplTop;
+//   _segEntityOutlet.backgroundColor = [UIColor yellowColor];
+//NSDictionary *selectedAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+////                                    [UIFont cbGothamBookFontWithSize:13.0], NSFontAttributeName,
+//                                    [UIColor lightGrayColor], NSForegroundColorAttributeName,
+//                                    [UIColor greenColor], NSBackgroundColorAttributeName, nil];
+//    [ _segEntityOutlet setTitleTextAttributes: selectedAttributes forState:UIControlStateNormal];
+//
+//     NSDictionary *unselectedAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+////                                      [UIFont cbGothamBookFontWithSize:13.0], NSFontAttributeName,
+//                                      [UIColor blackColor], NSForegroundColorAttributeName,
+//                                      [UIColor redColor], NSBackgroundColorAttributeName,
+//                                      nil
+//    ];
+//
+
+//   _segEntityOutlet.backgroundColor = gbl_reallyLightGray;
+//NSDictionary *selectedAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+////                                    [UIFont cbGothamBookFontWithSize:13.0], NSFontAttributeName,
+//                                    [UIColor yellowColor], NSForegroundColorAttributeName,
+//                                    gbl_color_cAplDarkBlue, NSBackgroundColorAttributeName, nil];
+//    [ _segEntityOutlet setTitleTextAttributes: selectedAttributes forState:UIControlStateNormal];
+//
+//     NSDictionary *unselectedAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+////                                      [UIFont cbGothamBookFontWithSize:13.0], NSFontAttributeName,
+//                                     gbl_color_cAplDarkBlue, NSForegroundColorAttributeName,
+////                                      [UIColor whiteColor], NSBackgroundColorAttributeName,
+//                                     gbl_reallyLightGray, NSBackgroundColorAttributeName,
+//                                      nil
+//    ];
+//    [ _segEntityOutlet setTitleTextAttributes: selectedAttributes forState:UIControlStateSelected];
+//    [ _segEntityOutlet setTitleTextAttributes: unselectedAttributes forState:UIControlStateNormal];
+//
+
+
+
 
 //    int64_t myDelayInSec   = 0.5 * (double)NSEC_PER_SEC;
 //    int64_t myDelayInSec   = 2.5 * (double)NSEC_PER_SEC;
@@ -1795,6 +1866,23 @@ NSLog(@"in viewDidAppear()  in HOME");
   NSLog(@"in HOME  didSelectRowAtIndexPath ");
   NSLog(@"gbl_colorHomeBG=[%@]",gbl_colorHomeBG);
 
+
+//    gbl_mynow = [[[NSDate alloc] init] timeIntervalSince1970];
+//
+//  NSLog(@"gbl_mynow        =[%f]",gbl_mynow );
+//  NSLog(@"gbl_lastClick    =[%f]",gbl_lastClick );
+//  NSLog(@"gbl_lastIndexPath=[%@]",gbl_lastIndexPath);
+//
+//    if ((gbl_mynow - gbl_lastClick < 0.3) && [indexPath isEqual: gbl_lastIndexPath]) {
+//        // Double tap here
+//  NSLog(@"Double Tap!");
+//  return;
+//    }
+//    gbl_lastClick = gbl_mynow;
+//    gbl_lastIndexPath = indexPath;
+
+
+
     // selecting home row in yellow "edit mode" gives you  view or change mode
     //
     if ( [gbl_homeUseMODE isEqualToString: @"edit mode" ] )
@@ -1975,6 +2063,7 @@ NSLog(@"in viewDidAppear()  in HOME");
 {
 tn();trn("in doStuffOnEnteringForeground()   NOTIFICATION method     lastEntity stuff");
 
+
     //MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
     MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
 
@@ -2117,86 +2206,148 @@ nbn(161);
     }
 nbn(162);
 
-    NSArray *mySectionIndexTitles;
-    mySectionIndexTitles = [NSArray arrayWithObjects:  // 33 items  last index=32
-//            @"TOP",
-//         @" ", @" ", @" ", @" ",  @" ", @" ",
-//            @"__",
-//         @" ", @" ", @" ", @" ",  @" ", @" ",
-//            @"__",
-//         @" ", @" ", @" ", @" ",  @" ", @" ",
-//            @"__",
-//         @" ", @" ", @" ", @" ",  @" ", @" ",
-//            @"END", nil ];
-//
-
+    NSArray *mySectionIndexTitles = [NSArray arrayWithObjects:  // 33 items  last index=32
+//         @"A", @"B", @"C", @"D",  @"E", @"F", @"G", @"H", @"I", @"J",  @"K", @"L", @"M",
+//         @"N", @"O", @"P",  @"Q", @"R", @"S", @"T", @"U", @"V",  @"W", @"X", @"Y", @"Z",   nil ];
 
             @"TOP",
-         @" ", @" ", @" ", @" ",  @" ",
+         @" ", @" ", @" ", @" ",  @" ", @" ",
             @"__",
-         @" ", @" ", @" ", @" ",  @" ",
+         @" ", @" ", @" ", @" ",  @" ", @" ",
             @"__",
-         @" ", @" ", @" ", @" ",  @" ",
+         @" ", @" ", @" ", @" ",  @" ", @" ",
             @"__",
-         @" ", @" ", @" ", @" ",  @" ",
-            @"END",  @" ",  @" ", @"x", nil ];
+         @" ", @" ", @" ", @" ",  @" ", @" ",
+            @"END", nil ];
+
 
     gbl_numSectionIndexTitles = mySectionIndexTitles.count;
 
     return mySectionIndexTitles;
 
+
+//
+//    NSMutableSet    *mySetSectionIndexTitles = [[NSMutableSet alloc] init];
+//    NSMutableArray  *myArrSectionIndexTitles;
+//    NSMutableArray  *mutArrayNewTmp = [[NSMutableArray alloc] init];
+//    NSString        *firstLetter, *pername, *grpname;
+//
+//    // grab ALL  first letters of all entities for use as section index titles
+////    if ([gbl_lastSelectionType isEqualToString: @"group"])  {
+////        myCountOfRows = gbl_arrayGrp.count;
+////        for (NSString *grp in gbl_arrayGrp) {
+////            firstLetter = [grp substringFromIndex: 1 ];
+////            if ([firstLetter isEqualToString: @"~"]) continue;
+////            [mySetSectionIndexTitles addObject: firstLetter ];
+////        }
+////        myArrSectionIndexTitles = [mySetSectionIndexTitles allObjects];
+////    }
+////
+//    if ([gbl_lastSelectionType isEqualToString: @"person"])  {
+//        myCountOfRows = gbl_arrayPer.count;
+//        for (NSString *perrec in gbl_arrayPer) {
+//  NSLog(@"perrec         =[%@]",perrec);
+//            pername = [perrec  componentsSeparatedByString:@"|"][0];  // get fld1 (name) 0-based 
+//  NSLog(@"pername =[%@]",pername );
+//            if ([pername isEqualToString: @""]  || pername == nil) continue;
+//            firstLetter = [pername substringToIndex: 1 ];
+//  NSLog(@"firstLetter =[%@]",firstLetter );
+//            if ([firstLetter isEqualToString: @"~"]) continue;
+//            
+//            firstLetter = [firstLetter uppercaseString];
+//  NSLog(@"firstLetterU=[%@]",firstLetter );
+//
+//            [mySetSectionIndexTitles addObject: firstLetter ];
+//        }
+//    }
+//  NSLog(@"mySetSectionIndexTitles =[%@]",mySetSectionIndexTitles );
+//
+//
+//    // tremendous mystery  ??    but it works
+//    //
+//    NSSortDescriptor *mySortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"description"  ascending:YES];
+//    myArrSectionIndexTitles = [mySetSectionIndexTitles sortedArrayUsingDescriptors:[NSArray arrayWithObject: mySortDescriptor ]];
+//
+//  NSLog(@"myArrSectionIndexTitles 1 =[%@]",myArrSectionIndexTitles);
+//
+//    return myArrSectionIndexTitles;
+//
+
+
+
+
 } // end of sectionIndexTitlesForTableView
 
+
+//- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+// {
+//    [super touchesEnded:touches withEvent:event];
+//
+//  NSLog(@"in touchesEnded !");
+//
+//     if(((UITouch *)[touches anyObject]).tapCount == 2)
+//    {
+//    NSLog(@"DOUBLE TOUCH");
+//    }
+//}
+//
 
 
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
 {
 
   NSLog(@"sectionForSectionIndexTitle!  in HOME");
-    NSInteger newRow;
-    newRow = 0;
+  NSLog(@"title=[%@]",title);
+  NSLog(@"atIndex=[%ld]",(long)index);
+
+
+
+    // find first group starting with title letter (guaranteed to be there, see sectionIndexTitlesForTableView )
+    NSInteger newRow;  newRow = 0;
+    NSIndexPath *newIndexPath;
+    NSInteger myCountOfRows;
+    NSString *pername, *grpname;
 
 //    if ([gbl_lastSelectionType isEqualToString:@"group"])  {
-//        if ([title isEqualToString:@"__"]) newRow = 0;
-//        if ([title isEqualToString:@"20"]) newRow = (int) ( (20.0 / 100.0) * (double)gbl_arrayGrp.count );
-//        if ([title isEqualToString:@"40"]) newRow = (int) ( (40.0 / 100.0) * (double)gbl_arrayGrp.count );
-//        if ([title isEqualToString:@"60"]) newRow = (int) ( (60.0 / 100.0) * (double)gbl_arrayGrp.count );
-//        if ([title isEqualToString:@"80"]) newRow = (int) ( (80.0 / 100.0) * (double)gbl_arrayGrp.count );
-//        if ([title isEqualToString:@"=="]) newRow =              gbl_arrayGrp.count - 1;
+//        myCountOfRows = gbl_arrayGrp.count;
+//        for (NSString *grp in gbl_arrayGrp) {
+//            newRow = newRow + 1;
+//            if ([grp hasPrefix: title])  break;
+//        }
 //    }
 //    if ([gbl_lastSelectionType isEqualToString:@"person"])  {
-//        if ([title isEqualToString:@"__"]) newRow = 0;
-//        if ([title isEqualToString:@"20"]) newRow = (int) ( (20.0 / 100.0) * (double)gbl_arrayPer.count );
-//        if ([title isEqualToString:@"40"]) newRow = (int) ( (40.0 / 100.0) * (double)gbl_arrayPer.count );
-//        if ([title isEqualToString:@"60"]) newRow = (int) ( (60.0 / 100.0) * (double)gbl_arrayPer.count );
-//        if ([title isEqualToString:@"80"]) newRow = (int) ( (80.0 / 100.0) * (double)gbl_arrayPer.count );
-//        if ([title isEqualToString:@"=="]) newRow =              gbl_arrayPer.count - 1;
+//        myCountOfRows = gbl_arrayPer.count;
+//        for (NSString *perrec in gbl_arrayPer) {
+//            pername = [perrec  componentsSeparatedByString:@"|"][0]; // get fld1 (name) 0-based 
+//  NSLog(@"pername =[%@]",pername );
+//  NSLog(@"newRow  =[%ld]",(long)newRow );
+//            if ([pername hasPrefix: @"~"]) continue;
+//            newRow = newRow + 1;
+//            if ([pername hasPrefix: title])  break;
+//        }
 //    }
+//  NSLog(@"newRow =[%ld]",(long)newRow );
+//
+//    newIndexPath = [NSIndexPath indexPathForRow: newRow inSection: 0];
+//    [tableView scrollToRowAtIndexPath: newIndexPath atScrollPosition: UITableViewScrollPositionMiddle animated: NO];
 //
 
-    NSInteger myCountOfRows;
-    if ([gbl_lastSelectionType isEqualToString:@"group"])  {
-        myCountOfRows = gbl_arrayGrp.count;
-    }
-    if ([gbl_lastSelectionType isEqualToString:@"person"])  {
-        myCountOfRows = gbl_arrayPer.count;
-    }
+
+    if ([gbl_lastSelectionType isEqualToString:@"group"])   myCountOfRows = gbl_arrayGrp.count;
+    if ([gbl_lastSelectionType isEqualToString:@"person"])  myCountOfRows = gbl_arrayPer.count;
 
     if ([title isEqualToString:@"TOP"]) newRow = 0;
     if ([title isEqualToString:@"END"]) newRow = myCountOfRows - 1;
     if (   [title isEqualToString:@" "]
         || [title isEqualToString:@"__"]
     )   newRow = ((double) (index + 1) / (double) gbl_numSectionIndexTitles ) * (double)myCountOfRows ;
-
     if (   [title isEqualToString:@"x"] )
     {  // position at row last used  (highlight row)
 nbn(151);
         [self putHighlightOnCorrectRow ];
     }
 
-    NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow: newRow inSection: 0];
-
-//    [tableView scrollToRowAtIndexPath: newIndexPath atScrollPosition: UITableViewScrollPositionTop animated: NO];
+    newIndexPath = [NSIndexPath indexPathForRow: newRow inSection: 0];
     [tableView scrollToRowAtIndexPath: newIndexPath atScrollPosition: UITableViewScrollPositionMiddle animated: NO];
 
     return index;
@@ -2835,23 +2986,26 @@ nbn(357);
             } // search thru gbl_arrayGrp
     //NSLog(@"FOUND !=%ld", (long)idxGrpOrPer);
 
-    // get the indexpath of row num idxGrpOrPer in tableview
-            NSIndexPath *foundIndexPath = [NSIndexPath indexPathForRow:idxGrpOrPer inSection:0];
-    //tn();trn("SCROLL 111111111111111111111111111111111111111111111111111111111");
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
 
-            // select the row in UITableView
-            // This puts in the light grey "highlight" indicating selection
-            [self.tableView selectRowAtIndexPath: foundIndexPath 
-                                        animated: YES
-                                  scrollPosition: UITableViewScrollPositionNone];
-            //[self.tableView scrollToNearestSelectedRowAtScrollPosition: foundIndexPath.row 
-            [self.tableView scrollToNearestSelectedRowAtScrollPosition: UITableViewScrollPositionMiddle
-                                                      animated: YES];
+
+        // get the indexpath of row num idxGrpOrPer in tableview
+                NSIndexPath *foundIndexPath = [NSIndexPath indexPathForRow:idxGrpOrPer inSection:0];
+        //tn();trn("SCROLL 111111111111111111111111111111111111111111111111111111111");
+
+                // select the row in UITableView
+                // This puts in the light grey "highlight" indicating selection
+                [self.tableView selectRowAtIndexPath: foundIndexPath 
+                                            animated: YES
+                                      scrollPosition: UITableViewScrollPositionNone];
+                //[self.tableView scrollToNearestSelectedRowAtScrollPosition: foundIndexPath.row 
+                [self.tableView scrollToNearestSelectedRowAtScrollPosition: UITableViewScrollPositionMiddle
+                                                          animated: YES];
+            });
         }
 
         if ([gbl_lastSelectionType isEqualToString:@"person"]) {
 
-//nbn(358);
 //            NSLog(@"gbl_lastSelectedPerson=%@",gbl_lastSelectedPerson);
             
             do { // highlight gbl_lastSelectedPerson row in tableview
@@ -2871,27 +3025,29 @@ nbn(357);
                 } // search thru gbl_arrayPer
 //        NSLog(@"FOUND !=%ld", (long)idxGrpOrPer);
 
-                // get the indexpath of row num idxGrpOrPer in tableview
-                NSIndexPath *foundIndexPath = [NSIndexPath indexPathForRow:idxGrpOrPer inSection:0];
-//        NSLog(@"foundIndexPath=%@",foundIndexPath);
-//        NSLog(@"foundIndexPath.row=%ld",(long)foundIndexPath.row);
+                dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+
+                    // get the indexpath of row num idxGrpOrPer in tableview
+                    NSIndexPath *foundIndexPath = [NSIndexPath indexPathForRow:idxGrpOrPer inSection:0];
+    //        NSLog(@"foundIndexPath=%@",foundIndexPath);
+    //        NSLog(@"foundIndexPath.row=%ld",(long)foundIndexPath.row);
 
 
-                // select the row in UITableView
-                // This puts in the light grey "highlight" indicating selection
-                [self.tableView selectRowAtIndexPath: foundIndexPath 
-                                            animated: YES
-                                      scrollPosition: UITableViewScrollPositionMiddle];
-    //                                  scrollPosition: UITableViewScrollPositionNone];
-                //[self.tableView scrollToNearestSelectedRowAtScrollPosition: foundIndexPath.row 
-                [self.tableView scrollToNearestSelectedRowAtScrollPosition: UITableViewScrollPositionMiddle
-                                                                  animated: YES];
+                    // select the row in UITableView
+                    // This puts in the light grey "highlight" indicating selection
+                    [self.tableView selectRowAtIndexPath: foundIndexPath 
+                                                animated: YES
+                                          scrollPosition: UITableViewScrollPositionMiddle];
+        //                                  scrollPosition: UITableViewScrollPositionNone];
+                    //[self.tableView scrollToNearestSelectedRowAtScrollPosition: foundIndexPath.row 
 
-//nbn(359);
+                    [self.tableView scrollToNearestSelectedRowAtScrollPosition: UITableViewScrollPositionMiddle
+                                                                      animated: YES];
+                });
+
             } while (FALSE); // END highlight lastEntity row in tableview
 
         }
-//nbn(360);
 
 } //  putHighlightOnCorrectRow 
 

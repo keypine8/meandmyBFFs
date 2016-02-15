@@ -37,6 +37,12 @@
 NSString *gbltmpstr; // for debug
 NSInteger gbltmpint; // for debug
 
+//NSTimeInterval  gbl_lastClick;
+//NSTimeInterval  gbl_mynow;
+//NSIndexPath    *gbl_lastIndexPath;
+
+UITapGestureRecognizer *gbl_doubleTapGestureRecognizer;
+
 // cell.accessoryType = UITableViewCellAccessoryDisclosurebutton;    // home mode edit    with tap giving record details 
 // cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator; // home mode regular with tap giving report list
 //
@@ -44,6 +50,7 @@ NSString *gbl_homeUseMODE;      // "edit mode" (yellow)   or   "regular mode" (b
 NSString *gbl_homeEditingState; // if gbl_homeUseMODE = "edit mode"    then can be "add" or "view or change"   for tapped person or group
 // no, i think  // if gbl_homeUseMODE = "regular mode" then can be "add" or nil                for tapped person or group
 
+NSString *gbl_showExampleData;  // "yes" or "no"
 
 
 // THE THREE  "FIELDS"  =======================================================
@@ -63,8 +70,10 @@ NSInteger gbl_justAddedGroupRecord;
 
 // A is for tblrpts_1,  B is for tblrpts_2
 //
-NSString *gbl_do_A_pe_co_reload ;  // either  @"do the reload only the first time"] OR @"this is not reset until app startup"; (reload only once per session)
-NSString *gbl_do_B_pe_co_reload ;  // either  @"do the reload only the first time"] OR @"this is not reset until app startup"; (reload only once per session)
+NSString *gbl_do_A_per_reload ;  // either  @"do the reload only the first time"] OR @"this is not reset until app startup"; (reload only once per session)
+NSString *gbl_do_A_co__reload ;  // A = tblrpts 1
+NSString *gbl_do_B_per_reload ;  // B = tblrpts 2
+NSString *gbl_do_B_co__reload ;  
 
 NSInteger gbl_starsNSInteger;
 NSString *gbl_starsNSString;
@@ -705,10 +714,11 @@ UIColor *gbl_color_cRe2;
 //UIColor *gbl_color_textRe2; // [UIColor colorWithRed:034.0/255.0 green:034.0/255.0 blue:102.0/255.0 alpha:1.0]; // 222266  FOR TEST
 //NSInteger gbl_cre2Flag;
 UIColor *gbl_color_cMacHighlight;
-UIColor *gbl_color_cAplTop;  // color of top of iPhone screen  246,248,249
+//UIColor *gbl_color_cAplTop;  // color of top of iPhone screen  246,248,249
+UIColor *gbl_color_cAplTop;  // color of top of iPhone screen  252,250,246
 UIColor *gbl_color_cAplBlue;  // tint of chevron and Back etc
 
-
+UIColor *gbl_reallyLightGray;
 UIColor *gbl_color_cPerGreen; // used to be all green (see below)  now settled on color cNeu
 
 //gbl_color_cPerGreen5 = [UIColor colorWithRed:185.0/255.0 green:255.0/255.0 blue:130.0/255.0 alpha:1.0]; // b9ff82 // pretty light green 

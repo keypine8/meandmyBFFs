@@ -34,8 +34,10 @@
     
 
     // ensure a per and pco reload only first time  A=tblrpts_1  B=tblrpts_2  
-    gbl_do_A_pe_co_reload = @"do the reload only the first time"; // after 1st reload, set to  @"this is not reset until app startup";
-    gbl_do_B_pe_co_reload = @"do the reload only the first time"; // after 1st reload, set to  @"this is not reset until app startup";
+    gbl_do_A_per_reload = @"do the reload only the first time"; // after 1st reload, set to  @"this is not reset until app startup";
+    gbl_do_A_co__reload = @"do the reload only the first time"; // after 1st reload, set to  @"this is not reset until app startup";
+    gbl_do_B_per_reload = @"do the reload only the first time"; // after 1st reload, set to  @"this is not reset until app startup";
+    gbl_do_B_co__reload = @"do the reload only the first time"; // after 1st reload, set to  @"this is not reset until app startup";
 
 
     // Override point for customization after application launch.
@@ -67,6 +69,18 @@
 
 
     [[UINavigationBar appearance]  setTranslucent: NO];
+
+
+    // both of the below need to be here to remove
+    // the one-pixel border at the bottom of nav bar
+    //
+    [[UINavigationBar appearance] setBackgroundImage: [[UIImage alloc] init]
+                                      forBarPosition: UIBarPositionAny
+                                          barMetrics: UIBarMetricsDefault];
+    [[UINavigationBar appearance] setShadowImage: [[UIImage alloc] init]];
+
+
+
 //   [[UINavigationBar appearance] setBarTintColor:
 //  [UIColor lightGrayColor]
 // [UIColor colorWithRed:242.0/255.0 green:247.0/255.0 blue:255.0/255.0 alpha:1.0] // light blue
@@ -143,10 +157,17 @@
 //    gbl_bgColor_brownHdr  = [UIColor colorWithRed:225.0/255.0 green:200.0/255.0 blue:167.0/255.0 alpha:1.0]; // lighter burlywood  
 //    gbl_bgColor_brownHdr  = [UIColor colorWithRed:250.0/255.0 green:232.0/255.0 blue:207.0/255.0 alpha:1.0]; // much lighter burlywood  
 //    gbl_bgColor_brownHdr  = [UIColor colorWithRed:250.0/255.0 green:232.0/255.0 blue:207.0/255.0 alpha:1.0]; // much lighter burlywood  
-    gbl_bgColor_brownHdr  = [UIColor colorWithRed:237.0/255.0 green:216.0/255.0 blue:187.0/255.0 alpha:1.0]; // much lighter burlywood  
+//    gbl_bgColor_brownHdr  = [UIColor colorWithRed:237.0/255.0 green:216.0/255.0 blue:187.0/255.0 alpha:1.0]; // much lighter burlywood  
     gbl_bgColor_brownHdr  = [UIColor colorWithRed:221.0/255.0 green:200.0/255.0 blue:175.0/255.0 alpha:1.0]; // much lighter burlywood  
 
+    gbl_bgColor_brownHdr  = [UIColor colorWithRed:200.0/255.0 green:180.0/255.0 blue:158.0/255.0 alpha:1.0]; // much lighter burlywood  
+    gbl_bgColor_brownHdr  = [UIColor colorWithRed:220.0/255.0 green:190.0/255.0 blue:166.0/255.0 alpha:1.0]; // much lighter burlywood  
 
+//    gbl_bgColor_brownHdr  = [UIColor colorWithRed:124.0/255.0 green:096.0/255.0 blue:096.0/255.0 alpha:1.0];  try dark brown
+
+
+
+    // N.B.  HUNG when gbl_bgColor_brownHdr set to gbl_color_cAplDarkBlue in appdel .m
 
 
 //    gbl_myname              = [[UITextField alloc] initWithFrame:CGRectMake(16, 8, 200, 30)]; // arg 1=x 2=y 3=width 4=height
@@ -250,6 +271,7 @@
         //
 
 
+     gbl_reallyLightGray = [UIColor colorWithRed:240.0/255.0 green:240.0/255.0 blue:240.0/255.0 alpha:1.0]; 
      //  DI  Disclosure Indicator  colors
      //
 //     gbl_colorDIfor_home = [UIColor colorWithRed:064.0/255.0 green:064.0/255.0 blue:064.0/255.0 alpha:1.0]; // gray
@@ -939,7 +961,10 @@
     
 
 //    gbl_color_cMacHighlight  = [UIColor colorWithRed:038.0/255.0 green:140.0/255.0 blue:251.0/255.0 alpha:1.0]; // 268cfb or 038,140,251
-//    gbl_color_cAplTop  = [UIColor colorWithRed:248.0/255.0 green:248.0/255.0 blue:248.0/255.0 alpha:1.0]; // f8f8f8 or 246,248,249
+//    gbl_color_cAplTop  = [UIColor colorWithRed:248.0/255.0 green:248.0/255.0 blue:248.0/255.0 alpha:1.0]; //  246,248,249
+    gbl_color_cAplTop  = [UIColor colorWithRed:252.0/255.0 green:250.0/255.0 blue:246.0/255.0 alpha:1.0]; // f8f8f8 or 246,248,249
+
+
 //    gbl_color_cAplDarkBlue = [UIColor colorWithRed:000.0/255.0 green:128.0/255.0 blue:255.0/255.0 alpha:1.0]; // 0080ff  (blue text, chevron)
 
 
@@ -1157,7 +1182,6 @@
 
     // color of top of iPhone screen  246,248,249
     gbl_color_cMacHighlight  = [UIColor colorWithRed:038.0/255.0 green:140.0/255.0 blue:251.0/255.0 alpha:1.0]; // 268cfb or 038,140,251
-    gbl_color_cAplTop  = [UIColor colorWithRed:248.0/255.0 green:248.0/255.0 blue:248.0/255.0 alpha:1.0]; // f8f8f8 or 246,248,249
     gbl_color_cAplBlue = [UIColor colorWithRed:000.0/255.0 green:128.0/255.0 blue:255.0/255.0 alpha:1.0]; // 0080ff  (blue text, chevron)
 
 
