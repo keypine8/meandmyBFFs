@@ -398,6 +398,7 @@ nbn(100);
 
 //  [[UINavigationBar appearance]  setTranslucent: NO];
 //  [[UINavigationBar appearance] setBarTintColor: [UIColor redColor] ];
+//  [[UINavigationBar appearance] setBarTintColor: [UIColor brownColor] ];
 
 
 //        self.navigationItem.rightBarButtonItems =
@@ -881,6 +882,13 @@ ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
     // for test  LOOK AT all files in doc dir
 
 nbn(45);
+
+
+
+//    self.tableView.sectionIndexColor = [UIColor brownColor];  // set tintColor for section index
+
+
+
     [self sectionIndexTitlesForTableView: self.tableView ];  // set up sectionindex or not after switch
 
 
@@ -949,7 +957,7 @@ nbn(45);
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//  NSLog(@"in cellForRowAtIndexPath");
+  NSLog(@"in cellForRowAtIndexPath in HOME");
 //  NSLog(@"indexPath.row =[%ld]",(long)indexPath.row );
 
     // create an NSString  we can use as the reuse identifier
@@ -963,7 +971,6 @@ nbn(45);
     }
 
 
-    //   cell.selectedBackgroundView =  gbl_myCellBgView ;  // get my own background color for selected rows (see MAMB09AppDelegate.m)
 
 //    NSLog(@"in cellForRowAtIndexPath 2222");
 //    NSLog(@"all array[%@]", mambyObjectList);
@@ -1082,12 +1089,17 @@ nbn(45);
     });
 //  NSLog(@"after set access view");
   
+// stick with apple gray selection color
+//  NSLog(@"gbl_mySelectedCellBgView=[%@]",gbl_mySelectedCellBgView);
+//    cell.selectedBackgroundView =  gbl_mySelectedCellBgView;  // get my own background color for selected rows (see MAMB09AppDelegate.m)
 
     return cell;
 } // cellForRowAtIndexPath
 
 
-- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+  NSLog(@"in  willSelectRowAtIndexPath !  in HOME");
 
 
 // comment this out and try making  rows in yellow edit mode   selectable  (same action as "i" accessory)
@@ -1401,8 +1413,37 @@ tn();
 -(IBAction)pressedInfoButtonAction:(id)sender
 {
   NSLog(@"in   infoButtonAction!  in HOME");
+//tn();
+    // if 2 rows have highlight, remove one
+
+    // If you only want to iterate through the visible cells, then use
+    NSArray *myVisibleCells = [self.tableView visibleCells];
+    for (UITableViewCell *myviscell in myVisibleCells) {
+//  NSLog(@"cell.textLabel.text=[%@]",myviscell.textLabel.text);
+//  NSLog(@"highlighted  butt  =[%d]",myviscell.highlighted );
+//  NSLog(@"selected     butt  =[%d]",myviscell.selected    );
+    }
+
+//        if (myviscell.selected  == NO) {
+//            [myviscell setHighlighted: NO
+//                             animated: NO  ];
+//  NSLog(@"   set highlighted to NO");
+            // get indexpath for cell
+            // NSIndexPath *indexPath = [self.tableView indexPathForCell:cell] ;
+
+//    dispatch_async(dispatch_get_main_queue(), ^{                                 // <===  
+//            [self.tableView deselectRowAtIndexPath: [self.tableView indexPathForCell: myviscell] // and remove yellow highlight
+//                                          animated: NO
+//            ];
+//    });
+//  NSLog(@"   deselect this cell ! ");
+
+//  no        gbl_deselectThisCellOnReturnHome = myviscell;
+//        }
+//tn();
 
 } // end of  infoButtonAction
+
 
 
 // using setediting  INSTEAD
@@ -1516,59 +1557,105 @@ tn();
     MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
     [myappDelegate mamb_beginIgnoringInteractionEvents ];
 
-    if ([gbl_fromHomeCurrentEntity isEqualToString: @"group"]) {
-        _segEntityOutlet.selectedSegmentIndex = 0;
-        _segEntityOutlet.userInteractionEnabled = YES;
-        [_segEntityOutlet setEnabled: NO forSegmentAtIndex: 1];  // disable selection of "Person"
-        _segEntityOutlet.userInteractionEnabled = NO;
-    }
-    if ([gbl_fromHomeCurrentEntity isEqualToString: @"person"]) {
-        _segEntityOutlet.selectedSegmentIndex = 1;
 
-        _segEntityOutlet.userInteractionEnabled = YES;
-        [_segEntityOutlet setEnabled: NO forSegmentAtIndex: 0];  // disable selection of "Group"
-        _segEntityOutlet.userInteractionEnabled = NO;
-    }
 
-//self.segmentedControl.tintColor = [UIColor cb_Grey1Color];
-//self.segmentedControl.backgroundColor = [UIColor cb_Grey3Color];
-// _segEntityOutlet.tintColor = [UIColor greenColor];
-// _segEntityOutlet.backgroundColor = [UIColor cyanColor];
-// _segEntityOutlet.tintColor = gbl_color_cAplTop;
+//    if ([gbl_fromHomeCurrentEntity isEqualToString: @"group"]) {
+//        _segEntityOutlet.selectedSegmentIndex = 0;
+//        _segEntityOutlet.userInteractionEnabled = YES;
+//        [_segEntityOutlet setEnabled: NO forSegmentAtIndex: 1];  // disable selection of "Person"
+//        _segEntityOutlet.userInteractionEnabled = NO;
+//    }
+//    if ([gbl_fromHomeCurrentEntity isEqualToString: @"person"]) {
+//        _segEntityOutlet.selectedSegmentIndex = 1;
+//
+//        _segEntityOutlet.userInteractionEnabled = YES;
+//        [_segEntityOutlet setEnabled: NO forSegmentAtIndex: 0];  // disable selection of "Group"
+//        _segEntityOutlet.userInteractionEnabled = NO;
+//    }
+//    [ _segEntityOutlet setTitleTextAttributes: selectedAttributes   forState: UIControlStateSelected];
+//    [ _segEntityOutlet setTitleTextAttributes: unselectedAttributes forState: UIControlStateNormal];
+//
 
-  // _segEntityOutlet.backgroundColor = gbl_color_cAplTop;
-//   _segEntityOutlet.backgroundColor = [UIColor yellowColor];
-//NSDictionary *selectedAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-////                                    [UIFont cbGothamBookFontWithSize:13.0], NSFontAttributeName,
-//                                    [UIColor lightGrayColor], NSForegroundColorAttributeName,
-//                                    [UIColor greenColor], NSBackgroundColorAttributeName, nil];
-//    [ _segEntityOutlet setTitleTextAttributes: selectedAttributes forState:UIControlStateNormal];
+
+//
+////self.segmentedControl.tintColor = [UIColor cb_Grey1Color];
+////self.segmentedControl.backgroundColor = [UIColor cb_Grey3Color];
+//// _segEntityOutlet.tintColor = [UIColor greenColor];
+//// _segEntityOutlet.backgroundColor = [UIColor cyanColor];
+//// _segEntityOutlet.tintColor = gbl_color_cAplTop;
+//
+//  // _segEntityOutlet.backgroundColor = gbl_color_cAplTop;
+////   _segEntityOutlet.backgroundColor = [UIColor yellowColor];
+//     NSDictionary *selectedAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+//                                    [UIFont boldSystemFontOfSize: 13.0] , NSFontAttributeName,
+////                                        UIOffsetMake(0.0, 0.0), UITextAttributeTextShadowOffset,
+////                                        [UIColor redColor], UITextAttributeTextShadowColor,
+////                                    [UIColor redColor], NSForegroundColorAttributeName,
+////                                    [UIColor whiteColor], NSForegroundColorAttributeName,
+////                                    [UIColor greenColor], NSBackgroundColorAttributeName,
+//                                     nil
+//     ];
 //
 //     NSDictionary *unselectedAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+////                                    [UIFont boldSystemFontOfSize: 13.0] , NSFontAttributeName,
+//                                    [UIFont systemFontOfSize: 13.0] , NSFontAttributeName,
+//
+////                                        UIOffsetMake(0.0, 0.0), UITextAttributeTextShadowOffset,
+////                                        [UIColor redColor], UITextAttributeTextShadowColor,
+//
 ////                                      [UIFont cbGothamBookFontWithSize:13.0], NSFontAttributeName,
-//                                      [UIColor blackColor], NSForegroundColorAttributeName,
-//                                      [UIColor redColor], NSBackgroundColorAttributeName,
+////                                      [UIColor greenColor], NSForegroundColorAttributeName,
+////                                      [UIColor lightGrayColor], NSForegroundColorAttributeName,
+////                                    gbl_color_cAplDarkBlue, NSForegroundColorAttributeName,
+////                                      [UIColor redColor], NSBackgroundColorAttributeName,
 //                                      nil
 //    ];
 //
+//
+//
+////    _segEntityOutlet.backgroundColor = gbl_reallyLightGray;
+////    NSDictionary *selectedAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+//////                                    gbl_colorHomeBG_grp, NSStrokeColorAttributeName,
+//////                                    [UIFont cbGothamBookFontWithSize:13.0], NSFontAttributeName,
+//////                                    [UIColor whiteColor], NSForegroundColorAttributeName,
+//////                                    gbl_color_cAplDarkBlue, NSForegroundColorAttributeName,
+//////                                    [UIColor whiteColor], NSForegroundColorAttributeName,
+//////                                    gbl_color_cAplDarkBlue, NSBackgroundColorAttributeName,
+//////                                    gbl_colorHomeBG_grp, NSBackgroundColorAttributeName,
+//////                                     [UIColor greenColor], UITextAttributeTextColor,
+////                                     [UIColor whiteColor], UITextAttributeTextColor,
+////                                    nil
+////    ];
+////
+////     NSDictionary *unselectedAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+//////                                    gbl_colorHomeBG_grp, NSStrokeColorAttributeName,
+//////                                      [UIFont cbGothamBookFontWithSize:13.0], NSFontAttributeName,
+//////                                     gbl_color_cAplDarkBlue, NSForegroundColorAttributeName,
+//////                                     [UIColor redColor], NSForegroundColorAttributeName,
+//////                                     [UIColor lightGrayColor], NSForegroundColorAttributeName,
+//////                                      [UIColor whiteColor], NSBackgroundColorAttributeName,
+//////                                      [UIColor grayColor], NSBackgroundColorAttributeName,
+//////                                     gbl_reallyLightGray, NSBackgroundColorAttributeName,
+//////                                     [UIColor redColor], NSBackgroundColorAttributeName,
+//////                                     [UIColor lightGrayColor], UITextAttributeTextColor,
+////                                     [UIColor grayColor], UITextAttributeTextColor,
+//////                                     [UIColor redColor], UITextAttributeTextColor,
+////
+////                                      nil
+////    ];
+////
+//    [ _segEntityOutlet setTitleTextAttributes: selectedAttributes   forState: UIControlStateSelected];
+//    [ _segEntityOutlet setTitleTextAttributes: unselectedAttributes forState: UIControlStateNormal];
+//
 
-//   _segEntityOutlet.backgroundColor = gbl_reallyLightGray;
-//NSDictionary *selectedAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-////                                    [UIFont cbGothamBookFontWithSize:13.0], NSFontAttributeName,
-//                                    [UIColor yellowColor], NSForegroundColorAttributeName,
-//                                    gbl_color_cAplDarkBlue, NSBackgroundColorAttributeName, nil];
-//    [ _segEntityOutlet setTitleTextAttributes: selectedAttributes forState:UIControlStateNormal];
-//
-//     NSDictionary *unselectedAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-////                                      [UIFont cbGothamBookFontWithSize:13.0], NSFontAttributeName,
-//                                     gbl_color_cAplDarkBlue, NSForegroundColorAttributeName,
-////                                      [UIColor whiteColor], NSBackgroundColorAttributeName,
-//                                     gbl_reallyLightGray, NSBackgroundColorAttributeName,
-//                                      nil
-//    ];
-//    [ _segEntityOutlet setTitleTextAttributes: selectedAttributes forState:UIControlStateSelected];
-//    [ _segEntityOutlet setTitleTextAttributes: unselectedAttributes forState:UIControlStateNormal];
-//
+//    _segEntityOutlet.tintColor = [UIColor redColor];
+//    _segEntityOutlet.tintColor = gbl_colorHomeBG_grp;
+
+//    _segEntityOutlet.tintColor = [UIColor brownColor];  // works?  set navbar tintcolor instead
+
+
+
+//@property(nonatomic, retain) UIColor *sectionIndexColor
 
 
 
@@ -1754,7 +1841,6 @@ NSLog(@"in viewDidAppear()  in HOME");
     // if gbl_fromHomeCurrentEntityName is different from gbl_fromHomeLastEntityRemSaved
     // save the  remember array  gbl_arrayPerRem or gbl_arrayGrpRem
     //
-
 //    NSLog(@"gbl_fromHomeCurrentEntityName  =%@",gbl_fromHomeCurrentEntityName  );
 //    if (gbl_fromHomeCurrentEntityName ) { NSLog(@"gbl_fromHomeCurrentEntityName.length=%lu",(unsigned long)gbl_fromHomeCurrentEntityName.length); }
 //    NSLog(@"gbl_fromHomeLastEntityRemSaved  =%@",gbl_fromHomeLastEntityRemSaved  );
@@ -1806,15 +1892,44 @@ NSLog(@"in viewDidAppear()  in HOME");
 
 
 //tn();trn("SCROLL 555555555555555555555555555555555555555555555555555555555");
+
+    // deselect    every visible row except selected one
+    // unhighlight every visible row except selected one
+    //
+    NSArray *myVisibleCells = [self.tableView visibleCells]; // If you only want to iterate through the visible cells, then use
+tn();
+    dispatch_async(dispatch_get_main_queue(), ^{                                 // <===  
+        for (UITableViewCell *myviscell in myVisibleCells) {
+
+//  NSLog(@"cell.textLabel.text=[%@]",myviscell.textLabel.text);
+//  NSLog(@"highlighted  viewdidappear     =[%d]",myviscell.highlighted );
+//  NSLog(@"selected     viewdidappear     =[%d]",myviscell.selected    );
+            if (myviscell.selected == 0) {
+                [self.tableView deselectRowAtIndexPath: [self.tableView indexPathForCell: myviscell] // and remove yellow highlight
+                                              animated: NO
+                ];
+                [myviscell setHighlighted: NO
+                                 animated: NO  ];
+//  NSLog(@"   DID DESELECT!!  ");
+//  NSLog(@"   DID UNhighlight!!  ");
+//  NSLog(@"   set highlighted to NO");
+            }
+        }
+    });
+
+    // select (highlight) the selected cell
+    //
     NSIndexPath *myIdxPath = [self.tableView indexPathForSelectedRow];
 //NSLog(@"myIdxPath5=%@",myIdxPath);
 //NSLog(@"myIdxPath.row5=%ld",(long)myIdxPath.row);
     if(myIdxPath) {
-        [self.tableView selectRowAtIndexPath:myIdxPath
-                                    animated:YES
-                              scrollPosition:UITableViewScrollPositionNone];
+        [self.tableView selectRowAtIndexPath: myIdxPath
+                                    animated: YES
+                              scrollPosition: UITableViewScrollPositionNone
 //                              scrollPosition:UITableViewScrollPositionMiddle];
+        ];
     }
+
 
     //[self.tableView reloadData]; tn();trn("reload reload reload reload reload reload reload reload reload reload reload reload ");
 
@@ -1833,7 +1948,7 @@ NSLog(@"in viewDidAppear()  in HOME");
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willDeselectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"in willDeselectRowAtIndexPath() in home!");
+    NSLog(@"in willDeselectRowAtIndexPath() in HOME!");
 
     // When the user selects a cell, you should respond by deselecting the previously selected cell (
     // by calling the deselectRowAtIndexPath:animated: method) as well as by
@@ -1851,7 +1966,7 @@ NSLog(@"in viewDidAppear()  in HOME");
     // here deselect "previously" selected row
     // and remove yellow highlight
     //NSLog(@"willDeselectRowAtIndexPath()  DESELECT #######################################################");
-    [self.tableView deselectRowAtIndexPath: previouslyselectedIndexPath
+    [self.tableView deselectRowAtIndexPath: previouslyselectedIndexPath   // and remove yellow highlight
                                   animated: NO];
 //                                  animated: YES];
     return previouslyselectedIndexPath;
@@ -2028,7 +2143,8 @@ NSLog(@"in viewDidAppear()  in HOME");
 } // end of  didSelectRowAtIndexPath: (NSIndexPath *) indexPath
 
 
--(void) viewWillAppear:(BOOL)animated {
+-(void) viewWillAppear:(BOOL)animated
+{
  NSLog(@"in viewWillAppear() in home   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
 
@@ -2219,6 +2335,20 @@ nbn(162);
             @"__",
          @" ", @" ", @" ", @" ",  @" ", @" ",
             @"END", nil ];
+
+
+
+//    @"\U00002533",  // top
+//         @" ", @" ", @" ", @" ",  @" ", @" ",
+//    @"\U00002500",
+//         @" ", @" ", @" ", @" ",  @" ", @" ",
+//    @"\U00002501",
+//         @" ", @" ", @" ", @" ",  @" ", @" ",
+//    @"\U00002500",
+//         @" ", @" ", @" ", @" ",  @" ", @" ",
+//    @"\U0000253B",  // end
+//            nil ];
+//
 
 
     gbl_numSectionIndexTitles = mySectionIndexTitles.count;

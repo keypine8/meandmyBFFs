@@ -1108,9 +1108,10 @@ NSLog(@"in viewDidAppear()");
 //        if (   [gbl_currentMenuPlusReportCode hasSuffix: @"wc"]              // @"what color is the  day?"
         if (   [gbl_currentMenuPlusReportCode isEqualToString: @"hompwc"]      // @"what color is the  day?" from home
         ) {
-            myNavBar2lineTitle  = [NSString stringWithFormat:  @"%@\n%@", 
-//                                   gbl_lastSelectedPerson, gbl_lastSelectedDayFormattedForEmail ];
-                                   gbl_viewHTML_NAME_personJust1, gbl_lastSelectedDayFormattedForEmail ];
+//            myNavBar2lineTitle  = [NSString stringWithFormat:  @"%@\n%@", 
+//                                   gbl_viewHTML_NAME_personJust1, gbl_lastSelectedDayFormattedForEmail ];
+            myNavBar2lineTitle  = [NSString stringWithFormat:  @"%@", 
+                                   gbl_viewHTML_NAME_personJust1       ];
         }
 //        if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgbd"]    // what color report from best year
         if (   [gbl_currentMenuPlusReportCode isEqualToString: @"gbdpwc"]    // what color report from best year
@@ -1119,14 +1120,21 @@ NSLog(@"in viewDidAppear()");
                                    gbl_lastSelectedDayFormattedForEmail, gbl_viewHTML_NAME_personJust1];
         }
 
-        mySelRptB_Label.numberOfLines = 2;
+        if (   [gbl_currentMenuPlusReportCode isEqualToString: @"hompwc"]      // @"what color is the  day?" from home
+        ) {
+            mySelRptB_Label.numberOfLines = 1;
+        } else {
+            mySelRptB_Label.numberOfLines = 2;
+        }
 //        mySelRptB_Label.font          = [UIFont boldSystemFontOfSize: 16.0];
-        mySelRptB_Label.font          = [UIFont boldSystemFontOfSize: 14.0];
+//        mySelRptB_Label.font          = [UIFont boldSystemFontOfSize: 14.0];
+        mySelRptB_Label.font          = [UIFont boldSystemFontOfSize: 17.0];
         mySelRptB_Label.textColor     = [UIColor blackColor];
         mySelRptB_Label.textAlignment = NSTextAlignmentCenter; 
         mySelRptB_Label.text          = myNavBar2lineTitle;
         mySelRptB_Label.adjustsFontSizeToFitWidth = YES;
         [mySelRptB_Label sizeToFit];
+        
 
 
         // TWO-LINE NAV BAR TITLE

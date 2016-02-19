@@ -700,6 +700,7 @@ UIColor *gbl_colorEdit;
 UIView *gbl_myCellBgView;
 UIView *gbl_myCellBgView_cBgr;
 UIView *gbl_myCellBgView_cHed;
+UIView *gbl_mySelectedCellBgView;   // for highlight selected cell flash
 NSInteger gbl_scrollViewIsDragging;
 UIColor *gbl_color_cBGforSelected;  // for highlight bar BG
 

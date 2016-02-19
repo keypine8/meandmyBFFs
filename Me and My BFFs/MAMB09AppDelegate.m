@@ -79,6 +79,9 @@
                                           barMetrics: UIBarMetricsDefault];
     [[UINavigationBar appearance] setShadowImage: [[UIImage alloc] init]];
 
+//    [[UINavigationBar appearance] setTintColor: [UIColor redColor]];
+//    [[UINavigationBar appearance] setTintColor: [UIColor brownColor]];  // <<<< set tint color for all nav bars  (apl blue better)
+
 
 
 //   [[UINavigationBar appearance] setBarTintColor:
@@ -913,6 +916,13 @@
     //[gbl_myCellBgView setBackgroundColor:  gbl_color_cBGforSelected ];
 //[gbl_myCellBgView setBackgroundColor:  [UIColor lightTextColor] ];
 
+
+    gbl_mySelectedCellBgView =[[UIView alloc] initWithFrame:CGRectZero];     // for highlight selected cell flash
+//    [gbl_mySelectedCellBgView setBackgroundColor:  [UIColor yellowColor] ];   // for highlight selected cell flash
+//    [gbl_mySelectedCellBgView setBackgroundColor:  [UIColor cyanColor] ];   // for highlight selected cell flash
+//    [gbl_mySelectedCellBgView setBackgroundColor:  [UIColor lightGrayColor] ];   // for highlight selected cell flash
+//    [gbl_mySelectedCellBgView setBackgroundColor:  [UIColor colorWithRed:226.0/255.0 green:225.0/255.0 blue:255.0/255.0 alpha:1.0]]; 
+    [gbl_mySelectedCellBgView setBackgroundColor:  [UIColor whiteColor] ];   // for highlight selected cell flash
 
 
     gbl_myCellBgView =[[UIView alloc] initWithFrame:CGRectZero];     // for highlight selected cell flash

@@ -4,6 +4,7 @@
 * and format and write an html output file
 */
 
+
 #define NUM_PTS_WHOLE_YEAR 182
 void f_fnBIGOutPutTopOfHtmlFile(void);
 void fn_BIGoutputGrhAndAspects(void);
@@ -11,6 +12,7 @@ void f_fnBIG_aspect_text(char *);
 void fn_BIGaspect_from_to(char *);
 void f_fnBIG_prtlin(char *lin);
 
+int hasEqualBrackets(char *inlin);
 
 int logprtallprtlin = 0;
 
@@ -2113,12 +2115,15 @@ void fn_aspect_from_to(char *doclin)   // webview
 *       n = sprintf(p,"%s\n", scapwords(&fA_EVENT_NAME[0]));
 *       fput(p,n,fFP_DOCIN_FILE);
 */
-void f_fn_prtlin(char *lin) {
+void f_fn_prtlin(char *lin)
+{
   char myEOL[8];
   //char myLastLine[8192], next_doclin[8192], current_prtlin[8192], thirdline[8192];
   char                   next_doclin[8192], current_prtlin[8192], thirdline[8192];
   char *ptr;
-//trn("wv");ki(gbl_do_readahead);ks(lin);
+//tn(); tr("f_fn_prtlin ="); ksn(lin);
+
+//ki(gbl_do_readahead);
 
   // ignore rubbish line
   if (strstr(lin, "raph]") != NULL) return;
@@ -2137,7 +2142,7 @@ void f_fn_prtlin(char *lin) {
 /* ksn(next_doclin); */
 /* ksn(thirdline); */
 
-    //if (strstr(next_doclin, "||||||||||||||") == NULL) {
+    //if (strstr(next_doclin, "||||||||||||||") == NULL) 
     if (strstr(next_doclin, "''''''''''''''") == NULL) {
 
       insert_minus_benchmark( lin);
@@ -2452,7 +2457,7 @@ void f_fn_prtlin(char *lin) {
   *  BUT, print a line of spaces in cRe2
   */
 /* tn();trn(";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;"); */
-/* ksn(lin); */
+//tr("weird fix #3");ksn(lin); 
   if(strstr(lin, "OMG-") != NULL
   && strstr(lin, "cRe2")    == NULL)  {
     /* print blank line with color cRe2 under the 1st OMG
@@ -2464,6 +2469,7 @@ void f_fn_prtlin(char *lin) {
      strcpy(p, " <span style=\"background-color:#ff4477\"> </span><span style=\"color:#ff4477\">---</span><span style=\"background-color:#ff4477\"> </span><span class=\"cRe2\">                                                                                       </span> ");
 
     n = (int)strlen(p);
+tr("in weird fix #3");kin(n);
     fput(p, n, Fp_f_HTML_file);
     strcpy(gbl_prtlin_lastline, p); /* save last line printed in gbl */
 
@@ -2500,18 +2506,24 @@ void f_fn_prtlin(char *lin) {
   if (gbl_we_are_printing_graph == 1) change_last_7_chars(lin);
   
 
-  n = sprintf(p,"%s%s", lin, myEOL);
-//tn();trn("========================================================================================================================");
-//ksn(p);
-//trn("========================================================================================================================");
-//tn();
+  // if lin does not have equal brackets "<>", do not print it
+  //
+  if (hasEqualBrackets(lin) == 0) {
 
+//tn();trn("========  not printed  =================================================================================================");
+//ki(n);ksn(lin);
+//trn("========================================================================================================================");
+    return;  // do not print this unequal bracket line
+  }
+
+
+  n = sprintf(p,"%s%s", lin, myEOL);
 
   
   // during bug bottom star is on stress line, get "-" in char postition 1 (should always be " ")
   //
   if (*p == '-') {   // global      char *p = &writebuf[0];
-//ksn("hey");
+ksn("hey");
       *p  = ' ';
   }
 
@@ -2524,6 +2536,32 @@ void f_fn_prtlin(char *lin) {
 } /* end of f_fn_prtlin() */
 
 
+int hasEqualBrackets(char *inlin) {
+  int num_L_angle; // <
+  int num_R_angle; // >
+  num_L_angle = 0; // <
+  num_R_angle = 0; // >
+  for (int i = 0; i < strlen(inlin); i++) {
+    if (inlin[i] == '<') num_L_angle = num_L_angle + 1;
+    if (inlin[i] == '>') num_R_angle = num_R_angle + 1;
+  }
+
+  if (num_L_angle == num_R_angle) return 1;
+  else {
+    // here < and > do not match, so return 0, unless there is "w3" in the line
+
+    // problem:  these special lines should print
+    //    _(========  not printed  =================================================================================================)__
+    //    _n=[0]___lin=[<!doctype html public "-//w3c//dtd html 4.01 transitional//en" ]__
+    //    _(========  not printed  =================================================================================================)__
+    //    _n=[0]___lin=[  "http://www.w3.org/TR/html4/loose.dtd">]__
+    //
+    if (strstr(inlin, "w3") != NULL) return 1;
+
+    return 0;
+  }
+  
+}
 
 
 /* arg in_docin_last_idx  is pointing at the last line written.

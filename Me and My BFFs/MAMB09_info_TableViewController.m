@@ -82,30 +82,63 @@ tn();
 
     //MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global methods in appDelegate.m
 
-
-    [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone]; // remove separator lines between cells
-
-
-    //self.tableView.backgroundColor = gbl_color_cHed;   // WORKS
-    self.tableView.backgroundColor = gbl_color_cBgr;   // WORKS
-
-
-    // When I am navigating back & forth, i see a dark shadow
-    // on the right side of navigation bar at top. 
-    // It feels rough and distracting. How can I get rid of it?
+    
+    // set up custom image for "back"  (blueleft chevron)
     //
-    self.navigationController.navigationBar.translucent = NO; 
-    //
-    //http://stackoverflow.com/questions/22413193/dark-shadow-on-navigation-bar-during-segue-transition-after-upgrading-to-xcode-5
+    // http://stackoverflow.com/questions/18912638/custom-image-for-uinavigation-back-button-in-ios-7
+    //    UIImage *backBtn = [UIImage imageNamed:@"iconRightArrowBlue_66"];
+    //    UIImage *backBtn = gbl_chevronLeft;
+    UIImage *backBtn = [UIImage imageNamed:@"iconChevronLeft_66.png"];
+    //    backBtn = [backBtn imageWithRenderingMode: UIImageRenderingModeAlwaysTemplate];   NO  blue square
+    //    backBtn = [backBtn imageWithRenderingMode: UIImageRenderingModeAutomatic];
+    backBtn = [backBtn imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal];
+
+    dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+        self.navigationItem.backBarButtonItem.title=@"";
+        self.navigationController.navigationBar.backIndicatorImage = backBtn;
+        self.navigationController.navigationBar.backIndicatorTransitionMaskImage = backBtn;
+
+
+        [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone]; // remove separator lines between cells
+        // Removing extra separator lines for empty rows in UITableView
+        self.tableView.tableFooterView = [[UIView alloc] init];               // remove separator lines below last cell
+
+
+
+        //self.tableView.backgroundColor = gbl_colo_cHed;   // WORKS
+        self.tableView.backgroundColor = gbl_color_cBgr;   // WORKS
+
+
+        // When I am navigating back & forth, i see a dark shadow
+        // on the right side of navigation bar at top. 
+        // It feels rough and distracting. How can I get rid of it?
+        //
+        self.navigationController.navigationBar.translucent = NO; 
+        //
+        //http://stackoverflow.com/questions/22413193/dark-shadow-on-navigation-bar-during-segue-transition-after-upgrading-to-xcode-5
+    });
 
     // gbl_currentMenuPlusReportCode decides what info text to put  (set on SELRPT TAP, most/best row TAP, HOME enter)
+
+
+
+    UILabel *myNavBarLabel      = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 480.0, 44.0)];
+
+    myNavBarLabel.textColor     = [UIColor blackColor];
+    myNavBarLabel.textAlignment = NSTextAlignmentCenter; 
+    myNavBarLabel.font          = [UIFont boldSystemFontOfSize: 16.0];
 
     if (  [gbl_currentMenuPlusReportCode isEqualToString: @"HOME"]    // home screen for app (startup screen)
     ) {
         gbl_helpScreenDescription = @"HOME";
-        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
-            [[self navigationItem] setTitle: @"Me and my BFFS "];
-        });
+
+        myNavBarLabel.text          = @"Me and my BFFS ";
+        myNavBarLabel.adjustsFontSizeToFitWidth = YES;
+        [myNavBarLabel sizeToFit];
+
+//        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+            self.navigationItem.titleView = myNavBarLabel; // myNavBarLabel.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
+//        });
     }
 
     if (  [gbl_currentMenuPlusReportCode isEqualToString: @"hompcy"]    // calendar year
@@ -122,14 +155,20 @@ tn();
 //        Tlabel.text     = @"Long-term Stress Levels";
 //        [Tlabel sizeToFit];
 
-        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+//        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
              
-            [[self navigationItem] setTitle: @"Long-term Stress Levels"];
+//<.>
+
+//           [[self navigationItem] setTitle: @"Long-term Stress Levels"];
+           myNavBarLabel.text          =  @"Long-term Stress Levels";
+           myNavBarLabel.adjustsFontSizeToFitWidth = YES;
+           [myNavBarLabel sizeToFit];
+           self.navigationItem.titleView = myNavBarLabel; // myNavBarLabel.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
+
 //             self.navigationItem.titleView = Tlabel;
 //self.navigationController.navigationBar.topItem.backBarButtonItem = nil;
 
     self.navigationItem.backBarButtonItem.title=@"";
-        });
     }
 
     if (  [gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"]    // my best match (grpone)
@@ -142,7 +181,12 @@ tn();
     ) {
         gbl_helpScreenDescription = @"best match";
         dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
-            [[self navigationItem] setTitle: @"Best Match"];
+//            [[self navigationItem] setTitle: @"Best Match"];
+           myNavBarLabel.text          =  @"Best match";
+           myNavBarLabel.adjustsFontSizeToFitWidth = YES;
+           [myNavBarLabel sizeToFit];
+           self.navigationItem.titleView = myNavBarLabel; // myNavBarLabel.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
+
         });
     }
 
@@ -152,9 +196,15 @@ tn();
       ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgbd"]    // what color is the day? from best day
     ) {
         gbl_helpScreenDescription = @"what color";
-        dispatch_async( dispatch_get_main_queue(), ^{                                // <===  
-            [[self navigationItem] setTitle: @"Short-term Stress Levels"];
-        });
+//        dispatch_async( dispatch_get_main_queue(), ^{                                // <===  
+//            [[self navigationItem] setTitle: @"Short-term Stress Levels"];
+nbn(88);
+           myNavBarLabel.text          =  @"Short-term Stress Levels";
+           myNavBarLabel.adjustsFontSizeToFitWidth = YES;
+           [myNavBarLabel sizeToFit];
+           self.navigationItem.titleView = myNavBarLabel; // myNavBarLabel.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
+
+//        });
     }
 
     if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homppe"]   // Personality
@@ -173,7 +223,12 @@ tn();
     ) {
         gbl_helpScreenDescription = @"personality";
         dispatch_async( dispatch_get_main_queue(), ^{                                // <===  
-            [[self navigationItem] setTitle: @"Personality"];
+//            [[self navigationItem] setTitle: @"Personality"];
+            myNavBarLabel.text          =  @"Personality";
+            myNavBarLabel.adjustsFontSizeToFitWidth = YES;
+            [myNavBarLabel sizeToFit];
+            self.navigationItem.titleView = myNavBarLabel; // myNavBarLabel.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
+
         });
     }
 
@@ -183,7 +238,12 @@ tn();
     ) {
         gbl_helpScreenDescription = @"just 2";
         dispatch_async( dispatch_get_main_queue(), ^{                                // <===  
-            [[self navigationItem] setTitle: @"Compatibility Potential"];
+//            [[self navigationItem] setTitle: @"Compatibility Potential"];
+            myNavBarLabel.text          =  @"Compatibility Potential";
+            myNavBarLabel.adjustsFontSizeToFitWidth = YES;
+            [myNavBarLabel sizeToFit];
+            self.navigationItem.titleView = myNavBarLabel; // myNavBarLabel.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
+
         });
     }
 
@@ -225,7 +285,12 @@ tn();
         }
 
         dispatch_async( dispatch_get_main_queue(), ^{                                // <===  
-            [[self navigationItem] setTitle: myMostTitle];  // like Most Passionate in Swim Team
+//            [[self navigationItem] setTitle: myMostTitle];  // like Most Passionate in Swim Team
+            myNavBarLabel.text          =  myMostTitle;
+            myNavBarLabel.adjustsFontSizeToFitWidth = YES;
+            [myNavBarLabel sizeToFit];
+            self.navigationItem.titleView = myNavBarLabel; // myNavBarLabel.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
+
         });
     } // all Most reports
 
@@ -237,7 +302,12 @@ tn();
         myMostWhat                = @"Best Year";
 
         dispatch_async( dispatch_get_main_queue(), ^{                                // <===  
-            [[self navigationItem] setTitle: myMostTitle];  // like Most Passionate in Swim Team
+//            [[self navigationItem] setTitle: myMostTitle];  // like Most Passionate in Swim Team
+            myNavBarLabel.text          =  myMostTitle;
+            myNavBarLabel.adjustsFontSizeToFitWidth = YES;
+            [myNavBarLabel sizeToFit];
+            self.navigationItem.titleView = myNavBarLabel; // myNavBarLabel.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
+
         });
     }
 
@@ -248,7 +318,11 @@ tn();
         myMostWhat                = @"Best Day";
 
         dispatch_async( dispatch_get_main_queue(), ^{                                // <===  
-            [[self navigationItem] setTitle: myMostTitle];  // like Most Passionate in Swim Team
+//            [[self navigationItem] setTitle: myMostTitle];  // like Most Passionate in Swim Team
+            myNavBarLabel.text          =  myMostTitle;
+            myNavBarLabel.adjustsFontSizeToFitWidth = YES;
+            [myNavBarLabel sizeToFit];
+            self.navigationItem.titleView = myNavBarLabel; // myNavBarLabel.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
         });
     }
 
@@ -302,41 +376,103 @@ tn();
 //    UIImage *myImageCategories3      = [UIImage  imageNamed: @"categories3_info3.png" inBundle: nil compatibleWithTraitCollection: nil ];
 //    UIImage *myImageCategories3      = [UIImage  imageNamed: @"categories3_info9.png" inBundle: nil compatibleWithTraitCollection: nil ];
 //    UIImage *myImageCategories3      = [UIImage  imageNamed: @"categories5.png" inBundle: nil compatibleWithTraitCollection: nil ];
-    UIImage *myImageCategories3      = [UIImage  imageNamed: @"categories3_6.png" inBundle: nil compatibleWithTraitCollection: nil ];
+//    UIImage *myImageCategories3      = [UIImage  imageNamed: @"categories3_6.png" inBundle: nil compatibleWithTraitCollection: nil ];
+//    UIImage *myImageCategories3      = [UIImage  imageNamed: @"categories3_info10.png" inBundle: nil compatibleWithTraitCollection: nil ];
+//    UIImage *myImageCategories3      = [UIImage  imageNamed: @"categories3_info11.png" inBundle: nil compatibleWithTraitCollection: nil ];
+    UIImage *myImageCategories3      = [UIImage  imageNamed: @"categories3_info10.png" inBundle: nil compatibleWithTraitCollection: nil ];
 //    UIImage *myImageTwoThings        = [UIImage  imageNamed: @"twoThings_info5.png"   inBundle: nil compatibleWithTraitCollection: nil ];
-    UIImage *myImageTwoThings        = [UIImage  imageNamed: @"twoThings_info8.png"   inBundle: nil compatibleWithTraitCollection: nil ];
+//    UIImage *myImageTwoThings        = [UIImage  imageNamed: @"twoThings_info8.png"   inBundle: nil compatibleWithTraitCollection: nil ];
+    UIImage *myImageTwoThings        = [UIImage  imageNamed: @"twoThings_info9.png"   inBundle: nil compatibleWithTraitCollection: nil ];
 //    UIImage *myImageWillpower        = [UIImage  imageNamed: @"willpower_info3.png"   inBundle: nil compatibleWithTraitCollection: nil ];
-    UIImage *myImageWillpower        = [UIImage  imageNamed: @"willpower_info5.png"   inBundle: nil compatibleWithTraitCollection: nil ];
+//    UIImage *myImageWillpower        = [UIImage  imageNamed: @"willpower_info5.png"   inBundle: nil compatibleWithTraitCollection: nil ];
+    UIImage *myImageWillpower        = [UIImage  imageNamed: @"willpower_info6.png"   inBundle: nil compatibleWithTraitCollection: nil ];
 
 //    UIImage *myImageDestiny          = [UIImage  imageNamed: @"overcomDestiny_info2.png"   inBundle: nil compatibleWithTraitCollection: nil ];
-    UIImage *myImageDestiny          = [UIImage  imageNamed: @"overcomDestiny_info3.png"   inBundle: nil compatibleWithTraitCollection: nil ];
+//    UIImage *myImageDestiny          = [UIImage  imageNamed: @"overComDestiny_info3.png"   inBundle: nil compatibleWithTraitCollection: nil ];
+//    UIImage *myImageDestiny          = [UIImage  imageNamed: @"overComDestiny_info5.png"   inBundle: nil compatibleWithTraitCollection: nil ];
+//    UIImage *myImageDestiny          = [UIImage  imageNamed: @"overComDestiny_info6.png"   inBundle: nil compatibleWithTraitCollection: nil ];
+    UIImage *myImageDestiny          = [UIImage  imageNamed: @"overComDestiny_info3.png"   inBundle: nil compatibleWithTraitCollection: nil ];
 
-    UIImage *myImageTraits           = [UIImage  imageNamed: @"overcomTraits_info2.png"    inBundle: nil compatibleWithTraitCollection: nil ];
+//    UIImage *myImageTraits           = [UIImage  imageNamed: @"overcomTraits_info2.png"    inBundle: nil compatibleWithTraitCollection: nil ];
+//    UIImage *myImageTraits           = [UIImage  imageNamed: @"overcomTraits_info3.png"    inBundle: nil compatibleWithTraitCollection: nil ];
 
     UIImage *myIconmamb           = [UIImage  imageNamed: @"icon_mamb09_0064.png"    inBundle: nil compatibleWithTraitCollection: nil ];
 
 
 
 //    UIFont *myFont       = [UIFont fontWithName: @"Menlo-bold" size: 12.0];
-    UIFont *myFont       = [UIFont fontWithName: @"Menlo-bold" size: 11.0];
-//    UIFont *myFont       = [UIFont fontWithName: @"Menlo"      size: 12.0];
+//    UIFont *myFont        = [UIFont fontWithName: @"Menlo-bold" size: 11.0];
+//    UIFont *myFontForText = [UIFont fontWithName: @"Menlo-bold" size: 11.0];
+//    UIFont *myFontForText = [UIFont fontWithName: @"Menlo-bold" size: 13.0];
+//    UIFont *myFontForText = [UIFont boldSystemFontOfSize: 15.0];
+//    UIFont *myFontForText = [UIFont fontWithName: @"Menlo-bold" size: 15.0];
+//    UIFont *myFontForText = [UIFont fontWithName: @"Menlo" size: 14.0];
+//    UIFont *myFontForText = [UIFont fontWithName: @"Menlo-bold" size: 13.0];
+//    UIFont *myFontForText = [UIFont fontWithName: @"Menlo" size: 13.0];
+//    UIFont *myFontForText = [UIFont fontWithName: @"Menlo-bold" size: 13.2];
+//    UIFont *myFontForText = [UIFont fontWithName: @"Menlo-bold" size: 12.8];
+//    UIFont *myFontForText = [UIFont fontWithName: @"Menlo-bold" size: 12.0];
+    UIFont *myFontForText = [UIFont fontWithName: @"Menlo-bold" size: 12.5];
 
 //    UIFont *myFontOnSide = [UIFont fontWithName: @"Menlo"      size: 10.0];
 //    UIFont *myFontOnSide = [UIFont fontWithName: @"Menlo-bold" size: 10.0];
 //    UIFont *myFontOnSide = [UIFont fontWithName: @"Menlo-bold" size: 11.0];
-    UIFont *myFontOnSide = [UIFont fontWithName: @"Menlo-bold" size: 12.0];
-
+//    UIFont *myFontOnSide  = [UIFont fontWithName: @"Menlo-bold" size: 12.0];
+//    UIFont *myFontOnSide  = [UIFont fontWithName: @"Menlo-bold" size: 13.0];
+//    UIFont *myFontOnSide  = [UIFont fontWithName: @"Menlo" size: 13.0];
+    UIFont *myFontOnSide  = [UIFont fontWithName: @"Menlo-bold" size: 12.0];
 
 
 //    UIFont *myTitleFont  = [UIFont fontWithName: @"Menlo-bold" size: 13.1];
 //    UIFont *myTitleFont  = [UIFont fontWithName: @"Menlo-bold" size: 14.5];
-    UIFont *myTitleFont  = [UIFont fontWithName: @"Menlo-bold" size: 15.5];
+//    UIFont *myTitleFont   = [UIFont fontWithName: @"Menlo-bold" size: 15.5];
+    UIFont *myTitleFont   = [UIFont fontWithName: @"Menlo-bold" size: 17.0];
 
 //    UIFont *myDisclaimerFont= [UIFont fontWithName: @"Menlo-bold" size:  8.0];
     UIFont *myDisclaimerFont= [UIFont fontWithName: @"Menlo-bold" size:  9.0];
 
-
     UIFont *myFontForSwitch  = [UIFont fontWithName: @"Menlo-bold" size: 16.0];
+
+
+
+    //
+    // For instance let's say your app supports iPhones > 4s, so iPhone: 4s, 5, 5s, 6 and 6plus.
+    // Make sure to make launch-images which have the following dimensions:
+    //         iPhone4s    =  640 ×  960
+    //         iPhone5, 5s =  640 × 1136
+    //         iPhone6     =  750 x 1334
+    //         iPhone6plus = 1242 x 2208
+    //
+    CGFloat myScreenWidth, myFontSize;  // determine font size
+    myScreenWidth = self.view.bounds.size.width;
+
+    if (        myScreenWidth >= 414.0)                                          // 6+ and 6s+  and bigger
+    {
+        myFontForText    = [UIFont fontWithName: @"Menlo-bold" size: 12.5];
+        myFontOnSide     = [UIFont fontWithName: @"Menlo-bold" size: 12.0];
+        myTitleFont      = [UIFont fontWithName: @"Menlo-bold" size: 17.0];
+        myDisclaimerFont = [UIFont fontWithName: @"Menlo-bold" size:  9.0];
+        myFontForSwitch  = [UIFont fontWithName: @"Menlo-bold" size: 16.0];
+    }
+    else if (   myScreenWidth  < 414.0                                          // 6 and 6s
+             && myScreenWidth  > 320.0)   
+    {
+        myFontForText    = [UIFont fontWithName: @"Menlo-bold" size: 11.5];
+        myFontOnSide     = [UIFont fontWithName: @"Menlo-bold" size: 11.0];
+        myTitleFont      = [UIFont fontWithName: @"Menlo-bold" size: 16.0];
+        myDisclaimerFont = [UIFont fontWithName: @"Menlo-bold" size:  9.0];
+        myFontForSwitch  = [UIFont fontWithName: @"Menlo-bold" size: 15.0];
+    }
+    else if (   myScreenWidth <= 320.0)                                          //  5s and 5 and 4s and smaller
+    {
+        myFontForText    = [UIFont fontWithName: @"Menlo-bold" size: 10.5];
+        myFontOnSide     = [UIFont fontWithName: @"Menlo-bold" size: 10.0];
+        myTitleFont      = [UIFont fontWithName: @"Menlo-bold" size: 15.0];
+        myDisclaimerFont = [UIFont fontWithName: @"Menlo-bold" size:  9.0];
+        myFontForSwitch  = [UIFont fontWithName: @"Menlo-bold" size: 14.0];
+    }
+
+
 
     NSString *myTextLabelTextAddOn;  // depends on report
 
@@ -356,7 +492,7 @@ tn();
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFontOnSide;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text          = @"";
@@ -377,7 +513,7 @@ tn();
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== intro text for FUT
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFont;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text          = myIntroString;
@@ -391,7 +527,7 @@ tn();
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFontOnSide;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text          = nil;
@@ -424,7 +560,7 @@ tn();
 
             NSString *allLabelExplaintext = [NSString stringWithFormat:
 //              @" %@  very peaceful\n %@  peaceful\n %@\n %@  stressful\n %@  very stressful\n\n  Stressful and very stressful zones are colored red because stress is generally considered challenging.\n\n  The green zones are the opposite of stress.  Notice that the opposite of stressful is peaceful.\n\nIf your graph goes way up into the green zones, it generally does not mean fantastic excitement with kaleidiscopic fireworks.  Green means serene, calm, restful, tranquil.",
-              @" %@  very peaceful\n %@  peaceful\n %@\n %@  stressful\n %@  very stressful\n\nThe stressful and very stressful zones are colored red.\n\nThe green zones are the opposite of stressful.  Notice that the opposite of stressful is peaceful.\n\nIf your graph goes way up into the green zones, it generally does not mean fantastic excitement with fireworks.  Green is serene, calm, restful, tranquil.",
+              @" %@  very peaceful\n %@  peaceful\n %@\n %@  stressful\n %@  very stressful\n\nThe stressful and very stressful zones are colored red.\n\nThe green zones are the opposite of stressful.  Notice that the opposite of stressful is peaceful.\n\nIf your graph goes way up into the green zones, it seldom means fantastic excitement with fireworks.  Green is usually serene, calm, restful, tranquil.",
                 text_cGr2,
                 text_cGre,
                 text_cNeu,
@@ -470,35 +606,35 @@ tn();
                                                  value: gbl_color_cGr2 
                                                  range: range_cGr2        ];          // offset, length
             [myAttributedTextLabelExplain addAttribute: NSFontAttributeName
-                                                 value: myFont 
+                                                 value: myFontForText 
                                                  range: NSMakeRange(0, myAttributedTextLabelExplain.length)  ];  // offset, length
 
             [myAttributedTextLabelExplain addAttribute: NSBackgroundColorAttributeName 
                                                  value: gbl_color_cGre 
                                                  range: range_cGre        ];          // offset, length
             [myAttributedTextLabelExplain addAttribute: NSFontAttributeName
-                                                 value: myFont 
+                                                 value: myFontForText 
                                                  range: NSMakeRange(0, myAttributedTextLabelExplain.length)  ];  // offset, length
 
             [myAttributedTextLabelExplain addAttribute: NSBackgroundColorAttributeName 
                                                  value: gbl_color_cNeu 
                                                  range: range_cNeu        ];          // offset, length
             [myAttributedTextLabelExplain addAttribute: NSFontAttributeName
-                                                 value: myFont 
+                                                 value: myFontForText 
                                                  range: NSMakeRange(0, myAttributedTextLabelExplain.length)  ];  // offset, length
 
             [myAttributedTextLabelExplain addAttribute: NSBackgroundColorAttributeName 
                                                  value: gbl_color_cRed 
                                                  range: range_cRed        ];          // offset, length
             [myAttributedTextLabelExplain addAttribute: NSFontAttributeName
-                                                 value: myFont 
+                                                 value: myFontForText 
                                                  range: NSMakeRange(0, myAttributedTextLabelExplain.length)  ];  // offset, length
 
             [myAttributedTextLabelExplain addAttribute: NSBackgroundColorAttributeName 
                                                  value: gbl_color_cRe2 
                                                  range: range_cRe2        ];          // offset, length
             [myAttributedTextLabelExplain addAttribute: NSFontAttributeName
-                                                 value: myFont 
+                                                 value: myFontForText 
                                                  range: NSMakeRange(0, myAttributedTextLabelExplain.length)  ];  // offset, length
 
 
@@ -512,7 +648,7 @@ tn();
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== text for label explain
                 cell.textLabel.textColor      = [UIColor blackColor];
                 cell.userInteractionEnabled   = NO;
-                cell.textLabel.font           = myFont;
+                cell.textLabel.font           = myFontForText;
                 cell.backgroundColor          = gbl_color_cBgr;
                 cell.textLabel.numberOfLines  = 0;
 //                cell.textLabel.numberOfLines  = 25;
@@ -525,11 +661,13 @@ tn();
             });
             return cell;
         }
+
+
         if (indexPath.row == 5) {
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFontOnSide;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text          = nil;
@@ -559,7 +697,7 @@ tn();
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== text  for time frame influences
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFont;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
 //                cell.textLabel.text          = @"A starting date and ending date tell when the inluence for that time frame is working.  The influence will be favorable or challenging.\n\nChallenging influences look like a valley or letter \"u\" on the graph.\nFrom the start of the time frame the influence gradually falls down to it's lowest point at the middle of the time frame.  From there, it gradually rises up until it reaches the end of the time frame.\n\nFavorable influences look like a hill or letter \"n\" on the graph.\nFrom the beginning of the time frame the influence gradually rises up to it's highest point at the middle of the time frame.  From there, it gradually falls down until it reaches the end of the time frame.";
@@ -576,7 +714,7 @@ tn();
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFontOnSide;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text          = nil;
@@ -606,7 +744,7 @@ tn();
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== text  for year summary score
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFont;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text          = @"A score from 1 to 99 is calculated from the amount of time spent in the green zones and red zones over the whole year.\n\nThe score tells how favorable or challenging the year overall is.\n\nChallenging times can be tough. However, because we have free will, even challenging times can be bettered by will power.";
@@ -620,9 +758,9 @@ tn();
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFontOnSide;
-//                cell.backgroundColor         = gbl_color_cBgr;
-                cell.backgroundColor         = [UIColor blueColor];
+                cell.textLabel.font          = myFontForText;
+                cell.backgroundColor         = gbl_color_cBgr;
+//                cell.backgroundColor         = [UIColor blueColor];
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text          = nil;
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
@@ -645,12 +783,9 @@ tn();
 //                cell.imageView.image         = nil;
 //                cell.backgroundView = [[UIImageView alloc] initWithImage: myImageDestiny] ;
                 cell.textLabel.text          = @" ";
-cell.imageView.frame = CGRectMake(0.0f, 0.0f, 120.0f, 44.0f);
-cell.imageView.contentMode = UIViewContentModeScaleAspectFit;
-//                cell.imageView.image = myImageDestiny;
-                cell.imageView.image = myIconmamb;
-
+                cell.imageView.image = myImageDestiny ;
                 cell.backgroundView          = nil ;
+
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
 
             });
@@ -660,9 +795,9 @@ cell.imageView.contentMode = UIViewContentModeScaleAspectFit;
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFontOnSide;
-//                cell.backgroundColor         = gbl_color_cBgr;
-                cell.backgroundColor         = [UIColor cyanColor];
+                cell.textLabel.font          = myFontForText;
+                cell.backgroundColor         = gbl_color_cBgr;
+//                cell.backgroundColor         = [UIColor cyanColor];
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text          = nil;
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
@@ -767,7 +902,7 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{  
                 cell.textLabel.textColor     = [UIColor blackColor]; // black textcolor HAS TO BE FIRST, then cell.userInteractionEnabled = NO;
                 cell.userInteractionEnabled  = NO;                   // black textcolor HAS TO BE FIRST, then cell.userInteractionEnabled = NO;
-                cell.textLabel.font          = myFont;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text          = @"The scores in this report measure Compatibility Potential: how likely two people can form a good relationship, assuming both people also show mostly positive personality traits.";
@@ -783,7 +918,7 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFontOnSide;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text          = @"";
@@ -811,7 +946,7 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFontOnSide;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text          = nil;
@@ -908,7 +1043,7 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
                 cell.textLabel.textColor     = [UIColor blackColor]; // black textcolor HAS TO BE FIRST, then cell.userInteractionEnabled = NO;
                 cell.userInteractionEnabled  = NO;                   // black textcolor HAS TO BE FIRST, then cell.userInteractionEnabled = NO;
-                cell.textLabel.font          = myFont;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text          =  myTextLabelTextAddOn;
@@ -951,7 +1086,7 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{  
                 cell.textLabel.textColor     = [UIColor blackColor]; // black textcolor HAS TO BE FIRST, then cell.userInteractionEnabled = NO;
                 cell.userInteractionEnabled  = NO;                   // black textcolor HAS TO BE FIRST, then cell.userInteractionEnabled = NO;
-                cell.textLabel.font          = myFont;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
 //                cell.textLabel.text          = @"The Compatibility Potential score for two people takes into account many influences between the two.  But, within each person, good personality traits are assumed.\n\nThe potential of a good relationship can be ruined despite a high compatibility score if one of the two people (or both) have bad personality traits.";
@@ -972,8 +1107,12 @@ nbn(100);
                 cell.textLabel.numberOfLines = 0;   // 0 means unlimited number of lines
                 cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
                 cell.textLabel.text          = nil;
-                cell.imageView.image         = nil;
-                cell.backgroundView = [[UIImageView alloc] initWithImage: myImageTwoThings] ;
+
+//                cell.imageView.image         = nil;
+//                cell.backgroundView = [[UIImageView alloc] initWithImage: myImageTwoThings] ;
+                cell.imageView.image         = myImageTwoThings;
+                cell.backgroundView          = nil;
+
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
             });
             return cell;
@@ -982,7 +1121,7 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{  
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFontOnSide;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text          = @"";
@@ -997,7 +1136,7 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{        
                 cell.textLabel.textColor     = [UIColor blackColor]; // black textcolor HAS TO BE FIRST, then cell.userInteractionEnabled = NO;
                 cell.userInteractionEnabled  = NO;                   // black textcolor HAS TO BE FIRST, then cell.userInteractionEnabled = NO;
-                cell.textLabel.font          = myFont;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
@@ -1018,9 +1157,12 @@ nbn(100);
                 cell.textLabel.numberOfLines = 0;   // 0 means unlimited number of lines
                 cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
                 cell.textLabel.text          = nil;
-                cell.imageView.image         = nil;
 
-                cell.backgroundView = [[UIImageView alloc] initWithImage: myImageWillpower] ;
+//                cell.imageView.image         = nil;
+//                cell.backgroundView = [[UIImageView alloc] initWithImage: myImageWillpower] ;
+                cell.imageView.image = myImageWillpower;
+                cell.backgroundView          = nil ;
+
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
             });
             return cell;
@@ -1029,7 +1171,7 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{  
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFontOnSide;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text          = @"";
@@ -1066,7 +1208,7 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFontOnSide;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text          = @"";
@@ -1080,7 +1222,7 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
                 cell.textLabel.textColor     = [UIColor blackColor]; // black textcolor HAS TO BE FIRST, then cell.userInteractionEnabled = NO;
                 cell.userInteractionEnabled  = NO;                   // black textcolor HAS TO BE FIRST, then cell.userInteractionEnabled = NO;
-                cell.textLabel.font          = myFont;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text          = @"Compatiblity Potential is how likely two people can form a good relationship-  assuming both people also show mostly positive personality traits.";
@@ -1109,7 +1251,7 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFontOnSide;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text          = nil;
@@ -1139,7 +1281,7 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFontOnSide;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text          = @"";
@@ -1153,7 +1295,7 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{  
                 cell.textLabel.textColor     = [UIColor blackColor]; // black textcolor HAS TO BE FIRST, then cell.userInteractionEnabled = NO;
                 cell.userInteractionEnabled  = NO;                   // black textcolor HAS TO BE FIRST, then cell.userInteractionEnabled = NO;
-                cell.textLabel.font          = myFont;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
 //                cell.textLabel.text          = @"The Compatibility Potential score for two people takes into account many influences between the two.  But, within each person, good personality traits are assumed.\n\nThe potential of a good relationship can be ruined despite a high compatibility score if one of the two people (or both) have bad personality traits.";
@@ -1174,12 +1316,16 @@ nbn(100);
                 cell.textLabel.font          = myFontOnSide;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;   // 0 means unlimited number of lines
-                cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
-                cell.textLabel.text          = nil;
-                cell.imageView.image         = nil;
+//                cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+//                cell.textLabel.text          = nil;
+                cell.textLabel.text          = @" ";
+
+//                cell.backgroundView = [[UIImageView alloc] initWithImage: myImageTwoThings] ;
+                cell.imageView.image = myImageTwoThings;
+                cell.backgroundView          = nil ;
+
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
 
-                cell.backgroundView = [[UIImageView alloc] initWithImage: myImageTwoThings] ;
             });
             return cell;
         }
@@ -1187,7 +1333,7 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{  
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFontOnSide;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text          = @"";
@@ -1202,10 +1348,10 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{        
                 cell.textLabel.textColor     = [UIColor blackColor]; // black textcolor HAS TO BE FIRST, then cell.userInteractionEnabled = NO;
                 cell.userInteractionEnabled  = NO;                   // black textcolor HAS TO BE FIRST, then cell.userInteractionEnabled = NO;
-                cell.textLabel.font          = myFont;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
-                cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+//                cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
 //                cell.textLabel.text          = @"HOWEVER, because we have free will, even bad personality traits can be overcome by intense will power.  It is extremely difficult to overcome bad habits, but it can be done.";
 //                cell.textLabel.text          = @"HOWEVER, because we have free will, even challenging personality traits can be overcome by intense will power.  It is extremely difficult to overcome habits, but it can be done.";
                 cell.textLabel.text          = @"HOWEVER, because we have free will, even challenging personality traits can be overcome by intense will power.  Overcoming habits is very hard, but possible.";
@@ -1222,11 +1368,16 @@ nbn(100);
                 cell.textLabel.font          = myFontOnSide;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;   // 0 means unlimited number of lines
-                cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
-                cell.textLabel.text          = nil;
-                cell.imageView.image         = nil;
+//                cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+//                cell.textLabel.text          = nil;
+                cell.textLabel.text          = @" ";
 
-                cell.backgroundView = [[UIImageView alloc] initWithImage: myImageWillpower] ;
+//                cell.imageView.image         = nil;
+//                cell.backgroundView = [[UIImageView alloc] initWithImage: myImageWillpower] ;
+                cell.imageView.image = myImageWillpower;
+                cell.backgroundView          = nil ;
+
+
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
             });
             return cell;
@@ -1235,7 +1386,7 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{  
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFontOnSide;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text          = @"";
@@ -1266,7 +1417,7 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{  
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFontOnSide;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text          = @"";
@@ -1281,7 +1432,7 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{  
                 cell.textLabel.textColor     = [UIColor blackColor]; // black textcolor HAS TO BE FIRST, then cell.userInteractionEnabled = NO;
                 cell.userInteractionEnabled  = NO;                   // black textcolor HAS TO BE FIRST, then cell.userInteractionEnabled = NO;
-                cell.textLabel.font          = myFont;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text          = @"Out of the many factors making up the Compatibility Potential Score, these 3 categories are fun to look at separately.";
@@ -1297,7 +1448,7 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{  
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFontOnSide;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text          = @"";
@@ -1314,11 +1465,16 @@ nbn(100);
                 cell.textLabel.font          = myFontOnSide;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;   // 0 means unlimited number of lines
-                cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
-                cell.textLabel.text          = nil;
-                cell.imageView.image         = nil;
+//                cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+//                cell.textLabel.text          = nil;
+//                cell.textLabel.text          = @"xxxxx";
+                cell.textLabel.text          = @" ";
 
-                cell.backgroundView = [[UIImageView alloc] initWithImage: myImageCategories3] ;
+//                cell.imageView.image         = nil;
+//                cell.backgroundView = [[UIImageView alloc] initWithImage: myImageCategories3] ;
+                cell.imageView.image         = myImageCategories3;
+                cell.backgroundView          = nil;
+
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
             });
             return cell;
@@ -1327,7 +1483,7 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{  
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFontOnSide;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text          = @"";
@@ -1341,7 +1497,7 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{  
                 cell.textLabel.textColor     = [UIColor blackColor]; // black textcolor HAS TO BE FIRST, then cell.userInteractionEnabled = NO;
                 cell.userInteractionEnabled  = NO;                   // black textcolor HAS TO BE FIRST, then cell.userInteractionEnabled = NO;
-                cell.textLabel.font          = myFont;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
 
@@ -1358,7 +1514,7 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{  
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFontOnSide;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text          = @"";
@@ -1384,11 +1540,11 @@ nbn(100);
             return cell;
         }
 
-        if (indexPath.row == 21) {                           // <=== space 
+        if (indexPath.row == 21) {                           // <=== 
             dispatch_async(dispatch_get_main_queue(), ^{  
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFont;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
 //                cell.textLabel.text          = @"The compatibility details on the bottom give a LOT of detail.  It's hard work to combine the differing influences into an overall picture.\n\nIn doing his integration you have\n  - the 3 categories\n  - details at the bottom\n  - a personality report for each\n    of the 2 people\n\nA lot of the integration is done for you in the compatibility Potential score from 1 to 99.";
@@ -1427,14 +1583,14 @@ nbn(100);
  
 
     // =================================================================================================================================
-    if (  [gbl_helpScreenDescription isEqualToString: @"what color"]  )
+    if (  [gbl_helpScreenDescription isEqualToString: @"what color"]  )  // pwc wc
     {
 
         if (indexPath.row == 0) {
             dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
                 cell.textLabel.textColor     = [UIColor blackColor]; // black textcolor HAS TO BE FIRST, then cell.userInteractionEnabled = NO;
                 cell.userInteractionEnabled  = NO;                   // black textcolor HAS TO BE FIRST, then cell.userInteractionEnabled = NO;
-                cell.textLabel.font          = myFont;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;   // 0 means unlimited number of lines
                 cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
@@ -1469,7 +1625,7 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
                 cell.textLabel.textColor     = [UIColor blackColor]; // black textcolor HAS TO BE FIRST, then cell.userInteractionEnabled = NO;
                 cell.userInteractionEnabled  = NO;                   // black textcolor HAS TO BE FIRST, then cell.userInteractionEnabled = NO;
-                cell.textLabel.font          = myFont;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;   // 0 means unlimited number of lines
                 cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
@@ -1481,7 +1637,7 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFontOnSide;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text          = nil;
@@ -1500,9 +1656,13 @@ nbn(100);
                 cell.textLabel.numberOfLines = 0;   // 0 means unlimited number of lines
                 cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
                 cell.textLabel.text          = nil;
-                cell.imageView.image         = nil;
 
-                cell.backgroundView = [[UIImageView alloc] initWithImage: myImageDestiny] ;
+//                cell.imageView.image         = nil;
+//                cell.backgroundView = [[UIImageView alloc] initWithImage: myImageDestiny] ;
+
+                cell.imageView.image = myImageDestiny ;
+                cell.backgroundView          = nil ;
+
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
             });
             return cell;
@@ -1511,7 +1671,7 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFontOnSide;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text          = nil;
@@ -1548,7 +1708,7 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFontOnSide;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text          = @"";
@@ -1580,7 +1740,7 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
                 cell.textLabel.textColor     = [UIColor blackColor]; // black textcolor HAS TO BE FIRST, then cell.userInteractionEnabled = NO;
                 cell.userInteractionEnabled  = NO;                   // black textcolor HAS TO BE FIRST, then cell.userInteractionEnabled = NO;
-                cell.textLabel.font          = myFont;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;   // 0 means unlimited number of lines
                 cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
@@ -1615,7 +1775,7 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
                 cell.textLabel.textColor     = [UIColor blackColor]; // black textcolor HAS TO BE FIRST, then cell.userInteractionEnabled = NO;
                 cell.userInteractionEnabled  = NO;                   // black textcolor HAS TO BE FIRST, then cell.userInteractionEnabled = NO;
-                cell.textLabel.font          = myFontOnSide ;
+                cell.textLabel.font          = myFontForText ;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;   // 0 means unlimited number of lines
                 cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
@@ -1672,7 +1832,7 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFontOnSide;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text          = nil;
@@ -1702,7 +1862,7 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
                 cell.textLabel.textColor     = [UIColor blackColor]; // black textcolor HAS TO BE FIRST, then cell.userInteractionEnabled = NO;
                 cell.userInteractionEnabled  = NO;                   // black textcolor HAS TO BE FIRST, then cell.userInteractionEnabled = NO;
-                cell.textLabel.font          = myFontOnSide ;
+                cell.textLabel.font          = myFontForText ;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;   // 0 means unlimited number of lines
                 cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
@@ -1718,7 +1878,7 @@ nbn(100);
 //            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
 //                cell.textLabel.textColor     = [UIColor blackColor];
 //                cell.userInteractionEnabled  = NO;
-//                cell.textLabel.font          = myFontOnSide;
+//                cell.textLabel.font          = myFontForText;
 //                cell.backgroundColor         = gbl_color_cBgr;
 //                cell.textLabel.numberOfLines = 0;
 //                cell.textLabel.text          = nil;
@@ -1742,11 +1902,9 @@ nbn(100);
 //                cell.textLabel.text          = nil;
                 cell.textLabel.text          = @" ";
 
-//                cell.imageView.image         = nil;
-                cell.imageView.image = myImageTraits;
-
+//                cell.imageView.image = myImageTraits;
+                cell.imageView.image         = myImageWillpower;
                 cell.backgroundView          = nil ;
-//                cell.backgroundView = [[UIImageView alloc] initWithImage: myImageTraits] ;
 
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
             });
@@ -1756,7 +1914,7 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFontOnSide;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text          = nil;
@@ -1792,7 +1950,7 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFontOnSide;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text          = @"";
@@ -1824,7 +1982,7 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
                 cell.textLabel.textColor     = [UIColor blackColor]; // black textcolor HAS TO BE FIRST, then cell.userInteractionEnabled = NO;
                 cell.userInteractionEnabled  = NO;                   // black textcolor HAS TO BE FIRST, then cell.userInteractionEnabled = NO;
-                cell.textLabel.font          = myFont;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;   // 0 means unlimited number of lines
                 cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
@@ -1857,7 +2015,7 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
                 cell.textLabel.textColor     = [UIColor blackColor]; // black textcolor HAS TO BE FIRST, then cell.userInteractionEnabled = NO;
                 cell.userInteractionEnabled  = NO;                   // black textcolor HAS TO BE FIRST, then cell.userInteractionEnabled = NO;
-                cell.textLabel.font          = myFont;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;   // 0 means unlimited number of lines
                 cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
@@ -1896,7 +2054,7 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
                 cell.textLabel.textColor     = [UIColor blackColor]; // black textcolor HAS TO BE FIRST, then cell.userInteractionEnabled = NO;
                 cell.userInteractionEnabled  = NO;                   // black textcolor HAS TO BE FIRST, then cell.userInteractionEnabled = NO;
-                cell.textLabel.font          = myFont;
+                cell.textLabel.font          = myFontForText;
                 ;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;   // 0 means unlimited number of lines
@@ -1918,10 +2076,8 @@ nbn(100);
                 cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
 
 //                cell.textLabel.text          = nil;
-//                cell.imageView.image         = nil;
-//                cell.backgroundView = [[UIImageView alloc] initWithImage: myImageTraits] ;
                 cell.textLabel.text          = @" ";
-                cell.imageView.image = myImageTraits;
+                cell.imageView.image         = myImageWillpower;
                 cell.backgroundView          = nil ;
 
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -1932,7 +2088,7 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFontOnSide;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text          = nil;
@@ -1968,7 +2124,7 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFontOnSide;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text          = @"";
@@ -1998,7 +2154,7 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== text  for whole year score
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFont;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
 
@@ -2014,7 +2170,7 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFontOnSide;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text          = nil;
@@ -2033,9 +2189,12 @@ nbn(100);
                 cell.textLabel.numberOfLines = 0;   // 0 means unlimited number of lines
                 cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
                 cell.textLabel.text          = @" ";
-                cell.imageView.image         = nil;
 
-                cell.backgroundView = [[UIImageView alloc] initWithImage: myImageDestiny] ;
+//                cell.imageView.image         = nil;
+//                cell.backgroundView = [[UIImageView alloc] initWithImage: myImageDestiny] ;
+                cell.imageView.image = myImageDestiny ;
+                cell.backgroundView          = nil ;
+
             });
             return cell;
         }
@@ -2044,7 +2203,7 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFontOnSide;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text          = nil;
@@ -2081,7 +2240,7 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFontOnSide;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text          = @"";
@@ -2111,7 +2270,7 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== text  for whole year score
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFont;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
 
@@ -2128,7 +2287,7 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFontOnSide;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text          = nil;
@@ -2147,9 +2306,12 @@ nbn(100);
                 cell.textLabel.numberOfLines = 0;   // 0 means unlimited number of lines
                 cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
                 cell.textLabel.text          = nil;
-                cell.imageView.image         = nil;
 
-                cell.backgroundView = [[UIImageView alloc] initWithImage: myImageDestiny] ;
+//                cell.imageView.image         = nil;
+//                cell.backgroundView = [[UIImageView alloc] initWithImage: myImageDestiny] ;
+                cell.imageView.image = myImageDestiny ;
+                cell.backgroundView          = nil ;
+
             });
             return cell;
         }
@@ -2158,7 +2320,7 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFontOnSide;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text          = nil;
@@ -2195,7 +2357,7 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFontOnSide;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text          = @"";
@@ -2252,14 +2414,16 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== blue text
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFontOnSide;
+                cell.textLabel.font          = myFontForText;
 //                cell.backgroundColor         = gbl_color_cBgr;
 //                cell.backgroundColor         = gbl_bgColor_blueDone;
                 cell.backgroundColor         = gbl_bgColor_brownDone;
                 cell.textLabel.numberOfLines = 0;
 //                cell.textLabel.text          = @"Look at reports for all the people and groups you have entered.";
 //                cell.textLabel.text          = @"Look at reports for all of your people and groups.";
-                cell.textLabel.text          = @"Look at reports for the people and groups you have added.";
+//                cell.textLabel.text          = @"Look at reports for the people and groups you have added.";
+//                cell.textLabel.text          = @"Look at reports for people and groups you have added.";
+                cell.textLabel.text          = @"View reports for people and groups you have added.";
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -2272,7 +2436,7 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFontOnSide;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text          = @"";
@@ -2307,7 +2471,7 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== yellow text
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFontOnSide;
+                cell.textLabel.font          = myFontForText;
 //                cell.backgroundColor         = gbl_color_cBgr;
                 cell.backgroundColor         = gbl_bgColor_yellowEdit;
                 cell.textLabel.numberOfLines = 0;
@@ -2325,7 +2489,7 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFontOnSide;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text          = @"";
@@ -2363,7 +2527,7 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== do stuff text
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFontOnSide;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
 //                cell.textLabel.text          = @"To send ANY REPORT as an email attachment, tap \"Share\"\n\nTo email a Group to a BFF who has this app, go to the Group, then tap \"Share\"\n\nTo import a Group someone has emailed you, open the email on the device where you have this app, and tap and hold on the email attachment";
@@ -2398,7 +2562,7 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== report list 
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFontOnSide;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
 //                cell.textLabel.text          = @" - Calendar Year stress levels\n - Personality\n - Compatibility Potential of two people\n - What Color is Today for Me?\n - Best Match for a Person in a Group\n\n - in a Group, Best Matched Pair\n - in a Group, Most Emotional Person\n - in a Group, Most Down-to-earth Person\n - in a Group, Most Passionate Person\n - in a Group, Most Assertive Person\n - in a Group, Most Restless Person";
@@ -2431,7 +2595,7 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== text for why not
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFontOnSide;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text          = @"Study human factors on sports teams\n\nBe a matchmaker by using the reports \"Best Match\" and \"Personality\"\n\nSend questions and comments to QQQQQ@QQQQQ.com";
@@ -2464,11 +2628,12 @@ nbn(100);
             dispatch_async(dispatch_get_main_queue(), ^{                                 // <=== text for example data 
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFontOnSide;
+                cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
 //                cell.textLabel.text          = @"Example people and groups have names starting with \"~\".\n\nThe example data lets you explore all the different reports and how the app works before you enter any new people or groups yourself.\n\nWhen you want to enter a new person go to the home screen.  You can tell the home screen because it has the black, red and yellow app icon on the top left.  Tap \"+\" beside it to add a new person.\n\nAfter a while, you might want to not see the example data.  Check the \"hide example data\" checkbox below.";
-                cell.textLabel.text          = @"Example people and groups have names starting with \"~\".\n\nThe example data lets you explore all the different reports and how the app works before you enter any new people or groups yourself.\n\nWhen you want to enter a new person go to the home screen.  You can tell the home screen because it has the app icon on the top left.  Tap \"+\" beside it to add a new person.\n\nAfter a while, you might want to not see the example data.  If so, set the \"Show Example Data\" switch below to off (gray).";
+//                cell.textLabel.text          = @"Example people and groups have names starting with \"~\".\n\nThe example data lets you explore all the different reports and how the app works before you enter any new people or groups yourself.\n\nWhen you want to enter a new person go to the home screen.  You can tell the home screen because it has the app icon on the top left.  Tap \"+\" beside it to add a new person.\n\nAfter a while, you might want to not see the example data.  If so, tap the switch below to off.";
+                cell.textLabel.text          = @"Example people and groups have names starting with \"~\".\n\nThe example data lets you explore all the different reports and how the app works before you enter any new people or groups yourself.\n\nWhen you want to enter a new person go to the home screen.  You can tell the home screen because it has the app icon on the top left.  Tap \"+\" beside it to add a new person.";
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -2486,15 +2651,13 @@ nbn(100);
         ];
         mySwitchView.enabled = YES;
 //        myViewController.view.frame = CGRectMake(0, 100, myViewController.view.frame.size.width, myViewController.view.frame.size.height);  
-        mySwitchView.frame = CGRectMake(180, 10, cell.frame.size.width, cell.frame.size.height);  
+//        mySwitchView.frame = CGRectMake(180, 10, cell.frame.size.width, cell.frame.size.height);  
 
         if (indexPath.row == 15) {
             dispatch_async(dispatch_get_main_queue(), ^{                                 // <=== text for example data 
                 cell.textLabel.textColor     = [UIColor blackColor];
 //                cell.userInteractionEnabled  = NO;
                 cell.userInteractionEnabled  = YES;
-//                cell.textLabel.font          = myFontOnSide;
-//                cell.textLabel.font          = myFontOnSide;
                 cell.textLabel.font          = myTitleFont;
 
 //                cell.backgroundColor         = gbl_color_cBgr;
@@ -2620,18 +2783,18 @@ nbn(100);
         if (indexPath.row ==   7) return    30.0;  // title for do stuff
 //        if (indexPath.row ==   2) return   150.0;  // text  for do stuff
 //        if (indexPath.row ==   2) return   170.0;  // text  for do stuff
-        if (indexPath.row ==   8) return   160.0;  // text  for do stuff
+        if (indexPath.row ==   8) return   200.0;  // text  for do stuff
         if (indexPath.row ==   9) return    30.0;  // title for report list
 //        if (indexPath.row ==   4) return   170.0;  // report  list
-        if (indexPath.row ==   10) return   160.0;  // report  list
+        if (indexPath.row ==   10) return   200.0;  // report  list
 
         if (indexPath.row ==   11) return    30.0;  // title for why not ?
 //        if (indexPath.row ==   6) return    90.0;  // text  for why not ?
 //        if (indexPath.row ==   12) return    84.0;  // text  for why not ?
-        if (indexPath.row ==   12) return    94.0;  // text  for why not ?
+        if (indexPath.row ==   12) return   120.0;  // text  for why not ?
 
         if (indexPath.row ==   13) return    30.0;  // title for Example Data
-        if (indexPath.row ==   14) return   175.0;  // text  for Example Data
+        if (indexPath.row ==   14) return   200.0;  // text  for Example Data
         if (indexPath.row ==   15) return    50.0;  // check box for "Show Example Data"
 
         if (indexPath.row ==   16) return    30.0;  // text for disclaimer
@@ -2642,7 +2805,7 @@ nbn(100);
         if (indexPath.row ==   1) return    30.0;  // title for Score for the Year
         if (indexPath.row ==   2) return   325.0;  // text  for Score for the Year
         if (indexPath.row ==   3) return     8.0;  // spacer
-        if (indexPath.row ==   4) return    55.0;  // image for overcome destiny
+        if (indexPath.row ==   4) return    75.0;  // image for overcome destiny
         if (indexPath.row ==   5) return     8.0;  // spacer
         if (indexPath.row ==   6) return    20.0;  // text for disclaimer
     }
@@ -2650,9 +2813,9 @@ nbn(100);
     if (   [gbl_helpScreenDescription isEqualToString: @"best year"] ) {
         if (indexPath.row ==   0) return     8.0;  // spacer
         if (indexPath.row ==   1) return    30.0;  // title for Score for the Year
-        if (indexPath.row ==   2) return   270.0;  // text  for Score for the Year
+        if (indexPath.row ==   2) return   290.0;  // text  for Score for the Year
         if (indexPath.row ==   3) return     8.0;  // spacer
-        if (indexPath.row ==   4) return    55.0;  // image for overcome destiny
+        if (indexPath.row ==   4) return    75.0;  // image for overcome destiny
         if (indexPath.row ==   5) return     8.0;  // spacer
         if (indexPath.row ==   6) return    20.0;  // text for disclaimer
     }
@@ -2671,10 +2834,7 @@ nbn(100);
         if (indexPath.row ==  5) return     8.0;  // spacer
         if (indexPath.row ==  6) return    30.0;  // title for quality of personality traits
         if (indexPath.row ==  7) return    82.0;  // text for quality
-//        if (indexPath.row ==  8) return     8.0;  // spacer
-//        if (indexPath.row ==  8) return    55.0;  // image for overcome traits
-//        if (indexPath.row ==  8) return    75.0;  // image for overcome traits
-        if (indexPath.row ==  8) return    60.0;  // image for overcome traits
+        if (indexPath.row ==  8) return     55.0;  // image willpower  for overcome traits
         if (indexPath.row ==  9) return     8.0;  // spacer
         if (indexPath.row == 10) return    20.0;  // text for disclaimer
     }
@@ -2687,7 +2847,7 @@ nbn(100);
         if (indexPath.row == 3) return    30.0;  // title for quality of traits
         if (indexPath.row == 4) return   105.0;  // reference to Personality report
         if (indexPath.row == 5) return   115.0;  // specific trait reference
-        if (indexPath.row == 6) return    55.0;  // image for overcome traits
+        if (indexPath.row == 6) return    55.0;  // image willpower  for overcome traits
         if (indexPath.row == 7) return     8.0;  // spacer
         if (indexPath.row == 8) return    20.0;  // text for disclaimer
     }
@@ -2697,17 +2857,17 @@ nbn(100);
         if (indexPath.row ==   1) return    60.0;  // intro string
         if (indexPath.row ==   2) return     8.0;  // spacer
         if (indexPath.row ==   3) return    30.0;  // title for Labels inside the Graph
-        if (indexPath.row ==   4) return   200.0;  // text  for Labels inside the Graph
+        if (indexPath.row ==   4) return   240.0;  // text  for Labels inside the Graph
         if (indexPath.row ==   5) return     8.0;  // spacer
         if (indexPath.row ==   6) return    30.0;  // title for Time Frame Influences
 //        if (indexPath.row ==   7) return   250.0;  // text  for Time Frame Influences
         if (indexPath.row ==   7) return   150.0;  // text  for Time Frame Influences
         if (indexPath.row ==   8) return     8.0;  // spacer
         if (indexPath.row ==   9) return    30.0;  // title for Score for the Year
-        if (indexPath.row ==  10) return   150.0;  // text  for Score for the Year
+        if (indexPath.row ==  10) return   175.0;  // text  for Score for the Year
         if (indexPath.row ==  11) return     8.0;  // spacer
 
-        if (indexPath.row ==  12) return    55.0;  // image for overcome destiny
+        if (indexPath.row ==  12) return    75.0;  // image for overcome destiny
 //        if (indexPath.row ==  12) return    75.0;  // image for overcome destiny
 
         if (indexPath.row ==  13) return     8.0;  // spacer
@@ -2720,20 +2880,28 @@ nbn(100);
         if (indexPath.row ==  1) return    80.0;  // preamble
         if (indexPath.row ==  2) return    30.0;  // title for scores
         if (indexPath.row ==  3) return    16.0;  // spacer
-        if (indexPath.row ==  4) return   225.0;  // image
+
+        if (indexPath.row ==  4) return   225.0;  // space for label and score explain
+//        if (indexPath.row ==  4) return   140.0;  //
+//        if (indexPath.row ==  4) return   70.0;  // 
+
         if (indexPath.row ==  5) return    16.0;  // spacer
         if (indexPath.row ==  6) return   140.0;  // text for complexity #1
-        if (indexPath.row ==  7) return    60.0;  // image two things
+        if (indexPath.row ==  7) return    70.0;  // image two things
         if (indexPath.row ==  8) return     8.0;  // spacer
+
         if (indexPath.row ==  9) return    70.0;  // text for complexity #2
-        if (indexPath.row == 10) return    55.0;  // image overcome trait
+        if (indexPath.row == 10) return    55.0;  // image willpower  overcome trait
         if (indexPath.row == 11) return    24.0;  // spacer
 
         if (indexPath.row == 12) return    30.0;  // title for 3 categories    3 fun categories
         if (indexPath.row == 13) return    16.0;  // spacer
         if (indexPath.row == 14) return    45.0;  // text #1 for 3 categories
         if (indexPath.row == 15) return     8.0;  // spacer
-        if (indexPath.row == 16) return   320.0;  // image 3 categories
+
+//        if (indexPath.row == 16) return   320.0;  // image 3 categories
+        if (indexPath.row == 16) return   200.0;  // image 3 categories
+
         if (indexPath.row == 17) return     1.0;  // spacer
         if (indexPath.row == 18) return   130.0;  // text #2 for 3 categories
 
@@ -2741,7 +2909,8 @@ nbn(100);
         if (indexPath.row == 20) return    30.0;  // title for relationships are really complex
 //        if (indexPath.row == 21) return   210.0;  // text for complexity part 2
 //        if (indexPath.row == 21) return   225.0;  // text for complexity part 2
-        if (indexPath.row == 21) return   240.0;  // text for complexity part 2
+//        if (indexPath.row == 21) return   240.0;  // text for complexity part 2
+        if (indexPath.row == 21) return   270.0;  // text for complexity part 2
         if (indexPath.row == 22) return    20.0;  // text for disclaimer
     }
     // if (  [gbl_currentMenuPlusReportCode isEqualToString: @"hompwc"])     // what color is the day?
@@ -2751,7 +2920,7 @@ nbn(100);
         if (indexPath.row == 1) return   210.0;  
         if (indexPath.row == 2) return   120.0;  
         if (indexPath.row == 3) return     8.0;  // spacer
-        if (indexPath.row == 4) return    55.0;  // image for overcome destiny
+        if (indexPath.row == 4) return    75.0;  // image for overcome destiny
         if (indexPath.row == 5) return     8.0;  // spacer
         if (indexPath.row == 6) return    20.0;  // text for disclaimer
     }
@@ -2767,10 +2936,10 @@ nbn(100);
         if (indexPath.row ==  6) return     8.0;  // spacer
         if (indexPath.row ==  7) return    30.0;  // title for complexity
         if (indexPath.row ==  8) return   140.0;  // text for complexity #1
-        if (indexPath.row ==  9) return    55.0;  // image two things
+        if (indexPath.row ==  9) return    70.0;  // image two things
         if (indexPath.row == 10) return     8.0;  // spacer
         if (indexPath.row == 11) return    70.0;  // text for complexity #2
-        if (indexPath.row == 12) return    55.0;  // image overcome trait
+        if (indexPath.row == 12) return    55.0;  // image willpower  overcome trait
         if (indexPath.row == 13) return    16.0;  // spacer
         if (indexPath.row == 14) return    20.0;  // text for disclaimer
     }
