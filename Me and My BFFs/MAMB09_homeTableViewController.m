@@ -22,16 +22,48 @@
 #import "MAMB09AppDelegate.h"   // to get globals
 #import "mamblib.h"
 
+//#include "Darwin.POSIX.netinet.in.h"
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netdb.h>
+#include <arpa/inet.h>
+
+/* 
+ * udpclient.c - A simple UDP client
+ * usage: udpclient <host> <port>
+ */
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+//#include <sys/types.h>
+//#include <sys/socket.h>
+#include <netinet/in.h>
+//#include <netdb.h> 
+
+#define BUFSIZE 1024
+
+
+
 @interface MAMB09_homeTableViewController ()
 
 //@property (strong, nonatomic)  UILabel *lcl_disclosureIndicatorLabel;  // set in viewDidLoad
+
+// forward declarations
+- (void) readSockData;
+
 
 @end
 
 //UITapGestureRecognizer *doubleTapGesture;   // used gbl_
 
 
+
 @implementation MAMB09_homeTableViewController
+
+
+CFSocketRef cfSocket;
+int  newsock;
 
 //@synthesize mambyObjectList;
 
@@ -43,9 +75,6 @@
     }
     return self;
 }
-
-
-
 
 
 //No this is not a bug. The behavior is explained here: developer.apple.com/library/ios/#featuredarticles/…
@@ -87,6 +116,9 @@
 }
 
 
+
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -97,96 +129,35 @@ tn();
   NSLog(@"in viewDidLoad  in HOME  HOME  ");
 
 
-    // add a method (processDoubleTap) to run on double tap
-    //
-    gbl_doubleTapGestureRecognizer = [
-       [UITapGestureRecognizer alloc] initWithTarget: self 
-                                              action: @selector( processDoubleTap: )
-    ];
-    [gbl_doubleTapGestureRecognizer    setNumberOfTapsRequired: 2];
-    [gbl_doubleTapGestureRecognizer setNumberOfTouchesRequired: 1];
-    gbl_doubleTapGestureRecognizer.delaysTouchesBegan = YES;       // for uitableview
-    [self.tableView addGestureRecognizer: gbl_doubleTapGestureRecognizer ];
 
 
-//    gbl_lastClick = [[[NSDate alloc] init] timeIntervalSince1970];
 
-//    WWW width=[240.930176]
-//    MMM width=[217.023926]
 //
-//CGSize siz = [@"WWWWWWWWWWWWWWW" sizeWithAttributes: @{NSFontAttributeName: [UIFont systemFontOfSize:17.0f]}];
-//  NSLog(@"WWW width=[%f]",siz.width);
-//       siz = [@"MMMMMMMMMMMMMMM" sizeWithAttributes: @{NSFontAttributeName: [UIFont systemFontOfSize:17.0f]}];
-//  NSLog(@"MMM width=[%f]",siz.width);
+// [ self shouldAutorotate ];
+// [ self supportedInterfaceOrientations ];
 //
-
-
-
- [ self shouldAutorotate ];
- [ self supportedInterfaceOrientations ];
-
-    gbl_justAddedPersonRecord = 0;  // do not reload home array
-    gbl_justAddedGroupRecord  = 0;  // do not reload home array
-
-    self.tableView.allowsSelectionDuringEditing = YES;
-
-    [self.navigationController.navigationBar setTranslucent: NO];
-//     self.navigationController.navigationBar.barTintColor = [UIColor blueColor] ;
-     self.navigationController.navigationBar.barTintColor = gbl_color_cAplTop;
-
-
-    // assign height of tableview rows here
-    
-
-
-// try to reduce load time of first cal yr report   
-
-//UIWebView *webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 0, 320, 568)];
-//webView.delegate = self;   
+//    gbl_justAddedPersonRecord = 0;  // do not reload home array
+//    gbl_justAddedGroupRecord  = 0;  // do not reload home array
 //
+//    self.tableView.allowsSelectionDuringEditing = YES;
 //
-//    [self.webView setUserInteractionEnabled:NO];
-//    [self.webView loadHTMLString:finalString baseURL:nil];
-//
-//    UIWebView *webview=[[UIWebView alloc]initWithFrame:CGRectMake(0, 0, 1024,768)];
-//    NSString *url=@"http://www.google.com";
-//    NSURL *nsurl=[NSURL URLWithString:url];
-//    NSURLRequest *nsrequest=[NSURLRequest requestWithURL:nsurl];
-//    [webview loadRequest:nsrequest];
-//    [self.view addSubview:webview];
+//    [self.navigationController.navigationBar setTranslucent: NO];
+////     self.navigationController.navigationBar.barTintColor = [UIColor blueColor] ;
+//     self.navigationController.navigationBar.barTintColor = gbl_color_cAplTop;
 //
 //
 
-//nbn(1);
-////    UIWebView *webview=[[UIWebView alloc]initWithFrame:CGRectMake(0, 0, 40, 40)];
-//    UIWebView *webview=[[UIWebView alloc]initWithFrame:CGRectMake(0, 0, 11, 11)];
-//nbn(2);
-////    NSString *stringForHTML = @"X";
-////    [webview loadHTMLString: stringForHTML   baseURL: nil];
-//    [webview loadHTMLString: [NSString stringWithFormat:@"<html><body>X</body></html>"]  baseURL: nil];
-//nbn(3);
-//    [self.view addSubview:webview];
-//nbn(5);
-//
-
-//    UIWebView *webview=[[UIWebView alloc]initWithFrame:CGRectMake(0, 0, 11, 11)];
-//    NSURLRequest *nsrequest=[NSURLRequest requestWithURL: nil];
-//    [webview loadRequest: nsrequest];
-
-
-//   UIWebView *webview =[[UIWebView alloc]initWithFrame:CGRectMake(0, 0, 11, 11)];
-//   NSString *someHTML = [webview stringByEvaluatingJavaScriptFromString:@""];   
 
 
 
-    // try to reduce load time of first cal yr report   
+    // try to reduce load time of first cal yr report   (uiwebview)
     // this WORKED!
-    //
+    //    this maybe loads  and initializes javascript ahead of first uiwebview report
 tn();
   NSLog(@"BEG  use javascript to  grab document.title - to try to reduce load time of first cal yr report   ");
 
-    UIWebView *webview = [[UIWebView alloc]initWithFrame:CGRectMake(0, 0, 11, 11)];
-    NSString *xtitle   = [webview stringByEvaluatingJavaScriptFromString:@"document.title"];  
+    UIWebView *tmpwebview = [[UIWebView alloc]initWithFrame:CGRectMake(0, 0, 11, 11)];
+    NSString *xtitle   = [tmpwebview stringByEvaluatingJavaScriptFromString:@"document.title"];  
   NSLog(@"END  use javascript to  grab document.title - to try to reduce load time of first cal yr report   ");
   NSLog(@"xtitle   =[%@]",xtitle   );
     //
@@ -488,6 +459,17 @@ nbn(100);
     BOOL haveGrp, havePer, haveMem, haveGrpRem, havePerRem;
     MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global methods in appDelegate.m
                                                                                    //BOOL ret01;
+
+
+
+
+    [myappDelegate gcy ];  // get real current year for calendar year cap (= curr yr + 1)
+  NSLog(@"gbl_cy_apl 1 =[%@]",gbl_cy_apl );
+  NSLog(@"gbl_cy_goo 1 =[%@]",gbl_cy_goo );
+
+
+
+
     NSError *err01;
 
 
@@ -4046,5 +4028,919 @@ nbn(357);
 //        // end of  UILabel for the disclosure indicator, ">",  for tappable cells
 //
 
+
+//
+//// this works for getting the current date from internet
+//  NSLog(@"start getting date real");
+//
+//NSMutableURLRequest *myrequest = [[NSMutableURLRequest alloc]
+//                                initWithURL:[NSURL URLWithString:@"http://google.com" ]];
+//[myrequest setHTTPMethod:@"GET"];
+//NSHTTPURLResponse *myhttpResponse = nil;
+//[NSURLConnection sendSynchronousRequest:myrequest returningResponse:&myhttpResponse error:nil];
+//NSString *mydateString = [[myhttpResponse allHeaderFields] objectForKey:@"Date"];
+////NSDate *gooCurrentDate = [NSDate dateWithNaturalLanguageString:dateString locale:NSLocale.currentLocale];
+////  NSLog(@"gooCurrentDate =[%@]",gooCurrentDate );
+//  NSLog(@"mydateString =[%@]",mydateString );
+//
+//
+//
+
+
+//
+//// below gets this :  App Transport Security has blocked a cleartext HTTP (http://) resource load since it is insecure.
+////                    Temporary exceptions can be configured via your app's Info.plist file.
+////
+//NSURLSession *session = [NSURLSession sharedSession];
+//[[session   dataTaskWithURL: [NSURL URLWithString:@"https://google.com" ]
+//          completionHandler: ^(NSData        *mydata,
+//                               NSURLResponse *response,
+//                               NSError       *error     ) {
+//            // handle response
+////  NSLog(@"mydata=[%@]",mydata);
+//   NSString *mydatastring = [[NSString alloc] initWithData: mydata   encoding: NSUTF8StringEncoding] ;
+//  NSLog(@"mydatastring =[%@]",mydatastring );
+//    NSString *yourStr= [NSString stringWithUTF8String: [mydata bytes]];
+//  NSLog(@"yourStr=[%@]",yourStr);
+////NSString *mydateString = [mydata  objectForKey:@"Date"];
+////  NSLog(@"mydateString =[%@]",mydateString );
+//
+////        NSString *mydateString = [[myhttpResponse allHeaderFields] objectForKey:@"Date"];
+//
+//  }] resume];
+//
+//
+
+
+
+//
+////static void SocketReadCallback(CFSocketRef s, CFSocketCallBackType type, CFDataRef address, const void *data, void *info)
+//void readSockData()
+//    // Called by the CFSocket read callback to actually read and process data 
+//    // from the socket.
+//{
+//tn();
+//  NSLog(@"in readSockData ");
+//kin(newsock);
+//    int                     err;
+//    int                     sock;
+//    struct sockaddr_storage addr;
+//    socklen_t               addrLen;
+//    uint8_t                 buffer[512];
+//    ssize_t                 bytesRead;
+//    
+////    sock = CFSocketGetNative(self->_cfSocket);
+////    sock = CFSocketGetNative(cfSocket);
+////    sock = cfSocket;
+////    assert(sock >= 0);
+//    
+//    addrLen = sizeof(addr);
+//
+////dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+////    bytesRead = recvfrom(sock, buffer, sizeof(buffer), 0, (struct sockaddr *) &addr, &addrLen);
+////    bytesRead = recv((int)cfSocket, buffer, sizeof(buffer), 0);
+//    bytesRead = recv((int)newsock, buffer, sizeof(buffer), 0);
+////});
+//  NSLog(@"bytesRead =[%ld]",bytesRead );
+//
+//    if (bytesRead < 0) {
+//        err = errno;
+//  NSLog(@"bytes < 0");
+//    } else if (bytesRead == 0) {
+//  NSLog(@"bytes  ==  0");
+//    } else {
+//        NSData *    dataObj;
+////        NSData *    addrObj;
+// 
+//        err = 0;
+// 
+//        dataObj = [NSData dataWithBytes: buffer length: (NSUInteger) bytesRead ];
+//  NSLog(@"dataObj =[%@]",dataObj );
+//
+////<.>
+////NSUInteger len = [dataObj length];
+////Byte *byteData = (Byte*)malloc(len + 8);
+////memcpy(byteData, [data bytes], len);
+////
+////<.>
+////
+//  NSLog(@"dataObj =[%@]",dataObj );
+//
+//NSString* newStr = [[NSString alloc] initWithData: dataObj encoding:NSUTF8StringEncoding];
+//  NSLog(@"newStr =[%@]",newStr );
+//
+//
+////        assert(dataObj != nil);
+////        addrObj = [NSData dataWithBytes: &addr  length: addrLen  ];
+////        assert(addrObj != nil);
+// 
+//        // Tell the delegate about the data.
+//        
+////        if ( (self.delegate != nil) && [self.delegate respondsToSelector:@selector(echo:didReceiveData:fromAddress:)] ) {
+////            [self.delegate echo:self didReceiveData:dataObj fromAddress:addrObj];
+////        }
+// 
+//        // Echo the data back to the sender.
+// 
+////        if (self.isServer) {
+////            [self sendData:dataObj toAddress:addrObj];
+////        }
+//    }
+//
+//
+//    
+//} // readSockData
+//
+//
+
+
+//
+//- (void)stream:(NSStream *)stream handleEvent: (NSStreamEvent)eventCode
+//{
+//  NSLog(@"in handleEvent!");
+//  NSLog(@"eventCode=[%ld]",eventCode);
+//
+//NSNumber *myec = [NSNumber numberWithInt:eventCode];
+//
+//  NSLog(@"=myec[%@]",myec);
+//
+//
+//switch (eventCode){
+//
+//nbn(11);
+//    case NSStreamEventErrorOccurred:
+//        NSLog(@"ErrorOccurred");
+//        break;
+//    case NSStreamEventEndEncountered:
+//        NSLog(@"EndEncountered");
+//        break;
+//    case NSStreamEventNone:
+//        NSLog(@"None");
+//        break;
+//    case NSStreamEventHasBytesAvailable:
+//        NSLog(@"HasBytesAvaible");
+////        var buffer = [UInt8](count: 1024, repeatedValue: 0)
+////        if ( aStream == inputstream){
+//
+////            while (inputstream.hasBytesAvailable){
+////                int len = inputstream.read(&buffer, maxLength: buffer.count) 
+////                if(len > 0){
+////                    var output = NSString(bytes: &buffer, length: buffer.count, encoding: NSUTF8StringEncoding) 
+////                    if (output != ""){
+////                        NSLog(@"server said: %@", output!)
+////                    }
+////                }
+////
+////            } 
+////        }
+//        break;
+////    case NSStreamEventAllZeros:
+////        NSLog(@"allZeros");
+////        break;
+//    case NSStreamEventOpenCompleted:
+//        NSLog(@"OpenCompleted");
+//        break;
+//    case NSStreamEventHasSpaceAvailable:
+//        NSLog(@"HasSpaceAvailable");
+//        break;
+//nbn(14);
+//}
+//
+//nbn(15);
+// 
+//    switch(eventCode) {
+//        case NSStreamEventHasBytesAvailable:
+//        {
+//  NSLog(@"in NSStreamEventHasBytesAvailable!");
+//            if(!gbl_data) {
+//                gbl_data = [NSMutableData data] ;
+//            }
+//            uint8_t buf[1024];
+////            unsigned int len = 0;
+//            long len = 0;
+//            len = [(NSInputStream *)stream read:buf maxLength:1024];
+//            if(len) {
+//                [gbl_data appendBytes:(const void *)buf length:len];
+//  NSLog(@"gbl_data =[%@]",gbl_data );
+//                // bytesRead is an instance variable of type NSNumber.
+////                [gbl_bytesRead setIntValue:[gbl_bytesRead intValue] + len];
+//            } else {
+//                NSLog(@"no buffer!");
+//            }
+//            break;
+//        }
+//        case NSStreamEventEndEncountered:
+//        {
+//  NSLog(@"in NSStreamEventEndEncountered!");
+//            [stream close];
+//            [stream removeFromRunLoop: [NSRunLoop currentRunLoop]
+//                              forMode: NSDefaultRunLoopMode];
+////            [stream release];
+//            stream = nil; // stream is ivar, so reinit it
+//            break;
+//        }
+//
+//        // continued
+//    }
+//nbn(20);
+//} // end of  (void)stream:(NSStream *)stream handleEvent:(NSStreamEvent)eventCode
+//
+
+
+//
+//// <.> getaddrinfo man page    http://linux.die.net/man/3/getaddrinfo
+//// struct addrinfo {
+////     int              ai_flags;
+////     int              ai_family;
+////     int              ai_socktype;
+////     int              ai_protocol;
+////     socklen_t        ai_addrlen;
+////     struct sockaddr *ai_addr;
+////     char            *ai_canonname;
+////     struct addrinfo *ai_next;
+//// };
+//// 
+//// int getaddrinfo(const char *node, const char *service,
+////                 const struct addrinfo *hints,
+////                 struct addrinfo **res);
+//// 
+//// return  Value
+//// 
+//// getaddrinfo() returns 0 if it succeeds, or one of the following nonzero error codes:
+//// 
+//// EAI_ADDRFAMILY
+//// The specified network host does not have any network addresses in the requested address family.
+//// EAI_AGAIN
+//// The name server returned a temporary failure indication. Try again later.
+//// EAI_BADFLAGS
+//// hints.ai_flags contains invalid flags; or, hints.ai_flags included AI_CANONNAME and name was NULL.
+//// EAI_FAIL
+//// The name server returned a permanent failure indication.
+//// EAI_FAMILY
+//// The requested address family is not supported.
+//// EAI_MEMORY
+//// Out of memory.
+//// EAI_NODATA
+//// The specified network host exists, but does not have any network addresses defined.
+//// EAI_NONAME
+//// The node or service is not known; or both node and service are NULL; or AI_NUMERICSERV was specified in hints.ai_flags and service was not a numeric port-number string.
+//// EAI_SERVICE
+//// The requested service is not available for the requested socket type. It may be available through another socket type. For example, this error could occur if service was "shell" (a service only available on stream sockets), and either hints.ai_protocol was IPPROTO_UDP, or hints.ai_socktype was SOCK_DGRAM; or the error could occur if service was not NULL, and hints.ai_socktype was SOCK_RAW (a socket type that does not support the concept of services).
+//// EAI_SOCKTYPE
+//// The requested socket type is not supported. This could occur, for example, if hints.ai_socktype and hints.ai_protocol are inconsistent (e.g., SOCK_DGRAM and IPPROTO_TCP, respectively).
+//// EAI_SYSTEM
+//// Other system error, check errno for details.
+//// The gai_strerror() function translates these error codes to a human readable string, suitable for error reporting.
+//// Files
+//// /etc/gai.conf
+//// 
+////int
+////main(int argc, char *argv[])
+////{
+//tn();
+//  NSLog(@" start // <.> getaddrinfo man page    http://linux.die.net/man/3/getaddrinfo ");
+//    struct addrinfo hints;
+//    struct addrinfo *result, *rp;
+//    int sfd, s, j;
+//    size_t len;
+//    ssize_t nread;
+//    char buf[1024], ksnbuf[1024];;
+//
+////    if (argc < 3) {
+////        fprintf(stderr, "Usage: %s host port msg...\n", argv[0]);
+////        exit(EXIT_FAILURE);
+////    }
+//
+//   /* Obtain address(es) matching host/port */
+//
+//    memset(&hints, 0, sizeof(struct addrinfo));
+////    hints.ai_family = AF_UNSPEC;    /* Allow IPv4 or IPv6 */
+//    hints.ai_family   = AF_INET;
+//    hints.ai_socktype = SOCK_DGRAM; /* Datagram socket */
+//    hints.ai_flags    = 0;
+//    hints.ai_protocol = 0;          /* Any protocol */
+//
+////    s = getaddrinfo(argv[1], argv[2], &hints, &result);
+////    s = getaddrinfo("time.nist.gov", "13", &hints, &result);
+////    s = getaddrinfo("time.nist.gov", "daytime", &hints, &result);
+////    s = getaddrinfo("time.nist.gov", "13", &hints, &result);
+////    s = getaddrinfo("//https:/time-c.nist.gov", "13", &hints, &result);
+////    s = getaddrinfo("129.6.15.29", "13", &hints, &result);
+////    s = getaddrinfo("time.nist.gov", "13", &hints, &result);
+//    s = getaddrinfo("129.6.15.29", "13", &hints, &result);
+//tmn("result->ai_addr->sa_data", result->ai_addr->sa_data, 14);
+//
+//    if (s != 0) {
+//        sprintf(ksnbuf, "getaddrinfo error: %s\n", gai_strerror(s));
+//ksn(ksnbuf);
+//    }
+//
+//   // getaddrinfo() returns a list of address structures.
+//   //  Try each address until we successfully connect(2).
+//   //  If socket(2) (or connect(2)) fails, we (close the socket
+//   //  and) try the next address.
+//   //
+//   for (rp = result; rp != NULL; rp = rp->ai_next) {
+//nbn(98);
+//int __block retval4;
+//       sfd = socket(rp->ai_family, rp->ai_socktype , rp->ai_protocol );
+//kin(sfd);
+//kin(rp->ai_socktype );
+//kin(rp->ai_protocol );
+//       if (sfd == -1) continue;
+//
+//rp->ai_protocol = 13;
+//kin(rp->ai_protocol );
+//
+//        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+//       retval4 = connect(sfd, rp->ai_addr, rp->ai_addrlen);
+//});
+//kin(retval4);
+//       if (retval4 != -1) break;                  /* Success */
+//
+//
+////       close(sfd);
+//    }
+//
+//   if (rp == NULL) { ksn("Could not connect   no address succeeded\n"); } /* No address succeeded */
+//
+//   freeaddrinfo(result);           /* No longer needed */
+//
+//   // Send remaining command-line arguments as separate
+//   //  datagrams, and read responses from server 
+////   for (j = 3; j < argc; j++) {
+////        len = strlen(argv[j]) + 1; /* +1 for terminating null byte */
+////
+////       if (len + 1 > 1024) { ksn( "Ignoring long message in argument %d\n", j); }
+////
+////       if (write(sfd, argv[j], len) != len) { ksn( "partial/failed write\n"); }
+////
+////       nread = read(sfd, buf, 1024);
+////       if (nread == -1) { perror("read"); }
+////        sprintf(ksnbuf, "Received %ld bytes: %s\n", (long) nread, buf);
+////ksn(ksnbuf)
+////tr("received buf ="); ksn(buf);
+////    }
+//    // send only 1 msg
+//        len = strlen("") + 1; /* +1 for terminating null byte */
+//kin(len);
+//int retval5; retval5 = 999;
+//       retval5 = write(sfd, "", len);
+//kin(retval5);
+//       if (retval5 != len) { ksn( "partial/failed write\n"); }
+//nbn(100);
+//
+//
+//       nread = read(sfd, buf, 1024);
+//nbn(101);
+//       if (nread == -1) { perror("read"); }
+//       sprintf(ksnbuf, "Received %ld bytes: %s\n", (long) nread, buf);
+//ksn(ksnbuf);
+//tr("received buf ="); ksn(buf);
+//
+////} // main
+//// <.>  end of   getaddrinfo man page    http://linux.die.net/man/3/getaddrinfo
+//
+//
+
+
+//
+////<.> udpclient.c     http://www.cs.cmu.edu/afs/cs/academic/class/15213-f99/www/class26/udpclient.c
+//tn();
+//  NSLog(@"start UDPclient!!");
+//  //int main(int argc, char **argv) {
+//    int sockfd, portno, n;
+//    int serverlen;
+//    struct sockaddr_in serveraddr;
+//    struct hostent *server;
+//    char *hostname;
+//    char buf[BUFSIZE];
+//
+////    hostname = argv[1];
+////    portno = atoi(argv[2]);
+////    hostname = "ntp1.glb.nist.gov";
+////    hostname = "http://www.time.gov/";
+////    hostname = "time.nist.gov";
+////    hostname = "time-a.nist.gov";
+////    hostname = "http://www.time.gov/daytime";
+//    hostname = "www.time.gov";
+//    portno   = 13;
+//nbn(100);
+//ksn(hostname);
+//kin(portno);
+//    /* socket: create the socket */
+//    sockfd = socket(AF_INET, SOCK_DGRAM, 0);
+//    if (sockfd < 0) perror("ERROR opening socket");
+//
+//    /* gethostbyname: get the server's DNS entry */
+////    server = gethostbyname(hostname);
+////    server = gethostbyname(hostname);
+//    server = getservbyport(portno);
+//    if (server == NULL) {
+//        fprintf(stderr,"ERROR, no such host as %s\n", hostname);
+//        exit(0);
+//    }
+//
+//    /* build the server's Internet address */
+//    bzero((char *) &serveraddr, sizeof(serveraddr));
+//    serveraddr.sin_family = AF_INET;
+//    bcopy((char *)server->h_addr,   (char *) &serveraddr.sin_addr.s_addr, server->h_length );
+//    serveraddr.sin_port = htons(portno);
+//nbn(101);
+//
+//    /* get a message from the user */
+//    strcpy(buf, "hey23");
+//
+//    /* send the message to the server */
+//    serverlen = sizeof(serveraddr);
+//    n = sendto(sockfd, buf, strlen(buf), 0, &serveraddr, serverlen);
+//    if (n < 0) 
+//      perror("ERROR in sendto");
+//    
+//    /* print the server's reply */
+//    n = recvfrom(sockfd, buf, strlen(buf), 0, &serveraddr, &serverlen);
+//    if (n < 0) perror("ERROR in recvfrom");
+//tr("returned from server=["); ksn(buf);tn();
+//  //} // main
+////<.> end udpclient.c
+//
+//
+
+
+//CFReadStreamRef readStream;
+//    CFWriteStreamRef writeStream;
+////    CFStreamCreatePairWithSocketToHost(NULL, (CFStringRef)@"192.168.1.90", 23, &readStream, &writeStream); //192.168.1.90 is the server address, 23 is standard telnet port
+//    CFStreamCreatePairWithSocketToHost(NULL, (CFStringRef)@"ntp1.glb.nist.gov", 13, &readStream, &writeStream); //192.168.1.90 is the server address, 23 is standard telnet port
+//    inputStream = (__bridge NSInputStream *)readStream;
+//    outputStream = (__bridge NSOutputStream *)writeStream;
+//
+//    [inputStream setDelegate:self];
+//    [outputStream setDelegate:self];
+//
+//    [inputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+//    [outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+//
+//    [inputStream open];
+//    [outputStream open];
+//
+//NSData *readdata = [[NSData alloc] initWithData:[@"hey" dataUsingEncoding:NSASCIIStringEncoding]]; //is ASCIIStringEncoding what I want?
+//
+//NSData *data = [[NSData alloc] initWithData:[@"hey" dataUsingEncoding:NSASCIIStringEncoding]]; //is ASCIIStringEncoding what I want?
+//[outputStream write:[data bytes] maxLength:[data length]];
+//NSLog(@"Sent message to server: %@", message);
+//
+
+
+
+//
+// // Create Socket
+//  NSLog(@"create socket ");
+//int Handle = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+//if (Handle <=0){
+//    printf("Failed to create socket\n");
+//}
+//
+//NSString    *hostName;
+//NSData      *hostAddress;
+//NSUInteger  port;
+//
+//hostName = @"time.nist.gov";
+//port     = 13;
+//
+//CFHostRef   cfHost;
+////CFSocketRef cfSocket;
+//
+//cfHost = CFHostCreateWithName(NULL, (__bridge CFStringRef) hostName);
+//kin(cfHost);
+//
+////        CFHostSetClient(self->_cfHost, HostResolveCallback, &context);
+//
+//CFHostScheduleWithRunLoop(cfHost, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
+//
+////        success = CFHostStartInfoResolution(self->_cfHost, kCFHostAddresses, &streamError);
+////        if (success) {
+////            self.hostName = hostName;
+////            self.port = port;
+////            // ... continue in HostResolveCallback
+////        } else {
+////            [self stopWithStreamError:streamError];
+////       }
+//
+////    - (BOOL)setupSocketConnectedToAddress:(NSData *)address port:(NSUInteger)port error:(NSError **)errorPtr
+//int                     err;
+//int                     junk;
+//int                     sock;
+//const CFSocketContext   context = { 0, (__bridge void *)(self), NULL, NULL, NULL };
+//CFRunLoopSourceRef      rls;
+//
+//
+//        // Create the UDP socket itself.
+//        
+//        err = 0;
+//        sock = socket(AF_INET, SOCK_DGRAM, 0);
+//nbn(1);
+//kin(sock);
+//        if (sock < 0) {
+//nbn(2);
+//            err = errno;
+//        }
+//
+//        struct sockaddr_in      addr;
+//        memset(&addr, 0, sizeof(addr));
+//
+////        [address getBytes:&addr length:[hostAddress length]];
+//        
+//        addr.sin_family = AF_INET;
+//        addr.sin_port   = htons(port);
+//        err = connect(sock, (const struct sockaddr *) &addr, sizeof(addr));
+//tr("err1=");kin(err);
+//kin(sock);
+//
+//        // From now on we want the socket in non-blocking mode to prevent any unexpected 
+//        // blocking of the main thread.  None of the above should block for any meaningful 
+//        // amount of time.
+//            int flags;
+//            flags = fcntl(sock, F_GETFL);
+//            err = fcntl(sock, F_SETFL, flags | O_NONBLOCK);
+//tr("err2=");kin(err);
+//kin(sock);
+//            if (err < 0) {
+//                NSLog(@"could not set to nonblocking");
+//            }
+//        
+//
+//        // Wrap the socket in a CFSocket that's scheduled on the runloop.
+//nbn(3);
+////        if (err == 0) {
+////nbn(4);
+//////            cfSocket = CFSocketCreateWithNative(NULL, sock, kCFSocketReadCallBack, SocketReadCallback, &context);
+////            cfSocket = CFSocketCreateWithNative(NULL, sock, kCFSocketReadCallBack, readSockData, &context);
+//// 
+////            // The socket will now take care of cleaning up our file descriptor.
+//// 
+//////            assert( CFSocketGetSocketFlags(cfSocket) & kCFSocketCloseOnInvalidate );
+////            sock = -1;
+//// 
+////            rls = CFSocketCreateRunLoopSource(NULL, cfSocket, 0);
+////            assert(rls != NULL);
+////            
+////            CFRunLoopAddSource(CFRunLoopGetCurrent(), rls, kCFRunLoopDefaultMode);
+////            
+////            CFRelease(rls);
+////        }
+////
+//        
+//nbn(5);
+//
+////    int                     err;
+////    int                     sock;
+//    ssize_t                 bytesWritten;
+//    const struct sockaddr * addrPtr;
+//    socklen_t               addrLen;
+//
+//NSString* sendstr = @"teststring";
+//NSData* senddata = [sendstr dataUsingEncoding:NSUTF8StringEncoding];
+//
+////    bytesWritten = sendto(sock, [senddata bytes], [senddata length], 0, addrPtr, addrLen);
+//    bytesWritten = send(sock, "hey", 4, 0);
+//
+//  NSLog(@"bytesWritten2=[%ld]",bytesWritten );
+//
+//newsock = sock;
+//kin(sock);
+//kin(newsock);
+//  readSockData();
+//nbn(6);
+//
+//
+
+
+
+
+//<.>
+//    NSString *urlStr = @"time.nist.gov";
+//
+//        NSURL *website = [NSURL URLWithString: urlStr];
+//        if (!website) {
+//            NSLog(@"%@ is not a valid URL", website);
+//            return;
+//        }
+// 
+//        CFReadStreamRef readStream;
+//        CFWriteStreamRef writeStream;
+////      CFStreamCreatePairWithSocketToHost(NULL, (CFStringRef)[website host], 13, &readStream, &writeStream);
+//        CFStreamCreatePairWithSocketToHost(NULL, (__bridge CFStringRef)[website host], 13, &readStream, &writeStream);
+//
+//// Write something (the socket is not valid before you read or write):
+//CFWriteStreamOpen(writeStream);
+//CFWriteStreamWrite(writeStream, "Hello\n", 6);
+////const UInt8 *mywritestuff = @[ @0xff ];
+////CFWriteStreamWrite(writeStream, mywritestuff, 1);
+//
+//
+//
+//// Get the native socket handle:
+//CFDataRef socketData = CFWriteStreamCopyProperty(writeStream, kCFStreamPropertySocketNativeHandle);
+//CFSocketNativeHandle socket;
+//CFDataGetBytes(socketData, CFRangeMake(0, sizeof(CFSocketNativeHandle)), (UInt8 *)&socket);
+////CFDataGetBytes(socketData, CFRangeMake(0, 1023), (UInt8 *)&socket);
+//CFSocketNativeHandle Handle = socket;
+//<.>
+//
+
+
+//
+//// Bind Socket
+//struct sockaddr_in address;
+//address.sin_family = AF_INET;
+////address.sin_addr.s_addr = INADDR_ANY;
+//
+//
+//unsigned char buf_in6_addr[sizeof(struct in6_addr)];
+//
+//int aretval;
+//aretval = inet_pton(AF_INET, "time.nist.gov", buf_in6_addr);
+////aretval = inet_pton(AF_INET, "//https:/google.com", buf_in6_addr);
+//kin(aretval);
+//if (aretval < 0){
+//    printf("Failed to inet_pton\n");
+//    perror("inet_pton");
+//}
+//
+//kin(buf_in6_addr[0]);
+//kin(buf_in6_addr[1]);
+//kin(buf_in6_addr[2]);
+//kin(buf_in6_addr[3]);
+//kin(buf_in6_addr[4]);
+//kin(buf_in6_addr[5]);
+//kin(buf_in6_addr[6]);
+//kin(buf_in6_addr[7]);
+//kin(buf_in6_addr[8]);
+//
+//
+//if (aretval == 1 ) {
+//  trn("addr was converted");
+//}
+//
+//
+//address.sin_addr.s_addr = buf_in6_addr;
+////address.sin_port = htons((unsigned short) 4966);
+//address.sin_port = htons((unsigned short) 13);
+//
+//aretval = bind( Handle, (struct sockaddr *) &address, sizeof(struct sockaddr_in) );
+//kin(aretval);
+//if (aretval < 0){
+//    printf("Failed to Bind\n");
+//    perror("bind");
+//}
+//printf("Bind Done\n");
+//
+//// Set to non Blocking
+////int NonBlocking = 1;
+////if (fcntl(Handle, F_SETFL, O_NONBLOCK, NonBlocking) == -1){
+////    printf("Faile to set nonblocking\n");
+////}
+//Boolean ContinueLoop = true;
+//
+//unsigned char Packet_Data[256];
+//unsigned int Maximum_Packet_Size = sizeof(Packet_Data);
+//
+//struct sockaddr_in From_Address;
+//socklen_t FromLength = sizeof(From_Address);
+//
+////while (ContinueLoop){
+//    int Received_Bytes = recvfrom(Handle, (char *)Packet_Data, Maximum_Packet_Size, 0, (struct sockaddr *)&From_Address, &FromLength);
+//
+//    if (Received_Bytes > 0){
+//      ContinueLoop = false;
+//      printf("Got Data \n");
+//    } else {
+//      printf("DID  NOT got Data \n");
+//    }
+//
+//ksn(Packet_Data);
+////}//wend
+//
+//    close(Handle);
+//
+//
+
+
+
+//<.>
+//- (IBAction)searchForSite:(id)sender
+//{
+//    NSString *urlStr = [sender stringValue];
+//    if (![urlStr isEqualToString:@""]) {
+//        NSURL *website = [NSURL URLWithString:urlStr];
+//        if (!website) {
+//            NSLog(@"%@ is not a valid URL");
+//            return;
+//        }
+// 
+//        CFReadStreamRef readStream;
+//        CFWriteStreamRef writeStream;
+//        CFStreamCreatePairWithSocketToHost(NULL, (CFStringRef)[website host], 80, &readStream, &writeStream);
+// 
+//        NSInputStream *inputStream = (__bridge_transfer NSInputStream *)readStream;
+//        NSOutputStream *outputStream = (__bridge_transfer NSOutputStream *)writeStream;
+//        [inputStream setDelegate:self];
+//        [outputStream setDelegate:self];
+//        [inputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+//        [outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+//        [inputStream open];
+//        [outputStream open];
+// 
+//        /* Store a reference to the input and output streams so that
+//           they don't go away.... */
+//        ...
+//    }
+//}
+//
+
+//
+//    NSString *urlStr = @"time.nist.gov";
+//    if (![urlStr isEqualToString:@""]) {
+//        NSURL *website = [NSURL URLWithString: urlStr];
+//        if (!website) {
+//            NSLog(@"%@ is not a valid URL", website);
+//            return;
+//        }
+// 
+//        CFReadStreamRef readStream;
+//        CFWriteStreamRef writeStream;
+////      CFStreamCreatePairWithSocketToHost(NULL, (CFStringRef)[website host], 13, &readStream, &writeStream);
+//        CFStreamCreatePairWithSocketToHost(NULL, (__bridge CFStringRef)[website host], 13, &readStream, &writeStream);
+//
+//// Write something (the socket is not valid before you read or write):
+//CFWriteStreamOpen(writeStream);
+//CFWriteStreamWrite(writeStream, "Hello\n", 6);
+////const UInt8 *mywritestuff = @[ @0xff ];
+////CFWriteStreamWrite(writeStream, mywritestuff, 1);
+//
+//
+//
+//// Get the native socket handle:
+//CFDataRef socketData = CFWriteStreamCopyProperty(writeStream, kCFStreamPropertySocketNativeHandle);
+//CFSocketNativeHandle socket;
+//CFDataGetBytes(socketData, CFRangeMake(0, sizeof(CFSocketNativeHandle)), (UInt8 *)&socket);
+////CFDataGetBytes(socketData, CFRangeMake(0, 1023), (UInt8 *)&socket);
+//
+//char mydatebuf[1024];
+//
+//
+////
+//////NSData *myData = (NSData *)myCFDataRef; //  It's toll-free bridged, so you just have to cast it.
+////NSData *myData = (__bridge NSData *)socketData; //  It's toll-free bridged, so you just have to cast it.
+////  NSLog(@"myData =[%@]",myData );
+//////NSString *mydatastring = [[[NSString alloc] initWithData: myData encoding:NSUTF8StringEncoding] autorelease];
+////NSString *mydatastring = [[NSString alloc] initWithData: myData encoding:NSUTF8StringEncoding] ;
+////  NSLog(@"mydatastring =[%@]xxx",mydatastring );
+////
+//
+//
+
+
+
+
+//
+////      CFIndex CFReadStreamRead ( CFReadStreamRef stream, UInt8 *buffer, CFIndex bufferLength );
+//        UInt8 myUIntBuf[1024];
+//        CFIndex mycfindex;
+//        mycfindex = 1024;
+////        CFIndex CFReadStreamRead (readStream, myUInt8uf,  mycfindex );
+//        CFIndex CFReadStreamRead ( CFReadStreamRef readStream, UInt8 *myUIntBuf, CFIndex mycfindex );
+//// NSLog(@"myUIntBuf=[%@]",myUIntBuf);
+//ksn(myUIntBuf);
+//
+
+
+//
+//nbn(1);
+////        NSURL *website = [NSURL URLWithString: @"time.gov"];
+//        NSURL *website = [NSURL URLWithString: @"http://time.nist.gov"];
+//        CFReadStreamRef  readStream;
+//        CFWriteStreamRef writeStream;
+////        CFStreamCreatePairWithSocketToHost(NULL, (CFStringRef)[website host], 80, &readStream, &writeStream);
+//        CFStreamCreatePairWithSocketToHost(NULL, (__bridge CFStringRef)[website host], 13, &readStream, &writeStream);
+//
+//        NSInputStream *inputStream = (__bridge_transfer NSInputStream *)readStream;
+//        NSOutputStream *outputStream = (__bridge_transfer NSOutputStream *)writeStream;
+//        [inputStream setDelegate:self];
+//        [outputStream setDelegate:self];
+//        [inputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+//        [outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+//        [inputStream open];
+//        [outputStream open];
+//
+//nbn(10);
+// 
+//        /* Store a reference to the input and output streams so that
+//           they don't go away.... */
+////        ...
+//
+////<.>
+//
+//
+//
+////- (void)sendMessage: (NSString*) message{ //called when the user interacts with UISwitches, is supposed to send message to server
+//NSData *data = [[NSData alloc] initWithData:[@"x" dataUsingEncoding:NSASCIIStringEncoding]]; 
+//[outputStream write:[data bytes] maxLength:[data length]];
+//NSLog(@"Sent message to server: ");
+////}
+//
+//  NSLog(@"gbl_data=[%@]",gbl_data);
+//
+//
+////NSInteger result;
+////uint8_t buffer[1024]; // BUFFER_LEN can be any positive integer
+////  NSLog(@"inputStream=[%@]",inputStream);
+////while((result = [inputStream read:buffer maxLength:1024]) != 0) {
+////    if(result > 0) {
+////        // buffer contains result bytes of data to be handled
+////  NSLog(@"result =[%ld]",result);
+////    } else {
+////        // The stream had an error. You can get an NSError object using [iStream streamError]
+////  NSLog(@" // The stream had an error. You can get an NSError object using [iStream streamError] ");
+////        break;
+////    }
+////}
+////  NSLog(@"result2=[%ld]",result);
+////  NSLog(@"buffer=[%@]",buffer);
+////
+//
+//
+//
+//
+//
+//
+//
+//
+//    // add a method (processDoubleTap) to run on double tap
+//    //
+//    gbl_doubleTapGestureRecognizer = [
+//       [UITapGestureRecognizer alloc] initWithTarget: self 
+//                                              action: @selector( processDoubleTap: )
+//    ];
+//    [gbl_doubleTapGestureRecognizer    setNumberOfTapsRequired: 2];
+//    [gbl_doubleTapGestureRecognizer setNumberOfTouchesRequired: 1];
+//    gbl_doubleTapGestureRecognizer.delaysTouchesBegan = YES;       // for uitableview
+//    [self.tableView addGestureRecognizer: gbl_doubleTapGestureRecognizer ];
+//
+//
+////    gbl_lastClick = [[[NSDate alloc] init] timeIntervalSince1970];
+//
+////    WWW width=[240.930176]
+////    MMM width=[217.023926]
+////
+////CGSize siz = [@"WWWWWWWWWWWWWWW" sizeWithAttributes: @{NSFontAttributeName: [UIFont systemFontOfSize:17.0f]}];
+////  NSLog(@"WWW width=[%f]",siz.width);
+////       siz = [@"MMMMMMMMMMMMMMM" sizeWithAttributes: @{NSFontAttributeName: [UIFont systemFontOfSize:17.0f]}];
+////  NSLog(@"MMM width=[%f]",siz.width);
+////
+//
+//
+//
+
+
+// try to reduce load time of first cal yr report   
+//
+//UIWebView *webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 0, 320, 568)];
+//webView.delegate = self;   
+//
+//
+//    [self.webView setUserInteractionEnabled:NO];
+//    [self.webView loadHTMLString:finalString baseURL:nil];
+//
+//    UIWebView *webview=[[UIWebView alloc]initWithFrame:CGRectMake(0, 0, 1024,768)];
+//    NSString *url=@"http://www.google.com";
+//    NSURL *nsurl=[NSURL URLWithString:url];
+//    NSURLRequest *nsrequest=[NSURLRequest requestWithURL:nsurl];
+//    [webview loadRequest:nsrequest];
+//    [self.view addSubview:webview];
+//
+//
+
+//nbn(1);
+////    UIWebView *webview=[[UIWebView alloc]initWithFrame:CGRectMake(0, 0, 40, 40)];
+//    UIWebView *webview=[[UIWebView alloc]initWithFrame:CGRectMake(0, 0, 11, 11)];
+//nbn(2);
+////    NSString *stringForHTML = @"X";
+////    [webview loadHTMLString: stringForHTML   baseURL: nil];
+//    [webview loadHTMLString: [NSString stringWithFormat:@"<html><body>X</body></html>"]  baseURL: nil];
+//nbn(3);
+//    [self.view addSubview:webview];
+//nbn(5);
+//
+
+//    UIWebView *webview=[[UIWebView alloc]initWithFrame:CGRectMake(0, 0, 11, 11)];
+//    NSURLRequest *nsrequest=[NSURLRequest requestWithURL: nil];
+//    [webview loadRequest: nsrequest];
+
+
+//   UIWebView *webview =[[UIWebView alloc]initWithFrame:CGRectMake(0, 0, 11, 11)];
+//   NSString *someHTML = [webview stringByEvaluatingJavaScriptFromString:@""];   
+
+////<.> end daytime tries here
 
 

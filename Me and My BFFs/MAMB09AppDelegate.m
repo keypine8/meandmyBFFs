@@ -1,5 +1,3 @@
-//
-
 //  MAMB09AppDelegate.m
 //  Me and My BFFs
 //
@@ -33,14 +31,23 @@
     NSLog(@"in didFinishLaunchingWithOptions()  in appdelegate");
     
 
-    // ensure a per and pco reload only first time  A=tblrpts_1  B=tblrpts_2  
-    gbl_do_A_per_reload = @"do the reload only the first time"; // after 1st reload, set to  @"this is not reset until app startup";
-    gbl_do_A_co__reload = @"do the reload only the first time"; // after 1st reload, set to  @"this is not reset until app startup";
-    gbl_do_B_per_reload = @"do the reload only the first time"; // after 1st reload, set to  @"this is not reset until app startup";
-    gbl_do_B_co__reload = @"do the reload only the first time"; // after 1st reload, set to  @"this is not reset until app startup";
+    // In order to get rid of opening in middle of report instead of top for tblrpts  per and co,
+    // we have to reload the report at screen startup,
+    // but only the first time that report screen appears in the app session.
+    //
+    // ensure a per and pco reload only first time  A=tblrpts_1  B=tblrpts_2  (get rid of opening in mid of report instead of top)
+    //
+    gbl_do_A_per_reload = @"do the reload only the first time"; // after 1st reload, set to  @"this is not reset until new app startup";
+    gbl_do_A_co__reload = @"do the reload only the first time"; // after 1st reload, set to  @"this is not reset until new app startup";
+    gbl_do_B_per_reload = @"do the reload only the first time"; // after 1st reload, set to  @"this is not reset until new app startup";
+    gbl_do_B_co__reload = @"do the reload only the first time"; // after 1st reload, set to  @"this is not reset until new app startup";
+
 
 
     // Override point for customization after application launch.
+
+
+
 //    [[UINavigationBar appearance] setTranslucent: NO ];  // set all navigation bars to opaque
 
 
@@ -60,16 +67,9 @@
 //  [[UINavigationBar appearance] setTranslucent: NO];                      // works
 //  [[UINavigationBar appearance] setBackGroundColor: [UIColor redColor] ]; // works
 
-
-
-// back arrow chevron gave problems, so go back to white
-//    gbl_colorNavBarBG = [UIColor colorWithRed:255.0/255.0 green:244.0/255.0 blue:228.0/255.0 alpha:1.0]; // GOLD light brown 
-//    gbl_colorNavBarBG = [UIColor redColor];
-
-
-
     [[UINavigationBar appearance]  setTranslucent: NO];
 
+    gbl_colorAplNavBarBG = [UIColor colorWithRed:252.0/255.0 green:250.0/255.0 blue:248.0/255.0 alpha:1.0]; 
 
     // both of the below need to be here to remove
     // the one-pixel border at the bottom of nav bar
@@ -138,7 +138,16 @@
 //                                 inBundle: nil
 //            compatibleWithTraitCollection: nil
 //    ];
-    gbl_brownDone   = [UIImage  imageNamed: @"bg_brownDone8.png" // [self.editButtonItem setBackgroundImage: gbl_BlueBG
+
+    // FYI  done button colors
+    //     stroke: 255, 220, 195
+    //       fill: 240, 230, 200
+    //
+    //     stroke: 232, 210, 190
+    //       fill: 235, 215, 195
+    // 
+//    gbl_brownDone   = [UIImage  imageNamed: @"bg_brownDone8.png" // [self.editButtonItem setBackgroundImage: gbl_BlueBG
+    gbl_brownDone   = [UIImage  imageNamed: @"bg_brownDone9.png" // [self.editButtonItem setBackgroundImage: gbl_BlueBG
                                  inBundle: nil
             compatibleWithTraitCollection: nil
     ];
@@ -161,9 +170,9 @@
 //    gbl_bgColor_brownHdr  = [UIColor colorWithRed:250.0/255.0 green:232.0/255.0 blue:207.0/255.0 alpha:1.0]; // much lighter burlywood  
 //    gbl_bgColor_brownHdr  = [UIColor colorWithRed:250.0/255.0 green:232.0/255.0 blue:207.0/255.0 alpha:1.0]; // much lighter burlywood  
 //    gbl_bgColor_brownHdr  = [UIColor colorWithRed:237.0/255.0 green:216.0/255.0 blue:187.0/255.0 alpha:1.0]; // much lighter burlywood  
-    gbl_bgColor_brownHdr  = [UIColor colorWithRed:221.0/255.0 green:200.0/255.0 blue:175.0/255.0 alpha:1.0]; // much lighter burlywood  
+//    gbl_bgColor_brownHdr  = [UIColor colorWithRed:221.0/255.0 green:200.0/255.0 blue:175.0/255.0 alpha:1.0]; // much lighter burlywood  
 
-    gbl_bgColor_brownHdr  = [UIColor colorWithRed:200.0/255.0 green:180.0/255.0 blue:158.0/255.0 alpha:1.0]; // much lighter burlywood  
+//    gbl_bgColor_brownHdr  = [UIColor colorWithRed:200.0/255.0 green:180.0/255.0 blue:158.0/255.0 alpha:1.0]; // much lighter burlywood  
     gbl_bgColor_brownHdr  = [UIColor colorWithRed:220.0/255.0 green:190.0/255.0 blue:166.0/255.0 alpha:1.0]; // much lighter burlywood  
 
 //    gbl_bgColor_brownHdr  = [UIColor colorWithRed:124.0/255.0 green:096.0/255.0 blue:096.0/255.0 alpha:1.0];  try dark brown
@@ -658,8 +667,16 @@
     // This is the initial example data in DB when app first starts.
     // This is NOT the ongoing data, which is in  data files.
     //
+
+    gbl_nameOfGrpHavingAllPeopleIhaveAdded = @"All My People~";
+
+    gbl_recOfAllPeopleIhaveAdded = [ NSString stringWithFormat: @"%@||||||||||||||", // 14 flds for misc
+        gbl_nameOfGrpHavingAllPeopleIhaveAdded
+    ]; // 14 flds for misc
+
     gbl_arrayExaGrp =   // field 1=name-of-group  field 2=locked-or-not
     @[
+      gbl_recOfAllPeopleIhaveAdded,     // gbl_nameOfGrpHavingAllPeopleIhaveAdded
       @"Long Names||",
       @"Short Names||",
       @"~My Family||",
@@ -1105,7 +1122,10 @@
 //    gbl_colorHomeBG_grp  = [UIColor colorWithRed:207.0/255.0 green:155.0/255.0 blue:115.0/255.0 alpha:1.0]; // burlywood brown
 //
 
+//  gbl_colorHomeBG_per  = [UIColor colorWithRed:225.0/255.0 green:200.0/255.0 blue:167.0/255.0 alpha:1.0]; // lighter burlywood   GOLD per
+
     gbl_colorHomeBG_grp  = [UIColor colorWithRed:222.0/255.0 green:184.0/255.0 blue:135.0/255.0 alpha:1.0]; // burlywood brown  GOLD grp
+    gbl_colorHomeBG_grp  = [UIColor colorWithRed:200.0/255.0 green:178.0/255.0 blue:149.0/255.0 alpha:1.0]; // burlywood brown  GOLD grp
 
 
 
@@ -1685,14 +1705,14 @@ NSLog(@"end of gggggggggggggggggggggggggggggggggggggggg grabLastSelectionValueFo
 
 // READ   there are 5  entity/array files to READ
 //
-- (void) mambReadArrayFileWithDescription: (NSString *) entDesc     // argEntityDescription  // like "group","person"
+- (void) mambReadArrayFileWithDescription: (NSString *) entDesc     // argEntityDescription  // like "group","person"  populate gbl_array*
 {
     NSLog(@"in mambReadArrayFileWithDescription: %@  ----------", entDesc  );
-    NSURL   *myURLtoReadFrom;
+    NSURL          *myURLtoReadFrom;
+    NSMutableArray *my_gbl_array;
     NSData  *myWritten;
     NSData  *myNSData;
     NSData  *myUnarchived;
-    NSMutableArray *my_gbl_array;
 
     if ([entDesc isEqualToString:@"group"])         { myURLtoReadFrom = gbl_URLToGroup;    my_gbl_array = gbl_arrayGrp;    }
     if ([entDesc isEqualToString:@"person"])        { myURLtoReadFrom = gbl_URLToPerson;   my_gbl_array = gbl_arrayPer;    }
@@ -1716,11 +1736,11 @@ NSLog(@"end of gggggggggggggggggggggggggggggggggggggggg grabLastSelectionValueFo
 //tn();  NSLog(@"myUnarchived=\n%@",myUnarchived );
 
     //if ([entDesc isEqualToString:@"group"])         { gbl_arrayGrp       = [[NSMutableArray alloc]initWithArray: (NSMutableArray*) myLocalArray]; }
-    if ([entDesc isEqualToString:@"group"])  { gbl_arrayGrp       = [[NSMutableArray alloc]initWithArray: (NSMutableArray*) myUnarchived]; }
-    if ([entDesc isEqualToString:@"person"]) { gbl_arrayPer       = [[NSMutableArray alloc]initWithArray: (NSMutableArray*) myUnarchived]; }
-    if ([entDesc isEqualToString:@"member"]) { gbl_arrayMem       = [[NSMutableArray alloc]initWithArray: (NSMutableArray*) myUnarchived]; }
-    if ([entDesc isEqualToString:@"grprem"]) { gbl_arrayGrpRem    = [[NSMutableArray alloc]initWithArray: (NSMutableArray*) myUnarchived]; }
-    if ([entDesc isEqualToString:@"perrem"]) { gbl_arrayPerRem    = [[NSMutableArray alloc]initWithArray: (NSMutableArray*) myUnarchived]; }
+    if ([entDesc isEqualToString:@"group"])  { gbl_arrayGrp    = [[NSMutableArray alloc]initWithArray: (NSMutableArray*) myUnarchived]; }
+    if ([entDesc isEqualToString:@"person"]) { gbl_arrayPer    = [[NSMutableArray alloc]initWithArray: (NSMutableArray*) myUnarchived]; }
+    if ([entDesc isEqualToString:@"member"]) { gbl_arrayMem    = [[NSMutableArray alloc]initWithArray: (NSMutableArray*) myUnarchived]; }
+    if ([entDesc isEqualToString:@"grprem"]) { gbl_arrayGrpRem = [[NSMutableArray alloc]initWithArray: (NSMutableArray*) myUnarchived]; }
+    if ([entDesc isEqualToString:@"perrem"]) { gbl_arrayPerRem = [[NSMutableArray alloc]initWithArray: (NSMutableArray*) myUnarchived]; }
 
 } // end of mambReadArrayFileWithDescription
 
@@ -3169,6 +3189,156 @@ tn();
     }
 }
 
+//  // response header app
+//  mydict =[{
+//      "Cache-Control" = "max-age=0";
+//      Connection = "keep-alive";
+//      "Content-Encoding" = gzip;
+//      "Content-Length" = 4721;
+//      "Content-Type" = "text/html; charset=UTF-8";
+//      Date = "Tue, 23 Feb 2016 16:32:16 GMT";
+//      Expires = "Tue, 23 Feb 2016 16:32:16 GMT";
+//      Server = Apache;
+//      Vary = "Accept-Encoding";
+//  }]
+//  
+//  // response header goo
+//      "Cache-Control" = "private, max-age=0";
+//      "Content-Encoding" = gzip;
+//      "Content-Length" = 41659;
+//      "Content-Type" = "text/html; charset=ISO-8859-1";
+//      Date = "Tue, 23 Feb 2016 16:32:17 GMT";
+//      Expires = "-1";
+//      Server = gws;
+//      "x-frame-options" = SAMEORIGIN;
+//      "x-xss-protection" = "1; mode=block";
+//  }]
+//
+    // this works, but     rats!   deprecated -> sendSynchronousRequest
+    //  find the actual current date time, found in apl's response header:
+    //    NSHTTPURLResponse *myhttpUrlResponse = nil;
+    //    NSString *mydateString;
+    //
+    //    NSMutableURLRequest *myaplrequest = [[NSMutableURLRequest alloc] initWithURL: [NSURL URLWithString: @"https://apple.com" ]];
+    //    [myaplrequest setHTTPMethod: @"GET"];
+    //    [NSURLConnection sendSynchronousRequest: myaplrequest returningResponse: &myhttpUrlResponse error: nil];
+    //    NSDictionary *mydict = [myhttpUrlResponse allHeaderFields] ; 
+    //  NSLog(@"mydict =[%@]",mydict );
+    //    mydateString = [[myhttpUrlResponse allHeaderFields] objectForKey: @"Date"]; 
+    //  NSLog(@"mydateString =[%@]",mydateString );
+    //
+    // rats!   deprecated -> sendSynchronousRequest
+
+- (void) gcy //  find the actual current year   from  date time, found in apl's response header:
+{
+  NSLog(@"start gcy   get real date   apple    116, 108, 135");
+ NSLog(@"gbl_cy_apl   =[%@]",gbl_cy_apl);
+ NSLog(@"gbl_cy_goo   =[%@]",gbl_cy_goo);
+
+    NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration: defaultConfigObject
+                                                                 delegate: self
+                                                            delegateQueue: [NSOperationQueue mainQueue]
+    ];
+    NSURL *myurl;
+    NSURLSessionDataTask *mydataTask;
+
+  NSLog(@"start  APPLE  NSURLSessionDataTask");
+    myurl      = [NSURL URLWithString: @"https://apple.com" ];
+    mydataTask = [ defaultSession dataTaskWithURL: myurl
+                                completionHandler: ^(NSData *mydata,  NSURLResponse *myresponse,  NSError *myerror)
+        { // start of completionHandler
+            if(myerror == nil)
+            {
+  NSLog(@"  doing completionHandler got data branch   doing completionHandler   error == nil");
+
+                // cast response into form having allHeaderFields
+                NSHTTPURLResponse *myNSURLResponse_as_NSHTTPURLResponse = (NSHTTPURLResponse*) myresponse;
+
+                // get allHeaderFields dictionary
+                NSDictionary *mydict         = [myNSURLResponse_as_NSHTTPURLResponse  allHeaderFields] ; 
+
+                // get date from allHeaderFields dictionary
+                NSString *mydatestr          = [mydict objectForKey: @"Date"];  
+
+ NSLog(@"mydict APPLE =[%@]",mydict );
+ NSLog(@"mydatestr   =[%@]",mydatestr);
+
+                // verify year 
+                NSArray *myarr = [mydatestr componentsSeparatedByCharactersInSet: [NSCharacterSet whitespaceCharacterSet ]];
+                for (NSString *fld in myarr) {
+                    if ( [fld length] == 4  &&  [fld hasPrefix: @"20" ]) {
+                        NSString *myYYstr  = [fld  substringWithRange: NSMakeRange(2,2) ];
+                        unichar c = [myYYstr characterAtIndex: 0];
+                        if (c >= '0' && c <= '9') {            // check that char 1 and 2 are numeric
+                            c = [myYYstr characterAtIndex: 1];
+                            if (c >= '0' && c <= '9') gbl_cy_apl = fld;          // here fld is valid year  "20nn"
+                        }
+ NSLog(@"gbl_cy_apl   =[%@]",gbl_cy_apl);
+                        break; 
+                    }
+                }
+ NSLog(@"gbl_cy_apl   =[%@]",gbl_cy_apl);
+
+                // unused data    NSString * text = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
+                //                NSLog(@"Data = %@",text);
+
+                // can do notification here that you are finished
+
+            } else {
+  NSLog(@"got an error");
+            }
+        } // end of completionHandler
+
+    ]; // end of NSURLSessionDataTask 
+    [mydataTask resume];            // sending off dataTask  to execute asynchronously
+  NSLog(@"sending off dataTask ");
+
+
+
+    myurl = [NSURL URLWithString: @"https://google.com" ];
+    mydataTask = [ defaultSession dataTaskWithURL: myurl
+                                completionHandler: ^(NSData *mydata,  NSURLResponse *myresponse,  NSError *myerror)
+        { // start of completionHandler
+            if (myerror == nil)
+            {
+                // cast response into form having allHeaderFields
+                NSHTTPURLResponse *myNSURLResponse_as_NSHTTPURLResponse = (NSHTTPURLResponse*) myresponse;
+                // get allHeaderFields dictionary
+                NSDictionary *mydict         = [myNSURLResponse_as_NSHTTPURLResponse  allHeaderFields] ; 
+                // get date from allHeaderFields dictionary
+                NSString *mydatestr          = [mydict objectForKey: @"Date"];  
+
+                // verify year 
+                NSArray *myarr = [mydatestr componentsSeparatedByCharactersInSet: [NSCharacterSet whitespaceCharacterSet ]];
+                for (NSString *fld in myarr) {
+                    if ( [fld length] == 4  &&  [fld hasPrefix: @"20" ]) {
+                        NSString *myYYstr  = [fld  substringWithRange: NSMakeRange(2,2) ];
+                        unichar c = [myYYstr characterAtIndex: 0];
+                        if (c >= '0' && c <= '9') {            // check that char 1 and 2 are numeric
+                            c = [myYYstr characterAtIndex: 1];
+                            if (c >= '0' && c <= '9') gbl_cy_goo = fld;          // here fld is valid year  "20nn"
+                        }
+ NSLog(@"gbl_cy_goo   =[%@]",gbl_cy_goo);
+                        break; 
+                    }
+                }
+ NSLog(@"gbl_cy_goo   =[%@]",gbl_cy_goo);
+
+                // can do notification here that you are finished
+            } else {
+  NSLog(@"got an error");
+            }
+        } // end of completionHandler
+    ]; // end of NSURLSessionDataTask 
+    [mydataTask resume];            // sending off dataTask  to execute asynchronously
+
+
+                // can do notification here that you are finished
+
+} // end of  gcy
+
+
 
 
 @end
@@ -3769,4 +3939,16 @@ tn();
 //
 //
 //
+
+
+//    NSHTTPURLResponse *myhttpUrlResponse = nil;
+//    NSString *mydateString;
+//      NSLog(@"start get real date   GOOGLE   300ms ,300, 300");
+//    NSMutableURLRequest *mygoorequest = [[NSMutableURLRequest alloc] initWithURL: [NSURL URLWithString: @"https://google.com"]];
+//    [mygoorequest setHTTPMethod: @"GET"];
+//    [NSURLConnection sendSynchronousRequest: mygoorequest returningResponse: &myhttpUrlResponse error: nil];
+//    NSDictionary *mydict = [myhttpUrlResponse allHeaderFields] ; 
+//    mydateString = [[myhttpUrlResponse allHeaderFields] objectForKey: @"Date"];
+//  NSLog(@"mydict =[%@]",mydict );
+//  NSLog(@"mydateString GOOGLE =[%@]",mydateString );
 

@@ -6,6 +6,10 @@
 //
 
 #import <UIKit/UIKit.h>
+
+NSString *gbl_cy_apl;  // format "20nn"
+NSString *gbl_cy_goo;  // format "20nn"
+
          
 //    The viewController life cycle are 
 //
@@ -70,7 +74,7 @@ NSInteger gbl_justAddedGroupRecord;
 
 // A is for tblrpts_1,  B is for tblrpts_2
 //
-NSString *gbl_do_A_per_reload ;  // either  @"do the reload only the first time"] OR @"this is not reset until app startup"; (reload only once per session)
+NSString *gbl_do_A_per_reload ;  // either  @"do the reload only the first time"] OR @"this is not reset until new app startup"; (reload only once per session)
 NSString *gbl_do_A_co__reload ;  // A = tblrpts 1
 NSString *gbl_do_B_per_reload ;  // B = tblrpts 2
 NSString *gbl_do_B_co__reload ;  
@@ -679,7 +683,7 @@ NSMutableArray *gbl_homeLeftItemsWithAddButton;
 NSMutableArray *gbl_homeLeftItemsWithNoAddButton;
 
 UIColor *gbl_colorHomeBG;
-//UIColor *gbl_colorNavBarBG;
+UIColor *gbl_colorAplNavBarBG;  // apple's bg color
 //UIColor *gbl_colorHomeBG_save;  // in order to put back after editing mode color
 UIColor *gbl_colorHomeBG_grp;
 UIColor *gbl_colorHomeBG_per;
@@ -755,6 +759,9 @@ NSMutableArray *gbl_arrayPer;
 NSMutableArray *gbl_arrayMem;
 NSMutableArray *gbl_arrayGrpRem; // REMEMBER DATA 
 NSMutableArray *gbl_arrayPerRem; // REMEMBER DATA 
+
+NSString *gbl_nameOfGrpHavingAllPeopleIhaveAdded; // "All My People~"
+NSString *gbl_recOfAllPeopleIhaveAdded;           //  = [ NSString stringWithFormat: @"%@||||||||||||||", // 14 flds for misc
 
 NSInteger gbl_numRowsToTurnOnIndexBar;  // 201500624 = 90
 
@@ -1057,6 +1064,8 @@ NSIndexPath *gbl_savePrevIndexPath;  // for scrolling to the prev row you were o
 
 - (void) mambChangeGRPMEM_groupNameFrom: (NSString *) arg_originalGroupName
                               toNewName: (NSString *) arg_newGroupName;
+
+- (void) gcy;
 
 
 @end

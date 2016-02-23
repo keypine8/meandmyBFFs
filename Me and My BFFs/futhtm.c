@@ -735,6 +735,14 @@ void f_fnOutPutTopOfHtmlFile(void) {  // webview version
 /*   f_fn_prtlin( "    .cRe2        { background-color:#ff6094; }"); */
 /*   f_fn_prtlin( "    .cRe2        { background-color:#ff3366; }"); */
 
+  // take away bold   "o" = ordinary
+  //
+  f_fn_prtlin("    .oGr2        { background-color:#80ff40; }");
+  f_fn_prtlin("    .oGre        { background-color:#c0ffc0; }");
+  f_fn_prtlin("    .oNeu        { background-color:#edebd8; }");
+  f_fn_prtlin("    .oRed        { background-color:#ffb5c9; }");
+  f_fn_prtlin("    .oRe2        { background-color:#ff7ba3; }");
+
 
 //  f_fn_prtlin( "    .cGr2        { background-color:#66ff33; font-weight: bold; ");
   f_fn_prtlin( "    .cGr2        { background-color:#80ff40; font-weight: bold; ");
@@ -1711,8 +1719,12 @@ STRESS-|<span style="background-color:#FFBAC7; font-family: Andale Mono, Courier
   f_fn_prtlin("<pre class=\"explain\">");
   gblWeAreInPREblockContent = 1;  
 /*   f_fn_prtlin("           Important Periods"); */
-  f_fn_prtlin("           Important Periods          ");
-  f_fn_prtlin("    (they influence the graph above)\n");
+//  f_fn_prtlin("           Important Periods          ");
+//  f_fn_prtlin("    (they influence the graph above)\n");
+  f_fn_prtlin("         Important Time Frames        ");
+  f_fn_prtlin("     that influence the graph above \n");
+
+
   gblWeAreInPREblockContent = 0;  /* false */
   f_fn_prtlin("</pre>");
   //f_fn_prtlin("</div>");
@@ -1828,7 +1840,14 @@ nbn(401);
     else                           { strcpy(myleftmargin, "4.5em;"); }
 
     f_fn_prtlin("  <div><br></div>");
+
+//<.>
+////   f_fn_prtlin("<h4><span style=\"background-color:#FFBAC7;\">&nbspThis report is for entertainment purposes only.&nbsp</span></h4>");
+//  f_fn_prtlin( "    .cSky        { background-color:#3f3ffa; font-weight: bold; ");
+//<.>
+
     sprintf(writebuf, "  <table class=\"trait\" style=\"margin-left: %s;\"> <tr> <th colspan=\"3\"> Score For %s </tr>",
+
       myleftmargin,
       gbl_year_for_fut
     );
@@ -1844,7 +1863,8 @@ nbn(401);
 //    f_fn_prtlin(writebuf);
 //
 
-    f_fn_prtlin("  <tr > <th>Person</th> <th>Score</th> <th></th></tr>");
+//    f_fn_prtlin("  <tr > <th>Person</th> <th>Score</th> <th></th></tr>");
+    f_fn_prtlin("  <tr > <th><span style=\"font-weight: normal;\"> Person</span></th> <th><span style=\"font-weight: normal;\"> Score</span></th> <th></th></tr>");
 
 
 
@@ -1868,45 +1888,59 @@ nbn(401);
     if (gbl_YearStressScore >= 90) {
       write_calendar_day_score(gbl_name_for_fut, gbl_YearStressScore);
     }
-    f_fn_prtlin("  <tr class=\"cGr2\"><td></td> <td> 90  </td> <td>Great</td> </tr>");
+//    f_fn_prtlin("  <tr class=\"cGr2\"><td></td> <td> 90  </td> <td>Great</td> </tr>");
+    f_fn_prtlin("  <tr class=\"oGr2\"><td></td> <td> 90  </td> <td>Great</td> </tr>");
     if (gbl_YearStressScore >= 75) {
       write_calendar_day_score(gbl_name_for_fut, gbl_YearStressScore);
     }
-    f_fn_prtlin("  <tr class=\"cGre\"><td></td> <td> 75  </td> <td>Good</td> </tr>");
+//    f_fn_prtlin("  <tr class=\"cGre\"><td></td> <td> 75  </td> <td>Good</td> </tr>");
+    f_fn_prtlin("  <tr class=\"oGre\"><td></td> <td> 75  </td> <td>Good</td> </tr>");
 
     if ( gbl_YearStressScore  >= 75) {
-      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
-      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
-      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
+//      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
+//      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
+//      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
+      f_fn_prtlin("  <tr class=\"oNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
+      f_fn_prtlin("  <tr class=\"oNeu\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
+      f_fn_prtlin("  <tr class=\"oNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
     }
     if ( gbl_YearStressScore  < 75  &&  gbl_YearStressScore >= 50 ) {
       write_calendar_day_score(gbl_name_for_fut, gbl_YearStressScore);
-      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
-      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
+//      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
+//      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
+      f_fn_prtlin("  <tr class=\"oNeu\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
+      f_fn_prtlin("  <tr class=\"oNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
     }
       //   if ( gbl_YearStressScore  < 50  &&  gbl_YearStressScore >= 25 ) 
       if ( gbl_YearStressScore  < 50  &&  gbl_YearStressScore >  25 ) {
           
-      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
-      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
+//      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
+//      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
+      f_fn_prtlin("  <tr class=\"oNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
+      f_fn_prtlin("  <tr class=\"oNeu\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
       write_calendar_day_score(gbl_name_for_fut, gbl_YearStressScore);
     }
         //  if ( gbl_YearStressScore <= 25 ) 
             if ( gbl_YearStressScore <  25 ) {
                 
-      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
-      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
-      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
+//      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
+//      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
+//      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
+      f_fn_prtlin("  <tr class=\"oNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
+      f_fn_prtlin("  <tr class=\"oNeu\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
+      f_fn_prtlin("  <tr class=\"oNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
     }
 
     if (gbl_YearStressScore >  25)
       write_calendar_day_score(gbl_name_for_fut, gbl_YearStressScore);
-    f_fn_prtlin("  <tr class=\"cRed\"><td></td> <td> 25  </td> <td>Stress</td> </tr>");
+//    f_fn_prtlin("  <tr class=\"cRed\"><td></td> <td> 25  </td> <td>Stress</td> </tr>");
+    f_fn_prtlin("  <tr class=\"oRed\"><td></td> <td> 25  </td> <td>Stress</td> </tr>");
     if (gbl_YearStressScore >  10)
       write_calendar_day_score(gbl_name_for_fut, gbl_YearStressScore);
 
 
-    f_fn_prtlin("  <tr class=\"cRe2\"><td></td> <td> 10  </td> <td>OMG</td> </tr>");
+//    f_fn_prtlin("  <tr class=\"cRe2\"><td></td> <td> 10  </td> <td>OMG</td> </tr>");
+    f_fn_prtlin("  <tr class=\"oRe2\"><td></td> <td> 10  </td> <td>OMG</td> </tr>");
     write_calendar_day_score(gbl_name_for_fut, gbl_YearStressScore); /* only writes if still unwritten */
 
     f_fn_prtlin("  </table>");
@@ -2923,6 +2957,14 @@ int make_calendar_day_html_file(   /* called from futdoc.c  */
 /*   f_fn_prtlin( "    .cRe2        { background-color:#ff6094; }"); */
 /*   f_fn_prtlin( "    .cRe2        { background-color:#ff3366; }"); */
 
+  // take away bold   "o" = ordinary
+  //
+  f_fn_prtlin("    .oGr2        { background-color:#80ff40; }");
+  f_fn_prtlin("    .oGre        { background-color:#c0ffc0; }");
+  f_fn_prtlin("    .oNeu        { background-color:#edebd8; }");
+  f_fn_prtlin("    .oRed        { background-color:#ffb5c9; }");
+  f_fn_prtlin("    .oRe2        { background-color:#ff7ba3; }");
+
 
 //  f_fn_prtlin( "    .cGr2        { background-color:#66ff33; }");
   f_fn_prtlin( "    .cGr2        { background-color:#80ff40; }");
@@ -3290,19 +3332,35 @@ void write_calendar_day_score(char *pname, int istress_score) {
 
   if (gblCalDayScoreIsWritten == 1)  return;
 
-  if (istress_score >= 90) strcpy(rowcolor, " class=\"cGr2\"");
+  if (istress_score >= 90) strcpy(rowcolor, " class=\"oGr2\"");
   if (istress_score <  90 &&
-      istress_score >= 75) strcpy(rowcolor, " class=\"cGre\"");
+      istress_score >= 75) strcpy(rowcolor, " class=\"oGre\"");
   if (istress_score <  75 &&
-      istress_score >= 25) strcpy(rowcolor, " class=\"cNeu\"");
+      istress_score >= 25) strcpy(rowcolor, " class=\"oNeu\"");
   if (istress_score <= 25 &&
-      istress_score >  10) strcpy(rowcolor, " class=\"cRed\"");
-  if (istress_score <= 10) strcpy(rowcolor, " class=\"cRe2\"");
+      istress_score >  10) strcpy(rowcolor, " class=\"oRed\"");
+  if (istress_score <= 10) strcpy(rowcolor, " class=\"oRe2\"");
 
 /*   sprintf(writebuf, "  <tr><td> %s</td><td> %d  </td><td></td></tr>", pname, istress_score); */
   sprintf(writebuf, "  <tr %s><td> %s</td><td> %d  </td><td></td></tr>", rowcolor, pname, istress_score);
 
-  f_fn_prtlin(writebuf);
+tn();tr("calendar day score=");ksn(writebuf);tn();
+
+  f_fn_prtlin(writebuf);  //  this does extra processing to mess up
+
+//
+//  //  f_fn_prtlin(writebuf);   this does extra processing to mess up
+//  //
+//  // these are globals:
+//  //        FILE *Fp_f_HTML_file;
+//  //        int   n;
+//  //        char *p = &writebuf[0];
+//  //
+////  n = sprintf(p,"%s%s", writebuf, myEOL);
+//  n = sprintf(p,"%s%s\n", writebuf);
+//  fput(p, n, Fp_f_HTML_file);        /* PRINT the line */
+//
+
 
   gblCalDayScoreIsWritten = 1;
 }
@@ -4295,8 +4353,11 @@ STRESS-|<span style="background-color:#FFBAC7; font-family: Andale Mono, Courier
 
 /*   f_fnBIG_prtlin("  <h4><span style=\"font-size: 85%; font-weight: normal\">"); */
 /*   f_fnBIG_prtlin("      (they influence the graph above)   </span><br><br><br></h4>"); */
-  f_fnBIG_prtlin("  <h3>Important Periods</h3>");
-  f_fnBIG_prtlin("  <h4>(they influence the graph above)<br><br><br></h4>");
+
+//  f_fnBIG_prtlin("  <h3>Important Periods</h3>");
+//  f_fnBIG_prtlin("  <h4>(they influence the graph above)<br><br><br></h4>");
+  f_fnBIG_prtlin("  <h3>Important Time Frames</h3>");
+  f_fnBIG_prtlin("  <h4>that influence the graph above<br><br><br></h4>");
 
 
 

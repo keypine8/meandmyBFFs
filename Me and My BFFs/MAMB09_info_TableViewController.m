@@ -382,7 +382,9 @@ nbn(88);
     UIImage *myImageCategories3      = [UIImage  imageNamed: @"categories3_info10.png" inBundle: nil compatibleWithTraitCollection: nil ];
 //    UIImage *myImageTwoThings        = [UIImage  imageNamed: @"twoThings_info5.png"   inBundle: nil compatibleWithTraitCollection: nil ];
 //    UIImage *myImageTwoThings        = [UIImage  imageNamed: @"twoThings_info8.png"   inBundle: nil compatibleWithTraitCollection: nil ];
-    UIImage *myImageTwoThings        = [UIImage  imageNamed: @"twoThings_info9.png"   inBundle: nil compatibleWithTraitCollection: nil ];
+//    UIImage *myImageTwoThings        = [UIImage  imageNamed: @"twoThings_info9.png"   inBundle: nil compatibleWithTraitCollection: nil ];
+    UIImage *myImageTwoThings        = [UIImage  imageNamed: @"twoThings_info9b.png"   inBundle: nil compatibleWithTraitCollection: nil ];
+  NSLog(@"myImageTwoThings        =[%@]",myImageTwoThings        );
 //    UIImage *myImageWillpower        = [UIImage  imageNamed: @"willpower_info3.png"   inBundle: nil compatibleWithTraitCollection: nil ];
 //    UIImage *myImageWillpower        = [UIImage  imageNamed: @"willpower_info5.png"   inBundle: nil compatibleWithTraitCollection: nil ];
     UIImage *myImageWillpower        = [UIImage  imageNamed: @"willpower_info6.png"   inBundle: nil compatibleWithTraitCollection: nil ];
@@ -1105,8 +1107,9 @@ nbn(100);
                 cell.textLabel.font          = myFontOnSide;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;   // 0 means unlimited number of lines
-                cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
-                cell.textLabel.text          = nil;
+//                cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+//                cell.textLabel.text          = nil;
+                cell.textLabel.text          = @" ";
 
 //                cell.imageView.image         = nil;
 //                cell.backgroundView = [[UIImageView alloc] initWithImage: myImageTwoThings] ;
@@ -1139,7 +1142,7 @@ nbn(100);
                 cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
-                cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+//                cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
 //                cell.textLabel.text          = @"HOWEVER, because we have free will, even challenging personality traits can be overcome by intense will power.  Habits are extremely difficult to overcome, but it can be done.";
                 cell.textLabel.text          = @"HOWEVER, because we have free will, even challenging personality traits can be overcome by intense will power.  Overcoming habits is very hard, but possible.";
                 cell.imageView.image         = nil;
@@ -1155,7 +1158,7 @@ nbn(100);
                 cell.textLabel.font          = myFontOnSide;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;   // 0 means unlimited number of lines
-                cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+//                cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
                 cell.textLabel.text          = nil;
 
 //                cell.imageView.image         = nil;
@@ -1593,7 +1596,7 @@ nbn(100);
                 cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;   // 0 means unlimited number of lines
-                cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+//                cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
                 cell.textLabel.text          = @"What Color is the Day?\n\nUse this report to check out today and yesterday and the next few days.";
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
@@ -1610,7 +1613,7 @@ nbn(100);
                 cell.textLabel.font          = myFontOnSide;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;   // 0 means unlimited number of lines
-                cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+//                cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
 //                cell.textLabel.text          = @"The score measures stress levels on this day for this person.\n\nA day with a lower score, say below 10, is likely to be more stressful, whereas a day with a high score, like above 90, is likely to be more peaceful.";
 //                cell.textLabel.text          = @"The score measures stress levels on this day for this person.\n\nFor example, a day with a lower score in the red zones is likely to be more stressful, whereas a day with a higher score in the green zones is likely to be more peaceful.";
                 cell.textLabel.text          = @"The score measures stress levels on this day for this person.\n\nA day with a lower score in the red zones is more likely to have stressful times, whereas a day with a higher score in the green zones is more likely to have peaceful times.";
@@ -1628,7 +1631,7 @@ nbn(100);
                 cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;   // 0 means unlimited number of lines
-                cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+//                cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
                 cell.textLabel.text          = @"The stress level score in this report is calculated from very short-term influences whose effects last just a few hours or a day or two.\n\nFar more important is the \"Calendar Year\" report where the influences are much stronger and they can last for many weeks or even months.";
             });
             return cell;
@@ -1654,8 +1657,9 @@ nbn(100);
                 cell.textLabel.font          = myFontOnSide;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;   // 0 means unlimited number of lines
-                cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
-                cell.textLabel.text          = nil;
+//                cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+//                cell.textLabel.text          = nil;
+                cell.textLabel.text          = @" ";
 
 //                cell.imageView.image         = nil;
 //                cell.backgroundView = [[UIImageView alloc] initWithImage: myImageDestiny] ;
@@ -1761,7 +1765,7 @@ nbn(100);
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;   // 0 means unlimited number of lines
                 cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
-                cell.textLabel.text          = @"example";
+                cell.textLabel.text          = @"e.g.";
 
                 cell.imageView.image = myImagePersonality;
                 cell.backgroundView          = nil ;
@@ -1836,6 +1840,7 @@ nbn(100);
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text          = nil;
+                cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -1849,6 +1854,7 @@ nbn(100);
                 cell.textLabel.font          = myTitleFont;
                 cell.backgroundColor         = gbl_color_cHed;
                 cell.textLabel.numberOfLines = 0;
+                cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
                 cell.textLabel.text          = @"Quality of Personality Traits";
                 cell.imageView.image         = nil;
                 cell.backgroundView          = nil ;
@@ -1917,6 +1923,7 @@ nbn(100);
                 cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
+                cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
                 cell.textLabel.text          = nil;
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
@@ -1932,6 +1939,7 @@ nbn(100);
                 cell.textLabel.font          = myDisclaimerFont;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
+                cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
                 cell.textLabel.text          = @"This report is for entertainment purposes only.";
                 cell.imageView.image         = nil;
                 cell.backgroundView          = nil ;
@@ -1985,7 +1993,7 @@ nbn(100);
                 cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;   // 0 means unlimited number of lines
-                cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+//                cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
                 cell.textLabel.text          = [NSString stringWithFormat: @"This %@ report measures the \"size\" of the trait %@ within each person.\n\nEach SCORE measures \"how much\" of the trait %@ the person has.\n\nScores go from 1 to 99.\nA score of 88 is higher than 88%% of all scores in the world\nA score of 11 is higher than 11%% of all scores in the world\n\nA really low score or really high score is neither favorable nor challenging. That's why the scores are not shown with the colors green/red because those colors mean favorable/challenging.",
                     myMostTitle, myMostWhat, myMostWhat
                 ];
@@ -2018,7 +2026,7 @@ nbn(100);
                 cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;   // 0 means unlimited number of lines
-                cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+//                cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
                 cell.textLabel.text          = @"The Personality report for each person gives you the \"quality\" of the personality traits of that person.\n\nIn the Personality report look at the text below the table.  This is where favorable and challenging influences are.";
                 cell.imageView.image         = nil;
                 cell.backgroundView          = nil ;
@@ -2058,7 +2066,7 @@ nbn(100);
                 ;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;   // 0 means unlimited number of lines
-                cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+//                cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
                 cell.textLabel.text          = myGoodBadText;
                 cell.imageView.image         = nil;
                 cell.backgroundView          = nil ;
@@ -2073,7 +2081,7 @@ nbn(100);
                 cell.textLabel.font          = myFontOnSide;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;   // 0 means unlimited number of lines
-                cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+//                cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
 
 //                cell.textLabel.text          = nil;
                 cell.textLabel.text          = @" ";
@@ -2187,7 +2195,7 @@ nbn(100);
                 cell.textLabel.font          = myFontOnSide;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;   // 0 means unlimited number of lines
-                cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+//                cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
                 cell.textLabel.text          = @" ";
 
 //                cell.imageView.image         = nil;
@@ -2304,8 +2312,9 @@ nbn(100);
                 cell.textLabel.font          = myFontOnSide;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;   // 0 means unlimited number of lines
-                cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
-                cell.textLabel.text          = nil;
+//                cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+//                cell.textLabel.text          = nil;
+                cell.textLabel.text          = @" ";
 
 //                cell.imageView.image         = nil;
 //                cell.backgroundView = [[UIImageView alloc] initWithImage: myImageDestiny] ;
@@ -2846,7 +2855,7 @@ nbn(100);
         if (indexPath.row == 2) return   265.0;  // score how much not good/bad
         if (indexPath.row == 3) return    30.0;  // title for quality of traits
         if (indexPath.row == 4) return   105.0;  // reference to Personality report
-        if (indexPath.row == 5) return   115.0;  // specific trait reference
+        if (indexPath.row == 5) return   140.0;  // specific trait reference
         if (indexPath.row == 6) return    55.0;  // image willpower  for overcome traits
         if (indexPath.row == 7) return     8.0;  // spacer
         if (indexPath.row == 8) return    20.0;  // text for disclaimer
@@ -2937,6 +2946,7 @@ nbn(100);
         if (indexPath.row ==  7) return    30.0;  // title for complexity
         if (indexPath.row ==  8) return   140.0;  // text for complexity #1
         if (indexPath.row ==  9) return    70.0;  // image two things
+//        if (indexPath.row ==  9) return    100.0;  // image two things
         if (indexPath.row == 10) return     8.0;  // spacer
         if (indexPath.row == 11) return    70.0;  // text for complexity #2
         if (indexPath.row == 12) return    55.0;  // image willpower  overcome trait

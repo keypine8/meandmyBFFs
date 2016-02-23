@@ -170,8 +170,9 @@ nbn(501);
                 //
                 [self.navigationController.navigationBar setShadowImage: [UIImage new]];   
                 //
-                self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];  // 2. of 2
 //               self.navigationController.navigationBar.backgroundColor = gbl_colorNavBarBG;  // 2. of 2
+//                self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];  // 2. of 2
+                self.navigationController.navigationBar.backgroundColor = gbl_colorAplNavBarBG;  // 2. of 2
                 //
                 // end of  How to hide iOS7 UINavigationBar 1px bottom line
 
@@ -236,6 +237,9 @@ nbn(501);
                 //
 //                self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];  // 2. of 2
 //              self.navigationController.navigationBar.backgroundColor = gbl_colorNavBarBG;  // 2. of 2
+                self.navigationController.navigationBar.backgroundColor = gbl_colorAplNavBarBG;  // 2. of 2
+
+
                 //
                 // end of  How to hide iOS7 UINavigationBar 1px bottom line
 
@@ -274,6 +278,9 @@ nbn(501);
             //
 //            self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];
 //          self.navigationController.navigationBar.backgroundColor = gbl_colorNavBarBG;  // 2. of 2
+             self.navigationController.navigationBar.backgroundColor = gbl_colorAplNavBarBG;  // 2. of 2
+
+
             //
             // end of  How to hide iOS7 UINavigationBar 1px bottom line
 
@@ -4730,8 +4737,10 @@ trn("// END   END    4 of 3 FOOTER CELLS");
 //lblSection0.backgroundColor =  gbl_color_cHed;  
 //        lblSection0.backgroundColor = gbl_color_cAplTop;
         //        lblSection0.backgroundColor = [UIColor redColor];   for test
-        lblSection0.backgroundColor = [UIColor whiteColor];
         //        lblSection0.backgroundColor = gbl_colorNavBarBG;
+//        lblSection0.backgroundColor = [UIColor whiteColor];
+        lblSection0.backgroundColor = gbl_colorAplNavBarBG;
+
 
         [lblSection0 sizeToFit];
 
@@ -4962,7 +4971,7 @@ tn();
 //        if ([ gbl_do_B_pe_co_reload isEqualToString: @"do the reload only the first time"] )
 //        {
 //  NSLog(@"per pco  RELOAD B   DO IT");
-//            gbl_do_B_pe_co_reload = @"this is not reset until app startup";
+//            gbl_do_B_pe_co_reload = @"this is not reset until new app startup";
 //
 //
 //
@@ -4994,7 +5003,7 @@ tn();
         if ([ gbl_do_B_co__reload isEqualToString: @"do the reload only the first time"] )
         {
   NSLog(@"co RELOAD B   DO IT");
-            gbl_do_B_co__reload = @"this is not reset until app startup";
+            gbl_do_B_co__reload = @"this is not reset until new app startup";
 
             // try to get rid of tbl position in middle on startup
             dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
@@ -5015,7 +5024,7 @@ tn();
         if ([ gbl_do_B_per_reload isEqualToString: @"do the reload only the first time"] )
         {
   NSLog(@"per RELOAD B   DO IT");
-            gbl_do_B_per_reload = @"this is not reset until app startup";
+            gbl_do_B_per_reload = @"this is not reset until new app startup";
 
             // try to get rid of tbl position in middle on startup
             dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
@@ -5173,7 +5182,8 @@ tn();
             //
             [self.navigationController.navigationBar setShadowImage: [UIImage new]];
             //
-            self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];
+//            self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];
+            self.navigationController.navigationBar.backgroundColor = gbl_colorAplNavBarBG;  // 2. of 2
             //
             // end of  How to hide iOS7 UINavigationBar 1px bottom line
 

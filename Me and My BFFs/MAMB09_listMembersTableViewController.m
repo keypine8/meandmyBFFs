@@ -86,7 +86,7 @@ tn();
 
         NSString *myNavBar2lineTitle;
 //        myNavBar2lineTitle = [NSString stringWithFormat:  @"Current Members of\n Group  %@", gbl_lastSelectedGroup ];
-        myNavBar2lineTitle = [NSString stringWithFormat:  @"Current Members of\n%@", gbl_lastSelectedGroup ];
+        myNavBar2lineTitle = [NSString stringWithFormat:  @"Current Members of\nGroup %@", gbl_lastSelectedGroup ];
 
         myNavBarLabel.numberOfLines = 2;
     //        myNavBarLabel.font          = [UIFont boldSystemFontOfSize: 16.0];

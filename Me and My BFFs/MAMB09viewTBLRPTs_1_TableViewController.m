@@ -3717,7 +3717,8 @@ trn("// 1 of 3 FOOTER CELLS");
 //        [self.tableView setSeparatorColor:  [UIColor greenColor] ];
 
             dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
-                cell.textLabel.font          = myFont_12b;
+//                cell.textLabel.font          = myFont_12b;
+                cell.textLabel.font          = myFont_12;
                 cell.textLabel.numberOfLines = 5;
                 cell.accessoryView           = myInvisibleButton;               // no right arrow on column labels
                 cell.userInteractionEnabled  = NO;
@@ -3990,12 +3991,20 @@ tn();trn("in row 1  header");
                 {
                     cell.textLabel.textColor     = [UIColor whiteColor];
                 } else {
-                    cell.textLabel.textColor     = [UIColor blackColor];
+                    cell.textLabel.textColor     = [UIColor blackColor];  // best
                 }
 
                 cell.userInteractionEnabled              = YES;      // method just returns 
                 cell.textLabel.numberOfLines             = 1; 
-                cell.textLabel.font                      = myFont_16b;
+
+
+                if ([gbl_currentMenuPlusReportCode hasPrefix: @"homgm"] ) // MOST trait reports
+                {
+                    cell.textLabel.font                      = myFont_16b;  // most white text on darker blue
+                } else {
+                    cell.textLabel.font                      = myFont_16;   // best  
+                }
+
                 cell.textLabel.adjustsFontSizeToFitWidth = YES;
                 cell.textLabel.text                      = myNewCellText;  // ------------------------------------------------------------
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -4841,8 +4850,10 @@ trn("// end of  tableView cellForRowAtIndexPath: (NSIndexPath *)indexPath");
         //        lblSection0.backgroundColor = gbl_color_cAplTop;
         //        lblSection0.backgroundColor = [UIColor redColor];   for test
 
-        lblSection0.backgroundColor = [UIColor whiteColor];
-        //        lblSection0.backgroundColor = gbl_colorNavBarBG;
+//        lblSection0.backgroundColor = [UIColor whiteColor];
+        lblSection0.backgroundColor = gbl_colorAplNavBarBG;
+
+
         [lblSection0 sizeToFit];
 
         // make same font bold
@@ -5345,7 +5356,7 @@ NSLog(@"gbl_TBLRPTS1_saveSelectedIndexPath.row=%ld",(long)gbl_TBLRPTS1_saveSelec
         if ([ gbl_do_A_per_reload isEqualToString: @"do the reload only the first time"] )
         {
   NSLog(@"per RELOAD A   DO IT");
-              gbl_do_A_per_reload = @"this is not reset until app startup";
+              gbl_do_A_per_reload = @"this is not reset until new app startup";
 
             // try to get rid of tbl position in middle on startup
 //nbn(451);
@@ -5403,7 +5414,7 @@ NSLog(@"gbl_TBLRPTS1_saveSelectedIndexPath.row=%ld",(long)gbl_TBLRPTS1_saveSelec
         if ([ gbl_do_A_co__reload isEqualToString: @"do the reload only the first time"] )
         {
   NSLog(@"pco RELOAD A   DO IT");
-            gbl_do_A_co__reload = @"this is not reset until app startup";
+            gbl_do_A_co__reload = @"this is not reset until new app startup";
 
             // try to get rid of tbl position in middle on startup
             dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
@@ -5481,7 +5492,8 @@ NSLog(@"gbl_TBLRPTS1_saveSelectedIndexPath.row=%ld",(long)gbl_TBLRPTS1_saveSelec
                 //
                 [self.navigationController.navigationBar setShadowImage: [UIImage new]];   
                 //
-                self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];  // 2. of 2
+//                self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];  // 2. of 2
+                self.navigationController.navigationBar.backgroundColor = gbl_colorAplNavBarBG;  // 2. of 2
                 //
                 // end of  How to hide iOS7 UINavigationBar 1px bottom line
 
@@ -5569,7 +5581,8 @@ NSLog(@"gbl_TBLRPTS1_saveSelectedIndexPath.row=%ld",(long)gbl_TBLRPTS1_saveSelec
                 //
                 [self.navigationController.navigationBar setShadowImage: [UIImage new]];   
                 //
-                self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];  // 2. of 2
+//                self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];  // 2. of 2
+                self.navigationController.navigationBar.backgroundColor = gbl_colorAplNavBarBG;  // 2. of 2
                 //
                 // end of  How to hide iOS7 UINavigationBar 1px bottom line
 

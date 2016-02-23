@@ -214,31 +214,31 @@ void Xtu(char *srk, unsigned irk) {
 }
 
 /*  for examining num chars in mem */
-/* void tmn(char *srk, char *addr, int num) {NL=1; Xtm(srk,addr,num);}
-* void tm( char *srk, char *addr, int num) {NL=0; Xtm(srk,addr,num);}
-* void Xtm(char *srk, char *addr, int num) {
-*   int n,i;
-*   unsigned char *p = addr;
-*   char wk[512+1];
-*   if(RKDEBUG) {
-*     n = sprintf(wk,"%s_%s_for_%d=[",(NL?"\n":""),srk,num);
-*     fwrite(wk,n,1,fpdb);
-*     for (n=0; n <= num-1; n++) {
-*       if (isprint(*(p+n))) {
-*         putc(*(p+n),fpdb);
-*       } else {
-*         if (*(p+n) == 0) {
-*           putc(0xf9,fpdb);
-*         } else {
-*           i = sprintf(wk,"'%X'",*(p+n));
-*           fwrite(wk,i,1,fpdb);
-*         }
-*       }
-*     }
-*     fwrite("]",1,1,fpdb);
-*   }
-* }  
-*/
+ void tmn(char *srk, char *addr, int num) {NL=1; Xtm(srk,addr,num);}
+void tm( char *srk, char *addr, int num) {NL=0; Xtm(srk,addr,num);}
+void Xtm(char *srk, char *addr, int num) {
+  int n,i;
+  unsigned char *p = addr;
+  char wk[512+1];
+  if(RKDEBUG) {
+    n = sprintf(wk,"%s_%s_for_%d=[",(NL?"\n":""),srk,num);
+    fwrite(wk,n,1,fpdb);
+    for (n=0; n <= num-1; n++) {
+      if (isprint(*(p+n))) {
+        putc(*(p+n),fpdb);
+      } else {
+        if (*(p+n) == 0) {
+          putc(0xf9,fpdb);
+        } else {
+          i = sprintf(wk,"'%X'",*(p+n));
+          fwrite(wk,i,1,fpdb);
+        }
+      }
+    }
+    fwrite("]",1,1,fpdb);
+  }
+}  
+
 
 /*  for examining num bytes in mem in binary */
 /* 
