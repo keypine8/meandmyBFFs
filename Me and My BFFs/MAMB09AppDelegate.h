@@ -7,8 +7,22 @@
 
 #import <UIKit/UIKit.h>
 
-NSString *gbl_cy_apl;  // format "20nn"
-NSString *gbl_cy_goo;  // format "20nn"
+NSString *gbl_cy_session_startup;   // format "20nn"  cy gotten from apl this session
+NSString *gbl_cm_session_startup;
+NSString *gbl_cd_session_startup;
+
+NSString *gbl_cy_currentAllPeople;  // format "20nn"  cy gotten from grp allpeople
+NSString *gbl_cm_currentAllPeople;  // format "nn"  mth
+NSString *gbl_cd_currentAllPeople;  // format "nn"  day of mth
+
+NSString *gbl_cy_apl;               // format "20nn"  cy gotten from apl this session
+NSString *gbl_cm_apl;               // format "nn"  mth
+NSString *gbl_cd_apl;               // format "nn"  day of mth
+
+NSString *gbl_cy_goo;               // format "20nn"  cy gotten from apl this session
+NSString *gbl_cm_goo;               // format "nn"  mth
+NSString *gbl_cd_goo;               // format "nn"  day  of mth
+
 
          
 //    The viewController life cycle are 

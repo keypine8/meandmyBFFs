@@ -181,29 +181,55 @@
 
     do {    // populate array yearsToPickFrom2 for uiPickerView and init picker and init calendar year text field  (130 lines)
  
+
+
         // get the current year
         //
-        NSCalendar *gregorian = [NSCalendar currentCalendar];          // Get the Current Date and Time
-       //         NSDateComponents *dateComponents = [gregorian components:(NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit)
-        NSDateComponents *dateComponents = [gregorian components:(NSCalendarUnitDay| NSCalendarUnitMonth | NSCalendarUnitYear)
+//        NSCalendar *gregorian = [NSCalendar currentCalendar];          // Get the Current Date and Time
+//       //         NSDateComponents *dateComponents = [gregorian components:(NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit)
+//        NSDateComponents *dateComponents = [gregorian components:(NSCalendarUnitDay| NSCalendarUnitMonth | NSCalendarUnitYear)
+//
+//                                                        fromDate:[NSDate date]];
+//        gbl_currentYearInt  = [dateComponents year];
+//        gbl_currentMonthInt = [dateComponents month];
+//        gbl_currentDayInt   = [dateComponents day];
+//        //NSLog(@"gbl_currentYearInt  =%ld",(long)gbl_currentYearInt  );
+//        //NSLog(@"gbl_currentMonthInt =%ld",(long)gbl_currentMonthInt );
+//        //NSLog(@"gbl_currentDayInt   =%ld",(long)gbl_currentDayInt   );
+        
 
-                                                        fromDate:[NSDate date]];
-        gbl_currentYearInt  = [dateComponents year];
-        gbl_currentMonthInt = [dateComponents month];
-        gbl_currentDayInt   = [dateComponents day];
-        //NSLog(@"gbl_currentYearInt  =%ld",(long)gbl_currentYearInt  );
-        //NSLog(@"gbl_currentMonthInt =%ld",(long)gbl_currentMonthInt );
-        //NSLog(@"gbl_currentDayInt   =%ld",(long)gbl_currentDayInt   );
+        MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global methods in appDelegate.m
+        [myappDelegate gcy ];  // get real current year , month, day
+
+        if (gbl_cy_apl == nil  &&  gbl_cy_goo == nil) {
+                                   gbl_currentYearInt  = [gbl_cy_currentAllPeople intValue];
+                                   gbl_currentMonthInt = [gbl_cm_currentAllPeople intValue];
+                                   gbl_currentDayInt   = [gbl_cd_currentAllPeople intValue];
+
+        } else {
+            if (gbl_cy_apl != nil) {
+                gbl_currentYearInt  = [gbl_cy_apl intValue];
+                gbl_currentMonthInt = [gbl_cm_apl intValue];
+                gbl_currentDayInt   = [gbl_cd_apl intValue];
+            } else {
+                if (gbl_cy_goo != nil) {
+                    gbl_currentYearInt  = [gbl_cy_goo intValue];
+                    gbl_currentMonthInt = [gbl_cm_goo intValue];
+                    gbl_currentDayInt   = [gbl_cd_goo intValue];
+                }
+            }
+        }
         
+
         
-        gbl_currentDay_yyyymmdd = [NSString stringWithFormat:@"%04ld%02ld%02ld",
+        gbl_currentDay_yyyymmdd = [NSString stringWithFormat: @"%04ld%02ld%02ld",
                                        (long)gbl_currentYearInt,
                                        (long)gbl_currentMonthInt,
                                        (long)gbl_currentDayInt     ];
 
         
         
-        // get the date of birth  for starting point from   gbl_fromHomeCurrentSelectionPSV
+
 
 
         NSArray *psvArray;
@@ -262,7 +288,8 @@
         // get remembered date, if present
         //
         NSString *psvRememberedDate;   // "yyyymmdd"
-        MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
+
+//        MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
 
 
 

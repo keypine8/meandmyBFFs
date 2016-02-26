@@ -14,3 +14,14 @@
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
 #endif
+
+// #define DO_MAMB_DEBUG yes
+// #ifndef DO_MAMB_DEBUG
+//    // #define NSLog //
+// #define NSLog(...)
+// #endif
+
+// commenting out the line below ( #define NSLog(...) )   turns off logging throughout the App
+// #define NSLog(...)
+
+

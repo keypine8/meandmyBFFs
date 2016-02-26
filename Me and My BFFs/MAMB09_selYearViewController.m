@@ -23,6 +23,10 @@
     self.outletYearPicker.delegate = self;
     self.outletYearPicker.dataSource = self;
     
+
+ NSLog(@"gbl_cy_apl 9 =[%@]",gbl_cy_apl);
+ NSLog(@"gbl_cy_goo 9 =[%@]",gbl_cy_goo);
+
 //    self.view.backgroundColor = gbl_colorSelParamForReports;
     if ([gbl_lastSelectionType isEqualToString:@"person"]) [self.view setBackgroundColor: gbl_colorHomeBG_per];
     if ([gbl_lastSelectionType isEqualToString:@"group" ]) [self.view setBackgroundColor: gbl_colorHomeBG_grp];
@@ -118,30 +122,28 @@
     do {    // populate array yearsToPickFrom for uiPickerView and init picker and calendar year text field
         
         // get the current year
-        NSCalendar *gregorian = [NSCalendar currentCalendar];          // Get the Current Date and Time
-        //        NSDateComponents *dateComponents = [gregorian components:(NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit) fromDate:[NSDate date]];
-        NSDateComponents *dateComponents = [gregorian components:(NSCalendarUnitDay| NSCalendarUnitMonth | NSCalendarUnitYear)
-                                                        fromDate:[NSDate date]  ];
+        //
+
+        //        NSCalendar *gregorian = [NSCalendar currentCalendar];          // Get the Current Date and Time
+        //        NSDateComponents *dateComponents = [gregorian components: (NSCalendarUnitDay| NSCalendarUnitMonth | NSCalendarUnitYear)
+        //                                                        fromDate: [NSDate date] 
+        //        ];
+        //        gbl_currentYearInt = [dateComponents year];
 
         
-        gbl_currentYearInt = [dateComponents year];
         // NSString *yearStr = [@(gbl_currentYear) stringValue];  // convert integer to NSString
         
-        // get the year of birth to start  from   gbl_fromHomeCurrentSelectionPSV 
 
+        MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global methods in appDelegate.m
+        [myappDelegate gcy ];  // get real current year for calendar year cap (= curr yr + 1)
+        if (gbl_cy_apl == nil  &&  gbl_cy_goo == nil) {
+                                   gbl_currentYearInt = [gbl_cy_currentAllPeople intValue];
 
-        // NSArray *psvArray = [gbl_fromHomeCurrentSelectionPSV componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"|"]];
-
-
-        //NSString *psvYearOfBirth    = psvArray[3];
-
-        // name now in nav bar title
-        //        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  <.>
-        //            self.outletPersonName.text       = psvArray[0];
-        //        });
-        //
+        } else {
+            if (gbl_cy_apl != nil) gbl_currentYearInt = [gbl_cy_apl intValue];
+            if (gbl_cy_goo != nil) gbl_currentYearInt = [gbl_cy_goo intValue];
+        }
         
-        //NSInteger yearOfBirthInt = [psvYearOfBirth intValue];  // convert NSString to integer
         
         // for the picker, set yearsToPickFrom str array
         //
@@ -173,7 +175,7 @@
 //        NSString *psvRememberedYear = myRemArray[2];  // year is field # 3 one-based
 //
         NSString *psvRememberedYear;
-        MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
+//        MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
         psvRememberedYear = [myappDelegate grabLastSelectionValueForEntity: (NSString *) @"person"
                                                                 havingName: (NSString *) gbl_fromHomeCurrentEntityName 
                                                       fromRememberCategory: (NSString *) @"year"  ];

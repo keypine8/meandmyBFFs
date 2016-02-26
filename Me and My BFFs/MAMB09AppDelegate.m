@@ -29,7 +29,18 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     NSLog(@"in didFinishLaunchingWithOptions()  in appdelegate");
+ksn("in didFinishLaunchingWithOptions()  in appdelegate");
     
+
+//    gbl_cy_apl              = @"9999";  // inited now in appdel didFinishLaunchingWithOptions
+//    gbl_cy_goo              = @"9999";
+//    gbl_cy_session_startup  = @"9999";  // format "20nn"  cy gotten from apl this session
+//    gbl_cy_currentAllPeople = @"9999";  // format "20nn"  cy gotten from grp allpeople
+    gbl_cy_apl              = nil;    // inited now in appdel didFinishLaunchingWithOptions
+    gbl_cy_goo              = nil;  
+    gbl_cy_session_startup  = nil;    // format "20nn"  cy gotten from apl this session
+    gbl_cy_currentAllPeople = nil;    // format "20nn"  cy gotten from grp allpeople
+
 
     // In order to get rid of opening in middle of report instead of top for tblrpts  per and co,
     // we have to reload the report at screen startup,
@@ -668,11 +679,12 @@
     // This is NOT the ongoing data, which is in  data files.
     //
 
-    gbl_nameOfGrpHavingAllPeopleIhaveAdded = @"All My People~";
+    gbl_nameOfGrpHavingAllPeopleIhaveAdded = @"All People~";
 
-    gbl_recOfAllPeopleIhaveAdded = [ NSString stringWithFormat: @"%@||||||||||||||", // 14 flds for misc
+    gbl_recOfAllPeopleIhaveAdded = [ NSString stringWithFormat: @"%@||||2016|06|15||||||||", // 14 flds for misc
         gbl_nameOfGrpHavingAllPeopleIhaveAdded
     ]; // 14 flds for misc
+    // fld #5 (one-based) is gbl_cy_currentAllPeople
 
     gbl_arrayExaGrp =   // field 1=name-of-group  field 2=locked-or-not
     @[
@@ -3138,58 +3150,54 @@ tn();
 {
 tn();
   NSLog(@"in mamb_endIgnoringInteractionEvents_after:  ");
-  NSLog(@"isIgnoringInteractionEvents=[%d]a", [[UIApplication sharedApplication] isIgnoringInteractionEvents] );
-  NSLog(@"arg_numSecondsDelay  =[%f]",arg_numSecondsDelay  );
+//  NSLog(@"arg_numSecondsDelay  =[%f]",arg_numSecondsDelay  );
 
-    if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] ==  YES) 
+    BOOL areIgnoringEvents = [[UIApplication sharedApplication] isIgnoringInteractionEvents];
+  NSLog(@"areIgnoringEvents =[%d]",areIgnoringEvents );
+
+    if (areIgnoringEvents  ==  YES) 
     {
         int64_t myDelayInSec   = arg_numSecondsDelay * (double)NSEC_PER_SEC;
   NSLog(@"myDelayInSec   =[%lld]",myDelayInSec   );
-
-
-
 //        dispatch_time_t my_dispatch_time = dispatch_time(DISPATCH_TIME_NOW, (int64_t)myDelayInSec);
-//
 //        dispatch_after(my_dispatch_time, dispatch_get_main_queue(), ^{     
-//
 //            [[UIApplication sharedApplication] endIgnoringInteractionEvents ];
 //        });
-//
 
         // suspend handling of touch-related events
         [[UIApplication sharedApplication] endIgnoringInteractionEvents];       // typically call this after an animation or transitiion.
+  NSLog(@"in mamb_endIgnoringInteractionEvents_after:  CHANGE to end ignoring");
+    }
 
   NSLog(@"isIgnoringInteractionEvents=[%d]b", [[UIApplication sharedApplication] isIgnoringInteractionEvents] );
-    }
+tn();
 
-    if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] ==   NO)
-    {
-  NSLog(@"isIgnoringInteractionEvents=[%d]c", [[UIApplication sharedApplication] isIgnoringInteractionEvents] );
-    }
-}
+} // mamb_endIgnoringInteractionEvents_after
 
 
 - (void) mamb_beginIgnoringInteractionEvents 
 {
 tn();
   NSLog(@"in mamb_beginIgnoringInteractionEvents:  ");
-  NSLog(@"isIgnoringInteractionEvents=[%d]x", [[UIApplication sharedApplication] isIgnoringInteractionEvents] );
 
-    if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] ==   YES)
-    {
-  NSLog(@"isIgnoringInteractionEvents=[%d]y", [[UIApplication sharedApplication] isIgnoringInteractionEvents] );
-    }
+    BOOL areIgnoringEvents = [[UIApplication sharedApplication] isIgnoringInteractionEvents];
+  NSLog(@"areIgnoringEvents =[%d]",areIgnoringEvents );
 
-    if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] ==    NO)
+    if (areIgnoringEvents  ==   NO) 
     {
         // suspend handling of touch-related events
         [[UIApplication sharedApplication] beginIgnoringInteractionEvents];     // typically call this before an animation or transitiion.
 
-  NSLog(@"isIgnoringInteractionEvents=[%d]z", [[UIApplication sharedApplication] isIgnoringInteractionEvents] );
+  NSLog(@"in mamb_beginIgnoringInteractionEvents:  CHANGE to begin ignoring");
     }
-}
 
-//  // response header app
+  NSLog(@"isIgnoringInteractionEvents=[%d]y", [[UIApplication sharedApplication] isIgnoringInteractionEvents] );
+tn();
+} // mamb_beginIgnoringInteractionEvents 
+
+
+
+//  // response header apl
 //  mydict =[{
 //      "Cache-Control" = "max-age=0";
 //      Connection = "keep-alive";
@@ -3214,7 +3222,7 @@ tn();
 //      "x-xss-protection" = "1; mode=block";
 //  }]
 //
-    // this works, but     rats!   deprecated -> sendSynchronousRequest
+    // this works, but      deprecated -> sendSynchronousRequest
     //  find the actual current date time, found in apl's response header:
     //    NSHTTPURLResponse *myhttpUrlResponse = nil;
     //    NSString *mydateString;
@@ -3227,13 +3235,16 @@ tn();
     //    mydateString = [[myhttpUrlResponse allHeaderFields] objectForKey: @"Date"]; 
     //  NSLog(@"mydateString =[%@]",mydateString );
     //
-    // rats!   deprecated -> sendSynchronousRequest
+    // deprecated -> sendSynchronousRequest
 
 - (void) gcy //  find the actual current year   from  date time, found in apl's response header:
 {
   NSLog(@"start gcy   get real date   apple    116, 108, 135");
- NSLog(@"gbl_cy_apl   =[%@]",gbl_cy_apl);
- NSLog(@"gbl_cy_goo   =[%@]",gbl_cy_goo);
+
+    //    gbl_cy_apl = @"9999";  inited now to nil  in appdel didFinishLaunchingWithOptions
+    //    gbl_cy_goo = @"9999";
+ NSLog(@"gbl_cy_apl 1 =[%@]",gbl_cy_apl);
+ NSLog(@"gbl_cy_goo 1 =[%@]",gbl_cy_goo);
 
     NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
     NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration: defaultConfigObject
@@ -3246,10 +3257,10 @@ tn();
   NSLog(@"start  APPLE  NSURLSessionDataTask");
     myurl      = [NSURL URLWithString: @"https://apple.com" ];
     mydataTask = [ defaultSession dataTaskWithURL: myurl
-                                completionHandler: ^(NSData *mydata,  NSURLResponse *myresponse,  NSError *myerror)
+                                completionHandler: ^(NSData *mydata,  NSURLResponse *myresponse,  NSError *myerror)
         { // start of completionHandler
-            if(myerror == nil)
-            {
+            if(myerror == nil)
+            {
   NSLog(@"  doing completionHandler got data branch   doing completionHandler   error == nil");
 
                 // cast response into form having allHeaderFields
@@ -3262,9 +3273,11 @@ tn();
                 NSString *mydatestr          = [mydict objectForKey: @"Date"];  
 
  NSLog(@"mydict APPLE =[%@]",mydict );
- NSLog(@"mydatestr   =[%@]",mydatestr);
+ NSLog(@"mydatestr    =[%@]",mydatestr);
 
                 // verify year 
+                NSInteger yearIsValid;
+                yearIsValid = 0;
                 NSArray *myarr = [mydatestr componentsSeparatedByCharactersInSet: [NSCharacterSet whitespaceCharacterSet ]];
                 for (NSString *fld in myarr) {
                     if ( [fld length] == 4  &&  [fld hasPrefix: @"20" ]) {
@@ -3272,13 +3285,34 @@ tn();
                         unichar c = [myYYstr characterAtIndex: 0];
                         if (c >= '0' && c <= '9') {            // check that char 1 and 2 are numeric
                             c = [myYYstr characterAtIndex: 1];
-                            if (c >= '0' && c <= '9') gbl_cy_apl = fld;          // here fld is valid year  "20nn"
+
+                            if (c >= '0' && c <= '9') {
+                                yearIsValid = 1;
+                                gbl_cy_apl  = fld;          // !!!!  here fld is valid year  "20nn"
+                            }
                         }
- NSLog(@"gbl_cy_apl   =[%@]",gbl_cy_apl);
+ NSLog(@"gbl_cy_apl 2 =[%@]",gbl_cy_apl);
                         break; 
                     }
                 }
- NSLog(@"gbl_cy_apl   =[%@]",gbl_cy_apl);
+                if (yearIsValid == 1) {   //  Date = "Tue, 23 Feb 2016 16:32:17 GMT";
+                    gbl_cd_apl = [NSString stringWithFormat: @"%02d", [myarr[1] intValue ] ];  // "23"
+
+                    if ([myarr[2] isEqualToString: @"Jan"]) gbl_cm_apl = @"01";
+                    if ([myarr[2] isEqualToString: @"Feb"]) gbl_cm_apl = @"02";
+                    if ([myarr[2] isEqualToString: @"Mar"]) gbl_cm_apl = @"03";
+                    if ([myarr[2] isEqualToString: @"Apr"]) gbl_cm_apl = @"04";
+                    if ([myarr[2] isEqualToString: @"May"]) gbl_cm_apl = @"05";
+                    if ([myarr[2] isEqualToString: @"Jun"]) gbl_cm_apl = @"06";
+                    if ([myarr[2] isEqualToString: @"Jul"]) gbl_cm_apl = @"07";
+                    if ([myarr[2] isEqualToString: @"Aug"]) gbl_cm_apl = @"08";
+                    if ([myarr[2] isEqualToString: @"Sep"]) gbl_cm_apl = @"09";
+                    if ([myarr[2] isEqualToString: @"Oct"]) gbl_cm_apl = @"10";
+                    if ([myarr[2] isEqualToString: @"Nov"]) gbl_cm_apl = @"11";
+                    if ([myarr[2] isEqualToString: @"Dec"]) gbl_cm_apl = @"12";
+ NSLog(@"gbl_cm_apl 2 =[%@]",gbl_cm_apl);
+ NSLog(@"gbl_cd_apl 2 =[%@]",gbl_cd_apl);
+                }
 
                 // unused data    NSString * text = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
                 //                NSLog(@"Data = %@",text);
@@ -3286,13 +3320,15 @@ tn();
                 // can do notification here that you are finished
 
             } else {
-  NSLog(@"got an error");
+  NSLog(@"got an error  dataTaskWithURL  apl");
             }
+ NSLog(@"gbl_cy_apl 3 =[%@]",gbl_cy_apl);
         } // end of completionHandler
 
     ]; // end of NSURLSessionDataTask 
     [mydataTask resume];            // sending off dataTask  to execute asynchronously
-  NSLog(@"sending off dataTask ");
+ NSLog(@"gbl_cy_apl 4 =[%@]",gbl_cy_apl);
+  NSLog(@"sending off dataTask apl");
 
 
 
@@ -3310,6 +3346,8 @@ tn();
                 NSString *mydatestr          = [mydict objectForKey: @"Date"];  
 
                 // verify year 
+                NSInteger yearIsValid;
+                yearIsValid = 0;
                 NSArray *myarr = [mydatestr componentsSeparatedByCharactersInSet: [NSCharacterSet whitespaceCharacterSet ]];
                 for (NSString *fld in myarr) {
                     if ( [fld length] == 4  &&  [fld hasPrefix: @"20" ]) {
@@ -3317,21 +3355,48 @@ tn();
                         unichar c = [myYYstr characterAtIndex: 0];
                         if (c >= '0' && c <= '9') {            // check that char 1 and 2 are numeric
                             c = [myYYstr characterAtIndex: 1];
-                            if (c >= '0' && c <= '9') gbl_cy_goo = fld;          // here fld is valid year  "20nn"
+
+                            if (c >= '0' && c <= '9') {
+                                yearIsValid = 1;
+                                gbl_cy_goo = fld;          // !!!!  here fld is valid year  "20nn"
+                            }
                         }
- NSLog(@"gbl_cy_goo   =[%@]",gbl_cy_goo);
+ NSLog(@"gbl_cy_goo 2 =[%@]",gbl_cy_goo);
                         break; 
                     }
                 }
- NSLog(@"gbl_cy_goo   =[%@]",gbl_cy_goo);
+
+                if (yearIsValid == 1) {   //  Date = "Tue, 23 Feb 2016 16:32:17 GMT";
+                    gbl_cd_goo = [NSString stringWithFormat: @"%02d", [myarr[1] intValue ] ];  // "23"
+
+                    if ([myarr[2] isEqualToString: @"Jan"]) gbl_cm_goo = @"01";
+                    if ([myarr[2] isEqualToString: @"Feb"]) gbl_cm_goo = @"02";
+                    if ([myarr[2] isEqualToString: @"Mar"]) gbl_cm_goo = @"03";
+                    if ([myarr[2] isEqualToString: @"Apr"]) gbl_cm_goo = @"04";
+                    if ([myarr[2] isEqualToString: @"May"]) gbl_cm_goo = @"05";
+                    if ([myarr[2] isEqualToString: @"Jun"]) gbl_cm_goo = @"06";
+                    if ([myarr[2] isEqualToString: @"Jul"]) gbl_cm_goo = @"07";
+                    if ([myarr[2] isEqualToString: @"Aug"]) gbl_cm_goo = @"08";
+                    if ([myarr[2] isEqualToString: @"Sep"]) gbl_cm_goo = @"09";
+                    if ([myarr[2] isEqualToString: @"Oct"]) gbl_cm_goo = @"10";
+                    if ([myarr[2] isEqualToString: @"Nov"]) gbl_cm_goo = @"11";
+                    if ([myarr[2] isEqualToString: @"Dec"]) gbl_cm_goo = @"12";
+ NSLog(@"gbl_cm_goo 2 =[%@]",gbl_cm_goo);
+ NSLog(@"gbl_cd_goo 2 =[%@]",gbl_cd_goo);
+                }
+
+ NSLog(@"gbl_cy_goo 3 =[%@]",gbl_cy_goo);
 
                 // can do notification here that you are finished
             } else {
-  NSLog(@"got an error");
+  NSLog(@"got an error  dataTaskWithURL  goo");
             }
         } // end of completionHandler
     ]; // end of NSURLSessionDataTask 
+
     [mydataTask resume];            // sending off dataTask  to execute asynchronously
+ NSLog(@"gbl_cy_goo 4 =[%@]",gbl_cy_goo);
+  NSLog(@"sending off dataTask goo");
 
 
                 // can do notification here that you are finished

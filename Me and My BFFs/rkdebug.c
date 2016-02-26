@@ -105,7 +105,8 @@ void tr (char *srk);
 void Xtr(char *srk);
 
 
-int RKDEBUG=1;  /* =0 turns off output in all these debug functions */
+// int RKDEBUG=0;  /* =0 turns off output in all these debug functions */
+int RKDEBUG=1;  /* =1 turns on   output in all these debug functions */
 
 void tspec(void) { } 
 
@@ -123,9 +124,9 @@ void b(int nrk)  {
         //fflush(fpdb);}
     }
 }
-void nb (int nrk)  { fprintf(fpdb,"\n%3d!",nrk); }
-void bn (int nrk)  { fprintf(fpdb,"%3d!\n",nrk); }
-void nbn(int nrk)  { fprintf(fpdb,"\n%3d!\n",nrk); }
+void nb (int nrk)  { if(RKDEBUG) {fprintf(fpdb,"\n%3d!"  ,nrk);} }
+void bn (int nrk)  { if(RKDEBUG) {fprintf(fpdb,"%3d!\n"  ,nrk);} }
+void nbn(int nrk)  { if(RKDEBUG) {fprintf(fpdb,"\n%3d!\n",nrk);} }
 
 /*  for examining a string */
 #define ks(s)   ts(#s,s)
