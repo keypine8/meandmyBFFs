@@ -163,14 +163,14 @@ tn();
 //
 //
 
-//nbn(1);
+//
 ////    UIWebView *webview=[[UIWebView alloc]initWithFrame:CGRectMake(0, 0, 40, 40)];
 //    UIWebView *webview=[[UIWebView alloc]initWithFrame:CGRectMake(0, 0, 11, 11)];
-//nbn(2);
+//
 ////    NSString *stringForHTML = @"X";
 ////    [webview loadHTMLString: stringForHTML   baseURL: nil];
 //    [webview loadHTMLString: [NSString stringWithFormat:@"<html><body>X</body></html>"]  baseURL: nil];
-//nbn(3);
+//
 //    [self.view addSubview:webview];
 //nbn(5);
 //
@@ -364,7 +364,7 @@ nbn(100);
 ////            self.editButtonItem.layer.cornerRadius = 5.0f;
 //            self.editButtonItem.layer.cornerRadius = 8.0f;
 
-//<.>
+//
 //            UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
 //            [button setFrame:CGRectMake(0, 0, 50, 40)];
 //            [button setImage:[UIImage imageNamed:@"settings.png"] forState:UIControlStateNormal];
@@ -382,7 +382,7 @@ nbn(100);
 //            UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:button];
 //
 //            self.navigationItem.leftBarButtonItem = leftItem;
-//<.>
+//
 
 
 
@@ -489,14 +489,15 @@ nbn(100);
                                                  name: UIApplicationWillEnterForegroundNotification
                                                object: nil  ];
 
+nbn(14);
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(doStuffOnSignificantTimeChange)
                                                  name: UIApplicationSignificantTimeChangeNotification
                                                object: nil  ];
 
+nbn(15);
 
     BOOL haveGrp, havePer, haveMem, haveGrpRem, havePerRem;
-
 
 
 //
@@ -515,13 +516,6 @@ nbn(100);
 //
 //
 //
-
-
-    MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global methods in appDelegate.m
-    [myappDelegate gcy ];  // get real current year for calendar year cap (= curr yr + 1)
-//  NSLog(@"gbl_cy_apl 1 =[%@]",gbl_cy_apl );
-//  NSLog(@"gbl_cy_goo 1 =[%@]",gbl_cy_goo );
-
 
     NSError *err01;
 
@@ -551,7 +545,7 @@ nbn(100);
 
 
 
-
+//
 //    //   for test   TO SIMULATE first downloading the app-  when there are no data files
 //    //   FOR test   remove all regular named files   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 //    //
@@ -571,6 +565,7 @@ nbn(100);
 //    NSLog(@" FOR test   END   remove all regular named files   xxxxxxxxxx ");
 //    // end of   FOR test   remove all regular named files   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 //
+//
 
 
 
@@ -585,7 +580,7 @@ nbn(100);
 
 
 
-
+    MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
 
 
     haveGrp    = [gbl_sharedFM fileExistsAtPath: gbl_pathToGroup];
@@ -739,6 +734,11 @@ ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
                 [gbl_arrayGrp removeObjectAtIndex: i ];
             }
 
+
+    
+
+
+
             [myappDelegate mambWriteNSArrayWithDescription:              (NSString *) @"group" ]; // write new array data to file
             [myappDelegate mambReadArrayFileWithDescription:             (NSString *) @"group" ]; // read new data from file to array
             [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription: (NSString *) @"group" ]; // sort array by name
@@ -756,7 +756,7 @@ ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
             [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.5 ];   
 
 
-//<.>
+//
 //            // http://stackoverflow.com/questions/25962559/uialertcontroller-text-alignment
 //            //
 //            // I have successfully used the following, for both aligning and styling the text of UIAlertControllers:
@@ -782,7 +782,7 @@ ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
 //            // @powerj1984 yes, it did. – Eduardo Jul 6 '15 at 15:02
 //            //
 // 
-//<.>
+//
 //
 //  Use this code instead       [self.navigationController presentViewController: myAlert  animated: YES  completion: nil ];
 
@@ -907,40 +907,20 @@ ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
 
 
 
-    // initialize current year from gbl_array_grp
-    // gbl_cy_session_startup;   // format "20nn"  cy gotten from apl this session
-    // gbl_cy_currentAllPeople;  // format "20nn"  cy gotten from grp allpeople
-    // 
-    // gbl_nameOfGrpHavingAllPeopleIhaveAdded; // "All My People~"
-    // gbl_recOfAllPeopleIhaveAdded;           //  = [ NSString stringWithFormat: @"%@||||||||||||||", // 15 flds for misc
-    //
-    NSString *prefixStr5 = [NSString stringWithFormat: @"%@|",gbl_nameOfGrpHavingAllPeopleIhaveAdded ];  // notice '|'
-    for (NSString *elt in gbl_arrayPer) {     // get PSV of arg name
-        if ([elt hasPrefix: prefixStr5]) { 
-            gbl_recOfAllPeopleIhaveAdded = elt;
-            break;
-        }
-    }
-    if (gbl_recOfAllPeopleIhaveAdded) {
-        NSArray *myaparr  = [gbl_recOfAllPeopleIhaveAdded componentsSeparatedByString:@"|"];
-        gbl_cy_session_startup  = myaparr [4]; // get fld#5 year     (0-based)
-        gbl_cm_session_startup  = myaparr [5]; // get fld#5 mth      (0-based)
-        gbl_cd_session_startup  = myaparr [6]; // get fld#5 dayofmth (0-based)
 
-        gbl_cy_currentAllPeople = gbl_cy_session_startup ;
-        gbl_cm_currentAllPeople = gbl_cm_session_startup ;
-        gbl_cd_currentAllPeople = gbl_cd_session_startup ;
-    }
-    // here, these 2 gbls are "9999" or a valid year
-  NSLog(@"gbl_cy_session_startup  =[%@]",gbl_cy_session_startup  );
-  NSLog(@"gbl_cy_currentAllPeople =[%@]",gbl_cy_currentAllPeople );
-  NSLog(@"gbl_cy_apl 10           =[%@]",gbl_cy_apl );
-  NSLog(@"gbl_cy_goo 10           =[%@]",gbl_cy_goo );
+//trn("hey");    // ONE TIME TEST
+//  NSLog(@"gbl_recOfAllPeopleIhaveAdded =[%@]",gbl_recOfAllPeopleIhaveAdded );
+//    [gbl_arrayGrp   addObject: gbl_recOfAllPeopleIhaveAdded ];  // for text <.>  add all people    TODO  
+//    [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription: (NSString *) @"group" ]; // sort array by name  // for text <.>  add all people    TODO  
+
 
 
 
 
     [self doStuffOnEnteringForeground];  // read   lastEntity stuff
+
+
+
 
     // for test  LOOK AT all files in doc dir
     NSArray *docFiles2 = [[NSFileManager defaultManager] contentsOfDirectoryAtPath: gbl_appDocDirStr error:NULL];
@@ -997,21 +977,36 @@ nbn(45);
 {
   NSLog(@"in numberOfRowsInSection");
     // Return the number of rows in the section.
-    //return 0;
-    //return mambyObjectList.count;
-    //if ([_mambCurrentEntity isEqualToString:@"group"])  return gbl_arrayGrp.count;
-    //if ([_mambCurrentEntity isEqualToString:@"person"]) return gbl_arrayPer.count;
+
     if ([gbl_lastSelectionType isEqualToString:@"group"]) 
     {
-  NSLog(@"retint  return num groups=[%ld]",(long)gbl_arrayGrp.count);
-        return gbl_arrayGrp.count;
+        if (gbl_ExampleData_show == 1) {
+           gbl_numRowsToDisplayFor_grp = gbl_arrayGrp.count;
+        } else {
+           // Here we do not want to show example data.
+           // Because example data names start with "~", they sort last,
+           // so we can just reduce the number of rows to exclude example data from showing on the screen.
+           gbl_numRowsToDisplayFor_grp = gbl_arrayGrp.count - gbl_ExampleData_count_grp ;
+        }
+  NSLog(@"gbl_numRowsToDisplayFor_grp  return =[%ld]",(long)gbl_numRowsToDisplayFor_grp  );
+        return gbl_numRowsToDisplayFor_grp;
     }
+
     if ([gbl_lastSelectionType isEqualToString:@"person"])
     {
-  NSLog(@"retint  return num people=[%ld]",(long)gbl_arrayPer.count);
-        return gbl_arrayPer.count;
+        if (gbl_ExampleData_show == 1) {
+           gbl_numRowsToDisplayFor_per = gbl_arrayPer.count;
+        } else {
+           // Here we do not want to show example data.
+           // Because example data names start with "~", they sort last,
+           // so we can just reduce the number of rows to exclude example data from showing on the screen.
+           gbl_numRowsToDisplayFor_per = gbl_arrayPer.count - gbl_ExampleData_count_per ;
+        }
+  NSLog(@"gbl_numRowsToDisplayFor_per  return =[%ld]",(long)gbl_numRowsToDisplayFor_per  );
+        return gbl_numRowsToDisplayFor_per;
     }
-    return 0;
+    return 1;  // should not happen
+
 } // numberOfRowsInSection
 
 
@@ -1037,12 +1032,15 @@ nbn(45);
 //    NSLog(@"all array[%@]", mambyObjectList);
 //    NSLog(@"current  row=[%@]", [mambyObjectList objectAtIndex:indexPath.row]);
 
+
+
+
     // set the text attribute to the name of
     // whatever we are currently looking at in our array
     // name is 1st element in csv
     //
     // NSLog(@"_mambCurrentEntity=%@",_mambCurrentEntity);
-
+    //
     NSString *currentLine, *nameOfGrpOrPer;
 
     if ([gbl_lastSelectionType isEqualToString:@"group"]) {
@@ -1057,6 +1055,8 @@ nbn(45);
         }
     }
     // NSLog(@"currentLine=%@",currentLine);
+
+
 
     _arr = [currentLine componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"|"]];
     nameOfGrpOrPer = _arr[0];
@@ -1151,6 +1151,9 @@ nbn(45);
 //  NSLog(@"after set access view");
   
 
+  NSLog(@"nameOfGrpOrPer=[%@]",nameOfGrpOrPer);
+  NSLog(@"END of  cellForRowAtIndexPath in HOME");
+tn();
     return cell;
 } // cellForRowAtIndexPath
 
@@ -1548,6 +1551,9 @@ tn();
 - (IBAction)actionSwitchEntity:(id)sender   // segemented control on home page   select person  or  group
 {  // segemented control on home page   select person  or  group
     NSLog(@"in actionSwitchEntity() in home!");
+  NSLog(@"gbl_fromHomeCurrentEntity        =[%@]",gbl_fromHomeCurrentEntity);
+  NSLog(@"gbl_lastSelectionType            =[%@]",gbl_lastSelectionType            );
+
 
 //    NSLog(@"gbl_LastSelectedPerson=%@",gbl_lastSelectedPerson);
 //    NSLog(@"gbl_LastSelectedGroup=%@" ,gbl_lastSelectedGroup);
@@ -1702,10 +1708,10 @@ tn();
         self.tableView.separatorColor    = gbl_colorSepara_grp;
 
     }
-//    NSLog(@"gbl_fromHomeCurrentEntity        =%@",gbl_fromHomeCurrentEntity        );
-//    NSLog(@"gbl_fromHomeCurrentSelectionType =%@",gbl_fromHomeCurrentSelectionType );
-//    NSLog(@"gbl_lastSelectionType            =%@",gbl_lastSelectionType            );
-//    NSLog(@"gbl_currentMenuPrefixFromHome              =%@",gbl_currentMenuPrefixFromHome);
+    NSLog(@"gbl_fromHomeCurrentEntity        =%@",gbl_fromHomeCurrentEntity        );
+    NSLog(@"gbl_fromHomeCurrentSelectionType =%@",gbl_fromHomeCurrentSelectionType );
+    NSLog(@"gbl_lastSelectionType            =%@",gbl_lastSelectionType            );
+    NSLog(@"gbl_currentMenuPrefixFromHome              =%@",gbl_currentMenuPrefixFromHome);
 
 
     if ([gbl_lastSelectionType isEqualToString: @"group"])  _segEntityOutlet.selectedSegmentIndex = 0; // highlight correct entity in seg ctrl
@@ -1720,56 +1726,81 @@ tn();
     idxGrpOrPer = -1;   // zero-based idx
 
         if ([gbl_fromHomeCurrentEntity isEqualToString: @"group"]) {
-
+nbn(50);
 
             // NSLog(@"reload table here!");
             [self.tableView reloadData];
+nbn(51);
 
             // highlight lastEntity row in tableview
             //
+
+
+            // Check for gbl_lastSelectedPerson being example data person
+            // and example data being turned off.
+            // In that case, put top row on top of tableview
+            //
+            if (gbl_ExampleData_show == 0
+                && (
+                       [gbl_lastSelectedGroup hasPrefix: @"~" ] 
+                    || (gbl_numRowsToDisplayFor_per == 0)
+                   )
+               )
+            {
+nbn(55);
+               // set gbl_lastSelectedPerson  to whoever is in top row
+               // put top row on top of tableview
+               self.tableView.contentOffset = CGPointMake(0, 0 - self.tableView.contentInset.top);
+
+            } else {
+                // normal case here
+
             
-            // find index of _mambCurrentSelection (like "~Family") in gbl_arrayGrp
-            for (id eltGrp in gbl_arrayGrp) {
-              idxGrpOrPer = idxGrpOrPer + 1;
-              //NSLog(@"idxGrpOrPer =%ld", (long)idxGrpOrPer );
-              //NSLog(@"eltGrp=%@", eltGrp);
+                // find index of _mambCurrentSelection (like "~Family") in gbl_arrayGrp
+                for (id eltGrp in gbl_arrayGrp) {
+                  idxGrpOrPer = idxGrpOrPer + 1;
+                  //NSLog(@"idxGrpOrPer =%ld", (long)idxGrpOrPer );
+                  //NSLog(@"eltGrp=%@", eltGrp);
 
-              NSCharacterSet *mySeparators = [NSCharacterSet characterSetWithCharactersInString: @"|"];
-              arrayGrpOrper  = [eltGrp componentsSeparatedByCharactersInSet:  mySeparators];
-              nameOfGrpOrPer = arrayGrpOrper[0];  // name is 1st fld
+                  NSCharacterSet *mySeparators = [NSCharacterSet characterSetWithCharactersInString: @"|"];
+                  arrayGrpOrper  = [eltGrp componentsSeparatedByCharactersInSet:  mySeparators];
+                  nameOfGrpOrPer = arrayGrpOrper[0];  // name is 1st fld
 
-              //if ([nameOfGrpOrPer isEqualToString:  _mambCurrentSelection]) 
-              if ([nameOfGrpOrPer isEqualToString:  gbl_lastSelectedGroup]) {
-                break;
-              }
-            }  // search thru gbl_arrayGrp
-            NSLog(@"FOUND !=%ld", (long)idxGrpOrPer);
+                  //if ([nameOfGrpOrPer isEqualToString:  _mambCurrentSelection]) 
+                  if ([nameOfGrpOrPer isEqualToString:  gbl_lastSelectedGroup]) {
+                    break;
+                  }
+                }  // search thru gbl_arrayGrp
+  NSLog(@"FOUND idxGrpOrPer! =%ld", (long)idxGrpOrPer);
 
-            // get the indexpath of row num idxGrpOrPer in tableview
-            //   assumes index of entity in gbl_array Per or Grp
-            //   is the same as its index (row) in the tableview
-            NSIndexPath *foundIndexPath = [NSIndexPath indexPathForRow: idxGrpOrPer inSection:0];
+                // get the indexpath of row num idxGrpOrPer in tableview
+                //   assumes index of entity in gbl_array Per or Grp
+                //   is the same as its index (row) in the tableview
+                NSIndexPath *foundIndexPath = [NSIndexPath indexPathForRow: idxGrpOrPer inSection:0];
 
-    //tn();trn("SCROLL 333333333333333333333333333333333333333333333333333333333");
+        //tn();trn("SCROLL 333333333333333333333333333333333333333333333333333333333");
 
-            dispatch_async(dispatch_get_main_queue(), ^{                                 // <===  
+  nbn(52);
+                dispatch_async(dispatch_get_main_queue(), ^{                                 // <===  
 
-                // select the row in UITableView
-                // This puts in the light grey "highlight" indicating selection
-                [self.tableView selectRowAtIndexPath:  foundIndexPath   // This puts in the light grey "highlight" indicating selection
-                                            animated:  YES
-                                      scrollPosition:  UITableViewScrollPositionNone];
-                //[self.tableView scrollToNearestSelectedRowAtScrollPosition:  foundIndexPath.row 
-                [self.tableView scrollToNearestSelectedRowAtScrollPosition:  UITableViewScrollPositionMiddle
-                                                                  animated:  YES];
+                    // select the row in UITableView
+                    // This puts in the light grey "highlight" indicating selection
+                    [self.tableView selectRowAtIndexPath:  foundIndexPath   // This puts in the light grey "highlight" indicating selection
+                                                animated:  YES
+                                          scrollPosition:  UITableViewScrollPositionNone];
+                    //[self.tableView scrollToNearestSelectedRowAtScrollPosition:  foundIndexPath.row 
+                    [self.tableView scrollToNearestSelectedRowAtScrollPosition:  UITableViewScrollPositionMiddle
+                                                                      animated:  YES];
 
-                if ( [gbl_homeUseMODE isEqualToString: @"edit mode" ] ) {
-//                    self.view.backgroundColor     = gbl_colorEditingBG;
-                    [self.tableView setBackgroundColor: gbl_colorEditingBG];
-                }
-            });
+                });
+            } // end of normal case here (highlight row)
 
-        }
+            if ( [gbl_homeUseMODE isEqualToString: @"edit mode" ] ) {
+                [self.tableView setBackgroundColor: gbl_colorEditingBG];
+            }
+        }  // end of "group"
+
+
         if ([gbl_fromHomeCurrentEntity isEqualToString: @"person"]) {
 
 
@@ -1778,42 +1809,63 @@ tn();
 
             // highlight lastEntity row in tableview
             //
+        
 
-            // find index of _mambCurrentSelection (like "~Dave") in gbl_arrayPer
-            for (id eltPer in gbl_arrayPer) {
-                idxGrpOrPer = idxGrpOrPer + 1;
-                //NSLog(@"idxGrpOrPer =%ld", (long)idxGrpOrPer );
-                //NSLog(@"eltPer=%@", eltPer);
-                NSCharacterSet *mySeparators = [NSCharacterSet characterSetWithCharactersInString: @"|"];
-                arrayGrpOrper  = [eltPer componentsSeparatedByCharactersInSet:  mySeparators];
-                nameOfGrpOrPer = arrayGrpOrper[0];  // name is 1st fld
+            // Check for gbl_lastSelectedPerson being example data person
+            // and example data being turned off.
+            // In that case, put top row on top of tableview
+            //
+            if (gbl_ExampleData_show == 0
+                && (
+                       [gbl_lastSelectedPerson hasPrefix: @"~" ] 
+                    || (gbl_numRowsToDisplayFor_grp == 0)
+                   )
+               )
+            {
+nbn(55);
+               // set gbl_lastSelectedPerson  to whoever is in top row
+               // put top row on top of tableview
+               self.tableView.contentOffset = CGPointMake(0, 0 - self.tableView.contentInset.top);
 
-                //if ([nameOfGrpOrPer isEqualToString:  _mambCurrentSelection]) 
-                if ([nameOfGrpOrPer isEqualToString:  gbl_lastSelectedPerson]) {
-                    break;
-                }
-            } // search thru gbl_arrayPer
-            NSLog(@"FOUND !=%ld", (long)idxGrpOrPer);
+            } else {
+                // normal case here
 
-            // get the indexpath of row num idxGrpOrPer in tableview
-            NSIndexPath *foundIndexPath = [NSIndexPath indexPathForRow:idxGrpOrPer inSection:0];
+                // find index of _mambCurrentSelection (like "~Dave") in gbl_arrayPer
+                for (id eltPer in gbl_arrayPer) {
+                    idxGrpOrPer = idxGrpOrPer + 1;
+                    //NSLog(@"idxGrpOrPer =%ld", (long)idxGrpOrPer );
+                    //NSLog(@"eltPer=%@", eltPer);
+                    NSCharacterSet *mySeparators = [NSCharacterSet characterSetWithCharactersInString: @"|"];
+                    arrayGrpOrper  = [eltPer componentsSeparatedByCharactersInSet:  mySeparators];
+                    nameOfGrpOrPer = arrayGrpOrper[0];  // name is 1st fld
 
-    //tn();trn("SCROLL 444444444444444444444444444444444444444444444444444444444");
-            dispatch_async(dispatch_get_main_queue(), ^{                                 // <===  
-                // select the row in UITableView
-                // This puts in the light grey "highlight" indicating selection
-                [self.tableView selectRowAtIndexPath: foundIndexPath 
-                                            animated: YES
-                                      scrollPosition: UITableViewScrollPositionNone];
-                //[self.tableView scrollToNearestSelectedRowAtScrollPosition: foundIndexPath.row 
-                [self.tableView scrollToNearestSelectedRowAtScrollPosition: UITableViewScrollPositionMiddle
-                                                                  animated: YES];
+                    //if ([nameOfGrpOrPer isEqualToString:  _mambCurrentSelection]) 
+                    if ([nameOfGrpOrPer isEqualToString:  gbl_lastSelectedPerson]) {
+                        break;
+                    }
+                } // search thru gbl_arrayPer
+  NSLog(@"FOUND! idxGrpOrPer=%ld", (long)idxGrpOrPer);
 
-                if ( [gbl_homeUseMODE isEqualToString: @"edit mode" ] ) {
-//                    self.view.backgroundColor     = gbl_colorEditingBG;
-                    [self.tableView setBackgroundColor: gbl_colorEditingBG];
-                }
-            });
+                // get the indexpath of row num idxGrpOrPer in tableview
+                NSIndexPath *foundIndexPath = [NSIndexPath indexPathForRow:idxGrpOrPer inSection:0];
+
+//tn();trn("SCROLL 444444444444444444444444444444444444444444444444444444444");
+                dispatch_async(dispatch_get_main_queue(), ^{                                 // <===  
+                    // select the row in UITableView
+                    // This puts in the light grey "highlight" indicating selection
+                    [self.tableView selectRowAtIndexPath: foundIndexPath 
+                                                animated: YES
+                                          scrollPosition: UITableViewScrollPositionNone];
+                    //[self.tableView scrollToNearestSelectedRowAtScrollPosition: foundIndexPath.row 
+                    [self.tableView scrollToNearestSelectedRowAtScrollPosition: UITableViewScrollPositionMiddle
+                                                                      animated: YES];
+                });
+
+            } // end of normal case here (highlight row)
+
+            if ( [gbl_homeUseMODE isEqualToString: @"edit mode" ] ) {
+                [self.tableView setBackgroundColor: gbl_colorEditingBG];
+            }
         }
 
         //// end DO STUFF HERE
@@ -2195,7 +2247,9 @@ tn();
 
     MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global methods in appDelegate.m
 
-    [myappDelegate gcy ];  // get real current year for calendar year cap (= curr yr + 1)
+    [myappDelegate gcy ];  // get real current year  and m and d
+
+
 
     // method gcy sends a notification when it is done
     // so that the following can be done:
@@ -2231,6 +2285,56 @@ tn();trn("in doStuffOnEnteringForeground()   NOTIFICATION method     lastEntity 
 
     //MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
     MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
+
+
+
+
+    // initialize current year from gbl_array_grp
+    // gbl_cy_session_startup;   // format "20nn"  cy gotten from apl this session
+    // gbl_cy_currentAllPeople;  // format "20nn"  cy gotten from grp allpeople
+    // 
+    // gbl_nameOfGrpHavingAllPeopleIhaveAdded; // "#allpeople"
+//    // gbl_nameOfGrpHavingAllPeopleIhaveAdded; // "#meandmybffs"
+    // gbl_recOfAllPeopleIhaveAdded;           //  = [ NSString stringWithFormat: @"%@||||||||||||||", // 15 flds for misc
+    //
+
+
+    NSString *prefixStr5 = [NSString stringWithFormat: @"%@|",gbl_nameOfGrpHavingAllPeopleIhaveAdded ];  // notice '|'
+    for (NSString *elt in gbl_arrayGrp) {
+        if ([elt hasPrefix: prefixStr5]) { 
+            gbl_recOfAllPeopleIhaveAdded = elt;
+            break;
+        }
+    }
+  NSLog(@"gbl_recOfAllPeopleIhaveAdded =[%@]",gbl_recOfAllPeopleIhaveAdded );
+    if (gbl_recOfAllPeopleIhaveAdded) {
+        NSArray *myaparr  = [gbl_recOfAllPeopleIhaveAdded componentsSeparatedByString:@"|"];
+
+        gbl_cy_currentAllPeople = myaparr [4]; // get fld#5 year     (0-based)
+        gbl_cm_currentAllPeople = myaparr [5]; // get fld#5 mth      (0-based)
+        gbl_cd_currentAllPeople = myaparr [6]; // get fld#5 dayofmth (0-based)
+    }
+    // here, these 2 gbls are "nil" or a valid year
+
+  NSLog(@"gbl_cy_apl              in doStuffOnEnteringForeground home after get allpeople =[%@]",gbl_cy_apl);
+  NSLog(@"gbl_cm_apl              in doStuffOnEnteringForeground home after get allpeople =[%@]",gbl_cm_apl);
+  NSLog(@"gbl_cd_apl              in doStuffOnEnteringForeground home after get allpeople =[%@]",gbl_cd_apl);
+  NSLog(@"gbl_cy_currentAllPeople in doStuffOnEnteringForeground home after get allpeople =[%@]",gbl_cy_currentAllPeople );
+  NSLog(@"gbl_cm_currentAllPeople in doStuffOnEnteringForeground home after get allpeople =[%@]",gbl_cm_currentAllPeople );
+  NSLog(@"gbl_cd_currentAllPeople in doStuffOnEnteringForeground home after get allpeople =[%@]",gbl_cd_currentAllPeople );
+
+
+
+    // date might have changed due to passage of time, so
+    // 
+    // get current date from internet on app startup
+    // you need gbl_array_grp (done above)  to be there
+    //
+    //    MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global methods in appDelegate.m
+    [myappDelegate gcy ];  // get real current year for calendar year cap (= curr yr + 1)
+
+
+
 
     // get Document directory as URL and Str
     //
@@ -2333,6 +2437,8 @@ tn();trn("in doStuffOnEnteringForeground()   NOTIFICATION method     lastEntity 
    
     [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.3 ];    // after arg seconds
 
+trn("at END of  doStuffOnEnteringForeground()   NOTIFICATION method     lastEntity stuff");
+tn();
 } // end of  doStuffOnEnteringForeground()
 
 
@@ -2359,8 +2465,30 @@ tn();trn("in doStuffOnEnteringForeground()   NOTIFICATION method     lastEntity 
     myCountOfRows = 0;
 
 
-    if ([gbl_lastSelectionType isEqualToString:@"group"])   myCountOfRows = gbl_arrayGrp.count;
-    if ([gbl_lastSelectionType isEqualToString:@"person"])  myCountOfRows = gbl_arrayPer.count;
+    if ([gbl_lastSelectionType isEqualToString:@"group"]) 
+    {
+        if (gbl_ExampleData_show == 1) {
+           myCountOfRows = gbl_arrayGrp.count;
+        } else {
+           // Here we do not want to show example data.
+           // Because example data names start with "~", they sort last,
+           // so we can just reduce the number of rows to exclude example data from showing on the screen.
+           myCountOfRows = gbl_arrayGrp.count - gbl_ExampleData_count_grp ;
+        }
+    }
+
+    if ([gbl_lastSelectionType isEqualToString:@"person"])
+    {
+        if (gbl_ExampleData_show == 1) {
+           myCountOfRows = gbl_arrayPer.count;
+        } else {
+           // Here we do not want to show example data.
+           // Because example data names start with "~", they sort last,
+           // so we can just reduce the number of rows to exclude example data from showing on the screen.
+           myCountOfRows = gbl_arrayPer.count - gbl_ExampleData_count_per ;
+        }
+    }
+
 nbn(160);
   NSLog(@"myCountOfRows              =[%ld]", (long)myCountOfRows );
   NSLog(@"gbl_numRowsToTurnOnIndexBar=[%ld]", (long)gbl_numRowsToTurnOnIndexBar);
@@ -2498,8 +2626,32 @@ nbn(162);
 //
 
 
-    if ([gbl_lastSelectionType isEqualToString:@"group"])   myCountOfRows = gbl_arrayGrp.count;
-    if ([gbl_lastSelectionType isEqualToString:@"person"])  myCountOfRows = gbl_arrayPer.count;
+//    if ([gbl_lastSelectionType isEqualToString:@"group"])   myCountOfRows = gbl_arrayGrp.count;
+//    if ([gbl_lastSelectionType isEqualToString:@"person"])  myCountOfRows = gbl_arrayPer.count;
+    if ([gbl_lastSelectionType isEqualToString:@"group"]) 
+    {
+        if (gbl_ExampleData_show == 1) {
+           myCountOfRows = gbl_arrayGrp.count;
+        } else {
+           // Here we do not want to show example data.
+           // Because example data names start with "~", they sort last,
+           // so we can just reduce the number of rows to exclude example data from showing on the screen.
+           myCountOfRows = gbl_arrayGrp.count - gbl_ExampleData_count_grp ;
+        }
+    }
+
+    if ([gbl_lastSelectionType isEqualToString:@"person"])
+    {
+        if (gbl_ExampleData_show == 1) {
+           myCountOfRows = gbl_arrayPer.count;
+        } else {
+           // Here we do not want to show example data.
+           // Because example data names start with "~", they sort last,
+           // so we can just reduce the number of rows to exclude example data from showing on the screen.
+           myCountOfRows = gbl_arrayPer.count - gbl_ExampleData_count_per ;
+        }
+    }
+
 
     if ([title isEqualToString:@"TOP"]) newRow = 0;
     if ([title isEqualToString:@"END"]) newRow = myCountOfRows - 1;
@@ -3054,20 +3206,34 @@ nbn(3);
             // count how many members
             // if not at least 2 members,  alert and return
             //
-      NSLog(@"gbl_lastSelectedGroup =[%@]",gbl_lastSelectedGroup );
+  NSLog(@"gbl_lastSelectedGroup =[%@]",gbl_lastSelectedGroup );
 
             NSInteger member_cnt;
             NSString *prefixStr = [NSString stringWithFormat: @"%@|", gbl_lastSelectedGroup ];
 
-            member_cnt = 0;
-            for (NSString *element in gbl_arrayMem) {
-                if ([element hasPrefix: prefixStr]) {
+            if ([gbl_lastSelectedGroup isEqualToString: gbl_nameOfGrpHavingAllPeopleIhaveAdded])
+            {
+                // special group  "#allpeople"
+                member_cnt = 0;
+                for (NSString *element in gbl_arrayPer) {
+
+                    if ([element hasPrefix: @"~"]) continue;
                     member_cnt = member_cnt + 1;
+                }
+
+            } else {
+                // ordinary group
+                member_cnt = 0;
+                for (NSString *element in gbl_arrayMem) {
+                    if ([element hasPrefix: prefixStr]) {
+                        member_cnt = member_cnt + 1;
+                    }
                 }
             }
 
-      NSLog(@"prefixStr  =[%@]",prefixStr );
-      NSLog(@"member_cnt =[%ld]",(long) member_cnt );
+  NSLog(@"prefixStr  =[%@]",prefixStr );
+  NSLog(@"member_cnt =[%ld]",(long) member_cnt );
+
 
             if (member_cnt  <  2) {
 
@@ -3125,9 +3291,42 @@ nbn(3);
 {
 nbn(357);
   NSLog(@"in putHighlightOnCorrectRow  ");
-  NSLog(@"gbl_lastSelectedPerson=[%@]",gbl_lastSelectedPerson);
+
 
 // return; // for test empty Launch image
+
+
+
+  NSLog(@"gbl_lastSelectionType      =[%@]",gbl_lastSelectionType );
+  NSLog(@"gbl_lastSelectedPerson     =[%@]",gbl_lastSelectedPerson);
+  NSLog(@"gbl_lastSelectedGroup      =[%@]",gbl_lastSelectedGroup );
+  NSLog(@"gbl_ExampleData_show       =[%ld]",(long)gbl_ExampleData_show );
+
+
+    if ([gbl_lastSelectionType isEqualToString:@"person"])
+    {
+        if (gbl_ExampleData_show == 1) {
+           gbl_numRowsToDisplayFor_per = gbl_arrayPer.count;
+        } else {
+           // Here we do not want to show example data.
+           // Because example data names start with "~", they sort last,
+           // so we can just reduce the number of rows to exclude example data from showing on the screen.
+           gbl_numRowsToDisplayFor_per = gbl_arrayPer.count - gbl_ExampleData_count_per ;
+        }
+    }
+    if ([gbl_lastSelectionType isEqualToString:@"group"])
+    {
+        if (gbl_ExampleData_show == 1) {
+           gbl_numRowsToDisplayFor_grp = gbl_arrayGrp.count;
+        } else {
+           // Here we do not want to show example data.
+           // Because example data names start with "~", they sort last,
+           // so we can just reduce the number of rows to exclude example data from showing on the screen.
+           gbl_numRowsToDisplayFor_grp = gbl_arrayGrp.count - gbl_ExampleData_count_grp ;
+        }
+    }
+  NSLog(@"gbl_numRowsToDisplayFor_per=[%ld]",(long)gbl_numRowsToDisplayFor_per);
+  NSLog(@"gbl_numRowsToDisplayFor_grp=[%ld]",(long)gbl_numRowsToDisplayFor_grp);
 
 
         NSString  *nameOfGrpOrPer;
@@ -3136,8 +3335,27 @@ nbn(357);
         idxGrpOrPer = -1;   // zero-based idx
 
         if ([gbl_lastSelectionType isEqualToString:@"group"]) {
+nbn(30);
 
-            for (id eltGrp in gbl_arrayGrp) { // find index of _mambCurrentSelection (like "~Family") in gbl_arrayGrp
+            if (gbl_numRowsToDisplayFor_grp == 0) return;
+nbn(31);
+
+            // Check for gbl_lastSelectedPerson being example data person
+            // and example data being turned off.
+            // In that case, put highlight on top row
+            //
+            if (gbl_ExampleData_show == 0
+                && [gbl_lastSelectedGroup hasPrefix: @"~" ] )
+            {
+nbn(32);
+               // set gbl_lastSelectedPerson  to whoever is in top row
+               // put top row on top of tableview
+               self.tableView.contentOffset = CGPointMake(0, 0 - self.tableView.contentInset.top);
+               return;
+            }
+nbn(33);
+
+            for (id eltGrp in gbl_arrayGrp) { // find index of gbl_lastSelectedGroup (like "~Family") in gbl_arrayGrp
               idxGrpOrPer = idxGrpOrPer + 1;
     //NSLog(@"idxGrpOrPer =%ld", (long)idxGrpOrPer );
     //NSLog(@"eltGrp=%@", eltGrp);
@@ -3170,6 +3388,25 @@ nbn(357);
         }
 
         if ([gbl_lastSelectionType isEqualToString:@"person"]) {
+
+nbn(40);
+            if (gbl_numRowsToDisplayFor_per == 0) return;
+nbn(41);
+
+            // Check for gbl_lastSelectedPerson being example data person
+            // and example data being turned off.
+            // In that case, put highlight on top row
+            //
+            if (gbl_ExampleData_show == 0
+                && [gbl_lastSelectedPerson hasPrefix: @"~" ] )
+            {
+nbn(42);
+               // set gbl_lastSelectedPerson  to whoever is in top row
+               // put top row on top of tableview
+               self.tableView.contentOffset = CGPointMake(0, 0 - self.tableView.contentInset.top);
+               return;
+            }
+nbn(43);
 
 //            NSLog(@"gbl_lastSelectedPerson=%@",gbl_lastSelectedPerson);
             

@@ -2340,10 +2340,7 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
 //  NSLog(@"width stars only         =[%f]", ceilf(rect2.size.width));
 //  NSLog(@"width white space        =[%f]", ceilf(rect21.size.width));
 ////  NSLog(@"widthRightMargin         =[%f]",widthRightMargin);
-//  NSLog(@"total                    =[%f]",
-//             ceilf(rect0.size.width) +
-//             ceilf(rect1.size.width) +
-//             ceilf(rect3.size.width) );
+//  NSLog(@"total                    =[%f]", ceilf(rect0.size.width) + ceilf(rect1.size.width) + ceilf(rect3.size.width) );
 //  NSLog(@"starLineOfMaxSize width  =[%f]", ceilf(rect3.size.width));
 ////widthRightMargin);
 //  NSLog(@"   screen width          =[%f]",ceilf(self.view.bounds.size.width) );
@@ -3203,9 +3200,10 @@ trn("in row = 1   1st hdr line");
 
                 for (int myidx = 3; myidx <= 9; myidx++) {  // now both grpone and grpall have   line with "top space" - legacy + hdr1 + hdr2 --- start with idx 3
 
-//kin(myidx);
+kin(myidx);
+ksn(lcl_group_report_output_PSVs);
                     strcpy(my_tmp_str, lcl_group_report_output_PSVs  +  myidx * (int)gbl_maxLenRptLinePSV);  
-//ks(my_tmp_str);
+ks(my_tmp_str);
 
                     if (strstr(my_tmp_str, "90  Great")     != NULL 
                     ||  strstr(my_tmp_str, "75  Very Good") != NULL
@@ -3222,22 +3220,26 @@ trn("in row = 1   1st hdr line");
 
 ksn(my_tmp_str);
                 NSString *myFirstData =  [NSString stringWithUTF8String: my_tmp_str];  // convert c string to NSString
+nbn(1);
                 NSArray  *tmpArray2   = [myFirstData componentsSeparatedByCharactersInSet: mySeparators];  // delim= '|'
+nbn(2);
 
 //  NSLog(@"myFirstData =%@",myFirstData );
 //  NSLog(@"tmpArray2   =%@",tmpArray2   );
                 NSString *myFirstPersonLine = tmpArray2[1];
+nbn(3);
 //  NSLog(@"myFirstPersonLine =%@",myFirstPersonLine );
 
                 const char *tmp_c_CONST;                                                  // NSString object to C str
                 char tmp_c_first_person_buff[128];                                        // NSString object to C str
+nbn(4);
                 tmp_c_CONST = [myFirstPersonLine cStringUsingEncoding:NSUTF8StringEncoding]; // NSString object to C str
                 strcpy(tmp_c_first_person_buff, tmp_c_CONST);                             // NSString object to C str  because of const
 //tn();ksn(tmp_c_first_person_buff);
             //
             // end of  grab first line with a person
 
-
+nbn(5);
             // for the rank number lines below, determine the number of left spaces to remove- gbl_numLeadingSpacesToRemove 
             // and still keep all the rank number
             //
@@ -5355,8 +5357,12 @@ NSLog(@"gbl_TBLRPTS1_saveSelectedIndexPath.row=%ld",(long)gbl_TBLRPTS1_saveSelec
   NSLog(@"per RELOAD A ? 2");
         if ([ gbl_do_A_per_reload isEqualToString: @"do the reload only the first time"] )
         {
-  NSLog(@"per RELOAD A   DO IT");
+  NSLog(@"per RELOAD A   DO IT  ");
               gbl_do_A_per_reload = @"this is not reset until new app startup";
+
+//    self.tableView.contentOffset = CGPointMake(0, 0 - self.tableView.contentInset.top); // DID NOT WORK
+
+
 
             // try to get rid of tbl position in middle on startup
 //nbn(451);
@@ -5405,6 +5411,10 @@ NSLog(@"gbl_TBLRPTS1_saveSelectedIndexPath.row=%ld",(long)gbl_TBLRPTS1_saveSelec
 //                    gbl_justLookedAtInfoScreen = 0;  // no re-load
 //                }
             });
+
+
+
+
         }
     } // homppe
 
@@ -6347,8 +6357,8 @@ NSLog(@"gbl_TBLRPTS1_saveSelectedIndexPath.row=%ld",(long)gbl_TBLRPTS1_saveSelec
 
 
   NSLog(@"gbl_kingpinIsInGroup =%ld",(long)gbl_kingpinIsInGroup );
-//NSLog(@"gbl_grp_CSVs =%@",gbl_grp_CSVs ); // for test see all grp CSVs
-//kin((int)gbl_grp_CSVs.count);
+NSLog(@"gbl_grp_CSVs =%@",gbl_grp_CSVs ); // for test see all grp CSVs
+kin((int)gbl_grp_CSVs.count);
 
 
             // here we can store the number of pairs ranked  in  gbl_numPairsRanked (for column header size calc)
@@ -7623,6 +7633,11 @@ bn(505);
     MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
     [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.0 ];    // after arg seconds
                                                     
+
+//    dispatch_async(dispatch_get_main_queue(), ^(void){
+//    self.tableView.contentOffset = CGPointMake(0, 0 - self.tableView.contentInset.top); // DID NOT WORK
+//    });
+
 
     return;
 

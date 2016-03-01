@@ -3478,8 +3478,7 @@ nb(3);
   NSLog(@"arg_typedCharAsNSString=[%@]",arg_typedCharAsNSString);
 
   if (arg_typedCharAsNSString.length != 0  && arg_typedCharAsNSString != nil) {
-  NSLog(@"in textField: shouldChangeCharactersInRange: replacementString: =%@",
-       [@"" stringByPaddingToLength: 20 withString: arg_typedCharAsNSString  startingAtIndex: 0] );
+  NSLog(@"in textField: shouldChangeCharactersInRange: replacementString: =%@", [@"" stringByPaddingToLength: 20 withString: arg_typedCharAsNSString  startingAtIndex: 0] );
   }
 
   //  NSLog(@"textField.description=%@",textField.description);
@@ -5294,8 +5293,7 @@ nbn(40);
         gbl_mycitySearchString.inputAccessoryView = gbl_ToolbarForCityKeyboard;
   NSLog(@"gbl_mycitySearchString.inputAccessoryView 04 SET  keyboard  SET SET SET SET SET SET SET SET  SET ");
 
-  NSLog(@"-setCityInputAccessoryViewFor -- VASSIGN gbl_mycitySearchString.inputAccessoryView.description --- old=[%@]  new=[%@] ---", gbltmpstr,
-   gbl_mycitySearchString.inputAccessoryView.description  );
+  NSLog(@"-setCityInputAccessoryViewFor -- VASSIGN gbl_mycitySearchString.inputAccessoryView.description --- old=[%@]  new=[%@] ---", gbltmpstr, gbl_mycitySearchString.inputAccessoryView.description  );
 //  [ gbl_mycitySearchString.inputAccessoryView.description substringToIndex: 15]
 
     [self showHide_ButtonToSeePicklist ];

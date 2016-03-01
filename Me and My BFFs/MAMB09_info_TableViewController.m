@@ -2399,7 +2399,7 @@ nbn(100);
 //
 
         if (indexPath.row == 1) {
-            dispatch_async(dispatch_get_main_queue(), ^{                                  // <=== title for blue home
+            dispatch_async(dispatch_get_main_queue(), ^{                                  // <=== title for brown home
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
                 cell.textLabel.font          = myTitleFont;
@@ -2420,7 +2420,7 @@ nbn(100);
 
 
         if (indexPath.row == 2) {
-            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== blue text
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== brown text
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
                 cell.textLabel.font          = myFontForText;
@@ -2511,113 +2511,7 @@ nbn(100);
         }
 
 
-
-
-
-
-        if (indexPath.row == 7) {
-            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== title for do stuff
-                cell.textLabel.textColor     = [UIColor blackColor];
-                cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myTitleFont;
-                cell.backgroundColor         = gbl_color_cHed;
-                cell.textLabel.numberOfLines = 0;
-                cell.textLabel.text          = @"How to Do Stuff";
-                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
-                cell.backgroundView          = nil ;
-                cell.textLabel.textAlignment = NSTextAlignmentLeft;
-                cell.accessoryView = nil;
-            });
-            return cell;
-        }
-
-
-        if (indexPath.row == 8) {
-            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== do stuff text
-                cell.textLabel.textColor     = [UIColor blackColor];
-                cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFontForText;
-                cell.backgroundColor         = gbl_color_cBgr;
-                cell.textLabel.numberOfLines = 0;
-//                cell.textLabel.text          = @"To send ANY REPORT as an email attachment, tap \"Share\"\n\nTo email a Group to a BFF who has this app, go to the Group, then tap \"Share\"\n\nTo import a Group someone has emailed you, open the email on the device where you have this app, and tap and hold on the email attachment";
-                cell.textLabel.text          = @"To send ANY REPORT as an email attachment, tap \"Share\"\n\nTo email a Group to a BFF who has this app, go to the Group, then tap \"Share\"\n\nTo import a Group someone has emailed you, open the email on the device where you have this app, and tap and hold on the email attachment\n\nTo have fun, get \"Me and my BFFs\" together and use this app.";
-                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
-                cell.backgroundView          = nil ;
-                cell.textLabel.textAlignment = NSTextAlignmentLeft;
-                cell.accessoryView = nil;
-            });
-            return cell;
-        }
-
-        if (indexPath.row == 9) {
-            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== title for report list
-                cell.textLabel.textColor     = [UIColor blackColor];
-                cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myTitleFont;
-                cell.backgroundColor         = gbl_color_cHed;
-                cell.textLabel.numberOfLines = 0;
-                cell.textLabel.text          = @"Reports";
-                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
-                cell.backgroundView          = nil ;
-                cell.textLabel.textAlignment = NSTextAlignmentLeft;
-                cell.accessoryView = nil;
-            });
-            return cell;
-        }
-
-
-
-        if (indexPath.row == 10) {
-            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== report list 
-                cell.textLabel.textColor     = [UIColor blackColor];
-                cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFontForText;
-                cell.backgroundColor         = gbl_color_cBgr;
-                cell.textLabel.numberOfLines = 0;
-//                cell.textLabel.text          = @" - Calendar Year stress levels\n - Personality\n - Compatibility Potential of two people\n - What Color is Today for Me?\n - Best Match for a Person in a Group\n\n - in a Group, Best Matched Pair\n - in a Group, Most Emotional Person\n - in a Group, Most Down-to-earth Person\n - in a Group, Most Passionate Person\n - in a Group, Most Assertive Person\n - in a Group, Most Restless Person";
-                cell.textLabel.text          = @" - Calendar Year stress levels\n - What Color is Today for Me?\n - Personality\n - Compatibility Potential of two people\n - Best Match for a Person in a Group\n\n - in a Group, Best Matched Pair\n - in a Group, Most Emotional Person\n - in a Group, Most Down-to-earth Person\n - in a Group, Most Passionate Person\n - in a Group, Most Assertive Person\n - in a Group, Most Restless Person";
-                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
-                cell.backgroundView          = nil ;
-                cell.textLabel.textAlignment = NSTextAlignmentLeft;
-                cell.accessoryView = nil;
-            });
-            return cell;
-        }
-
-        if (indexPath.row == 11) {
-            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== title for Why Not ?
-                cell.textLabel.textColor     = [UIColor blackColor];
-                cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myTitleFont;
-                cell.backgroundColor         = gbl_color_cHed;
-                cell.textLabel.numberOfLines = 0;
-                cell.textLabel.text          = @"Why Not ?";
-                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
-                cell.backgroundView          = nil ;
-                cell.textLabel.textAlignment = NSTextAlignmentLeft;
-                cell.accessoryView = nil;
-            });
-            return cell;
-        }
-
-        if (indexPath.row == 12) {
-            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== text for why not
-                cell.textLabel.textColor     = [UIColor blackColor];
-                cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFontForText;
-                cell.backgroundColor         = gbl_color_cBgr;
-                cell.textLabel.numberOfLines = 0;
-                cell.textLabel.text          = @"Study human factors on sports teams\n\nBe a matchmaker by using the reports \"Best Match\" and \"Personality\"\n\nSend questions and comments to QQQQQ@QQQQQ.com";
-                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
-                cell.backgroundView          = nil ;
-                cell.textLabel.textAlignment = NSTextAlignmentLeft;
-                cell.accessoryView = nil;
-            });
-            return cell;
-        }
-
-
-        if (indexPath.row == 13) {
+        if (indexPath.row ==  7) {
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== title for example data
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
@@ -2633,7 +2527,7 @@ nbn(100);
             return cell;
         }
 
-        if (indexPath.row == 14) {
+        if (indexPath.row ==  8) {
             dispatch_async(dispatch_get_main_queue(), ^{                                 // <=== text for example data 
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
@@ -2642,7 +2536,7 @@ nbn(100);
                 cell.textLabel.numberOfLines = 0;
 //                cell.textLabel.text          = @"Example people and groups have names starting with \"~\".\n\nThe example data lets you explore all the different reports and how the app works before you enter any new people or groups yourself.\n\nWhen you want to enter a new person go to the home screen.  You can tell the home screen because it has the black, red and yellow app icon on the top left.  Tap \"+\" beside it to add a new person.\n\nAfter a while, you might want to not see the example data.  Check the \"hide example data\" checkbox below.";
 //                cell.textLabel.text          = @"Example people and groups have names starting with \"~\".\n\nThe example data lets you explore all the different reports and how the app works before you enter any new people or groups yourself.\n\nWhen you want to enter a new person go to the home screen.  You can tell the home screen because it has the app icon on the top left.  Tap \"+\" beside it to add a new person.\n\nAfter a while, you might want to not see the example data.  If so, tap the switch below to off.";
-                cell.textLabel.text          = @"Example people and groups have names starting with \"~\".\n\nThe example data lets you explore all the different reports and how the app works before you enter any new people or groups yourself.\n\nWhen you want to enter a new person go to the home screen.  You can tell the home screen because it has the app icon on the top left.  Tap \"+\" beside it to add a new person.";
+                cell.textLabel.text          = @"Example people and groups have names starting with \"~\".\n\nThe example data lets you explore all the different reports and how the app works before you enter any new people or groups yourself.\n\nWhen you want to enter a new person go to the home screen.  You can tell the home screen because it has the app icon on the top left.  Tap \"+\" to add a new person.";
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -2662,7 +2556,7 @@ nbn(100);
 //        myViewController.view.frame = CGRectMake(0, 100, myViewController.view.frame.size.width, myViewController.view.frame.size.height);  
 //        mySwitchView.frame = CGRectMake(180, 10, cell.frame.size.width, cell.frame.size.height);  
 
-        if (indexPath.row == 15) {
+        if (indexPath.row ==  9) {
             dispatch_async(dispatch_get_main_queue(), ^{                                 // <=== text for example data 
                 cell.textLabel.textColor     = [UIColor blackColor];
 //                cell.userInteractionEnabled  = NO;
@@ -2689,9 +2583,196 @@ nbn(100);
             });
             return cell;
         }
+//<.>
+//        if (indexPath.row ==   15) return    50.0;  // check box for "Show Example Data"
+//
+//        if (indexPath.row ==   16) return    32.0;  // spacer
+//        if (indexPath.row ==   17) return    30.0;  // title for #allpeople
+//        if (indexPath.row ==   18) return   200.0;  // text  for #allpeople
+//        if (indexPath.row ==   19) return    30.0;  // text for disclaimer
+//<.>
+
+        if (indexPath.row == 10) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myFontForText;
+                cell.backgroundColor         = gbl_color_cBgr;
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.text          = @"";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
+            });
+            return cell;
+        }
+
+        if (indexPath.row == 11) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== title for #allpeople
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myTitleFont;
+                cell.backgroundColor         = gbl_color_cHed;
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.text          = @"#allpeople Special Group";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
+            });
+            return cell;
+        }
 
 
-        if (indexPath.row ==  16) {                           // <=== disclaimer 
+        if (indexPath.row == 12) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                 // <=== text for #allpeople
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myFontForText;
+                cell.backgroundColor         = gbl_color_cBgr;
+                cell.textLabel.numberOfLines = 0;
+//                cell.textLabel.text          = @"The special group #allpeople is a group that holds all the people you have added to Me and My BFFs.\n\nA person that you add is automatically added to group #allpeople.\nA person that you delete is automatically removed from group #allpeople.\n\n Group #allpeople lets you quickly get a Best Match or other group report for everyone.";
+                cell.textLabel.text          = @"The special group #allpeople is a group that holds all the people you have added to Me and My BFFs.\n\nPeople that you add or delete from the app are automatically added or deleted from group #allpeople.\n\nGroup #allpeople lets you quickly get a Best Match or other group report for everyone.";
+
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
+            });
+            return cell;
+        }
+
+
+        if (indexPath.row == 13) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== title for report list
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myTitleFont;
+                cell.backgroundColor         = gbl_color_cHed;
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.text          = @"Reports";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
+            });
+            return cell;
+        }
+
+
+
+        if (indexPath.row == 14) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== report list 
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myFontForText;
+                cell.backgroundColor         = gbl_color_cBgr;
+                cell.textLabel.numberOfLines = 0;
+//                cell.textLabel.text          = @" - Calendar Year stress levels\n - Personality\n - Compatibility Potential of two people\n - What Color is Today for Me?\n - Best Match for a Person in a Group\n\n - in a Group, Best Matched Pair\n - in a Group, Most Emotional Person\n - in a Group, Most Down-to-earth Person\n - in a Group, Most Passionate Person\n - in a Group, Most Assertive Person\n - in a Group, Most Restless Person";
+                cell.textLabel.text          = @" - Calendar Year stress levels\n - What Color is Today for Me?\n - Personality\n - Compatibility Potential of two people\n - Best Match for a Person in a Group\n\n - in a Group, Best Matched Pair\n - in a Group, Most Emotional Person\n - in a Group, Most Down-to-earth Person\n - in a Group, Most Passionate Person\n - in a Group, Most Assertive Person\n - in a Group, Most Restless Person";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
+            });
+            return cell;
+        }
+
+
+//<.>
+//        if (indexPath.row ==   6) return    32.0;  // spacer
+//
+// 7       if (indexPath.row ==   13) return    30.0;  // title for Example Data
+// 8       if (indexPath.row ==   14) return   200.0;  // text  for Example Data
+// 9       if (indexPath.row ==   15) return    50.0;  // check box for "Show Example Data"
+//
+//10       if (indexPath.row ==   16) return    32.0;  // spacer
+//11       if (indexPath.row ==   17) return    30.0;  // title for #allpeople
+//12       if (indexPath.row ==   18) return   160.0;  // text  for #allpeople
+//
+//13       if (indexPath.row ==   9) return    30.0;  // title for report list
+//14       if (indexPath.row ==   10) return   200.0;  // report  list
+//
+//15       if (indexPath.row ==   11) return    30.0;  // title for why not ?
+//16       if (indexPath.row ==   12) return   120.0;  // text  for why not ?
+//
+//17      if (indexPath.row ==   7) return    30.0;  // title for do stuff
+//18       if (indexPath.row ==   8) return   200.0;  // text  for do stuff
+//
+//        if (indexPath.row ==   19) return    30.0;  // text for disclaimer
+//<.>
+//
+        if (indexPath.row == 15) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== title for do stuff
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myTitleFont;
+                cell.backgroundColor         = gbl_color_cHed;
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.text          = @"How to Do Stuff";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
+            });
+            return cell;
+        }
+
+
+        if (indexPath.row == 16) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== do stuff text
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myFontForText;
+                cell.backgroundColor         = gbl_color_cBgr;
+                cell.textLabel.numberOfLines = 0;
+//                cell.textLabel.text          = @"To send ANY REPORT as an email attachment, tap \"Share\"\n\nTo email a Group to a BFF who has this app, go to the Group, then tap \"Share\"\n\nTo import a Group someone has emailed you, open the email on the device where you have this app, and tap and hold on the email attachment";
+                cell.textLabel.text          = @"To send ANY REPORT as an email attachment, tap \"Share\"\n\nTo email a Group to a BFF who has this app, go to the Group, then tap \"Share\"\n\nTo import a Group someone has emailed you, open the email on the device where you have this app, and tap and hold on the email attachment\n\nTo have fun, get \"Me and my BFFs\" together and use this app.";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
+            });
+            return cell;
+        }
+
+
+
+        if (indexPath.row == 17) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== title for Why Not ?
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myTitleFont;
+                cell.backgroundColor         = gbl_color_cHed;
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.text          = @"Why Not ?";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
+            });
+            return cell;
+        }
+
+        if (indexPath.row == 18) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== text for why not
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myFontForText;
+                cell.backgroundColor         = gbl_color_cBgr;
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.text          = @"Study human factors on sports teams\n\nBe a matchmaker by using the reports \"Best Match\" and \"Personality\"\n\nSend questions and comments to QQQQQ@QQQQQ.com";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
+            });
+            return cell;
+        }
+
+
+        if (indexPath.row ==  19) {                           // <=== disclaimer 
             dispatch_async(dispatch_get_main_queue(), ^{  
 //                cell.textLabel.textColor     = [UIColor blackColor];
                 cell.textLabel.textColor     = [UIColor redColor]; 
@@ -2724,7 +2805,7 @@ nbn(100);
 
     if (mySwitchControl.on == YES) {
 
-        gbl_showExampleData = @"yes";
+        gbl_ExampleData_show = 1;
 
 //        [sender setThumbTintColor:[UIColor redColor]];
 //        [sender setBackgroundColor:[UIColor cyanColor] ];
@@ -2736,7 +2817,7 @@ nbn(100);
     }
     if (mySwitchControl.on ==  NO) {
 
-        gbl_showExampleData = @"no";
+        gbl_ExampleData_show = 0;
 
 //        [sender setTintColor:[UIColor   cyanColor]];
 //        [sender setThumbTintColor:[UIColor blueColor]];
@@ -2769,7 +2850,8 @@ nbn(100);
     if ([gbl_helpScreenDescription isEqualToString: @"best day"     ] ) { return  7; } 
 //    if ([gbl_helpScreenDescription isEqualToString: @"HOME"         ] ) { return  8; } 
 //    if ([gbl_helpScreenDescription isEqualToString: @"HOME"         ] ) { return  14; } 
-    if ([gbl_helpScreenDescription isEqualToString: @"HOME"         ] ) { return  17; } 
+//    if ([gbl_helpScreenDescription isEqualToString: @"HOME"         ] ) { return  17; } 
+    if ([gbl_helpScreenDescription isEqualToString: @"HOME"         ] ) { return  20; } 
     return 1;
 }
 
@@ -2778,6 +2860,29 @@ nbn(100);
 {
 //  NSLog(@"in heightForRowAtIndexPath  INFO ");
 
+//<.>
+//        if (indexPath.row ==   6) return    32.0;  // spacer
+//
+// 7       if (indexPath.row ==   13) return    30.0;  // title for Example Data
+// 8       if (indexPath.row ==   14) return   200.0;  // text  for Example Data
+// 9       if (indexPath.row ==   15) return    50.0;  // check box for "Show Example Data"
+//
+//10       if (indexPath.row ==   16) return    32.0;  // spacer
+//11       if (indexPath.row ==   17) return    30.0;  // title for #allpeople
+//12       if (indexPath.row ==   18) return   160.0;  // text  for #allpeople
+//
+//13       if (indexPath.row ==   9) return    30.0;  // title for report list
+//14       if (indexPath.row ==   10) return   200.0;  // report  list
+//
+//15       if (indexPath.row ==   11) return    30.0;  // title for why not ?
+//16       if (indexPath.row ==   12) return   120.0;  // text  for why not ?
+//
+//17      if (indexPath.row ==   7) return    30.0;  // title for do stuff
+//18       if (indexPath.row ==   8) return   200.0;  // text  for do stuff
+//
+//        if (indexPath.row ==   19) return    30.0;  // text for disclaimer
+//<.>
+//
     if (   [gbl_helpScreenDescription isEqualToString: @"HOME"] ) {
 
         if (indexPath.row ==   0) return    16.0;  // spacer
@@ -2788,25 +2893,25 @@ nbn(100);
         if (indexPath.row ==   5) return    30.0;  // text  for yellow
         if (indexPath.row ==   6) return    32.0;  // spacer
 
-//        if (indexPath.row ==   5) return    16.0;  // spacer
-        if (indexPath.row ==   7) return    30.0;  // title for do stuff
-//        if (indexPath.row ==   2) return   150.0;  // text  for do stuff
-//        if (indexPath.row ==   2) return   170.0;  // text  for do stuff
-        if (indexPath.row ==   8) return   200.0;  // text  for do stuff
-        if (indexPath.row ==   9) return    30.0;  // title for report list
-//        if (indexPath.row ==   4) return   170.0;  // report  list
-        if (indexPath.row ==   10) return   200.0;  // report  list
+        if (indexPath.row ==   7) return    30.0;  // title for Example Data
+        if (indexPath.row ==   8) return   200.0;  // text  for Example Data
+        if (indexPath.row ==   9) return    50.0;  // check box for "Show Example Data"
 
-        if (indexPath.row ==   11) return    30.0;  // title for why not ?
-//        if (indexPath.row ==   6) return    90.0;  // text  for why not ?
-//        if (indexPath.row ==   12) return    84.0;  // text  for why not ?
-        if (indexPath.row ==   12) return   120.0;  // text  for why not ?
+        if (indexPath.row ==   10) return    32.0;  // spacer
+        if (indexPath.row ==   11) return    30.0;  // title for #allpeople
+        if (indexPath.row ==   12) return   160.0;  // text  for #allpeople
 
-        if (indexPath.row ==   13) return    30.0;  // title for Example Data
-        if (indexPath.row ==   14) return   200.0;  // text  for Example Data
-        if (indexPath.row ==   15) return    50.0;  // check box for "Show Example Data"
 
-        if (indexPath.row ==   16) return    30.0;  // text for disclaimer
+        if (indexPath.row ==   13) return    30.0;  // title for report list
+        if (indexPath.row ==   14) return   200.0;  // report  list
+
+        if (indexPath.row ==   15) return    30.0;  // title for do stuff
+        if (indexPath.row ==   16) return   200.0;  // text  for do stuff
+
+        if (indexPath.row ==   17) return    30.0;  // title for why not ?
+        if (indexPath.row ==   18) return   120.0;  // text  for why not ?
+
+        if (indexPath.row ==   19) return    30.0;  // text for disclaimer
 //<.>
     }
     if (   [gbl_helpScreenDescription isEqualToString: @"best day"] ) {

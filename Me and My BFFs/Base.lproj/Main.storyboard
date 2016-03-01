@@ -368,7 +368,7 @@
                                     <constraint firstAttribute="width" constant="100" id="Ngf-32-taY"/>
                                 </constraints>
                                 <attributedString key="attributedText">
-                                    <fragment content="year">
+                                    <fragment content=" ">
                                         <attributes>
                                             <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <font key="NSFont" size="28" name="HelveticaNeue"/>
@@ -576,7 +576,7 @@
                             <pickerView contentMode="TopLeft" translatesAutoresizingMaskIntoConstraints="NO" id="dy8-9A-phT">
                                 <rect key="frame" x="16" y="177" width="288" height="180"/>
                             </pickerView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Selected Date" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U2q-xg-HuS">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U2q-xg-HuS">
                                 <rect key="frame" x="117" y="102" width="162" height="41"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="25"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -645,8 +645,8 @@
         <image name="rounded_MAMB09_144" width="144" height="144"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="9JI-0J-Lme"/>
         <segue reference="0US-NI-9lF"/>
-        <segue reference="EzM-79-T0o"/>
-        <segue reference="2Rt-iZ-59y"/>
+        <segue reference="38j-By-p0h"/>
     </inferredMetricsTieBreakers>
 </document>

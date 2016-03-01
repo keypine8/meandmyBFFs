@@ -7,9 +7,9 @@
 
 #import <UIKit/UIKit.h>
 
-NSString *gbl_cy_session_startup;   // format "20nn"  cy gotten from apl this session
-NSString *gbl_cm_session_startup;
-NSString *gbl_cd_session_startup;
+//NSString *gbl_cy_session_startup;   // format "20nn"  cy gotten from apl this session
+//NSString *gbl_cm_session_startup;
+//NSString *gbl_cd_session_startup;
 
 NSString *gbl_cy_currentAllPeople;  // format "20nn"  cy gotten from grp allpeople
 NSString *gbl_cm_currentAllPeople;  // format "nn"  mth
@@ -19,9 +19,9 @@ NSString *gbl_cy_apl;               // format "20nn"  cy gotten from apl this se
 NSString *gbl_cm_apl;               // format "nn"  mth
 NSString *gbl_cd_apl;               // format "nn"  day of mth
 
-NSString *gbl_cy_goo;               // format "20nn"  cy gotten from apl this session
-NSString *gbl_cm_goo;               // format "nn"  mth
-NSString *gbl_cd_goo;               // format "nn"  day  of mth
+//NSString *gbl_cy_goo;               // format "20nn"  cy gotten from apl this session
+//NSString *gbl_cm_goo;               // format "nn"  mth
+//NSString *gbl_cd_goo;               // format "nn"  day  of mth
 
 
          
@@ -68,7 +68,11 @@ NSString *gbl_homeUseMODE;      // "edit mode" (yellow)   or   "regular mode" (b
 NSString *gbl_homeEditingState; // if gbl_homeUseMODE = "edit mode"    then can be "add" or "view or change"   for tapped person or group
 // no, i think  // if gbl_homeUseMODE = "regular mode" then can be "add" or nil                for tapped person or group
 
-NSString *gbl_showExampleData;  // "yes" or "no"
+NSInteger gbl_ExampleData_show;  // 1="yes" or 0="no"
+NSInteger gbl_ExampleData_count_per;  // as of 20160301 is per=21 
+NSInteger gbl_ExampleData_count_grp;  // as of 20160301 is grp= 2
+NSInteger gbl_numRowsToDisplayFor_per;  // could be  zero if  gbl_ExampleData_show is 0
+NSInteger gbl_numRowsToDisplayFor_grp;  // could be  zero if  gbl_ExampleData_show is 0
 
 
 // THE THREE  "FIELDS"  =======================================================
@@ -774,7 +778,7 @@ NSMutableArray *gbl_arrayMem;
 NSMutableArray *gbl_arrayGrpRem; // REMEMBER DATA 
 NSMutableArray *gbl_arrayPerRem; // REMEMBER DATA 
 
-NSString *gbl_nameOfGrpHavingAllPeopleIhaveAdded; // "All My People~"
+NSString *gbl_nameOfGrpHavingAllPeopleIhaveAdded; // "#allpeople"
 NSString *gbl_recOfAllPeopleIhaveAdded;           //  = [ NSString stringWithFormat: @"%@||||||||||||||", // 14 flds for misc
 
 NSInteger gbl_numRowsToTurnOnIndexBar;  // 201500624 = 90

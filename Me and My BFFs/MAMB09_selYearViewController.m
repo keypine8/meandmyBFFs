@@ -25,7 +25,7 @@
     
 
  NSLog(@"gbl_cy_apl 9 =[%@]",gbl_cy_apl);
- NSLog(@"gbl_cy_goo 9 =[%@]",gbl_cy_goo);
+// NSLog(@"gbl_cy_goo 9 =[%@]",gbl_cy_goo);
 
 //    self.view.backgroundColor = gbl_colorSelParamForReports;
     if ([gbl_lastSelectionType isEqualToString:@"person"]) [self.view setBackgroundColor: gbl_colorHomeBG_per];
@@ -118,11 +118,79 @@
     });
 
 
+    // this MOVED to viewDidAppear to get latest date then going to home and back
+    // Use table view disclosure indicator style for uibutton ios
+    // http://stackoverflow.com/questions/13836606/use-table-view-disclosure-indicator-style-for-uibutton-ios
+    // This can be done entirely with code by placing a UITableViewCell with the
+    // disclosure indicator within a UIButton:
+    //    nb(10);
+    //    UITableViewCell *disclosure = [[UITableViewCell alloc] init];
+    //    nb(11);
+    //
+    //    [_buttonDoReport addSubview:disclosure];
+    //    nb(12);
+    //
+    //    disclosure.frame = _buttonDoReport.bounds;
+    //    disclosure.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    //    disclosure.userInteractionEnabled = NO;
     
+} // end of viewDidLoad 
+
+
+
+- (void)viewDidAppear:(BOOL)animated
+{
+NSLog(@"in viewDidAppear()");
+
+    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
+    [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.0 ];    // after arg seconds
+                                                    
+    // this MOVED to viewDidAppear to get latest date then going to home and back
+    // do {    // populate array yearsToPickFrom for uiPickerView and init picker and calendar year text field
+
+
+NSLog(@"END of viewDidAppear()  in sel Year");
+} // end of viewDidAppear
+
+
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    NSLog(@"selyear viewWillAppear");
+
+    // disable text field for year always
+    //
+    // If you use the above code, then if you navigate to another view
+    // (detailed view) and come back then also the textField will be disabled.    
+
+    //[textfield setEnable:NO];
+    // self.outletPickedYear.enabled = NO;
+    self.outletYearSelected.enabled = NO;
+
+
+
+     
+    // this MOVED from viewDidAppear to get latest date then going to home and back
+
     do {    // populate array yearsToPickFrom for uiPickerView and init picker and calendar year text field
         
         // get the current year
         //
+
+        // here ASSUME the current year, mth, day have been continuously updated by these
+        //   1.  app startup
+        //       - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+        //   2.  time change notification
+        //    - (void) doStuffOnSignificantTimeChange   // for   UIApplicationSignificantTimeChangeNotification
+        //
+        // Both 1. and 2. call method gcy which updates current y,m,d  in allpeople record
+        //
+        // THEREFORE  rely on value in allpeople record, like this -
+        gbl_currentYearInt  = [gbl_cy_currentAllPeople intValue];
+        gbl_currentMonthInt = [gbl_cm_currentAllPeople intValue];
+        gbl_currentDayInt   = [gbl_cd_currentAllPeople intValue];
+
+
 
         //        NSCalendar *gregorian = [NSCalendar currentCalendar];          // Get the Current Date and Time
         //        NSDateComponents *dateComponents = [gregorian components: (NSCalendarUnitDay| NSCalendarUnitMonth | NSCalendarUnitYear)
@@ -133,16 +201,23 @@
         
         // NSString *yearStr = [@(gbl_currentYear) stringValue];  // convert integer to NSString
         
+        // no, see above
+        //        MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global methods in appDelegate.m
+        //        [myappDelegate gcy ];  // get real current year for calendar year cap (= curr yr + 1)
+        //
+        //        if (gbl_cy_apl == nil) {
+        //            gbl_currentYearInt = [gbl_cy_currentAllPeople intValue];
+        //        } else {
+        //            gbl_currentYearInt = [gbl_cy_apl intValue];
+        //        }
 
-        MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global methods in appDelegate.m
-        [myappDelegate gcy ];  // get real current year for calendar year cap (= curr yr + 1)
-        if (gbl_cy_apl == nil  &&  gbl_cy_goo == nil) {
-                                   gbl_currentYearInt = [gbl_cy_currentAllPeople intValue];
-
-        } else {
-            if (gbl_cy_apl != nil) gbl_currentYearInt = [gbl_cy_apl intValue];
-            if (gbl_cy_goo != nil) gbl_currentYearInt = [gbl_cy_goo intValue];
-        }
+        //        if (gbl_cy_apl == nil  &&  gbl_cy_goo == nil) {
+        //                                   gbl_currentYearInt = [gbl_cy_currentAllPeople intValue];
+        //
+        //        } else {
+        //            if (gbl_cy_apl != nil) gbl_currentYearInt = [gbl_cy_apl intValue];
+        //            if (gbl_cy_goo != nil) gbl_currentYearInt = [gbl_cy_goo intValue];
+        //        }
         
         
         // for the picker, set yearsToPickFrom str array
@@ -175,7 +250,7 @@
 //        NSString *psvRememberedYear = myRemArray[2];  // year is field # 3 one-based
 //
         NSString *psvRememberedYear;
-//        MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
+        MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
         psvRememberedYear = [myappDelegate grabLastSelectionValueForEntity: (NSString *) @"person"
                                                                 havingName: (NSString *) gbl_fromHomeCurrentEntityName 
                                                       fromRememberCategory: (NSString *) @"year"  ];
@@ -279,49 +354,6 @@
     NSLog(@"_selYear gbl_fromHomeCurrentSelectionType=%@",gbl_fromHomeCurrentSelectionType);    // like "group" or "person" or "pair"
     NSLog(@"_selYear gbl_fromHomeCurrentEntity=%@",gbl_fromHomeCurrentEntity);                  // like "group" or "person"
 
-    // Use table view disclosure indicator style for uibutton ios
-    // http://stackoverflow.com/questions/13836606/use-table-view-disclosure-indicator-style-for-uibutton-ios
-    // This can be done entirely with code by placing a UITableViewCell with the
-    // disclosure indicator within a UIButton:
-    //    nb(10);
-    //    UITableViewCell *disclosure = [[UITableViewCell alloc] init];
-    //    nb(11);
-    //
-    //    [_buttonDoReport addSubview:disclosure];
-    //    nb(12);
-    //
-    //    disclosure.frame = _buttonDoReport.bounds;
-    //    disclosure.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    //    disclosure.userInteractionEnabled = NO;
-    
-} // end of viewDidLoad 
-
-
-
-- (void)viewDidAppear:(BOOL)animated
-{
-NSLog(@"in viewDidAppear()");
-
-    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
-    [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.0 ];    // after arg seconds
-                                                    
-NSLog(@"in viewDidAppear()");
-} // end of viewDidAppear
-
-
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    NSLog(@"selyear viewWillAppear");
-
-    // disable text field for year always
-    //
-    // If you use the above code, then if you navigate to another view
-    // (detailed view) and come back then also the textField will be disabled.    
-
-    //[textfield setEnable:NO];
-    // self.outletPickedYear.enabled = NO;
-    self.outletYearSelected.enabled = NO;
     
 }
 

@@ -167,8 +167,6 @@
 
 
 
-
-
     self.arrayMonths      = [[NSArray alloc]
         initWithObjects:@"Jan",@"Feb",@"Mar",@"Apr",@"May",@"Jun",@"Jul",@"Aug",@"Sep",@"Oct",@"Nov",@"Dec", nil];
     self.arrayDaysOfMonth = [[NSMutableArray alloc]init];
@@ -179,12 +177,57 @@
     }
     //NSLog(@"self.arrayMonths=%@",self.arrayMonths);
 
+
+
+
+    // MOVED to viewWillAppear populate date-related stuff
+
+
+
+
+// old using uidatepicker
+//    [self.outletToDatePicker  addTarget:self
+//                                 action:@selector(datePickerChanged:)
+//                       forControlEvents:UIControlEventValueChanged];
+//
+
+
+} // viewDidLoad
+
+
+- (void)viewDidAppear:(BOOL)animated
+{
+NSLog(@"in viewDidAppear()  in  selDate! ");
+
+
+    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
+    [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.0 ];    // after arg seconds
+                                                    
+    // copied from viewDidLoad
+
+    // populate date-related stuff   MOVED from  viewDidLoad
     do {    // populate array yearsToPickFrom2 for uiPickerView and init picker and init calendar year text field  (130 lines)
  
 
 
-        // get the current year
+        // get the current yr, mn, da
         //
+
+        // here ASSUME the current year, mth, day have been continuously updated by these
+        //   1.  app startup
+        //       - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+        //   2.  time change notification
+        //    - (void) doStuffOnSignificantTimeChange   // for   UIApplicationSignificantTimeChangeNotification
+        //
+        // Both 1. and 2. call method gcy which updates current y,m,d  in allpeople record
+        //
+        // THEREFORE  rely on value in allpeople record, like this -
+        gbl_currentYearInt  = [gbl_cy_currentAllPeople intValue];
+        gbl_currentMonthInt = [gbl_cm_currentAllPeople intValue];
+        gbl_currentDayInt   = [gbl_cd_currentAllPeople intValue];
+
+
+
 //        NSCalendar *gregorian = [NSCalendar currentCalendar];          // Get the Current Date and Time
 //       //         NSDateComponents *dateComponents = [gregorian components:(NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit)
 //        NSDateComponents *dateComponents = [gregorian components:(NSCalendarUnitDay| NSCalendarUnitMonth | NSCalendarUnitYear)
@@ -198,27 +241,31 @@
 //        //NSLog(@"gbl_currentDayInt   =%ld",(long)gbl_currentDayInt   );
         
 
-        MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global methods in appDelegate.m
-        [myappDelegate gcy ];  // get real current year , month, day
+//        MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global methods in appDelegate.m
+//        [myappDelegate gcy ];  // get real current year , month, day
 
-        if (gbl_cy_apl == nil  &&  gbl_cy_goo == nil) {
-                                   gbl_currentYearInt  = [gbl_cy_currentAllPeople intValue];
-                                   gbl_currentMonthInt = [gbl_cm_currentAllPeople intValue];
-                                   gbl_currentDayInt   = [gbl_cd_currentAllPeople intValue];
+//
+////        if (gbl_cy_apl == nil  &&  gbl_cy_goo == nil) {
+//        if (gbl_cy_apl == nil) {
+//            gbl_currentYearInt  = [gbl_cy_currentAllPeople intValue];
+//            gbl_currentMonthInt = [gbl_cm_currentAllPeople intValue];
+//            gbl_currentDayInt   = [gbl_cd_currentAllPeople intValue];
+//
+//        } else {
+//            gbl_currentYearInt  = [gbl_cy_apl intValue];
+//            gbl_currentMonthInt = [gbl_cm_apl intValue];
+//            gbl_currentDayInt   = [gbl_cd_apl intValue];
+//        }
 
-        } else {
-            if (gbl_cy_apl != nil) {
-                gbl_currentYearInt  = [gbl_cy_apl intValue];
-                gbl_currentMonthInt = [gbl_cm_apl intValue];
-                gbl_currentDayInt   = [gbl_cd_apl intValue];
-            } else {
-                if (gbl_cy_goo != nil) {
-                    gbl_currentYearInt  = [gbl_cy_goo intValue];
-                    gbl_currentMonthInt = [gbl_cm_goo intValue];
-                    gbl_currentDayInt   = [gbl_cd_goo intValue];
-                }
-            }
-        }
+//            if (gbl_cy_apl != nil) {
+//            } else {
+//                if (gbl_cy_goo != nil) {
+//                    gbl_currentYearInt  = [gbl_cy_goo intValue];
+//                    gbl_currentMonthInt = [gbl_cm_goo intValue];
+//                    gbl_currentDayInt   = [gbl_cd_goo intValue];
+//                }
+//            }
+//        }
         
 
         
@@ -289,8 +336,7 @@
         //
         NSString *psvRememberedDate;   // "yyyymmdd"
 
-//        MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
-
+        MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
 
 
         if (   [gbl_currentMenuPlusReportCode isEqualToString: @"hompwc"]  ) {
@@ -311,10 +357,12 @@
 
         // for initial date, get c integer forms for yyyy, mm, dd
         //
+tn();
             int initYYYY,  initMM,  initDD;  // initMM and initDD are "one-based" real m and d values
             if (psvRememberedDate == NULL || [psvRememberedDate intValue] == 0) {
 
                 initYYYY = (int) gbl_currentYearInt;   // use  today's date if no remembered date
+kin(initYYYY);
                 initMM   = (int) gbl_currentMonthInt;
                 initDD   = (int) gbl_currentDayInt;
                 gbl_lastSelectedDay         = [NSString stringWithFormat:@"%04ld%02ld%02ld",
@@ -324,10 +372,13 @@
             } else {   
 
                 gbl_lastSelectedDay         =  psvRememberedDate;   // yyyymmdd
+  NSLog(@"psvRememberedDate=[%@]",psvRememberedDate);
                 NSString *lastSelectedYear  = [psvRememberedDate substringWithRange:NSMakeRange(0, 4)];
+  NSLog(@"lastSelectedYear  =[%@]",lastSelectedYear  );
                 NSString *lastSelectedMonth = [psvRememberedDate substringWithRange:NSMakeRange(4, 2)];
                 NSString *lastSelectedDay   = [psvRememberedDate substringWithRange:NSMakeRange(6, 2)];
                 initYYYY = [lastSelectedYear  intValue];
+kin(initYYYY);
                 initMM   = [lastSelectedMonth intValue];
                 initDD   = [lastSelectedDay   intValue];
 
@@ -467,17 +518,26 @@ tn();tr("date fmt  date fmt  date fmt  date fmt  date fmt  date fmt  date fmt  "
 //        [self.outletFor_YMD_picker selectRow:myIndex inComponent: 1 animated:YES]; // This is how you manually SET(!!) a selection!
         [self.outletFor_YMD_picker selectRow:myIndex inComponent: 2 animated:YES]; // This is how you manually SET(!!) a selection!
 
-
+kin(initYYYY);
         NSString* myInitYear = [NSString stringWithFormat:@"%i", initYYYY];  // convert c int to NSString
+  NSLog(@"myInitYear =[%@]",myInitYear );
         myIndex = [yearsToPickFrom2 indexOfObject: myInitYear];
+  NSLog(@"myIndex =[%ld]",(long)myIndex );
         if (myIndex == NSNotFound) {
             // second last elt should be current year
             myIndex = yearsToPickFrom2.count - 2;
         }
+  NSLog(@"myIndex =[%ld]",(long)myIndex );
 //        [self.outletFor_YMD_picker selectRow:myIndex inComponent: 2 animated:YES]; // This is how you manually SET(!!) a selection!
-        [self.outletFor_YMD_picker selectRow:myIndex inComponent: 3 animated:YES]; // This is how you manually SET(!!) a selection!
+//        [self.outletFor_YMD_picker selectRow:myIndex inComponent: 3 animated:YES]; // This is how you manually SET(!!) a selection!
 
 nbn(4);
+//        [self.outletFor_YMD_picker selectRow: 0 inComponent: 4 animated:YES]; // This is how you manually SET(!!) a selection!
+//nbn(5);
+        [self.outletFor_YMD_picker reloadAllComponents];
+
+        [self.outletFor_YMD_picker selectRow:myIndex inComponent: 3 animated:YES]; // This is how you manually SET(!!) a selection!
+
 
         // save initial settings for gbl_rollerLast_*
         //
@@ -496,26 +556,6 @@ nbn(4);
 
     } while( false);  // populate array yearsToPickFrom2 for uiPickerView
 
-
-
-
-// old using uidatepicker
-//    [self.outletToDatePicker  addTarget:self
-//                                 action:@selector(datePickerChanged:)
-//                       forControlEvents:UIControlEventValueChanged];
-//
-
-
-} // viewDidLoad
-
-
-- (void)viewDidAppear:(BOOL)animated
-{
-NSLog(@"in viewDidAppear()");
-
-    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
-    [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.0 ];    // after arg seconds
-                                                    
 NSLog(@"in viewDidAppear()");
 } // end of viewDidAppear
 

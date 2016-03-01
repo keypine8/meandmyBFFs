@@ -219,7 +219,7 @@ void Xtu(char *srk, unsigned irk) {
 void tm( char *srk, char *addr, int num) {NL=0; Xtm(srk,addr,num);}
 void Xtm(char *srk, char *addr, int num) {
   int n,i;
-  unsigned char *p = addr;
+  unsigned char *p = (unsigned char*)&addr[0];
   char wk[512+1];
   if(RKDEBUG) {
     n = sprintf(wk,"%s_%s_for_%d=[",(NL?"\n":""),srk,num);

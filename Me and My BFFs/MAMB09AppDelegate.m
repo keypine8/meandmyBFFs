@@ -29,7 +29,14 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     NSLog(@"in didFinishLaunchingWithOptions()  in appdelegate");
-ksn("in didFinishLaunchingWithOptions()  in appdelegate");
+    
+    // test cannot have bkt c lang debug functions in  MAMB09AppDelegate.m  in method  didFinishLaunchingWithOptions 
+    // test but they appear to work in other method in here (MAMB09AppDelegate.m )
+    //tn(); crash    all these crash here
+    //tn();
+    //tn();
+    //trn("in didFinishLaunchingWithOptions() 1 in appdelegate");
+
     
 
 //    gbl_cy_apl              = @"9999";  // inited now in appdel didFinishLaunchingWithOptions
@@ -37,9 +44,11 @@ ksn("in didFinishLaunchingWithOptions()  in appdelegate");
 //    gbl_cy_session_startup  = @"9999";  // format "20nn"  cy gotten from apl this session
 //    gbl_cy_currentAllPeople = @"9999";  // format "20nn"  cy gotten from grp allpeople
     gbl_cy_apl              = nil;    // inited now in appdel didFinishLaunchingWithOptions
-    gbl_cy_goo              = nil;  
-    gbl_cy_session_startup  = nil;    // format "20nn"  cy gotten from apl this session
+//    gbl_cy_goo              = nil;  
     gbl_cy_currentAllPeople = nil;    // format "20nn"  cy gotten from grp allpeople
+    gbl_cm_currentAllPeople = nil;    // format "20nn"  cy gotten from grp allpeople
+    gbl_cd_currentAllPeople = nil;    // format "20nn"  cy gotten from grp allpeople
+//    gbl_cy_session_startup  = nil;    // format "20nn"  cy gotten from apl this session
 
 
     // In order to get rid of opening in middle of report instead of top for tblrpts  per and co,
@@ -495,7 +504,7 @@ ksn("in didFinishLaunchingWithOptions()  in appdelegate");
     gbl_colorforDelMembers = [UIColor colorWithRed:224.0/255.0 green:140.0/255.0 blue:140.0/255.0 alpha:1.0]; // GOLD #7
 
 //
-////<.> for test   fut  colors
+//// for test   fut  colors
 ////    gbl_color_cRed  = [UIColor colorWithRed:255.0/255.0 green:181.0/255.0 blue:201.0/255.0 alpha:1.0]; // ffb5c9  gold
 ////    gbl_color_cRe2  = [UIColor colorWithRed:255.0/255.0 green:123.0/255.0 blue:163.0/255.0 alpha:1.0]; //   NEW gold
 //
@@ -512,7 +521,7 @@ ksn("in didFinishLaunchingWithOptions()  in appdelegate");
 //    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:175.0/255.0 blue:175.0/255.0 alpha:1.0]; // x
 //    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:123.0/255.0 blue:163.0/255.0 alpha:1.0]; // ffb5c9  gold
 //
-////<.> for test
+//// for test
 //
 //
 
@@ -633,7 +642,7 @@ ksn("in didFinishLaunchingWithOptions()  in appdelegate");
 
 
 
-    // SET GBL DATA  HERE        ----------------------------------------------------------
+    // SET GBL DATA  HERE        ------------ all magic numbers----------------------------
 
     gbl_ThresholdshortTblLineLen = 17;  // nameA  + nameB more than this , then move benchmark label
     
@@ -651,6 +660,9 @@ ksn("in didFinishLaunchingWithOptions()  in appdelegate");
 
     gbl_earliestYear = 1850;     // minimum birthyear (privacy)
 
+
+    gbl_ExampleData_count_per = 21;  // as of 20160301 is per=21 
+    gbl_ExampleData_count_grp =  2;  // as of 20160301 is grp= 2
 
 
     gbl_numCitiesToTriggerPicklist = 25;
@@ -679,9 +691,11 @@ ksn("in didFinishLaunchingWithOptions()  in appdelegate");
     // This is NOT the ongoing data, which is in  data files.
     //
 
-    gbl_nameOfGrpHavingAllPeopleIhaveAdded = @"All People~";
+//    gbl_nameOfGrpHavingAllPeopleIhaveAdded = @"All People~";
+    gbl_nameOfGrpHavingAllPeopleIhaveAdded = @"#allpeople";
 
-    gbl_recOfAllPeopleIhaveAdded = [ NSString stringWithFormat: @"%@||||2016|06|15||||||||", // 14 flds for misc
+//    gbl_recOfAllPeopleIhaveAdded = [ NSString stringWithFormat: @"%@||||2016|06|15||||||||", // 14 flds for misc
+    gbl_recOfAllPeopleIhaveAdded = [ NSString stringWithFormat: @"%@||||2033|03|25||||||||", // FOR TEST
         gbl_nameOfGrpHavingAllPeopleIhaveAdded
     ]; // 14 flds for misc
     // fld #5 (one-based) is gbl_cy_currentAllPeople
@@ -697,6 +711,8 @@ ksn("in didFinishLaunchingWithOptions()  in appdelegate");
 
     gbl_arrayExaPer = // field 11= locked or not   HAVE TO BE PRE-SORTED
     @[
+      @"WWWWWWWWWWWWWWW|2|21|1971|1|51|1|Los Angeles|California|United States||",   // notice hr goes 1-12
+      @"MMMMMMMMMMMMMMM|11|8|1988|10|8|0|Los Angeles|California|United States||",   // notice hr goes 1-12
       @"Father Lastnae|7|11|1961|11|8|1|Los Angeles|California|United States||",   // notice hr goes 1-12
       @"Fa|7|11|1961|11|8|1|Los Angeles|California|United States||",
       @"Mother Lastna|3|12|1965|10|45|0|Los Angeles|California|United States||",
@@ -1378,7 +1394,7 @@ ksn("in didFinishLaunchingWithOptions()  in appdelegate");
 
 
 
-// <.> ?? after remembering N things, write out the remember Files    todox??
+// <.> ?? after remembering N things, write out the remember Files    TODO ??
 //
 //    [myappDelegate selectionMemorizeForEntity: (NSString *) @"person"
 //                                   havingName: (NSString *) myPSVarr[0]
@@ -1786,6 +1802,12 @@ tn();
     int daysinmonth[12]     ={31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     int daysinmonth_leap[12]={31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
+//ksn(C_allowedCharactersInCity);
+//trn("hey");
+//tn();
+//tn();
+
+
     // get the current year
     NSCalendar       *gregorian;
     NSDateComponents *dateComponents;
@@ -1808,12 +1830,23 @@ tn();
         numRecords = numRecords + 1;
        
         // check for exactly 3 fields
+        //   EXCEPT for  "All People~" which has 15-20 fields
         //                  @"~My Family||",
         //
         flds  = [psvGrp componentsSeparatedByCharactersInSet: mySeparators];
-        if (flds.count != 3)                                   return   1;   // s/b 3   
+
+        if (flds.count == 0)                                   return   1;   // s/b 3   or lots for "All People~"
 
         fname    = flds[0];
+       
+        if ([fname isEqualToString: gbl_nameOfGrpHavingAllPeopleIhaveAdded]) // gbl_nameOfGrpHavingAllPeopleIhaveAdded;// "All People~"
+        {
+            // do not do fld count check for all people
+        } else {
+            // do fld count check for other groups
+            if (flds.count != 3)                                   return   1;   // s/b 3   
+        }
+
 
         if (fname.length < 1)                                  return   2;
         if (fname.length > gbl_MAX_lengthOfName)               return   3;
@@ -1823,10 +1856,20 @@ tn();
         if ([fname canBeConvertedToEncoding:         NSUTF8StringEncoding] == NO) return 4;
         constant_char = [fname cStringUsingEncoding: NSUTF8StringEncoding]; // NSString object to C str
         strcpy(cname, constant_char);                                        // NSString object to C str  // because of const
-        if (cname[0] == '~') {        // ~ only legal as first char
-            if (sall(cname + 1, C_allowedCharactersInName) == 0) return   4;
+
+        // check for  ~  as first char (is ok)
+        //   EXCEPT  do not check grp "#allpeople"  for this (gbl_nameOfGrpHavingAllPeopleIhaveAdded)
+        //
+        if ([fname isEqualToString: gbl_nameOfGrpHavingAllPeopleIhaveAdded]) // gbl_nameOfGrpHavingAllPeopleIhaveAdded;// "All People~"
+        {
+            // skip this check for group  gbl_nameOfGrpHavingAllPeopleIhaveAdded
+
         } else {
-            if (sall(cname,     C_allowedCharactersInName) == 0) return   5;
+            if (cname[0] == '~') {      
+                if (sall(cname + 1, C_allowedCharactersInName) == 0) return   4;
+            } else {
+                if (sall(cname,     C_allowedCharactersInName) == 0) return   5;
+            }
         }
     }
     if (numRecords <   2 )                                     return   6;  // 2 is MAGIC for the 2 example groups
@@ -1986,7 +2029,7 @@ tn();
         currPerson      = psvArray[1];
         group_wasFound  = NO;
         person_wasFound = NO;
-tn();
+
         // for test, put in non-existant group and person
         //if ([currGroup isEqualToString: @"Short Names" ]) currGroup = @"short names xxx";
         //if ([currPerson isEqualToString: @"harry" ]) currPerson = @"harry xxx";
@@ -2466,6 +2509,10 @@ tn();  NSLog(@"at end of   mambReadLastEntityFile  myLastEntityDecoded=\n%@",myL
     NSLog(@"in applicationDidBecomeActive()  in appdelegate");
     // Restart any tasks that were paused (or not yet started) while the application was inactive.
     // If the application was previously in the background, OPTIONALLY REFRESH THE USER INTERFACE.
+
+//    if (gbl/onent
+//<.>
+
 }
 
 
@@ -2531,62 +2578,150 @@ tn();  NSLog(@"at end of   mambReadLastEntityFile  myLastEntityDecoded=\n%@",myL
     NSInteger  we_have_hit_target_group;
     we_have_hit_target_group = 0;
 
-    if ([argArrayDescription isEqualToString: @"gbl_grp_CSVs"]) {
+    // do ordinary group  (not #allpeople)
+    if (! [argGroupName  isEqualToString: gbl_nameOfGrpHavingAllPeopleIhaveAdded ])
+    {
+
+        if (     [argArrayDescription isEqualToString: @"gbl_grp_CSVs"])
+        {
 //trn("init  gbl_grp_CSVs");
-        [gbl_grp_CSVs removeAllObjects];               // empty array for this new group
-         gbl_grp_CSVs = [[NSMutableArray alloc] init];  // init  array for this new group
+            [gbl_grp_CSVs removeAllObjects];               // empty array for this new group
+             gbl_grp_CSVs = [[NSMutableArray alloc] init];  // init  array for this new group
 //NSMutableArray *outputArray=[NSMutableArray new];
 //         gbl_grp_CSVs = [NSMutableArray new];  // init  array for this new group
 
-    }
-    if ([argArrayDescription isEqualToString: @"gbl_grp_CSVs_B"]) {
+        }
+        if ([argArrayDescription isEqualToString: @"gbl_grp_CSVs_B"]) {
 //trn("init  gbl_grp_CSVs_B");
-        [gbl_grp_CSVs_B removeAllObjects];               // empty array for this new group
-         gbl_grp_CSVs_B = [[NSMutableArray alloc] init];  // init  array for this new group
-    }
+            [gbl_grp_CSVs_B removeAllObjects];               // empty array for this new group
+             gbl_grp_CSVs_B = [[NSMutableArray alloc] init];  // init  array for this new group
+        }
 
-    gbl_numPeopleInCurrentGroup = 0;  // INIT
-    gbl_kingpinIsInGroup        = 0;  // INIT
+        gbl_numPeopleInCurrentGroup = 0;  // INIT
+        gbl_kingpinIsInGroup        = 0;  // INIT
 
 //    NSInteger insertAt;
 //    insertAt = -1;
-    for (id member in gbl_arrayMem) {   // loop thru gbl group member array
+        for (id member in gbl_arrayMem) {   // loop thru gbl group member array
 
-        NSCharacterSet *mySeparators           = [NSCharacterSet characterSetWithCharactersInString:@"|"];
-        NSArray        *groupMemberComponents  = [member componentsSeparatedByCharactersInSet: mySeparators];
-//NSLog(@"groupMemberComponents  =%@",groupMemberComponents  );
+            NSCharacterSet *mySeparators           = [NSCharacterSet characterSetWithCharactersInString:@"|"];
+            NSArray        *groupMemberComponents  = [member componentsSeparatedByCharactersInSet: mySeparators];
+    //NSLog(@"groupMemberComponents  =%@",groupMemberComponents  );
 
-        NSString *nameOfGroup  = groupMemberComponents[0];  // group name is 1st fld
-        NSString *nameOfMember = groupMemberComponents[1];  // member (person) name is 2nd fld
+            NSString *nameOfGroup  = groupMemberComponents[0];  // group name is 1st fld
+            NSString *nameOfMember = groupMemberComponents[1];  // member (person) name is 2nd fld
 //    NSLog(@"nameOfGroup  =%@",nameOfGroup  );
 //    NSLog(@"nameOfMember =%@",nameOfMember );
 
-        if (! [nameOfGroup isEqualToString: argGroupName]) {
-            if (we_have_hit_target_group == 1) break;
-            else                              continue;
-        }
+            if (! [nameOfGroup isEqualToString: argGroupName]) {
+                if (we_have_hit_target_group == 1) break;
+                else                              continue;
+            }
 
-        // here we are in our target group
-        we_have_hit_target_group = 1;
+            // here we are in our target group
+            we_have_hit_target_group = 1;
 
-        gbl_numPeopleInCurrentGroup = gbl_numPeopleInCurrentGroup + 1;
+            gbl_numPeopleInCurrentGroup = gbl_numPeopleInCurrentGroup + 1;
 
-        
-        if (  [nameOfMember isEqualToString: argPersonToCompareEveryoneElseWith]) {
-            gbl_kingpinIsInGroup = 1;
-            continue;
-        }
+            
+            if (  [nameOfMember isEqualToString: argPersonToCompareEveryoneElseWith]) {
+                gbl_kingpinIsInGroup = 1;
+                continue;
+            }
 
 //tn(); NSLog(@"member=%@", member);
 
-        // add this member's CSV to our array of Group CSVs
-        //
-        NSString *PSVthatWasFound;
-        do {
-            // grab this members's Obj PSV from gbl_arrayPer
-            PSVthatWasFound = nil;
+            // add this member's CSV to our array of Group CSVs
+            //
+            NSString *PSVthatWasFound;
+            do {
+                // grab this members's Obj PSV from gbl_arrayPer
+                PSVthatWasFound = nil;
 
 
+//  NSLog(@"nameOfMember=%@",nameOfMember);
+               NSString *myCSVobj = [myappDelegate getCSVforPersonName: (NSString *) nameOfMember]; 
+//  NSLog(@"myCSVobj =%@",myCSVobj );
+
+               if (myCSVobj != nil) {
+
+                    if ([argArrayDescription isEqualToString: @"gbl_grp_CSVs"]) {
+
+                        [gbl_grp_CSVs   addObject: myCSVobj];
+//                    insertAt = insertAt + 1;
+//                    [gbl_grp_CSVs   insertObject: myCSVobj atIndex: insertAt];
+
+
+//trn("[gbl_grp_CSVs   addObject: myCSVobj];");
+//  NSLog(@"gbl_grp_CSVs=%@",gbl_grp_CSVs);
+//  NSLog(@"gbl_grp_CSVs.count=%ld",(unsigned long)gbl_grp_CSVs.count);
+                    }
+                    if ([argArrayDescription isEqualToString: @"gbl_grp_CSVs_B"]) {
+                        [gbl_grp_CSVs_B addObject: myCSVobj];
+//trn("[gbl_grp_CSVs_B  addObject: myCSVobj];");
+//  NSLog(@"myCSVobj =%@",myCSVobj );
+//  NSLog(@"gbl_grp_CSVs_B=%@",gbl_grp_CSVs);
+                    }
+               }
+            } while (FALSE); // add this member's CSV to our array of Group CSVs
+
+        }   // loop thru gbl group member array 
+// get a NSString CSV for each member of the group into NSArray gbl_grp_CSVs or gbl_grp_CSVs_B
+//tn();
+//  NSLog(@"gbl_grp_CSVs=%@",gbl_grp_CSVs);
+//  NSLog(@"gbl_grp_CSVs_B=%@",gbl_grp_CSVs_B);
+//tn();
+
+        // move to bottom
+        //        return gbl_kingpinIsInGroup;
+    } // do ordinary group  (not #allpeople)
+
+
+
+
+    // do special group   #allpeople
+    if ([argGroupName  isEqualToString: gbl_nameOfGrpHavingAllPeopleIhaveAdded ])
+    {
+        if (     [argArrayDescription isEqualToString: @"gbl_grp_CSVs"])
+        {
+//trn("init  gbl_grp_CSVs");
+            [gbl_grp_CSVs removeAllObjects];               // empty array for this new group
+             gbl_grp_CSVs = [[NSMutableArray alloc] init];  // init  array for this new group
+//NSMutableArray *outputArray=[NSMutableArray new];
+//         gbl_grp_CSVs = [NSMutableArray new];  // init  array for this new group
+
+        }
+        if ([argArrayDescription isEqualToString: @"gbl_grp_CSVs_B"]) {
+//trn("init  gbl_grp_CSVs_B");
+            [gbl_grp_CSVs_B removeAllObjects];               // empty array for this new group
+             gbl_grp_CSVs_B = [[NSMutableArray alloc] init];  // init  array for this new group
+        }
+
+        gbl_numPeopleInCurrentGroup = 0;  // INIT
+        gbl_kingpinIsInGroup        = 0;  // INIT
+
+        for (id member in gbl_arrayPer) {   // loop thru gbl group member array
+
+            NSCharacterSet *mySeparators           = [NSCharacterSet characterSetWithCharactersInString:@"|"];
+            NSArray        *groupMemberComponents  = [member componentsSeparatedByCharactersInSet: mySeparators];
+    //NSLog(@"groupMemberComponents  =%@",groupMemberComponents  );
+
+            NSString *nameOfMember = groupMemberComponents[0];  // member (person) name is 1st fld in gbl_arrayPer
+//    NSLog(@"nameOfMember =%@",nameOfMember );
+
+            if ([nameOfMember hasPrefix: @"~"]) continue;
+
+            gbl_numPeopleInCurrentGroup = gbl_numPeopleInCurrentGroup + 1;
+
+            if (  [nameOfMember isEqualToString: argPersonToCompareEveryoneElseWith]) {
+                gbl_kingpinIsInGroup = 1;
+                continue;
+            }
+
+//tn(); NSLog(@"member=%@", member);
+
+            // add this member's CSV to our array of Group CSVs
+            //
 //  NSLog(@"nameOfMember=%@",nameOfMember);
            NSString *myCSVobj = [myappDelegate getCSVforPersonName: (NSString *) nameOfMember]; 
 //  NSLog(@"myCSVobj =%@",myCSVobj );
@@ -2596,31 +2731,20 @@ tn();  NSLog(@"at end of   mambReadLastEntityFile  myLastEntityDecoded=\n%@",myL
                 if ([argArrayDescription isEqualToString: @"gbl_grp_CSVs"]) {
 
                     [gbl_grp_CSVs   addObject: myCSVobj];
-//                    insertAt = insertAt + 1;
-//                    [gbl_grp_CSVs   insertObject: myCSVobj atIndex: insertAt];
-
-
-//trn("[gbl_grp_CSVs   addObject: myCSVobj];");
-//  NSLog(@"gbl_grp_CSVs=%@",gbl_grp_CSVs);
-//  NSLog(@"gbl_grp_CSVs.count=%ld",(unsigned long)gbl_grp_CSVs.count);
                 }
                 if ([argArrayDescription isEqualToString: @"gbl_grp_CSVs_B"]) {
+
                     [gbl_grp_CSVs_B addObject: myCSVobj];
-//trn("[gbl_grp_CSVs_B  addObject: myCSVobj];");
-//  NSLog(@"myCSVobj =%@",myCSVobj );
-//  NSLog(@"gbl_grp_CSVs_B=%@",gbl_grp_CSVs);
                 }
            }
-        } while (FALSE); // add this member's CSV to our array of Group CSVs
 
-    }   // loop thru gbl group member array 
-// get a NSString CSV for each member of the group into NSArray gbl_grp_CSVs or gbl_grp_CSVs_B
-//tn();
-//  NSLog(@"gbl_grp_CSVs=%@",gbl_grp_CSVs);
-//  NSLog(@"gbl_grp_CSVs_B=%@",gbl_grp_CSVs_B);
-//tn();
+        }   // loop thru gbl group member array 
 
-    return gbl_kingpinIsInGroup;
+    } // do special group   #allpeople
+
+
+
+    return gbl_kingpinIsInGroup;  // both regular and #allpeople
 
 } // end of  getNSArrayOfCSVsForGroup
 
@@ -3237,14 +3361,19 @@ tn();
     //
     // deprecated -> sendSynchronousRequest
 
-- (void) gcy //  find the actual current year   from  date time, found in apl's response header:
+- (void) gcy //  find the actual current year   from  date found in apl's response header:
 {
+tn();
+trn(" XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX ");
+trn(" XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX ");
   NSLog(@"start gcy   get real date   apple    116, 108, 135");
 
     //    gbl_cy_apl = @"9999";  inited now to nil  in appdel didFinishLaunchingWithOptions
     //    gbl_cy_goo = @"9999";
- NSLog(@"gbl_cy_apl 1 =[%@]",gbl_cy_apl);
- NSLog(@"gbl_cy_goo 1 =[%@]",gbl_cy_goo);
+  NSLog(@"gbl_cy_currentAllPeople =[%@] at top of gcy",gbl_cy_currentAllPeople );
+  NSLog(@"gbl_cm_currentAllPeople =[%@] at top of gcy",gbl_cm_currentAllPeople );
+  NSLog(@"gbl_cd_currentAllPeople =[%@] at top of gcy",gbl_cd_currentAllPeople );
+// NSLog(@"gbl_cy_goo 1 =[%@]",gbl_cy_goo);
 
     NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
     NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration: defaultConfigObject
@@ -3256,11 +3385,23 @@ tn();
 
   NSLog(@"start  APPLE  NSURLSessionDataTask");
     myurl      = [NSURL URLWithString: @"https://apple.com" ];
+
+
+
+    // XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    // XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    // XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+    // Always try to get the latest internet time in case the date has changed
+    //
     mydataTask = [ defaultSession dataTaskWithURL: myurl
                                 completionHandler: ^(NSData *mydata,  NSURLResponse *myresponse,  NSError *myerror)
         { // start of completionHandler
             if(myerror == nil)
-            {
+            { // if(myerror == nil)
+tn();            
+trn(" xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx ");
+trn(" xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx ");
   NSLog(@"  doing completionHandler got data branch   doing completionHandler   error == nil");
 
                 // cast response into form having allHeaderFields
@@ -3291,7 +3432,7 @@ tn();
                                 gbl_cy_apl  = fld;          // !!!!  here fld is valid year  "20nn"
                             }
                         }
- NSLog(@"gbl_cy_apl 2 =[%@]",gbl_cy_apl);
+  NSLog(@"gbl_cy_apl 2 =[%@]",gbl_cy_apl);
                         break; 
                     }
                 }
@@ -3310,8 +3451,8 @@ tn();
                     if ([myarr[2] isEqualToString: @"Oct"]) gbl_cm_apl = @"10";
                     if ([myarr[2] isEqualToString: @"Nov"]) gbl_cm_apl = @"11";
                     if ([myarr[2] isEqualToString: @"Dec"]) gbl_cm_apl = @"12";
- NSLog(@"gbl_cm_apl 2 =[%@]",gbl_cm_apl);
- NSLog(@"gbl_cd_apl 2 =[%@]",gbl_cd_apl);
+  NSLog(@"gbl_cm_apl 2 =[%@]",gbl_cm_apl);
+  NSLog(@"gbl_cd_apl 2 =[%@]",gbl_cd_apl);
                 }
 
                 // unused data    NSString * text = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
@@ -3319,87 +3460,210 @@ tn();
 
                 // can do notification here that you are finished
 
-            } else {
-  NSLog(@"got an error  dataTaskWithURL  apl");
-            }
- NSLog(@"gbl_cy_apl 3 =[%@]",gbl_cy_apl);
-        } // end of completionHandler
+                // if the fresh from the internet  y OR m OR d  is different from all people version,
+                // update all people version with  the new data
+                //
 
-    ]; // end of NSURLSessionDataTask 
-    [mydataTask resume];            // sending off dataTask  to execute asynchronously
- NSLog(@"gbl_cy_apl 4 =[%@]",gbl_cy_apl);
-  NSLog(@"sending off dataTask apl");
+  NSLog(@"gbl_cy_apl  in gcy before check diffs             =[%@]",gbl_cy_apl);
+  NSLog(@"gbl_cm_apl  in gcy before check diffs             =[%@]",gbl_cm_apl);
+  NSLog(@"gbl_cd_apl  in gcy before check diffs             =[%@]",gbl_cd_apl);
+  NSLog(@"gbl_cy_currentAllPeople in gcy before check diffs =[%@]",gbl_cy_currentAllPeople );
+  NSLog(@"gbl_cm_currentAllPeople in gcy before check diffs =[%@]",gbl_cm_currentAllPeople );
+  NSLog(@"gbl_cd_currentAllPeople in gcy before check diffs =[%@]",gbl_cd_currentAllPeople );
 
 
+                NSInteger do_update;
+                do_update = 0;
+                if ( ! [gbl_cy_apl isEqualToString: gbl_cy_currentAllPeople ]) do_update = 1;
+                if ( ! [gbl_cm_apl isEqualToString: gbl_cm_currentAllPeople ]) do_update = 1;
+                if ( ! [gbl_cd_apl isEqualToString: gbl_cd_currentAllPeople ]) do_update = 1;
+  NSLog(@"do_update =[%ld]",(long)do_update );
+                if (do_update == 1) {
+    
+                    NSString  *PSVthatWasFound;
+                    NSString  *prefixStr;
+                    NSInteger  myElementNum = 0;
+                    NSInteger  arrayIdx;
+                    NSString  *myStrToUpdate;
+                    NSString  *myupdatedStr1, *myupdatedStr2, *myupdatedStr3; 
 
-    myurl = [NSURL URLWithString: @"https://google.com" ];
-    mydataTask = [ defaultSession dataTaskWithURL: myurl
-                                completionHandler: ^(NSData *mydata,  NSURLResponse *myresponse,  NSError *myerror)
-        { // start of completionHandler
-            if (myerror == nil)
-            {
-                // cast response into form having allHeaderFields
-                NSHTTPURLResponse *myNSURLResponse_as_NSHTTPURLResponse = (NSHTTPURLResponse*) myresponse;
-                // get allHeaderFields dictionary
-                NSDictionary *mydict         = [myNSURLResponse_as_NSHTTPURLResponse  allHeaderFields] ; 
-                // get date from allHeaderFields dictionary
-                NSString *mydatestr          = [mydict objectForKey: @"Date"];  
+                    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for global methods in appDelegate.m
 
-                // verify year 
-                NSInteger yearIsValid;
-                yearIsValid = 0;
-                NSArray *myarr = [mydatestr componentsSeparatedByCharactersInSet: [NSCharacterSet whitespaceCharacterSet ]];
-                for (NSString *fld in myarr) {
-                    if ( [fld length] == 4  &&  [fld hasPrefix: @"20" ]) {
-                        NSString *myYYstr  = [fld  substringWithRange: NSMakeRange(2,2) ];
-                        unichar c = [myYYstr characterAtIndex: 0];
-                        if (c >= '0' && c <= '9') {            // check that char 1 and 2 are numeric
-                            c = [myYYstr characterAtIndex: 1];
+                    NSString *prefixStr7 = [NSString stringWithFormat: @"%@|",gbl_nameOfGrpHavingAllPeopleIhaveAdded ];  // notice '|'
+  NSLog(@"prefixStr7            =%@",prefixStr7 );
 
-                            if (c >= '0' && c <= '9') {
-                                yearIsValid = 1;
-                                gbl_cy_goo = fld;          // !!!!  here fld is valid year  "20nn"
-                            }
+                    // get the PSV of  AllPeople~ in gbl_arrayGrp
+                    PSVthatWasFound = NULL;
+                    arrayIdx = 0;
+                    for (NSString *element in gbl_arrayGrp) {
+  NSLog(@"element =[%@]",element );
+
+                        if ([element hasPrefix: prefixStr7]) {
+                            PSVthatWasFound = element;
+                            break;
                         }
- NSLog(@"gbl_cy_goo 2 =[%@]",gbl_cy_goo);
-                        break; 
+                        arrayIdx = arrayIdx + 1;
                     }
-                }
+  NSLog(@"PSVthatWasFound       =%@",PSVthatWasFound );
 
-                if (yearIsValid == 1) {   //  Date = "Tue, 23 Feb 2016 16:32:17 GMT";
-                    gbl_cd_goo = [NSString stringWithFormat: @"%02d", [myarr[1] intValue ] ];  // "23"
+                    if (PSVthatWasFound != NULL) {
 
-                    if ([myarr[2] isEqualToString: @"Jan"]) gbl_cm_goo = @"01";
-                    if ([myarr[2] isEqualToString: @"Feb"]) gbl_cm_goo = @"02";
-                    if ([myarr[2] isEqualToString: @"Mar"]) gbl_cm_goo = @"03";
-                    if ([myarr[2] isEqualToString: @"Apr"]) gbl_cm_goo = @"04";
-                    if ([myarr[2] isEqualToString: @"May"]) gbl_cm_goo = @"05";
-                    if ([myarr[2] isEqualToString: @"Jun"]) gbl_cm_goo = @"06";
-                    if ([myarr[2] isEqualToString: @"Jul"]) gbl_cm_goo = @"07";
-                    if ([myarr[2] isEqualToString: @"Aug"]) gbl_cm_goo = @"08";
-                    if ([myarr[2] isEqualToString: @"Sep"]) gbl_cm_goo = @"09";
-                    if ([myarr[2] isEqualToString: @"Oct"]) gbl_cm_goo = @"10";
-                    if ([myarr[2] isEqualToString: @"Nov"]) gbl_cm_goo = @"11";
-                    if ([myarr[2] isEqualToString: @"Dec"]) gbl_cm_goo = @"12";
- NSLog(@"gbl_cm_goo 2 =[%@]",gbl_cm_goo);
- NSLog(@"gbl_cd_goo 2 =[%@]",gbl_cd_goo);
-                }
+                        myStrToUpdate = PSVthatWasFound;
+  NSLog(@"myStrToUpdate         =%@",myStrToUpdate );
+  NSLog(@"arrayIdx              =%ld",(long)arrayIdx);
+  NSLog(@"gbl1arrayGrp[arrayIdx]=%@",gbl_arrayGrp[arrayIdx]);
+tn();
+  NSLog(@"gbl_cy_apl=[%@]",gbl_cy_apl);
+                        myupdatedStr1 = [myappDelegate updateDelimitedString: (NSMutableString *) myStrToUpdate
+                                                                 delimitedBy: (NSString *) @"|"
+                                                    updateOneBasedElementNum: (NSInteger)  5                     // current year
+                                                              withThisString: (NSString *) gbl_cy_apl ];
+  NSLog(@"myupdatedStr1          =%@",myupdatedStr1 );
 
- NSLog(@"gbl_cy_goo 3 =[%@]",gbl_cy_goo);
+tn();
+  NSLog(@"gbl_cm_apl=[%@]",gbl_cm_apl);
+                        myupdatedStr2 = [myappDelegate updateDelimitedString: (NSMutableString *) myupdatedStr1
+                                                                 delimitedBy: (NSString *) @"|"
+                                                    updateOneBasedElementNum: (NSInteger)  6                     // current month
+                                                              withThisString: (NSString *) gbl_cm_apl ];
+  NSLog(@"myupdatedStr2          =%@",myupdatedStr2 );
 
-                // can do notification here that you are finished
-            } else {
-  NSLog(@"got an error  dataTaskWithURL  goo");
-            }
+tn();
+  NSLog(@"gbl_cd_apl=[%@]",gbl_cd_apl);
+                        myupdatedStr3 = [myappDelegate updateDelimitedString: (NSMutableString *) myupdatedStr2
+                                                                 delimitedBy: (NSString *) @"|"
+                                                    updateOneBasedElementNum: (NSInteger)  7                     // current year
+                                                              withThisString: (NSString *) gbl_cd_apl ];
+  NSLog(@"myupdatedStr3          =%@",myupdatedStr3 );
+tn();
+
+                        // update gbls for current date
+                        //
+                        gbl_cy_currentAllPeople = gbl_cy_apl;
+                        gbl_cm_currentAllPeople = gbl_cm_apl;
+                        gbl_cd_currentAllPeople = gbl_cd_apl;
+
+  NSLog(@"gbl_cy_currentAllPeople =[%@] at end of  found allpeople rec to update",gbl_cy_currentAllPeople );
+  NSLog(@"gbl_cm_currentAllPeople =[%@]   at end of  found allpeople rec to update",gbl_cm_currentAllPeople );
+  NSLog(@"gbl_cd_currentAllPeople =[%@]   at end of  found allpeople rec to update",gbl_cd_currentAllPeople );
+
+                        // update #allpeople record containing new data  in array gbl_arrayGrp 
+                        //
+  NSLog(@"gbl4arrayGrp[arrayIdx]=%@",gbl_arrayGrp[arrayIdx]);
+                        [gbl_arrayGrp replaceObjectAtIndex: arrayIdx  withObject: myupdatedStr3];  // <<<<<<<<<<<<<<<<---------
+  NSLog(@"gbl2arrayGrp[arrayIdx]=%@",gbl_arrayGrp[arrayIdx]);
+
+                        // write updated gbl_arrayGrp to file
+                        //
+  NSLog(@"write updated gbl_arrayGrp to file");
+  NSLog(@"gbl_arrayGrp=[%@]",gbl_arrayGrp);
+                        [myappDelegate mambWriteNSArrayWithDescription: (NSString *) @"group"]; // write new array data to file
+  NSLog(@"write updated gbl_arrayGrp to file");
+
+
+                    } // if (PSVthatWasFound != NULL)    update allpeople rec in file
+
+                } // do_update == 1  because there is a difference between allpeople rec and latest internet  y, m, d
+
+            } // if(myerror == nil)   dataTaskWithURL  error arg in nill   mydataTask =  defaultSession dataTaskWithURL: myurl
+            else
+            { // if(myerror != nil)   dataTaskWithURL  error arg in nill   mydataTask =  defaultSession dataTaskWithURL: myurl
+                 // 
+                 // got an error, so keep using whatever is in allpeople record
+                 // 
+  NSLog(@"got an error  dataTaskWithURL  apl");
+            } // year is NOT valid
+
+  NSLog(@"gbl_cy_currentAllPeople =[%@] at end of  completionHandler",gbl_cy_currentAllPeople );
+  NSLog(@"gbl_cm_currentAllPeople =[%@]   at end of  completionHandler",gbl_cm_currentAllPeople );
+  NSLog(@"gbl_cd_currentAllPeople =[%@]   at end of  completionHandler",gbl_cd_currentAllPeople );
+
+trn(" xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx ");
+trn(" xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx ");
+tn();
+
         } // end of completionHandler
+
     ]; // end of NSURLSessionDataTask 
 
+
+  NSLog(@"sending off dataTask apl");
+trn(" XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX ");
+  tn();
     [mydataTask resume];            // sending off dataTask  to execute asynchronously
- NSLog(@"gbl_cy_goo 4 =[%@]",gbl_cy_goo);
-  NSLog(@"sending off dataTask goo");
 
 
-                // can do notification here that you are finished
+
+
+    // 20160227  do only apl , not goo as well
+    //
+    //    myurl = [NSURL URLWithString: @"https://google.com" ];
+    //    mydataTask = [ defaultSession dataTaskWithURL: myurl
+    //                                completionHandler: ^(NSData *mydata,  NSURLResponse *myresponse,  NSError *myerror)
+    //        { // start of completionHandler
+    //            if (myerror == nil)
+    //            {
+    //                // cast response into form having allHeaderFields
+    //                NSHTTPURLResponse *myNSURLResponse_as_NSHTTPURLResponse = (NSHTTPURLResponse*) myresponse;
+    //                // get allHeaderFields dictionary
+    //                NSDictionary *mydict         = [myNSURLResponse_as_NSHTTPURLResponse  allHeaderFields] ; 
+    //                // get date from allHeaderFields dictionary
+    //                NSString *mydatestr          = [mydict objectForKey: @"Date"];  
+    //
+    //                // verify year 
+    //                NSInteger yearIsValid;
+    //                yearIsValid = 0;
+    //                NSArray *myarr = [mydatestr componentsSeparatedByCharactersInSet: [NSCharacterSet whitespaceCharacterSet ]];
+    //                for (NSString *fld in myarr) {
+    //                    if ( [fld length] == 4  &&  [fld hasPrefix: @"20" ]) {
+    //                        NSString *myYYstr  = [fld  substringWithRange: NSMakeRange(2,2) ];
+    //                        unichar c = [myYYstr characterAtIndex: 0];
+    //                        if (c >= '0' && c <= '9') {            // check that char 1 and 2 are numeric
+    //                            c = [myYYstr characterAtIndex: 1];
+    //
+    //                            if (c >= '0' && c <= '9') {
+    //                                yearIsValid = 1;
+    //                                gbl_cy_goo = fld;          // !!!!  here fld is valid year  "20nn"
+    //                            }
+    //                        }
+    // NSLog(@"gbl_cy_goo 2 =[%@]",gbl_cy_goo);
+    //                        break; 
+    //                    }
+    //                }
+    //
+    //                if (yearIsValid == 1) {   //  Date = "Tue, 23 Feb 2016 16:32:17 GMT";
+    //                    gbl_cd_goo = [NSString stringWithFormat: @"%02d", [myarr[1] intValue ] ];  // "23"
+    //
+    //                    if ([myarr[2] isEqualToString: @"Jan"]) gbl_cm_goo = @"01";
+    //                    if ([myarr[2] isEqualToString: @"Feb"]) gbl_cm_goo = @"02";
+    //                    if ([myarr[2] isEqualToString: @"Mar"]) gbl_cm_goo = @"03";
+    //                    if ([myarr[2] isEqualToString: @"Apr"]) gbl_cm_goo = @"04";
+    //                    if ([myarr[2] isEqualToString: @"May"]) gbl_cm_goo = @"05";
+    //                    if ([myarr[2] isEqualToString: @"Jun"]) gbl_cm_goo = @"06";
+    //                    if ([myarr[2] isEqualToString: @"Jul"]) gbl_cm_goo = @"07";
+    //                    if ([myarr[2] isEqualToString: @"Aug"]) gbl_cm_goo = @"08";
+    //                    if ([myarr[2] isEqualToString: @"Sep"]) gbl_cm_goo = @"09";
+    //                    if ([myarr[2] isEqualToString: @"Oct"]) gbl_cm_goo = @"10";
+    //                    if ([myarr[2] isEqualToString: @"Nov"]) gbl_cm_goo = @"11";
+    //                    if ([myarr[2] isEqualToString: @"Dec"]) gbl_cm_goo = @"12";
+    // NSLog(@"gbl_cm_goo 2 =[%@]",gbl_cm_goo);
+    // NSLog(@"gbl_cd_goo 2 =[%@]",gbl_cd_goo);
+    //                }
+    //
+    // NSLog(@"gbl_cy_goo 3 =[%@]",gbl_cy_goo);
+    //
+    //                // can do notification here that you are finished
+    //            } else {
+    //  NSLog(@"got an error  dataTaskWithURL  goo");
+    //            }
+    //        } // end of completionHandler
+    //    ]; // end of NSURLSessionDataTask 
+    //
+    //    [mydataTask resume];            // sending off dataTask  to execute asynchronously
+    // NSLog(@"gbl_cy_goo 4 =[%@]",gbl_cy_goo);
+    //  NSLog(@"sending off dataTask goo");
+    //
+
 
 } // end of  gcy
 

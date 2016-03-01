@@ -3472,10 +3472,7 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
 //  NSLog(@"width stars only         =[%f]", ceilf(rect2.size.width));
 //  NSLog(@"width white space        =[%f]", ceilf(rect21.size.width));
 ////  NSLog(@"widthRightMargin         =[%f]",widthRightMargin);
-//  NSLog(@"total                    =[%f]",
-//             ceilf(rect0.size.width) +
-//             ceilf(rect1.size.width) +
-//             ceilf(rect3.size.width) );
+//  NSLog(@"total                    =[%f]", ceilf(rect0.size.width) + ceilf(rect1.size.width) + ceilf(rect3.size.width) );
 //  NSLog(@"starLineOfMaxSize width  =[%f]", ceilf(rect3.size.width));
 ////widthRightMargin);
 //  NSLog(@"   screen width          =[%f]",ceilf(self.view.bounds.size.width) );

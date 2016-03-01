@@ -174,6 +174,12 @@
             if ([person1 isEqualToString: person2]) {            // do not show person himself
                 continue;
             }
+            if (   [person1 hasPrefix: @"~"]
+                && gbl_ExampleData_show == 0  )
+            {            // do not show example data if turned off
+                continue;
+            }
+
             [gbl_arrayPersonsToPickFrom addObject: person1 ];                        //  Person name for pick
             [_PSVs_for_person_picklist addObject: myPerPSV ]; //  Person PSV  for ViewHTML
             
@@ -182,8 +188,7 @@
         //NSLog(@"gbl_arrayPersonsToPickFrom.count=%lu",(unsigned long)gbl_arrayPersonsToPickFrom.count);
         //NSLog(@"_PSVs_for_person_picklist=%@",_PSVs_for_person_picklist);
     }
-//    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"]) 
-    else  { 
+    else  {    //    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"]) 
         [_PSVs_for_group_picklist removeAllObjects];
         _PSVs_for_group_picklist   = [[NSMutableArray alloc] init];
         
@@ -202,6 +207,12 @@
             NSArray *psvArray;
             psvArray = [myGrpPSV componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"|"]];
             NSString *myGroup = psvArray[0];
+
+            if (   [myGroup hasPrefix: @"~"]
+                && gbl_ExampleData_show == 0  )
+            {            // do not show example data if turned off
+                continue;
+            }
 
             [gbl_arrayGroupsToPickFrom addObject: myGroup ]; //  Group name for pick
             [_PSVs_for_group_picklist addObject: myGrpPSV ]; //  Group PSV  for ViewHTML
@@ -716,12 +727,14 @@ tn();    NSLog(@"in didSelectRowAtIndexPath!  in SelectPerson !!!!!!!!!!!!");
         });
     }
 
-//    if (   [gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"]
-//        || [gbl_currentMenuPlusReportCode isEqualToString: @"pbm2bm"]
-//    )    
+    //    if (   [gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"]
+    //        || [gbl_currentMenuPlusReportCode isEqualToString: @"pbm2bm"]
+    //    )    
     else {
 
         gbl_lastSelectedGroup = currcell.textLabel.text;
+  NSLog(@"gbl_lastSelectedGroup                 =[%@]",gbl_lastSelectedGroup );
+  NSLog(@"gbl_nameOfGrpHavingAllPeopleIhaveAdded=[%@]",gbl_nameOfGrpHavingAllPeopleIhaveAdded);
 
 
         // search in  gbl_arrayMem  for   currcell.textLabel.text
@@ -733,10 +746,23 @@ tn();    NSLog(@"in didSelectRowAtIndexPath!  in SelectPerson !!!!!!!!!!!!");
         NSInteger member_cnt;
         NSString *prefixStr = [NSString stringWithFormat: @"%@|", currcell.textLabel.text ];
 
-        member_cnt = 0;
-        for (NSString *element in gbl_arrayMem) {
-            if ([element hasPrefix: prefixStr]) {
+        if ([gbl_lastSelectedGroup isEqualToString: gbl_nameOfGrpHavingAllPeopleIhaveAdded])
+        {
+            // special group  "#allpeople"
+            member_cnt = 0;
+            for (NSString *element in gbl_arrayPer) {
+
+                if ([element hasPrefix: @"~"]) continue;
                 member_cnt = member_cnt + 1;
+            }
+
+        } else {
+            // ordinary group
+            member_cnt = 0;
+            for (NSString *element in gbl_arrayMem) {
+                if ([element hasPrefix: prefixStr]) {
+                    member_cnt = member_cnt + 1;
+                }
             }
         }
 
