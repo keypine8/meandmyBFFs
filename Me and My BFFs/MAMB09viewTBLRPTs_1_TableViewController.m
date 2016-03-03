@@ -5357,10 +5357,11 @@ NSLog(@"gbl_TBLRPTS1_saveSelectedIndexPath.row=%ld",(long)gbl_TBLRPTS1_saveSelec
   NSLog(@"per RELOAD A ? 2");
         if ([ gbl_do_A_per_reload isEqualToString: @"do the reload only the first time"] )
         {
-  NSLog(@"per RELOAD A   DO IT  ");
+  NSLog(@"per RELOAD A  3DO IT  ");
               gbl_do_A_per_reload = @"this is not reset until new app startup";
 
 //    self.tableView.contentOffset = CGPointMake(0, 0 - self.tableView.contentInset.top); // DID NOT WORK
+//           [self.tableView scrollRectToVisible:CGRectMake(0.0, 0.0, 1.0, 1.0) animated:YES];
 
 
 
@@ -5411,6 +5412,7 @@ NSLog(@"gbl_TBLRPTS1_saveSelectedIndexPath.row=%ld",(long)gbl_TBLRPTS1_saveSelec
 //                    gbl_justLookedAtInfoScreen = 0;  // no re-load
 //                }
             });
+
 
 
 
@@ -7572,11 +7574,14 @@ bn(505);
 - (void)viewDidAppear:(BOOL)animated
 {
 //     [super viewDidAppear];
-    NSLog(@"in TBLRPTs 1  viewDidAppear!");
+    NSLog(@"in TBLRPTs 1  viewDidAppear!   2");
 
     [super viewDidAppear:animated];
+
 //    [self.tableView reloadData];    // self.view is the table view if self is its controller
 
+
+//           [self.tableView scrollRectToVisible:CGRectMake(0.0, 0.0, 1.0, 1.0) animated:YES];
 
 // try to get rid of tbl position in middle on startup
 //nbn(320);
@@ -7614,6 +7619,8 @@ bn(505);
 //        return;
 //    }
 //
+
+
 
 
     if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homppe"]

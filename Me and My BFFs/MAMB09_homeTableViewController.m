@@ -545,33 +545,25 @@ nbn(15);
 
 
 
-//
-//    //   for test   TO SIMULATE first downloading the app-  when there are no data files
-//    //   FOR test   remove all regular named files   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-//    //
-//    NSLog(@" FOR test   BEG   remove all regular named files   xxxxxxxxxx ");
-//    [gbl_sharedFM removeItemAtURL: gbl_URLToLastEnt    error: &err01];
-//    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm lastent %@", [err01 localizedFailureReason]); }
-//    [gbl_sharedFM removeItemAtURL: gbl_URLToGroup      error: &err01];
-//    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm group   %@", [err01 localizedFailureReason]); }
-//    [gbl_sharedFM removeItemAtURL: gbl_URLToPerson     error: &err01];
-//    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm person  %@", [err01 localizedFailureReason]); }
-//    [gbl_sharedFM removeItemAtURL: gbl_URLToMember     error: &err01];
-//    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm Member  %@", [err01 localizedFailureReason]); }
-//    [gbl_sharedFM removeItemAtURL: gbl_URLToGrpRem     error: &err01];
-//    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm GrpRem  %@", [err01 localizedFailureReason]); }
-//    [gbl_sharedFM removeItemAtURL: gbl_URLToPerRem     error: &err01];
-//    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm PerRem  %@", [err01 localizedFailureReason]); }
-//    NSLog(@" FOR test   END   remove all regular named files   xxxxxxxxxx ");
-//    // end of   FOR test   remove all regular named files   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-//
-//
 
-
-
-
-
-
+    //   for test   TO SIMULATE first downloading the app-  when there are no data files
+    //   FOR test   remove all regular named files   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    //
+    NSLog(@" FOR test   BEG   remove all regular named files   xxxxxxxxxx ");
+    [gbl_sharedFM removeItemAtURL: gbl_URLToLastEnt    error: &err01];
+    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm lastent %@", [err01 localizedFailureReason]); }
+    [gbl_sharedFM removeItemAtURL: gbl_URLToGroup      error: &err01];
+    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm group   %@", [err01 localizedFailureReason]); }
+    [gbl_sharedFM removeItemAtURL: gbl_URLToPerson     error: &err01];
+    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm person  %@", [err01 localizedFailureReason]); }
+    [gbl_sharedFM removeItemAtURL: gbl_URLToMember     error: &err01];
+    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm Member  %@", [err01 localizedFailureReason]); }
+    [gbl_sharedFM removeItemAtURL: gbl_URLToGrpRem     error: &err01];
+    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm GrpRem  %@", [err01 localizedFailureReason]); }
+    [gbl_sharedFM removeItemAtURL: gbl_URLToPerRem     error: &err01];
+    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm PerRem  %@", [err01 localizedFailureReason]); }
+    NSLog(@" FOR test   END   remove all regular named files   xxxxxxxxxx ");
+    // end of   FOR test   remove all regular named files   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 
 
@@ -924,7 +916,7 @@ ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
 
     // for test  LOOK AT all files in doc dir
     NSArray *docFiles2 = [[NSFileManager defaultManager] contentsOfDirectoryAtPath: gbl_appDocDirStr error:NULL];
-    NSLog(@"docFiles2.count=%lu",(unsigned long)docFiles2.count);
+  NSLog(@"docFiles2.count=%lu",(unsigned long)docFiles2.count);
     for (NSString *fil in docFiles2) { NSLog(@"doc fil=%@",fil); }
     // for test  LOOK AT all files in doc dir
 
@@ -980,7 +972,8 @@ nbn(45);
 
     if ([gbl_lastSelectionType isEqualToString:@"group"]) 
     {
-        if (gbl_ExampleData_show == 1) {
+        if ([gbl_ExampleData_show isEqualToString: @"yes"] )     
+        {
            gbl_numRowsToDisplayFor_grp = gbl_arrayGrp.count;
         } else {
            // Here we do not want to show example data.
@@ -994,7 +987,8 @@ nbn(45);
 
     if ([gbl_lastSelectionType isEqualToString:@"person"])
     {
-        if (gbl_ExampleData_show == 1) {
+        if ([gbl_ExampleData_show isEqualToString: @"yes"] )     
+        {
            gbl_numRowsToDisplayFor_per = gbl_arrayPer.count;
         } else {
            // Here we do not want to show example data.
@@ -1740,7 +1734,7 @@ nbn(51);
             // and example data being turned off.
             // In that case, put top row on top of tableview
             //
-            if (gbl_ExampleData_show == 0
+            if ([gbl_ExampleData_show isEqualToString: @"no"]
                 && (
                        [gbl_lastSelectedGroup hasPrefix: @"~" ] 
                     || (gbl_numRowsToDisplayFor_per == 0)
@@ -1815,7 +1809,7 @@ nbn(55);
             // and example data being turned off.
             // In that case, put top row on top of tableview
             //
-            if (gbl_ExampleData_show == 0
+            if ([gbl_ExampleData_show isEqualToString: @"no"]
                 && (
                        [gbl_lastSelectedPerson hasPrefix: @"~" ] 
                     || (gbl_numRowsToDisplayFor_grp == 0)
@@ -1900,7 +1894,9 @@ nbn(55);
 
 - (void)viewDidAppear:(BOOL)animated
 {
+tn();
 NSLog(@"in viewDidAppear()  in HOME");
+  NSLog(@"gbl_ExampleData_show=[%@]",gbl_ExampleData_show);
 
     // if gbl_fromHomeCurrentEntityName is different from gbl_fromHomeLastEntityRemSaved
     // save the  remember array  gbl_arrayPerRem or gbl_arrayGrpRem
@@ -1914,13 +1910,23 @@ NSLog(@"in viewDidAppear()  in HOME");
 //    BOOL cond1 =  gbl_fromHomeLastEntityRemSaved != nil ;
 //    BOOL cond2 = ![gbl_fromHomeLastEntityRemSaved isEqualToString: gbl_fromHomeCurrentEntityName];
 //
+
+    if (gbl_ExampleData_show_switchChanged == 1)
+    {
+  NSLog(@"reloading tableview because gbl_ExampleData_show_switchChanged == 1");
+
+        gbl_ExampleData_show_switchChanged = 0;
+
+        [self.tableView reloadData];
+        [self putHighlightOnCorrectRow ];
+    }
    
     if (   gbl_justAddedPersonRecord == 1
         || gbl_justAddedGroupRecord  == 1
     ) {
         gbl_justAddedPersonRecord  = 0;
         gbl_justAddedGroupRecord   = 0;
-  NSLog(@"reloading tableview");
+  NSLog(@"reloading tableview because have added an entity");
 
         [self.tableView reloadData];
 
@@ -2209,7 +2215,9 @@ tn();
 
 -(void) viewWillAppear:(BOOL)animated
 {
+tn();
  NSLog(@"in viewWillAppear() in home   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+  NSLog(@"gbl_ExampleData_show=[%@]",gbl_ExampleData_show);
 
 
     //   gbl_homeUseMODE;      // "edit mode" (yellow)   or   "regular mode" (blue)
@@ -2310,9 +2318,11 @@ tn();trn("in doStuffOnEnteringForeground()   NOTIFICATION method     lastEntity 
     if (gbl_recOfAllPeopleIhaveAdded) {
         NSArray *myaparr  = [gbl_recOfAllPeopleIhaveAdded componentsSeparatedByString:@"|"];
 
+        gbl_ExampleData_show    = myaparr [2]; // get fld#3 show example data switch     (0-based)  ("yes" or "no")
+
         gbl_cy_currentAllPeople = myaparr [4]; // get fld#5 year     (0-based)
-        gbl_cm_currentAllPeople = myaparr [5]; // get fld#5 mth      (0-based)
-        gbl_cd_currentAllPeople = myaparr [6]; // get fld#5 dayofmth (0-based)
+        gbl_cm_currentAllPeople = myaparr [5]; // get fld#6 mth      (0-based)
+        gbl_cd_currentAllPeople = myaparr [6]; // get fld#7 dayofmth (0-based)
     }
     // here, these 2 gbls are "nil" or a valid year
 
@@ -2467,7 +2477,8 @@ tn();
 
     if ([gbl_lastSelectionType isEqualToString:@"group"]) 
     {
-        if (gbl_ExampleData_show == 1) {
+        if ([gbl_ExampleData_show isEqualToString: @"yes"])
+        {
            myCountOfRows = gbl_arrayGrp.count;
         } else {
            // Here we do not want to show example data.
@@ -2479,7 +2490,8 @@ tn();
 
     if ([gbl_lastSelectionType isEqualToString:@"person"])
     {
-        if (gbl_ExampleData_show == 1) {
+        if ([gbl_ExampleData_show isEqualToString: @"yes"])
+        {
            myCountOfRows = gbl_arrayPer.count;
         } else {
            // Here we do not want to show example data.
@@ -2630,7 +2642,8 @@ nbn(162);
 //    if ([gbl_lastSelectionType isEqualToString:@"person"])  myCountOfRows = gbl_arrayPer.count;
     if ([gbl_lastSelectionType isEqualToString:@"group"]) 
     {
-        if (gbl_ExampleData_show == 1) {
+        if ([gbl_ExampleData_show isEqualToString: @"yes"] ) 
+        {
            myCountOfRows = gbl_arrayGrp.count;
         } else {
            // Here we do not want to show example data.
@@ -2642,7 +2655,8 @@ nbn(162);
 
     if ([gbl_lastSelectionType isEqualToString:@"person"])
     {
-        if (gbl_ExampleData_show == 1) {
+        if ([gbl_ExampleData_show isEqualToString: @"yes"] ) 
+        {
            myCountOfRows = gbl_arrayPer.count;
         } else {
            // Here we do not want to show example data.
@@ -3300,12 +3314,13 @@ nbn(357);
   NSLog(@"gbl_lastSelectionType      =[%@]",gbl_lastSelectionType );
   NSLog(@"gbl_lastSelectedPerson     =[%@]",gbl_lastSelectedPerson);
   NSLog(@"gbl_lastSelectedGroup      =[%@]",gbl_lastSelectedGroup );
-  NSLog(@"gbl_ExampleData_show       =[%ld]",(long)gbl_ExampleData_show );
+  NSLog(@"gbl_ExampleData_show       =[%@]",gbl_ExampleData_show );
 
 
     if ([gbl_lastSelectionType isEqualToString:@"person"])
     {
-        if (gbl_ExampleData_show == 1) {
+        if ([gbl_ExampleData_show isEqualToString: @"yes"] )
+        {
            gbl_numRowsToDisplayFor_per = gbl_arrayPer.count;
         } else {
            // Here we do not want to show example data.
@@ -3316,7 +3331,8 @@ nbn(357);
     }
     if ([gbl_lastSelectionType isEqualToString:@"group"])
     {
-        if (gbl_ExampleData_show == 1) {
+        if ([gbl_ExampleData_show isEqualToString: @"yes"] )
+        {
            gbl_numRowsToDisplayFor_grp = gbl_arrayGrp.count;
         } else {
            // Here we do not want to show example data.
@@ -3344,8 +3360,8 @@ nbn(31);
             // and example data being turned off.
             // In that case, put highlight on top row
             //
-            if (gbl_ExampleData_show == 0
-                && [gbl_lastSelectedGroup hasPrefix: @"~" ] )
+            if ([gbl_ExampleData_show isEqualToString: @"no"]
+                && [gbl_lastSelectedGroup hasPrefix: @"~" ]    )
             {
 nbn(32);
                // set gbl_lastSelectedPerson  to whoever is in top row
@@ -3397,7 +3413,7 @@ nbn(41);
             // and example data being turned off.
             // In that case, put highlight on top row
             //
-            if (gbl_ExampleData_show == 0
+            if ([gbl_ExampleData_show isEqualToString: @"no"]
                 && [gbl_lastSelectedPerson hasPrefix: @"~" ] )
             {
 nbn(42);

@@ -221,6 +221,27 @@ tn();
 NSLog(@"in ADD CHANGE  viewDidLoad!");
   NSLog(@"gbl_lastSelectedPerson=[%@]",gbl_lastSelectedPerson);
 
+    // NO editing allowed for #allpeople or any example data ("~")
+    //
+    if (   [gbl_fromHomeCurrentSelectionType isEqualToString: @"person" ]
+        && (
+               [gbl_lastSelectedPerson hasPrefix: @"~" ]
+           )
+       )
+    {
+        self.tableView.userInteractionEnabled = NO;
+    }
+    if (   [gbl_fromHomeCurrentSelectionType isEqualToString: @"group" ]
+        && (
+               [gbl_lastSelectedGroup hasPrefix: @"#" ]
+            || [gbl_lastSelectedGroup hasPrefix: @"~" ]
+           )
+       )
+    {
+        self.tableView.userInteractionEnabled = NO;
+    }
+
+
     self.tableView.allowsMultipleSelectionDuringEditing = NO;
 
     gbl_lastSelectedPersonBeforeChange = gbl_lastSelectedPerson;   // like "~Dave"   used in YELLOW gbl_homeUseMODE "edit mode"
@@ -4206,7 +4227,7 @@ nbn(3);
 
 
                     gbl_mycityprovcounLabel.attributedText =
-                 [[NSAttributedString alloc] initWithString: @" Saved with3High Security\n Saved with High Security\n Saved with High Security"
+                 [[NSAttributedString alloc] initWithString: @" Saved with High Security\n Saved with High Security\n Saved with High Security"
                   attributes: @{ NSForegroundColorAttributeName:  [UIColor lightGrayColor] }
                  ];
 
@@ -4267,7 +4288,7 @@ nbn(3);
 //            cell.contentView.backgroundColor    = currentBGfieldColor;
 
 //            gbl_mycityprovcounLabel.text             = myTextCity;
-//                    gbl_mycityprovcounLabel.text            = @" Saved with3High Security\n Saved with High Security\n Saved with High Security";
+//                    gbl_mycityprovcounLabel.text            = @" Saved with High Security\n Saved with High Security\n Saved with High Security";
             [cell addSubview: gbl_mycityprovcounLabel ];
 
 

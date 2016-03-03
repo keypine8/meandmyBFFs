@@ -254,26 +254,21 @@ tn();
 
 
     // INCLUDE ONLY  non members of gbl_lastSelectedGroup
+    // EXCLUDE       people who are example data ("~")
     //
     for (id myNewMemberRec in gbl_arrayPer) {
 
-// skip example record  TODO in production
-//            if (gbl_show_example_data ==  NO  &&
-//                [mymyMemberRecPSV hasPrefix: @"~"]) {  // skip example record
-//                continue;         //  ======================-------------------------------------- PUT BACK when we have non-example data!!!
-//            }
-//
-
         NSArray *psvArray;
-        NSString *currMember;
+        NSString *candidateMember;
         
         psvArray = [myNewMemberRec componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"|"]];
-        currMember = psvArray[0];
+        candidateMember = psvArray[0];
 
+        if ( [grpmemNameArray containsObject: candidateMember] ) continue;   // in the group already
 
-        if ( [grpmemNameArray containsObject: currMember] ) continue;
+        if ([candidateMember hasPrefix: @"~" ])                  continue;   // no example people to be member
        
-        [gbl_arrayNewMembersToPickFrom addObject: currMember ];                        //  Person name for pick
+        [gbl_arrayNewMembersToPickFrom addObject: candidateMember ];         //  Person name for pick
     } // for each groupmember
 
  NSLog(@"gbl_arrayNewMembersToPickFrom=%@",gbl_arrayNewMembersToPickFrom);

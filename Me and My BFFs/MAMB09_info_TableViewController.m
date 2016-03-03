@@ -45,12 +45,99 @@ NSString *myGoodBadText;  // for trait
 } // didReceiveMemoryWarning 
 
 
+- (void)viewWillDisappear:(BOOL)animated {
+tn();
+     NSLog(@"in viewWillDisappear in TBLRPTs_1  !");
+
+    [super viewWillDisappear:animated];
+
+    // check if gbl_ExampleData_show has changed, and
+    // if so,  write out gbl_arrayGrp to save it
+    //
+  NSLog(@"gbl_ExampleData_show_entering =[%@]",gbl_ExampleData_show_entering );
+  NSLog(@"gbl_ExampleData_show          =[%@]",gbl_ExampleData_show );
+
+
+
+    // these can be different because gbl_ExampleData_show  has been updated by user switch
+    //
+    gbl_ExampleData_show_switchChanged = 0;   // 1=yes  OR  0=no
+    if ( ! [gbl_ExampleData_show_entering isEqualToString: gbl_ExampleData_show ])   // home screen for app (startup screen)
+    {
+        gbl_ExampleData_show_switchChanged = 1;   // 1=yes  OR  0=no
+
+  NSLog(@"write updated gbl_arrayGrp to file");
+         // get #allpeople record
+         // update ExampleData_show fld  (fld #3 base 1)
+         // write gbl_arrayGrp to file
+    
+        NSString  *PSVthatWasFound;
+        NSString  *prefixStr;
+        NSInteger  arrayIdx;
+        NSString  *myStrToUpdate;
+        NSString  *myupdatedStr1;
+
+        MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for global methods in appDelegate.m
+
+        NSString *prefixStr9 = [NSString stringWithFormat: @"%@|",gbl_nameOfGrpHavingAllPeopleIhaveAdded ];  // notice '|'
+  NSLog(@"prefixStr9            =%@",prefixStr9 );
+
+        // get the PSV of  AllPeople~ in gbl_arrayGrp
+        PSVthatWasFound = NULL;
+        arrayIdx = 0;
+        for (NSString *element in gbl_arrayGrp) {
+  NSLog(@"element =[%@]",element );
+
+            if ([element hasPrefix: prefixStr9]) {
+                PSVthatWasFound = element;
+                break;
+            }
+            arrayIdx = arrayIdx + 1;
+        }
+  NSLog(@"PSVthatWasFound       =%@",PSVthatWasFound );
+
+        if (PSVthatWasFound != NULL) {
+
+            myStrToUpdate = PSVthatWasFound;
+  NSLog(@"myStrToUpdate         =%@",myStrToUpdate );
+  NSLog(@"arrayIdx              =%ld",(long)arrayIdx);
+  NSLog(@"gbl1arrayGrp[arrayIdx]=%@",gbl_arrayGrp[arrayIdx]);
+tn();
+            myupdatedStr1 = [myappDelegate updateDelimitedString: (NSMutableString *) myStrToUpdate
+                                                     delimitedBy: (NSString *) @"|"
+                                        updateOneBasedElementNum: (NSInteger)  3                     // show eg data flag
+                                                  withThisString: (NSString *) gbl_ExampleData_show ];
+  NSLog(@"myupdatedStr1          =%@",myupdatedStr1 );
+
+            // update #allpeople record containing new data  in memory array gbl_arrayGrp 
+            //
+  NSLog(@"gbl4arrayGrp[arrayIdx]=%@",gbl_arrayGrp[arrayIdx]);
+            [gbl_arrayGrp replaceObjectAtIndex: arrayIdx  withObject: myupdatedStr1];  // <<<<<<<<<<<<<<<<---------
+  NSLog(@"gbl2arrayGrp[arrayIdx]=%@",gbl_arrayGrp[arrayIdx]);
+
+
+            // write updated gbl_arrayGrp to file
+            //
+  NSLog(@"gbl_arrayGrp=[%@]",gbl_arrayGrp);
+            [myappDelegate mambWriteNSArrayWithDescription: (NSString *) @"group"]; // write new array data to file
+  NSLog(@"write updated gbl_arrayGrp to file");
+
+        } // if found #allpeople record
+    } // if gbl_ExampleData_show has change 
+
+
+} // viewWillDisappear
+
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     fopen_fpdb_for_debug();
     NSLog(@"in INFO   viewDidLoad!");
     
+    gbl_ExampleData_show_entering = gbl_ExampleData_show;  // save entering value
+
     gbl_justLookedAtInfoScreen = 1;
     
   NSLog(@"gbl_currentMenuPlusReportCode=%@",gbl_currentMenuPlusReportCode);
@@ -384,7 +471,7 @@ nbn(88);
 //    UIImage *myImageTwoThings        = [UIImage  imageNamed: @"twoThings_info8.png"   inBundle: nil compatibleWithTraitCollection: nil ];
 //    UIImage *myImageTwoThings        = [UIImage  imageNamed: @"twoThings_info9.png"   inBundle: nil compatibleWithTraitCollection: nil ];
     UIImage *myImageTwoThings        = [UIImage  imageNamed: @"twoThings_info9b.png"   inBundle: nil compatibleWithTraitCollection: nil ];
-  NSLog(@"myImageTwoThings        =[%@]",myImageTwoThings        );
+//  NSLog(@"myImageTwoThings        =[%@]",myImageTwoThings        );
 //    UIImage *myImageWillpower        = [UIImage  imageNamed: @"willpower_info3.png"   inBundle: nil compatibleWithTraitCollection: nil ];
 //    UIImage *myImageWillpower        = [UIImage  imageNamed: @"willpower_info5.png"   inBundle: nil compatibleWithTraitCollection: nil ];
     UIImage *myImageWillpower        = [UIImage  imageNamed: @"willpower_info6.png"   inBundle: nil compatibleWithTraitCollection: nil ];
@@ -2547,16 +2634,77 @@ nbn(100);
 
 
         UISwitch *mySwitchView = [[UISwitch alloc] initWithFrame:CGRectZero];
-        [mySwitchView setOn: YES animated: NO];
+//        [mySwitchView setOn: YES animated: NO];
+        if ([gbl_ExampleData_show isEqualToString: @"yes" ]) [mySwitchView setOn: YES animated: YES];
+        if ([gbl_ExampleData_show isEqualToString: @"no"  ]) [mySwitchView setOn: NO  animated: YES];
+        mySwitchView.layer.borderWidth  = 2;
+//        mySwitchView.layer.borderColor  = [UIColor whiteColor].CGColor;
+//        mySwitchView.layer.borderColor  = [UIColor lightGrayColor].CGColor;
+//        mySwitchView.layer.borderColor  = gbl_reallyLightGray.CGColor;
+//        mySwitchView.layer.borderColor  = [UIColor brownColor].CGColor;
+//        mySwitchView.layer.borderColor  = gbl_colorVlightBurly.CGColor;
+//        mySwitchView.layer.borderColor  = [UIColor yellowColor].CGColor;
+//        mySwitchView.layer.borderColor  = [UIColor blackColor].CGColor;
+        mySwitchView.layer.borderColor  = [UIColor whiteColor].CGColor;
+
+
+        mySwitchView.layer.cornerRadius = 16;
+
         [mySwitchView           addTarget: self
                                    action: @selector(showExampleDataSwitchChanged: )
                          forControlEvents: UIControlEventValueChanged
         ];
-        mySwitchView.enabled = YES;
+         
+//        mySwitchView.enabled = YES;
+//        [self showExampleDataSwitchChanged ];
+
 //        myViewController.view.frame = CGRectMake(0, 100, myViewController.view.frame.size.width, myViewController.view.frame.size.height);  
 //        mySwitchView.frame = CGRectMake(180, 10, cell.frame.size.width, cell.frame.size.height);  
 
         if (indexPath.row ==  9) {
+            // go with defaults
+//            if (mySwitchView.on == YES) {
+//                [mySwitchView setThumbTintColor:[UIColor whiteColor]];     // circle in switch
+//                [mySwitchView setOnTintColor:     [UIColor greenColor]]; // outline edges of sw
+//            }
+//            if (mySwitchView.on ==  NO) {
+//                [mySwitchView setTintColor:     [UIColor lightGrayColor]]; // outline edges of sw
+//                [mySwitchView setThumbTintColor:[UIColor lightGrayColor]]; // circle in switch
+//
+//                [mySwitchView setThumbTintColor:[UIColor whiteColor]];     // circle in switch
+//                [mySwitchView setTintColor:     [UIColor darkGrayColor]]; // outline edges of sw
+//                [mySwitchView setTintColor:     [UIColor redColor]]; // outline edges of sw
+//            }
+
+            NSString *switchPrompt;
+
+                //    gbl_numRowsToTurnOnIndexBar    = 90;
+                //
+                // CGFloat   gbl_heightForScreen;  // 6+  = 736.0 x 414  and 6s+  (self.view.bounds.size.width) and height
+                //                                 // 6s  = 667.0 x 375  and 6
+                //                                 // 5s  = 568.0 x 320  and 5 
+                //                                 // 4s  = 480.0 x 320  and 5 
+                //
+                //  NSLog(@"self.view.bounds.size.height  =[%f]",self.view.bounds.size.height  );
+                if (   self.view.bounds.size.width >= 414.0        // 6+ and 6s+  and bigger
+                ) {
+                    switchPrompt  = @"            Show Example Data";
+                }
+                else if (   self.view.bounds.size.width  < 414.0    // 6 and 6s
+                         && self.view.bounds.size.width  > 320.0
+                ) {
+                    switchPrompt  = @"           Show Example Data";
+                }
+                else if (   self.view.bounds.size.width <= 320.0   //  5s and 5 and 4s and smaller
+                ) {
+                    switchPrompt  = @"        Show Example Data";
+                }
+                else if (   self.view.bounds.size.width <= 320.0   // ??
+                ) {
+                    gbl_numRowsToTurnOnIndexBar    = 33;
+                }
+
+
             dispatch_async(dispatch_get_main_queue(), ^{                                 // <=== text for example data 
                 cell.textLabel.textColor     = [UIColor blackColor];
 //                cell.userInteractionEnabled  = NO;
@@ -2568,7 +2716,8 @@ nbn(100);
 //                cell.backgroundColor         = [UIColor lightGrayColor];
                 cell.backgroundColor         = gbl_bgColor_brownDone;
                 cell.textLabel.numberOfLines = 0;
-                cell.textLabel.text          = @"      Show Example Data";
+//                cell.textLabel.text          = @"      Show Example Data";
+                cell.textLabel.text          = switchPrompt;
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -2800,24 +2949,28 @@ nbn(100);
 
 
 - (void) showExampleDataSwitchChanged: (id)sender {
+
+
     UISwitch* mySwitchControl = sender;
     NSLog( @"The switch is %@", mySwitchControl.on ? @"ON" : @"OFF" );
 
     if (mySwitchControl.on == YES) {
 
-        gbl_ExampleData_show = 1;
+        gbl_ExampleData_show = @"yes";
 
 //        [sender setThumbTintColor:[UIColor redColor]];
 //        [sender setBackgroundColor:[UIColor cyanColor] ];
 //        [sender setOnTintColor:[UIColor blackColor]];
 
-        [sender setThumbTintColor:[UIColor whiteColor]];
+//        [sender setThumbTintColor:[UIColor whiteColor]];
+//        [sender setOnTintColor:     [UIColor greenColor]];   // outline of sw=0
+
 //        [sender setBackgroundColor:[UIColor clearColor] ];
 //        [sender setOnTintColor:[UIColor greenColor]];
     }
     if (mySwitchControl.on ==  NO) {
 
-        gbl_ExampleData_show = 0;
+        gbl_ExampleData_show = @"no";
 
 //        [sender setTintColor:[UIColor   cyanColor]];
 //        [sender setThumbTintColor:[UIColor blueColor]];
@@ -2825,8 +2978,13 @@ nbn(100);
 
 //        [sender setTintColor:[UIColor   lightGrayColor]];   // outline of sw=0
 //        [sender setTintColor:[UIColor   blackColor]];   // outline of sw=0
-        [sender setTintColor:[UIColor   lightGrayColor]];   // outline of sw=0
-        [sender setThumbTintColor:[UIColor lightGrayColor]];
+//        [sender setThumbTintColor:[UIColor lightGrayColor]];
+
+//        [sender setThumbTintColor:[UIColor whiteColor]];
+//        [sender setTintColor:     [UIColor darkGrayColor]];   // outline of sw=0
+//        [sender setTintColor:     [UIColor redColor]];   // outline of sw=0
+
+
 //        [sender setThumbTintColor:[UIColor clearColor]];
 //        [sender setBackgroundColor:[UIColor clearColor] ];
 

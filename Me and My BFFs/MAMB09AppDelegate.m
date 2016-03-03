@@ -694,15 +694,38 @@
 //    gbl_nameOfGrpHavingAllPeopleIhaveAdded = @"All People~";
     gbl_nameOfGrpHavingAllPeopleIhaveAdded = @"#allpeople";
 
-//    gbl_recOfAllPeopleIhaveAdded = [ NSString stringWithFormat: @"%@||||2016|06|15||||||||", // 14 flds for misc
-    gbl_recOfAllPeopleIhaveAdded = [ NSString stringWithFormat: @"%@||||2033|03|25||||||||", // FOR TEST
+//    NSString *lcl_recOfAllPeopleIhaveAdded = [ NSString stringWithFormat: @"%@||||2016|06|15||||||||", // 14 flds for misc
+    NSString *lcl_recOfAllPeopleIhaveAdded = [ NSString stringWithFormat: @"%@||yes||2033|03|25||||||||", // FOR TEST
         gbl_nameOfGrpHavingAllPeopleIhaveAdded
     ]; // 14 flds for misc
-    // fld #5 (one-based) is gbl_cy_currentAllPeople
+    //
+    // fld #3 (one-based) is gbl_ExampleData_show;       // "yes"  OR  "no"
+    // fld #5 (one-based) is gbl_cy_currentAllPeople  yyyy
+    // fld #6 (one-based) is gbl_cm_currentAllPeople  mm
+    // fld #7 (one-based) is gbl_cd_currentAllPeople  dd
+    //
+    //   All above gbl fields are updated from file data in method gcy which is called
+    //     - home notification method  doStuffOnSignificantTimeChange
+    //     - home notification method  doStuffOnEnteringForeground
+    // 
+    //   y,m,d are written to file, in method gcy, when one of them changes 
+    //     - in memory array gbl_arrayGrp, update #allpeople record containing new data 
+    //     - write updated array gbl_arrayGrp to file
+    
+    //   gbl  gbl_ExampleData_show  is updated
+    //     - on startup, (from file for gbl_arrayGrp) in home notification method  doStuffOnEnteringForeground
+    //     - when user changes switch in home info screen
+    //
+    //   gbl  gbl_ExampleData_show  is written to file  
+    //     - when user changes switch in home info screen
+    //     - as a side effect, whenever gbl_arrayGrp is written to file
+    //     - as a side effect, in method gcy, when y,m,d is written to file when one of them changes 
+
+
 
     gbl_arrayExaGrp =   // field 1=name-of-group  field 2=locked-or-not
     @[
-      gbl_recOfAllPeopleIhaveAdded,     // gbl_nameOfGrpHavingAllPeopleIhaveAdded
+      lcl_recOfAllPeopleIhaveAdded,     // gbl_nameOfGrpHavingAllPeopleIhaveAdded
       @"Long Names||",
       @"Short Names||",
       @"~My Family||",
@@ -928,8 +951,9 @@
     //
 
 
-    gbl_show_example_data = YES;  // add option later to not show them
+//    gbl_show_example_data = YES;  // add option later to not show them
     
+
     // UIColor uses a 0-1 instead of 0-255 system so you just need to convert it like so:
     //
 //    gbl_colorReportsBG          = [UIColor alloc];  use gbl_colorHomeBG instead 
@@ -1098,7 +1122,7 @@
     // try  colors for done button
 //    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:225.0/255.0 blue:190.0/255.0 alpha:1.0]; // very lighter burlywood
 //    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:236.0/255.0 blue:200.0/255.0 alpha:1.0]; // very lighter burlywood
-//    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:230.0/255.0 blue:200.0/255.0 alpha:1.0]; // very lighter burlywood
+    gbl_colorVlightBurly  = [UIColor colorWithRed:255.0/255.0 green:230.0/255.0 blue:200.0/255.0 alpha:1.0]; // very lighter burlywood
 
 
     // FYI  gbl_colorSepara  for apple is c8c7cc  200,199,204
@@ -2456,7 +2480,10 @@ tn();  NSLog(@"at end of   mambReadLastEntityFile  myLastEntityDecoded=\n%@",myL
 
 
     NSLog(@"finished  applicationWillResignActive()  in appdelegate");
-}
+
+} // end of  applicationWillResignActive
+
+
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
@@ -3437,6 +3464,7 @@ trn(" xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                     }
                 }
                 if (yearIsValid == 1) {   //  Date = "Tue, 23 Feb 2016 16:32:17 GMT";
+
                     gbl_cd_apl = [NSString stringWithFormat: @"%02d", [myarr[1] intValue ] ];  // "23"
 
                     if ([myarr[2] isEqualToString: @"Jan"]) gbl_cm_apl = @"01";
@@ -3481,8 +3509,6 @@ trn(" xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 if (do_update == 1) {
     
                     NSString  *PSVthatWasFound;
-                    NSString  *prefixStr;
-                    NSInteger  myElementNum = 0;
                     NSInteger  arrayIdx;
                     NSString  *myStrToUpdate;
                     NSString  *myupdatedStr1, *myupdatedStr2, *myupdatedStr3; 
@@ -3547,7 +3573,7 @@ tn();
   NSLog(@"gbl_cm_currentAllPeople =[%@]   at end of  found allpeople rec to update",gbl_cm_currentAllPeople );
   NSLog(@"gbl_cd_currentAllPeople =[%@]   at end of  found allpeople rec to update",gbl_cd_currentAllPeople );
 
-                        // update #allpeople record containing new data  in array gbl_arrayGrp 
+                        // update #allpeople record containing new data  in memory array gbl_arrayGrp 
                         //
   NSLog(@"gbl4arrayGrp[arrayIdx]=%@",gbl_arrayGrp[arrayIdx]);
                         [gbl_arrayGrp replaceObjectAtIndex: arrayIdx  withObject: myupdatedStr3];  // <<<<<<<<<<<<<<<<---------
@@ -3565,12 +3591,14 @@ tn();
 
                 } // do_update == 1  because there is a difference between allpeople rec and latest internet  y, m, d
 
-            } // if(myerror == nil)   dataTaskWithURL  error arg in nill   mydataTask =  defaultSession dataTaskWithURL: myurl
+            } // if(myerror == nil)   dataTaskWithURL  error arg is nil       mydataTask =  defaultSession dataTaskWithURL: myurl
             else
-            { // if(myerror != nil)   dataTaskWithURL  error arg in nill   mydataTask =  defaultSession dataTaskWithURL: myurl
+            { // if(myerror != nil)   dataTaskWithURL  error arg is not nil   mydataTask =  defaultSession dataTaskWithURL: myurl
+
                  // 
-                 // got an error, so keep using whatever is in allpeople record
+                 // got an error, so keep using whatever is in #allpeople record
                  // 
+
   NSLog(@"got an error  dataTaskWithURL  apl");
             } // year is NOT valid
 

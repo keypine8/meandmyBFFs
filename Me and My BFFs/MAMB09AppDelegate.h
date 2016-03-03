@@ -11,9 +11,9 @@
 //NSString *gbl_cm_session_startup;
 //NSString *gbl_cd_session_startup;
 
-NSString *gbl_cy_currentAllPeople;  // format "20nn"  cy gotten from grp allpeople
-NSString *gbl_cm_currentAllPeople;  // format "nn"  mth
-NSString *gbl_cd_currentAllPeople;  // format "nn"  day of mth
+NSString *gbl_cy_currentAllPeople;  // format "20nn"  cy        gotten from grp allpeople and updated in gcy when it changes
+NSString *gbl_cm_currentAllPeople;  // format "nn"  mth         "
+NSString *gbl_cd_currentAllPeople;  // format "nn"  day of mth  "
 
 NSString *gbl_cy_apl;               // format "20nn"  cy gotten from apl this session
 NSString *gbl_cm_apl;               // format "nn"  mth
@@ -68,11 +68,14 @@ NSString *gbl_homeUseMODE;      // "edit mode" (yellow)   or   "regular mode" (b
 NSString *gbl_homeEditingState; // if gbl_homeUseMODE = "edit mode"    then can be "add" or "view or change"   for tapped person or group
 // no, i think  // if gbl_homeUseMODE = "regular mode" then can be "add" or nil                for tapped person or group
 
-NSInteger gbl_ExampleData_show;  // 1="yes" or 0="no"
-NSInteger gbl_ExampleData_count_per;  // as of 20160301 is per=21 
-NSInteger gbl_ExampleData_count_grp;  // as of 20160301 is grp= 2
-NSInteger gbl_numRowsToDisplayFor_per;  // could be  zero if  gbl_ExampleData_show is 0
-NSInteger gbl_numRowsToDisplayFor_grp;  // could be  zero if  gbl_ExampleData_show is 0
+NSString *gbl_ExampleData_show;           // "yes"  OR  "no"
+NSString *gbl_ExampleData_show_entering;  // (home info)  "yes"  OR  "no"
+NSString *gbl_ExampleData_show_leaving;   // (home info)  "yes"  OR  "no"
+NSInteger gbl_ExampleData_show_switchChanged;   // 1=yes  OR  0=no
+NSInteger gbl_ExampleData_count_per;      // as of 20160301 is per=21 
+NSInteger gbl_ExampleData_count_grp;      // as of 20160301 is grp= 2
+NSInteger gbl_numRowsToDisplayFor_per;    // could be  zero if  gbl_ExampleData_show is "no"
+NSInteger gbl_numRowsToDisplayFor_grp;    // could be  zero if  gbl_ExampleData_show is "no"
 
 
 // THE THREE  "FIELDS"  =======================================================
@@ -138,6 +141,7 @@ UIImage *gbl_yellowEdit ;
 //UIColor *gbl_bgColor_blueDone;
 UIColor *gbl_bgColor_brownDone;
 UIColor *gbl_bgColor_brownHdr;
+UIColor *gbl_colorVlightBurly;
 UIColor *gbl_bgColor_yellowEdit;
 //UIImage *gbl_chevronRight ;
 //UIImage *gbl_chevronLeft  ;
@@ -691,9 +695,6 @@ NSArray *gbl_arrayExaPer;
 NSArray *gbl_arrayExaMem;
 NSArray *gbl_arrayExaGrpRem;
 NSArray *gbl_arrayExaPerRem;
-
-
-BOOL gbl_show_example_data;
 
 
 NSInteger       gbl_haveSetUpHomeNavButtons;      // 0=n, 1=y

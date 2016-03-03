@@ -141,12 +141,14 @@
     NSLog(@"gbl_fromHomeCurrentSelectionType=%@",gbl_fromHomeCurrentSelectionType);
     NSLog(@"gbl_fromHomeCurrentEntity=%@",gbl_fromHomeCurrentEntity);
     
-    
+    // ---------------------------------------------------------------------------------------- 
+    // ---------------------------------------------------------------------------------------- 
     // populate arrayPersonsToPickFrom
     //
     // if we came here from hompco, the domain is all persons except current person
     // if we came here from hompbm,  the domain is all persons in the group
-    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]) {   
+    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompco"])
+    {   
         
         [_PSVs_for_person_picklist removeAllObjects];
         _PSVs_for_person_picklist   = [[NSMutableArray alloc] init];
@@ -156,12 +158,13 @@
 
         for (id myPerPSV in gbl_arrayPer) {
 
-// skip example record  TODO in production
-//            if (gbl_show_example_data ==  NO  &&
-//                [myPerPSV hasPrefix: @"~"]) {  // skip example record
-//                continue;         //  ======================-------------------------------------- PUT BACK when we have non-example data!!!
-//            }
-//
+            // skip example record  in production  IF  gbl_show_example_data ==  NO  
+            if (   [gbl_ExampleData_show isEqualToString: @"no"] 
+                && [myPerPSV hasPrefix: @"~"]                      )
+            {  // skip example record
+                continue;     
+            }
+
 
             NSArray *psvArray;
             NSString *person1, *person2;
@@ -175,7 +178,7 @@
                 continue;
             }
             if (   [person1 hasPrefix: @"~"]
-                && gbl_ExampleData_show == 0  )
+                && [gbl_ExampleData_show isEqualToString: @"no"] ) 
             {            // do not show example data if turned off
                 continue;
             }
@@ -188,7 +191,8 @@
         //NSLog(@"gbl_arrayPersonsToPickFrom.count=%lu",(unsigned long)gbl_arrayPersonsToPickFrom.count);
         //NSLog(@"_PSVs_for_person_picklist=%@",_PSVs_for_person_picklist);
     }
-    else  {    //    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"]) 
+    else
+    {    //    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"]) 
         [_PSVs_for_group_picklist removeAllObjects];
         _PSVs_for_group_picklist   = [[NSMutableArray alloc] init];
         
@@ -197,19 +201,20 @@
 
         for (id myGrpPSV in gbl_arrayGrp) {
 
-// skip example record  TODO in production
-//            if (gbl_show_example_data ==  NO  &&
-//                [myGrpPSV hasPrefix: @"~"]) {  // skip example record
-//                continue;         //  ======================-------------------------------------- PUT BACK when we have non-example data!!!
-//            }
-//
+            // skip example record  in production  IF  gbl_show_example_data ==  NO  
+            if (   [gbl_ExampleData_show isEqualToString: @"no"] 
+                && [myGrpPSV hasPrefix: @"~"]                      )
+            {  // skip example record
+                continue;     
+            }
+
 
             NSArray *psvArray;
             psvArray = [myGrpPSV componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"|"]];
             NSString *myGroup = psvArray[0];
 
             if (   [myGroup hasPrefix: @"~"]
-                && gbl_ExampleData_show == 0  )
+                && [gbl_ExampleData_show isEqualToString: @"no"] )
             {            // do not show example data if turned off
                 continue;
             }
@@ -222,6 +227,7 @@
         NSLog(@"gbl_arrayGroupsToPickFrom.count=%lu",(unsigned long)gbl_arrayGroupsToPickFrom.count);
         NSLog(@"_PSVs_for_group_picklist=%@",_PSVs_for_group_picklist);
     }
+    // ---------------------------------------------------------------------------------------- 
 
 } /* viewDidLoad */
 

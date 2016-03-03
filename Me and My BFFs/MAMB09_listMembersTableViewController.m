@@ -110,9 +110,12 @@ tn();
 
 
 
+    // ---------------------------------------------------------------------------------
     // populate gbl_arrayMembersToDisplay
+    // ---------------------------------------------------------------------------------
     //
     // INCLUDE ONLY   members of gbl_lastSelectedGroup
+    // INCLUDE ONLY   all people except example data if group name is "#allpeople"
     //
 tn();
   NSLog(@"doing  // populate gbl_arrayMembersToDisplay");
@@ -121,44 +124,61 @@ tn();
     [gbl_arrayMembersToDisplay removeAllObjects];
     gbl_arrayMembersToDisplay = [[NSMutableArray alloc] init];
 
-    for (id myMemberRec in gbl_arrayMem) {
 
-// skip example record  TODO in production
-//            if (gbl_show_example_data ==  NO  &&
-//                [mymyMemberRecPSV hasPrefix: @"~"]) {  // skip example record
-//                continue;         //  ======================-------------------------------------- PUT BACK when we have non-example data!!!
-//            }
-//
-  NSLog(@"myMemberRec =[%@]",myMemberRec );
+    if ([gbl_lastSelectedGroup isEqualToString: gbl_nameOfGrpHavingAllPeopleIhaveAdded])
+    {
+        // special group  "#allpeople"
+        for (NSString *element in gbl_arrayPer) {
 
-        NSArray *psvArray;
-        NSString *currGroup;
-        NSString *currMember;
-        
-        psvArray = [myMemberRec componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"|"]];
-        currGroup  = psvArray[0];
-        currMember = psvArray[1];
-//  NSLog(@"currGroup  =[%@]",currGroup  );
-//  NSLog(@"currMember =[%@]",currMember );
+            NSArray *psvArray;
+            NSString *currPersonName;
 
-        if ([currGroup isEqualToString: gbl_lastSelectedGroup ] )
-        {
-//  NSLog(@"ADDED to gbl_arrayMembersToDisplay ");
-            [gbl_arrayMembersToDisplay addObject: currMember ];                        //  Person name for pick
+            psvArray = [element componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"|"]];
+            currPersonName  = psvArray[0];
+
+            if ([element hasPrefix: @"~"]) continue;
+
+            [gbl_arrayMembersToDisplay addObject: currPersonName];                        //  Person name for pick
         }
-    } // for each groupmember
+
+    } else {
+        // ordinary group
+        for (id myMemberRec in gbl_arrayMem) {
+
+            NSArray *psvArray;
+            NSString *currGroup;
+            NSString *currMember;
+            
+            psvArray = [myMemberRec componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"|"]];
+            currGroup  = psvArray[0];
+            currMember = psvArray[1];
+
+            if ([currGroup isEqualToString: gbl_lastSelectedGroup ] )
+            {
+                [gbl_arrayMembersToDisplay addObject: currMember ];                        //  Person name for pick
+            }
+        } // for each groupmember
+    }
 
  NSLog(@"gbl_arrayMembersToDisplay=%@",gbl_arrayMembersToDisplay);
  NSLog(@"gbl_arrayMembersToDisplay.count=%lu",(unsigned long)gbl_arrayMembersToDisplay.count);
+
+    // ---------------------------------------------------------------------------------
 
 } // viewDidLoad
 
 
 
-- (void) viewWillAppear: (BOOL) animated
+- (void) viewWillAppear: (BOOL) animated   // use viewWillAppear only for bottom toolbar setup
 {
     [super viewWillAppear: animated];
   NSLog(@"in viewWillAppear! in LIST MEMBERS ");
+
+
+    // do not put bottom toolbar for  group "#allpeople"  or  for example data groups
+    //
+    if ([gbl_lastSelectedGroup hasPrefix: @"~" ])  return;  // use viewWillAppear only for bottom toolbar setup
+    if ([gbl_lastSelectedGroup hasPrefix: @"#" ])  return;  // use viewWillAppear only for bottom toolbar setup
 
 
     // set up toolbar at bottom of screen
@@ -483,7 +503,21 @@ NSLog(@"in viewDidAppear()  in list  members");
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+
     return gbl_arrayMembersToDisplay.count;
+
+//    if ([gbl_ExampleData_show isEqualToString: @"yes"] )     
+//    {
+//NSLog(@"return =[%ld]",(long)gbl_numRowsToDisplayFor_per  );
+//       gbl_numRowsToDisplayFor_per = gbl_arrayPer.count;
+//    [gbl_arrayMembersToDisplay addObject: currMember ];                        //  Person name for pick
+//    } else {
+//       // Here we do not want to show example data.
+//       // Because example data names start with "~", they sort last,
+//       // so we can just reduce the number of rows to exclude example data from showing on the screen.
+//       gbl_numRowsToDisplayFor_per = gbl_arrayPer.count - gbl_ExampleData_count_per ;
+//    }
+
 }
 
 
