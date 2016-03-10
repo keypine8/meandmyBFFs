@@ -115,6 +115,7 @@ tn();
     [self.tableView addGestureRecognizer: gbl_doubleTapGestureRecognizer ];
 
 
+
 //    gbl_lastClick = [[[NSDate alloc] init] timeIntervalSince1970];
 
 //    WWW width=[240.930176]
@@ -545,26 +546,27 @@ nbn(15);
 
 
 
-
-    //   for test   TO SIMULATE first downloading the app-  when there are no data files
-    //   FOR test   remove all regular named files   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-    //
-    NSLog(@" FOR test   BEG   remove all regular named files   xxxxxxxxxx ");
-    [gbl_sharedFM removeItemAtURL: gbl_URLToLastEnt    error: &err01];
-    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm lastent %@", [err01 localizedFailureReason]); }
-    [gbl_sharedFM removeItemAtURL: gbl_URLToGroup      error: &err01];
-    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm group   %@", [err01 localizedFailureReason]); }
-    [gbl_sharedFM removeItemAtURL: gbl_URLToPerson     error: &err01];
-    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm person  %@", [err01 localizedFailureReason]); }
-    [gbl_sharedFM removeItemAtURL: gbl_URLToMember     error: &err01];
-    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm Member  %@", [err01 localizedFailureReason]); }
-    [gbl_sharedFM removeItemAtURL: gbl_URLToGrpRem     error: &err01];
-    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm GrpRem  %@", [err01 localizedFailureReason]); }
-    [gbl_sharedFM removeItemAtURL: gbl_URLToPerRem     error: &err01];
-    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm PerRem  %@", [err01 localizedFailureReason]); }
-    NSLog(@" FOR test   END   remove all regular named files   xxxxxxxxxx ");
-    // end of   FOR test   remove all regular named files   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
+//
+//    //   for test   TO SIMULATE first downloading the app-  when there are no data files
+//    //   FOR test   remove all regular named files   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+//    //
+//    NSLog(@" FOR test   BEG   remove all regular named files   xxxxxxxxxx ");
+//    [gbl_sharedFM removeItemAtURL: gbl_URLToLastEnt    error: &err01];
+//    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm lastent %@", [err01 localizedFailureReason]); }
+//    [gbl_sharedFM removeItemAtURL: gbl_URLToGroup      error: &err01];
+//    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm group   %@", [err01 localizedFailureReason]); }
+//    [gbl_sharedFM removeItemAtURL: gbl_URLToPerson     error: &err01];
+//    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm person  %@", [err01 localizedFailureReason]); }
+//    [gbl_sharedFM removeItemAtURL: gbl_URLToMember     error: &err01];
+//    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm Member  %@", [err01 localizedFailureReason]); }
+//    [gbl_sharedFM removeItemAtURL: gbl_URLToGrpRem     error: &err01];
+//    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm GrpRem  %@", [err01 localizedFailureReason]); }
+//    [gbl_sharedFM removeItemAtURL: gbl_URLToPerRem     error: &err01];
+//    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm PerRem  %@", [err01 localizedFailureReason]); }
+//    NSLog(@" FOR test   END   remove all regular named files   xxxxxxxxxx ");
+//    // end of   FOR test   remove all regular named files   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+//
+//
 
 
 
@@ -1268,6 +1270,14 @@ tn();
   NSLog(@"indexPath.row=%ld",(long)indexPath.row);
 
 
+    //how can I get the text of the cell here?
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    NSString *nameToDelete = cell.textLabel.text;
+
+  NSLog(@"nameToDelete =[%@]",nameToDelete );
+
+
+
     if (   editingStyle == UITableViewCellEditingStyleDelete
         && [gbl_lastSelectionType isEqualToString: @"person" ]
     ) {
@@ -1292,6 +1302,7 @@ tn();
         // here the array index to delete matches the incoming  indexPath.row
         //
         [gbl_arrayPer removeObjectAtIndex:  arrayIndexToDelete ]; 
+  NSLog(@"DELETED Person =[%@]",nameToDelete);
         // gbl_arrayPer  is now golden  (was sorted before)
 
         // was sorted before anyway, but sort it for safety
@@ -1322,6 +1333,35 @@ tn();
   NSLog(@"after  gbl_lastSelectedPerson          =[%@]",gbl_lastSelectedPerson);
 
 
+        // delete all memberships of the deleted person
+        //
+        // searchfor element in gbl_arrayMem
+        // matching   any group    and   member = del_me_indexPath.text
+        // delete that element in gbl_arrayMem
+        // 
+        NSString *currGroupMemberRec;
+        NSString *currGroupMemberName;  // name of group member 
+
+        for (int i=0;  i < gbl_arrayMem.count;  i++) {
+
+            currGroupMemberRec  = gbl_arrayMem[i];
+            currGroupMemberName = [currGroupMemberRec componentsSeparatedByString: @"|"][1]; // get fld#2 (name) - arr is 0-based 
+
+            if ( [currGroupMemberName isEqualToString: nameToDelete ] )
+            {
+                // delete this array element
+                [gbl_arrayMem removeObjectAtIndex:  i ]; 
+  NSLog(@"DELETED membership =[%@]",currGroupMemberRec);
+            }
+        }  // for each group member of all groups
+        // was sorted before anyway, but sort it for safety
+        [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription:  (NSString *) @"member"]; // sort array by name
+        [myappDelegate mambWriteNSArrayWithDescription:               (NSString *) @"member"]; // write new array data to file
+        gbl_justWroteMemberFile = 1;
+        //
+        // delete all memberships of the deleted person
+
+
         // now delete the row on the screen
         // and put highlight on row number for  arrayIndexOfNew_gbl_lastSelectedPerson
         //
@@ -1333,6 +1373,7 @@ tn();
 
             [self putHighlightOnCorrectRow ];
         });
+
 
         // after write of array data to file, allow user interaction events again
         //
@@ -1366,6 +1407,8 @@ tn();
         // here the array index to delete matches the incoming  indexPath.row
         //
         [gbl_arrayGrp removeObjectAtIndex:  arrayIndexToDelete ]; 
+  NSLog(@"DELETED Group =[%@]",nameToDelete);
+
         // gbl_arrayGrp  is now golden  (was sorted before)
 
         // was sorted before anyway, but sort it for safety
@@ -1390,10 +1433,39 @@ tn();
   NSLog(@"before gbl_lastSelectedGroup   I       =[%@]",gbl_lastSelectedGroup);
 
         gbl_fromHomeCurrentSelectionPSV  = gbl_arrayGrp[arrayIndexOfNew_gbl_lastSelectedGroup];
-        gbl_lastSelectedGroup           = [gbl_fromHomeCurrentSelectionPSV  componentsSeparatedByString:@"|"][0]; // get fld1 (name) 0-based 
+        gbl_lastSelectedGroup            = [gbl_fromHomeCurrentSelectionPSV  componentsSeparatedByString:@"|"][0]; // get fld1 (name) 0-based 
 
   NSLog(@"after  gbl_fromHomeCurrentSelectionPSV =[%@]",gbl_fromHomeCurrentSelectionPSV );
   NSLog(@"after  gbl_lastSelectedGroup           =[%@]",gbl_lastSelectedGroup);
+
+
+        // delete all memberships of the deleted group
+        //
+        // searchfor element in gbl_arrayMem
+        // matching   any group    and   member = del_me_indexPath.text
+        // delete that element in gbl_arrayMem
+        // 
+        NSString *currGroupMemberRec;
+        NSString *currGroupName;  // name of group 
+
+        for (int i=0;  i < gbl_arrayMem.count;  i++) {
+
+            currGroupMemberRec  = gbl_arrayMem[i];
+            currGroupName       = [currGroupMemberRec componentsSeparatedByString: @"|"][1]; // get fld#2 (name) - arr is 0-based 
+
+            if ( [currGroupName isEqualToString: nameToDelete ] )
+            {
+                // delete this array element
+                [gbl_arrayMem removeObjectAtIndex:  i ]; 
+  NSLog(@"DELETED membership =[%@]",currGroupMemberRec);
+            }
+        }  // for each group member of all groups
+        // was sorted before anyway, but sort it for safety
+        [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription:  (NSString *) @"member"]; // sort array by name
+        [myappDelegate mambWriteNSArrayWithDescription:               (NSString *) @"member"]; // write new array data to file
+        gbl_justWroteMemberFile = 1;
+        //
+        // delete all memberships of the deleted group
 
 
         // now delete the row on the screen
@@ -1465,6 +1537,18 @@ tn();
 
 
 
+-(IBAction) pressedSharePeople
+{
+  NSLog(@"in   pressedSharePeople!  in HOME");
+} // end of pressedSharePeople
+
+-(IBAction) pressedBackupAll
+{
+  NSLog(@"in   pressedBackupAll!  in HOME");
+} // end of pressedBackupAll
+
+
+
 -(IBAction)pressedInfoButtonAction:(id)sender
 {
   NSLog(@"in   infoButtonAction!  in HOME");
@@ -1524,6 +1608,13 @@ tn();
 {
   NSLog(@"in   navAddButtonAction!  in HOME");
 
+//        self.tableView.userInteractionEnabled = NO;   // YES in addButtonAction
+
+        self.tableView.userInteractionEnabled = YES;   // YES in addButtonAction
+
+  NSLog(@"self.tableView.userInteractionEnabled in HOME navAddButtonAction=[%d]",self.tableView.userInteractionEnabled );
+
+
     gbl_homeEditingState = @"add";  // "add" for add a new person or group, "view or change" for tapped person or group
 
 
@@ -1534,7 +1625,17 @@ tn();
     MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
     [myappDelegate mamb_beginIgnoringInteractionEvents ];
    
+  NSLog(@"sub_view #01");
     dispatch_async(dispatch_get_main_queue(), ^{                                 // <===  
+//        for( UIView *sub_view in [ self.view subviews ] ) { // remove subview (gbl_toolbarHomeMaintenance  - tag=34 ) , if existing
+        for( UIView *sub_view in [ self.navigationController.view subviews ] ) { // remove subview (gbl_toolbarHomeMaintenance  - tag=34 ) , if existing
+  NSLog(@"sub_view =[%@]",sub_view );
+  NSLog(@"sub_view.tag =[%ld]",(long)sub_view.tag );
+            if(sub_view.tag == 34) {
+  NSLog(@" REMOVED OLD  gbl_toolbarHomeMaintenance  ");
+                [sub_view removeFromSuperview ];
+            }
+        }
         [self performSegueWithIdentifier:@"segueHomeToAddChange" sender:self]; //  
     });
 
@@ -1706,6 +1807,10 @@ tn();
     NSLog(@"gbl_fromHomeCurrentSelectionType =%@",gbl_fromHomeCurrentSelectionType );
     NSLog(@"gbl_lastSelectionType            =%@",gbl_lastSelectionType            );
     NSLog(@"gbl_currentMenuPrefixFromHome              =%@",gbl_currentMenuPrefixFromHome);
+
+
+  NSLog(@"in switchEntity,  do handleMaintenanceToolbar  ");
+    [self handleMaintenanceToolbar ];
 
 
     if ([gbl_lastSelectionType isEqualToString: @"group"])  _segEntityOutlet.selectedSegmentIndex = 0; // highlight correct entity in seg ctrl
@@ -1897,6 +2002,26 @@ nbn(55);
 tn();
 NSLog(@"in viewDidAppear()  in HOME");
   NSLog(@"gbl_ExampleData_show=[%@]",gbl_ExampleData_show);
+  NSLog(@"gbl_homeUseMODE     =[%@]",gbl_homeUseMODE );
+
+
+//            if ([gbl_homeUseMODE isEqualToString: @"edit mode" ] )
+//            {
+//nbn(157);
+////                self.navigationController.toolbar.hidden =  NO;
+////                [self.navigationController setToolbarHidden:  NO   animated: YES ];
+//                gbl_toolbarHomeMaintenance.hidden  =  NO;
+//                gbl_toolbarHomeMaintenance.enabled =  NO;
+//            } else {
+//nbn(158);
+////                self.navigationController.toolbar.hidden = YES;
+////                [self.navigationController setToolbarHidden: YES   animated: YES ];
+//                gbl_toolbarHomeMaintenance.hidden  = YES;
+//                gbl_toolbarHomeMaintenance.enabled = YES;
+//            }
+//
+
+
 
     // if gbl_fromHomeCurrentEntityName is different from gbl_fromHomeLastEntityRemSaved
     // save the  remember array  gbl_arrayPerRem or gbl_arrayGrpRem
@@ -2233,18 +2358,262 @@ tn();
     gbl_currentMenuPlusReportCode = @"HOME";  // also set in viewDidAppear for coming back to HOME from other places (INFO ptr)
   NSLog(@"gbl_currentMenuPlusReportCode =%@",gbl_currentMenuPlusReportCode );
 
+
     // HIDE BOTTOM TOOLBAR (used for edit mode - tap edit button)
     //
+//    gbl_toolbarHomeMaintenance              = nil;
     self.navigationController.toolbarHidden = YES;  // ensure that the bottom of screen toolbar is NOT visible 
-//    self.segEntityOutlet.backgroundColor = gbl_colorEditingBG;
-//    self.segEntityOutlet.backgroundColor = [UIColor clearColor];
-//    self.segEntityOutlet.backgroundColor = [UIColor whiteColor];
-//    self.segEntityOutlet.backgroundColor = [UIColor redColor];
 
-//    if (self.tableView.editing == YES) self.segEntityOutlet.backgroundColor =  gbl_colorEditingBG;
-//    if (self.tableView.editing ==  NO) self.segEntityOutlet.backgroundColor =  [UIColor whiteColor];
 
-}
+
+//
+//    // BOTTOM TOOLBAR (used for edit mode - tap edit button)
+//    //
+//    if ([gbl_homeUseMODE isEqualToString:@"edit mode"])
+//    {
+//        self.navigationController.toolbarHidden =  NO;  // ensure that the bottom of screen toolbar is NOT visible 
+//    } else {
+//        self.navigationController.toolbarHidden = YES;  // ensure that the bottom of screen toolbar IS     visible 
+//    }
+
+nbn(140);
+    [self handleMaintenanceToolbar ];
+
+//            if ([gbl_homeUseMODE isEqualToString: @"edit mode" ] )
+//            {
+//nbn(157);
+////                self.navigationController.toolbar.hidden =  NO;
+////                [self.navigationController setToolbarHidden:  NO   animated: YES ];
+////                [self.view setToolbarHidden:  NO   animated: YES ];
+//                [ [self.view viewWithTag: 34 ] setHidden:  NO ];  // no labels, but white rect
+//            } else {
+//nbn(158);
+////                self.navigationController.toolbar.hidden = YES;
+////                [self.navigationController setToolbarHidden: YES   animated: YES ];
+////                [self.view setToolbarHidden: YES   animated: YES ];  xx
+////                self.gbl_toolbarHomeMaintenance = nil;
+////                [self.view viewWithTag: 34 ].hidden = YES;
+//
+////                [ [self.view viewWithTag: 34 ] setHidden: YES ];  // no labels, but white rect
+////                self.navigationController.toolbar.hidden = YES;
+//            }
+//
+
+
+
+}  // end of   viewWillAppear
+
+
+- (void) handleMaintenanceToolbar  // put it up or hide it
+{
+  NSLog(@" in handleMaintenanceToolbar! in HOME ");
+  NSLog(@"gbl_homeUseMODE =[%@]",gbl_homeUseMODE );
+
+//    if ([gbl_homeUseMODE isEqualToString: @"regular mode" ] )   // = brown
+//    {
+//        gbl_toolbarHomeMaintenance              = nil;
+//        self.navigationController.toolbarHidden =  NO;  // ensure that the bottom of screen toolbar IS NOT visible 
+//nbn(150);
+//        return;
+//    }
+
+//nbn(151);
+//    gbl_toolbarHomeMaintenance              = nil;
+//    self.navigationController.toolbarHidden = YES;  // ensure that the bottom of screen toolbar is NOT visible 
+
+    // remove the subview (gbl_toolbarHomeMaintenance  - tag=34 ) from before, if any
+    // 
+  NSLog(@"sub_view #02");
+//  UIView *ptrToView = (UITextField *)[self.view viewWithTag: 2 ];
+  UIView *ptrToView = [self.view viewWithTag: 34 ];
+  NSLog(@"ptrToView =[%@]",ptrToView );
+
+
+    for( UIView *sub_view in [ self.navigationController.view subviews ] ) { // remove subview (gbl_toolbarHomeMaintenance  - tag=34 ) , if existing
+  NSLog(@"sub_view =[%@]",sub_view );
+  NSLog(@"sub_view.tag =[%ld]",(long)sub_view.tag );
+        if(sub_view.tag == 34)
+        {
+  NSLog(@" REMOVED OLD  gbl_toolbarHomeMaintenance  ");
+            [sub_view removeFromSuperview ];
+        }
+    }
+
+    // use 2 buttons in a toolbar on bottom of home screen 
+    //   to   add Share_people + Backup_all_by_email   
+    //
+//    if ([gbl_homeUseMODE isEqualToString: @"edit mode" ] )   // = yellow
+//    {
+        NSString *shareTitle; 
+        if ([gbl_lastSelectionType isEqualToString:@"person"])  shareTitle = @"Share_people";
+        if ([gbl_lastSelectionType isEqualToString:@"group" ])  shareTitle = @"Share_groups";
+        UIBarButtonItem *shareEntity = [[UIBarButtonItem alloc]initWithTitle: shareTitle
+                                                                   style: UIBarButtonItemStylePlain
+                                                                //style: UIBarButtonItemStyleBordered
+                                                                  target: self
+                                                                  action: @selector(pressedSharePeople)];
+
+//        UIBarButtonItem *backupAll   = [[UIBarButtonItem alloc]initWithTitle: @"Backup_by_email" 
+        UIBarButtonItem *backupAll   = [[UIBarButtonItem alloc]initWithTitle: @"Backup" 
+                                                                   style: UIBarButtonItemStylePlain
+                                                                  target: self
+                                                                  action: @selector(pressedBackupAll)];
+
+
+        UIBarButtonItem *myFlexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemFlexibleSpace
+                                                                                         target: self
+                                                                                         action: nil];
+        // create a Toolbar
+//        UIToolbar *myToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 44, 320, 44)];
+//        UIToolbar *myToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 44, self.view.frame.size.width, 44)];
+//        gbl_toolbarForwBack = [[UIToolbar alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 44, self.view.frame.size.width, 44)];
+
+    float my_screen_height;
+    float my_status_bar_height;
+    float my_nav_bar_height;
+    float my_toolbar_height;
+
+    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
+    CGSize currentScreenWidthHeight = [myappDelegate currentScreenSize];
+    my_screen_height = currentScreenWidthHeight.height;
+
+    CGSize myStatusBarSize = [[UIApplication sharedApplication] statusBarFrame].size;
+    my_status_bar_height   = MIN(myStatusBarSize.width, myStatusBarSize.height);
+
+    my_nav_bar_height    =  self.navigationController.navigationBar.frame.size.height;
+
+
+//  NSLog(@"cu33entScreenWidthHeight.width  =%f",currentScreenWidthHeight.width );
+//  NSLog(@"cu33entScreenWidthHeight.height =%f",currentScreenWidthHeight.height );
+    my_toolbar_height = 44.0;
+
+  NSLog(@"my_screen_height                  =%f",my_screen_height );
+  NSLog(@"my_status_bar_height              =%f",my_status_bar_height   );
+  NSLog(@"my_nav_bar_height                 =%f",my_nav_bar_height    );
+  NSLog(@"my_toolbar_height                 =%f",my_toolbar_height );
+
+
+    float y_value_of_toolbar; 
+//    y_value_of_toolbar  = currentScreenWidthHeight.height - 44.0;
+//    y_value_of_toolbar  = 400.0;
+//    y_value_of_toolbar  = 436.0;
+//    y_value_of_toolbar  = 480.0;
+//    y_value_of_toolbar  = 472.0;// too low
+//    y_value_of_toolbar  = 464.0; // very close
+//    y_value_of_toolbar  = 458.0; // too high
+//    y_value_of_toolbar  = 456.0; // too high
+//    y_value_of_toolbar  = 459.0; // too high
+//    y_value_of_toolbar  = 460.0; // very close   exact
+
+//            if ([gbl_homeUseMODE isEqualToString: @"edit mode" ] )
+//            {
+//nbn(157);
+////                self.navigationController.toolbar.hidden =  NO;
+////                [self.navigationController setToolbarHidden:  NO   animated: YES ];
+////                gbl_toolbarHomeMaintenance.hidden  =  NO;
+////                gbl_toolbarHomeMaintenance.enabled =  NO;
+//    y_value_of_toolbar  = my_screen_height  - my_status_bar_height  - my_nav_bar_height - my_toolbar_height;
+//            } else {
+//nbn(158);
+////                self.navigationController.toolbar.hidden = YES;
+////                [self.navigationController setToolbarHidden: YES   animated: YES ];
+////                gbl_toolbarHomeMaintenance.hidden  = YES;
+////                gbl_toolbarHomeMaintenance.enabled = YES;
+//    y_value_of_toolbar  = my_screen_height   + 100.00                                                      ;
+//            }
+//
+
+
+//    y_value_of_toolbar  = my_screen_height  - my_status_bar_height  - my_nav_bar_height - my_toolbar_height;
+//    y_value_of_toolbar  = my_screen_height  - my_status_bar_height  - my_nav_bar_height ;
+//    y_value_of_toolbar  = my_screen_height  - my_status_bar_height  - my_toolbar_height;
+//    y_value_of_toolbar  = 300.0;
+
+//    y_value_of_toolbar  = my_screen_height  - my_status_bar_height                      - my_toolbar_height;
+    y_value_of_toolbar  = my_screen_height                                              - my_toolbar_height;
+    gbl_toolbarHomeMaintenance.hidden =  NO;
+  NSLog(@" SET toolbar hidden =  NO");
+
+  NSLog(@"gbl_homeUseMODE =[%@]",gbl_homeUseMODE );
+    if ([gbl_homeUseMODE isEqualToString:@"regular mode"])
+    {
+  NSLog(@"SET toolbar hidden = YES");
+        y_value_of_toolbar  = y_value_of_toolbar  + 100.0;  // MOVE the bottom toolbar off the bottom of the screen  *****
+        gbl_toolbarHomeMaintenance.hidden = YES;
+    }
+    
+
+  NSLog(@"y_value_of_toolbar  =%f",y_value_of_toolbar  );
+
+
+    gbl_toolbarHomeMaintenance = [[UIToolbar alloc] initWithFrame:CGRectMake(
+        0.0,
+//            currentScreenWidthHeight.height - 44,
+//        100.0,
+        y_value_of_toolbar, 
+        currentScreenWidthHeight.width,
+        44.0)];
+
+    gbl_toolbarHomeMaintenance.tag         = 34;
+    gbl_toolbarHomeMaintenance.translucent = NO;
+//    gbl_toolbarHomeMaintenance.backgroundColor = [UIColor redColor];
+//    gbl_toolbarHomeMaintenance.backgroundColor = [UIColor whiteColor];
+//    gbl_toolbarHomeMaintenance.backgroundColor = [UIColor yellowColor];
+    gbl_toolbarHomeMaintenance.backgroundColor = [UIColor clearColor];
+
+//<.>
+//439://      gbl_myCellBgView =[[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, [cell frame].size.width -20, [cell frame].size.height)];
+//906:// CGRect pickerFrame = CGRectMake(0.0, viewFrame.size.height-pickerHeight, viewFrame.size.width, pickerHeight);
+//28:    self.outletWebView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+//<.>
+
+        // make array of buttons for the Toolbar
+        NSArray *myButtonArray =  [NSArray arrayWithObjects:
+            myFlexibleSpace, shareEntity, myFlexibleSpace, backupAll, myFlexibleSpace, nil
+        ]; 
+
+  NSLog(@"gbl_toolbarHomeMaintenance.tag         =[%ld]",(long)gbl_toolbarHomeMaintenance.tag         );
+        // put the array of buttons in the Toolbar
+        [gbl_toolbarHomeMaintenance setItems: myButtonArray   animated: NO];
+nbn(156);
+
+
+//        CATransition* myTransition = [CATransition animation];
+//        //transition.startProgress = 0;
+//        //transition.endProgress = 1.0;
+//        //transition.type = kCATransitionPush;
+//        //transition.subtype = kCATransitionFromRight;
+//        myTransition.duration = 3.0;
+// 
+//        // Add the transition animation to layer
+////        [gbl_toolbarHomeMaintenance.layer addAnimation: myTransition forKey:@"transition"];
+//        [gbl_toolbarHomeMaintenance.layer addAnimation: myTransition forKey: nil];
+//
+
+
+        // put the Toolbar onto bottom of home screen view
+        dispatch_async(dispatch_get_main_queue(), ^(void){
+//             self.navigationController.toolbar.hidden = YES;
+
+
+//            [self.view addSubview: gbl_toolbarHomeMaintenance ];
+
+             [self.navigationController.view addSubview: gbl_toolbarHomeMaintenance ];
+
+//   [self.navigationController.view addSubview: gbl_toolbarHomeMaintenance ];  // this worked  but in info, it stayed  also allows too fast
+//             self.navigationController.toolbar.hidden = NO;
+//            [self.navigationController.toolbar setItems: myButtonArray ]; 
+//            self.navigationController.toolbar.items = myButtonArray; 
+//             self.navigationController.toolbar.hidden = NO
+
+  UIView *ptrToView = [self.navigationController.view viewWithTag: 34 ];
+  NSLog(@"ptrToView =[%@]",ptrToView );
+        });
+
+
+//    }  // in "edit mode"  PUT  bottom toolbar  for home screen add Share_people / Backup_by_email   on bottom of screen
+
+} // end of handleMaintenanceToolbar
 
 
 
@@ -2416,20 +2785,27 @@ tn();trn("in doStuffOnEnteringForeground()   NOTIFICATION method     lastEntity 
 //  NSLog(@"gbl_colorHomeBG=[%@]",gbl_colorHomeBG);
 
 
-    
+  NSLog(@"gbl_colorHomeBG     =[%@]",gbl_colorHomeBG );
+  NSLog(@"gbl_homeUseMODE5    =[%@]",gbl_homeUseMODE );
+
+
     if ([gbl_lastSelectionType isEqualToString:@"group"]) {
-      gbl_lastSelectedGroup            = _arr[1];  // like "~Swim Team"
-      gbl_lastSelectedPerson           = _arr[3];  // like "~Dave"
-      gbl_colorHomeBG                  = gbl_colorHomeBG_grp;
-      gbl_currentMenuPrefixFromHome    = @"homg";
-      self.tableView.separatorColor    = gbl_colorSepara_grp;
+        gbl_lastSelectedGroup            = _arr[1];  // like "~Swim Team"
+        gbl_lastSelectedPerson           = _arr[3];  // like "~Dave"
+        gbl_colorHomeBG                  = gbl_colorHomeBG_grp;
+        gbl_currentMenuPrefixFromHome    = @"homg";
+        self.tableView.separatorColor    = gbl_colorSepara_grp;
     }
     if ([gbl_lastSelectionType isEqualToString:@"person"]) {
-      gbl_lastSelectedPerson           = _arr[1];  // like "~Dave"
-      gbl_lastSelectedGroup            = _arr[3];  // like "~Swim Team"
-      gbl_colorHomeBG                  = gbl_colorHomeBG_per;
-      gbl_currentMenuPrefixFromHome    = @"homp";
-      self.tableView.separatorColor    = gbl_colorSepara_per;
+        gbl_lastSelectedPerson           = _arr[1];  // like "~Dave"
+        gbl_lastSelectedGroup            = _arr[3];  // like "~Swim Team"
+        gbl_colorHomeBG                  = gbl_colorHomeBG_per;
+        gbl_currentMenuPrefixFromHome    = @"homp";
+        self.tableView.separatorColor    = gbl_colorSepara_per;
+    }
+    // override 2 brown BG colors for YELLOW  if this is in edit mode
+    if ([gbl_homeUseMODE       isEqualToString:@"edit mode"]) {
+        gbl_colorHomeBG                  = gbl_colorEditingBG;  // temporary yellow color for editing 
     }
 
     self.tableView.backgroundColor = gbl_colorHomeBG;       // WORKS
@@ -2756,13 +3132,24 @@ nbn(151);
 - (void)setEditing: (BOOL)flag // editButtomItem AUTOMATICALLY TOGGLES BETWEEN AN Edit(flag=y) & Done(flag=n) BUTTON AND CALLS setEditing
           animated: (BOOL)animated
 {
-tn();  NSLog(@"setEditing !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    [super setEditing: flag animated: animated];
+
+tn();  NSLog(@"setEditing !!!!!!  pressed Edit or Done  !!!!!!!!!!!!!!!");
   NSLog(@"=%d",flag);
   NSLog(@"=%d",animated);
 
 
+//    if (flag == YES)   //  USER TAPPED  EDIT  BUTTON HERE
+//    {
+//        self.navigationController.toolbarHidden =  NO;  // ensure that the bottom of screen toolbar is NOT visible 
+//    } else {           //  USER TAPPED  DONE  BUTTON HERE
+//        self.navigationController.toolbarHidden = YES;  // ensure that the bottom of screen toolbar is NOT visible 
+//    }
+
+
     MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
     [myappDelegate mamb_beginIgnoringInteractionEvents ];
+
 
 //    int64_t myDelayInSec   = 2.33 * (double)NSEC_PER_SEC;
 //    int64_t myDelayInSec   = 0.33 * (double)NSEC_PER_SEC;
@@ -2774,7 +3161,13 @@ tn();  NSLog(@"setEditing !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         //// start DO STUFF HERE
 
 
-    [super setEditing: flag animated: animated];
+//    [super setEditing: flag animated: animated];
+//
+
+
+//    // HIDE BOTTOM TOOLBAR (used for edit mode - tap edit button)
+//    //
+//    self.navigationController.toolbarHidden = YES;  // ensure that the bottom of screen toolbar is NOT visible 
 
 
 
@@ -2821,9 +3214,8 @@ nbn(300);
 
 
 
-        gbl_colorHomeBG               = gbl_colorEditingBG;  // temporary color for editing 
+        gbl_colorHomeBG               = gbl_colorEditingBG;  // temporary yellow color for editing 
 
-nbn(3);
 //        self.segmentedControl.backgroundColor = gbl_colorEditingBG;     // [UIColor cb_Grey3Color];
 //        self.segEntityOutlet.backgroundColor = gbl_colorEditingBG;     
 
@@ -2878,9 +3270,11 @@ nbn(3);
 //        }
 
 
-nbn(4);
+
     [self putHighlightOnCorrectRow ];
-nbn(5);
+
+nbn(141);
+    [self handleMaintenanceToolbar ];
 
         // Change views to   edit mode.
 
@@ -2965,13 +3359,14 @@ nbn(311);
 //        });
 //
 
-nbn(9);
+
     [self putHighlightOnCorrectRow ];
-nbn(10);
+
+nbn(142);
+    [self handleMaintenanceToolbar ];
 
 
-    } // Change views from edit mode.
-
+    } // end of USER TAPPED  DONE BUTTON HERE
 
         //// end DO STUFF HERE
 
@@ -2981,6 +3376,9 @@ nbn(10);
 
     }); // do after delay of  mytime
 
+
+//nbn(141);
+//    [self handleMaintenanceToolbar ];
 
     [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.0 ];    // after arg seconds
 
@@ -3161,7 +3559,17 @@ nbn(3);
             //
             // Also, all UI-related stuff must be done on the *main queue*. That's way you need that dispatch_async.
             //
+  NSLog(@"sub_view #03");
             dispatch_async(dispatch_get_main_queue(), ^{                           
+//                for( UIView *sub_view in [ self.view subviews ] ) { // remove subview (gbl_toolbarHomeMaintenance  - tag=34 ) , if existing
+                for( UIView *sub_view in [ self.navigationController.view subviews ] ) { // remove subview (gbl_toolbarHomeMaintenance  - tag=34 ) , if existing
+  NSLog(@"sub_view =[%@]",sub_view );
+  NSLog(@"sub_view.tag =[%ld]",(long)sub_view.tag );
+                    if(sub_view.tag == 34) {
+  NSLog(@" REMOVED OLD  gbl_toolbarHomeMaintenance  ");
+                        [sub_view removeFromSuperview ];
+                    }
+                }
                 [self performSegueWithIdentifier: @"segueHomeToAddChange" sender:self]; //  
             });
             
@@ -3181,7 +3589,17 @@ nbn(3);
             MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
             [myappDelegate mamb_beginIgnoringInteractionEvents ];
 
+  NSLog(@"sub_view #04");
             dispatch_async(dispatch_get_main_queue(), ^{                                
+//                for( UIView *sub_view in [ self.view subviews ] ) { // remove subview (gbl_toolbarHomeMaintenance  - tag=34 ) , if existing
+                for( UIView *sub_view in [ self.navigationController.view subviews ] ) { // remove subview (gbl_toolbarHomeMaintenance  - tag=34 ) , if existing
+  NSLog(@"sub_view =[%@]",sub_view );
+  NSLog(@"sub_view.tag =[%ld]",(long)sub_view.tag );
+                    if(sub_view.tag == 34) {
+  NSLog(@" REMOVED OLD  gbl_toolbarHomeMaintenance  ");
+                        [sub_view removeFromSuperview ];
+                    }
+                }
                 [self performSegueWithIdentifier: @"segueHomeToListMembers" sender:self]; // selPerson screen where you can "+" or "-" group members
             });
 
@@ -3200,7 +3618,21 @@ nbn(3);
             //
             // Also, all UI-related stuff must be done on the *main queue*. That's way you need that dispatch_async.
             //
+  NSLog(@"sub_view #05");
             dispatch_async(dispatch_get_main_queue(), ^{                           
+
+  UIView *ptrToView = [self.view viewWithTag: 34 ];
+  NSLog(@"ptrToView =[%@]",ptrToView );
+
+//                for( UIView *sub_view in [ self.view subviews ] ) { // remove subview (gbl_toolbarHomeMaintenance  - tag=34 ) , if existing
+                for( UIView *sub_view in [ self.navigationController.view subviews ] ) { // remove subview (gbl_toolbarHomeMaintenance  - tag=34 ) , if existing
+  NSLog(@"sub_view =[%@]",sub_view );
+  NSLog(@"sub_view.tag =[%ld]",(long)sub_view.tag );
+                    if(sub_view.tag == 34) {
+  NSLog(@" REMOVED OLD  gbl_toolbarHomeMaintenance  ");
+                        [sub_view removeFromSuperview ];
+                    }
+                }
                 [self performSegueWithIdentifier: @"segueHomeToAddChange" sender:self]; //  
             });
             
@@ -3283,7 +3715,17 @@ nbn(3);
         MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
         [myappDelegate mamb_beginIgnoringInteractionEvents ];
 
+  NSLog(@"sub_view #06");
         dispatch_async(dispatch_get_main_queue(), ^{                                 // <===  
+//            for( UIView *sub_view in [ self.view subviews ] ) { // remove subview (gbl_toolbarHomeMaintenance  - tag=34 ) , if existing
+              for( UIView *sub_view in [ self.navigationController.view subviews ] ) { // remove subview (gbl_toolbarHomeMaintenance  - tag=34 ) , if existing
+  NSLog(@"sub_view     =[%@]",sub_view );
+  NSLog(@"sub_view.tag =[%ld]",(long)sub_view.tag );
+                if(sub_view.tag == 34) {
+  NSLog(@" REMOVED OLD  gbl_toolbarHomeMaintenance  ");
+                    [sub_view removeFromSuperview ];
+                }
+            }
             [self performSegueWithIdentifier:@"segueHomeToReportList" sender:self]; //  
         });
     

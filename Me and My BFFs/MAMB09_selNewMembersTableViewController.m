@@ -254,7 +254,6 @@ tn();
 
 
     // INCLUDE ONLY  non members of gbl_lastSelectedGroup
-    // EXCLUDE       people who are example data ("~")
     //
     for (id myNewMemberRec in gbl_arrayPer) {
 
@@ -266,7 +265,9 @@ tn();
 
         if ( [grpmemNameArray containsObject: candidateMember] ) continue;   // in the group already
 
-        if ([candidateMember hasPrefix: @"~" ])                  continue;   // no example people to be member
+        // 20160309  allow edit, etc of example "~" data
+        //   // EXCLUDE       people who are example data ("~")
+        //  if ([candidateMember hasPrefix: @"~" ])                  continue;   // no example people to be member
        
         [gbl_arrayNewMembersToPickFrom addObject: candidateMember ];         //  Person name for pick
     } // for each groupmember

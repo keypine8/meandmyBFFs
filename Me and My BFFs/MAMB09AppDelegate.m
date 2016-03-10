@@ -38,6 +38,23 @@
     //trn("in didFinishLaunchingWithOptions() 1 in appdelegate");
 
     
+//  NSLog(@"901!");
+//gbl_bestMatchActivityIndicator =
+////        [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleWhite];
+////        [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleGray];
+//        [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleWhiteLarge];
+//
+//    gbl_bestMatchActivityIndicator.hidesWhenStopped = YES;
+//
+//    gbl_bestMatchActivityIndicator.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin |
+//        UIViewAutoresizingFlexibleHeight |
+//        UIViewAutoresizingFlexibleLeftMargin |
+//        UIViewAutoresizingFlexibleRightMargin |
+//        UIViewAutoresizingFlexibleTopMargin |
+//        UIViewAutoresizingFlexibleWidth;
+
+
+
 
 //    gbl_cy_apl              = @"9999";  // inited now in appdel didFinishLaunchingWithOptions
 //    gbl_cy_goo              = @"9999";
@@ -2736,7 +2753,9 @@ tn();  NSLog(@"at end of   mambReadLastEntityFile  myLastEntityDecoded=\n%@",myL
             NSString *nameOfMember = groupMemberComponents[0];  // member (person) name is 1st fld in gbl_arrayPer
 //    NSLog(@"nameOfMember =%@",nameOfMember );
 
-            if ([nameOfMember hasPrefix: @"~"]) continue;
+
+            // 20160309 allow ~ members in a group
+            //            if ([nameOfMember hasPrefix: @"~"]) continue;
 
             gbl_numPeopleInCurrentGroup = gbl_numPeopleInCurrentGroup + 1;
 

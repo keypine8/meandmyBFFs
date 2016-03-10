@@ -645,8 +645,8 @@
         <image name="rounded_MAMB09_144" width="144" height="144"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="9JI-0J-Lme"/>
-        <segue reference="0US-NI-9lF"/>
+        <segue reference="Cp1-j3-FiA"/>
         <segue reference="38j-By-p0h"/>
+        <segue reference="9JI-0J-Lme"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -2554,6 +2554,7 @@ nbn(100);
                 cell.backgroundColor         = gbl_bgColor_yellowEdit;
                 cell.textLabel.numberOfLines = 0;
 //                cell.textLabel.text          = @"Yellow Home is for Editing";
+//                cell.textLabel.text          = @"Yellow is for Maintenance";
                 cell.textLabel.text          = @"Yellow is for Editing";
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
@@ -2572,7 +2573,7 @@ nbn(100);
                 cell.backgroundColor         = gbl_bgColor_yellowEdit;
                 cell.textLabel.numberOfLines = 0;
 //                cell.textLabel.text          = @"Entering people and group information and changing stuff is done from the YELLOW home";
-                cell.textLabel.text          = @"Enter people and groups and make changes to them.";
+                cell.textLabel.text          = @"Enter people and groups and make changes to them.\nShare people or groups by email.\nBackup all your data by email.";
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -3048,7 +3049,7 @@ nbn(100);
         if (indexPath.row ==   2) return    30.0;  // text  for blue
         if (indexPath.row ==   3) return    16.0;  // spacer
         if (indexPath.row ==   4) return    30.0;  // title for yellow home
-        if (indexPath.row ==   5) return    30.0;  // text  for yellow
+        if (indexPath.row ==   5) return    60.0;  // text  for yellow
         if (indexPath.row ==   6) return    32.0;  // spacer
 
         if (indexPath.row ==   7) return    30.0;  // title for Example Data

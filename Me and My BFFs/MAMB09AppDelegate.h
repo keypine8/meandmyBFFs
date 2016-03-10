@@ -7,6 +7,11 @@
 
 #import <UIKit/UIKit.h>
 
+//UIActivityIndicatorView *gbl_bestMatchActivityIndicator;  // for best match (could run 2,3 sec)
+//UIAlertView             *gbl_alert;
+//UIActivityIndicatorView *gbl_progress;
+
+
 //NSString *gbl_cy_session_startup;   // format "20nn"  cy gotten from apl this session
 //NSString *gbl_cm_session_startup;
 //NSString *gbl_cd_session_startup;
@@ -25,7 +30,7 @@ NSString *gbl_cd_apl;               // format "nn"  day of mth
 
 
          
-//    The viewController life cycle are 
+//    The viewController life cycle 
 //
 //    loadView
 //    viewDidLoad
@@ -334,6 +339,7 @@ NSInteger gbl_CITY_NOT_FOUND;     // in placetab
 
 NSInteger gbl_shouldUseDelayOnBackwardForeward;  // = 1 (0.5 sec  on what color update)
                                                  // = 0 (no delay on first show of screen)
+UIToolbar *gbl_toolbarHomeMaintenance; // for home screen Share_people / Backup_by_email   on bottom of screen
 UIToolbar *gbl_toolbarForwBack;       // for what color
 UIToolbar *gbl_toolbarMemberAddDel;   // for group member list screen
 CGFloat    gbl_listMemberToolbar_y;   // to set y offset of bottom toolbar on list members screen

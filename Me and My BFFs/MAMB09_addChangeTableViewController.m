@@ -161,6 +161,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
 //    
 ////  for test
 //    uint64_t        mystart;
@@ -219,27 +220,46 @@
 
 tn();
 NSLog(@"in ADD CHANGE  viewDidLoad!");
+  NSLog(@"gbl_homeUseMODE       =[%@]",gbl_homeUseMODE     );
+  NSLog(@"gbl_homeEditingState  =[%@]",gbl_homeEditingState);
   NSLog(@"gbl_lastSelectedPerson=[%@]",gbl_lastSelectedPerson);
 
-    // NO editing allowed for #allpeople or any example data ("~")
+
+
+  NSLog(@"self.tableView.userInteractionEnabled 1 in add/change viewDidLoad=[%d]",self.tableView.userInteractionEnabled );
+
+    //    // 20160309  allow edit, etc of example "~" data
+    //    // NO editing allowed for #allpeople or any example data ("~")
+    //    // HOWEVER  gbl_homeEditingState = "add"  always allows editing 
+    //    //
+    //    if (   [gbl_fromHomeCurrentSelectionType isEqualToString: @"person" ]
+    //        && (
+    //               [gbl_lastSelectedPerson hasPrefix: @"~" ]
+    //           )
+    //       )
+    //    {
+    //        self.tableView.userInteractionEnabled =  NO;
+    //    }
     //
-    if (   [gbl_fromHomeCurrentSelectionType isEqualToString: @"person" ]
-        && (
-               [gbl_lastSelectedPerson hasPrefix: @"~" ]
-           )
-       )
-    {
-        self.tableView.userInteractionEnabled = NO;
-    }
     if (   [gbl_fromHomeCurrentSelectionType isEqualToString: @"group" ]
         && (
                [gbl_lastSelectedGroup hasPrefix: @"#" ]
-            || [gbl_lastSelectedGroup hasPrefix: @"~" ]
+         //            || [gbl_lastSelectedGroup hasPrefix: @"~" ]
            )
        )
     {
-        self.tableView.userInteractionEnabled = NO;
+        self.tableView.userInteractionEnabled =  NO;
     }
+    if (   [gbl_homeEditingState  isEqualToString: @"add" ])
+    {
+        self.tableView.userInteractionEnabled = YES;
+
+        // gbl_mycitySearchString.inputView = nil ;          // this has to be here to put up keyboard
+         gbl_mycitySearchString.inputView = nil ;  // get rid of picker input view   // necessary ?  works?=yes
+    }
+  NSLog(@"self.tableView.userInteractionEnabled 2 in add/change viewDidLoad=[%d]",self.tableView.userInteractionEnabled );
+
+
 
 
     self.tableView.allowsMultipleSelectionDuringEditing = NO;
@@ -564,6 +584,7 @@ nbn(881);
 
 
         gbl_ToolbarForPersonName    = [[UIToolbar alloc] initWithFrame: CGRectMake(0, self.view.frame.size.height - 44, 320, 44)];
+        gbl_ToolbarForGroupName     = [[UIToolbar alloc] initWithFrame: CGRectMake(0, self.view.frame.size.height - 44, 320, 44)];
         gbl_ToolbarForBirthDate     = [[UIToolbar alloc] initWithFrame: CGRectMake(0, self.view.frame.size.height - 44, 320, 44)];
         gbl_ToolbarForCityPicklist  = [[UIToolbar alloc] initWithFrame: CGRectMake(0, self.view.frame.size.height - 44, 320, 44)];
         gbl_ToolbarForCityKeyboard  = [[UIToolbar alloc] initWithFrame: gbl_ToolbarForCityPicklist.bounds ];
@@ -613,7 +634,7 @@ nbn(881);
         //
         if ([gbl_fromHomeCurrentSelectionType isEqualToString: @"person" ] )
         {
-            gbl_buttonArrayForPersonName    =  [NSArray arrayWithObjects:  // like  " Clear Person Name  ___      "
+            gbl_buttonArrayForPersonName    =  [NSArray arrayWithObjects:  // like  " Clear ... Type Person Name  ___      "
                 gbl_nameButtonToClearKeyboard, gbl_flexibleSpace,
                 gbl_title_personName         , gbl_flexibleSpace,
                 gbl_flexibleSpace            , nil ]; 
@@ -647,12 +668,13 @@ nbn(881);
         if ([gbl_fromHomeCurrentSelectionType isEqualToString: @"group" ] )
         {
                 // for group 
-            gbl_buttonArrayForGroupName    =  [NSArray arrayWithObjects: 
+            gbl_buttonArrayForGroupName     =  [NSArray arrayWithObjects:  // like  " Clear ... Type Group Name  ___      "
                 gbl_nameButtonToClearKeyboard, gbl_flexibleSpace,
                 gbl_title_groupName          , gbl_flexibleSpace,
                 gbl_flexibleSpace            , nil ]; 
-            //
-            [gbl_ToolbarForGroupName    setItems: gbl_buttonArrayForPersonName  animated: YES];
+
+            // put the array of buttons in the Toolbar
+            [gbl_ToolbarForGroupName    setItems: gbl_buttonArrayForGroupName  animated: YES];
         }  //  gbl_fromHomeCurrentSelectionType = "person" 
 
 
@@ -1789,7 +1811,11 @@ tn();  NSLog(@"in showHide_ButtonToSeePicklist!");
 
     gbl_mycityInputView = @"picker";  // is "keyboard" or "picker"
 
-    [self putUpCityPicklist ];
+
+
+    [self putUpCityPicklist ];                                         // putUpCityPicklist only called once here
+
+
 
     [self setCityInputAccessoryViewFor: gbl_mycityInputView ];  // arg is "keyboard" or "picker"
 
@@ -1902,6 +1928,10 @@ NSLog(@"end of  oncityInputViewKeyboardButton!"); tn();
     MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
 
     [myappDelegate mamb_beginIgnoringInteractionEvents ];  // XXXXX  BEGIN  ignor #01   XXXXXXXXX  pressed Cancel  XXXXXXXXXXXXXXXXXXXXX
+
+
+     gbl_mycityInputView = @"keyboard";  // init to this in case we last used picker view
+  NSLog(@"gbl_mycityInputView changed to =[%@]",gbl_mycityInputView );
 
 
     [gbl_myname             resignFirstResponder];
@@ -2037,6 +2067,10 @@ NSLog(@"end of  oncityInputViewKeyboardButton!"); tn();
             gbl_editingChangeCITYHasOccurred = 0;
             gbl_editingChangeDATEHasOccurred = 0;
             gbl_lastInputFieldTapped         = @"";  // 3 values are: "name", "city", "date"
+
+            // FIXER  see city picklist, s/b kb   this worked!
+            //        gbl_mycitySearchString.inputView = nil ;          // this has to be here to put up keyboard
+            gbl_mycitySearchString.inputView = nil ;  // get rid of picker input view   // necessary ?  works?=yes
 
 //            [self.navigationController popToRootViewControllerAnimated: YES]; // pop to root view controller (actually do the "Back" action)
                 [self.navigationController popViewControllerAnimated: YES]; // actually do the "Back" action
@@ -2273,13 +2307,6 @@ nbn(502);
 
         // before write of array data to file, disallow/ignore user interaction events
         //
-
-//        if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] ==  NO) {  // suspend handling of touch-related events
-//            [[UIApplication sharedApplication] beginIgnoringInteractionEvents];     // typically call this before an animation or transitiion.
-//NSLog(@"ARE  IGnoring events");
-//        }
-
-
         [myappDelegate mamb_beginIgnoringInteractionEvents ];  // XXXXX  BEGIN  ignor #04   grp   before grp write + go back XXXXXXXXXXXXX
 
 
@@ -2381,13 +2408,17 @@ NSLog(@"          POP  VIEW   #6");
             gbl_editingChangeDATEHasOccurred = 0;
             gbl_lastInputFieldTapped         = @"";  // 3 values are: "name", "city", "date"
 
+            // FIXER  see city picklist, s/b kb   this worked!
+            //        gbl_mycitySearchString.inputView = nil ;          // this has to be here to put up keyboard
+            gbl_mycitySearchString.inputView = nil ;  // get rid of picker input view   // necessary ?  works?=yes
+
+
 //                    [self.navigationController popToRootViewControllerAnimated: YES]; // pop to root view controller (actually do the "Back" action)
             [self.navigationController popViewControllerAnimated: YES]; // actually do the "Back" action
 
-        });
+            // is system "done" button function here
 
-        // is system "done" button function here
-//            gbl_lastSelectedPersonBeforeChange = gbl_DisplayName;   // like "~Dave"   used in YELLOW gbl_homeUseMODE "edit mode"
+        });
 
 
 
@@ -2631,7 +2662,8 @@ nbn(510);
                      nameInPossessiveForm = [NSString stringWithFormat: @"%@\'s", gbl_myname.text ];
                 }
 //                saveMsg = [NSString stringWithFormat: @"note:\n   The High Security Save prevents EVERYONE, including yourself and this device owner, from EVER seeing %@ birth date or city.\n\n", nameInPossessiveForm ];
-                saveMsg = [NSString stringWithFormat: @"note:\n   The High Security Save prevents EVERYONE, including yourself and this device owner, from EVER seeing or changing %@\'s birth date or city.\n\n", gbl_myname.text ];
+//                saveMsg = [NSString stringWithFormat: @"note:\n   The High Security Save prevents EVERYONE, including yourself and this device owner, from EVER seeing or changing %@\'s birth date or city.\n\n", gbl_myname.text ];
+                saveMsg = [NSString stringWithFormat: @"\n   The High Security Save prevents EVERYONE, including yourself and this device owner, from EVER seeing or changing %@\'s birth date or city.\n\n", gbl_myname.text ];
 
 
 
@@ -3111,7 +3143,10 @@ tn();   NSLog(@"in textFieldShouldBeginEditing #################################
 
 nbn(801);
     [ self setFieldTap_currPrev ];
-    if ( [gbl_firstResponder_current isEqualToString:  @"date" ] ) {
+
+  NSLog(@"gbl_firstResponder_current =[%@]",gbl_firstResponder_current );
+
+    if ( [gbl_firstResponder_current isEqualToString:  @"date" ] ) {      // this is the only place gbl_firstResponder_current  is USED
         gbl_fieldTap_leaving = @"date";  // picker has no should/did end to set this with
     }
 
@@ -3124,11 +3159,28 @@ nbn(801);
   NSLog(@"                                    gbl_pickerToUse1        =%@",gbl_pickerToUse );
 //        return YES;  // name entry
     }
+
     if (textField.tag == 2) {                 // city,prov,coun  LABEL
         gbl_lastInputFieldTapped = @"city";
+
+
+//tn();   did not work
+//  NSLog(@"city FIXER in should begin edit ");
+//        // FIXER
+//        gbl_fieldTap_goingto       = @"city";
+//        gbl_firstResponder_current = @"city";
+
+
+
+
   NSLog(@"                                    GOT A TAP  in   textField  CITY");
   NSLog(@"                                    gbl_lastInputFieldTapped=%@",gbl_lastInputFieldTapped);
   NSLog(@"                                    gbl_pickerToUse1        =%@",gbl_pickerToUse );
+  NSLog(@"gbl_fieldTap_goingto                                        =[%@]",gbl_fieldTap_goingto       );
+  NSLog(@"gbl_firstResponder_current                                  =[%@]",gbl_firstResponder_current );
+
+
+
 //        return YES;  // name entry
     }
     if (textField.tag == 3) {                 // date/time entry
@@ -3272,7 +3324,7 @@ tn();   NSLog(@"in textFieldDidBeginEditing ####################################
     //
     if (            gbl_myname.isFirstResponder == 1)  gbl_fieldTap_goingto = @"name";
     if (gbl_mycitySearchString.isFirstResponder == 1)  gbl_fieldTap_goingto = @"city"; 
-    if (gbl_mybirthinformation.isFirstResponder == 1)  gbl_fieldTap_goingto = @"date";  // never
+    if (gbl_mybirthinformation.isFirstResponder == 1)  gbl_fieldTap_goingto = @"date";  // never happens (fld is neveer first responder)
 
   NSLog(@"gbl_fieldTap_goingto =%@  tap tap tap ",gbl_fieldTap_goingto );
 
@@ -3440,11 +3492,15 @@ trn("END OF  textFieldDidEndEditing ############################################
 {
 tn();
   NSLog(@"in setFieldTap_currPrev ");
-    if (   gbl_fieldTap_leaving == nil
+  NSLog(@"gbl_fieldTap_leaving =[%@]",gbl_fieldTap_leaving );
+  NSLog(@"gbl_fieldTap_goingto =[%@]",gbl_fieldTap_goingto );
+
+
+    if (   gbl_fieldTap_leaving == nil                                       // this is the only place gbl_fieldtap_* is used
         && gbl_fieldTap_goingto == nil  )  return;
 
 
-    if ([ gbl_fieldTap_leaving isEqualToString: gbl_fieldTap_goingto ]) {
+    if ([ gbl_fieldTap_leaving isEqualToString: gbl_fieldTap_goingto ]) {    // this is the only place gbl_fieldtap_* is used
   NSLog(@"--- 111 -------------------------------------------------------");
   NSLog(@"            gbl_myname.isFirstResponder=%d",gbl_myname.isFirstResponder);
   NSLog(@"gbl_mycitySearchString.isFirstResponder=%d",gbl_mycitySearchString.isFirstResponder);
@@ -3460,8 +3516,8 @@ tn();
 nb(3);
         // here a user tap causes the current field to change  (leaving and goingto fields are different)
         //
-        gbl_firstResponder_previous = gbl_fieldTap_leaving;
-        gbl_firstResponder_current  = gbl_fieldTap_goingto;
+        gbl_firstResponder_previous = gbl_fieldTap_leaving;                 // this is the only place gbl_firstResponder_previous is SET
+        gbl_firstResponder_current  = gbl_fieldTap_goingto;                 // this is the only place gbl_firstResponder_current  is SET
 
   NSLog(@"--- 222 -- firstResponder Change!!  ---------------------------");
   NSLog(@"            gbl_myname.isFirstResponder=%d",gbl_myname.isFirstResponder);
@@ -3472,6 +3528,7 @@ nb(3);
   NSLog(@"gbl_firstResponder_previous  =%@",gbl_firstResponder_previous );
   NSLog(@"gbl_firstResponder_current   =%@",gbl_firstResponder_current  );
   NSLog(@"---------------------------------------------------------------");
+
 
     }
 } //  setFieldTap_currPrev 
@@ -3740,7 +3797,7 @@ NSLog(@"=gbl_myCitySoFar %@",gbl_myCitySoFar );
     if (textField.tag == 1 && [allowedCharactersInName rangeOfString: arg_typedCharAsNSString].location == NSNotFound)
     {
 
-        NSLog(@"allowedCharacters does not contain typed char");
+  NSLog(@"allowedCharacters does not contain typed char");
         NSString *myMsg5;
         if ( [arg_typedCharAsNSString isEqualToString: @"~"] )  {
             myMsg5 = @"\nABCDEFGHIJKLMNOPQRSTUVWXYZ\nabcdefghijklmnopqrstuvwxyz\n1234567890\n\n( \"~\" is only used for example data )";
@@ -3764,7 +3821,7 @@ NSLog(@"=gbl_myCitySoFar %@",gbl_myCitySoFar );
         UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
                                                             style: UIAlertActionStyleDefault
                                                           handler: ^(UIAlertAction * action) {
-            NSLog(@"Ok button pressed");
+  NSLog(@"Ok button pressed");
         } ];
          
         [alert addAction:  okButton];
@@ -4121,7 +4178,7 @@ nbn(100);
                 gbl_myname.tag                      = 1;
                 gbl_myname.autocapitalizationType   = UITextAutocapitalizationTypeNone;
 
-        gbl_myname.inputAccessoryView = gbl_ToolbarForPersonName ; // for person name input field
+        gbl_myname.inputAccessoryView = gbl_ToolbarForGroupName ; // for group name input field
       NSLog(@"gbl_myname.inputAccessoryView 01_A  SET SET SET SET SET SET SET SET SET  SET ");
 
 
@@ -4246,8 +4303,8 @@ nbn(3);
             }
             gbl_mycityprovcounLabel.numberOfLines    = 0;
             gbl_mycityprovcounLabel.tag              = 2;
-//            gbl_mycityprovcounLabel.font             = myFontSmaller2;
-            gbl_mybirthinformation.font                    = myFontSmaller14;
+            gbl_mycityprovcounLabel.font             = myFontSmaller2;
+//            gbl_mybirthinformation.font                    = myFontSmaller14;
 //                    gbl_mycityprovcounLabel.font             = [UIFont fontWithName: @"Menlo" size: 10.0];
 
 
@@ -4343,8 +4400,8 @@ nbn(6);
             }
             gbl_mycityprovcounLabel.numberOfLines    = 0;
             gbl_mycityprovcounLabel.tag              = 2;
-//            gbl_mycityprovcounLabel.font             = myFontSmaller2;
-            gbl_mybirthinformation.font                    = myFontSmaller14;
+            gbl_mycityprovcounLabel.font             = myFontSmaller2;
+//            gbl_mybirthinformation.font                    = myFontSmaller14;
 //
             gbl_mycityprovcounLabel.textAlignment    = NSTextAlignmentLeft;
 
@@ -4413,7 +4470,8 @@ nbn(21);
 
     //            gbl_mybirthinformation.font                     = myFont;
 //                gbl_mybirthinformation.font                     = myFontMiddle;
-                gbl_mybirthinformation.font                    = myFontSmaller14;
+//                gbl_mybirthinformation.font                    = myFontSmaller14;
+            gbl_mycityprovcounLabel.font             = myFontSmaller2;
              gbl_mybirthinformation.borderStyle              = UITextBorderStyleRoundedRect;
 //            gbl_mybirthinformation.borderStyle              = UITextBorderStyleLine;
 
@@ -4492,7 +4550,9 @@ tn();trn("DATE field was drawn  hey   hey   hey   hey   hey   hey   hey   ");
               gbl_mybirthinformation.backgroundColor = gbl_colorEditingBGforInputField;
 
 //            gbl_mybirthinformation.font                     = myFont;
-            gbl_mybirthinformation.font                     = myFontMiddle;
+//            gbl_mybirthinformation.font                     = myFontMiddle;
+//            gbl_mybirthinformation.font                    = myFontSmaller14;
+            gbl_mybirthinformation.font                     = myFontSmaller2;
             gbl_mybirthinformation.borderStyle              = UITextBorderStyleRoundedRect;
             gbl_mybirthinformation.textAlignment            = NSTextAlignmentLeft;
 
@@ -4754,12 +4814,12 @@ nbn(123);
                 // WHEN THE RESPONDER BECOMES THE FIRST RESPONDER.
                 //
      //  ?? switch  becomefirst  and inputview=  ???
-                [gbl_mycitySearchString becomeFirstResponder];  // control goes to textFieldShouldEndEditing > textFieldDidEndEditing > back here
+                [gbl_mycitySearchString becomeFirstResponder];  // control goes to textFieldShouldBeginEditing > textFieldDidBeginEditing > back here
   NSLog(@"-didsel3a-- VASSIGN gbl_mycitySearchString BECOME_FIRST_RESPONDER ---------------- " );
 
   gbltmpstr = [gbl_mycitySearchString.inputView.description substringToIndex: 15];
 
-                gbl_mycitySearchString.inputView = [self pickerViewCity] ; 
+                gbl_mycitySearchString.inputView = [self pickerViewCity] ;   // this is only place is set to pickerViewCity
 
   NSLog(@"-didsel 1-- VASSIGN gbl_mycitySearchString.inputView --- old=[%@]  new=[%@] ---", gbltmpstr, [ gbl_mycitySearchString.inputView.description substringToIndex: 15]);
 
@@ -4777,7 +4837,7 @@ nbn(123);
 
 nbn(124);
 
-  NSLog(@"--- ooo -------------------------------------------------------");
+  NSLog(@"--- ooo -------- show city keyboard  --------------------------");
   NSLog(@"            gbl_myname.isFirstResponder=%d",gbl_myname.isFirstResponder);
   NSLog(@"gbl_mycitySearchString.isFirstResponder=%d",gbl_mycitySearchString.isFirstResponder);
   NSLog(@"gbl_mybirthinformation.isFirstResponder=%d",gbl_mybirthinformation.isFirstResponder);
@@ -4785,24 +4845,33 @@ nbn(124);
   NSLog(@"gbl_fieldTap_goingto  =%@",gbl_fieldTap_goingto );
   NSLog(@"gbl_firstResponder_previous  =%@",gbl_firstResponder_previous );
   NSLog(@"gbl_firstResponder_current   =%@",gbl_firstResponder_current  );
-  NSLog(@"---------------------------------------------------------------");
+  NSLog(@"----------------- show city keyboard --------------------------");
 
   NSLog(@"gbl_myCitySoFar =%@",gbl_myCitySoFar );
 
-            dispatch_async(dispatch_get_main_queue(), ^{        
+            dispatch_async(dispatch_get_main_queue(), ^{
                 [gbl_myname             resignFirstResponder];
-//  NSLog(@"-didsel3b-- VASSIGN gbl_myname             RESIGN!FIRST_RESPONDER ---------------- " );
+  NSLog(@"-didsel3b-- VASSIGN gbl_myname             RESIGN!FIRST_RESPONDER ---------------- " );
                 [gbl_mybirthinformation resignFirstResponder]; 
-//  NSLog(@"-didsel3b-- VASSIGN gbl_mybirthinformation RESIGN!FIRST_RESPONDER ---------------- " );
+  NSLog(@"-didsel3b-- VASSIGN gbl_mybirthinformation RESIGN!FIRST_RESPONDER ---------------- " );
                 [gbl_mycitySearchString resignFirstResponder]; // control goes to textFieldShouldEndEditing > textFieldDidEndEditing > back here
-//  NSLog(@"-didsel3b-- VASSIGN gbl_mycitySearchString RESIGN!FIRST_RESPONDER ---------------- " );
+  NSLog(@"-didsel3b-- VASSIGN gbl_mycitySearchString RESIGN!FIRST_RESPONDER ---------------- " );
 
 
                 // gbl_mycitySearchString.inputView = nil ;   // necessary ?   note: with this in, no keyboard appears
 
 //  gbltmpstr = [gbl_mycitySearchString.inputView.description substringToIndex: 15];
 //  NSLog(@"-didsel 2-- VASSIGN gbl_mycitySearchString.inputView --- old=[%@]  new=[%@] ---", gbltmpstr, [ gbl_mycitySearchString.inputView.description substringToIndex: 15]);
-                self.pickerViewCity.hidden       =  NO;
+
+
+
+
+//                self.pickerViewCity.hidden       =  NO;
+                self.pickerViewCity.hidden       =  YES;
+
+
+
+
 
 
   NSLog(@"gbl_mycityInputView =[%@]",gbl_mycityInputView );
@@ -4821,7 +4890,7 @@ nbn(124);
      //  ?? switch  becomefirst  and inputview=  ???
 tn();
   NSLog(@"gbl_mycitySearchString   GOING TO       city    BECOME_FIRST_RESPONDER ---------------- " );
-                [gbl_mycitySearchString becomeFirstResponder];  // control goes to textFieldShouldEndEditing > textFieldDidEndEditing > back here
+                [gbl_mycitySearchString becomeFirstResponder];  // control goes to textFieldShouldBeginEditing > textFieldDidBeginEditing > back here
   NSLog(@"gbl_mycitySearchString   RETURNING FROM city    BECOME_FIRST_RESPONDER ---------------- " );
 tn();
 
@@ -4847,25 +4916,26 @@ tn();
         } // show kb
 
 
-        // if current orientation is landscape, shift field into view
-        //
-        //  typedef enum : NSInteger {
-        //     UIInterfaceOrientationUnknown            = UIDeviceOrientationUnknown,
-        //     UIInterfaceOrientationPortrait           = UIDeviceOrientationPortrait,
-        //     UIInterfaceOrientationPortraitUpsideDown = UIDeviceOrientationPortraitUpsideDown,
-        //     UIInterfaceOrientationLandscapeLeft      = UIDeviceOrientationLandscapeRight,
-        //     UIInterfaceOrientationLandscapeRight     = UIDeviceOrientationLandscapeLeft 
-        //  } UIInterfaceOrientation;
-        //
-        NSInteger myOrientation = [UIApplication sharedApplication].statusBarOrientation;
-  NSLog(@"myOrientation =%ld", (long)myOrientation );
-        if (   myOrientation == UIInterfaceOrientationLandscapeLeft      
-            || myOrientation == UIInterfaceOrientationLandscapeRight  
-        ) {
-            dispatch_async(dispatch_get_main_queue(), ^{        
-                [self.tableView setContentOffset: CGPointMake(-44,0) animated:YES];
-            });
-        }
+//        // if current orientation is landscape, shift field into view
+//        //
+//        //  typedef enum : NSInteger {
+//        //     UIInterfaceOrientationUnknown            = UIDeviceOrientationUnknown,
+//        //     UIInterfaceOrientationPortrait           = UIDeviceOrientationPortrait,
+//        //     UIInterfaceOrientationPortraitUpsideDown = UIDeviceOrientationPortraitUpsideDown,
+//        //     UIInterfaceOrientationLandscapeLeft      = UIDeviceOrientationLandscapeRight,
+//        //     UIInterfaceOrientationLandscapeRight     = UIDeviceOrientationLandscapeLeft 
+//        //  } UIInterfaceOrientation;
+//        //
+//        NSInteger myOrientation = [UIApplication sharedApplication].statusBarOrientation;
+//  NSLog(@"myOrientation =%ld", (long)myOrientation );
+//        if (   myOrientation == UIInterfaceOrientationLandscapeLeft      
+//            || myOrientation == UIInterfaceOrientationLandscapeRight  
+//        ) {
+//            dispatch_async(dispatch_get_main_queue(), ^{        
+//                [self.tableView setContentOffset: CGPointMake(-44,0) animated:YES];
+//            });
+//        }
+//
     
   NSLog(@"end of didSelectRowAtIndexPath   for row = 3");
 tn();
@@ -5148,6 +5218,26 @@ nbn(555);
      NSLog(@"in viewWillDisappear in  addChange   ! !");
 
     [super viewWillDisappear:animated];
+
+// did not work  - no kb comes up
+//        // I'm using a UIPickerView as the inputView for a TextField (thus replacing the onscreen keyboard).
+//        // I use the following delegate to dismiss the view.
+//        //
+//        //  - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
+//        //      // Code logic
+//        //      [[self view] endEditing:YES];
+//        //  }
+//        //
+////        [[self view] endEditing:YES];
+//tn();
+//trn("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+//trn("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+//        [gbl_mycitySearchString endEditing: YES ];
+//tn();
+//
+
+
+//<.>  TODO
 
 //    segEntityOutlet.backgroundColor = [UIColor whiteColor];
 
@@ -5742,7 +5832,7 @@ NSLog(@"RETURN titleForRowRetval=%@",titleForRowRetval);
     //
     if (            gbl_myname.isFirstResponder == 1)  gbl_fieldTap_goingto = @"name";
     if (gbl_mycitySearchString.isFirstResponder == 1)  gbl_fieldTap_goingto = @"city"; 
-    if (gbl_mybirthinformation.isFirstResponder == 1)  gbl_fieldTap_goingto = @"date";
+    if (gbl_mybirthinformation.isFirstResponder == 1)  gbl_fieldTap_goingto = @"date";  // never happens (fld is neveer first responder)
 
 
 //    [ self setFieldTap_currPrev ];
@@ -6017,6 +6107,8 @@ tn();trn("in didSelectRow in some  PICKER !!   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
   NSLog(@"gbl_pickerToUse =[%@]",gbl_pickerToUse );
   NSLog(@"row=[%ld]",(long)row);
   NSLog(@"component=[%ld]",(long)component);
+
+
 
     gbl_editingChangeDATEHasOccurred = 1;   // default 0 at startup (after hitting "Edit" button on home page)
 
@@ -6313,6 +6405,10 @@ nbn(302);
         [ self updateCityProvCoun ]; // update city/prov/coun field  in cellForRowAtIndexpath
 
     } // city picker
+
+
+
+
 
 trn("!!!!!!!!!  END OF  didSelectRow in some  PICKER !!   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"); tn();
 

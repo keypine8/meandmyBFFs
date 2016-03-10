@@ -6454,8 +6454,35 @@ tn();trn("calling  mamb_report_whole_group() ...");
 //ksn(my_mamb_csv_arr[0]);
 //ksn(my_mamb_csv_arr[1]);
 //kin(num_input_csvs);
-//tn();
 //
+
+
+//  NSLog(@"902!");
+//    [super.view addSubview: gbl_bestMatchActivityIndicator ];
+//
+//    [gbl_bestMatchActivityIndicator startAnimating];
+//  NSLog(@"907!");
+//
+//  NSLog(@"9025a!");
+//sleep(3);
+
+
+//  NSLog(@"911!");
+//
+//UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Loading..." message: nil delegate:self cancelButtonTitle: nil otherButtonTitles: nil];
+//UIActivityIndicatorView *progress= [[UIActivityIndicatorView alloc] initWithFrame: CGRectMake(125, 50, 30, 30)];
+//    progress.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
+//[alert addSubview: progress];
+//[alert show];
+//[progress startAnimating];
+//  NSLog(@"9111!");
+//
+//sleep(3);
+
+//sleep(3);
+
+            // because this is biewWillAppear  alert or progress doesn't show until flash in viewdidload  CANNOT get progress indicator here
+
             retval = mamb_report_whole_group(  /* in grpdoc.o */
               pathToHTML_browser,          // path to html_file
               tmp_grp_name,                // group_name */
@@ -6466,6 +6493,22 @@ tn();trn("calling  mamb_report_whole_group() ...");
               lcl_group_report_output_PSVs,    // array of output report data
               &lcl_group_report_output_idx     // ptr to int having last index written
             );
+
+//  NSLog(@"912!");
+//
+//[gbl_progress stopAnimating];
+//// I'll just leave this here in case someone needs to dismiss this from another method programmatically: [alert dismissWithClickedButtonIndex:0 animated:YES]; – LordParsley Nov 9 '13 at 15:15
+//[gbl_alert dismissWithClickedButtonIndex:0 animated:YES];
+
+
+
+//  NSLog(@"903!");
+//    [gbl_bestMatchActivityIndicator stopAnimating];
+//  NSLog(@"905!");
+//
+//  NSLog(@"9025z!");
+
+
 //kin(retval);
 //kin(lcl_group_report_output_idx);
 //char my_tst_str[128];
@@ -6493,7 +6536,8 @@ tn();trn("calling  mamb_report_whole_group() ...");
 //tn();
 //
 
-            if (retval != 0) {tn(); trn("non-zero retval from mamb_report_whole_group()");}
+            if (retval != 0) {
+tn(); trn("non-zero retval from mamb_report_whole_group()");   }
 
         }
 

@@ -1,4 +1,3 @@
-
 //
 //  MAMB09_listMembersTableViewController.m
 //  Me&myBFFs
@@ -115,7 +114,7 @@ tn();
     // ---------------------------------------------------------------------------------
     //
     // INCLUDE ONLY   members of gbl_lastSelectedGroup
-    // INCLUDE ONLY   all people except example data if group name is "#allpeople"
+    // if group name is "#allpeople", include all people except example data 
     //
 tn();
   NSLog(@"doing  // populate gbl_arrayMembersToDisplay");
@@ -177,7 +176,10 @@ tn();
 
     // do not put bottom toolbar for  group "#allpeople"  or  for example data groups
     //
-    if ([gbl_lastSelectedGroup hasPrefix: @"~" ])  return;  // use viewWillAppear only for bottom toolbar setup
+
+    // allow edit, etc of example "~" data
+    // if ([gbl_lastSelectedGroup hasPrefix: @"~" ])  return;  // use viewWillAppear only for bottom toolbar setup
+
     if ([gbl_lastSelectedGroup hasPrefix: @"#" ])  return;  // use viewWillAppear only for bottom toolbar setup
 
 

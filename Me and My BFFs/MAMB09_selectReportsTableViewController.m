@@ -450,6 +450,20 @@ NSLog(@"in viewDidAppear()");
     //   UITableViewCell *currcell = [self.tableView cellForRowAtIndexPath:currentlyselectedIndexPath];
     // now you can use cell.textLabel.text
 
+
+
+//    if (   [segue.identifier isEqualToString:@"segueRptSelToViewTBLRPT1"]
+//        && [gbl_currentMenuPlusReportCode isEqualToString: @"homgbm"]     )  // on best match show progress indicator
+//    {
+//
+//        [gbl_alert addSubview: gbl_progress];
+//        [gbl_alert show];
+//        [gbl_progress startAnimating];
+//    }
+
+
+
+
     // segueRptSelToViewHTML
     //
     if ([segue.identifier isEqualToString:@"segueRptSelToViewHTML"]) {
@@ -910,7 +924,8 @@ NSLog(@"in dispatch  for SELECT YEAR  !");
 //
     
     //if ([stringForCurrentlySelectedRow hasPrefix: @"Best Match"] ) 
-    if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgbm"] ) {
+    if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgbm"] )
+    {
         
         gbl_currentMenuPrefixFromMatchRpt = @"gbm";
         
@@ -919,7 +934,35 @@ NSLog(@"in dispatch  for SELECT YEAR  !");
                          updatingRememberCategory: (NSString *) @"rptsel"
                                        usingValue: (NSString *) gbl_currentMenuPlusReportCode
         ];
+
+//        
+////  NSLog(@"902!");
+////    [self.tableView addSubview: gbl_bestMatchActivityIndicator ];
+//
+////    [gbl_bestMatchActivityIndicator startAnimating];
+//  NSLog(@"903!");
+//  NSLog(@"911!");
+//
+////UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Loading..." message: nil delegate:self cancelButtonTitle: nil otherButtonTitles: nil];
+////UIActivityIndicatorView *progress= [[UIActivityIndicatorView alloc] initWithFrame: CGRectMake(125, 50, 30, 30)];
+//gbl_alert = [[UIAlertView alloc] initWithTitle: @"Loading..." message: nil delegate:self cancelButtonTitle: nil otherButtonTitles: nil];
+//gbl_progress= [[UIActivityIndicatorView alloc] initWithFrame: CGRectMake(125, 50, 30, 30)];
+////gbl_progress.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
+////gbl_progress.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
+//gbl_progress.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+////[gbl_alert addSubview: gbl_progress];
+////[gbl_alert show];
+////[gbl_progress startAnimating];
+//  NSLog(@"9111!");
+//
+////sleep(3);
+//
+
+          
         dispatch_async(dispatch_get_main_queue(), ^{                                // <===  <.>
+//[gbl_alert addSubview: gbl_progress];
+//[gbl_alert show];
+//[gbl_progress startAnimating];
             [self performSegueWithIdentifier:@"segueRptSelToViewTBLRPT1" sender:self];
         });
 
