@@ -81,7 +81,7 @@ tn(); NSLog(@"in sel Reports viewDidLoad!");
     UIButton *myInvisibleButton       = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
 //        UIButton *myInvisibleButton       = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
     myInvisibleButton.backgroundColor = [UIColor clearColor];
-    UIBarButtonItem *mySpacerNavItem  = [[UIBarButtonItem alloc] initWithCustomView: myInvisibleButton];
+//    UIBarButtonItem *mySpacerNavItem  = [[UIBarButtonItem alloc] initWithCustomView: myInvisibleButton];
     UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 55, 44)];  // 3rd arg is horizontal length
     UIBarButtonItem *mySpacerForTitle = [[UIBarButtonItem alloc] initWithCustomView:spaceView];
 
@@ -928,6 +928,7 @@ NSLog(@"in dispatch  for SELECT YEAR  !");
     {
         
         gbl_currentMenuPrefixFromMatchRpt = @"gbm";
+
         
         [myappDelegate saveLastSelectionForEntity: (NSString *) @"group"
                                        havingName: (NSString *) gbl_fromHomeCurrentEntityName
@@ -1060,6 +1061,10 @@ NSLog(@"in dispatch  for SELECT YEAR  !");
                          updatingRememberCategory: (NSString *) @"rptsel"
                                        usingValue: (NSString *) gbl_currentMenuPlusReportCode
         ];
+
+
+
+
         dispatch_async(dispatch_get_main_queue(), ^{                                // <===  <.>
             [self performSegueWithIdentifier:@"segueRptSelToSelYear" sender:self];
         });

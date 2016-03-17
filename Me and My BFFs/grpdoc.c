@@ -30,9 +30,12 @@ char *set_cell_bg_color_2(int in_score) ;
 
 //int  gbl_g_max_len_group_data_PSV = 64;
 int  gbl_g_max_len_group_data_PSV = 128;
-int  gbl_g_top_bot_threshold  = 300;    // more data lines than this, then show top 200 + bot 100
-int  gbl_g_show_top_this_many = 200;
-int  gbl_g_show_bot_this_many = 100;
+//int  gbl_g_top_bot_threshold  = 300;    // more data lines than this, then show top 200 + bot 100
+//int  gbl_g_show_top_this_many = 200;
+//int  gbl_g_show_bot_this_many = 100;
+int  gbl_g_top_bot_threshold  = 200;    // more data lines than this, then show top 200 + bot 100
+int  gbl_g_show_top_this_many = 150;
+int  gbl_g_show_bot_this_many =  50;
 char gbl_my1_group_report_line[128];  // int gbl_g_max_len_group_data_PSV = 128;
 char gbl_my2_group_report_line[128];
 char gbl_my3_group_report_line[128];
@@ -76,7 +79,8 @@ struct trait_report_line {
 *   assuming MAX_PERSONS_IN_GROUP = 250, num pairs max is  31,125 
 *   (5 sec to run on pc/gcc , 1 sec on mac/llvm )
 */
-#define MAX_PERSONS_IN_GROUP 250   /* also defined incocoa.c and grphtm.c */
+// #define MAX_PERSONS_IN_GROUP 250   /* also defined incocoa.c and grphtm.c */
+#define MAX_PERSONS_IN_GROUP 200   /* also defined incocoa.c and grphtm.c */
 #define MAX_IN_RANK_LINE_ARRAY \
 ( ( (MAX_PERSONS_IN_GROUP * (MAX_PERSONS_IN_GROUP - 1) / 2) ) + 128 )
 
@@ -1218,7 +1222,7 @@ trn("    for BEST DAY on ");
 
   } /* ===== PUT DATA + BENCHMARK LINES  ===== */
 
-tn();trn("finished  doing trait rank build of  out_group_report_PSVs[]  ...");  ks(html_file_name);
+tn();tn();trn("finished  doing trait rank build of  out_group_report_PSVs[]  ...");  ks(html_file_name);
 
   /* when finished, free allocated array elements 
   */
@@ -2320,7 +2324,7 @@ tn();tn();trn("in mamb_report_whole_group()");
 /* tn();ks(group_name);ki(num_persons_in_grp); */
 
   if (strstr(instructions, "return only") == NULL) {
-    trn("in mamb_report_whole_group()");
+    trn("in mamb_report_whole_group() return only strstr == null");
   }  /* avoid dbmsg on non-rpt call */
 
 
@@ -2633,7 +2637,7 @@ tn();tn();trn("in mamb_report_whole_group()");
   */
 
 
-//trn("doing ... make_html_file_whole_group() in mamb_report_whole_group()");
+tn();trn("doing ... make_html_file_whole_group() in mamb_report_whole_group()");
 //ksn(instructions);
   /* HTML HTML HTML HTML HTML HTML HTML HTML HTML HTML  HTML HTML HTML HTML HTML HTML  HTML HTML HTML HTML HTML HTML 
   *  html report produced here
@@ -2653,13 +2657,13 @@ tn();tn();trn("in mamb_report_whole_group()");
     out_group_report_PSVs,    /* array of output report data to pass to cocoa */
     out_group_report_idx      /* ptr to int having last index written */
   );
-//tn();b(300);ksn(string_for_table_only);
-//trn("at end of  ... make_html_file_whole_group() in mamb_report_whole_group()");
+tn();b(300);ksn(string_for_table_only);
+trn("at end of  ... make_html_file_whole_group() in mamb_report_whole_group()");
 
-//ksn(group_name);
-//kin(num_persons_in_grp);
-//ksn(instructions);
-//kin(out_rank_line_idx);
+ksn(group_name);
+kin(num_persons_in_grp);
+ksn(instructions);
+kin(out_rank_line_idx);
 
 
 
@@ -2671,7 +2675,7 @@ tn();tn();trn("in mamb_report_whole_group()");
     return(1);
   }
 
-
+nbn(800);
 
   // here, build raw display data for tableview in cocoa ------------------------------------------------
   //
@@ -2685,12 +2689,14 @@ tn();tn();trn("in mamb_report_whole_group()");
 
 
   // determine if we need to show top 200 and bottom 100
-  //   int gbl_g_top_bot_threshold  = 300;    // more data lines than this, then show top 200 + bot 100
+  //   int gbl_g_top_bot_threshold  = 300;    // more data lines than this, then show top 150 + bot 50
   //
   int is_topbot;
   if (out_rank_line_idx > gbl_g_top_bot_threshold) { is_topbot = 1; } // gbl_g_show_top_this_many and gbl_g_show_bot_this_many
   else                                             { is_topbot = 0; } // NO
 
+kin(is_topbot);
+nbn(801);
 
 
   // populate   out_group_report_PSVs 
@@ -2730,6 +2736,7 @@ tn();tn();trn("in mamb_report_whole_group()");
     if(lenB > longest_B) longest_B = lenB;
   }
   
+nbn(802);
 
   /*          Pair of                     */
   /*        Group Members  Score          */
@@ -2744,6 +2751,7 @@ tn();tn();trn("in mamb_report_whole_group()");
 //kin(*out_group_report_idx);
   /* =========  PUT HEADER LINES  ==============
   */
+trn("/* =========  PUT HEADER LINES  ==============");
 
   // put out line to represent spacer before column headers in cocoa  (same as grpone)
     *out_group_report_idx = *out_group_report_idx + 1;      /* put in cocoa table here */
@@ -2752,23 +2760,29 @@ tn();tn();trn("in mamb_report_whole_group()");
 
   strcpy(cocoa_rowcolor, "cHed");   /* for hdr */
 
-  if (is_topbot == 1) {  // check for top / bot
-    strcpy(cocoa_rowcolor, "cBgr");   /* for html bg, etc.  */
 
-    *out_group_report_idx = *out_group_report_idx + 1;      /* put in cocoa table here */
-    sprintf(gbl_my3_group_report_line, "cBgr|This report has over %d lines, so||", gbl_g_top_bot_threshold); // 300
-//ksn(gbl_my3_group_report_line);
-    strcpy(out_group_report_PSVs + *out_group_report_idx * gbl_g_max_len_group_data_PSV , gbl_my3_group_report_line); // every 128
+  // 20160314   remove these lines and put a comment in the info screen for best match in grp rpt
+  //
+//  if (is_topbot == 1) {  // check for top / bot
+//    strcpy(cocoa_rowcolor, "cBgr");   /* for html bg, etc.  */
+//
+//    *out_group_report_idx = *out_group_report_idx + 1;      /* put in cocoa table here */
+//    sprintf(gbl_my3_group_report_line, "cBgr|This report has over %d lines, so||", gbl_g_top_bot_threshold); // 300
+////ksn(gbl_my3_group_report_line);
+//    strcpy(out_group_report_PSVs + *out_group_report_idx * gbl_g_max_len_group_data_PSV , gbl_my3_group_report_line); // every 128
+//
+//    *out_group_report_idx = *out_group_report_idx + 1;      /* put in cocoa table here */
+//    sprintf(gbl_my3_group_report_line, "cBgr|we show the top %d and Bottom %d||",
+//      gbl_g_show_top_this_many, // 150
+//      gbl_g_show_bot_this_many  //  50
+//    );
+////ksn(gbl_my3_group_report_line);
+//    strcpy(out_group_report_PSVs + *out_group_report_idx * gbl_g_max_len_group_data_PSV , gbl_my3_group_report_line); // every 128
+//
+//  } // check for top / bot
+//
 
-    *out_group_report_idx = *out_group_report_idx + 1;      /* put in cocoa table here */
-    sprintf(gbl_my3_group_report_line, "cBgr|we show the top %d and Bottom %d||",
-      gbl_g_show_top_this_many, // 300
-      gbl_g_show_bot_this_many  // 100
-    );
-//ksn(gbl_my3_group_report_line);
-    strcpy(out_group_report_PSVs + *out_group_report_idx * gbl_g_max_len_group_data_PSV , gbl_my3_group_report_line); // every 128
 
-  } // check for top / bot
 
 
   if (len2names <= 13 ) {  /* SHORT NAMES  ---------------------------------------*/
@@ -2804,7 +2818,7 @@ tn();tn();trn("in mamb_report_whole_group()");
 
 
     sprintf(gbl_my3_group_report_line, "%s|%s||", "cHed", pair_line);
-// ksn(gbl_my3_group_report_line);
+tr("short names");ksn(gbl_my3_group_report_line);
     strcpy(out_group_report_PSVs + *out_group_report_idx * gbl_g_max_len_group_data_PSV , gbl_my3_group_report_line); // every 128
 
   } else {                 /* ORDINARY LENGTH NAMES ------------------------------*/
@@ -2832,12 +2846,14 @@ tn();tn();trn("in mamb_report_whole_group()");
 
     *out_group_report_idx = *out_group_report_idx + 1;      /* put in cocoa table here */
     sprintf(gbl_my3_group_report_line, "%s|%s||", "cHed", pair_line);
-// ksn(gbl_my3_group_report_line);
+
+tr("ordinary length names");ksn(gbl_my3_group_report_line);
     strcpy(out_group_report_PSVs + *out_group_report_idx * gbl_g_max_len_group_data_PSV , gbl_my3_group_report_line); // every 128
 
   } // put out column headers
-
   /* end of =========  PUT HEADER LINES  ============== */
+
+trn("END of  /* end of =========  PUT HEADER LINES  ============== */");tn();
 
 
   /* 1. format lines into one string  
@@ -2851,6 +2867,9 @@ tn();tn();trn("in mamb_report_whole_group()");
   len_my_group_report_line   = 0;
   num_end_spaces             = 0;             // for Top... / Bot...lines
 
+
+  // big loop
+  //
   for (i=0; i <= out_rank_line_idx; i++) { /* ===== PUT DATA + BENCHMARK LINES  into array out_group_report_PSVs ===== */
     /* put out benchmark lines
     */
@@ -2877,6 +2896,7 @@ tn();tn();trn("in mamb_report_whole_group()");
 
 
       sprintf(gbl_my3_group_report_line, "%s|%s||", cocoa_rowcolor, pair_line);
+tr("benchmark line print");ksn(gbl_my3_group_report_line);
 
 
 // ksn(gbl_my3_group_report_line);
@@ -2938,6 +2958,7 @@ tn();tn();trn("in mamb_report_whole_group()");
     //int gbl_g_show_top_this_many = 200;
     //int gbl_g_show_bot_this_many = 100;
     //
+//kin(ctr_rank_lines_encountered  );
     if (is_topbot == 1) {  // check for top / bot
       if (ctr_rank_lines_encountered  == gbl_g_show_top_this_many + 1) {
 
@@ -2945,6 +2966,9 @@ tn();tn();trn("in mamb_report_whole_group()");
 
         sprintf(sfmt_pair_line, "cHed| %%%ds   %%s %%3d%%%ds", size_NPIG, num_end_spaces); 
         sprintf(gbl_my3_group_report_line, sfmt_pair_line, " ", "Top", gbl_g_show_top_this_many, " ");
+
+tr("top line print");ksn(gbl_my3_group_report_line);
+
         *out_group_report_idx = *out_group_report_idx + 1;
         strcpy(out_group_report_PSVs + (*out_group_report_idx * gbl_g_max_len_group_data_PSV) , gbl_my3_group_report_line); // every 128
       }
@@ -2954,10 +2978,14 @@ tn();tn();trn("in mamb_report_whole_group()");
 
         sprintf(sfmt_pair_line, "cHed| %%%ds   %%s %%3d%%%ds", size_NPIG, num_end_spaces); 
         sprintf(gbl_my3_group_report_line, sfmt_pair_line, " ", "Bottom", gbl_g_show_bot_this_many, " ");
+
+tr("bottom line print");ksn(gbl_my3_group_report_line);
+
         *out_group_report_idx = *out_group_report_idx + 1;
         strcpy(out_group_report_PSVs + (*out_group_report_idx * gbl_g_max_len_group_data_PSV) , gbl_my3_group_report_line); // every 128
       }
-
+//ki(ctr_rank_lines_encountered );kin(gbl_g_show_top_this_many  );
+//ki(ctr_rank_lines_encountered );kin(num_pairs_in_grp );
       if (ctr_rank_lines_encountered  > gbl_g_show_top_this_many   &&
           ctr_rank_lines_encountered  < num_pairs_in_grp - gbl_g_show_bot_this_many + 1)
       {
@@ -2977,6 +3005,7 @@ tn();tn();trn("in mamb_report_whole_group()");
         person_A_for_UITableView,
         person_B_for_UITableView
     );
+tr("data line print");ksn(gbl_my3_group_report_line);
 
 
 
@@ -2985,8 +3014,11 @@ tn();tn();trn("in mamb_report_whole_group()");
     len_my_group_report_line = (int)strlen(gbl_my3_group_report_line);
     strcpy(out_group_report_PSVs + *out_group_report_idx * gbl_g_max_len_group_data_PSV , gbl_my3_group_report_line); // every 128
 
+kin(*out_group_report_idx);
 
   }  /* ===== PUT DATA + BENCHMARK LINES  into array out_group_report_PSVs ===== */
+
+trn("END of    /* ===== PUT DATA + BENCHMARK LINES  into array out_group_report_PSVs ===== */");
 
 
   g_rank_line_free(out_rank_lines, out_rank_line_idx);   // when finished, free arr elements 

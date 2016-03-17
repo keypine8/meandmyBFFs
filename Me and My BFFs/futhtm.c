@@ -1821,7 +1821,7 @@ STRESS-|<span style="background-color:#FFBAC7; font-family: Andale Mono, Courier
 nbn(401); 
     int sizeLongestFld;
     char myleftmargin[32];
-    sizeLongestFld = strlen(gbl_name_for_fut);
+    sizeLongestFld = (int)strlen(gbl_name_for_fut);
          if (sizeLongestFld ==  1) { strcpy(myleftmargin, "8.00em;"); }
     else if (sizeLongestFld ==  2) { strcpy(myleftmargin, "7.75em;"); }
     else if (sizeLongestFld ==  3) { strcpy(myleftmargin, "7.50em;"); }

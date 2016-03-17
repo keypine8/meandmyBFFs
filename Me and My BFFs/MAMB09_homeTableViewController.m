@@ -89,7 +89,8 @@
 - (void) processDoubleTap:(UITapGestureRecognizer *)sender
 {
   NSLog(@"GOT A DOUBLE tap");
-  [self putHighlightOnCorrectRow ];
+    gbl_scrollToCorrectRow = 1;
+    [self putHighlightOnCorrectRow ];
 }
 
 
@@ -186,12 +187,12 @@ tn();
 
 
 
-    // try to reduce load time of first cal yr report   
+
+    // try to reduce load time of first cal yr report    this WORKED!
     // this WORKED!
     //
 tn();
   NSLog(@"BEG  use javascript to  grab document.title - to try to reduce load time of first cal yr report   ");
-
     UIWebView *tmpwebview = [[UIWebView alloc]initWithFrame:CGRectMake(0, 0, 11, 11)];
     NSString *xtitle   = [tmpwebview stringByEvaluatingJavaScriptFromString:@"document.title"];  
   NSLog(@"END  use javascript to  grab document.title - to try to reduce load time of first cal yr report   ");
@@ -310,10 +311,10 @@ nbn(100);
             self.navigationItem.leftBarButtonItems     = gbl_homeLeftItemsWithAddButton;
 
 //        UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 11, 44)];  // 3rd arg is horizontal length
-            UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 4, 44)];  // 3rd arg is horizontal length
 //        UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 15, 44)];  // 3rd arg is horizontal length
 //        spaceView.backgroundColor = [UIColor redColor];  // make visible for test
-            UIBarButtonItem *mySpacerForTitle = [[UIBarButtonItem alloc] initWithCustomView: spaceView];
+//            UIBarButtonItem *mySpacerForTitle = [[UIBarButtonItem alloc] initWithCustomView: spaceView];
+//            UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 4, 44)];  // 3rd arg is horizontal length
 
   NSLog(@"EDIT BUTTON 1   set title  edit tab");
 //            self.editButtonItem.title = @"Ed2t\t";  // pretty good
@@ -567,6 +568,7 @@ nbn(15);
 //    // end of   FOR test   remove all regular named files   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 //
 //
+//
 
 
 
@@ -699,8 +701,12 @@ ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
     //
     NSInteger myCorruptDataErrNum;
     do {
-        myCorruptDataErrNum =  [myappDelegate mambCheckForCorruptData ];
+
+
+        myCorruptDataErrNum =  [myappDelegate mambCheckForCorruptData ];  //  < --------------------------------------
   NSLog(@"myCorruptDataErrNum =[%ld]",(long)myCorruptDataErrNum );
+
+
 
         if (myCorruptDataErrNum > 0) {
 
@@ -821,7 +827,7 @@ ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
             // want left-justified alert text for long msg
             //
             NSString *mymsg;
-            mymsg = @"When corrupt data is found, the App has to delete all of your added people, groups and group members.\n\n   RECOVERY of DATA \n\nMethod 1:  Assuming you did backups, go to your latest email having the subject \"Me and My BFFs BACKUP\".  Follow the instructions in the email to restore the data.\n\nMethod 2:  Delete the App \"Me and My BFFs\" and install it again from the App store.  Doing this might restore the data for people, groups and members.";
+            mymsg = @"When corrupt data is found, the App has to delete all of your added people, groups and group members.\n\n   RECOVERY of DATA \n\nMethod 1:  Assuming you did backups, go to your latest email having the subject \"Me and My BFFs BACKUP\".  Follow the instructions in the email to restore the data.\n\nMethod 2:  Delete the App \"Me and My BFFs\" and install it again from the App store.  Doing this might restore the data for people, groups and members from apple backups.";
 
             NSMutableParagraphStyle *myParagraphStyle = [[NSMutableParagraphStyle alloc] init];
             myParagraphStyle.alignment                = NSTextAlignmentLeft;
@@ -1008,7 +1014,7 @@ nbn(45);
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  NSLog(@"in cellForRowAtIndexPath in HOME");
+//  NSLog(@"in cellForRowAtIndexPath in HOME");
 //  NSLog(@"indexPath.row =[%ld]",(long)indexPath.row );
 
     // create an NSString  we can use as the reuse identifier
@@ -1147,9 +1153,9 @@ nbn(45);
 //  NSLog(@"after set access view");
   
 
-  NSLog(@"nameOfGrpOrPer=[%@]",nameOfGrpOrPer);
-  NSLog(@"END of  cellForRowAtIndexPath in HOME");
-tn();
+//  NSLog(@"nameOfGrpOrPer=[%@]",nameOfGrpOrPer);
+//  NSLog(@"END of  cellForRowAtIndexPath in HOME");
+//tn();
     return cell;
 } // cellForRowAtIndexPath
 
@@ -1371,6 +1377,7 @@ tn();
                                   withRowAnimation: UITableViewRowAnimationFade
             ];
 
+            gbl_scrollToCorrectRow = 1;
             [self putHighlightOnCorrectRow ];
         });
 
@@ -1477,6 +1484,7 @@ tn();
                                   withRowAnimation: UITableViewRowAnimationFade
             ];
 
+            gbl_scrollToCorrectRow = 1;
             [self putHighlightOnCorrectRow ];
         });
 
@@ -1537,14 +1545,50 @@ tn();
 
 
 
--(IBAction) pressedSharePeople
+-(IBAction) pressedShareEntities    // People or Groups 
 {
-  NSLog(@"in   pressedSharePeople!  in HOME");
-} // end of pressedSharePeople
+  NSLog(@"in   pressedShareEntities! (People or Groups) in HOME");
 
--(IBAction) pressedBackupAll
+    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [myappDelegate mamb_beginIgnoringInteractionEvents ];
+
+  NSLog(@"sub_view removal #11, then goto selPerson");
+    dispatch_async(dispatch_get_main_queue(), ^{                                 // <===  
+
+        //  REMOVE OLD  gbl_toolbarHomeMaintenance 
+        //
+        for( UIView *sub_view in [ self.navigationController.view subviews ] ) { // remove subview (gbl_toolbarHomeMaintenance  - tag=34 ) , if existing
+  NSLog(@"sub_view =[%@]",sub_view );
+  NSLog(@"sub_view.tag =[%ld]",(long)sub_view.tag );
+            if(sub_view.tag == 34) {
+  NSLog(@" REMOVED OLD  gbl_toolbarHomeMaintenance  ");
+                [sub_view removeFromSuperview ];
+            }
+        }
+
+        // new segue "segueHomeToSelPerson"   to pick people or groups to share
+        [self performSegueWithIdentifier:@"segueHomeToSelPerson" sender:self]; //  
+//<.>
+
+    });
+} // end of pressedShareEntities
+
+
+-(IBAction) pressedBackupAll       // all People, all Groups
 {
   NSLog(@"in   pressedBackupAll!  in HOME");
+
+    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [myappDelegate mamb_beginIgnoringInteractionEvents ];
+   
+
+    [myappDelegate mamb_beginIgnoringInteractionEvents ];
+   
+
+    [myappDelegate doBackupAll ];  //  all People, all Groups  
+
+  NSLog(@"back from [myappDelegate doBackupAll ];  ");
+
 } // end of pressedBackupAll
 
 
@@ -1555,13 +1599,15 @@ tn();
 //tn();
     // if 2 rows have highlight, remove one
 
-    // If you only want to iterate through the visible cells, then use
-    NSArray *myVisibleCells = [self.tableView visibleCells];
-    for (UITableViewCell *myviscell in myVisibleCells) {
-//  NSLog(@"cell.textLabel.text=[%@]",myviscell.textLabel.text);
-//  NSLog(@"highlighted  butt  =[%d]",myviscell.highlighted );
-//  NSLog(@"selected     butt  =[%d]",myviscell.selected    );
-    }
+//
+//    // If you only want to iterate through the visible cells, then use
+//    NSArray *myVisibleCells = [self.tableView visibleCells];
+//    for (UITableViewCell *myviscell in myVisibleCells) {
+////  NSLog(@"cell.textLabel.text=[%@]",myviscell.textLabel.text);
+////  NSLog(@"highlighted  butt  =[%d]",myviscell.highlighted );
+////  NSLog(@"selected     butt  =[%d]",myviscell.selected    );
+//    }
+//
 
 //        if (myviscell.selected  == NO) {
 //            [myviscell setHighlighted: NO
@@ -1627,7 +1673,9 @@ tn();
    
   NSLog(@"sub_view #01");
     dispatch_async(dispatch_get_main_queue(), ^{                                 // <===  
-//        for( UIView *sub_view in [ self.view subviews ] ) { // remove subview (gbl_toolbarHomeMaintenance  - tag=34 ) , if existing
+
+        //  REMOVE OLD  gbl_toolbarHomeMaintenance 
+        //
         for( UIView *sub_view in [ self.navigationController.view subviews ] ) { // remove subview (gbl_toolbarHomeMaintenance  - tag=34 ) , if existing
   NSLog(@"sub_view =[%@]",sub_view );
   NSLog(@"sub_view.tag =[%ld]",(long)sub_view.tag );
@@ -1636,6 +1684,7 @@ tn();
                 [sub_view removeFromSuperview ];
             }
         }
+
         [self performSegueWithIdentifier:@"segueHomeToAddChange" sender:self]; //  
     });
 
@@ -1887,12 +1936,15 @@ nbn(55);
                     [self.tableView selectRowAtIndexPath:  foundIndexPath   // This puts in the light grey "highlight" indicating selection
                                                 animated:  YES
                                           scrollPosition:  UITableViewScrollPositionNone];
+
                     //[self.tableView scrollToNearestSelectedRowAtScrollPosition:  foundIndexPath.row 
                     [self.tableView scrollToNearestSelectedRowAtScrollPosition:  UITableViewScrollPositionMiddle
                                                                       animated:  YES];
 
                 });
             } // end of normal case here (highlight row)
+
+
 
             if ( [gbl_homeUseMODE isEqualToString: @"edit mode" ] ) {
                 [self.tableView setBackgroundColor: gbl_colorEditingBG];
@@ -2043,6 +2095,8 @@ NSLog(@"in viewDidAppear()  in HOME");
         gbl_ExampleData_show_switchChanged = 0;
 
         [self.tableView reloadData];
+
+        gbl_scrollToCorrectRow = 1;
         [self putHighlightOnCorrectRow ];
     }
    
@@ -2055,6 +2109,7 @@ NSLog(@"in viewDidAppear()  in HOME");
 
         [self.tableView reloadData];
 
+        gbl_scrollToCorrectRow = 1;
         [self putHighlightOnCorrectRow ];
     }
 
@@ -2399,8 +2454,6 @@ nbn(140);
 //            }
 //
 
-
-
 }  // end of   viewWillAppear
 
 
@@ -2451,7 +2504,7 @@ nbn(140);
                                                                    style: UIBarButtonItemStylePlain
                                                                 //style: UIBarButtonItemStyleBordered
                                                                   target: self
-                                                                  action: @selector(pressedSharePeople)];
+                                                                  action: @selector(pressedShareEntities)]; // People or Groups 
 
 //        UIBarButtonItem *backupAll   = [[UIBarButtonItem alloc]initWithTitle: @"Backup_by_email" 
         UIBarButtonItem *backupAll   = [[UIBarButtonItem alloc]initWithTitle: @"Backup" 
@@ -2818,6 +2871,7 @@ tn();trn("in doStuffOnEnteringForeground()   NOTIFICATION method     lastEntity 
     if ([gbl_lastSelectionType isEqualToString:@"group"])  _segEntityOutlet.selectedSegmentIndex = 0; // highlight correct entity in seg ctrl
     if ([gbl_lastSelectionType isEqualToString:@"person"]) _segEntityOutlet.selectedSegmentIndex = 1; // highlight correct entity in seg ctrl
 
+    gbl_scrollToCorrectRow = 1;
     [self putHighlightOnCorrectRow ];
 
    
@@ -2987,8 +3041,9 @@ nbn(162);
     NSInteger newRow;  newRow = 0;
     NSIndexPath *newIndexPath;
     NSInteger myCountOfRows;
-    NSString *pername, *grpname;
+    myCountOfRows = 0;
 
+//    NSString *pername, *grpname;
 //    if ([gbl_lastSelectionType isEqualToString:@"group"])  {
 //        myCountOfRows = gbl_arrayGrp.count;
 //        for (NSString *grp in gbl_arrayGrp) {
@@ -3051,6 +3106,7 @@ nbn(162);
     if (   [title isEqualToString:@"x"] )
     {  // position at row last used  (highlight row)
 nbn(151);
+        gbl_scrollToCorrectRow = 1;
         [self putHighlightOnCorrectRow ];
     }
 
@@ -3270,8 +3326,13 @@ nbn(300);
 //        }
 
 
-
+    // NSInteger gbl_scrollToCorrectRow;  // flag to set every time before calling [self putHighlightOnCorrectRow ] in HOME
+    //                                   // (do not want to scroll when hitting yellow/Edit and brown/Done)
+    gbl_scrollToCorrectRow = 0;
     [self putHighlightOnCorrectRow ];
+
+
+
 
 nbn(141);
     [self handleMaintenanceToolbar ];
@@ -3360,7 +3421,16 @@ nbn(311);
 //
 
 
+
+
+//    [self putHighlightOnCorrectRow ];
+
+    // NSInteger gbl_scrollToCorrectRow;  // flag to set every time before calling [self putHighlightOnCorrectRow ] in HOME
+    //                                   // (do not want to scroll when hitting yellow/Edit and brown/Done)
+    gbl_scrollToCorrectRow = 0;
     [self putHighlightOnCorrectRow ];
+
+
 
 nbn(142);
     [self handleMaintenanceToolbar ];
@@ -3757,6 +3827,8 @@ nbn(357);
   NSLog(@"gbl_lastSelectedPerson     =[%@]",gbl_lastSelectedPerson);
   NSLog(@"gbl_lastSelectedGroup      =[%@]",gbl_lastSelectedGroup );
   NSLog(@"gbl_ExampleData_show       =[%@]",gbl_ExampleData_show );
+  NSLog(@"gbl_scrollToCorrectRow     =[%ld]",(long)gbl_scrollToCorrectRow );
+
 
 
     if ([gbl_lastSelectionType isEqualToString:@"person"])
@@ -3793,10 +3865,8 @@ nbn(357);
         idxGrpOrPer = -1;   // zero-based idx
 
         if ([gbl_lastSelectionType isEqualToString:@"group"]) {
-nbn(30);
 
             if (gbl_numRowsToDisplayFor_grp == 0) return;
-nbn(31);
 
             // Check for gbl_lastSelectedPerson being example data person
             // and example data being turned off.
@@ -3805,13 +3875,11 @@ nbn(31);
             if ([gbl_ExampleData_show isEqualToString: @"no"]
                 && [gbl_lastSelectedGroup hasPrefix: @"~" ]    )
             {
-nbn(32);
                // set gbl_lastSelectedPerson  to whoever is in top row
                // put top row on top of tableview
                self.tableView.contentOffset = CGPointMake(0, 0 - self.tableView.contentInset.top);
                return;
             }
-nbn(33);
 
             for (id eltGrp in gbl_arrayGrp) { // find index of gbl_lastSelectedGroup (like "~Family") in gbl_arrayGrp
               idxGrpOrPer = idxGrpOrPer + 1;
@@ -3834,22 +3902,38 @@ nbn(33);
                 NSIndexPath *foundIndexPath = [NSIndexPath indexPathForRow:idxGrpOrPer inSection:0];
         //tn();trn("SCROLL 111111111111111111111111111111111111111111111111111111111");
 
-                // select the row in UITableView
-                // This puts in the light grey "highlight" indicating selection
-                [self.tableView selectRowAtIndexPath: foundIndexPath 
-                                            animated: YES
-                                      scrollPosition: UITableViewScrollPositionNone];
-                //[self.tableView scrollToNearestSelectedRowAtScrollPosition: foundIndexPath.row 
-                [self.tableView scrollToNearestSelectedRowAtScrollPosition: UITableViewScrollPositionMiddle
-                                                          animated: YES];
+                if (gbl_scrollToCorrectRow == 1) {
+                    // select the row in UITableView
+                    // This puts in the light grey "highlight" indicating selection
+                    [self.tableView selectRowAtIndexPath: foundIndexPath 
+                                                animated: YES
+                                          scrollPosition: UITableViewScrollPositionMiddle];
+                } else {
+                    // select the row in UITableView
+                    // This puts in the light grey "highlight" indicating selection
+                    [self.tableView selectRowAtIndexPath: foundIndexPath 
+                                                animated: YES
+                                          scrollPosition: UITableViewScrollPositionNone];
+                }
+
+                //  [self.tableView scrollToNearestSelectedRowAtScrollPosition: UITableViewScrollPositionMiddle
+                //                                                    animated: YES];
+
+                // NSInteger gbl_scrollToCorrectRow;  // flag to set every time before calling [self putHighlightOnCorrectRow ] in HOME
+                                   // (do not want to scroll when hitting yellow/Edit and brown/Done)
+                if (gbl_scrollToCorrectRow == 1) {
+                    [self.tableView scrollToNearestSelectedRowAtScrollPosition: UITableViewScrollPositionMiddle
+                                                                      animated: YES];
+                }
             });
-        }
+
+        }   // if ([gbl_lastSelectionType isEqualToString:@"group"]) {
+
+
 
         if ([gbl_lastSelectionType isEqualToString:@"person"]) {
 
-nbn(40);
             if (gbl_numRowsToDisplayFor_per == 0) return;
-nbn(41);
 
             // Check for gbl_lastSelectedPerson being example data person
             // and example data being turned off.
@@ -3858,13 +3942,11 @@ nbn(41);
             if ([gbl_ExampleData_show isEqualToString: @"no"]
                 && [gbl_lastSelectedPerson hasPrefix: @"~" ] )
             {
-nbn(42);
                // set gbl_lastSelectedPerson  to whoever is in top row
                // put top row on top of tableview
                self.tableView.contentOffset = CGPointMake(0, 0 - self.tableView.contentInset.top);
                return;
             }
-nbn(43);
 
 //            NSLog(@"gbl_lastSelectedPerson=%@",gbl_lastSelectedPerson);
             
@@ -3872,8 +3954,8 @@ nbn(43);
 
                 for (id eltPer in gbl_arrayPer) {  // find index of gbl_lastSelectedPerson (like "~Dave") in gbl_arrayPer
                     idxGrpOrPer = idxGrpOrPer + 1; 
-              NSLog(@"idxGrpOrPer =%ld", (long)idxGrpOrPer );
-              NSLog(@"eltPer=%@", eltPer);
+//              NSLog(@"idxGrpOrPer =%ld", (long)idxGrpOrPer );
+//              NSLog(@"eltPer=%@", eltPer);
 
                   NSCharacterSet *mySeparators = [NSCharacterSet characterSetWithCharactersInString:@"|"];
                   arrayGrpOrper  = [eltPer componentsSeparatedByCharactersInSet: mySeparators];
@@ -3895,14 +3977,33 @@ nbn(43);
 
                     // select the row in UITableView
                     // This puts in the light grey "highlight" indicating selection
-                    [self.tableView selectRowAtIndexPath: foundIndexPath 
-                                                animated: YES
-                                          scrollPosition: UITableViewScrollPositionMiddle];
-        //                                  scrollPosition: UITableViewScrollPositionNone];
-                    //[self.tableView scrollToNearestSelectedRowAtScrollPosition: foundIndexPath.row 
 
-                    [self.tableView scrollToNearestSelectedRowAtScrollPosition: UITableViewScrollPositionMiddle
-                                                                      animated: YES];
+                    if (gbl_scrollToCorrectRow == 1) {
+                        [self.tableView selectRowAtIndexPath: foundIndexPath 
+                                                    animated: YES
+                                              scrollPosition: UITableViewScrollPositionMiddle ];
+            //                                  scrollPosition: UITableViewScrollPositionNone];
+
+                    } else {
+                        [self.tableView selectRowAtIndexPath: foundIndexPath 
+                                                    animated: YES
+                                              scrollPosition: UITableViewScrollPositionNone ];
+                    }
+
+
+//                    [self.tableView scrollToNearestSelectedRowAtScrollPosition: UITableViewScrollPositionMiddle
+//                                                                      animated: YES];
+
+                    if (gbl_scrollToCorrectRow == 1) {
+                        // NSInteger gbl_scrollToCorrectRow;  // flag to set every time before calling [self putHighlightOnCorrectRow ] in HOME
+                        // (do not want to scroll when hitting yellow/Edit and brown/Done)
+                        [self.tableView scrollToNearestSelectedRowAtScrollPosition: UITableViewScrollPositionMiddle
+                                                                          animated: YES];
+                    }
+
+
+
+
                 });
 
             } while (FALSE); // END highlight lastEntity row in tableview

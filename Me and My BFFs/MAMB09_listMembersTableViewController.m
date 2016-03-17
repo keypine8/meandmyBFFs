@@ -72,7 +72,7 @@ tn();
         UIButton *myInvisibleButton       = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
 //        UIButton *myInvisibleButton       = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
         myInvisibleButton.backgroundColor = [UIColor clearColor];
-        UIBarButtonItem *mySpacerNavItem  = [[UIBarButtonItem alloc] initWithCustomView: myInvisibleButton];
+//        UIBarButtonItem *mySpacerNavItem  = [[UIBarButtonItem alloc] initWithCustomView: myInvisibleButton];
 
         // setup for TWO-LINE NAV BAR TITLE
 
@@ -525,7 +525,7 @@ NSLog(@"in viewDidAppear()  in list  members");
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 tn();
-  NSLog(@"in cellForRowAtIndexPath");
+//  NSLog(@"in cellForRowAtIndexPath");
 //  NSLog(@"row=[%ld]",(long)indexPath.row);
     //    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
 

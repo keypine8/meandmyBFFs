@@ -924,7 +924,7 @@ NSLog(@"in viewDidAppear()");
 
 -(bool) anySubViewScrolling: (UIView*)view
 {
-  NSLog(@"in anySubViewScrolling !!");
+    //  NSLog(@"in anySubViewScrolling  in sel date !!");
     if( [ view isKindOfClass:[ UIScrollView class ] ] ) {
         UIScrollView* scroll_view = (UIScrollView*) view;
         if( scroll_view.dragging || scroll_view.decelerating ) return true;

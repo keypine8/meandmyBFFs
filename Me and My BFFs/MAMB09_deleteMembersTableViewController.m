@@ -30,6 +30,12 @@ tn();
     NSLog(@"in DELEtE MEMBEFRS   viewDidLoad!");
 
 
+    // put selected names to delete into array  gbl_selectedMembers_toDel  
+    //
+    [gbl_selectedMembers_toDel  removeAllObjects];
+     gbl_selectedMembers_toDel  = [[NSMutableArray alloc] init];
+        
+
 
     [self.tableView setEditing:YES animated:YES];
 
@@ -74,14 +80,14 @@ tn();
         UIButton *myInvisibleButton       = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
 //        UIButton *myInvisibleButton       = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
         myInvisibleButton.backgroundColor = [UIColor clearColor];
-        UIBarButtonItem *mySpacerNavItem  = [[UIBarButtonItem alloc] initWithCustomView: myInvisibleButton];
+//        UIBarButtonItem *mySpacerNavItem  = [[UIBarButtonItem alloc] initWithCustomView: myInvisibleButton];
 
         // setup for TWO-LINE NAV BAR TITLE
 
         //    UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 11, 44)];  // 3rd arg is horizontal length
 //        UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 33, 44)];  // 3rd arg is horizontal length
-        UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 55, 44)];  // 3rd arg is horizontal length
-        UIBarButtonItem *mySpacerForTitle = [[UIBarButtonItem alloc] initWithCustomView:spaceView];
+//        UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 55, 44)];  // 3rd arg is horizontal length
+//        UIBarButtonItem *mySpacerForTitle = [[UIBarButtonItem alloc] initWithCustomView:spaceView];
 
         UILabel *myNavBarLabel      = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 480.0, 44.0)];
 
@@ -252,20 +258,40 @@ NSLog(@"in viewDidAppear()");
 
 
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+  NSLog(@"in didSelectRowAtIndexPath! in sel new mbr");
+    UITableViewCell* cell   = [tableView cellForRowAtIndexPath:indexPath];
+//    cell.accessoryType      = UITableViewCellAccessoryCheckmark;
+    NSString *tmpMemberName = cell.textLabel.text;
+    [gbl_selectedMembers_toDel  addObject: tmpMemberName ];          //  Person name for pick
+
+}
+
+- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+  NSLog(@"in didDeselectRowAtIndexPath! in sel new mbr");
+    UITableViewCell* cell   = [tableView cellForRowAtIndexPath:indexPath];
+//    cell.accessoryType      = UITableViewCellAccessoryNone;
+    NSString *tmpMemberName = cell.textLabel.text;
+    [gbl_selectedMembers_toDel  removeObject: tmpMemberName ];          //  Person name for pick
+}
+
+
+
 - (IBAction)pressedSaveDone:(id)sender
 {
   NSLog(@"in pressedSAVEDONE!!");
-
-    // put selected names to delete into array  gbl_selectedMembers_toDel  
+    // PROBLEM:  CANNOT TRUST  [self.tableView indexPathsForSelectedRows] when scrolling off screen
+    // therefore,  use gbl_selectedMembers_toAdd  
     //
-    [gbl_selectedMembers_toDel  removeAllObjects];
-     gbl_selectedMembers_toDel  = [[NSMutableArray alloc] init];
-        
-    for (id idxpath in [self.tableView indexPathsForSelectedRows] )
-    {
-        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath: idxpath];
-        [gbl_selectedMembers_toDel  addObject: cell.textLabel.text ];
-    }
+    //    for (id idxpath in [self.tableView indexPathsForSelectedRows] )
+    //    {
+    //        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath: idxpath];
+    //        [gbl_selectedMembers_toDel  addObject: cell.textLabel.text ];
+    //    }
+
+
 
     // sort array  gbl_selectedMembers_toDel 
     if (gbl_selectedMembers_toDel)  { [gbl_selectedMembers_toDel  sortUsingSelector: @selector(caseInsensitiveCompare:)]; }
@@ -292,7 +318,7 @@ NSLog(@"in viewDidAppear()");
     //     having group  = gbl_lastSelectedGroup
     //        and member = name in gbl_selectedMembers_toDel
     //
-    NSInteger arrayIndexToDelete;
+//    NSInteger arrayIndexToDelete;
     for (id del_me_name  in  gbl_selectedMembers_toDel)
     {
 
@@ -336,6 +362,7 @@ NSLog(@"in viewDidAppear()");
     });
 
 } // pressedSaveDone
+
 
 
 - (IBAction)pressedCancel:(id)sender     // this is the Cancel on left of Nav Bar

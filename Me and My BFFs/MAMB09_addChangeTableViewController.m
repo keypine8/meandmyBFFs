@@ -225,6 +225,20 @@ NSLog(@"in ADD CHANGE  viewDidLoad!");
   NSLog(@"gbl_lastSelectedPerson=[%@]",gbl_lastSelectedPerson);
 
 
+    if (   [gbl_homeEditingState  isEqualToString: @"add" ])   {
+        NSInteger numper;
+        numper = 0;
+        for (NSString *perrec in  gbl_arrayPer) {
+            if ( [perrec hasPrefix: @"~" ] ) continue;
+            numper = numper + 1;
+        }
+        if (numper >= gbl_MAX_persons) {
+  NSLog(@"numper          =[%ld]",(long)numper );
+  NSLog(@"gbl_MAX_persons =[%ld]",(long)gbl_MAX_persons);
+  NSLog(@"put up dialogue  Reached Maximum Number of People");        
+        }
+    }
+
 
   NSLog(@"self.tableView.userInteractionEnabled 1 in add/change viewDidLoad=[%d]",self.tableView.userInteractionEnabled );
 
@@ -250,8 +264,10 @@ NSLog(@"in ADD CHANGE  viewDidLoad!");
     {
         self.tableView.userInteractionEnabled =  NO;
     }
-    if (   [gbl_homeEditingState  isEqualToString: @"add" ])
+//    if (   [gbl_homeEditingState  isEqualToString: @"add" ])
+    if (   [gbl_homeUseMODE  isEqualToString: @"edit mode" ])    // not "regular mode"
     {
+trn("got rid of picker input view");
         self.tableView.userInteractionEnabled = YES;
 
         // gbl_mycitySearchString.inputView = nil ;          // this has to be here to put up keyboard
@@ -493,6 +509,17 @@ nbn(881);
                                                                      action: @selector( oncityInputViewPicklistButton: )
         ];
 
+//        [self.outletToButtonToGetPicklist setTitleTextAttributes: @{
+//    //                    NSFontAttributeName: [UIFont fontWithName:@"HelveticaNeue-Bold" size: 18.0],
+//    //                    NSFontAttributeName: [UIFont fontWithName:@"Menlo-Bold" size: 18.0],
+////                        NSFontAttributeName: [UIFont fontWithName:@"Menlo-Bold" size: 19.0],
+//                        NSFontAttributeName: [UIFont fontWithName:@"HelveticaNeue" size: 18.0],
+//             NSForegroundColorAttributeName: [UIColor blueColor]
+//        } forState: UIControlStateNormal];
+//
+
+
+
 //        gbl_dateButtonToClearKeyboard = [[UIBarButtonItem alloc]initWithTitle: @"Clear Birth Date"  
         gbl_dateButtonToClearKeyboard = [[UIBarButtonItem alloc]initWithTitle: @"Clear"  
                                                                         style: UIBarButtonItemStylePlain
@@ -500,10 +527,17 @@ nbn(881);
                                                                        action: @selector( onDateInputViewClearButton: )
         ];
 
+
+
         //        self.outletToButtonToGetPicklist.tintColor = [UIColor yellowColor];
         //        self.outletToButtonToGetPicklist.tintColor = [UIColor redColor];
-                self.outletToButtonToGetPicklist.tintColor = [UIColor blackColor];
-        //  decided to leave regular blue color
+//                self.outletToButtonToGetPicklist.tintColor = [UIColor blackColor];
+//                self.outletToButtonToGetPicklist.tintColor = [UIColor grayColor];
+//                self.outletToButtonToGetPicklist.tintColor = [UIColor blueColor];
+                self.outletToButtonToGetPicklist.tintColor = gbl_color_cAplDarkerBlue;
+
+
+
 
         // Create a 1x1 pixel image with the color you prefer.
         // In this case this image's name is "icons_gb.png".
@@ -2083,7 +2117,7 @@ NSLog(@"end of  oncityInputViewKeyboardButton!"); tn();
 
 -(bool) anySubViewScrolling: (UIView*)view
 {
-  NSLog(@"in anySubViewScrolling !!");
+    //  NSLog(@"in anySubViewScrolling   in add / change !!");
     if( [ view isKindOfClass:[ UIScrollView class ] ] ) {
         UIScrollView* scroll_view = (UIScrollView*) view;
         if( scroll_view.dragging || scroll_view.decelerating ) return true;
@@ -2468,7 +2502,7 @@ nbn(510);
 
 
 
-                // set the current values in each field
+                // set the current values in each screen field
 
                 if ([gbl_myname.text       isEqualToString: gbl_initPromptName ] ) gbl_DisplayName = @"";
                 else                                                               gbl_DisplayName = gbl_myname.text;
@@ -2748,11 +2782,8 @@ nbn(1);
 //                                               [view dismissViewControllerAnimated: YES  completion: nil];
 //                [self.navigationController popViewControllerAnimated: YES]; // "Back" out of save dialogue
 //                [myActionSheet popViewControllerAnimated: YES]; // "Back" out of save dialogue
-
                                                [self doActualPersonSave ];
-
-                                               [myActionSheet dismissViewControllerAnimated: YES  completion: nil];
-
+                                               [myActionSheet dismissViewControllerAnimated: YES  completion: nil];
                                            }
                     ]
                 ];
@@ -2767,10 +2798,8 @@ nbn(2);
                                                gbl_kindOfSave = @"high security save";   // or  "regular save"
   NSLog(@"gbl_kindOfSave 12 =[%@]",gbl_kindOfSave);
 //                                               [self doMeInsideBlock ];
-
                                                [self doActualPersonSave ];
-
-                                               [myActionSheet dismissViewControllerAnimated: YES  completion: nil];
+                                               [myActionSheet dismissViewControllerAnimated: YES  completion: nil];
 //                                               [self dismissViewControllerAnimated: YES completion: ^{   } ];
                                            }
                     ]
@@ -3714,7 +3743,7 @@ NSLog(@"=gbl_myCitySoFar %@",gbl_myCitySoFar );
   NSLog(@"in KB in NAME field");
 
         NSString *myAlertTitle;
-        NSString *myMaxMsg;
+//        NSString *myMaxMsg;
 
 //        myAlertTitle = [NSString stringWithFormat:@"Maximum %ld Characters", (long)gbl_MAX_lengthOfName ];
 //        if ( [gbl_fromHomeCurrentSelectionType isEqualToString: @"person"] ) myMaxMsg =  @"for Person Name";
@@ -4117,7 +4146,7 @@ NSLog(@"in textFieldShouldReturn:");
 //    UIFont *myFontSmaller2 = [UIFont fontWithName: @"Menlo" size: 15.0];
 //    UIFont *myFontSmaller2 = [UIFont fontWithName: @"Menlo" size: 14.0];
     UIFont *myFontSmaller2 = [UIFont fontWithName: @"Menlo" size: 16.0];
-    UIFont *myFontSmaller14 = [UIFont fontWithName: @"Menlo" size: 14.0];
+//    UIFont *myFontSmaller14 = [UIFont fontWithName: @"Menlo" size: 14.0];
 
     // invisible button for taking away the disclosure indicator
     //
@@ -4353,7 +4382,8 @@ nbn(3);
 
 nbn(5);
                 return cell;
-            }
+
+            }   // if ([gbl_kindOfSave isEqualToString: @"high security save" ] )
 nbn(6);
 
 
@@ -5057,7 +5087,8 @@ tn();
 //    ALWAYS     shows first city starting with typed sofar (in 3 city fields)
 //    SOMETIMES  unhides inputview toolbar  right button "Picklist >"
 //
-- (void) showCityProvCountryForTypedInCity: (NSString *) arg_citySoFar  {  // either first one in 3 labels or picklist uitable
+- (void) showCityProvCountryForTypedInCity: (NSString *) arg_citySoFar     // either first one in 3 labels or picklist uitable
+{
    
   NSLog(@"in showCityProvCountryForTypedInCity !!");
   NSLog(@"arg_citySoFar  =[%@]",arg_citySoFar  );

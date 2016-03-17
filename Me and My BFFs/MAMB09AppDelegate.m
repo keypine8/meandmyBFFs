@@ -11,6 +11,33 @@
 #import "NSData+MAMB09_NSData_encryption.h"
 
 
+//  -----   turning off logging for production
+//
+//  FOR  turning off NSLog
+//  in file "Me and My BFFs-Prefix.pch"  in xcode folder "supporting files"
+//  at the end of the file
+//
+//  have this for doing logging:
+//  #define NSLog(...)
+//
+//  have this for doing turning OFF logging:
+//  // #define NSLog(...)
+//
+//
+//  FOR turning off  rkdebug  functions for C
+//  in rkdebug.c
+//  around line 108:
+//
+//  have this for doing logging:
+//     int RKDEBUG=1;  /* =0 turns off output in all these debug functions */
+//
+//  have this for doing turning OFF logging:
+//     int RKDEBUG=0;  /* =0 turns off output in all these debug functions */
+//
+// end of  -----   turning off logging for production
+
+
+
 @implementation MAMB09AppDelegate
 
 
@@ -206,7 +233,10 @@
 //    gbl_bgColor_brownHdr  = [UIColor colorWithRed:225.0/255.0 green:200.0/255.0 blue:167.0/255.0 alpha:1.0]; // lighter burlywood  
 //    gbl_bgColor_brownHdr  = [UIColor colorWithRed:250.0/255.0 green:232.0/255.0 blue:207.0/255.0 alpha:1.0]; // much lighter burlywood  
 //    gbl_bgColor_brownHdr  = [UIColor colorWithRed:250.0/255.0 green:232.0/255.0 blue:207.0/255.0 alpha:1.0]; // much lighter burlywood  
-//    gbl_bgColor_brownHdr  = [UIColor colorWithRed:237.0/255.0 green:216.0/255.0 blue:187.0/255.0 alpha:1.0]; // much lighter burlywood  
+
+    gbl_bgColor_brownSwitch  = [UIColor colorWithRed:237.0/255.0 green:216.0/255.0 blue:187.0/255.0 alpha:1.0]; // much lighter burlywood  
+    gbl_bgColor_brownSwitch  = [UIColor colorWithRed:237.0/255.0 green:222.0/255.0 blue:187.0/255.0 alpha:1.0]; // much lighter burlywood  
+
 //    gbl_bgColor_brownHdr  = [UIColor colorWithRed:221.0/255.0 green:200.0/255.0 blue:175.0/255.0 alpha:1.0]; // much lighter burlywood  
 
 //    gbl_bgColor_brownHdr  = [UIColor colorWithRed:200.0/255.0 green:180.0/255.0 blue:158.0/255.0 alpha:1.0]; // much lighter burlywood  
@@ -261,15 +291,33 @@
                                                             target: self
                                                             action: nil
     ];
+
     gbl_title_cityPicklist = [[UIBarButtonItem alloc]initWithTitle: @"Pick City"
                                                               style: UIBarButtonItemStylePlain
                               //  style: UIBarButtonItemStyleBordered
                                                             target: self
                                                             action: nil ];
+//    [gbl_title_cityPicklist setTitleTextAttributes: @{
+//                    NSFontAttributeName: [UIFont fontWithName:@"HelveticaNeue-Bold" size: 18.0],
+//                    NSFontAttributeName: [UIFont fontWithName:@"Menlo-Bold" size: 18.0],
+//                    NSFontAttributeName: [UIFont fontWithName:@"Menlo" size: 19.0],
+//         NSForegroundColorAttributeName: [UIColor greenColor]
+//         NSForegroundColorAttributeName: [UIColor blackColor]
+//    } forState:UIControlStateNormal];
+
     gbl_title_cityKeyboard = [[UIBarButtonItem alloc]initWithTitle: @"Type City Name"
                                                              style: UIBarButtonItemStylePlain
                                                             target: self
                                                             action: nil ];
+    [gbl_title_cityKeyboard setTitleTextAttributes: @{
+//                    NSFontAttributeName: [UIFont fontWithName:@"HelveticaNeue-Bold" size: 18.0],
+//                    NSFontAttributeName: [UIFont fontWithName:@"Menlo-Bold" size: 18.0],
+                    NSFontAttributeName: [UIFont fontWithName:@"Menlo-Bold" size: 19.0],
+         NSForegroundColorAttributeName: [UIColor grayColor]
+    } forState:UIControlStateNormal];
+
+
+
     gbl_title_birthDate    = [[UIBarButtonItem alloc]initWithTitle: @"Pick Birth Date"
                                                              style: UIBarButtonItemStylePlain
                               //style: UIBarButtonItemStyleBordered
@@ -664,8 +712,16 @@
     gbl_ThresholdshortTblLineLen = 17;  // nameA  + nameB more than this , then move benchmark label
     
     gbl_MAX_groups          =  50;   // max in app 
-    gbl_MAX_persons         = 250;   // max in app 
-    gbl_MAX_personsInGroup  = 250;   // max in a Group
+
+    // for C max  see  
+    //   grpdoc.c    MAX_PERSONS_IN_GROUP
+    //   gtphtm.c    MAX_PERSONS_IN_GROUP
+    //   incocoa.c   MAX_PERSONS_IN_GROUP
+    //
+//    gbl_MAX_persons         = 250;   // max in app 
+//    gbl_MAX_personsInGroup  = 250;   // max in a Group
+    gbl_MAX_persons         = 200;   // max in app 
+    gbl_MAX_personsInGroup  = 200;   // max in a Group
 
     gbl_MAX_lengthOfName    =  15;   // 15 (applies to Person and Group both)
     gbl_MAX_lengthOfCity    =  30;   
@@ -683,6 +739,9 @@
 
 
     gbl_numCitiesToTriggerPicklist = 25;
+    gbl_numRowsToTurnOnIndexBar    = 50; // default - actual set elsewhere (varies by screen size)
+
+    gbl_numMembersToTriggerSpinner = 50;    // best match rpt  (50 = 1 sec)
 
     gbl_haveSetUpHomeNavButtons    =  0;      // beginning default is no   0=n, 1=y
 
@@ -739,27 +798,176 @@
     //     - as a side effect, in method gcy, when y,m,d is written to file when one of them changes 
 
 
+//    gbl_arrayTEST = // field 11= locked or not 
+//    @[
+//      @"ada|8|29|1946|1|30|0|Toronto|Ontario|Canada||",
+//      @"alex|4|8|1973|12|1|1|Toronto|Ontario|Canada||",
+//      @"alexei|6|22|1964|4|10|0|Toronto|Ontario|Canada||",
+//      @"andy2|5|15|1961|2|0|0|Toronto|Ontario|Canada||",
+//      @"barbara|4|23|1935|5|45|0|Toronto|Ontario|Canada||",
+//      @"barry|4|13|1950|0|53|1|Toronto|Ontario|Canada||",
+//      @"bb|9|1|1933|12|1|1|Toronto|Ontario|Canada||",
+//      @"ben|8|17|1960|3|15|1|Toronto|Ontario|Canada||",
+//      @"bia|8|4|1971|10|30|1|Toronto|Ontario|Canada||",
+//      @"bob|7|19|1935|1|55|0|Toronto|Ontario|Canada||",
+//      @"borje|5|24|1930|10|30|0|Toronto|Ontario|Canada||",
+//      @"brenda|10|31|1956|11|30|1|Toronto|Ontario|Canada||",
+//      @"brigitte|11|15|1945|8|22|0|Toronto|Ontario|Canada||",
+//      @"charley|7|16|1939|12|1|1|Toronto|Ontario|Canada||",
+//      @"chris|2|3|1959|12|1|1|Toronto|Ontario|Canada||",
+//      @"cristian|5|17|1975|12|1|1|Toronto|Ontario|Canada||",
+//      @"dan|12|19|1957|11|4|0|Toronto|Ontario|Canada||",
+//      @"doug|8|14|1963|7|30|1|Toronto|Ontario|Canada||",
+//      @"dragana|10|19|1968|8|20|0|Toronto|Ontario|Canada||",
+//      @"edwin|9|20|1969|4|0|0|Toronto|Ontario|Canada||",
+//      @"eleanor|2|3|1936|6|7|0|Toronto|Ontario|Canada||",
+//      @"gerry Lipat|10|10|1963|12|1|1|Toronto|Ontario|Canada||",
+//      @"gordana|2|23|1954|6|15|0|Toronto|Ontario|Canada||",
+//      @"herc|12|15|1966|12|1|1|Toronto|Ontario|Canada||",
+//      @"hicham|6|15|1959|12|1|1|Toronto|Ontario|Canada||",
+//      @"irina|8|21|1971|1|20|0|Toronto|Ontario|Canada||",
+//      @"joan|10|23|1929|7|0|0|Toronto|Ontario|Canada||",
+//      @"johnH|3|13|1959|4|10|1|Toronto|Ontario|Canada||",
+//      @"joris|4|13|1964|12|1|1|Toronto|Ontario|Canada||",
+//      @"jose|10|2|1959|4|0|1|Toronto|Ontario|Canada||",
+//      @"juta|7|19|1965|7|25|0|Toronto|Ontario|Canada||",
+//      @"karen|4|3|1949|5|45|1|Toronto|Ontario|Canada||",
+//      @"kaz|8|4|1964|5|34|0|Toronto|Ontario|Canada||",
+//      @"ken|9|21|1961|5|0|1|Toronto|Ontario|Canada||",
+//      @"kerstin|9|14|1946|5|25|0|Toronto|Ontario|Canada||",
+//      @"kevin|11|13|1960|12|1|1|Toronto|Ontario|Canada||",
+//      @"lance|9|15|1967|8|1|1|Toronto|Ontario|Canada||",
+//      @"larry|3|28|1947|5|15|0|Toronto|Ontario|Canada||",
+//      @"leo|6|17|1949|11|0|0|Toronto|Ontario|Canada||",
+//      @"luis|5|30|1967|0|30|1|Toronto|Ontario|Canada||",
+//      @"ma|4|4|1908|12|1|1|Toronto|Ontario|Canada||",
+//      @"mak|11|25|1960|12|1|1|Toronto|Ontario|Canada||",
+//      @"marie|8|22|1964|4|54|1|Toronto|Ontario|Canada||",
+//      @"marilyn|8|16|1959|11|0|0|Toronto|Ontario|Canada||",
+//      @"markgolf|1|24|1942|3|0|0|Toronto|Ontario|Canada||",
+//      @"marknesbit|10|13|1964|3|30|1|Toronto|Ontario|Canada||",
+//      @"matti|8|17|1947|8|5|0|Toronto|Ontario|Canada||",
+//      @"mihaela|7|17|1974|12|1|1|Toronto|Ontario|Canada||",
+//      @"mike2|5|2|1956|9|58|1|Toronto|Ontario|Canada||",
+//      @"mosy|12|16|1932|6|0|1|Toronto|Ontario|Canada||",
+//      @"muru|5|17|1944|7|0|1|Toronto|Ontario|Canada||",
+//      @"nicky|7|8|1975|5|30|1|Toronto|Ontario|Canada||",
+//      @"nina|4|12|1929|5|30|0|Toronto|Ontario|Canada||",
+//      @"olivia|11|23|1965|0|30|0|Toronto|Ontario|Canada||",
+//      @"pa|6|26|1892|12|1|1|Toronto|Ontario|Canada||",
+//      @"pat tennis|9|21|1958|3|30|1|Toronto|Ontario|Canada||",
+//      @"paul|10|3|1933|3|0|0|Toronto|Ontario|Canada||",
+//      @"renee|12|26|1953|3|15|1|Toronto|Ontario|Canada||",
+//      @"richard|9|3|1947|9|33|1|Toronto|Ontario|Canada||",
+//      @"rik|11|2|1958|9|30|0|Toronto|Ontario|Canada||",
+//      @"rohit|1|16|1971|0|55|1|Toronto|Ontario|Canada||",
+//      @"ruth|3|24|1923|1|30|1|Toronto|Ontario|Canada||",
+//      @"sam|12|02|1974|8|30|0|Toronto|Ontario|Canada||",
+//      @"sarwan|5|15|1965|12|1|1|Toronto|Ontario|Canada||",
+//      @"scott|2|28|1957|3|0|1|Toronto|Ontario|Canada||",
+//      @"steve skipper|4|22|1960|1|30|0|Toronto|Ontario|Canada||",
+//      @"ulli|4|27|1952|5|30|0|Toronto|Ontario|Canada||",
+//      @"vesna|6|27|1968|10|15|1|Toronto|Ontario|Canada||",
+//      @"victor|10|22|1984|11|23|0|Toronto|Ontario|Canada||",
+//      @"winnie|2|26|1962|0|30|0|Toronto|Ontario|Canada||",
+//      @"yogi|7|18|1959|4|0|0|Toronto|Ontario|Canada||",
+//    ];
+//
 
     gbl_arrayExaGrp =   // field 1=name-of-group  field 2=locked-or-not
     @[
       lcl_recOfAllPeopleIhaveAdded,     // gbl_nameOfGrpHavingAllPeopleIhaveAdded
+      @"folks||",
       @"Long Names||",
       @"Short Names||",
+      @"WWWWWWWWWWWWWWW||",
       @"~My Family||",
       @"~Swim Team||",
     ];
 
-    gbl_arrayExaPer = // field 11= locked or not   HAVE TO BE PRE-SORTED
+    gbl_arrayExaPer = // field 11= locked or not  DO NOT HAVE TO BE PRE-SORTED  (sorted on reading back into arrays)
     @[
+      @"ada|8|29|1946|1|30|0|Toronto|Ontario|Canada||",
+      @"alex|4|8|1973|12|1|1|Toronto|Ontario|Canada||",
+      @"alexei|6|22|1964|4|10|0|Toronto|Ontario|Canada||",
+      @"andy2|5|15|1961|2|0|0|Toronto|Ontario|Canada||",
+      @"barbara|4|23|1935|5|45|0|Toronto|Ontario|Canada||",
+      @"barry|4|13|1950|12|53|1|Toronto|Ontario|Canada||",
+      @"bb|9|1|1933|12|1|1|Toronto|Ontario|Canada||",
+      @"ben|8|17|1960|3|15|1|Toronto|Ontario|Canada||",
+      @"bia|8|4|1971|10|30|1|Toronto|Ontario|Canada||",
+      @"bob|7|19|1935|1|55|0|Toronto|Ontario|Canada||",
+      @"borje|5|24|1930|10|30|0|Toronto|Ontario|Canada||",
+      @"brenda|10|31|1956|11|30|1|Toronto|Ontario|Canada||",
+      @"brigitte|11|15|1945|8|22|0|Toronto|Ontario|Canada||",
+      @"charley|7|16|1939|12|1|1|Toronto|Ontario|Canada||",
+      @"chris|2|3|1959|12|1|1|Toronto|Ontario|Canada||",
+      @"cristian|5|17|1975|12|1|1|Toronto|Ontario|Canada||",
+      @"dan|12|19|1957|11|4|0|Toronto|Ontario|Canada||",
+      @"doug|8|14|1963|7|30|1|Toronto|Ontario|Canada||",
+      @"dragana|10|19|1968|8|20|0|Toronto|Ontario|Canada||",
+      @"edwin|9|20|1969|4|0|0|Toronto|Ontario|Canada||",
+      @"eleanor|2|3|1936|6|7|0|Toronto|Ontario|Canada||",
+      @"gerry Lipat|10|10|1963|12|1|1|Toronto|Ontario|Canada||",
+      @"gordana|2|23|1954|6|15|0|Toronto|Ontario|Canada||",
+      @"herc|12|15|1966|12|1|1|Toronto|Ontario|Canada||",
+      @"hicham|6|15|1959|12|1|1|Toronto|Ontario|Canada||",
+      @"irina|8|21|1971|1|20|0|Toronto|Ontario|Canada||",
+      @"joan|10|23|1929|7|0|0|Toronto|Ontario|Canada||",
+      @"johnH|3|13|1959|4|10|1|Toronto|Ontario|Canada||",
+      @"joris|4|13|1964|12|1|1|Toronto|Ontario|Canada||",
+      @"jose|10|2|1959|4|0|1|Toronto|Ontario|Canada||",
+      @"juta|7|19|1965|7|25|0|Toronto|Ontario|Canada||",
+      @"karen|4|3|1949|5|45|1|Toronto|Ontario|Canada||",
+      @"kaz|8|4|1964|5|34|0|Toronto|Ontario|Canada||",
+      @"ken|9|21|1961|5|0|1|Toronto|Ontario|Canada||",
+      @"kerstin|9|14|1946|5|25|0|Toronto|Ontario|Canada||",
+      @"kevin|11|13|1960|12|1|1|Toronto|Ontario|Canada||",
+      @"lance|9|15|1967|8|1|1|Toronto|Ontario|Canada||",
+      @"larry|3|28|1947|5|15|0|Toronto|Ontario|Canada||",
+      @"leo|6|17|1949|11|0|0|Toronto|Ontario|Canada||",
+      @"luis|5|30|1967|12|30|1|Toronto|Ontario|Canada||",
+      @"ma|4|4|1908|12|1|1|Toronto|Ontario|Canada||",
+      @"mak|11|25|1960|12|1|1|Toronto|Ontario|Canada||",
+      @"marie|8|22|1964|4|54|1|Toronto|Ontario|Canada||",
+      @"marilyn|8|16|1959|11|0|0|Toronto|Ontario|Canada||",
+      @"markgolf|1|24|1942|3|0|0|Toronto|Ontario|Canada||",
+      @"marknesbit|10|13|1964|3|30|1|Toronto|Ontario|Canada||",
+      @"matti|8|17|1947|8|5|0|Toronto|Ontario|Canada||",
+      @"mihaela|7|17|1974|12|1|1|Toronto|Ontario|Canada||",
+      @"mike2|5|2|1956|9|58|1|Toronto|Ontario|Canada||",
+      @"mosy|12|16|1932|6|0|1|Toronto|Ontario|Canada||",
+      @"muru|5|17|1944|7|0|1|Toronto|Ontario|Canada||",
+      @"nicky|7|8|1975|5|30|1|Toronto|Ontario|Canada||",
+      @"nina|4|12|1929|5|30|0|Toronto|Ontario|Canada||",
+      @"olivia|11|23|1965|12|30|0|Toronto|Ontario|Canada||",
+      @"pa|6|26|1892|12|1|1|Toronto|Ontario|Canada||",
+      @"pat tennis|9|21|1958|3|30|1|Toronto|Ontario|Canada||",
+      @"paul|10|3|1933|3|0|0|Toronto|Ontario|Canada||",
+      @"renee|12|26|1953|3|15|1|Toronto|Ontario|Canada||",
+      @"richard|9|3|1947|9|33|1|Toronto|Ontario|Canada||",
+      @"rik|11|2|1958|9|30|0|Toronto|Ontario|Canada||",
+      @"rohit|1|16|1971|12|55|1|Toronto|Ontario|Canada||",
+      @"ruth|3|24|1923|1|30|1|Toronto|Ontario|Canada||",
+      @"sam|12|02|1974|8|30|0|Toronto|Ontario|Canada||",
+      @"sarwan|5|15|1965|12|1|1|Toronto|Ontario|Canada||",
+      @"scott|2|28|1957|3|0|1|Toronto|Ontario|Canada||",
+      @"steve skipper|4|22|1960|1|30|0|Toronto|Ontario|Canada||",
+      @"ulli|4|27|1952|5|30|0|Toronto|Ontario|Canada||",
+      @"vesna|6|27|1968|10|15|1|Toronto|Ontario|Canada||",
+      @"victor|10|22|1984|11|23|0|Toronto|Ontario|Canada||",
+      @"winnie|2|26|1962|12|30|0|Toronto|Ontario|Canada||",
+      @"yogi|7|18|1959|4|0|0|Toronto|Ontario|Canada||",
       @"WWWWWWWWWWWWWWW|2|21|1971|1|51|1|Los Angeles|California|United States||",   // notice hr goes 1-12
       @"MMMMMMMMMMMMMMM|11|8|1988|10|8|0|Los Angeles|California|United States||",   // notice hr goes 1-12
       @"Father Lastnae|7|11|1961|11|8|1|Los Angeles|California|United States||",   // notice hr goes 1-12
       @"Fa|7|11|1961|11|8|1|Los Angeles|California|United States||",
       @"Mother Lastna|3|12|1965|10|45|0|Los Angeles|California|United States||",
       @"Mo|3|12|1965|10|45|1|Los Angeles|California|United States||",
-      @"Sister1 Lastnam|2|31|1988|12|31|1|Los Angeles|California|United States||",
-      @"Sis|2|31|1988|12|30|1|Los Angeles|California|United States||",
-      @"Sis3|2|31|1988|3|30|1|Los Angeles|California|United States||",
+      @"Sister1 Lastnam|2|27|1988|12|31|1|Los Angeles|California|United States||",
+//      @"Sis|2|31|1988|12|30|1|Los Angeles|California|United States||",  // test bad dy of mth  
+      @"Sis|2|29|1988|12|30|1|Los Angeles|California|United States||",
+      @"Sis3|2|28|1988|3|30|1|Los Angeles|California|United States||",
       @"~Abigail 012345|8|21|1994|1|20|0|Los Angeles|California|United States||",
       @"~Aiden 89012345|8|4|1991|10|30|1|Los Angeles|California|United States||",
       @"~Anya|10|19|1990|8|20|0|Los Angeles|California|United States||",
@@ -779,12 +987,83 @@
       @"~Mother|3|12|1965|10|45|0|Los Angeles|California|United States||",
       @"~Noah|12|19|1994|11|4|0|Los Angeles|California|United States||",
       @"~Olivia|4|13|1994|12|53|1|Los Angeles|California|United States||",
-      @"~Sister1|2|31|1988|12|30|1|Los Angeles|California|United States||",
+      @"~Sister1|2|29|1988|12|30|1|Los Angeles|California|United States||",
       @"~Sister2|2|13|1990|3|35|0|Los Angeles|California|United States||",
       @"~Sophia|9|20|1991|4|0|0|Los Angeles|California|United States||",
     ];
-    gbl_arrayExaMem = // field 11= locked or not   HAVE TO BE PRE-SORTED
+    gbl_arrayExaMem = // field 11= locked or not    DO NOT HAVE TO BE PRE-SORTED  (sorted on reading back into arrays)
     @[
+      @"folks|ada|",
+      @"folks|alex|",
+      @"folks|alexei|",
+      @"folks|andy",
+      @"folks|barbara|",
+      @"folks|barry|",
+      @"folks|bb|",
+      @"folks|ben|",
+      @"folks|bia|",
+      @"folks|bob|",
+      @"folks|borje|",
+      @"folks|brenda|",
+      @"folks|brigitte|",
+      @"folks|charley|",
+      @"folks|chris|",
+      @"folks|cristian|",
+      @"folks|dan|",
+      @"folks|doug|",
+      @"folks|dragana|",
+      @"folks|edwin|",
+      @"folks|eleanor|",
+      @"folks|gerry Lipat|",
+      @"folks|gordana|",
+      @"folks|herc|",
+      @"folks|hicham|",
+      @"folks|irina|",
+      @"folks|joan|",
+      @"folks|johnH|",
+      @"folks|joris|",
+      @"folks|jose|",
+      @"folks|juta|",
+      @"folks|karen|",
+      @"folks|kaz|",
+      @"folks|ken|",
+      @"folks|kerstin|",
+      @"folks|kevin|",
+      @"folks|lance|",
+      @"folks|larry|",
+      @"folks|leo|",
+      @"folks|luis|",
+      @"folks|ma|",
+      @"folks|mak|",
+      @"folks|marie|",
+      @"folks|marilyn|",
+      @"folks|markgolf|",
+      @"folks|marknesbit|",
+      @"folks|matti|",
+      @"folks|mihaela|",
+      @"folks|mike",
+      @"folks|mosy|",
+      @"folks|muru|",
+      @"folks|nicky|",
+      @"folks|nina|",
+      @"folks|olivia|",
+      @"folks|pa|",
+      @"folks|pat tennis|",
+      @"folks|paul|",
+      @"folks|renee|",
+      @"folks|richard|",
+      @"folks|rik|",
+      @"folks|rohit|",
+      @"folks|ruth|",
+      @"folks|sam|",
+      @"folks|sarwan|",
+      @"folks|scott|",
+      @"folks|steve skipper|",
+      @"folks|ulli|",
+      @"folks|vesna|",
+      @"folks|victor|",
+      @"folks|winnie|",
+      @"folks|yogi|",
       @"Long Names|Father Lastnae|",
       @"Long Names|Mother Lastna|",
       @"Long Names|Sister1 Lastnam|",
@@ -854,7 +1133,7 @@
     //     field 6  day
     //              extra "|" at end
     //
-    gbl_arrayExaPerRem =   // HAVE TO BE PRE-SORTED here
+    gbl_arrayExaPerRem =   //   DO NOT HAVE TO BE PRE-SORTED  (sorted on reading back into arrays)
     @[
       @"Father Lastnae||||||",
       @"Fa||||||",
@@ -1312,7 +1591,11 @@
      // done button stroke              fill                 
 
     // official apl  color of chevron, plus sign etc    is  3,122,255
-    gbl_color_cAplDarkBlue = [UIColor colorWithRed:000.0/255.0 green:128.0/255.0 blue:255.0/255.0 alpha:1.0]; // 0080ff  (blue text, chevron)
+    gbl_color_cAplDarkBlue = [UIColor colorWithRed:000.0/255.0 green:128.0/255.0 blue:255.0/255.0 alpha:1.0];
+
+
+    gbl_color_cAplDarkerBlue = [UIColor colorWithRed:000.0/255.0 green:096.0/255.0 blue:224.0/255.0 alpha:1.0];
+
 
 //    gbl_color_cPerGreen1 = [UIColor colorWithRed:000.0/255.0 green:128.0/255.0 blue:255.0/255.0 alpha:1.0]; // 0080ff  (blue text, chevron)
 //    gbl_color_cPerGreen1 = [UIColor colorWithRed:144.0/255.0 green:200.0/255.0 blue:255.0/255.0 alpha:1.0]; //        (mid blue) 
@@ -1789,6 +2072,7 @@ NSLog(@"end of gggggggggggggggggggggggggggggggggggggggg grabLastSelectionValueFo
     if ([entDesc isEqualToString:@"grprem"])        { myURLtoReadFrom = gbl_URLToGrpRem;   my_gbl_array = gbl_arrayGrpRem; }
     if ([entDesc isEqualToString:@"perrem"])        { myURLtoReadFrom = gbl_URLToPerRem;   my_gbl_array = gbl_arrayPerRem; }
 
+
     myWritten = [[NSData alloc] initWithContentsOfURL: myURLtoReadFrom];
     if (myWritten == nil) {
         NSLog(@"Error reading %@, skip it (ok)", entDesc);
@@ -1810,6 +2094,7 @@ NSLog(@"end of gggggggggggggggggggggggggggggggggggggggg grabLastSelectionValueFo
     if ([entDesc isEqualToString:@"member"]) { gbl_arrayMem    = [[NSMutableArray alloc]initWithArray: (NSMutableArray*) myUnarchived]; }
     if ([entDesc isEqualToString:@"grprem"]) { gbl_arrayGrpRem = [[NSMutableArray alloc]initWithArray: (NSMutableArray*) myUnarchived]; }
     if ([entDesc isEqualToString:@"perrem"]) { gbl_arrayPerRem = [[NSMutableArray alloc]initWithArray: (NSMutableArray*) myUnarchived]; }
+
 
 } // end of mambReadArrayFileWithDescription
 
@@ -1839,7 +2124,7 @@ tn();
     char      cname[32], cmth[32], cday[32], cyr[32], chr[32], cmin[32], campm[32];
     NSString *fcity, *fprov, *fcoun, *fhighsec;
     char C_allowedCharactersInName[128] = "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-    char C_allowedCharactersInCity[128] = "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-";
+//    char C_allowedCharactersInCity[128] = "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-";
     int daysinmonth[12]     ={31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     int daysinmonth_leap[12]={31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
@@ -1847,6 +2132,14 @@ tn();
 //trn("hey");
 //tn();
 //tn();
+
+
+//<.>
+//    int daysinmonth[12]={31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+//    int rollerMM, rollerDD, rollerYYYY;
+//
+//<.>
+//
 
 
     // get the current year
@@ -1922,7 +2215,7 @@ tn();
   NSLog(@"BEG   CHECK  person");
     //      BEG   CHECK  person)";
     for (NSString *psvPer in gbl_arrayPer) {     // get PSV of arg name
-  NSLog(@"psvPer =[%@]",psvPer );
+//  NSLog(@"psvPer =[%@]",psvPer );
         numRecords = numRecords + 1;
 
         // check for exactly 12 fields
@@ -1945,7 +2238,7 @@ tn();
         fprov    = flds[8];
         fcoun    = flds[9];
         fhighsec = flds[10];  // "" or "hs"
-  NSLog(@"fhr=[%@]",fhr);
+//  NSLog(@"fhr=[%@]",fhr);
 
         // check for invalid  name fld
         if (fname.length < 1)                                  return  12;
@@ -1970,61 +2263,69 @@ tn();
         if (atoi(cmth) > 12)                                   return  20;
 
         // check for invalid  year fld
-        if (fyr.length != 4)                                   return  25;
+        if (fyr.length != 4)                                   return  21;
         constant_char = [fyr  cStringUsingEncoding: NSUTF8StringEncoding]; // NSString object to C str
         strcpy(cyr, constant_char);                                        // NSString object to C str  // because of const
-        if (sall(cyr, "0123456789") == 0)                      return  26;
-        if (atoi(cyr) < gbl_earliestYear)                      return  27;
-        if (atoi(cyr) > (int) myCurrentYearInt + 1)            return  28;
+        if (sall(cyr, "0123456789") == 0)                      return  22;
+        if (atoi(cyr) < gbl_earliestYear)                      return  23;
+        if (atoi(cyr) > (int) myCurrentYearInt + 1)            return  24;
 
 
         // check for invalid  day fld
-        if (fday.length < 1)                                   return  21;
-        if (fday.length > 2)                                   return  22;
+        if (fday.length < 1)                                   return  25;
+        if (fday.length > 2)                                   return  26;
         constant_char = [fday  cStringUsingEncoding: NSUTF8StringEncoding]; // NSString object to C str
         strcpy(cday, constant_char);                                        // NSString object to C str  // because of const
-        if (sall(cday, "0123456789") == 0)                     return  23;
-        if (atoi(cday) <  1)                                   return  24;
+        if (sall(cday, "0123456789") == 0)                     return  27;
+        if (atoi(cday) <  1)                                   return  28;
+
         //
         if (    atoi(cyr) % 400 == 0                            //  invalid day of month
             || (atoi(cyr) % 100 != 0  &&  atoi(cyr) % 4 == 0))  // if leap year
         {
-            if (atoi(cday) > daysinmonth_leap[ atoi(cmth) ])   return  25;
+
+            if (atoi(cday) > daysinmonth_leap[ atoi(cmth) - 1] )   return  29;   // -1 because array is 0-based
         } else {
-            if (atoi(cday) > daysinmonth     [ atoi(cmth) ])   return  25;
+            if (atoi(cday) > daysinmonth     [ atoi(cmth) - 1])   return  30;
         }
 
 
         // check for invalid  hr fld
-        if (fhr.length < 1)                                    return  29;
-        if (fhr.length > 2)                                    return  30;
+        if (fhr.length < 1)                                    return  31;
+        if (fhr.length > 2)                                    return  32;
         constant_char = [fhr  cStringUsingEncoding: NSUTF8StringEncoding]; // NSString object to C str
         strcpy(chr, constant_char);                                        // NSString object to C str  // because of const
 //ksn(chr);
-        if (sall(chr, "0123456789") == 0)                      return  30;
-        if (atoi(chr) <  1)                                    return  31; // valid vals= 01 to 12
-        if (atoi(chr) > 12)                                    return  32; // valid vals= 01 to 12
+        if (sall(chr, "0123456789") == 0)                      return  33;
+
+        if (atoi(chr) <  1)                                    return  34; // valid vals= 01 to 12
+//        if (atoi(chr) <  1)         {
+//  NSLog(@"psvPer=[%@]",psvPer);
+//            return  31; // valid vals= 01 to 12
+//        }
+
+        if (atoi(chr) > 12)                                    return  35; // valid vals= 01 to 12
 //        if (atoi(chr) <  0)                                    return  31; // valid vals= 00 to 11
 //        if (atoi(chr) > 11)                                    return  32;
 
 
         // check for invalid  min fld
-        if (fmin.length < 1)                                   return  33;
-        if (fmin.length > 2)                                   return  34;
+        if (fmin.length < 1)                                   return  36;
+        if (fmin.length > 2)                                   return  37;
         constant_char = [fmin  cStringUsingEncoding: NSUTF8StringEncoding]; // NSString object to C str
         strcpy(cmin, constant_char);                                        // NSString object to C str  // because of const
-        if (sall(cmin, "0123456789") == 0)                     return  35;
-        if (atoi(cmin) <  0)                                   return  36;
-        if (atoi(cmin) > 59)                                   return  37;
+        if (sall(cmin, "0123456789") == 0)                     return  38;
+        if (atoi(cmin) <  0)                                   return  39;
+        if (atoi(cmin) > 59)                                   return  40;
 
 
         // check for invalid  am/pm (0/1) fld
-        if (fampm.length != 1)                                 return  38;
+        if (fampm.length != 1)                                 return  41;
         constant_char = [fampm  cStringUsingEncoding: NSUTF8StringEncoding]; // NSString object to C str
         strcpy(campm, constant_char);                                        // NSString object to C str  // because of const
-        if (sall(campm, "0123456789") == 0)                    return  39;
-        if (atoi(campm) <  0)                                  return  40;
-        if (atoi(campm) >  1)                                  return  41;
+        if (sall(campm, "0123456789") == 0)                    return  42;
+        if (atoi(campm) <  0)                                  return  43;
+        if (atoi(campm) >  1)                                  return  44;
 
     }
   NSLog(@"END   CHECK  person");
@@ -3411,7 +3712,7 @@ tn();
 {
 tn();
 trn(" XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX ");
-trn(" XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX ");
+trn(" XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXyXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX ");
   NSLog(@"start gcy   get real date   apple    116, 108, 135");
 
     //    gbl_cy_apl = @"9999";  inited now to nil  in appdel didFinishLaunchingWithOptions
@@ -3421,9 +3722,18 @@ trn(" XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
   NSLog(@"gbl_cd_currentAllPeople =[%@] at top of gcy",gbl_cd_currentAllPeople );
 // NSLog(@"gbl_cy_goo 1 =[%@]",gbl_cy_goo);
 
+//    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for global methods in appDelegate.m
+
     NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
     NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration: defaultConfigObject
-                                                                 delegate: self
+//                                                                 delegate: myappDelegate 
+//                                                                 delegate: (NSURLSessionDelegate) self
+
+//                                                                 delegate: self
+//                                                                 delegate: (__bridge NSURLSessionDelegate* _Nullable) self
+//                                                                 delegate: ( (NSURLSessionDelegate _Nullable) self )
+//4347://  gbl_mycityprovcounLabel.layer.borderColor = (__bridge CGColorRef _Nullable)([UIColor colorWithRed:064.0/255.0 green:064.0/255.0 blue:064.0/255.0 alpha:1.0]); // gray   __bridge suggested by XCODE
+                                                                 delegate: nil
                                                             delegateQueue: [NSOperationQueue mainQueue]
     ];
     NSURL *myurl;
@@ -3713,6 +4023,14 @@ trn(" XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 
 } // end of  gcy
+
+
+- (void) doBackupAll //  find the actual current year   from  date found in apl's response header:
+{
+  NSLog(@"in doBackupAll");
+
+
+} // end of doBackupAll
 
 
 

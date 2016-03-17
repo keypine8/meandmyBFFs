@@ -8,8 +8,9 @@
 #import <UIKit/UIKit.h>
 
 //UIActivityIndicatorView *gbl_bestMatchActivityIndicator;  // for best match (could run 2,3 sec)
-//UIAlertView             *gbl_alert;
-//UIActivityIndicatorView *gbl_progress;
+UIAlertView             *gbl_alert;
+UIActivityIndicatorView *gbl_progress1;
+UIActivityIndicatorView *gbl_progress2;
 
 
 //NSString *gbl_cy_session_startup;   // format "20nn"  cy gotten from apl this session
@@ -79,9 +80,12 @@ NSString *gbl_ExampleData_show_leaving;   // (home info)  "yes"  OR  "no"
 NSInteger gbl_ExampleData_show_switchChanged;   // 1=yes  OR  0=no
 NSInteger gbl_ExampleData_count_per;      // as of 20160301 is per=21 
 NSInteger gbl_ExampleData_count_grp;      // as of 20160301 is grp= 2
-NSInteger gbl_numRowsToDisplayFor_per;    // could be  zero if  gbl_ExampleData_show is "no"
-NSInteger gbl_numRowsToDisplayFor_grp;    // could be  zero if  gbl_ExampleData_show is "no"
+NSInteger gbl_numRowsToDisplayFor_per;    // this is number of persons could be  zero if  gbl_ExampleData_show is "no"
+NSInteger gbl_numRowsToDisplayFor_grp;    // this is number of groups  could be  zero if  gbl_ExampleData_show is "no"
+NSInteger gbl_numMembersInCurrentGroup;   // (meaning gbl_lastSelectedGroup)
+NSInteger gbl_numMembersToTriggerSpinner; // best match rpt (50 = 1 sec wait)
 
+int       gbl_numCitiesToTriggerPicklist;     // is type  int  for passing to C function
 
 // THE THREE  "FIELDS"  =======================================================
 //
@@ -146,6 +150,7 @@ UIImage *gbl_yellowEdit ;
 //UIColor *gbl_bgColor_blueDone;
 UIColor *gbl_bgColor_brownDone;
 UIColor *gbl_bgColor_brownHdr;
+UIColor *gbl_bgColor_brownSwitch;
 UIColor *gbl_colorVlightBurly;
 UIColor *gbl_bgColor_yellowEdit;
 //UIImage *gbl_chevronRight ;
@@ -766,6 +771,7 @@ UIColor *gbl_color_cPerGreen; // used to be all green (see below)  now settled o
 UIColor *gbl_color_cPerGreen2; 
 UIColor *gbl_color_cPerGreen1;
 UIColor *gbl_color_cAplDarkBlue;
+UIColor *gbl_color_cAplDarkerBlue;
 
 
 //
@@ -785,10 +791,12 @@ NSMutableArray *gbl_arrayMem;
 NSMutableArray *gbl_arrayGrpRem; // REMEMBER DATA 
 NSMutableArray *gbl_arrayPerRem; // REMEMBER DATA 
 
+NSMutableArray *gbl_arrayTEST; // for test
+
 NSString *gbl_nameOfGrpHavingAllPeopleIhaveAdded; // "#allpeople"
 NSString *gbl_recOfAllPeopleIhaveAdded;           //  = [ NSString stringWithFormat: @"%@||||||||||||||", // 14 flds for misc
 
-NSInteger gbl_numRowsToTurnOnIndexBar;  // 201500624 = 90
+NSInteger gbl_numRowsToTurnOnIndexBar;  // varies by screen size
 
     //                                  NSArray *arrayMAMBexampleGroupRemember = 
     // REMEMBER DATA for each Group 
@@ -839,6 +847,9 @@ NSString *gbl_pathToPerson;
 NSString *gbl_pathToMember;
 NSString *gbl_pathToGrpRem; //  the app can "remember" what to put highlight on for what was last selected.
 NSString *gbl_pathToPerRem; //  the app can "remember" what to put highlight on for what was last selected.
+
+NSInteger gbl_scrollToCorrectRow;  // flag to set every time before calling [self putHighlightOnCorrectRow ] in HOME
+                                   // (do not want to scroll when hitting yellow/Edit and brown/Done)
 
 NSURL    *gbl_URLToLastEnt;
 NSURL    *gbl_URLToGroup;
@@ -1078,7 +1089,7 @@ NSIndexPath *gbl_savePrevIndexPath;  // for scrolling to the prev row you were o
 - (CGSize) currentScreenSize;   // for using  CGSize.width and CGSize.height
 
 - (NSInteger) mambCheckForCorruptData;
-- (void) handleCorruptDataErrNum: (NSInteger) argCorruptDataErrNum;
+//- (void) handleCorruptDataErrNum: (NSInteger) argCorruptDataErrNum;
 
 - (void) mamb_endIgnoringInteractionEvents_after: (CGFloat) arg_numSecondsDelay; 
 - (void) mamb_beginIgnoringInteractionEvents;                                   
@@ -1092,6 +1103,7 @@ NSIndexPath *gbl_savePrevIndexPath;  // for scrolling to the prev row you were o
 
 - (void) gcy;
 
+- (void) doBackupAll;
 
 @end
 

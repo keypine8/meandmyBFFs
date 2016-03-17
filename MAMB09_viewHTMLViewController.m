@@ -665,7 +665,7 @@ ksn(pathToHTML_webview      );
 
 //  get all the html lines into a NSString and a NSArray
 
-            NSCharacterSet *newlineCharSet = [NSCharacterSet newlineCharacterSet];
+//            NSCharacterSet *newlineCharSet = [NSCharacterSet newlineCharacterSet];
             NSString* myHTML_FileContents    = [NSString stringWithContentsOfFile: OpathToHTML_webview
                                                                          encoding: NSUTF8StringEncoding
                                                                             error: nil];
@@ -2000,7 +2000,7 @@ NSLog(@"Ok button pressed");
 
             //  get all the html lines into a NSString and a NSArray
             //
-            NSCharacterSet *newlineCharSet = [NSCharacterSet newlineCharacterSet];
+//            NSCharacterSet *newlineCharSet = [NSCharacterSet newlineCharacterSet];
             NSString* myWhatColorHTML_FileContents = [NSString stringWithContentsOfFile: gbl_OpathToHTML_webview
                                                                                encoding: NSUTF8StringEncoding
                                                                                   error: nil ];

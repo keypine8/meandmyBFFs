@@ -360,7 +360,7 @@ NSLog(@"END of viewDidAppear()  in sel Year");
 
 -(bool) anySubViewScrolling: (UIView*)view
 {
-  NSLog(@"in anySubViewScrolling !!");
+//  NSLog(@"in anySubViewScrolling !!");
     if( [ view isKindOfClass:[ UIScrollView class ] ] ) {
         UIScrollView* scroll_view = (UIScrollView*) view;
         if( scroll_view.dragging || scroll_view.decelerating ) return true;

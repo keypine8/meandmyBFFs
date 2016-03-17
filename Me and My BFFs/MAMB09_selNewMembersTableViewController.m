@@ -29,10 +29,13 @@ tn();
     NSLog(@"in SELECT New MEMBEFRS   viewDidLoad!");
 
 
+    [gbl_selectedMembers_toAdd  removeAllObjects];
+     gbl_selectedMembers_toAdd  = [[NSMutableArray alloc] init];
+
 
     [self.tableView setEditing:YES animated:YES];
-
     self.tableView.allowsMultipleSelectionDuringEditing = YES;
+//    self.tableView.allowsMultipleSelection = YES;
 
 //    [[UITableViewCell appearance] setTintColor:[UIColor greenColor]];  // set color of selected row circle+checkmark background
 //    [[UITableViewCell appearance] setTintColor:[UIColor blueColor]];  // set color of selected row circle+checkmark background
@@ -72,14 +75,14 @@ tn();
         UIButton *myInvisibleButton       = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
 //        UIButton *myInvisibleButton       = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
         myInvisibleButton.backgroundColor = [UIColor clearColor];
-        UIBarButtonItem *mySpacerNavItem  = [[UIBarButtonItem alloc] initWithCustomView: myInvisibleButton];
+//        UIBarButtonItem *mySpacerNavItem  = [[UIBarButtonItem alloc] initWithCustomView: myInvisibleButton];
 
         // setup for TWO-LINE NAV BAR TITLE
 
         //    UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 11, 44)];  // 3rd arg is horizontal length
 //        UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 33, 44)];  // 3rd arg is horizontal length
-        UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 55, 44)];  // 3rd arg is horizontal length
-        UIBarButtonItem *mySpacerForTitle = [[UIBarButtonItem alloc] initWithCustomView:spaceView];
+//        UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 55, 44)];  // 3rd arg is horizontal length
+//        UIBarButtonItem *mySpacerForTitle = [[UIBarButtonItem alloc] initWithCustomView:spaceView];
 
         UILabel *myNavBarLabel      = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 480.0, 44.0)];
 
@@ -316,24 +319,56 @@ NSLog(@"in viewDidAppear()");
 
 
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+  NSLog(@"in didSelectRowAtIndexPath! in sel new mbr");
+    UITableViewCell* cell   = [tableView cellForRowAtIndexPath:indexPath];
+//    cell.accessoryType      = UITableViewCellAccessoryCheckmark;
+    NSString *tmpMemberName = cell.textLabel.text;
+    [gbl_selectedMembers_toAdd  addObject: tmpMemberName ];          //  Person name for pick
+
+}
+
+- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+  NSLog(@"in didDeselectRowAtIndexPath! in sel new mbr");
+    UITableViewCell* cell   = [tableView cellForRowAtIndexPath:indexPath];
+//    cell.accessoryType      = UITableViewCellAccessoryNone;
+    NSString *tmpMemberName = cell.textLabel.text;
+    [gbl_selectedMembers_toAdd  removeObject: tmpMemberName ];          //  Person name for pick
+}
+
+
 - (IBAction)pressedSaveDone:(id)sender
 {
   NSLog(@"in pressedSAVEDONE!!");
 
-    [gbl_selectedMembers_toAdd  removeAllObjects];
-     gbl_selectedMembers_toAdd  = [[NSMutableArray alloc] init];
-        
-    for (id idxpath in [self.tableView indexPathsForSelectedRows] )
-    {
-        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath: idxpath];
-        [gbl_selectedMembers_toAdd  addObject: cell.textLabel.text ];
-    }
 
+    // PROBLEM:  CANNOT TRUST  [self.tableView indexPathsForSelectedRows] when scrolling off screen
+    // therefore,  use gbl_selectedMembers_toAdd  
+    //
+    //nbn(1);        
+    //  NSLog(@"[self.tableView indexPathsForSelectedRows] =[%@]",[self.tableView indexPathsForSelectedRows] );
+    //  NSArray *selectedArr = [self.tableView indexPathsForSelectedRows];
+    //  NSLog(@"selectedArr =[%@]",selectedArr );
+    //    for (id idxpath in [self.tableView indexPathsForSelectedRows] )
+    //    {
+    //        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath: idxpath];
+    //  NSLog(@"a selected member = cell.textLabel.text =[%@]",cell.textLabel.text );
+    ////        if (cell.textLabel.text != nil)
+    //        [gbl_selectedMembers_toAdd  addObject: cell.textLabel.text ];
+    //  NSLog(@"gbl_selectedMembers_toAdd=[%@]",gbl_selectedMembers_toAdd);
+    //    }
+    //
+
+
+nbn(2);        
+  NSLog(@"gbl_selectedMembers_toAdd=[%@]",gbl_selectedMembers_toAdd);
     // sort array  gbl_selectedMembers_toAdd 
     if (gbl_selectedMembers_toAdd)  { [gbl_selectedMembers_toAdd  sortUsingSelector: @selector(caseInsensitiveCompare:)]; }
+nbn(3);        
+  NSLog(@"gbl_selectedMembers_toAdd=[%@]",gbl_selectedMembers_toAdd);
 
-  NSLog(@"[self.tableView indexPathsForSelectedRows] =[%@]",[self.tableView indexPathsForSelectedRows] );
-  NSLog(@"gbl_selectedMembers_toAdd  =[%@]",gbl_selectedMembers_toAdd);
 
     // add the members here
     //
@@ -352,6 +387,7 @@ NSLog(@"in viewDidAppear()");
     [myappDelegate mamb_beginIgnoringInteractionEvents ];
    
 
+nbn(4);
 
     NSString *member_record;
     for (id add_me in gbl_selectedMembers_toAdd)   // add each new member
@@ -361,11 +397,13 @@ NSLog(@"in viewDidAppear()");
         [gbl_arrayMem addObject: member_record ];                        //  Person name for pick
 
     }
+nbn(5);
 
     [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription:  (NSString *) @"member"]; // sort array by name
     [myappDelegate mambWriteNSArrayWithDescription:               (NSString *) @"member"]; // write new array data to file
 //  [myappDelegate mambReadArrayFileWithDescription:              (NSString *) @"member"]; // read new data from file to array
 
+nbn(6);
 
 //    // after write of array data to file, allow user interaction events again
 //    //
@@ -414,7 +452,9 @@ NSLog(@"in viewDidAppear()");
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return gbl_arrayNewMembersToPickFrom.count;
+
+  NSLog(@"gbl_arrayNewMembersToPickFrom.count =[%ld]",(long)gbl_arrayNewMembersToPickFrom.count );
+    return gbl_arrayNewMembersToPickFrom.count ;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -450,6 +490,14 @@ NSLog(@"in viewDidAppear()");
         //
         cell.indentationWidth = 12.0; // these 2 keep the name on screen when hit red round delete and delete button slides from right
         cell.indentationLevel =  3;   // these 2 keep the name on screen when hit red round delete and delete button slides from right
+
+//        if([[self.tableView indexPathsForSelectedRows] containsObject:indexPath]) {
+        if([gbl_selectedMembers_toAdd containsObject:indexPath]) {
+            cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        } else {
+            cell.accessoryType = UITableViewCellAccessoryNone;
+        }
+
     });
 
     return cell;

@@ -22,7 +22,7 @@
     //
     char group_report_input_birthinfo_CSVs_B[250 * 64];  // [250 * fixed length of 64]
     int  group_report_input_birthinfo_idx_b;
-    char group_report_output_PSVs_B[333 * 64];           // [333 * fixed length of 64]
+    char group_report_output_PSVs_B[333 * 128];           // [333 * fixed length of 128]
     int  group_report_output_idx_B;
 
 
@@ -93,11 +93,11 @@ tn();
 //<.>
     // add Navigation Bar right buttons, if not added alread
     //
-nbn(501);
-  NSLog(@"gbl_currentMenuPrefixFromMatchRpt =[%@]",gbl_currentMenuPrefixFromMatchRpt );
-  NSLog(@"gbl_lastSelectedPerson =[%@]",gbl_lastSelectedPerson );
-  NSLog(@"gbl_currentMenuPlusReportCode=[%@]",gbl_currentMenuPlusReportCode);
-  NSLog(@"gbl_tblrpts2_ShouldAddToNavBar=[%ld]",(long)gbl_tblrpts2_ShouldAddToNavBar);
+//nbn(501);
+//  NSLog(@"gbl_currentMenuPrefixFromMatchRpt =[%@]",gbl_currentMenuPrefixFromMatchRpt );
+//  NSLog(@"gbl_lastSelectedPerson =[%@]",gbl_lastSelectedPerson );
+//  NSLog(@"gbl_currentMenuPlusReportCode=[%@]",gbl_currentMenuPlusReportCode);
+//  NSLog(@"gbl_tblrpts2_ShouldAddToNavBar=[%ld]",(long)gbl_tblrpts2_ShouldAddToNavBar);
 
     NSString *myNavBarTitle;
     if (gbl_tblrpts2_ShouldAddToNavBar == 1) { // init to prevent  multiple programatic adds of nav bar items
@@ -315,14 +315,14 @@ nbn(501);
         const char *my_psvc; // psv=pipe-separated values
         char my_psv[128];
         
-        char csv_person_string[128], csv_person1_string[128], csv_person2_string[128];
-        char person_name_for_filename[32], person1_name_for_filename[32], person2_name_for_filename[32];
+        char csv_person_string[128]; // csv_person1_string[128]; // csv_person2_string[128];
+        char person_name_for_filename[32]; // person1_name_for_filename[32], person2_name_for_filename[32];
         char myStringBuffForTraitCSV[64];
         
-        char  yyyy_todo[16], yyyymmdd_todo[16], stringBuffForStressScore[64] ;
-        const char *yyyy_todoC;
-        const char *yyyymmdd_todoC;
-        int retval, retval2;
+//        char  yyyy_todo[16], yyyymmdd_todo[16]; // stringBuffForStressScore[64] ;
+//        const char *yyyy_todoC;
+//        const char *yyyymmdd_todoC;
+        int retval;  // retval2;
 
         char   html_file_name_browser[2048], html_file_name_webview[2048];
         NSString *Ohtml_file_name_browser, *Ohtml_file_name_webview;
@@ -330,8 +330,8 @@ nbn(501);
         char     *pathToHTML_browser,      *pathToHTML_webview;
         
         NSURL *URLtoHTML_forWebview;
-        NSURL *URLtoHTML_forEmailing;
-        NSURLRequest *HTML_URLrequest;
+//        NSURL *URLtoHTML_forEmailing;
+//        NSURLRequest *HTML_URLrequest;
         NSArray* tmpDirFiles;
     
 
@@ -439,7 +439,6 @@ nbn(501);
                                      myStringBuffForTraitCSV);
 
            
-nbn(101);
         // gbl_perDataLines;  // used in tblrpts_1 (read in from webview . html file)
         NSString *perDataStr = [NSString stringWithContentsOfURL: URLtoHTML_forWebview  encoding: NSUTF8StringEncoding  error: nil];
         gbl_perDataLines     = [perDataStr componentsSeparatedByCharactersInSet: [NSCharacterSet newlineCharacterSet]];
@@ -1115,12 +1114,14 @@ for (id eltTst in gbl_compDataLines) { NSLog(@"    gbl_comp=%@", eltTst); }
                    continue;
                 }
                 strcpy(my_buff, group_report_output_PSVs_B  +  i * (int)gbl_maxLenRptLinePSV);  // 128   get ROW   get ROW   get ROW  get ROW
-//tn();ki(i);ks(my_buff);
+//trn("rpts_2 populate");ki(i);ks(my_buff);
 
                 myCellContentsPSV     = [NSMutableString stringWithUTF8String: my_buff];  // convert c string to NSString
+//  NSLog(@"myCellContentsPSV     =[%@]",myCellContentsPSV     );
                 tmpArray3             = [myCellContentsPSV componentsSeparatedByCharactersInSet: mySeparators];
 
                 curr_cellBGcolorName = tmpArray3[0];
+//  NSLog(@"curr_cellBGcolorName =[%@]",curr_cellBGcolorName );
                 curr_cellPersonAnameTMP = tmpArray3[2];
                 curr_cellPersonBnameTMP = tmpArray3[3];
 //tn();  NSLog(@"curr_cellPersonAname  =%@",curr_cellPersonAname  );
@@ -1326,8 +1327,8 @@ for (id eltTst in gbl_compDataLines) { NSLog(@"    gbl_comp=%@", eltTst); }
         UIFont *perFont_16  = [UIFont fontWithName: @"Menlo"      size: 16.0];
         UIFont *perFont_16b = [UIFont fontWithName: @"Menlo-bold" size: 16.0];
         UIFont *perFont_15b = [UIFont fontWithName: @"Menlo-bold" size: 15.0];
-        UIFont *perFont_14  = [UIFont fontWithName: @"Menlo"      size: 14.0];
-        UIFont *perFont_14b = [UIFont fontWithName: @"Menlo-bold" size: 14.0];
+//        UIFont *perFont_14  = [UIFont fontWithName: @"Menlo"      size: 14.0];
+//        UIFont *perFont_14b = [UIFont fontWithName: @"Menlo-bold" size: 14.0];
         UIFont *perFont_12  = [UIFont fontWithName: @"Menlo"      size: 12.0];
         UIFont *perFont_11b = [UIFont fontWithName: @"Menlo-bold" size: 11.0];
         
@@ -1862,7 +1863,7 @@ for (id eltTst in gbl_compDataLines) { NSLog(@"    gbl_comp=%@", eltTst); }
             compFont_12  = [UIFont fontWithName: @"Menlo" size: 10.0];
             compFont_12b = [UIFont fontWithName: @"Menlo_bold" size: 10.0];
             compFont_11b = [UIFont fontWithName: @"Menlo-bold" size: 10.0];
-nbn(33);
+
 //            compFont_Stars = [UIFont fontWithName: @"Menlo" size: 14.0]; // too big
 //            compFont_Stars = [UIFont fontWithName: @"Menlo" size: 13.0]; // too big
             compFont_Stars = [UIFont fontWithName: @"Menlo" size: 11.0]; // gold 
@@ -3901,7 +3902,7 @@ bn(802);
     if (indexPath.row <= group_report_output_idx_B) {
 
         myidx = (int)indexPath.row;
-        strcpy(my_tmp_str, group_report_output_PSVs_B  +  myidx * (int)gbl_maxLenRptLinePSV);  // 64   get ROW   get ROW   get ROW  get ROW  
+        strcpy(my_tmp_str, group_report_output_PSVs_B  +  myidx * (int)gbl_maxLenRptLinePSV);  // 128   get ROW   get ROW   get ROW  get ROW  
 //ksn(my_tmp_str);
         myCellContentsPSV     = [NSString stringWithUTF8String: my_tmp_str];  // convert c string to NSString
         mySeparators          = [NSCharacterSet characterSetWithCharactersInString:@"|"];
@@ -4321,7 +4322,7 @@ trn("// END   END    4 of 3 FOOTER CELLS");
 //NSLog(@"myNewCellTextShort A =[%@]",myNewCellTextShort     );
 
         // short line, on left end, 
-        // remove leading spaces which do not constitute part of space for rank number (
+        // remove leading spaces which do not constitute part of space for rank number 
         //
         int mylen1 = (int)myNewCellTextShort.length;
 
@@ -4785,10 +4786,10 @@ trn("// END   END    4 of 3 FOOTER CELLS");
 ////  NSLog(@"thisCellBGcolorName =%@",thisCellBGcolorName );
 //
 
-    if (indexPath.row  <=  gbl_array_cellBGcolorName.count -1 )  // is max idx number (0-based)
+    if (indexPath.row  <=  gbl_array_cellBGcolorName_B.count -1 )  // is max idx number (0-based)
     {
 //  NSLog(@"indexPath.row =[%ld]",(long)indexPath.row );
-        thisCellBGcolorName = gbl_array_cellBGcolorName[indexPath.row];   // array set in  viewDidLoad
+        thisCellBGcolorName = gbl_array_cellBGcolorName_B[indexPath.row];   // array set in  viewDidLoad
 //  NSLog(@"thisCellBGcolorName =%@",thisCellBGcolorName );
     } else {
 
@@ -4805,11 +4806,7 @@ trn("// END   END    4 of 3 FOOTER CELLS");
 
         if ( [thisCellBGcolorName isEqualToString: @"cGr2"] )  cell.backgroundColor = gbl_color_cGr2;
         if ( [thisCellBGcolorName isEqualToString: @"cGre"] )  cell.backgroundColor = gbl_color_cGre;
-        if ( [thisCellBGcolorName isEqualToString: @"cNeu"] )
-        {
-nbn(77);
-            cell.backgroundColor = gbl_color_cNeu;
-        }
+        if ( [thisCellBGcolorName isEqualToString: @"cNeu"] ) {cell.backgroundColor = gbl_color_cNeu; }
         if ( [thisCellBGcolorName isEqualToString: @"cRed"] )  cell.backgroundColor = gbl_color_cRed;
         if ( [thisCellBGcolorName isEqualToString: @"cRe2"] )  cell.backgroundColor = gbl_color_cRe2;
         if ( [thisCellBGcolorName isEqualToString: @"cBgr"] )  cell.backgroundColor = gbl_color_cBgr;
@@ -4890,7 +4887,8 @@ nbn(77);
 {
 tn();
   NSLog(@"in myDidChangeOrientation !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  ");
-    UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
+
+//    UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
 
 //    if (UIInterfaceOrientationIsLandscape(orientation)) {
 //        NSLog(@"Landscape");
@@ -5700,11 +5698,9 @@ NSLog(@"Ok button pressed");
 
 //    if (lcl_group_report_output_idx <= gbl_numRowsToTurnOnIndexBar) {
     if (myCountOfRows <= gbl_numRowsToTurnOnIndexBar) {
-nbn(40);
         return nil;
     }
 
-nbn(41);
     NSArray *mySectionIndexTitles;
     mySectionIndexTitles = [NSArray arrayWithObjects:  // 33 items  last index=32
             @"TOP"

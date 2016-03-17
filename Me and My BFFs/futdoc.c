@@ -217,12 +217,16 @@ int mamb_report_year_in_the_life(  /* called from cocoa */
 
   fopen_fpdb_for_debug();
 
- tn();tr("in mamb_report_year_in_the_life()"); 
+//int testt; testt = strcmp(gbl_instructions,  "return only year stress score");
+//kin(testt);
+//  if(testt != 0) {  // log only if not best year
+  if(strcmp(instructions,  "return only year stress score") != 0) {  // log only if not best year
+ tn();tr("in mamb_report_year_in_the_life() 2"); 
 ksn(html_f_file_name);
 ksn(csv_person_string);
 ksn(year_todo_yyyy);
 ksn(instructions);
-
+}
 
 
   if (strstr(instructions, "return only") == NULL) {
@@ -236,6 +240,7 @@ ksn(instructions);
     *  gbl_instructions,  "return only day stress score_B")
     */
   if(strcmp(gbl_instructions,  "return only year stress score") == 0) {
+//trn("year score only  - no docin_puts ");
     allow_docin_puts = 0;
 
     strcpy(gbl_yyyymmdd_todo, ""); 
@@ -518,6 +523,7 @@ b(7);trn("small end");
   */
   if(strcmp(gbl_instructions,  "return only year stress score") == 0) {
 
+//trn("no HTML file  - return from futdoc.c 0521");
 
 
     strcpy(gbl_instructions,  "");  /* init gbl */
@@ -660,6 +666,7 @@ b(7);trn("small end");
 * ksn(gbl_BuffYearStressScore);
 */
 
+trn(" doing make_fut_htm_file() in futdoc.c 665");
   retval = make_fut_htm_file(
     html_f_file_name,
     docin_lines,
@@ -782,7 +789,7 @@ void f_docin_put(char *line, int length)
 {
 
   if (allow_docin_puts == 0) return; /* (like pt of view) */
-  
+//ksn("doing docin_put"); 
   if (is_first_f_docin_put == 1) docin_idx = 0;
   else                           docin_idx++;
 
@@ -3860,6 +3867,7 @@ int mamb_BIGreport_year_in_the_life(  /* called from cocoa */
     *  gbl_instructions,  "return only day stress score_B")
     */
   if(strcmp(gbl_instructions,  "return only year stress score") == 0) {
+//trn("BIGreport_y   year score only  - no docin_puts  3865");
     allow_docin_puts = 0;
 
     strcpy(gbl_yyyymmdd_todo, ""); 
@@ -4142,6 +4150,7 @@ int mamb_BIGreport_year_in_the_life(  /* called from cocoa */
   if(strcmp(gbl_instructions,  "return only year stress score") == 0) {
 
 
+//trn("no HTML file  - return from futdoc.c 4146");
 
     strcpy(gbl_instructions,  "");  /* init gbl */
     allow_docin_puts = 1;           /* init gbl */
@@ -4283,6 +4292,7 @@ int mamb_BIGreport_year_in_the_life(  /* called from cocoa */
 * ksn(gbl_BuffYearStressScore);
 */
 
+trn(" doing make_fut_htm_file() in futdoc.c 4291");
   retval = make_fut_htm_file(   // ------------------------------------------------
     html_f_file_name,
     docin_lines,

@@ -179,7 +179,8 @@ struct cocoa_rank {            /* info for cocoa table display */
 *   assuming MAX_PERSONS_IN_GROUP = 250, num pairs max is  31,125 
 *   (5 sec to run on pc/gcc , 1 sec on mac/llvm )
 */
-#define MAX_PERSONS_IN_GROUP 250  /* also defined in grpdoc.c and grphtm.c */
+// #define MAX_PERSONS_IN_GROUP 250  /* also defined in grpdoc.c and grphtm.c */
+#define MAX_PERSONS_IN_GROUP 200  /* also defined in grpdoc.c and grphtm.c */
 #define MAX_IN_RANK_LINE_ARRAY \
 ( ( (MAX_PERSONS_IN_GROUP * (MAX_PERSONS_IN_GROUP - 1) / 2) ) + 64 )
 struct rank_report_line *out_rank_lines[MAX_IN_RANK_LINE_ARRAY];

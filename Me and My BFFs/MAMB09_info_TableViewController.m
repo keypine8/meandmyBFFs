@@ -72,7 +72,7 @@ tn();
          // write gbl_arrayGrp to file
     
         NSString  *PSVthatWasFound;
-        NSString  *prefixStr;
+//        NSString  *prefixStr;
         NSInteger  arrayIdx;
         NSString  *myStrToUpdate;
         NSString  *myupdatedStr1;
@@ -485,7 +485,7 @@ nbn(88);
 //    UIImage *myImageTraits           = [UIImage  imageNamed: @"overcomTraits_info2.png"    inBundle: nil compatibleWithTraitCollection: nil ];
 //    UIImage *myImageTraits           = [UIImage  imageNamed: @"overcomTraits_info3.png"    inBundle: nil compatibleWithTraitCollection: nil ];
 
-    UIImage *myIconmamb           = [UIImage  imageNamed: @"icon_mamb09_0064.png"    inBundle: nil compatibleWithTraitCollection: nil ];
+//    UIImage *myIconmamb           = [UIImage  imageNamed: @"icon_mamb09_0064.png"    inBundle: nil compatibleWithTraitCollection: nil ];
 
 
 
@@ -532,7 +532,7 @@ nbn(88);
     //         iPhone6     =  750 x 1334
     //         iPhone6plus = 1242 x 2208
     //
-    CGFloat myScreenWidth, myFontSize;  // determine font size
+    CGFloat myScreenWidth; //  myFontSize;  // determine font size
     myScreenWidth = self.view.bounds.size.width;
 
     if (        myScreenWidth >= 414.0)                                          // 6+ and 6s+  and bigger
@@ -2519,7 +2519,8 @@ nbn(100);
 //                cell.textLabel.text          = @"Look at reports for all of your people and groups.";
 //                cell.textLabel.text          = @"Look at reports for the people and groups you have added.";
 //                cell.textLabel.text          = @"Look at reports for people and groups you have added.";
-                cell.textLabel.text          = @"View reports for people and groups you have added.";
+//                cell.textLabel.text          = @"View reports for people and groups you have added.";
+                cell.textLabel.text          = @"View reports for people and groups you have added.\nShare reports by email.";
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -2573,7 +2574,9 @@ nbn(100);
                 cell.backgroundColor         = gbl_bgColor_yellowEdit;
                 cell.textLabel.numberOfLines = 0;
 //                cell.textLabel.text          = @"Entering people and group information and changing stuff is done from the YELLOW home";
-                cell.textLabel.text          = @"Enter people and groups and make changes to them.\nShare people or groups by email.\nBackup all your data by email.";
+//                cell.textLabel.text          = @"Enter people and groups and make changes to them.\nShare people or groups by email.\nBackup all your data to an email attachment.";
+//                cell.textLabel.text          = @"Enter people and groups and make changes to them.\nShare people or groups by email.\nBackup your people and groups to an email attachment.";
+                cell.textLabel.text          = @"Enter people and groups and make changes to them.\nShare people or groups by email.\nBackup all your data to an email attachment.";
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -2689,20 +2692,23 @@ nbn(100);
                 //  NSLog(@"self.view.bounds.size.height  =[%f]",self.view.bounds.size.height  );
                 if (   self.view.bounds.size.width >= 414.0        // 6+ and 6s+  and bigger
                 ) {
-                    switchPrompt  = @"            Show Example Data";
+//                    switchPrompt  = @"            Show Example Data";
+                    switchPrompt  = @"            Show Example Data\n           on the Home Screen";
                 }
                 else if (   self.view.bounds.size.width  < 414.0    // 6 and 6s
                          && self.view.bounds.size.width  > 320.0
                 ) {
-                    switchPrompt  = @"           Show Example Data";
+//                    switchPrompt  = @"           Show Example Data";
+                    switchPrompt  = @"           Show Example Data\n          on the Home Screen";
                 }
                 else if (   self.view.bounds.size.width <= 320.0   //  5s and 5 and 4s and smaller
                 ) {
-                    switchPrompt  = @"        Show Example Data";
+//                    switchPrompt  = @"        Show Example Data";
+                    switchPrompt  = @"        Show Example Data\n       on the Home Screen";
                 }
                 else if (   self.view.bounds.size.width <= 320.0   // ??
                 ) {
-                    gbl_numRowsToTurnOnIndexBar    = 33;
+                    ;  // gbl_numRowsToTurnOnIndexBar    = 33;
                 }
 
 
@@ -2715,7 +2721,12 @@ nbn(100);
 //                cell.backgroundColor         = gbl_color_cBgr;
 //                cell.backgroundColor         = gbl_color_cHed;
 //                cell.backgroundColor         = [UIColor lightGrayColor];
-                cell.backgroundColor         = gbl_bgColor_brownDone;
+
+//                cell.backgroundColor         = gbl_bgColor_brownDone;
+//                cell.backgroundColor         = gbl_color_cHed;
+//                cell.backgroundColor         = gbl_color_cBgr;
+                cell.backgroundColor         = gbl_bgColor_brownSwitch;
+
                 cell.textLabel.numberOfLines = 0;
 //                cell.textLabel.text          = @"      Show Example Data";
                 cell.textLabel.text          = switchPrompt;
@@ -2783,7 +2794,8 @@ nbn(100);
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
 //                cell.textLabel.text          = @"The special group #allpeople is a group that holds all the people you have added to Me and My BFFs.\n\nA person that you add is automatically added to group #allpeople.\nA person that you delete is automatically removed from group #allpeople.\n\n Group #allpeople lets you quickly get a Best Match or other group report for everyone.";
-                cell.textLabel.text          = @"The special group #allpeople is a group that holds all the people you have added to Me and My BFFs.\n\nPeople that you add or delete from the app are automatically added or deleted from group #allpeople.\n\nGroup #allpeople lets you quickly get a Best Match or other group report for everyone.";
+//                cell.textLabel.text          = @"The special group #allpeople is a group that holds all the people you have added to Me and My BFFs.\n\nPeople that you add or delete from the app are automatically added or deleted from group #allpeople.\n\nGroup #allpeople lets you quickly get a Best Match or other group report for everyone.";
+                cell.textLabel.text          = @"The special group #allpeople is a group that holds all the people you have added to Me and My BFFs.\n\nPeople that you add or delete are automatically added or deleted from group #allpeople.\n\nGroup #allpeople lets you quickly get a Best Match or other group report for everyone.";
 
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
@@ -3045,16 +3057,17 @@ nbn(100);
     if (   [gbl_helpScreenDescription isEqualToString: @"HOME"] ) {
 
         if (indexPath.row ==   0) return    16.0;  // spacer
-        if (indexPath.row ==   1) return    30.0;  // title for blue home
-        if (indexPath.row ==   2) return    30.0;  // text  for blue
+        if (indexPath.row ==   1) return    30.0;  // title for brown home
+        if (indexPath.row ==   2) return    50.0;  // text  for brown
         if (indexPath.row ==   3) return    16.0;  // spacer
         if (indexPath.row ==   4) return    30.0;  // title for yellow home
-        if (indexPath.row ==   5) return    60.0;  // text  for yellow
+        if (indexPath.row ==   5) return    72.0;  // text  for yellow
         if (indexPath.row ==   6) return    32.0;  // spacer
 
         if (indexPath.row ==   7) return    30.0;  // title for Example Data
         if (indexPath.row ==   8) return   200.0;  // text  for Example Data
-        if (indexPath.row ==   9) return    50.0;  // check box for "Show Example Data"
+//        if (indexPath.row ==   9) return    50.0;  // check box for "Show Example Data"
+        if (indexPath.row ==   9) return    70.0;  // check box for "Show Example Data"
 
         if (indexPath.row ==   10) return    32.0;  // spacer
         if (indexPath.row ==   11) return    30.0;  // title for #allpeople

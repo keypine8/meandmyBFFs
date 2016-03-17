@@ -74,11 +74,12 @@
                         <segue destination="df3-AS-qCo" kind="push" identifier="segueHomeToAddChange" id="Vd0-76-gKQ"/>
                         <segue destination="c6B-B7-05J" kind="push" identifier="segueHomeToReportList" id="FMb-AS-tJX"/>
                         <segue destination="lj1-OQ-gPo" kind="push" identifier="segueHomeToListMembers" id="HYE-Hx-QR6"/>
+                        <segue destination="QgP-dY-i4R" kind="push" identifier="segueHomeToSelPerson" id="nxl-xA-9Hd"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BbN-gl-Rsk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-14419" y="-11682"/>
+            <point key="canvasLocation" x="-14398" y="-11709"/>
         </scene>
         <!--select Reports Table View Controller-->
         <scene sceneID="hSq-N8-rBp">
@@ -645,8 +646,9 @@
         <image name="rounded_MAMB09_144" width="144" height="144"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Cp1-j3-FiA"/>
-        <segue reference="38j-By-p0h"/>
-        <segue reference="9JI-0J-Lme"/>
+        <segue reference="nxl-xA-9Hd"/>
+        <segue reference="0US-NI-9lF"/>
+        <segue reference="EzM-79-T0o"/>
+        <segue reference="2Rt-iZ-59y"/>
     </inferredMetricsTieBreakers>
 </document>
