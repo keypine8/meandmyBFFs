@@ -169,7 +169,7 @@ tn();
 
     //MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global methods in appDelegate.m
 
-    
+
     // set up custom image for "back"  (blueleft chevron)
     //
     // http://stackoverflow.com/questions/18912638/custom-image-for-uinavigation-back-button-in-ios-7
@@ -215,18 +215,37 @@ tn();
     myNavBarLabel.textAlignment = NSTextAlignmentCenter; 
     myNavBarLabel.font          = [UIFont boldSystemFontOfSize: 16.0];
 
-    if (  [gbl_currentMenuPlusReportCode isEqualToString: @"HOME"]    // home screen for app (startup screen)
-    ) {
-        gbl_helpScreenDescription = @"HOME";
 
-        myNavBarLabel.text          = @"Me and my BFFS ";
-        myNavBarLabel.adjustsFontSizeToFitWidth = YES;
-        [myNavBarLabel sizeToFit];
 
-//        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+    // HOME screen EDITING help
+    //
+    if (  [gbl_currentMenuPlusReportCode isEqualToString: @"HOME"] )  // home screen for app (startup screen)
+    {
+        if (   [gbl_homeEditingState isEqualToString: @"add" ]       // have "+" button in  gbl_homeUseMODE = "regular mode"
+            || [gbl_homeUseMODE      isEqualToString: @"edit mode" ] // covers         gbl_homeEditingState = "add"  or "view or change"
+           )
+        {
+            gbl_helpScreenDescription = @"HOME yellow";
+
+            myNavBarLabel.text          = @"Editing and Data Movement";
+            myNavBarLabel.adjustsFontSizeToFitWidth = YES;
+            [myNavBarLabel sizeToFit];
+
             self.navigationItem.titleView = myNavBarLabel; // myNavBarLabel.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
-//        });
-    }
+
+        } else {
+
+            gbl_helpScreenDescription = @"HOME brown";
+
+            myNavBarLabel.text          = @"Me and my BFFS ";
+            myNavBarLabel.adjustsFontSizeToFitWidth = YES;
+            [myNavBarLabel sizeToFit];
+
+            self.navigationItem.titleView = myNavBarLabel; // myNavBarLabel.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
+        }
+    }  // "HOME" screen
+
+
 
     if (  [gbl_currentMenuPlusReportCode isEqualToString: @"hompcy"]    // calendar year
       ||  [gbl_currentMenuPlusReportCode isEqualToString: @"gbypcy"] 
@@ -244,7 +263,6 @@ tn();
 
 //        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
              
-//<.>
 
 //           [[self navigationItem] setTitle: @"Long-term Stress Levels"];
            myNavBarLabel.text          =  @"Long-term Stress Levels";
@@ -257,6 +275,7 @@ tn();
 
     self.navigationItem.backBarButtonItem.title=@"";
     }
+
 
     if (  [gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"]    // my best match (grpone)
       ||  [gbl_currentMenuPlusReportCode isEqualToString: @"pbm2bm"]    // my best match (grpone)
@@ -540,7 +559,7 @@ nbn(88);
         myFontForText    = [UIFont fontWithName: @"Menlo-bold" size: 12.5];
         myFontOnSide     = [UIFont fontWithName: @"Menlo-bold" size: 12.0];
         myTitleFont      = [UIFont fontWithName: @"Menlo-bold" size: 17.0];
-        myDisclaimerFont = [UIFont fontWithName: @"Menlo-bold" size:  9.0];
+        myDisclaimerFont = [UIFont fontWithName: @"Menlo-bold" size: 12.0];
         myFontForSwitch  = [UIFont fontWithName: @"Menlo-bold" size: 16.0];
     }
     else if (   myScreenWidth  < 414.0                                          // 6 and 6s
@@ -549,7 +568,7 @@ nbn(88);
         myFontForText    = [UIFont fontWithName: @"Menlo-bold" size: 11.5];
         myFontOnSide     = [UIFont fontWithName: @"Menlo-bold" size: 11.0];
         myTitleFont      = [UIFont fontWithName: @"Menlo-bold" size: 16.0];
-        myDisclaimerFont = [UIFont fontWithName: @"Menlo-bold" size:  9.0];
+        myDisclaimerFont = [UIFont fontWithName: @"Menlo-bold" size: 11.0];
         myFontForSwitch  = [UIFont fontWithName: @"Menlo-bold" size: 15.0];
     }
     else if (   myScreenWidth <= 320.0)                                          //  5s and 5 and 4s and smaller
@@ -2446,7 +2465,104 @@ nbn(100);
     } // end of gbl_helpScreenDescription   "best day"
 
 
-    if (  [gbl_helpScreenDescription isEqualToString: @"HOME"] )
+    if (  [gbl_helpScreenDescription isEqualToString: @"HOME yellow"] )
+    { 
+        if (indexPath.row == 0) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myFontForText;
+                cell.backgroundColor         = gbl_color_cBgr;
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.text          = @"";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
+            });
+            return cell;
+        }
+
+
+        if (indexPath.row == 1) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                  // <=== title for 
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myTitleFont;
+//                cell.backgroundColor         = gbl_color_cHed;
+//                cell.backgroundColor         = gbl_bgColor_blueDoneH;
+                cell.backgroundColor         = gbl_bgColor_brownDone;
+                cell.textLabel.numberOfLines = 0;
+                //                cell.textLabel.text          = @"Blue Home is for Reports";
+//                cell.textLabel.text          = @"Brown Home is for Reports";
+                cell.textLabel.text          = @"Brown is for Reports";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
+            });
+            return cell;
+        }
+
+
+        if (indexPath.row == 2) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== text
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myFontForText;
+                cell.backgroundColor         = gbl_bgColor_brownDone;
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.text          = @"View reports for people and groups you have added.\nShare reports by email.";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
+            });
+            return cell;
+        }
+
+
+        if (indexPath.row == 3) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myFontForText;
+                cell.backgroundColor         = gbl_color_cBgr;
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.text          = @"";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
+            });
+            return cell;
+        }
+
+
+
+        if (indexPath.row ==   4) {                           // <=== disclaimer 
+            dispatch_async(dispatch_get_main_queue(), ^{  
+//                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.textLabel.textColor     = [UIColor redColor]; 
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myDisclaimerFont;
+                cell.backgroundColor         = gbl_color_cBgr;
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.text          = @"All reports are for entertainment purposes only.";
+                cell.imageView.image         = nil;
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentCenter;
+                cell.accessoryView = nil;
+
+            });
+            return cell;
+        }
+
+    } // end of gbl_helpScreenDescription   "HOME yellow"
+
+
+
+    if (  [gbl_helpScreenDescription isEqualToString: @"HOME brown"] )
     { 
 
         if (indexPath.row == 0) {
@@ -2951,8 +3067,7 @@ nbn(100);
             });
             return cell;
         }
-    } // end of gbl_helpScreenDescription   "HOME"
-//<.>
+    } // end of gbl_helpScreenDescription   "HOME brown"
 
 
 
@@ -3019,10 +3134,9 @@ nbn(100);
     if ([gbl_helpScreenDescription isEqualToString: @"calendar year"] ) { return 15; } 
     if ([gbl_helpScreenDescription isEqualToString: @"best year"    ] ) { return  7; } 
     if ([gbl_helpScreenDescription isEqualToString: @"best day"     ] ) { return  7; } 
-//    if ([gbl_helpScreenDescription isEqualToString: @"HOME"         ] ) { return  8; } 
-//    if ([gbl_helpScreenDescription isEqualToString: @"HOME"         ] ) { return  14; } 
-//    if ([gbl_helpScreenDescription isEqualToString: @"HOME"         ] ) { return  17; } 
-    if ([gbl_helpScreenDescription isEqualToString: @"HOME"         ] ) { return  20; } 
+    if ([gbl_helpScreenDescription isEqualToString: @"HOME brown"   ] ) { return 20; } 
+
+    if ([gbl_helpScreenDescription isEqualToString: @"HOME yellow"  ] ) { return  5; } 
     return 1;
 }
 
@@ -3031,30 +3145,18 @@ nbn(100);
 {
 //  NSLog(@"in heightForRowAtIndexPath  INFO ");
 
-//<.>
-//        if (indexPath.row ==   6) return    32.0;  // spacer
-//
-// 7       if (indexPath.row ==   13) return    30.0;  // title for Example Data
-// 8       if (indexPath.row ==   14) return   200.0;  // text  for Example Data
-// 9       if (indexPath.row ==   15) return    50.0;  // check box for "Show Example Data"
-//
-//10       if (indexPath.row ==   16) return    32.0;  // spacer
-//11       if (indexPath.row ==   17) return    30.0;  // title for #allpeople
-//12       if (indexPath.row ==   18) return   160.0;  // text  for #allpeople
-//
-//13       if (indexPath.row ==   9) return    30.0;  // title for report list
-//14       if (indexPath.row ==   10) return   200.0;  // report  list
-//
-//15       if (indexPath.row ==   11) return    30.0;  // title for why not ?
-//16       if (indexPath.row ==   12) return   120.0;  // text  for why not ?
-//
-//17      if (indexPath.row ==   7) return    30.0;  // title for do stuff
-//18       if (indexPath.row ==   8) return   200.0;  // text  for do stuff
-//
-//        if (indexPath.row ==   19) return    30.0;  // text for disclaimer
-//<.>
-//
-    if (   [gbl_helpScreenDescription isEqualToString: @"HOME"] ) {
+    if (   [gbl_helpScreenDescription isEqualToString: @"HOME yellow"] ) {
+
+        if (indexPath.row ==   0) return    16.0;  // spacer
+        if (indexPath.row ==   1) return    30.0;  // title for 
+        if (indexPath.row ==   2) return    50.0;  // text  for
+        if (indexPath.row ==   3) return    16.0;  // spacer
+
+        if (indexPath.row ==   4) return    30.0;  // text for disclaimer
+    }
+
+
+    if (   [gbl_helpScreenDescription isEqualToString: @"HOME brown"] ) {
 
         if (indexPath.row ==   0) return    16.0;  // spacer
         if (indexPath.row ==   1) return    30.0;  // title for brown home
@@ -3084,7 +3186,6 @@ nbn(100);
         if (indexPath.row ==   18) return   120.0;  // text  for why not ?
 
         if (indexPath.row ==   19) return    30.0;  // text for disclaimer
-//<.>
     }
     if (   [gbl_helpScreenDescription isEqualToString: @"best day"] ) {
         if (indexPath.row ==   0) return     8.0;  // spacer

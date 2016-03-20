@@ -782,7 +782,7 @@ tn();    NSLog(@"in didSelectRowAtIndexPath!  in SelectPerson !!!!!!!!!!!!");
             
             if (member_cnt == 0) missingMsg = [ NSString stringWithFormat:
                 @"A group report needs\nat least 2 members.\n\nGroup \"%@\" has %ld members.",
-                currcell.textLabel.text, member_cnt
+                currcell.textLabel.text, (long)member_cnt
             ];
 //            UIAlertController* myAlert = [UIAlertController alertControllerWithTitle: @"Need more Group Members"
             UIAlertController* myAlert = [UIAlertController alertControllerWithTitle: @"Not enough Group Members"

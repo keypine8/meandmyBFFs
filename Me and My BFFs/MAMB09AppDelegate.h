@@ -8,9 +8,10 @@
 #import <UIKit/UIKit.h>
 
 //UIActivityIndicatorView *gbl_bestMatchActivityIndicator;  // for best match (could run 2,3 sec)
-UIAlertView             *gbl_alert;
+//UIAlertView             *gbl_alert;
 UIActivityIndicatorView *gbl_progress1;
-UIActivityIndicatorView *gbl_progress2;
+//UIActivityIndicatorView *gbl_progress2;
+UIBarButtonItem *gbl_goToReportButton;  // for sel year and sel date
 
 
 //NSString *gbl_cy_session_startup;   // format "20nn"  cy gotten from apl this session
@@ -752,7 +753,7 @@ UIColor *gbl_color_cMacHighlight;
 //UIColor *gbl_color_cAplTop;  // color of top of iPhone screen  246,248,249
 UIColor *gbl_color_cAplTop;  // color of top of iPhone screen  252,250,246
 UIColor *gbl_color_cAplBlue;  // tint of chevron and Back etc
-
+UIColor *gbl_color_cAplBlueForSpinner;
 UIColor *gbl_reallyLightGray;
 UIColor *gbl_color_cPerGreen; // used to be all green (see below)  now settled on color cNeu
 

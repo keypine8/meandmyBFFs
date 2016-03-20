@@ -40,7 +40,9 @@
     [super viewDidLoad];
 
     fopen_fpdb_for_debug();
+tn();
     NSLog(@"in TBLRPT_1 viewDidLoad!");
+
 
 
 //        //  REMOVE OLD  spinner 
@@ -521,6 +523,49 @@ tn();
 //
 
 
+tn();
+  NSLog(@" in tblrpts 1 just after  calc for best year report !");
+  NSLog(@"gbl_progress1                  =[%@]",gbl_progress1 );
+
+
+
+
+if (gbl_progress1 != nil) 
+  NSLog(@"gbl_progress1.hidden =[%d]",gbl_progress1.hidden );
+                // IF  we came here to do "homgby"
+                // and if (gbl_numMembersInCurrentGroup > gbl_numMembersToTriggerSpinner )
+                // that means the spinner is still animating here.
+                //
+                //   then  stop it animating and REMOVE UIActivityIndicatorView from self.navigationController.view subviews 
+                //
+                //  REMOVE OLD  spinner 
+                //
+nbn(606);
+                if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgby"]     // best year
+                    &&  gbl_numMembersInCurrentGroup > gbl_numMembersToTriggerSpinner )
+                {
+nbn(608);
+  NSLog(@"  spinner 55 is animating NOW !");
+                    if (gbl_progress1 != nil) {
+                        [gbl_progress1 stopAnimating ];
+  NSLog(@"  spinner 55  STOP animating  !");
+                    }
+
+                    for( UIView *sub_view in [ self.navigationController.view subviews ] )  // remove subview (gbl_toolbarHomeMaintenance  - tag=34 )
+                    {
+  NSLog(@"sub_view =[%@]",sub_view );
+  NSLog(@"sub_view.tag =[%ld]",(long)sub_view.tag );
+                          if(sub_view.tag == 55) {                         // magic = 55 tag
+  NSLog(@" REMOVED OLD spinner 55 !");
+                              [sub_view removeFromSuperview ];
+                            gbl_progress1 = nil;
+                        }
+                    }
+
+                }
+nbn(609);
+
+
          }    // group Best year rpt
 
 
@@ -590,7 +635,7 @@ tn();
         retint = lcl_group_report_output_idx + 1 + 3 + 1 ; // + 3 for 3 bottom cells   +1 for very bottom space
     }
 
-  NSLog(@"retint=[%ld]",retint);
+  NSLog(@"retint=[%ld]",(long)retint);
 
     return retint;
 }
@@ -1313,7 +1358,7 @@ tn();
   NSLog(@"mycode=[%@]",mycode);
   NSLog(@"mylin =[%@]",mylin);
   NSLog(@"gbl_heightCellCOMP =[%ld]",(long)gbl_heightCellCOMP );
-  NSLog(@"gbl_topTableWidth=[%ld]",gbl_topTableWidth);
+  NSLog(@"gbl_topTableWidth=[%ld]",(long)gbl_topTableWidth);
 
             
   NSLog(@"mylin hdr=[%@]",mylin);
@@ -1657,7 +1702,7 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
                     ];
                     gbl_heightCellCOMP = 18;
 
-  NSLog(@"[mylin s length]=[%ld]",[mylin length]);
+  NSLog(@"[mylin s length]=[%ld]",(unsigned long)[mylin length]);
 
 
                 } else { // LONG  line here
@@ -1747,7 +1792,7 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
 
                 } // end   LONG  line here
 
-  NSLog(@"[mylin l length]=[%ld]",[mylin length]);
+  NSLog(@"[mylin l length]=[%ld]",(unsigned long)[mylin length]);
             } // if ( [mycode2 isEqualToString: @"label"] )
 
 
@@ -1778,7 +1823,7 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
   NSLog(@"else ");
                     mylin = gbl_topTablePairLine;
                 }
-  NSLog(@"[mylin space length]=[%ld]",[mylin length]);
+  NSLog(@"[mylin space length]=[%ld]",(unsigned long)[mylin length]);
   NSLog(@"mylin=[%@]",mylin);
   NSLog(@"gbltmpstr=[%@]",gbltmpstr);
 
@@ -3186,7 +3231,7 @@ NSLog(@"myCellContentsPSV =[%@]", myCellContentsPSV );
             myOriginalCellTextLen = myOriginalCellText.length;
 
 NSLog(@"myOriginalCellText    =%@",myOriginalCellText    );
-NSLog(@"myOriginalCellTextLen =%ld",myOriginalCellTextLen );
+NSLog(@"myOriginalCellTextLen =%ld",(long)myOriginalCellTextLen );
 
 
             // get the number of chars taken up by rank numbers on left (  gbl_numPairsRanked )
@@ -5025,6 +5070,7 @@ NSLog(@"myOriginalCellTextLen =%ld",myOriginalCellTextLen );
 
 } // end of   willDisplayCell
 
+
 //- (void)tableView:(UITableView *)tableView willDisplayCell: (UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 //{ 
 //tn();  NSLog(@"willDisplayCell !");
@@ -5638,7 +5684,7 @@ tn();trn("just tapped on row in TBLRPTS_1");
 -(void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear: animated];
-
+tn();
     NSLog(@"in TBLRPTs 1  viewWillAppear!");
 NSLog(@"gbl_TBLRPTS1_saveSelectedIndexPath.row=%ld",(long)gbl_TBLRPTS1_saveSelectedIndexPath.row);
 
@@ -5691,6 +5737,9 @@ NSLog(@"gbl_TBLRPTS1_saveSelectedIndexPath.row=%ld",(long)gbl_TBLRPTS1_saveSelec
 ////            self.tableView.backgroundColor = gbl_color_cBgr;   // WORKS
 //        }
 //
+
+//self.tableView.backgroundColor = gbl_color_cHed;   // WORKS
+        self.tableView.backgroundColor = gbl_color_cBgr;   // WORKS
 
     } while (FALSE); // set bg color (spinner)
 
@@ -6147,7 +6196,7 @@ NSLog(@"gbl_TBLRPTS1_saveSelectedIndexPath.row=%ld",(long)gbl_TBLRPTS1_saveSelec
         //
         NSString *perDataStr = [NSString stringWithContentsOfURL: URLtoHTML_forWebview  encoding: NSUTF8StringEncoding  error: nil];
         gbl_perDataLines     = [perDataStr componentsSeparatedByCharactersInSet: [NSCharacterSet newlineCharacterSet]];
-  NSLog(@"gbl_perDataLines.count    =[%ld]",gbl_perDataLines.count    );
+  NSLog(@"gbl_perDataLines.count    =[%ld]",(unsigned long)gbl_perDataLines.count    );
 
 //
 //// Log all data in gbl_perDataLines file array contents    for test <.>
@@ -6358,7 +6407,7 @@ NSLog(@"gbl_TBLRPTS1_saveSelectedIndexPath.row=%ld",(long)gbl_TBLRPTS1_saveSelec
         NSString *compDataStr = [NSString stringWithContentsOfURL: URLtoHTML_forWebview  encoding: NSUTF8StringEncoding  error: nil];
         gbl_compDataLines     = [compDataStr componentsSeparatedByCharactersInSet: [NSCharacterSet newlineCharacterSet]];
 
-  NSLog(@"gbl_compDataLines.count    =[%ld]",gbl_compDataLines.count    );
+  NSLog(@"gbl_compDataLines.count    =[%ld]",(unsigned long)gbl_compDataLines.count    );
 //int kk;
 //for (kk=0; kk <= 20; kk++)
 //{tn();ki(kk);
@@ -6618,7 +6667,7 @@ NSLog(@"gbl_TBLRPTS1_saveSelectedIndexPath.row=%ld",(long)gbl_TBLRPTS1_saveSelec
 
     ) {   // all BEST MATCH ... reports  PLUS all reports AFTER THAT in navigation <-------------
 
-        tn();trn("in REPORT  all BEST MATCH ... reports !");
+tn();trn("in REPORT  all BEST MATCH ... reports !");
 
         //        NSString myTitleForTableview;
 
@@ -6717,9 +6766,9 @@ NSLog(@"gbl_TBLRPTS1_saveSelectedIndexPath.row=%ld",(long)gbl_TBLRPTS1_saveSelec
         // remove all "*.html" files from TMP directory before creating new one
         //
         tmpDirFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:NSTemporaryDirectory() error:NULL];
-        NSLog(@"tmpDirFiles.count=%lu",(unsigned long)tmpDirFiles.count);
+  NSLog(@"tmpDirFiles.count=%lu",(unsigned long)tmpDirFiles.count);
         for (NSString *fil in tmpDirFiles) {
-            NSLog(@"REMOVED THIS fil=%@",fil);
+  NSLog(@"REMOVED THIS fil=%@",fil);
             if ([fil hasSuffix: @"html"]) {
                 [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), fil] error:NULL];
             }
@@ -6798,6 +6847,7 @@ NSLog(@"gbl_TBLRPTS1_saveSelectedIndexPath.row=%ld",(long)gbl_TBLRPTS1_saveSelec
           // put ptr to that spot into c array of strings
           my_mamb_csv_arr[lcl_group_report_input_birthinfo_idx] = my_ptr_in_buff;
         }
+nbn(1000);
 
 //for (int kkk=0; kkk <= num_input_csvs -1; kkk++) {
 //tn();ki(kkk);ks(my_mamb_csv_arr[kkk]); }
@@ -6826,119 +6876,83 @@ NSLog(@"gbl_TBLRPTS1_saveSelectedIndexPath.row=%ld",(long)gbl_TBLRPTS1_saveSelec
 //
 //
 
+
+        // 1 different report invocation  for grpall (homgbm)
+        // 4 different report invocations for grpone (hompbm, gbm1gm, gbm2bm, pbm2bm)
+        //
+        if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgbm"]       // Best Match in Group ...  this is grpall
+            || [gbl_currentMenuPlusReportCode       hasPrefix: @"gbm"   ]       // Best Match in Group ...  this is grpall
+
+        ) { // grpall
+
+//  NSLog(@"gbl_currentMenuPlusReportCode=%@",gbl_currentMenuPlusReportCode);
+
+
+tn();trn("calling  mamb_report_whole_group() ...");
+//ksn(pathToHTML_browser);
+//ksn(tmp_grp_name);
+//ksn(my_mamb_csv_arr[0]);
+//ksn(my_mamb_csv_arr[1]);
+//kin(num_input_csvs);
 //
-//        // 1 different report invocation  for grpall (homgbm)
-//        // 4 different report invocations for grpone (hompbm, gbm1gm, gbm2bm, pbm2bm)
-//        //
-//        if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgbm"]       // Best Match in Group ...  this is grpall
-//            || [gbl_currentMenuPlusReportCode       hasPrefix: @"gbm"   ]       // Best Match in Group ...  this is grpall
-//
-//        ) { // grpall
-//
-////  NSLog(@"gbl_currentMenuPlusReportCode=%@",gbl_currentMenuPlusReportCode);
-//
-//
-//tn();trn("calling  mamb_report_whole_group() ...");
-////ksn(pathToHTML_browser);
-////ksn(tmp_grp_name);
-////ksn(my_mamb_csv_arr[0]);
-////ksn(my_mamb_csv_arr[1]);
-////kin(num_input_csvs);
-////
-//
-//
-////  NSLog(@"902!");
-////    [super.view addSubview: gbl_bestMatchActivityIndicator ];
-////
-////    [gbl_bestMatchActivityIndicator startAnimating];
-////  NSLog(@"907!");
-////
-////  NSLog(@"9025a!");
-////sleep(3);
-//
-//
-////  NSLog(@"911!");
-////
-////UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Loading..." message: nil delegate:self cancelButtonTitle: nil otherButtonTitles: nil];
-////UIActivityIndicatorView *progress= [[UIActivityIndicatorView alloc] initWithFrame: CGRectMake(125, 50, 30, 30)];
-////    progress.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
-////[alert addSubview: progress];
-////[alert show];
-////[progress startAnimating];
-////  NSLog(@"9111!");
-////
-////sleep(3);
-//
-////sleep(3);
-//
-//            // because this is biewWillAppear  alert or progress doesn't show until flash in viewdidload  CANNOT get progress indicator here
-//
-//            retval = mamb_report_whole_group(  /* in grpdoc.o */
-//              pathToHTML_browser,          // path to html_file
-//              tmp_grp_name,                // group_name */
-//              my_mamb_csv_arr,             // from   lcl_group_report_input_birthinfo_CSVs
-//              num_input_csvs,              // num_persons_in_grp xxzz
-//              "",  // instructions,  sprintf(instructions_for_top_bot, "top_this_many=|%d|bot_this_many=|%d|", top_this_many, bot_this_many);
-//              "",                  /* buffer for string_for_table_only  */
-//              lcl_group_report_output_PSVs,    // array of output report data
-//              &lcl_group_report_output_idx     // ptr to int having last index written
-//            );
-//
-////  NSLog(@"912!");
-////
-////[gbl_progress stopAnimating];
-////// I'll just leave this here in case someone needs to dismiss this from another method programmatically: [alert dismissWithClickedButtonIndex:0 animated:YES]; – LordParsley Nov 9 '13 at 15:15
-////[gbl_alert dismissWithClickedButtonIndex:0 animated:YES];
-//
-//
-//
-////  NSLog(@"903!");
-////    [gbl_bestMatchActivityIndicator stopAnimating];
-////  NSLog(@"905!");
-////
-////  NSLog(@"9025z!");
-//
-//
-////kin(retval);
-////kin(lcl_group_report_output_idx);
-////char my_tst_str[128];
-////strcpy(my_tst_str, lcl_group_report_output_PSVs  +  0 * (int)gbl_maxLenRptLinePSV);  // 128   get ROW   get ROW   get ROW  get ROW  
-////tr("lcl_group_report_output_PSVs  idx=0");ksn(my_tst_str);
-////strcpy(my_tst_str, lcl_group_report_output_PSVs  +  1 * (int)gbl_maxLenRptLinePSV);  // 128   get ROW   get ROW   get ROW  get ROW  
-////tr("lcl_group_report_output_PSVs  idx=1");ksn(my_tst_str);
-////strcpy(my_tst_str, lcl_group_report_output_PSVs  +  2 * (int)gbl_maxLenRptLinePSV);  // 128   get ROW   get ROW   get ROW  get ROW  
-////tr("lcl_group_report_output_PSVs  idx=2");ksn(my_tst_str);
-////strcpy(my_tst_str, lcl_group_report_output_PSVs  +  3 * (int)gbl_maxLenRptLinePSV);  // 128   get ROW   get ROW   get ROW  get ROW  
-////tr("lcl_group_report_output_PSVs  idx=3");ksn(my_tst_str);
-////strcpy(my_tst_str, lcl_group_report_output_PSVs  +  4 * (int)gbl_maxLenRptLinePSV);  // 128   get ROW   get ROW   get ROW  get ROW  
-////tr("lcl_group_report_output_PSVs  idx=4");ksn(my_tst_str);
-////strcpy(my_tst_str, lcl_group_report_output_PSVs  +  5 * (int)gbl_maxLenRptLinePSV);  // 128   get ROW   get ROW   get ROW  get ROW  
-////tr("lcl_group_report_output_PSVs  idx=5");ksn(my_tst_str);
-////strcpy(my_tst_str, lcl_group_report_output_PSVs  +  6 * (int)gbl_maxLenRptLinePSV);  // 128   get ROW   get ROW   get ROW  get ROW  
-////tr("lcl_group_report_output_PSVs  idx=6");ksn(my_tst_str);
-////strcpy(my_tst_str, lcl_group_report_output_PSVs  +  7 * (int)gbl_maxLenRptLinePSV);  // 128   get ROW   get ROW   get ROW  get ROW  
-////tr("lcl_group_report_output_PSVs  idx=7");ksn(my_tst_str);
-////strcpy(my_tst_str, lcl_group_report_output_PSVs  +  8 * (int)gbl_maxLenRptLinePSV);  // 128   get ROW   get ROW   get ROW  get ROW  
-////tr("lcl_group_report_output_PSVs  idx=8");ksn(my_tst_str);
-////strcpy(my_tst_str, lcl_group_report_output_PSVs  +  9 * (int)gbl_maxLenRptLinePSV);  // 128   get ROW   get ROW   get ROW  get ROW  
-////tr("lcl_group_report_output_PSVs  idx=9");ksn(my_tst_str);
-////trn("in cocoa  returning from call of   mamb_report_whole_group() ...");
-////tn();
-////
-//
-//            if (retval != 0) {
-//tn(); trn("non-zero retval from mamb_report_whole_group()");   }
-//
-//        } // END of grpall
-//
+
+
+            // because this is biewWillAppear  alert or progress doesn't show until flash in viewdidload  CANNOT get progress indicator here
+
+            retval = mamb_report_whole_group(  /* in grpdoc.o */
+              pathToHTML_browser,          // path to html_file
+              tmp_grp_name,                // group_name */
+              my_mamb_csv_arr,             // from   lcl_group_report_input_birthinfo_CSVs
+              num_input_csvs,              // num_persons_in_grp xxzz
+              "",  // instructions,  sprintf(instructions_for_top_bot, "top_this_many=|%d|bot_this_many=|%d|", top_this_many, bot_this_many);
+              "",                  /* buffer for string_for_table_only  */
+              lcl_group_report_output_PSVs,    // array of output report data
+              &lcl_group_report_output_idx     // ptr to int having last index written
+            );
+
+//kin(retval);
+//kin(lcl_group_report_output_idx);
+//char my_tst_str[128];
+//strcpy(my_tst_str, lcl_group_report_output_PSVs  +  0 * (int)gbl_maxLenRptLinePSV);  // 128   get ROW   get ROW   get ROW  get ROW  
+//tr("lcl_group_report_output_PSVs  idx=0");ksn(my_tst_str);
+//strcpy(my_tst_str, lcl_group_report_output_PSVs  +  1 * (int)gbl_maxLenRptLinePSV);  // 128   get ROW   get ROW   get ROW  get ROW  
+//tr("lcl_group_report_output_PSVs  idx=1");ksn(my_tst_str);
+//strcpy(my_tst_str, lcl_group_report_output_PSVs  +  2 * (int)gbl_maxLenRptLinePSV);  // 128   get ROW   get ROW   get ROW  get ROW  
+//tr("lcl_group_report_output_PSVs  idx=2");ksn(my_tst_str);
+//strcpy(my_tst_str, lcl_group_report_output_PSVs  +  3 * (int)gbl_maxLenRptLinePSV);  // 128   get ROW   get ROW   get ROW  get ROW  
+//tr("lcl_group_report_output_PSVs  idx=3");ksn(my_tst_str);
+//strcpy(my_tst_str, lcl_group_report_output_PSVs  +  4 * (int)gbl_maxLenRptLinePSV);  // 128   get ROW   get ROW   get ROW  get ROW  
+//tr("lcl_group_report_output_PSVs  idx=4");ksn(my_tst_str);
+//strcpy(my_tst_str, lcl_group_report_output_PSVs  +  5 * (int)gbl_maxLenRptLinePSV);  // 128   get ROW   get ROW   get ROW  get ROW  
+//tr("lcl_group_report_output_PSVs  idx=5");ksn(my_tst_str);
+//strcpy(my_tst_str, lcl_group_report_output_PSVs  +  6 * (int)gbl_maxLenRptLinePSV);  // 128   get ROW   get ROW   get ROW  get ROW  
+//tr("lcl_group_report_output_PSVs  idx=6");ksn(my_tst_str);
+//strcpy(my_tst_str, lcl_group_report_output_PSVs  +  7 * (int)gbl_maxLenRptLinePSV);  // 128   get ROW   get ROW   get ROW  get ROW  
+//tr("lcl_group_report_output_PSVs  idx=7");ksn(my_tst_str);
+//strcpy(my_tst_str, lcl_group_report_output_PSVs  +  8 * (int)gbl_maxLenRptLinePSV);  // 128   get ROW   get ROW   get ROW  get ROW  
+//tr("lcl_group_report_output_PSVs  idx=8");ksn(my_tst_str);
+//strcpy(my_tst_str, lcl_group_report_output_PSVs  +  9 * (int)gbl_maxLenRptLinePSV);  // 128   get ROW   get ROW   get ROW  get ROW  
+//tr("lcl_group_report_output_PSVs  idx=9");ksn(my_tst_str);
+trn("in cocoa  returning from call of   mamb_report_whole_group() ...");
+tn();
+
+
+            if (retval != 0) {
+tn(); trn("non-zero retval from mamb_report_whole_group()");   }
+
+        } // END of grpall
+
 
 
         // fall through here
 
 
+nbn(1001);
         if (   [gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"] // *MY*  Best Match in Group ...  this is grpone
             || [gbl_currentMenuPlusReportCode       hasPrefix: @"pbm"   ] // *MY*  Best Match in Group ...  this is grpone
         ) { // grpone
+trn("in grpone code");
+nbn(1002);
 //                || [gbl_currentMenuPlusReportCode isEqualToString: @"pbm2bm"]
 //                || [gbl_currentMenuPlusReportCode isEqualToString: @"gbm1bm"]
 //                || [gbl_currentMenuPlusReportCode isEqualToString: @"gbm2bm"]
@@ -7050,8 +7064,10 @@ tn();trn("DOING person in group ... in tblrpts 111111"); ks(html_file_name_brows
         // still falling throught here
 
 
+trn(" still falling throught here");
+
         do {  // populate  gbl_array_cellBGcolorName gbl_array_cellPersonAname gbl_array_cellPersonBname
-//tn();trn("// populate  gbl_array_cellBGcolorName gbl_array_cellPersonAname gbl_array_cellPersonBname");
+tn();trn("// populate  gbl_array_cellBGcolorName gbl_array_cellPersonAname gbl_array_cellPersonBname");
 
             // now that we have lcl_group_report_output_PSVs, grab all BG color for all tableview cells
             // and put into   NSArray *gbl_array_cellBGcolorName;
@@ -7079,26 +7095,29 @@ tn();trn("DOING person in group ... in tblrpts 111111"); ks(html_file_name_brows
             gbl_array_cellPersonAname = [[NSMutableArray alloc] init];  // init  array
             gbl_array_cellPersonBname = [[NSMutableArray alloc] init];  // init  array 
 
-    //tn();kin(lcl_group_report_output_idx);
+tn();kin(lcl_group_report_output_idx);
 
             NSString *myHedColor = @"cHed";
 
             for (int i=0; i <= lcl_group_report_output_idx + 3; i++) {  // lcl_group_report_output_idx = last index written
-
+nbn(1005);
                 if (i == lcl_group_report_output_idx + 1) {
+nbn(10051);
                     [gbl_array_cellBGcolorName addObject: myHedColor];  //  footer line 1  // add the BG colors of the 3 footer cells
                     continue;
                 }
                 if (i == lcl_group_report_output_idx + 2) {
+nbn(10052);
                     [gbl_array_cellBGcolorName addObject: myHedColor];  //  footer line 2
                     continue;
                 }
                 if (i == lcl_group_report_output_idx + 3) {
+nbn(10053);
                     [gbl_array_cellBGcolorName addObject: myHedColor];  //  footer line 3
                     continue;
                 }
                 strcpy(my_buff, lcl_group_report_output_PSVs  +  i * (int)gbl_maxLenRptLinePSV);  // 128   get ROW   get ROW   get ROW  get ROW
-//tn();ki(i);ks(my_buff);
+tn();ki(i);ksn(my_buff);
 
                 // _(top    line print)___gbl_my3_group_report_line=[cHed|        Top 150                                                  ]__
                 // _(bottom line print)___gbl_my3_group_report_line=[cHed|        Bottom  50                                               ]__
@@ -7124,7 +7143,7 @@ tn();trn("DOING person in group ... in tblrpts 111111"); ks(html_file_name_brows
 
 
                 myCellContentsPSV     = [NSMutableString stringWithUTF8String: my_buff];  // convert c string to NSString
-//  NSLog(@"myCellContentsPSV     =[%@]",myCellContentsPSV     );
+  NSLog(@"myCellContentsPSV     =[%@]",myCellContentsPSV     );
 
                 tmpArray3             = [myCellContentsPSV componentsSeparatedByCharactersInSet: mySeparators ];
 
@@ -7156,7 +7175,7 @@ tn();trn("DOING person in group ... in tblrpts 111111"); ks(html_file_name_brows
 
         } while (false);   // populate  gbl_array_cellBGcolorName gbl_array_cellPersonAname gbl_array_cellPersonBname
 
-//trn("END OF   // populate  gbl_array_cellBGcolorName gbl_array_cellPersonAname gbl_array_cellPersonBname"); tn();
+trn("END OF   // populate  gbl_array_cellBGcolorName gbl_array_cellPersonAname gbl_array_cellPersonBname"); tn();
 
 
 
@@ -7194,8 +7213,7 @@ tn();trn("DOING person in group ... in tblrpts 111111"); ks(html_file_name_brows
 //
 
 
-
-
+trn(" // END of   all BEST MATCH ... reports  ====");
 
     }  // END of   all BEST MATCH ... reports  ======================================================================================
 

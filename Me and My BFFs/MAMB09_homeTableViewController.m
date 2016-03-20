@@ -547,28 +547,29 @@ nbn(15);
 
 
 
-//
-//    //   for test   TO SIMULATE first downloading the app-  when there are no data files
-//    //   FOR test   remove all regular named files   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-//    //
-//    NSLog(@" FOR test   BEG   remove all regular named files   xxxxxxxxxx ");
-//    [gbl_sharedFM removeItemAtURL: gbl_URLToLastEnt    error: &err01];
-//    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm lastent %@", [err01 localizedFailureReason]); }
-//    [gbl_sharedFM removeItemAtURL: gbl_URLToGroup      error: &err01];
-//    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm group   %@", [err01 localizedFailureReason]); }
-//    [gbl_sharedFM removeItemAtURL: gbl_URLToPerson     error: &err01];
-//    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm person  %@", [err01 localizedFailureReason]); }
-//    [gbl_sharedFM removeItemAtURL: gbl_URLToMember     error: &err01];
-//    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm Member  %@", [err01 localizedFailureReason]); }
-//    [gbl_sharedFM removeItemAtURL: gbl_URLToGrpRem     error: &err01];
-//    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm GrpRem  %@", [err01 localizedFailureReason]); }
-//    [gbl_sharedFM removeItemAtURL: gbl_URLToPerRem     error: &err01];
-//    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm PerRem  %@", [err01 localizedFailureReason]); }
-//    NSLog(@" FOR test   END   remove all regular named files   xxxxxxxxxx ");
-//    // end of   FOR test   remove all regular named files   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-//
-//
-//
+
+    //   for test   TO SIMULATE first downloading the app-  when there are no data files
+    //   FOR test   remove all regular named files   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    //
+    NSLog(@" FOR test   BEG   remove all regular named files   xxxxxxxxxx ");
+    [gbl_sharedFM removeItemAtURL: gbl_URLToLastEnt    error: &err01];
+    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm lastent %@", [err01 localizedFailureReason]); }
+    [gbl_sharedFM removeItemAtURL: gbl_URLToGroup      error: &err01];
+    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm group   %@", [err01 localizedFailureReason]); }
+    [gbl_sharedFM removeItemAtURL: gbl_URLToPerson     error: &err01];
+    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm person  %@", [err01 localizedFailureReason]); }
+    [gbl_sharedFM removeItemAtURL: gbl_URLToMember     error: &err01];
+    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm Member  %@", [err01 localizedFailureReason]); }
+    [gbl_sharedFM removeItemAtURL: gbl_URLToGrpRem     error: &err01];
+    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm GrpRem  %@", [err01 localizedFailureReason]); }
+    [gbl_sharedFM removeItemAtURL: gbl_URLToPerRem     error: &err01];
+    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm PerRem  %@", [err01 localizedFailureReason]); }
+    NSLog(@" FOR test   END   remove all regular named files   xxxxxxxxxx ");
+    // end of   FOR test   remove all regular named files   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+
+
+
 
 
 
@@ -3758,7 +3759,7 @@ nbn(3);
                 
                 if (member_cnt == 0) missingMsg = [ NSString stringWithFormat:
                     @"A group report needs\nat least 2 members.\n\nGroup \"%@\" has %ld members.",
-                    gbl_lastSelectedGroup, member_cnt
+                    gbl_lastSelectedGroup, (long)member_cnt
                 ];
     //            UIAlertController* myAlert = [UIAlertController alertControllerWithTitle: @"Need more Group Members"
                 UIAlertController* myAlert = [UIAlertController alertControllerWithTitle: @"Not enough Group Members"

@@ -37,11 +37,11 @@
     //
 //        UIImage *myImage = [[UIImage imageNamed: @"ReportArrow_14.png"]
 //                         imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal ];
-//        UIBarButtonItem *_goToReportButton = [[UIBarButtonItem alloc]initWithImage: myImage
+//        UIBarButtonItem *gbl_goToReportButton = [[UIBarButtonItem alloc]initWithImage: myImage
 //                                                                             style: UIBarButtonItemStylePlain 
 //                                                                            target: self 
 //                                                                            action: @selector(actionDoReport)];
-//        self.navigationItem.rightBarButtonItem = _goToReportButton;
+//        self.navigationItem.rightBarButtonItem = gbl_goToReportButton;
 //
 
     // set up navigation bar  right button  ">" in image format
@@ -57,8 +57,8 @@
     UIImage *myImage = [[UIImage imageNamed: @"iconChevronRight_66"]
                      imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal ];
 
-//    UIBarButtonItem *_goToReportButton = [[UIBarButtonItem alloc]initWithImage: gbl_chevronRight
-    UIBarButtonItem *_goToReportButton = [[UIBarButtonItem alloc]initWithImage: myImage
+//    UIBarButtonItem *gbl_goToReportButton = [[UIBarButtonItem alloc]initWithImage: gbl_chevronRight
+    UIBarButtonItem *gbl_goToReportButton = [[UIBarButtonItem alloc]initWithImage: myImage
                                                                          style: UIBarButtonItemStylePlain 
                                                                         target: self 
                                                                         action: @selector(actionDoReport)];
@@ -70,7 +70,7 @@
 
 //      UIImageView *myImageView = [[UIImageView alloc] initWithImage: myImage] ;
 //
-//      UIBarButtonItem *_goToReportButton = [[UIBarButtonItem alloc] initWithCustomView: myImageView];
+//      UIBarButtonItem *gbl_goToReportButton = [[UIBarButtonItem alloc] initWithCustomView: myImageView];
 //      CGRect myrect = myImageView.frame;
 //      CGFloat y_value;
 //      y_value           = [myImageView frame].origin.y ;
@@ -107,7 +107,7 @@
     // TWO-LINE NAV BAR TITLE
     //
     dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
-        self.navigationItem.rightBarButtonItem = _goToReportButton;
+        self.navigationItem.rightBarButtonItem = gbl_goToReportButton;
         self.navigationItem.titleView           = mySelDate_Label; // mySelDate_Label.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
         self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerForTitle];
 //        [self.navigationItem.rightBarButtonItem setImageInsets:UIEdgeInsetsMake(0, 0, -8.0, 0)];  // too  low
@@ -434,12 +434,161 @@ NSLog(@"END of viewDidAppear()  in sel Year");
                           usingValue: (NSString *) gbl_lastSelectedYear
         ];
 
+
+        // If there is > 50 members in group  (1 sec run time)
+        // and user hits ">" button on the Nav Bar to start the report calculating
+        // show a "spinner" on the Nav Bar beside the ">" button.
+        //
+        // Then, in tblrpts 1, stopAnimating  spinner and remove it from self.navigationController.view
+        do {
+
+            gbl_numMembersInCurrentGroup = 0;
+
+            if ([gbl_lastSelectedGroup isEqualToString: gbl_nameOfGrpHavingAllPeopleIhaveAdded ] ) {
+                // "#allpeople"
+                if ([gbl_ExampleData_show isEqualToString: @"yes"] ) 
+                {
+                   gbl_numMembersInCurrentGroup = gbl_arrayPer.count;
+                } else {
+                   // Here we do not want to show example data.
+                   // Because example data names start with "~", they sort last,
+                   // so we can just reduce the number of rows to exclude example data from showing on the screen.
+                   gbl_numMembersInCurrentGroup = gbl_arrayPer.count - gbl_ExampleData_count_per ;
+                }
+
+            } else {
+                // regular group
+                NSString *currGroupMemberRec;
+                NSString *currGroupName;
+                for (int i=0;  i < gbl_arrayMem.count;  i++) {
+
+                    currGroupMemberRec  = gbl_arrayMem[i];
+                    currGroupName       = [currGroupMemberRec componentsSeparatedByString: @"|"][0]; // get fld#1 (grpname) - arr is 0-based 
+
+                    if ( [currGroupName isEqualToString: gbl_lastSelectedGroup ] ) {
+  NSLog(@"currGroupMemberRec  =[%@]",currGroupMemberRec  );
+                        gbl_numMembersInCurrentGroup = gbl_numMembersInCurrentGroup + 1;
+                    }
+                }
+            }
+tn();
+  NSLog(@" in sel year just before going from sel year to tblrpts 1 !");
+  NSLog(@"gbl_numMembersInCurrentGroup   =[%ld]",(long)gbl_numMembersInCurrentGroup );
+  NSLog(@"gbl_numMembersToTriggerSpinner =[%ld]",(long)gbl_numMembersToTriggerSpinner );
+  NSLog(@"gbl_progress1                  =[%@]",gbl_progress1 );
+
+nbn(101);
+            if (gbl_numMembersInCurrentGroup > gbl_numMembersToTriggerSpinner )
+            {
+nbn(102);
+//dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+//});
+
+                if (gbl_progress1 != nil) {
+                    [gbl_progress1 stopAnimating ];
+  NSLog(@"  spinner 55  STOP animating  !");
+                }
+
+  NSLog(@"gbl_progress1 -10 =[%@]",gbl_progress1 );
+////                gbl_progress1 = nil;
+
+//                    for( UIView *sub_view in [ self.navigationController.view subviews ] )  // remove subview (gbl_toolbarHomeMaintenance  - tag=34 )
+//                    {
+//  NSLog(@"sub_view =[%@]",sub_view );
+//  NSLog(@"sub_view.tag =[%ld]",(long)sub_view.tag );
+//                          if(sub_view.tag == 55) {                         // magic = 55 tag
+//  NSLog(@" REMOVED OLD spinner 55 !");
+//                              [sub_view removeFromSuperview ];
+//                            gbl_progress1 = nil;
+//                        }
+//
+//                    }
+//
+
+//  NSLog(@"gbl_progress1 - 9 =[%@]",gbl_progress1 );
+
+
+
+                // gbl_progress1 = [[UIActivityIndicatorView alloc] initWithFrame: CGRectMake(320, 20, 44, 44)];  // on 6+
+                //
+                // For instance let's say your app supports iPhones > 4s, so iPhone: 4s, 5, 5s, 6 and 6plus.
+                // Make sure to make launch-images which have the following dimensions:
+                //         iPhone4s    =  640 ×  960
+                //         iPhone5, 5s =  640 × 1136
+                //         iPhone6,    =  750 x 1334
+                //         iPhone6plus = 1242 x 2208
+                //
+                CGFloat myScreenWidth; //  myFontSize;  // determine font size
+                myScreenWidth = self.view.bounds.size.width;
+
+                if (        myScreenWidth >= 414.0)                                          // 6+ and 6s+  and bigger
+                {
+                    gbl_progress1 = [[UIActivityIndicatorView alloc] initWithFrame: CGRectMake(320, 20, 44, 44)]; // 320 1242 x 1242
+                }
+                else if (   myScreenWidth  < 414.0                                          // 6 and 6s
+                         && myScreenWidth  > 320.0)   
+                {
+//                    gbl_progress1 = [[UIActivityIndicatorView alloc] initWithFrame: CGRectMake(280, 20, 44, 44)]; // 320 1242 x  750
+                    gbl_progress1 = [[UIActivityIndicatorView alloc] initWithFrame: CGRectMake(290, 20, 44, 44)]; // 320 1242 x  750
+                }
+                else if (   myScreenWidth <= 320.0)                                          //  5s and 5 and 4s and smaller
+                {
+                    gbl_progress1 = [[UIActivityIndicatorView alloc] initWithFrame: CGRectMake(240, 20, 44, 44)]; // 320 1242 x  640
+                }
+
+
+
+
+//  NSLog(@"gbl_progress1 - 8 =[%@]",gbl_progress1 );
+
+                gbl_progress1.hidden                     = NO; 
+//  NSLog(@"gbl_progress1 - 8.5 =[%@]",gbl_progress1 );
+                //gbl_progress1.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
+                gbl_progress1.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
+//  NSLog(@"gbl_progress1 - 7 =[%@]",gbl_progress1);
+                gbl_progress1.color                      = gbl_color_cAplBlueForSpinner;
+                gbl_progress1.tag                        = 55;                             // magic = 55 tag
+//  NSLog(@"gbl_progress1 - 5 =[%@]",gbl_progress1);
+
+//  NSLog(@" ADDED     spinner 55 !");
+                [gbl_progress1 startAnimating ];
+//  NSLog(@"gbl_progress1 - 4 =[%@]",gbl_progress1);
+                [self.navigationController.view          addSubview: gbl_progress1];
+//  NSLog(@"gbl_progress1 - 3 =[%@]",gbl_progress1);
+                [self.navigationController.view bringSubviewToFront: gbl_progress1];
+//  NSLog(@"gbl_progress1 - 2 =[%@]",gbl_progress1);
+                gbl_progress1.hidden                     = NO; 
+//  NSLog(@"gbl_progress1 - 2.5 =[%@]",gbl_progress1);
+
+//                gbl_goToReportButton.enabled     = NO;
+                gbl_goToReportButton.tintColor     = [UIColor lightGrayColor] ;
+//                  gbl_goToReportButton.highlighted = NO;
+//                gbl_goToReportButton.selected    = NO;
+
+
+            }  // if (gbl_numMembersInCurrentGroup > gbl_numMembersToTriggerSpinner )
+nbn(103);
+
+        } while (FALSE);    // show a "spinner" on the Nav Bar beside the ">" button.
+
+
+
         // Because background threads are not prioritized and will wait a very long time
         // before you see results, unlike the mainthread, which is high priority for the system.
         //
         // Also, all UI-related stuff must be done on the *main queue*. That's way you need that dispatch_async.
         //
-        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+    int64_t myDelayInSec   = 0.14 * (double)NSEC_PER_SEC;
+    dispatch_time_t mytime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)myDelayInSec);
+
+    // magic fix to always see spinner
+    //   http://stackoverflow.com/questions/12144644/displaying-uiactivityindicatorview-until-uiview-is-loaded?lq=1
+    // Sorry for ugly text formatting. There is a very cute way to do what you want.
+    // Firstly you have to show the indicator view and
+    // only after a little amount of time (0.1 sec or even lesser) you ask your scrollView to populate.
+    //
+    dispatch_after(mytime, dispatch_get_main_queue(), ^{       // do after delay of mytime    dispatch    dispatch    dispatch   dispatch  
+//        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
             [self performSegueWithIdentifier:@"segueSelYearToViewTBLRPT1" sender:self];
         });
     }

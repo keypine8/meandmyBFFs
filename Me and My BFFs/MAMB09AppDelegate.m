@@ -1562,6 +1562,9 @@
     gbl_color_cMacHighlight  = [UIColor colorWithRed:038.0/255.0 green:140.0/255.0 blue:251.0/255.0 alpha:1.0]; // 268cfb or 038,140,251
     gbl_color_cAplBlue = [UIColor colorWithRed:000.0/255.0 green:128.0/255.0 blue:255.0/255.0 alpha:1.0]; // 0080ff  (blue text, chevron)
 
+    gbl_color_cAplBlueForSpinner= [UIColor colorWithRed:000.0/255.0 green:160.0/255.0 blue:255.0/255.0 alpha:1.0]; // lighter than gbl_color_cAplBlue 
+    gbl_color_cAplBlueForSpinner= [UIColor colorWithRed:032.0/255.0 green:192.0/255.0 blue:255.0/255.0 alpha:1.0]; // lighter than gbl_color_cAplBlue 
+
 
 //    // light green for personality neutral color bg  (alternate the two colors)
 //    gbl_color_cPerGreen  = [UIColor colorWithRed:211.0/255.0 green:255.0/255.0 blue:165.0/255.0 alpha:1.0]; // d3ffa5 // light green for personality neutral color bg

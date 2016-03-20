@@ -442,7 +442,7 @@ tn();
         // gbl_perDataLines;  // used in tblrpts_1 (read in from webview . html file)
         NSString *perDataStr = [NSString stringWithContentsOfURL: URLtoHTML_forWebview  encoding: NSUTF8StringEncoding  error: nil];
         gbl_perDataLines     = [perDataStr componentsSeparatedByCharactersInSet: [NSCharacterSet newlineCharacterSet]];
-  NSLog(@"gbl_perDataLines.count    =[%ld]",gbl_perDataLines.count    );
+  NSLog(@"gbl_perDataLines.count    =[%ld]",(unsigned long)gbl_perDataLines.count    );
 
 // Log all data in gbl_perDataLines file array contents    for test 
 for (id eltTst in gbl_perDataLines) { NSLog(@"    gbl_per=%@", eltTst); }
@@ -650,7 +650,7 @@ for (id eltTst in gbl_perDataLines) { NSLog(@"    gbl_per=%@", eltTst); }
         //
         NSString *compDataStr = [NSString stringWithContentsOfURL: URLtoHTML_forWebview  encoding: NSUTF8StringEncoding  error: nil];
         gbl_compDataLines     = [compDataStr componentsSeparatedByCharactersInSet: [NSCharacterSet newlineCharacterSet]];
-  NSLog(@"gbl_compDataLines.count    =[%ld]",gbl_compDataLines.count    );
+  NSLog(@"gbl_compDataLines.count    =[%ld]",(unsigned long)gbl_compDataLines.count    );
 
 // Log all data in gbl_compDataLines file array contents    for test <.>
 for (id eltTst in gbl_compDataLines) { NSLog(@"    gbl_comp=%@", eltTst); }
@@ -2128,7 +2128,7 @@ for (id eltTst in gbl_compDataLines) { NSLog(@"    gbl_comp=%@", eltTst); }
   NSLog(@"mycode=[%@]",mycode);
   NSLog(@"mylin =[%@]",mylin);
   NSLog(@"gbl_heightCellCOMP =[%ld]",(long)gbl_heightCellCOMP );
-  NSLog(@"gbl_topTableWidth=[%ld]",gbl_topTableWidth);
+  NSLog(@"gbl_topTableWidth=[%ld]",(long)gbl_topTableWidth);
 
             
   NSLog(@"mylin hdr=[%@]",mylin);
@@ -2476,7 +2476,7 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
                     ];
                     gbl_heightCellCOMP = 18;
 
-  NSLog(@"[mylin s length]=[%ld]",[mylin length]);
+  NSLog(@"[mylin s length]=[%ld]",(unsigned long)[mylin length]);
 
 
                 } else { // LONG  line here
@@ -2566,7 +2566,7 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
 
                 } // end   LONG  line here
 
-  NSLog(@"[mylin l length]=[%ld]",[mylin length]);
+  NSLog(@"[mylin l length]=[%ld]",(unsigned long)[mylin length]);
             } // if ( [mycode2 isEqualToString: @"label"] )
 
 
@@ -2597,7 +2597,7 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
   NSLog(@"else ");
                     mylin = gbl_topTablePairLine;
                 }
-  NSLog(@"[mylin space length]=[%ld]",[mylin length]);
+  NSLog(@"[mylin space length]=[%ld]",(unsigned long)[mylin length]);
   NSLog(@"mylin=[%@]",mylin);
   NSLog(@"gbltmpstr=[%@]",gbltmpstr);
 

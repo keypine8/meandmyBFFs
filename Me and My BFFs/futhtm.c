@@ -5260,7 +5260,7 @@ void insert_minus_benchmark(char *line_to_change) {
 //ksn(line_to_change); 
   char changed_line[8192], part_before[8192], part_after[8192], part_new_front[8192], mywork[8192], my_text_color[32];
   char my_minuses[1024];
-  char part_removed[1024];
+    //  char part_removed[1024];
   int  len_label;
   len_label = (int)strlen(gbl_benchmark_label);
   sfill(my_minuses,  len_label, '-'); 
