@@ -77,7 +77,6 @@
 		50CCBAB91A38D27F0010D201 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50CCBAB81A38D27F0010D201 /* MessageUI.framework */; };
 		50DCAC451A2CDF530018624D /* MAMB09_selPersonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50DCAC441A2CDF530018624D /* MAMB09_selPersonViewController.m */; };
 		50DE03131A27AB1700425BAC /* MAMB09_selYearViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50DE03121A27AB1700425BAC /* MAMB09_selYearViewController.m */; };
-		50E044271A73FCA200A5330A /* NSData+MAMB09_NSData_encryption.m in Sources */ = {isa = PBXBuildFile; fileRef = 50E044261A73FCA200A5330A /* NSData+MAMB09_NSData_encryption.m */; };
 		50E05BF71A2F994100B48107 /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = 50E05BF61A2F994100B48107 /* iTunesArtwork */; };
 		50EB4F711A3552CE001F15C0 /* iTunesArtwork@2x in Resources */ = {isa = PBXBuildFile; fileRef = 50EB4F701A3552CE001F15C0 /* iTunesArtwork@2x */; };
 /* End PBXBuildFile section */
@@ -191,8 +190,6 @@
 		50DCAC441A2CDF530018624D /* MAMB09_selPersonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAMB09_selPersonViewController.m; sourceTree = "<group>"; };
 		50DE03111A27AB1700425BAC /* MAMB09_selYearViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAMB09_selYearViewController.h; sourceTree = "<group>"; };
 		50DE03121A27AB1700425BAC /* MAMB09_selYearViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAMB09_selYearViewController.m; sourceTree = "<group>"; };
-		50E044251A73FCA200A5330A /* NSData+MAMB09_NSData_encryption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+MAMB09_NSData_encryption.h"; sourceTree = "<group>"; };
-		50E044261A73FCA200A5330A /* NSData+MAMB09_NSData_encryption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+MAMB09_NSData_encryption.m"; sourceTree = "<group>"; };
 		50E05BF61A2F994100B48107 /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
 		50EB4F701A3552CE001F15C0 /* iTunesArtwork@2x */ = {isa = PBXFileReference; lastKnownFileType = file; path = "iTunesArtwork@2x"; sourceTree = "<group>"; };
 		50ED86C61A23BADF003CED81 /* incocoa.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = incocoa.h; sourceTree = "<group>"; };
@@ -260,8 +257,6 @@
 				50AC390519D082EB00FF3997 /* Main.storyboard */,
 				50AC390219D082EB00FF3997 /* MAMB09AppDelegate.h */,
 				50AC390319D082EB00FF3997 /* MAMB09AppDelegate.m */,
-				50E044251A73FCA200A5330A /* NSData+MAMB09_NSData_encryption.h */,
-				50E044261A73FCA200A5330A /* NSData+MAMB09_NSData_encryption.m */,
 				50AC390B19D082EB00FF3997 /* Images.xcassets */,
 				50E05BF61A2F994100B48107 /* iTunesArtwork */,
 				50EB4F701A3552CE001F15C0 /* iTunesArtwork@2x */,
@@ -523,7 +518,6 @@
 				5004DD3A1ACC426A0094BA14 /* MAMB09_info_TableViewController.m in Sources */,
 				5055382E1A9F79C5003DC816 /* MAMB09viewTBLRPTs_1_TableViewController.m in Sources */,
 				5019A6471A87FDBB002408DA /* MAMB09_selDateViewController2.m in Sources */,
-				50E044271A73FCA200A5330A /* NSData+MAMB09_NSData_encryption.m in Sources */,
 				50AC390019D082EB00FF3997 /* main.m in Sources */,
 				50C0BAB21A2108CE005B79F4 /* perhtm.c in Sources */,
 				50C0BAAD1A2108CE005B79F4 /* grphtm.c in Sources */,

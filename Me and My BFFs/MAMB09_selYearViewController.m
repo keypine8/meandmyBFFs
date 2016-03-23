@@ -156,7 +156,8 @@ NSLog(@"END of viewDidAppear()  in sel Year");
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    NSLog(@"selyear viewWillAppear");
+tn();
+    NSLog(@"selyear viewWillAppear in  sel year");
 
     // disable text field for year always
     //
@@ -186,10 +187,10 @@ NSLog(@"END of viewDidAppear()  in sel Year");
         // Both 1. and 2. call method gcy which updates current y,m,d  in allpeople record
         //
         // THEREFORE  rely on value in allpeople record, like this -
-        gbl_currentYearInt  = [gbl_cy_currentAllPeople intValue];
-        gbl_currentMonthInt = [gbl_cm_currentAllPeople intValue];
-        gbl_currentDayInt   = [gbl_cd_currentAllPeople intValue];
-
+//        gbl_currentYearInt  = [gbl_cy_currentAllPeople intValue];  // have to set these 3 in case gcy never got to internet
+//        gbl_currentMonthInt = [gbl_cm_currentAllPeople intValue];  // have to set these 3 in case gcy never got to internet
+//        gbl_currentDayInt   = [gbl_cd_currentAllPeople intValue];  // have to set these 3 in case gcy never got to internet
+        // set elsewhere now
 
 
         //        NSCalendar *gregorian = [NSCalendar currentCalendar];          // Get the Current Date and Time
@@ -251,21 +252,30 @@ NSLog(@"END of viewDidAppear()  in sel Year");
 //
         NSString *psvRememberedYear;
         MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
-        psvRememberedYear = [myappDelegate grabLastSelectionValueForEntity: (NSString *) @"person"
+
+//      psvRememberedYear = [myappDelegate grabLastSelectionValueForEntity: (NSString *) @"person"
+        psvRememberedYear = [myappDelegate grabLastSelectionValueForEntity: (NSString *) gbl_fromHomeCurrentSelectionType
                                                                 havingName: (NSString *) gbl_fromHomeCurrentEntityName 
                                                       fromRememberCategory: (NSString *) @"year"  ];
 
 
+nbn(0);
         NSLog(@"gbl_fromHomeCurrentEntityName =%@",gbl_fromHomeCurrentEntityName );
         NSLog(@"psvRememberedYear=%@", psvRememberedYear);
 
+//        if (psvRememberedYear == NULL || [psvRememberedYear intValue] == 0) {
+        if (psvRememberedYear == nil || [psvRememberedYear intValue] == 0) {
 
-        if (psvRememberedYear == NULL || [psvRememberedYear intValue] == 0) {
+  NSLog(@"psvRememberedYear IS NOT THERE");
+  NSLog(@"gbl_currentYearInt=[%ld]",(long)gbl_currentYearInt);
+
             gbl_lastSelectedYear           = [@(gbl_currentYearInt) stringValue];
-//  NSLog(@"gbl_colorDIfor_home=[%@]",gbl_colorDIfor_home);
+
+  NSLog(@"gbl_lastSelectionType=[%@]",gbl_lastSelectionType);
 
             dispatch_async(dispatch_get_main_queue(), ^{
                     if ([gbl_lastSelectionType isEqualToString:@"person"]) {
+nbn(1);
                         NSMutableAttributedString *myAttrYear;
                         myAttrYear = [[NSMutableAttributedString alloc] initWithString:  [@(gbl_currentYearInt) stringValue]
                             attributes : @{
@@ -279,6 +289,7 @@ NSLog(@"END of viewDidAppear()  in sel Year");
                         self.outletYearSelected.attributedText = myAttrYear;
                     }
                     if ([gbl_lastSelectionType isEqualToString:@"group" ]) {
+nbn(2);
                         NSMutableAttributedString *myAttrYear;
                         myAttrYear = [[NSMutableAttributedString alloc] initWithString:   [@(gbl_currentYearInt) stringValue]
                             attributes : @{
@@ -298,10 +309,12 @@ NSLog(@"END of viewDidAppear()  in sel Year");
 //                [self.outletYearSelected setTextColor: gbl_colorDIfor_home];
             });
         } else {   
+nbn(3);
             gbl_lastSelectedYear           = psvRememberedYear;
             dispatch_async(dispatch_get_main_queue(), ^{                                // <===  <.>
 
                 if ([gbl_lastSelectionType isEqualToString:@"person"]) {
+nbn(4);
                     NSMutableAttributedString *myAttrYear;
                     myAttrYear = [[NSMutableAttributedString alloc] initWithString: psvRememberedYear
                         attributes : @{
@@ -315,6 +328,7 @@ NSLog(@"END of viewDidAppear()  in sel Year");
                     self.outletYearSelected.attributedText = myAttrYear;
                 }
                 if ([gbl_lastSelectionType isEqualToString:@"group" ]) {
+nbn(5);
                     NSMutableAttributedString *myAttrYear;
                     myAttrYear = [[NSMutableAttributedString alloc] initWithString: psvRememberedYear
                         attributes : @{
@@ -333,17 +347,22 @@ NSLog(@"END of viewDidAppear()  in sel Year");
             });
         }
         
+nbn(6);
         // INIT  PICKER
         // in picker set the roller to gbl_lastSelectedYear
         // find out the rownumber of gbl_lastSelectedYear in yearToPickFrom
         //
+  NSLog(@"gbl_lastSelectedYear=[%@]",gbl_lastSelectedYear);
         NSInteger myIndex = [yearsToPickFrom indexOfObject: gbl_lastSelectedYear];
         if (myIndex == NSNotFound) {
+nbn(7);
             // second last elt should be current year
             myIndex = yearsToPickFrom.count - 2;
         }
+nbn(8);
         // This is how you manually SET(!!) a selection!
         [self.outletYearPicker selectRow:myIndex inComponent:0 animated:YES];
+nbn(9);
 
     } while( false);  // populate array yearsToPickFrom for uiPickerView
 
@@ -355,6 +374,7 @@ NSLog(@"END of viewDidAppear()  in sel Year");
     NSLog(@"_selYear gbl_fromHomeCurrentEntity=%@",gbl_fromHomeCurrentEntity);                  // like "group" or "person"
 
     
+nbn(10);
 }
 
 

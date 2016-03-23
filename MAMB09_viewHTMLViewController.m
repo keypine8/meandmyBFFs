@@ -111,15 +111,17 @@
     // yyyymmdd  Maximum future lookahead is to the end of the
     //           calendar year after the current calendar year.
     //
-        // get the current year
-        NSCalendar *gregorian = [NSCalendar currentCalendar];          // Get the Current Date and Time
+//        // get the current year
+//        NSCalendar *gregorian = [NSCalendar currentCalendar];          // Get the Current Date and Time
+//
+//    // NSDateComponents *dateComponents = [gregorian components: (NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit)
+//    NSDateComponents *dateComponents = [gregorian components:(NSCalendarUnitDay| NSCalendarUnitMonth | NSCalendarUnitYear)
+//                                                    fromDate: [NSDate date]];
+//        gbl_currentYearInt  = [dateComponents year];
+//        gbl_currentMonthInt = [dateComponents month];
+//        gbl_currentDayInt   = [dateComponents day];
+        // above set elsewhere now
 
-    // NSDateComponents *dateComponents = [gregorian components: (NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit)
-    NSDateComponents *dateComponents = [gregorian components:(NSCalendarUnitDay| NSCalendarUnitMonth | NSCalendarUnitYear)
-                                                    fromDate: [NSDate date]];
-        gbl_currentYearInt  = [dateComponents year];
-        gbl_currentMonthInt = [dateComponents month];
-        gbl_currentDayInt   = [dateComponents day];
         gbl_lastSelectedDayLimit = [NSString stringWithFormat: @"%4ld1231", (long)gbl_currentYearInt + 1];
 //  NSLog(@"gbl_lastSelectedDayLimit =%@",gbl_lastSelectedDayLimit );
     //

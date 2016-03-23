@@ -18,13 +18,29 @@ UIBarButtonItem *gbl_goToReportButton;  // for sel year and sel date
 //NSString *gbl_cm_session_startup;
 //NSString *gbl_cd_session_startup;
 
-NSString *gbl_cy_currentAllPeople;  // format "20nn"  cy        gotten from grp allpeople and updated in gcy when it changes
-NSString *gbl_cm_currentAllPeople;  // format "nn"  mth         "
-NSString *gbl_cd_currentAllPeople;  // format "nn"  day of mth  "
 
+
+//  CURRENT DATE VARS
+//
+NSString *gbl_cy_currentAllPeople;  // format "20nn"  cy        gotten from grp allpeople and updated in gcy when it changes
+NSString *gbl_cm_currentAllPeople;  // format "nn"  mth         gotten from grp allpeople and updated in gcy when it changes
+NSString *gbl_cd_currentAllPeople;  // format "nn"  day of mth  gotten from grp allpeople and updated in gcy when it changes
+
+NSInteger gbl_currentYearInt;       //                          gotten from grp allpeople and updated in gcy when it changes
+NSInteger gbl_currentMonthInt;      //                          gotten from grp allpeople and updated in gcy when it changes
+NSInteger gbl_currentDayInt;        //                          gotten from grp allpeople and updated in gcy when it changes
+//
+//  CURRENT DATE VARS
+
+
+
+
+// these 3 only used in appdel .m  (block wants gbl)
 NSString *gbl_cy_apl;               // format "20nn"  cy gotten from apl this session
 NSString *gbl_cm_apl;               // format "nn"  mth
 NSString *gbl_cd_apl;               // format "nn"  day of mth
+// these 3 only used in appdel .m  (block wants gbl)
+
 
 //NSString *gbl_cy_goo;               // format "20nn"  cy gotten from apl this session
 //NSString *gbl_cm_goo;               // format "nn"  mth
@@ -867,12 +883,10 @@ NSMutableArray *gbl_arrayGroupsToPickFrom;
 NSMutableArray *gbl_arrayMembersToDisplay;
 NSMutableArray *gbl_arrayNewMembersToPickFrom;
 NSMutableArray *gbl_arrayDeletableMembersToPickFrom;
-NSInteger       gbl_currentYearInt;
-NSInteger       gbl_currentMonthInt;
-NSInteger       gbl_currentDayInt;
-NSInteger       gbl_earliestYear;   // see .m  1850
 
-NSString       *gbl_currentDay_yyyymmdd;
+//NSString       *gbl_currentDay_yyyymmdd;
+
+NSInteger       gbl_earliestYear;   // see .m  1850
 
 // multiple pick for group member stuff
 //

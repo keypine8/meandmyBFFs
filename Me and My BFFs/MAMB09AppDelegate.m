@@ -8,7 +8,6 @@
 #import "MAMB09AppDelegate.h"
 #import "rkdebug_externs.h"
 #import "mamblib.h"
-#import "NSData+MAMB09_NSData_encryption.h"
 
 
 //  -----   turning off logging for production
@@ -87,7 +86,7 @@
 //    gbl_cy_goo              = @"9999";
 //    gbl_cy_session_startup  = @"9999";  // format "20nn"  cy gotten from apl this session
 //    gbl_cy_currentAllPeople = @"9999";  // format "20nn"  cy gotten from grp allpeople
-    gbl_cy_apl              = nil;    // inited now in appdel didFinishLaunchingWithOptions
+//    gbl_cy_apl              = nil;    // inited now in appdel didFinishLaunchingWithOptions
 //    gbl_cy_goo              = nil;  
     gbl_cy_currentAllPeople = nil;    // format "20nn"  cy gotten from grp allpeople
     gbl_cm_currentAllPeople = nil;    // format "20nn"  cy gotten from grp allpeople
@@ -770,24 +769,53 @@
 //    gbl_nameOfGrpHavingAllPeopleIhaveAdded = @"All People~";
     gbl_nameOfGrpHavingAllPeopleIhaveAdded = @"#allpeople";
 
+
+
+    // set up initial value for    the  GOLD CURRENT DATE  for the whole app   (stored in #allpeople grp record fld 5,6,7 1-based)
+    //
 //    NSString *lcl_recOfAllPeopleIhaveAdded = [ NSString stringWithFormat: @"%@||||2016|06|15||||||||", // 14 flds for misc
     NSString *lcl_recOfAllPeopleIhaveAdded = [ NSString stringWithFormat: @"%@||yes||2033|03|25||||||||", // FOR TEST
         gbl_nameOfGrpHavingAllPeopleIhaveAdded
     ]; // 14 flds for misc
+
+
+//<.>
+    //           CURRENT DATE
     //
-    // fld #3 (one-based) is gbl_ExampleData_show;       // "yes"  OR  "no"
-    // fld #5 (one-based) is gbl_cy_currentAllPeople  yyyy
-    // fld #6 (one-based) is gbl_cm_currentAllPeople  mm
-    // fld #7 (one-based) is gbl_cd_currentAllPeople  dd
+    //   Method mambCheckForCorruptData  in HOME  in viewDidLoad
+    //   grabs current date m,d,y fields in gbl_arrayGrp rec for "#allpeople"
+    //           fld #5 (one-based) populates gbl_cy_currentAllPeople  yyyy     PLUS  gbl  INT
+    //           fld #6 (one-based) populates gbl_cm_currentAllPeople  mm
+    //           fld #7 (one-based) populates gbl_cd_currentAllPeople  dd
     //
-    //   All above gbl fields are updated from file data in method gcy which is called
-    //     - home notification method  doStuffOnSignificantTimeChange
-    //     - home notification method  doStuffOnEnteringForeground
-    // 
-    //   y,m,d are written to file, in method gcy, when one of them changes 
+    //
+    //   Method gcy  (get current year)  is called from 2 places
+    //     - on home notification method  doStuffOnEnteringForeground
+    //     - on home notification method  doStuffOnSignificantTimeChange
+    //
+    //   Method gcy updates these gbl variables with the current date
+    //   which is gotten from the internet (an apple site).
+    //   These vars are updated when current y or m or d changes.
+    //
+    //       this current internet yr populates 
+    //           - fld #5 (one-based)  in gbl_arrayGrp rec for "#allpeople" 
+    //           - gbl_cy_currentAllPeople  yyyy  str
+    //           - gbl_currentYearInt
+
+    //           current internet mn populates  fld #6 (one-based)  and   gbl_cm_currentAllPeople  mm    str
+    //           current internet dy populates  fld #7 (one-based)  and   gbl_cd_currentAllPeople  dd    str
+
+    //   Method gcy updates  the current date in the data file for gbl_arrayGrp (in record for grp "#allpeople")
+    //   When current y or m or d changes,
     //     - in memory array gbl_arrayGrp, update #allpeople record containing new data 
     //     - write updated array gbl_arrayGrp to file
+
+//<.>
+
+
     
+    // fld #3 (one-based) populates gbl_ExampleData_show;       // "yes"  OR  "no"
+
     //   gbl  gbl_ExampleData_show  is updated
     //     - on startup, (from file for gbl_arrayGrp) in home notification method  doStuffOnEnteringForeground
     //     - when user changes switch in home info screen
@@ -796,6 +824,8 @@
     //     - when user changes switch in home info screen
     //     - as a side effect, whenever gbl_arrayGrp is written to file
     //     - as a side effect, in method gcy, when y,m,d is written to file when one of them changes 
+
+
 
 
 //    gbl_arrayTEST = // field 11= locked or not 
@@ -1880,9 +1910,9 @@ tn(); NSLog(@"       ssssssssssssssssssssssssssss saveLastSelectionForEntity   a
                                     havingName: (NSString *) argEntityName
                           fromRememberCategory: (NSString *) argRememberCategory
 {
-tn(); NSLog(@"       gggggggggggggggggggggggggggggggggggggggg grabLastSelectionValueForEntity   entity     =%@", argPersonOrGroup );
-      NSLog(@"       gggggggggggggggggggggggggggggggggggggggg grabLastSelectionValueForEntity   entityName =%@", argEntityName);
-      NSLog(@"       gggggggggggggggggggggggggggggggggggggggg grabLastSelectionValueForEntity rememberCat  =%@", argRememberCategory);
+tn(); NSLog(@"       ggggg  grabLastSelectionValueForEntity   entity     =%@", argPersonOrGroup );
+      NSLog(@"       ggggg  grabLastSelectionValueForEntity   entityName =%@", argEntityName);
+      NSLog(@"       ggggg  grabLastSelectionValueForEntity rememberCat  =%@", argRememberCategory);
 
     NSInteger myPSVfldNum = 0;
     NSArray  *myRemArr;
@@ -1935,12 +1965,12 @@ tn(); NSLog(@"       gggggggggggggggggggggggggggggggggggggggg grabLastSelectionV
 //        return myRemArr[myPSVfldNum -1]; // one-based 
         myReturnStr = myRemArr[myPSVfldNum -1]; // one-based 
 
-      NSLog(@"end of gggggggggggggggggggggggggggggggggggggggg grabLastSelectionValueForEntity   myReturnStr=%@", myReturnStr);
+      NSLog(@"end of ggggg  grabLastSelectionValueForEntity   myReturnStr=%@", myReturnStr);
 
         return myReturnStr;
     }
 
-NSLog(@"end of gggggggggggggggggggggggggggggggggggggggg grabLastSelectionValueForEntity   myReturnStr=NIL");
+NSLog(@"end of ggggg  grabLastSelectionValueForEntity   myReturnStr=NIL");
     return nil;  // no previous selection  (pgm startup after download)
 } // end of grabLastSelectionValueForEntity
 
@@ -2145,15 +2175,15 @@ tn();
 //
 
 
-    // get the current year
-    NSCalendar       *gregorian;
-    NSDateComponents *dateComponents;
-    NSInteger         myCurrentYearInt;
-    gregorian        = [NSCalendar currentCalendar]; 
-    dateComponents   = [gregorian components: (NSCalendarUnitDay| NSCalendarUnitMonth | NSCalendarUnitYear) 
-                                    fromDate: [NSDate date]
-    ];
-    myCurrentYearInt = [dateComponents year];
+    //    // get the current year       relying on gcy() instead
+    //    NSCalendar       *gregorian;
+    //    NSDateComponents *dateComponents;
+    //    NSInteger         myCurrentYearInt;
+    //    gregorian        = [NSCalendar currentCalendar]; 
+    //    dateComponents   = [gregorian components: (NSCalendarUnitDay| NSCalendarUnitMonth | NSCalendarUnitYear) 
+    //                                    fromDate: [NSDate date]
+    //    ];
+    //    myCurrentYearInt = [dateComponents year];
 
     //  int sall(char *s,char *set) // returns 1 if  str s consists entirely of chars in str set, else 0
 
@@ -2172,16 +2202,49 @@ tn();
         //
         flds  = [psvGrp componentsSeparatedByCharactersInSet: mySeparators];
 
-        if (flds.count == 0)                                   return   1;   // s/b 3   or lots for "All People~"
+        if (flds.count == 0)                                   return 100;   // s/b 3   or lots for "All People~"
 
         fname    = flds[0];
        
-        if ([fname isEqualToString: gbl_nameOfGrpHavingAllPeopleIhaveAdded]) // gbl_nameOfGrpHavingAllPeopleIhaveAdded;// "All People~"
+        if ([fname isEqualToString: gbl_nameOfGrpHavingAllPeopleIhaveAdded]) // gbl_nameOfGrpHavingAllPeopleIhaveAdded; 
         {
             // do not do fld count check for all people
+            if (flds.count  < 10 )                                 return 101;   // s/b  gt 14,15 
+
+            //  the  GOLD CURRENT DATE  for the whole app  
+            // (stored in #allpeople grp record fld 5,6,7 1-based) 
+            //
+            NSString *curyr = flds[4];  // 5 1-based
+            NSString *curmn = flds[5];  // 6 1-based
+            NSString *curdy = flds[6];  // 7 1-based
+
+            // check for invalid  current year fld in #allpeople
+            if (curyr.length != 4)                                 return 102;
+            constant_char = [curyr  cStringUsingEncoding: NSUTF8StringEncoding]; // NSString object to C str
+            strcpy(cyr, constant_char);                                        // NSString object to C str  // because of const
+            if (sall(cyr, "0123456789") == 0)                      return 103;
+            if (atoi(cyr) < gbl_earliestYear)                      return 104;
+
+            // check for invalid  current month fld in #allpeople
+            if (curmn.length < 1)                                  return 104;
+            if (curmn.length > 2)                                  return 105;
+            constant_char = [curmn  cStringUsingEncoding: NSUTF8StringEncoding]; // NSString object to C str
+            strcpy(cmth, constant_char);                                        // NSString object to C str  // because of const
+            if (sall(cmth, "0123456789") == 0)                     return 106;
+            if (atoi(cmth) <  1)                                   return 107;
+            if (atoi(cmth) > 12)                                   return 108;
+
+            // check for invalid current day fld in #allpeople
+            if (curdy.length < 1)                                  return 109;
+            if (curdy.length > 2)                                  return 110;
+            constant_char = [curdy  cStringUsingEncoding: NSUTF8StringEncoding]; // NSString object to C str
+            strcpy(cday, constant_char);                                        // NSString object to C str  // because of const
+            if (sall(cday, "0123456789") == 0)                     return 111;
+            if (atoi(cday) <  1)                                   return 112;
+
         } else {
             // do fld count check for other groups
-            if (flds.count != 3)                                   return   1;   // s/b 3   
+            if (flds.count !=  3)                                   return   1;   // s/b 3   
         }
 
 
@@ -2241,7 +2304,7 @@ tn();
         fprov    = flds[8];
         fcoun    = flds[9];
         fhighsec = flds[10];  // "" or "hs"
-//  NSLog(@"fhr=[%@]",fhr);
+  NSLog(@"fyr=[%@]",fyr);
 
         // check for invalid  name fld
         if (fname.length < 1)                                  return  12;
@@ -2269,9 +2332,15 @@ tn();
         if (fyr.length != 4)                                   return  21;
         constant_char = [fyr  cStringUsingEncoding: NSUTF8StringEncoding]; // NSString object to C str
         strcpy(cyr, constant_char);                                        // NSString object to C str  // because of const
+ksn(cyr);
         if (sall(cyr, "0123456789") == 0)                      return  22;
         if (atoi(cyr) < gbl_earliestYear)                      return  23;
-        if (atoi(cyr) > (int) myCurrentYearInt + 1)            return  24;
+
+
+        // gbl_currentYearInt  is not set yet from gcy   nothing to check it against
+        //        if (atoi(cyr) > (int) myCurrentYearInt + 1)            return  24;
+        //        if (atoi(cyr) > (int) gbl_currentYearInt + 1)            return  24;
+
 
 
         // check for invalid  day fld
@@ -2576,29 +2645,29 @@ tn();
 //} // end of handleCorruptDataNum
 //
 
+// mambKriptOnThisNSData  is called like this:
+//    myArchive   = [NSKeyedArchiver  archivedDataWithRootObject: myArray];
+//    myWriteable = [myappDelegate mambKriptOnThisNSData: (NSData *) myArchive];
 
 - (NSData *) mambKriptOnThisNSData:  (NSData *)  argMyArchive   // arg is NSData/archived, returns a file-writeable NSData
 {
-//tn();trn("in KRIPT ON");
-    NSString      *myKeyStr = @"Lorem ipsum calor sit amet, cons"; // len 32
-    NSData        *myEncrypted;
+tn();trn("in KRIPT ON");
+//  NSLog(@"argMyArchive   =[%@]",argMyArchive   );
+
     NSData        *myb64Data; 
     NSMutableData *myb64Muta; 
 
-    myEncrypted = [argMyArchive AES256EncryptWithKey: myKeyStr];               // (1) argMyArchive to myEncrypted
-//    printf("myEncrypted=     KriptOn\n%s\n", [[myEncrypted description] UTF8String]);
-
-    myb64Data   = [myEncrypted base64EncodedDataWithOptions: 0];              // (2) myEncrypted to myb64Data
+    myb64Data   = [argMyArchive base64EncodedDataWithOptions: 0];             // (1) myArchive to myb64Data
 //tn();  NSLog(@"myb64Data=     KriptOn\n%@",myb64Data);
 
-    myb64Muta   = [[NSMutableData alloc] initWithData: myb64Data];            // (3) myb64Data to myb64Muta obfuscated (in place)
-    uint8_t *bytes = (uint8_t *)[myb64Muta bytes];                            
-    uint8_t pattern[] = {0xe8, 0xf4, 0xa8, 0x32, 0x63, 0xab, 0x7e, 0x44}; 
-    const int patternLengthInBytes = 8;    // len 64 bit
-    for(int index = 0; index < [myb64Data length]; index++) {
-         bytes[index] ^= pattern[index % patternLengthInBytes];
-    }
-//tn();  NSLog(@"myb64MutaOBFUSCATED=     KriptOn\n%@",myb64Muta);
+    myb64Muta   = [[NSMutableData alloc] initWithData: myb64Data];            // (2) myb64Data to myb64Muta obfuscated (in place)
+        uint8_t *bytes = (uint8_t *)[myb64Muta bytes];                            
+        uint8_t pattern[] = {0xe8, 0xf4, 0xa8, 0x32, 0x63, 0xab, 0x7e, 0x44}; 
+        const int patternLengthInBytes = 8;    // len 64 bit
+        for(int index = 0; index < [myb64Data length]; index++) {
+             bytes[index] ^= pattern[index % patternLengthInBytes];
+        }
+//tn();  NSLog(@"myb64DataOBFUSCATED=     KriptOn\n%@",myb64Muta);
 
     return myb64Muta;
 
@@ -2609,26 +2678,21 @@ tn();
 {
 //tn();trn("in KRIPT OFF");
     NSMutableData *myb64Muta; 
-    NSString      *myKeyStr = @"Lorem ipsum calor sit amet, cons"; // len 32
-    NSData        *myEncrypted;
     NSData        *myArchive; 
 
-    myb64Muta   = [[NSMutableData alloc] initWithData: argMyNSData];         // (3) myb64Muta obfuscated to myb64Muta (in place)
-    uint8_t *bytes = (uint8_t *)[myb64Muta bytes];                       
-    uint8_t pattern[] = {0xe8, 0xf4, 0xa8, 0x32, 0x63, 0xab, 0x7e, 0x44};
-    const int patternLengthInBytes = 8;
-    for(int index = 0; index < [myb64Muta length]; index++) {
-        bytes[index] ^= pattern[index % patternLengthInBytes];
-    }
+    myb64Muta   = [[NSMutableData alloc] initWithData: argMyNSData];          // (2) myb64Muta obfuscated to myb64Muta (in place)
+        uint8_t *bytes = (uint8_t *)[myb64Muta bytes];                       
+        uint8_t pattern[] = {0xe8, 0xf4, 0xa8, 0x32, 0x63, 0xab, 0x7e, 0x44};
+        const int patternLengthInBytes = 8;
+        for(int index = 0; index < [myb64Muta length]; index++) {
+            bytes[index] ^= pattern[index % patternLengthInBytes];
+        }
 //tn();  NSLog(@"myb64Muta=     KriptOff\n%@",myb64Muta);
 
-    myEncrypted = [[NSData alloc] initWithBase64EncodedData: myb64Muta       // (2) myb64Muta to myEncrypted
+    myArchive = [[NSData alloc] initWithBase64EncodedData: myb64Muta          // (2) myb64Muta to myArchive
                                                     options: 0];  
-//tn();  NSLog(@"myEncrypted=     KriptOff\n%@",myEncrypted );
-
-    myArchive = [myEncrypted AES256DecryptWithKey: myKeyStr];                // (2) myEncrypted to myArchive
 //    NSLog(@"myArchive=     KriptOff\n%@",myArchive);
-    //printf("myArchiveSTR=\n%s\n", [[myArchive description] UTF8String]);
+//printf("myArchiveSTR=\n%s\n", [[myArchive description] UTF8String]);
 
     return myArchive;
 
@@ -3711,7 +3775,8 @@ tn();
     //
     // deprecated -> sendSynchronousRequest
 
-- (void) gcy //  find the actual current year   from  date found in apl's response header:
+
+- (void) gcy   //  find the actual current year   from  date found in apl's response header:
 {
 tn();
 trn(" XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX ");
@@ -3723,6 +3788,8 @@ trn(" XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXyXX
   NSLog(@"gbl_cy_currentAllPeople =[%@] at top of gcy",gbl_cy_currentAllPeople );
   NSLog(@"gbl_cm_currentAllPeople =[%@] at top of gcy",gbl_cm_currentAllPeople );
   NSLog(@"gbl_cd_currentAllPeople =[%@] at top of gcy",gbl_cd_currentAllPeople );
+
+
 // NSLog(@"gbl_cy_goo 1 =[%@]",gbl_cy_goo);
 
 //    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for global methods in appDelegate.m
@@ -3739,10 +3806,9 @@ trn(" XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXyXX
                                                                  delegate: nil
                                                             delegateQueue: [NSOperationQueue mainQueue]
     ];
-    NSURL *myurl;
-    NSURLSessionDataTask *mydataTask;
 
   NSLog(@"start  APPLE  NSURLSessionDataTask");
+    NSURL *myurl;
     myurl      = [NSURL URLWithString: @"https://apple.com" ];
 
 
@@ -3751,11 +3817,26 @@ trn(" XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXyXX
     // XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
     // XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
+
+//    //    http://stackoverflow.com/questions/21198404/nsurlsession-with-nsblockoperation-and-queues
+//    // You can create a semaphore with:
+//    //
+//    dispatch_semaphore_t mySemaphore = dispatch_semaphore_create(0);
+//  NSLog(@"mySemaphore =[%@]",mySemaphore );
+//
+
+
+
+
     // Always try to get the latest internet time in case the date has changed
     //
-    mydataTask = [ defaultSession dataTaskWithURL: myurl
+    NSURLSessionDataTask *mydataTask;
+    mydataTask = [ defaultSession dataTaskWithURL: myurl    // START of defining   NSURLSessionDataTask 
                                 completionHandler: ^(NSData *mydata,  NSURLResponse *myresponse,  NSError *myerror)
-        { // start of completionHandler
+        { // start of completionHandler block   COMPLETIONHANDLER
+  NSLog(@"  start of completionHandler block    COMPLETIONHANDLER");
+
+
             if(myerror == nil)
             { // if(myerror == nil)
 tn();            
@@ -3763,7 +3844,7 @@ trn(" xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 trn(" xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx ");
   NSLog(@"  doing completionHandler got data branch   doing completionHandler   error == nil");
 
-                // cast response into form having allHeaderFields
+                // cast response into form having allHeaderFields method
                 NSHTTPURLResponse *myNSURLResponse_as_NSHTTPURLResponse = (NSHTTPURLResponse*) myresponse;
 
                 // get allHeaderFields dictionary
@@ -3923,6 +4004,17 @@ tn();
 
                 } // do_update == 1  because there is a difference between allpeople rec and latest internet  y, m, d
 
+ 
+                // here we got a date, so update globals  in case the values are new
+                //
+                //  This is the  GOLD CURRENT DATE  for the whole app   (stored in #allpeople grp record)
+                //
+                gbl_currentYearInt  = [gbl_cy_currentAllPeople intValue];
+                gbl_currentMonthInt = [gbl_cm_currentAllPeople intValue];
+                gbl_currentDayInt   = [gbl_cd_currentAllPeople intValue];
+
+
+
             } // if(myerror == nil)   dataTaskWithURL  error arg is nil       mydataTask =  defaultSession dataTaskWithURL: myurl
             else
             { // if(myerror != nil)   dataTaskWithURL  error arg is not nil   mydataTask =  defaultSession dataTaskWithURL: myurl
@@ -3931,28 +4023,94 @@ tn();
                  // got an error, so keep using whatever is in #allpeople record
                  // 
 
-  NSLog(@"got an error  dataTaskWithURL  apl");
+  NSLog(@"got an error  in gcy  dataTaskWithURL  apl");
             } // year is NOT valid
 
   NSLog(@"gbl_cy_currentAllPeople =[%@] at end of  completionHandler",gbl_cy_currentAllPeople );
-  NSLog(@"gbl_cm_currentAllPeople =[%@]   at end of  completionHandler",gbl_cm_currentAllPeople );
-  NSLog(@"gbl_cd_currentAllPeople =[%@]   at end of  completionHandler",gbl_cd_currentAllPeople );
+  NSLog(@"gbl_cm_currentAllPeople =[%@] at end of  completionHandler",gbl_cm_currentAllPeople );
+  NSLog(@"gbl_cd_currentAllPeople =[%@] at end of  completionHandler",gbl_cd_currentAllPeople );
+  NSLog(@"gbl_currentYearInt      =[%ld]",(long)gbl_currentYearInt  );
+  NSLog(@"gbl_currentMonthInt     =[%ld]",(long)gbl_currentMonthInt  );
+  NSLog(@"gbl_currentDayInt       =[%ld]",(long)gbl_currentDayInt  );
 
-trn(" xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx ");
-trn(" xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx ");
+trn(" xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  gcy  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx ");
+trn(" xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  gcy  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx ");
 tn();
 
-        } // end of completionHandler
+//            // You can then have the completion block of the asynchronous process signal the semaphore with:
+//            //
+//  NSLog(@"SEMAPHORE dispatched here");
+//            dispatch_semaphore_signal(mySemaphore);
+//
 
-    ]; // end of NSURLSessionDataTask 
+
+
+        } // end of completionHandler COMPLETIONHANDLER
+
+
+
+//<.>
+//[queue addOperationWithBlock:^{
+//
+//    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+//
+//    NSURLSession *session = [NSURLSession sharedSession]; // or create your own session with your own NSURLSessionConfiguration
+//    NSURLSessionTask *task = [session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+//        if (data) {
+//            // do whatever you want with the data here
+//        } else {
+//            NSLog(@"error = %@", error);
+//        }
+//
+//        dispatch_semaphore_signal(semaphore);
+//    }];
+//    [task resume];
+//
+//    // but have the thread wait until the task is done
+//
+//    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+//
+//    // now carry on with other stuff contingent upon what you did above
+//]);
+//
+//<.>
+//
+
+
+    ]; // end of defining   NSURLSessionDataTask 
+
 
 
   NSLog(@"sending off dataTask apl");
 trn(" XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX ");
   tn();
     [mydataTask resume];            // sending off dataTask  to execute asynchronously
+  NSLog(@"sent    off dataTask apl");
 
 
+//  NSLog(@"before semaphore wait");
+//    // but have the thread wait until the task is done
+//    //
+////    dispatch_semaphore_wait(mySemaphore, DISPATCH_TIME_FOREVER);
+//        //
+//        //    int64_t myDelayInSec   = 0.38 * (double)NSEC_PER_SEC;
+//        //    dispatch_time_t mytime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)myDelayInSec);
+//        //
+//        //    dispatch_after(mytime, dispatch_get_main_queue(), ^{       // do after delay of mytime    dispatch 
+//        //
+////        int64_t myTimeoutInSec   = 3.0 * (double)NSEC_PER_SEC;
+//        int64_t myTimeoutInSec   = 1.0 * (double)NSEC_PER_SEC;
+//    dispatch_semaphore_wait(mySemaphore, myTimeoutInSec   );
+//    //
+//    // now carry on with other stuff contingent upon what you did above
+//  NSLog(@"after semaphore wait");
+//
+
+
+  NSLog(@"dataTask apl  FINISHED");
+  NSLog(@"gbl_cy_currentAllPeople =[%@] at end of  completionHandler",gbl_cy_currentAllPeople );
+  NSLog(@"gbl_cm_currentAllPeople =[%@] at end of  completionHandler",gbl_cm_currentAllPeople );
+  NSLog(@"gbl_cd_currentAllPeople =[%@] at end of  completionHandler",gbl_cd_currentAllPeople );
 
 
     // 20160227  do only apl , not goo as well

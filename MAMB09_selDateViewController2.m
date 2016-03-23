@@ -222,9 +222,10 @@ NSLog(@"in viewDidAppear()  in  selDate! ");
         // Both 1. and 2. call method gcy which updates current y,m,d  in allpeople record
         //
         // THEREFORE  rely on value in allpeople record, like this -
-        gbl_currentYearInt  = [gbl_cy_currentAllPeople intValue];
-        gbl_currentMonthInt = [gbl_cm_currentAllPeople intValue];
-        gbl_currentDayInt   = [gbl_cd_currentAllPeople intValue];
+//        gbl_currentYearInt  = [gbl_cy_currentAllPeople intValue];  // have to set these 3 in case gcy never got to internet
+//        gbl_currentMonthInt = [gbl_cm_currentAllPeople intValue];  // have to set these 3 in case gcy never got to internet
+//        gbl_currentDayInt   = [gbl_cd_currentAllPeople intValue];  // have to set these 3 in case gcy never got to internet
+        // set elsewhere now
 
 
 
@@ -269,13 +270,12 @@ NSLog(@"in viewDidAppear()  in  selDate! ");
         
 
         
-        gbl_currentDay_yyyymmdd = [NSString stringWithFormat: @"%04ld%02ld%02ld",
-                                       (long)gbl_currentYearInt,
-                                       (long)gbl_currentMonthInt,
-                                       (long)gbl_currentDayInt     ];
 
-        
-        
+// not used           gbl_currentDay_yyyymmdd 
+//        gbl_currentDay_yyyymmdd = [NSString stringWithFormat: @"%04ld%02ld%02ld",
+//                                       (long)gbl_currentYearInt,
+//                                       (long)gbl_currentMonthInt,
+//                                       (long)gbl_currentDayInt     ];
 
 
 

@@ -775,27 +775,29 @@ nbn(881);
 
     do {    // populate array array_BirthYearsToPick for uiPickerView and init picker and init birth info label field  (130 lines)
  
-        // get the current year
-        //
-        NSCalendar *gregorian = [NSCalendar currentCalendar];          // Get the Current Date and Time
-
-//        NSDateComponents *dateComponents = [gregorian components:(NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit)
+//        // get the current year
+//        //
+//        NSCalendar *gregorian = [NSCalendar currentCalendar];          // Get the Current Date and Time
+//
+// //        NSDateComponents *dateComponents = [gregorian components:(NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit)
+// //                                                        fromDate:[NSDate date]];
+//        NSDateComponents *dateComponents = [gregorian components:(NSCalendarUnitDay| NSCalendarUnitMonth | NSCalendarUnitYear)
 //                                                        fromDate:[NSDate date]];
-        NSDateComponents *dateComponents = [gregorian components:(NSCalendarUnitDay| NSCalendarUnitMonth | NSCalendarUnitYear)
-                                                        fromDate:[NSDate date]];
 
-        gbl_currentYearInt  = [dateComponents year];
-        gbl_currentMonthInt = [dateComponents month];
-        gbl_currentDayInt   = [dateComponents day];
-        //NSLog(@"gbl_currentYearInt  =%ld",(long)gbl_currentYearInt  );
-        //NSLog(@"gbl_currentMonthInt =%ld",(long)gbl_currentMonthInt );
-        //NSLog(@"gbl_currentDayInt   =%ld",(long)gbl_currentDayInt   );
+        // set elsewhere now
+        //        gbl_currentYearInt  = [dateComponents year];
+        //        gbl_currentMonthInt = [dateComponents month];
+        //        gbl_currentDayInt   = [dateComponents day];
+
+        NSLog(@"gbl_currentYearInt  =%ld",(long)gbl_currentYearInt  );
+        NSLog(@"gbl_currentMonthInt =%ld",(long)gbl_currentMonthInt );
+        NSLog(@"gbl_currentDayInt   =%ld",(long)gbl_currentDayInt   );
         
-        
-        gbl_currentDay_yyyymmdd = [NSString stringWithFormat:@"%04ld%02ld%02ld",
-                                       (long)gbl_currentYearInt,
-                                       (long)gbl_currentMonthInt,
-                                       (long)gbl_currentDayInt     ];
+// NOT USED        
+//        gbl_currentDay_yyyymmdd = [NSString stringWithFormat:@"%04ld%02ld%02ld",
+//                                       (long)gbl_currentYearInt,
+//                                       (long)gbl_currentMonthInt,
+//                                       (long)gbl_currentDayInt     ];
 
         NSArray *psvArray;
         if (   [gbl_currentMenuPlusReportCode isEqualToString: @"hompwc"]  ) {

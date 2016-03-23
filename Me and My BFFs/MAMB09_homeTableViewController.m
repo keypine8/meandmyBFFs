@@ -548,6 +548,10 @@ nbn(15);
 
 
 
+
+
+
+
     //   for test   TO SIMULATE first downloading the app-  when there are no data files
     //   FOR test   remove all regular named files   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     //
@@ -566,6 +570,7 @@ nbn(15);
     if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm PerRem  %@", [err01 localizedFailureReason]); }
     NSLog(@" FOR test   END   remove all regular named files   xxxxxxxxxx ");
     // end of   FOR test   remove all regular named files   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
 
 
 
@@ -627,7 +632,7 @@ ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
             if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"Error in rm perrem %@", err01); }
 
             [myappDelegate mambWriteNSArrayWithDescription: (NSString *) @"examplegroup"];   // write on init app
-//    NSLog(@"home1viewDidLoad  gbl_arrayGrp=%@",gbl_arrayGrp);
+//    NSLog(@"home1viewDidLoad  gbl_arrayGrp%@",gbl_arrayGrp);
             [myappDelegate mambWriteNSArrayWithDescription: (NSString *) @"exampleperson"];  // write on init app
 //    NSLog(@"home1viewDidLoad  gbl_arrayPer=%@",gbl_arrayPer);
             [myappDelegate mambWriteNSArrayWithDescription: (NSString *) @"examplemember"];  // write on init app
@@ -705,11 +710,14 @@ ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
 
 
         myCorruptDataErrNum =  [myappDelegate mambCheckForCorruptData ];  //  < --------------------------------------
+
   NSLog(@"myCorruptDataErrNum =[%ld]",(long)myCorruptDataErrNum );
 
 
 
         if (myCorruptDataErrNum > 0) {
+
+            // got data errors here
 
   NSLog(@"myCorruptDataErrNum =[%ld]",(long)myCorruptDataErrNum );
 
@@ -736,10 +744,8 @@ ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
             }
 
 
-    
-
-
-
+            // write app-startup initial data arrays to files
+            //
             [myappDelegate mambWriteNSArrayWithDescription:              (NSString *) @"group" ]; // write new array data to file
             [myappDelegate mambReadArrayFileWithDescription:             (NSString *) @"group" ]; // read new data from file to array
             [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription: (NSString *) @"group" ]; // sort array by name
@@ -2730,6 +2736,8 @@ tn();trn("in doStuffOnEnteringForeground()   NOTIFICATION method     lastEntity 
     //
 
 
+    // initialize current year from gbl_array_grp
+    //
     NSString *prefixStr5 = [NSString stringWithFormat: @"%@|",gbl_nameOfGrpHavingAllPeopleIhaveAdded ];  // notice '|'
     for (NSString *elt in gbl_arrayGrp) {
         if ([elt hasPrefix: prefixStr5]) { 
@@ -2743,18 +2751,24 @@ tn();trn("in doStuffOnEnteringForeground()   NOTIFICATION method     lastEntity 
 
         gbl_ExampleData_show    = myaparr [2]; // get fld#3 show example data switch     (0-based)  ("yes" or "no")
 
-        gbl_cy_currentAllPeople = myaparr [4]; // get fld#5 year     (0-based)
-        gbl_cm_currentAllPeople = myaparr [5]; // get fld#6 mth      (0-based)
-        gbl_cd_currentAllPeople = myaparr [6]; // get fld#7 dayofmth (0-based)
+        gbl_cy_currentAllPeople = myaparr [4]; // get fld#5 year     (0-based)  (from "#allpeople" group rec)
+        gbl_cm_currentAllPeople = myaparr [5]; // get fld#6 mth      (0-based)  (from "#allpeople" group rec)
+        gbl_cd_currentAllPeople = myaparr [6]; // get fld#7 dayofmth (0-based)  (from "#allpeople" group rec)
+
+        // THEREFORE  rely on value in allpeople record, like this -
+        gbl_currentYearInt  = [gbl_cy_currentAllPeople intValue];  // have to set these 3 in case gcy never got to internet
+        gbl_currentMonthInt = [gbl_cm_currentAllPeople intValue];  // have to set these 3 in case gcy never got to internet
+        gbl_currentDayInt   = [gbl_cd_currentAllPeople intValue];  // have to set these 3 in case gcy never got to internet
+
     }
     // here, these 2 gbls are "nil" or a valid year
 
-  NSLog(@"gbl_cy_apl              in doStuffOnEnteringForeground home after get allpeople =[%@]",gbl_cy_apl);
-  NSLog(@"gbl_cm_apl              in doStuffOnEnteringForeground home after get allpeople =[%@]",gbl_cm_apl);
-  NSLog(@"gbl_cd_apl              in doStuffOnEnteringForeground home after get allpeople =[%@]",gbl_cd_apl);
   NSLog(@"gbl_cy_currentAllPeople in doStuffOnEnteringForeground home after get allpeople =[%@]",gbl_cy_currentAllPeople );
   NSLog(@"gbl_cm_currentAllPeople in doStuffOnEnteringForeground home after get allpeople =[%@]",gbl_cm_currentAllPeople );
   NSLog(@"gbl_cd_currentAllPeople in doStuffOnEnteringForeground home after get allpeople =[%@]",gbl_cd_currentAllPeople );
+  NSLog(@"gbl_currentYearInt      in doStuffOnEnteringForeground home after get allpeople =[%ld]",(long)gbl_currentYearInt );
+  NSLog(@"gbl_currentMonthInt     in doStuffOnEnteringForeground home after get allpeople =[%ld]",(long)gbl_currentMonthInt );
+  NSLog(@"gbl_currentDayInt       in doStuffOnEnteringForeground home after get allpeople =[%ld]",(long)gbl_currentDayInt );
 
 
 
