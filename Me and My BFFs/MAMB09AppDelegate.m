@@ -989,6 +989,7 @@
       @"winnie|2|26|1962|12|30|0|Toronto|Ontario|Canada||",
       @"yogi|7|18|1959|4|0|0|Toronto|Ontario|Canada||",
       @"WWWWWWWWWWWWWWW|2|21|1971|1|51|1|Los Angeles|California|United States||",   // notice hr goes 1-12
+      @"WWWWWWWWWWWWWMM|2|21|1975|1|51|1|Los Angeles|California|United States||",   // notice hr goes 1-12
       @"MMMMMMMMMMMMMMM|11|8|1988|10|8|0|Los Angeles|California|United States||",   // notice hr goes 1-12
       @"Father Lastnae|7|11|1961|11|8|1|Los Angeles|California|United States||",   // notice hr goes 1-12
       @"Fa|7|11|1961|11|8|1|Los Angeles|California|United States||",
@@ -1592,8 +1593,9 @@
     gbl_color_cMacHighlight  = [UIColor colorWithRed:038.0/255.0 green:140.0/255.0 blue:251.0/255.0 alpha:1.0]; // 268cfb or 038,140,251
     gbl_color_cAplBlue = [UIColor colorWithRed:000.0/255.0 green:128.0/255.0 blue:255.0/255.0 alpha:1.0]; // 0080ff  (blue text, chevron)
 
-    gbl_color_cAplBlueForSpinner= [UIColor colorWithRed:000.0/255.0 green:160.0/255.0 blue:255.0/255.0 alpha:1.0]; // lighter than gbl_color_cAplBlue 
-    gbl_color_cAplBlueForSpinner= [UIColor colorWithRed:032.0/255.0 green:192.0/255.0 blue:255.0/255.0 alpha:1.0]; // lighter than gbl_color_cAplBlue 
+//    gbl_color_cAplBlueForSpinner= [UIColor colorWithRed:000.0/255.0 green:160.0/255.0 blue:255.0/255.0 alpha:1.0]; // lighter than gbl_color_cAplBlue 
+//    gbl_color_cAplBlueForSpinner= [UIColor colorWithRed:032.0/255.0 green:192.0/255.0 blue:255.0/255.0 alpha:1.0]; // lighter than gbl_color_cAplBlue 
+    gbl_color_cAplBlueForSpinner = [UIColor colorWithRed:000.0/255.0 green:128.0/255.0 blue:255.0/255.0 alpha:1.0]; // = gbl_color_cAplBlue 
 
 
 //    // light green for personality neutral color bg  (alternate the two colors)
@@ -2304,7 +2306,7 @@ tn();
         fprov    = flds[8];
         fcoun    = flds[9];
         fhighsec = flds[10];  // "" or "hs"
-  NSLog(@"fyr=[%@]",fyr);
+//  NSLog(@"fyr=[%@]",fyr);
 
         // check for invalid  name fld
         if (fname.length < 1)                                  return  12;
@@ -2332,7 +2334,7 @@ tn();
         if (fyr.length != 4)                                   return  21;
         constant_char = [fyr  cStringUsingEncoding: NSUTF8StringEncoding]; // NSString object to C str
         strcpy(cyr, constant_char);                                        // NSString object to C str  // because of const
-ksn(cyr);
+//ksn(cyr);
         if (sall(cyr, "0123456789") == 0)                      return  22;
         if (atoi(cyr) < gbl_earliestYear)                      return  23;
 
@@ -4232,57 +4234,6 @@ trn(" XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
     //   strcpy(my_psv, my_psvc);
 
 
-//tn();trn("TEST GROUP ENCODE HERE :");
-//
-//       NSLog(@"gbl_arrayGrp=%@",gbl_arrayGrp);  // start here
-//
-//       myGroupArchive   = [NSKeyedArchiver  archivedDataWithRootObject: gbl_arrayGrp]; // (1) gbl_arrayGrp to myGroupArchive
-//tn();  NSLog(@"myGroupArchive=\n%@",myGroupArchive);
-//
-//       myGroupEncrypted = [myGroupArchive AES256EncryptWithKey: myGroupKeyStr];        // (2) myGroupArchive to myGroupEncrypted
-//       printf("myGroupEncrypted=\n%s\n", [[myGroupEncrypted description] UTF8String]);
-//
-//       myGroupb64Data   = [myGroupEncrypted base64EncodedDataWithOptions: 0];          // (3) myGroupEncrypted to myGroupb64Data
-//tn();  NSLog(@"myGroupb64Data=\n%@",myGroupb64Data);
-//
-//       myGroupb64Muta   = [[NSMutableData alloc] initWithData: myGroupb64Data];        // (4) myGroupb64Data to myGroupb64Muta
-//
-//       uint8_t *bytes = (uint8_t *)[myGroupb64Muta bytes];                             // (5) myGroupb64Muta to myGroupb64Muta obfuscated
-//       uint8_t pattern[] = {0xe8, 0xf4, 0xa8, 0x32, 0x63, 0xab, 0x7e, 0x44};
-//       const int patternLengthInBytes = 8;
-//       for(int index = 0; index < [myGroupb64Data length]; index++) {
-//            bytes[index] ^= pattern[index % patternLengthInBytes];
-//       }
-//tn();  NSLog(@"myGroupb64MutaOBFUSCATED=\n%@",myGroupb64Muta);
-//
-//
-//
-//
-//tn();trn("TEST GROUP DECODE HERE :");
-//
-////       uint8_t *bytes = (uint8_t *)[myGroupb64Muta bytes];                             // (5) myGroupb64Muta obfuscated to myGroupb64Muta 
-////       uint8_t pattern[] = {0xe8, 0xf4, 0xa8, 0x32, 0x63, 0xab, 0x7e, 0x44}; // or whatever
-////       const int patternLengthInBytes = 8;
-////
-//       for(int index = 0; index < [myGroupb64Data length]; index++) {
-//            bytes[index] ^= pattern[index % patternLengthInBytes];
-//       }
-//tn();  NSLog(@"myGroupb64Muta=\n%@",myGroupb64Muta);
-//
-//
-//       myGroupEncrypted = [[NSData alloc] initWithBase64EncodedData: myGroupb64Muta    // (3) myGroupb64Muta to myGroupEncrypted 
-//                                                            options: 0];  
-//tn();  NSLog(@"myGroupEncrypted =\n%@",myGroupEncrypted );
-//
-//       myGroupArchive = [myGroupEncrypted AES256DecryptWithKey: myGroupKeyStr];        // (2) myGroupEncrypted to myGroupArchive
-//       NSLog(@"myGroupArchive=\n%@",myGroupArchive);
-//       //printf("myGroupArchiveSTR=\n%s\n", [[myGroupArchive description] UTF8String]);
-//
-//       myGroupDecoded = [NSKeyedUnarchiver unarchiveObjectWithData: myGroupArchive];   // (1) myGroupDecrypted to MyGroupDecoded (gbl_arrayGrp)
-//tn();  NSLog(@"myGroupDecoded=\n%@",myGroupDecoded); // should = gbl_arrayGrp
-//
-//
-//
 
         // for test
         //         //NSCharacterSet *myNSCharacterSet = [NSCharacterSet characterSetWithCharactersInString:@"=|"];

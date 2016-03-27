@@ -162,6 +162,8 @@
 {
     [super viewDidLoad];
 
+    gbl_didAddDoneButtonInAddChange = 0;   // 1=yes, 0=no  set=0 in add/change viewDidLoad  set=1 when Done is added to nav bar
+
 //    
 ////  for test
 //    uint64_t        mystart;
@@ -998,6 +1000,7 @@ tn();
 {
 NSLog(@"in viewDidAppear()  in add/change   ");
 
+
     MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
     [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.0 ];    // when view first appears on screen   after arg seconds
 
@@ -1457,6 +1460,7 @@ tn();
         gbl_enteredProv        = gbl_initPromptProv;  // @"State or Province";
         gbl_enteredCoun        = gbl_initPromptCoun;  // @"Country";
 
+        gbl_kindOfSave = @"regular save";   // set default    // this var is used throughout
     }
 
     gbl_previousCharTypedWasSpace = 0;                 // for no multiple consecutive spaces
@@ -1498,31 +1502,34 @@ tn();
                                                                                          action: @selector(pressedCancel:)];
 
 
-        dispatch_async(dispatch_get_main_queue(), ^{  
-
-//            self.navigationItem.leftBarButtonItems   =
-//                [self.navigationItem.leftBarButtonItems   arrayByAddingObject: navCancelButton]; // add CANCEL BUTTON
-
-
-            self.navigationItem.leftBarButtonItem    = navCancelButton; // replace what's there with  CANCEL BUTTON   Notice no "s" on item
-//            self.navigationItem.backBarButtonItem    = navCancelButton; // replace what's there with  CANCEL BUTTON   Notice no "s" on item
-
-
-//self.navigationController.navigationBar.topItem.backBarButtonItem = barButton;
-//self.navigationController.navigationBar.topItem.backBarButtonItem = navCancelButton;
-
-
-// gold
-            self.navigationItem.rightBarButtonItems  =
-                [self.navigationItem.rightBarButtonItems  arrayByAddingObject: navSaveButton  ]; // add SAVE   BUTTON
-
-//            self.navigationItem.rightBarButtonItems =
-//                [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerForTitle];
-
-//            self.navigationItem.rightBarButtonItems  =
-//                [self.navigationItem.rightBarButtonItems  arrayByAddingObject: navSaveButton  ]; // add SAVE   BUTTON
-
-        });
+//  NSLog(@"gbl_didAddDoneButtonInAddChange 1 =[%ld]",(long)gbl_didAddDoneButtonInAddChange );
+        if (gbl_didAddDoneButtonInAddChange == 0)     // 1=yes, 0=no  set=0 in add/change viewDidLoad  set=1 when Done is added to nav bar
+        {
+             gbl_didAddDoneButtonInAddChange = 1;     // 1=yes, 0=no  set=0 in add/change viewDidLoad  set=1 when Done is added to nav bar
+ 
+             dispatch_async(dispatch_get_main_queue(), ^{  
+ 
+  //            self.navigationItem.leftBarButtonItems   =
+  //                [self.navigationItem.leftBarButtonItems   arrayByAddingObject: navCancelButton]; // add CANCEL BUTTON
+ 
+ 
+                 self.navigationItem.leftBarButtonItem    = navCancelButton; // replace what's there with  CANCEL BUTTON   Notice no "s" on item
+  //            self.navigationItem.backBarButtonItem    = navCancelButton; // replace what's there with  CANCEL BUTTON   Notice no "s" on item
+ 
+  
+  // gold
+                 self.navigationItem.rightBarButtonItems  =
+                     [self.navigationItem.rightBarButtonItems  arrayByAddingObject: navSaveButton  ]; // add SAVE   BUTTON
+ 
+  //            self.navigationItem.rightBarButtonItems =
+  //                [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerForTitle];
+ 
+  //            self.navigationItem.rightBarButtonItems  =
+  //                [self.navigationItem.rightBarButtonItems  arrayByAddingObject: navSaveButton  ]; // add SAVE   BUTTON
+ 
+             });
+        }
+//  NSLog(@"gbl_didAddDoneButtonInAddChange 2 =[%ld]",(long)gbl_didAddDoneButtonInAddChange );
 
 
         if ( [gbl_homeEditingState isEqualToString: @"add" ]) {  // "add" for add a new person or group, "view or change" for tapped person or group
@@ -2699,7 +2706,8 @@ nbn(510);
                 }
 //                saveMsg = [NSString stringWithFormat: @"note:\n   The High Security Save prevents EVERYONE, including yourself and this device owner, from EVER seeing %@ birth date or city.\n\n", nameInPossessiveForm ];
 //                saveMsg = [NSString stringWithFormat: @"note:\n   The High Security Save prevents EVERYONE, including yourself and this device owner, from EVER seeing or changing %@\'s birth date or city.\n\n", gbl_myname.text ];
-                saveMsg = [NSString stringWithFormat: @"\n   The High Security Save prevents EVERYONE, including yourself and this device owner, from EVER seeing or changing %@\'s birth date or city.\n\n", gbl_myname.text ];
+//                saveMsg = [NSString stringWithFormat: @"\n   The High Security Save prevents EVERYONE, including yourself and this device owner, from EVER seeing or changing %@\'s birth date or city.\n\n", gbl_myname.text ];
+                saveMsg = [NSString stringWithFormat: @"\n   The No Look, No Change Save prevents EVERYONE, including yourself and this device owner, from ever seeing or changing %@\'s birth date or city.\n\n", gbl_myname.text ];
 
 
 
@@ -2791,7 +2799,8 @@ nbn(1);
                 ];
 nbn(2);
                 [myActionSheet addAction:
-                    [UIAlertAction actionWithTitle: @"High Security Save"
+//                    [UIAlertAction actionWithTitle: @"High Security Save"
+                    [UIAlertAction actionWithTitle: @"No Look, No Change Save"
             //                                 style: UIAlertActionStyleDestructive
                                              style: UIAlertActionStyleDefault
                                            handler: ^(UIAlertAction *action) {
@@ -4148,6 +4157,7 @@ NSLog(@"in textFieldShouldReturn:");
 //    UIFont *myFontSmaller2 = [UIFont fontWithName: @"Menlo" size: 15.0];
 //    UIFont *myFontSmaller2 = [UIFont fontWithName: @"Menlo" size: 14.0];
     UIFont *myFontSmaller2 = [UIFont fontWithName: @"Menlo" size: 16.0];
+    UIFont *myFontSmaller3 = [UIFont fontWithName: @"Menlo" size: 13.0];
 //    UIFont *myFontSmaller14 = [UIFont fontWithName: @"Menlo" size: 14.0];
 
     // invisible button for taking away the disclosure indicator
@@ -4315,8 +4325,11 @@ nbn(3);
 
 
                     gbl_mycityprovcounLabel.attributedText =
-                 [[NSAttributedString alloc] initWithString: @" Saved with High Security\n Saved with High Security\n Saved with High Security"
-                  attributes: @{ NSForegroundColorAttributeName:  [UIColor lightGrayColor] }
+//                 [[NSAttributedString alloc] initWithString: @" Saved with High Security\n Saved with High Security\n Saved with High Security"
+                 [[NSAttributedString alloc] initWithString: @" Saved with No Look, No Change\n Saved with No Look, No Change\n Saved with No Look, No Change"
+                     attributes: @{
+                         NSForegroundColorAttributeName:  [UIColor lightGrayColor]
+                     }
                  ];
 
 
@@ -4335,6 +4348,7 @@ nbn(3);
             gbl_mycityprovcounLabel.numberOfLines    = 0;
             gbl_mycityprovcounLabel.tag              = 2;
             gbl_mycityprovcounLabel.font             = myFontSmaller2;
+
 //            gbl_mybirthinformation.font                    = myFontSmaller14;
 //                    gbl_mycityprovcounLabel.font             = [UIFont fontWithName: @"Menlo" size: 10.0];
 
@@ -4503,13 +4517,16 @@ nbn(21);
     //            gbl_mybirthinformation.font                     = myFont;
 //                gbl_mybirthinformation.font                     = myFontMiddle;
 //                gbl_mybirthinformation.font                    = myFontSmaller14;
-            gbl_mycityprovcounLabel.font             = myFontSmaller2;
+//            gbl_mycityprovcounLabel.font             = myFontSmaller2;
+             gbl_mybirthinformation.font             = myFontSmaller3;   // for no look, ...
+
              gbl_mybirthinformation.borderStyle              = UITextBorderStyleRoundedRect;
 //            gbl_mybirthinformation.borderStyle              = UITextBorderStyleLine;
 
 
                 gbl_mybirthinformation.textAlignment            = NSTextAlignmentLeft;
-                gbl_mybirthinformation.text                     = @" Saved with High Security";
+//                gbl_mybirthinformation.text                     = @" Saved with High Security";
+                gbl_mybirthinformation.text                     = @" Saved with No Look, No Change";
 
 //                gbl_mybirthinformation.textColor                = [UIColor greenColor]; // is @"Birth Date and Time" 
                 gbl_mybirthinformation.textColor                = [UIColor lightGrayColor]; // is @"Birth Date and Time" 

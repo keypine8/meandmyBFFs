@@ -29,8 +29,7 @@
     char lcl_group_report_output_PSVs[333 * 128];           // [333 * fixed length of 128] gbl_maxLenRptLinePSV = 128 (set in appdel.m)
 
     int  lcl_group_report_output_idx;
-
-
+    NSString *lcl_myNewCellText;
 
 @implementation MAMB09viewTBLRPTs_1_TableViewController
 
@@ -1584,6 +1583,7 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
             mycode2 = @" ";
             myscore = @"00";
             myspace = @" ";
+
             if (tmparr.count >= 2) {
                 mycode2   = tmparr[0];
                 myscore   = tmparr[1];
@@ -2756,6 +2756,7 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
 //nbn(11);
 //  NSLog(@"myrang=[%@]",myrang);
 //  NSLog(@"myrang.location =[%ld]",(long)myrang.location );
+//  NSLog(@"myrange.location=%lu",(unsigned long)myrange.location);
 //  NSLog(@"myrang.length   =[%ld]",(long)myrang.length   );
 //nbn(12);
 //myrang = NSMakeRange(  0, 50);
@@ -3309,12 +3310,12 @@ NSLog(@"myOriginalCellTextLen =%ld",(long)myOriginalCellTextLen );
 
             // Initialise the searching range to the whole string
             NSRange searchRange = NSMakeRange(0, [myStringNoAttr length]);
-//  NSLog(@"searchRange.location %lu%d](unsigned long)",searchRange.location );
+//  NSLog(@"searchRange.location %lu](unsigned long)",searchRange.location );
 //  NSLog(@"searchRange.length   %lu%d](unsigned long)",searchRange.length   );
             do {
                 // Search for next occurrence
                 NSRange searchReturnRange = [myStringNoAttr  rangeOfString: toFind  options: 0  range: searchRange];
-//  NSLog(@"searchReturnRange.location %lu%d](unsigned long)",searchReturnRange.location );
+//  NSLog(@"searchReturnRange.location %lu](unsigned long)",searchReturnRange.location );
 //  NSLog(@"searchReturnRange.length   %lu%d](unsigned long)",searchReturnRange.length   );
                 if (searchReturnRange.location != NSNotFound) {
                     // If found, searchReturnRange contains the range of the current iteration
@@ -3333,7 +3334,7 @@ NSLog(@"myOriginalCellTextLen =%ld",(long)myOriginalCellTextLen );
                     // Reset search range for next attempt to start after the current found range
                     searchRange.location = searchReturnRange.location + searchReturnRange.length;
                     searchRange.length = [myAttrString length] - searchRange.location;
-//  NSLog(@"searchRange.location2%lu%d](unsigned long)",searchRange.location );
+//  NSLog(@"searchRange.location2%lu](unsigned long)",searchRange.location );
 //  NSLog(@"searchRange.length  2%lu%d](unsigned long)",searchRange.length   );
                 } else {
                     // If we didn't find it, we have no more occurrences
@@ -4436,6 +4437,9 @@ NSLog(@"myOriginalCellTextLen =%ld",(long)myOriginalCellTextLen );
 
             myNewCellText  = [myNewCellTextShort substringWithRange:
                 NSMakeRange(gbl_numLeadingSpacesToRemove, mylen1 - gbl_numLeadingSpacesToRemove)]; // zero-based
+
+            lcl_myNewCellText = myNewCellText;
+  NSLog(@"lcl_myNewCellText 1 =[%@]",lcl_myNewCellText );
 //NSLog(@"myNewCellText=[%@]",myNewCellText);
 
 //trn(" end of  // shorter data line");
@@ -4660,6 +4664,8 @@ NSLog(@"myOriginalCellTextLen =%ld",(long)myOriginalCellTextLen );
             //
             // end of  UILabel for the disclosure indicator, ">",  for tappable cells
 
+            lcl_myNewCellText = myNewCellText;
+  NSLog(@"lcl_myNewCellText 2 =[%@]",lcl_myNewCellText );
 
             dispatch_async(dispatch_get_main_queue(), ^{            // <===  short line and long line
                 cell.textLabel.text                      = myNewCellText;  // --------------------------------------------------
@@ -5010,10 +5016,9 @@ NSLog(@"myOriginalCellTextLen =%ld",(long)myOriginalCellTextLen );
 
 
 
-//    if (   [gbl_currentMenuPlusReportCode       hasPrefix: @"homgby"]  // Best Year
-//        || [gbl_currentMenuPlusReportCode       hasPrefix: @"homgbd"]  // Best Day
-//    )  
-    } else {
+    } else { // this is for   gbl_currentMenuPlusReportCode       hasPrefix: @"homgby"]  // Best Year
+             // this is for   gbl_currentMenuPlusReportCode       hasPrefix: @"homgbd"]  // Best Day
+
         // doubling the bg color got rid of 1 pixel vertical line
 
         dispatch_async(dispatch_get_main_queue(), ^{            // <===  short line and long line
@@ -5064,9 +5069,50 @@ NSLog(@"myOriginalCellTextLen =%ld",(long)myOriginalCellTextLen );
                 cell.backgroundColor = gbl_color_cBgr;
             } 
 
+// NO,  can detect year of  birth if this is in
+//            // SCORE FLAG  = -1 when
+//            // best year and best day   in group
+//            //     year is on or before birth year  homgby
+//            //     date is before birth date        homgbd
+//            //
+//            // make all these scores "n/a" instead of " -1"
+//            // make all these bg colors = gbl_color_Neu
+//            //
+//
+//            // ? Replace only the first instance of a substring in an NSString  ?
+//            //
+//            // NSString *myString = @"My blue car is bigger then my blue shoes or my blue bicycle";
+//            // NSString *original = @"blue";      // change from
+//            // NSString *replacement = @"green";  // change to
+//            //  //  The algorithm is quite simple:
+//            // NSRange rOriginal = [myString rangeOfString: original];
+//            // if (NSNotFound != rOriginal.location) {
+//            //     myString = [myString
+//            //         stringByReplacingCharactersInRange: rOriginal
+//            //         withString:                         replacement];
+//            // }
+//  NSLog(@"lcl_myNewCellText  =[%@]",lcl_myNewCellText  );
+//            NSRange rangeOriginal = [lcl_myNewCellText  rangeOfString: @" -1"];
+//  NSLog(@"rangeOriginal.location = [%lu]",  (unsigned long)rangeOriginal.location );
+//  NSLog(@"rangeOriginal.length   = [%lu]",  (unsigned long)rangeOriginal.length   );
+//
+//            if (NSNotFound != rangeOriginal.location) {
+//                lcl_myNewCellText  = [lcl_myNewCellText  stringByReplacingCharactersInRange: rangeOriginal
+//                                                                                 withString: @"n/a"
+//                ];
+//
+////                myDisclosureIndicatorLabel.backgroundColor = gbl_color_cNeu;  // see above
+//                cell.backgroundColor = gbl_color_cNeu;
+//            }
+//
+
 
         });
+
+             // this is for   gbl_currentMenuPlusReportCode       hasPrefix: @"homgby"]  // Best Year
+             // this is for   gbl_currentMenuPlusReportCode       hasPrefix: @"homgbd"]  // Best Day
     }    // for "Best" use red/green color
+nbn(6);
 
 } // end of   willDisplayCell
 

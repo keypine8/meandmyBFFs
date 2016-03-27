@@ -890,8 +890,8 @@ trn("    for BEST DAY on ");
 
     /* set score in trait_line struct
     */
-    int yr_todo, currbirthyr;
-    char currbirthyyyymmdd[16];
+//    int yr_todo, currbirthyr;
+//    char currbirthyyyymmdd[16];
 
     if (strstr(trait_name, "mysterious") != NULL ) {  /* abandoned 201309 */
       my_trait_line.score =  mapNumStarsToBenchmarkNum(
@@ -903,26 +903,31 @@ trn("    for BEST DAY on ");
     } else if (strstr(trait_name, "Best Day on") != NULL) {
       my_trait_line.score = atoi(stringBuffForStressScore);
 
-      /* EXCLUDE person (score = -1) 
-      *          IF birth date < gbl_fut_yyyymmdd_todo
-      */
-      sprintf(currbirthyyyymmdd, "%s%s%s", current_birth_year, current_birth_mth, current_birth_day);
-      /* must be alive on the day */
-      if (strcmp(gbl_fut_yyyymmdd_todo, currbirthyyyymmdd) < 0)  { 
-        my_trait_line.score = -1;     /* flag for exluding person from report */
-      }
+
+    // NO,  can detect year of  birth if this is in
+    //      /* EXCLUDE person (score = -1) 
+    //      *          IF birth date < gbl_fut_yyyymmdd_todo
+    //      */
+    //      sprintf(currbirthyyyymmdd, "%s%s%s", current_birth_year, current_birth_mth, current_birth_day);
+    //      /* must be alive on the day */
+    //      if (strcmp(gbl_fut_yyyymmdd_todo, currbirthyyyymmdd) < 0)  { 
+    //        my_trait_line.score = -1;     /* flag for exluding person from report */
+    //      }
+    //
 
     } else if (strstr(trait_name, "Best Calendar Year") != NULL) {
       my_trait_line.score = atoi(stringBuffForStressScore);
 
-      /* EXCLUDE person (score = -1) 
-      *          IF (   birth year = gbl_bestyear_yyyy_todo
-      */
-      currbirthyr = atoi(current_birth_year);
-      yr_todo     = atoi(gbl_bestyear_yyyy_todo);
-      if (yr_todo <= currbirthyr)  {  /* must be alive whole year */
-        my_trait_line.score = -1;     /* flag for exluding person from report */
-      }
+    // NO,  can detect year of  birth if this is in
+    //      /* EXCLUDE person (score = -1) 
+    //      *          IF (   birth year = gbl_bestyear_yyyy_todo
+    //      */
+    //      currbirthyr = atoi(current_birth_year);
+    //      yr_todo     = atoi(gbl_bestyear_yyyy_todo);
+    //      if (yr_todo <= currbirthyr)  {  /* must be alive whole year */
+    //        my_trait_line.score = -1;     /* flag for exluding person from report */
+    //      }
+    //
 
     } else {
       my_trait_line.score = get_trait_score(trait_name, stringBuffForTraitCSV);

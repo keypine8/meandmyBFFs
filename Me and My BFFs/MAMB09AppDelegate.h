@@ -174,6 +174,7 @@ UIColor *gbl_bgColor_yellowEdit;
 //UIImage *gbl_chevronLeft  ;
 
 
+NSInteger gbl_didAddDoneButtonInAddChange;   // 1=yes, 0=no  set=0 in add/change viewDidLoad  set=1 when Done is added to nav bar
 //NSInteger addChangeViewJustEntered;  // 1=y,0=n
 NSInteger gbl_justEnteredAddChangeView;  // 1=y,0=n
 NSInteger gbl_citySetEditingValue;  // 1=y,0=n  // set initial value  when first entering City in "edit mode"  yellow
@@ -312,9 +313,21 @@ NSString *gbl_currentCityPicklistIsForTypedSoFar;  // like "toron"  or "toro"
 //       UITableViewCellAccessoryDetailButton 
 //    } UITableViewCellAccessoryType;
 //
-NSInteger  gbl_home_cell_AccessoryType;        // in regular mode =  UITableViewCellAccessoryDisclosureIndicator
-NSInteger  gbl_home_cell_editingAccessoryType; 
-NSInteger  gbl_home_cell_editingAccessoryView; // in editing mode =  UITableViewCellAccessoryDetailDisclosureButton
+
+
+
+// The accessory        view appears in the right side of the cell in the table view’s   normal (default) state.
+// The editingAccessory view appears in the right side of the cell in the table view’s   editing state.
+//
+// The standard accessory views include the disclosure chevron; 
+// The accessory-type image cross-fades between normal and editing states if it set for both states;
+//   use the editingAccessoryType property to set the accessory type for the cell during editing mode.
+//   If this property is not set for both states, the cell is animated to slide in or out, as necessary.
+// 
+//NSInteger  gbl_home_cell_AccessoryType;        // in regular mode =  UITableViewCellAccessoryDisclosureIndicator
+//NSInteger  gbl_home_cell_editingAccessoryType; 
+
+//NSInteger  gbl_home_cell_editingAccessoryView; // in editing mode =  UITableViewCellAccessoryDetailDisclosureButton
 
 
 

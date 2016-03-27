@@ -140,7 +140,7 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
-NSLog(@"in viewDidAppear()");
+NSLog(@"in viewDidAppear()   in sel year");
 
     MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
     [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.0 ];    // after arg seconds
@@ -273,9 +273,11 @@ nbn(0);
 
   NSLog(@"gbl_lastSelectionType=[%@]",gbl_lastSelectionType);
 
-            dispatch_async(dispatch_get_main_queue(), ^{
-                    if ([gbl_lastSelectionType isEqualToString:@"person"]) {
 nbn(1);
+            dispatch_async(dispatch_get_main_queue(), ^{
+
+                    if ([gbl_lastSelectionType isEqualToString:@"person"]) {
+
                         NSMutableAttributedString *myAttrYear;
                         myAttrYear = [[NSMutableAttributedString alloc] initWithString:  [@(gbl_currentYearInt) stringValue]
                             attributes : @{
@@ -428,9 +430,9 @@ nbn(10);
         // gbl_lastSelectedYear is 1. remembered year (above) 2. default current year (above) or 3. didSelect year (spinner)
         MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
         [myappDelegate saveLastSelectionForEntity: (NSString *) @"person"
-                          havingName: (NSString *) gbl_lastSelectedPerson
-            updatingRememberCategory: (NSString *) @"year"
-                          usingValue: (NSString *) gbl_lastSelectedYear
+                                       havingName: (NSString *) gbl_lastSelectedPerson
+                         updatingRememberCategory: (NSString *) @"year"
+                                       usingValue: (NSString *) gbl_lastSelectedYear
         ];
 
         // Because background threads are not prioritized and will wait a very long time
@@ -449,9 +451,9 @@ nbn(10);
         // gbl_lastSelectedYear is 1. remembered year (above) 2. default current year (above) or 3. didSelect year (spinner)
         MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
         [myappDelegate saveLastSelectionForEntity: (NSString *) @"group"
-                          havingName: (NSString *) gbl_lastSelectedPerson
-            updatingRememberCategory: (NSString *) @"year"
-                          usingValue: (NSString *) gbl_lastSelectedYear
+                                       havingName: (NSString *) gbl_lastSelectedGroup
+                         updatingRememberCategory: (NSString *) @"year"
+                                       usingValue: (NSString *) gbl_lastSelectedYear
         ];
 
 

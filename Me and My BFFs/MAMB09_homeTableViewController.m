@@ -51,6 +51,34 @@
 }
 
 
+- (void)viewDidLayoutSubviews {  // fill whole screen, no top/leftside gaps  in  webview  THIS WORKED
+//    NSLog(@"in home viewDidLayoutSubviews!");
+
+//    self.tableView.contentInset = UIEdgeInsetsMake(0, 0, self.bottomLayoutGuide.length, 0);
+
+
+
+    // http://stackoverflow.com/questions/18552416/uiwebview-full-screen-size
+//    webView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+
+
+//        self.outletWebView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);  // this worked
+//   self.tableView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 44.0);  // infinite loop
+
+
+//        // put the Toolbar onto bottom of what color view
+//        dispatch_async(dispatch_get_main_queue(), ^(void){
+//            [self.view addSubview: gbl_toolbarForwBack ];
+//        });
+
+
+//    if (  [gbl_currentMenuPlusReportCode isEqualToString: @"hompwc"]) { // what color
+//        self.outletWebView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 44.0);
+//    } else {
+//        self.outletWebView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+//    }
+
+} // end of viewDidLayoutSubviews 
 
 
 
@@ -94,6 +122,196 @@
 }
 
 
+//
+//// http://stackoverflow.com/questions/11070874/how-can-i-distinguish-which-part-of-uitableviewcell-has-been-clicked
+//// This delegate method determines if the handleTapInCell: method should be executed.
+//// If it can find an indexPath from the users touch, then it returns YES otherwise it returns NO.
+////
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
+{
+return YES;
+    UITableView *tmpTableView = (UITableView *)gestureRecognizer.view;
+    CGPoint p = [gestureRecognizer locationInView: gestureRecognizer.view ];
+    if ([tmpTableView indexPathForRowAtPoint:p]) {
+        return YES;
+    }
+    return NO;
+}
+
+//
+//// Once we have determined if the user has clicked in a cell,
+//// the handleTap: method is called,
+//// which then decides if the user touched the image, or any other part of the cell.
+////
+- (void)handleSingleTapInCell:(UITapGestureRecognizer *)tap
+{
+tn();
+  NSLog(@"in handleSingleTapInCell  in HOME! ttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt");
+    if (UIGestureRecognizerStateEnded == tap.state)
+    {
+
+        UITableView *tmpTableView = (UITableView *)tap.view;
+
+        CGPoint p = [tap locationInView: tap.view ];
+        NSIndexPath* indexPathTappedIn = [tmpTableView indexPathForRowAtPoint: p ];
+
+//        [tmpTableView deselectRowAtIndexPath: indexPathTappedIn animated: NO ];
+
+        UITableViewCell *cellTappedIn = [tmpTableView cellForRowAtIndexPath: indexPathTappedIn ];
+        CGPoint pointInCell = [tap locationInView: cellTappedIn ];
+
+tn(); tr("tapped here in cell      = ");kd(pointInCell.x); kd(pointInCell.y);
+
+//<.>
+        // if tap is in area of red delete circle with "-",
+        // then
+        //     move name to right to accomodate big red "Delete" button sliding in from the right
+        //     call delete cell  method
+        //
+        if (pointInCell.x <= 45.0)    // 0.0 - 45.0 within cell = hit area for red circle with "-" on left side of cell
+        {
+            if ( [gbl_homeUseMODE isEqualToString: @"edit mode" ])   // yellow
+            {
+
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//                 cellTappedIn.textLabel.textAlignment = NSTextAlignmentRight;
+
+//nbn(334);
+//    NSArray*     rowsToReload = [NSArray arrayWithObjects: indexPathTappedIn , nil ];
+//        [self.tableView reloadRowsAtIndexPaths: rowsToReload
+//                              withRowAnimation: UITableViewRowAnimationLeft
+//        ];
+//
+//nbn(335);
+//
+//        }); // end of  dispatch_async(dispatch_get_main_queue()
+
+//
+//               // name has shifted off or partly off left side of screen
+//               // so put label with name 
+//               //
+////               UILabel *nameToDeleteLabel = [[UILabel alloc]initWithFrame: CGRectMake(160, 0, 240, 44)];
+////               UILabel *nameToDeleteLabel = [[UILabel alloc]initWithFrame: CGRectMake(130, 0, 285, 44)];
+//               UILabel *nameToDeleteLabel = [[UILabel alloc]initWithFrame: CGRectMake(100, 200, 285, 44)];
+//               nameToDeleteLabel.text     = cellTappedIn.textLabel.text ;
+//
+//               nameToDeleteLabel.backgroundColor   = [UIColor redColor];
+//               nameToDeleteLabel.textColor   = [UIColor whiteColor];
+////               nameToDeleteLabel.backgroundColor   = gbl_colorEditingBG;
+////               nameToDeleteLabel.textColor   = [UIColor blackColor];
+//
+//               nameToDeleteLabel.textAlignment = NSTextAlignmentCenter;
+//
+////               [cellTappedIn addSubview: nameToDeleteLabel ];
+//               [self.tableView addSubview: nameToDeleteLabel ];
+//
+
+
+//- (void)tableView:(UITableView *)tableView commitEditingStyle: (UITableViewCellEditingStyle)  editingStyle  // DELETE METHOD, DELETE METHOD
+//                                            forRowAtIndexPath: (NSIndexPath *)                indexPath
+
+
+//tn();
+//  NSLog(@"SHIFT name TO RIGHT here !");
+//        // PROBLEM  name slides left off screen when you hit red round delete "-" button
+//        //          and delete button slides from right into screen
+//        //
+//        // these 2 keep the name on screen when hit red round delete and big delete button slides from right
+//        //
+//        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+//
+//            cellTappedIn.indentationWidth = 12.0; // these 2 keep the name on screen 
+////            cellTappedIn.indentationLevel =  7;   // these 2 keep the name on screen // orig = 3
+////            cellTappedIn.indentationLevel =  9;   // these 2 keep the name on screen // orig = 3
+//            cellTappedIn.indentationLevel =  8;   // these 2 keep the name on screen // orig = 3
+//
+//        }); // end of  dispatch_async(dispatch_get_main_queue()
+//
+
+//                 cellTappedIn.textLabel.frame.origin.x = cellTappedIn.textLabel.frame.origin.x +  2 * 45.0 ; 
+
+//
+//                //When users tap the insertion (green plus) control or Delete button associated with a UITableViewCell object in the table view, the table view sends this message to the data source, asking it to commit the change. (If the user taps the deletion (red minus) control, the table view then displays the Delete button to get confirmation.) 
+//                //
+//                [self commitEditingStyleGUTS: UITableViewCellEditingStyleDelete // DELETE METHOD, DELETE METHOD
+//                           forRowAtIndexPath: indexPathTappedIn
+//                ];
+//
+
+            } // "edit mode"
+
+        } // tapped in cell where x = 0.0 - 45.0
+
+//
+
+//        CGPoint pointInTableView = [tap locationInView: self.tableView ];
+//tn(); tr("tapped here in tableView = ");kd(pointInTableView.x); kd(pointInTableView.y);
+
+//
+//        // You can use the locationInView: method on UIGestureRecognizer.
+//        // If you pass nil for the view, this method will return the location of the touch in the window.
+//        //
+////        CGPoint pointInWindow   = [tap locationInView: nil ];
+//        CGPoint pointInWindow   = [tap locationInView: self.view ];
+//tn(); tr("tapped here in Window    = ");kd(pointInWindow.x); kd(pointInWindow.y);
+//tn();
+//
+////        if (CGRectContainsPoint(tmpCell.imageView.frame, pointInCell)) {
+//        if (       CGRectContainsPoint(tmpCell.textLabel.frame, pointInCell) )
+//        {
+//  NSLog(@"  // user tapped tmpCell.textLabel");
+//
+//        } else {
+////            if ( [gbl_homeUseMODE isEqualToString: @"edit mode")   // yellow
+////            && CGRectContainsPoint(tmpCell.textLabel.frame, pointInCell))
+////        }
+//  NSLog(@"  // user tapped CELL");
+//        }
+//
+
+
+
+    } // (UIGestureRecognizerStateEnded == tap.state) 
+}
+
+//- (void)handleSingleTapInWindow:(UITapGestureRecognizer *)tap
+//{
+//tn();
+//  NSLog(@"in handleSingleTapInWindow  in HOME! ttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt");
+//    if (UIGestureRecognizerStateEnded == tap.state) {
+//
+//        UITableView *tmpTableView = (UITableView *)tap.view;
+//
+//        CGPoint p = [tap locationInView: tap.view ];
+//        NSIndexPath* indexPath = [tmpTableView indexPathForRowAtPoint: p ];
+//
+////        [tmpTableView deselectRowAtIndexPath: indexPath animated: NO ];
+//
+//        // You can use the locationInView: method on UIGestureRecognizer.
+//        // If you pass nil for the view, this method will return the location of the touch in the window.
+//        //
+////        CGPoint pointInWindow   = [tap locationInView: nil ];
+//        CGPoint pointInWindow   = [tap locationInView: self.view ];
+//tn(); tr("tapped here in Window    = ");kd(pointInWindow.x); kd(pointInWindow.y);
+//tn();
+//
+////        if (CGRectContainsPoint(tmpCell.imageView.frame, pointInCell)) {
+//        if (       CGRectContainsPoint(self.view.frame, pointInWindow) )
+//        {
+//  NSLog(@"  // user tapped tmpCell.textLabel");
+//        } else {
+////            if ( [gbl_homeUseMODE isEqualToString: @"edit mode")   // yellow
+////            && CGRectContainsPoint(tmpCell.textLabel.frame, pointInCell))
+////        }
+//  NSLog(@"  // user tapped CELL");
+//        }
+//    }
+//}
+//
+
+
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -115,7 +333,59 @@ tn();
     gbl_doubleTapGestureRecognizer.delaysTouchesBegan = YES;       // for uitableview
     [self.tableView addGestureRecognizer: gbl_doubleTapGestureRecognizer ];
 
+//
+//    // to avoid tap in widened section index to act like a tap of cell
+//    // when tapping on left side of section index 8 chars wide ("___TOP__")
+//    //
+    UITapGestureRecognizer *singleTapInCell = [[UITapGestureRecognizer alloc] initWithTarget: self
+                                                                                      action: @selector( handleSingleTapInCell: )
+    ];
+    singleTapInCell.delegate                = self;
+    singleTapInCell.numberOfTapsRequired    = 1;
+    singleTapInCell.numberOfTouchesRequired = 1;
+    singleTapInCell.cancelsTouchesInView    = NO;
 
+    [self.tableView addGestureRecognizer: singleTapInCell];
+
+
+//    UIWindow *mainWindow = [[[UIApplication sharedApplication] delegate] window];
+//    SEL mySelector = @selector(selfhandleSingleTapInWindow );
+
+//    UITapGestureRecognizer *singleTapInWindow = [[UITapGestureRecognizer alloc] initWithTarget: mainWindow
+
+//    MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
+//
+//    UITapGestureRecognizer *singleTapInWindow = [[UITapGestureRecognizer alloc] initWithTarget: self
+//                                                                                        action: @selector ( handleSingleTapInWindow: )
+//    ];
+//    singleTapInWindow.delegate = self;
+//    singleTapInWindow.numberOfTapsRequired = 1;
+//    singleTapInWindow.numberOfTouchesRequired = 1;
+//    [self.view addGestureRecognizer: singleTapInWindow];
+//
+//
+////
+////// Actually UIWindow is subclass of UIView, that means you can add a gesture recognizer to it.
+////// But how to make sure this will not have influence on real content of your app ?
+//////
+////// Make AppDelegate the delegate of UIGestureRecognizer that you just added, and override shouldReceiveTouch as follows:
+//////
+////- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+////{
+////  NSLog(@"touch at %@", NSStringFromCGPoint([touch locationInView:touch.view]));
+////  return NO;
+////}
+////
+//
+
+//
+//
+////    UITapGestureRecognizer *singleTapInWindow = [[UITapGestureRecognizer alloc] initWithTarget: self.super.view
+////                                                                                      action: @selector( handleSingleTapInCell: )
+////    ];
+////
+//
+//
 
 //    gbl_lastClick = [[[NSDate alloc] init] timeIntervalSince1970];
 
@@ -227,8 +497,8 @@ tn();
   NSLog(@"gbl_homeEditingState=[%@]",gbl_homeEditingState);
     // gbl_homeEditingState;  // if gbl_homeUseMODE = "edit mode" then either "add" or "view or change"   for tapped person or group
 
-    gbl_home_cell_AccessoryType        = UITableViewCellAccessoryDisclosureIndicator; // home mode regular with tap giving report list
-    gbl_home_cell_editingAccessoryType = UITableViewCellAccessoryNone;                // home mode regular with tap giving report list
+//    gbl_home_cell_AccessoryType        = UITableViewCellAccessoryDisclosureIndicator; // home mode regular with tap giving report list
+//    gbl_home_cell_editingAccessoryType = UITableViewCellAccessoryNone;                // home mode regular with tap giving report list
 
     gbl_currentMenuPrefixFromHome    = @"homp";    // set default on startup
 
@@ -304,7 +574,7 @@ nbn(100);
 //        [ gbl_homeLeftItemsWithNoAddButton removeObjectAtIndex: 1 ];                 // remove add button from array copy
 
 
-        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+        dispatch_async(dispatch_get_main_queue(), ^{
 
             // try with always add button
             // self.navigationItem.leftBarButtonItems  = gbl_homeLeftItemsWithNoAddButton;
@@ -550,29 +820,29 @@ nbn(15);
 
 
 
-
-
-    //   for test   TO SIMULATE first downloading the app-  when there are no data files
-    //   FOR test   remove all regular named files   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-    //
-    NSLog(@" FOR test   BEG   remove all regular named files   xxxxxxxxxx ");
-    [gbl_sharedFM removeItemAtURL: gbl_URLToLastEnt    error: &err01];
-    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm lastent %@", [err01 localizedFailureReason]); }
-    [gbl_sharedFM removeItemAtURL: gbl_URLToGroup      error: &err01];
-    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm group   %@", [err01 localizedFailureReason]); }
-    [gbl_sharedFM removeItemAtURL: gbl_URLToPerson     error: &err01];
-    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm person  %@", [err01 localizedFailureReason]); }
-    [gbl_sharedFM removeItemAtURL: gbl_URLToMember     error: &err01];
-    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm Member  %@", [err01 localizedFailureReason]); }
-    [gbl_sharedFM removeItemAtURL: gbl_URLToGrpRem     error: &err01];
-    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm GrpRem  %@", [err01 localizedFailureReason]); }
-    [gbl_sharedFM removeItemAtURL: gbl_URLToPerRem     error: &err01];
-    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm PerRem  %@", [err01 localizedFailureReason]); }
-    NSLog(@" FOR test   END   remove all regular named files   xxxxxxxxxx ");
-    // end of   FOR test   remove all regular named files   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-
-
+//
+//
+//    //   for test   TO SIMULATE first downloading the app-  when there are no data files
+//    //   FOR test   remove all regular named files   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+//    //
+//    NSLog(@" FOR test   BEG   remove all regular named files   xxxxxxxxxx ");
+//    [gbl_sharedFM removeItemAtURL: gbl_URLToLastEnt    error: &err01];
+//    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm lastent %@", [err01 localizedFailureReason]); }
+//    [gbl_sharedFM removeItemAtURL: gbl_URLToGroup      error: &err01];
+//    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm group   %@", [err01 localizedFailureReason]); }
+//    [gbl_sharedFM removeItemAtURL: gbl_URLToPerson     error: &err01];
+//    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm person  %@", [err01 localizedFailureReason]); }
+//    [gbl_sharedFM removeItemAtURL: gbl_URLToMember     error: &err01];
+//    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm Member  %@", [err01 localizedFailureReason]); }
+//    [gbl_sharedFM removeItemAtURL: gbl_URLToGrpRem     error: &err01];
+//    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm GrpRem  %@", [err01 localizedFailureReason]); }
+//    [gbl_sharedFM removeItemAtURL: gbl_URLToPerRem     error: &err01];
+//    if (err01 && (long)[err01 code] != NSFileNoSuchFileError) { NSLog(@"rm PerRem  %@", [err01 localizedFailureReason]); }
+//    NSLog(@" FOR test   END   remove all regular named files   xxxxxxxxxx ");
+//    // end of   FOR test   remove all regular named files   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+//
+//
+//
 
 
 
@@ -1092,6 +1362,7 @@ nbn(45);
 //        }
 //
 
+
             // make label for Disclosure Indicator   ">"
             //
             NSAttributedString *myNewCellAttributedText3 = [
@@ -1110,11 +1381,23 @@ nbn(45);
             if ([gbl_lastSelectionType isEqualToString:@"group"])  myDisclosureIndicatorLabel.backgroundColor = gbl_colorHomeBG_grp; 
             if ([gbl_lastSelectionType isEqualToString:@"person"]) myDisclosureIndicatorLabel.backgroundColor = gbl_colorHomeBG_per; 
 
+//    if ([gbl_homeUseMODE isEqualToString: @"regular mode"]) 
+//    {
+//    } // brown regular mode, not yellow edit
+
 
 //  NSLog(@"gbl_homeUseMODE =%@",gbl_homeUseMODE );
 
 //  NSLog(@"before set access view");
     dispatch_async(dispatch_get_main_queue(), ^{                        
+
+
+// no effect
+//       self.tableView.autoresizesSubviews = NO;
+//       cell.autoresizesSubviews = NO;
+//       cell.contentView.autoresizesSubviews = NO;
+//       cell.textLabel.autoresizesSubviews = NO;
+
 
 //  cell.textLabel.text = @"";           // for test create empty Launch screen shot 
 //  cell.accessoryType        = nil;      // for test create empty Launch screen shot
@@ -1134,12 +1417,26 @@ nbn(45);
 
         cell.textLabel.text = nameOfGrpOrPer;
 
-        cell.textLabel.font            = [UIFont boldSystemFontOfSize: 17.0];
+//tn();
+//kd(self.view.bounds.size.width);
+//kd(self.view.bounds.size.height);
+//tn();
+//kd(cell.textLabel.frame.size.width);
+//kd(cell.textLabel.frame.size.height);
+//tn();
+
+
+        cell.textLabel.font       = [UIFont boldSystemFontOfSize: 17.0];
         cell.textLabel.adjustsFontSizeToFitWidth = YES;
-        cell.accessoryType        = gbl_home_cell_AccessoryType;           // home mode edit    with tap giving record details
-        cell.editingAccessoryType = gbl_home_cell_editingAccessoryType;    // home mode edit    with tap giving record details
+//        cell.accessoryType        = gbl_home_cell_AccessoryType;           // home mode regular with tap giving record details
+//        cell.editingAccessoryType = gbl_home_cell_editingAccessoryType;    // home mode edit    with tap giving record details
 
 //        cell.textLabel.textAlignment = NSTextAlignmentCenter;
+        cell.textLabel.textAlignment = NSTextAlignmentLeft;
+
+//        cell.autoresizingMask     = UIViewAutoresizingFlexibleRightMargin;
+//        cell.autoresizingMask     = UIViewAutoresizingFlexibleWidth;
+
 
         // PROBLEM  name slides left off screen when you hit red round delete "-" button
         //          and delete button slides from right into screen
@@ -1149,9 +1446,20 @@ nbn(45);
 
         if ([gbl_homeUseMODE isEqualToString: @"edit mode"]) cell.tintColor = [UIColor blackColor];
 
+        if ([gbl_homeUseMODE isEqualToString: @"regular mode"]) 
+        {
 //        cell.accessoryView                       = gbl_disclosureIndicatorLabel;
-        cell.accessoryView                       = myDisclosureIndicatorLabel;
-        cell.accessoryType                       = UITableViewCellAccessoryDisclosureIndicator;
+            cell.accessoryView                       = myDisclosureIndicatorLabel;
+            cell.accessoryType                       = UITableViewCellAccessoryDisclosureIndicator;
+        } else {
+            // edit mode
+            cell.accessoryView                       = nil;
+            cell.accessoryType                       = UITableViewCellAccessoryNone;
+
+        }
+
+//        cell.autoresizingMask     = UIViewAutoresizingFlexibleRightMargin;
+
 
   //<.x for test create empty Launch screen shot  //  ALSO comment out between the 2  <.  above
 
@@ -1261,6 +1569,7 @@ nbn(45);
 //    else                     return YES;
 //
 
+
     return YES;
 }
 
@@ -1268,9 +1577,26 @@ nbn(45);
 {
 //tn();
 //NSLog(@"in editingStyleForRowAtIndexPath");
+
+
     return UITableViewCellEditingStyleDelete;
 }
 
+//  DELETE METHODS
+//
+// Just to make sure I understand, when you swipe,               CanEditRow and EditingStyleForRow should be called immediately.
+// Just to make sure I understand, when tap red circle with "-", CanEditRow and EditingStyleForRow should be called immediately.
+// Then a "Delete" button should be drawn for you by iOS.
+// After you tap the "Delete" button, CommitEditingStyle should be called. – sblom Jul 26 '12 at 3:26 
+//
+
+// When users tap the insertion (green plus) control or Delete button
+// associated with a UITableViewCell object in the table view,
+// the table view sends this message to the data source, asking it to commit the change.
+// 
+// (If the user taps the deletion (red minus) control,
+// the table view then displays the Delete button to get confirmation.) 
+// 
 
 //   DELETE METHOD  DELETE METHOD  DELETE METHOD  DELETE METHOD  DELETE METHOD  DELETE METHOD  DELETE METHOD  DELETE METHOD DELETE METHOD
 //
@@ -1279,6 +1605,28 @@ nbn(45);
 {
 tn();
   NSLog(@"in commitEditingStyle");
+  NSLog(@"editingStyle =[%ld]",(long)editingStyle);
+  NSLog(@"indexPath.row=%ld",(long)indexPath.row);
+
+    
+    [self commitEditingStyleGUTS: editingStyle  // want to call this here and from  handleSingleTapInCell:(UITapGestureRecognizer *)tap
+               forRowAtIndexPath: indexPath
+    ];
+
+}  // end of commitEditingStyle
+//
+//   DELETE METHOD  DELETE METHOD  DELETE METHOD  DELETE METHOD  DELETE METHOD  DELETE METHOD  DELETE METHOD  DELETE METHOD DELETE METHOD
+
+
+
+//- (void)tableView:(UITableView *)tableView commitEditingStyleGUTS: (UITableViewCellEditingStyle)  editingStyle  // DELETE METHOD, DELETE METHOD
+//                                                forRowAtIndexPath: (NSIndexPath *)                indexPath
+- (void) commitEditingStyleGUTS: (UITableViewCellEditingStyle)  editingStyle  // DELETE METHOD GUTS, DELETE METHOD GUTS
+              forRowAtIndexPath: (NSIndexPath *)                indexPath
+{
+tn();
+
+  NSLog(@"in commitEditingStyleGUTS");
   NSLog(@"editingStyle =[%ld]",(long)editingStyle);
   NSLog(@"indexPath.row=%ld",(long)indexPath.row);
 
@@ -1295,6 +1643,36 @@ tn();
         && [gbl_lastSelectionType isEqualToString: @"person" ]
     ) {
   NSLog(@"in commitEditingStyle  2222222");
+
+//
+//    // Here the red delete button has slid over from the right edge
+//    // pushing the name to the left partly or all out of sight off screen.
+//    //
+//    // So,  move the cell.textLabel to the right (back into sight)
+//
+//    // PROBLEM  name slides left off screen when you hit red round delete "-" button
+//    //          and delete button slides from right into screen
+//    //
+//
+//    UITableViewCell* cell   = [tableView cellForRowAtIndexPath:indexPath];
+//
+////    NSIndexPath* rowToReload  = [NSIndexPath indexPathForRow: 3 inSection: 0 ];
+//    NSArray*     rowsToReload = [NSArray arrayWithObjects: indexPath, nil ];
+//
+//    dispatch_async(dispatch_get_main_queue(), ^{  
+////        cell.indentationWidth = 12.0; // these 2 keep the name on screen when hit red round delete and delete button slides from right
+////        cell.indentationLevel =  3;   // these 2 keep the name on screen when hit red round delete and delete button slides from right
+//        cell.indentationWidth = 12.0; // these 2 keep the name on screen when hit red round delete and delete button slides from right
+//        cell.indentationLevel =  6;   // these 2 keep the name on screen when hit red round delete and delete button slides from right
+//
+//        [self.tableView reloadRowsAtIndexPaths: rowsToReload
+//                              withRowAnimation: UITableViewRowAnimationLeft
+//        ];
+//
+//    });
+//
+//nbn(334);
+//
 
         NSInteger arrayCountBeforeDelete;
         NSInteger arrayIndexToDelete;
@@ -1502,9 +1880,7 @@ tn();
     }  // if (editingStyle == UITableViewCellEditingStyleDelete) 
 
 
-}  // end of commitEditingStyle
-//
-//   DELETE METHOD  DELETE METHOD  DELETE METHOD  DELETE METHOD  DELETE METHOD  DELETE METHOD  DELETE METHOD  DELETE METHOD DELETE METHOD
+}  // end of commitEditingStyleGUTS
 
 
 
@@ -1545,7 +1921,7 @@ tn();
     [sourceViewController.navigationController.view.layer addAnimation: transition 
                                                                 forKey: kCATransition];
 
-        [self.tableView setEditing: YES animated: YES];  // turn cocoa editing mode off when this screen leaves
+        [self.tableView setEditing: YES animated: YES];  // ?    turn cocoa editing mode off when this screen leaves
 
     }
 } // end of  prepareForSegue 
@@ -2219,7 +2595,29 @@ tn();
     if ([gbl_fromHomeCurrentEntity isEqualToString:@"group"])   NSLog(@"current  row 225=[%@]", [gbl_arrayGrp objectAtIndex:previouslyselectedIndexPath.row]);
     if ([gbl_fromHomeCurrentEntity isEqualToString:@"person"])  NSLog(@"current  row 226=[%@]", [gbl_arrayPer objectAtIndex:previouslyselectedIndexPath.row]);
 
+
+//    // put this back to default  indentationLevel = 3
+//    //
+//    // PROBLEM  name slides left off screen when you hit red round delete "-" button
+//    //          and delete button slides from right into screen
+//    //
+//    // these 2 keep the name on screen when hit red round delete and big delete button slides from right
+//    //
+//    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath: indexPath];
+//    NSArray*     rowsToReload = [NSArray arrayWithObjects: indexPath, nil ];
+//    dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+//
+//        cell.indentationWidth = 12.0; // these 2 keep the name on screen 
+//        cell.indentationLevel =  3;   // these 2 keep the name on screen // = 7 when user hit red circle with "-"
+//
+//        [self.tableView reloadRowsAtIndexPaths: rowsToReload
+//                              withRowAnimation: UITableViewRowAnimationLeft
+//        ];
+//
+//    }); // end of  dispatch_async(dispatch_get_main_queue()
+//
     
+
     // here deselect "previously" selected row
     // and remove yellow highlight
     //NSLog(@"willDeselectRowAtIndexPath()  DESELECT #######################################################");
@@ -2407,13 +2805,35 @@ tn();
   NSLog(@"gbl_ExampleData_show=[%@]",gbl_ExampleData_show);
 
 
+//
+//    // put on a bottom FOOTER to account for BOTTOM TOOLBAR if this is yellow edit mode
+//    //
+//    if ([gbl_homeUseMODE isEqualToString:@"edit mode"]) {
+//
+//       // magic 44 is the specified height of bottom footer
+//        self.tableView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 44.0);
+//
+//        UIView *footer = [[UIView alloc] initWithFrame: CGRectMake(0, 0, 1, 44)];  // magic 44 is the specified height of bottom footer
+//        footer.backgroundColor = [UIColor clearColor];
+//        self.tableView.tableFooterView = footer;
+//
+//
+//    } else {
+//        self.tableView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height       );
+//
+//        self.tableView.tableFooterView = nil;
+//    }
+//
+
+
     //   gbl_homeUseMODE;      // "edit mode" (yellow)   or   "regular mode" (blue)
     if ([gbl_homeUseMODE isEqualToString:@"edit mode"]) {
+
         [self.tableView setEditing: YES animated: YES];  // turn cocoa editing mode on
-//        [self.tableView setEditing: YES animated: NO];  // turn cocoa editing mode on
+
     } else {
+
         [self.tableView setEditing: NO  animated: YES];  // turn cocoa editing mode off
-//        [self.tableView setEditing: NO  animated: NO];  // turn cocoa editing mode off
     }
 
 
@@ -2612,14 +3032,17 @@ nbn(140);
 //        100.0,
         y_value_of_toolbar, 
         currentScreenWidthHeight.width,
-        44.0)];
+        44.0)];  // magic
 
     gbl_toolbarHomeMaintenance.tag         = 34;
     gbl_toolbarHomeMaintenance.translucent = NO;
+//    gbl_toolbarHomeMaintenance.translucent = YES;
 //    gbl_toolbarHomeMaintenance.backgroundColor = [UIColor redColor];
 //    gbl_toolbarHomeMaintenance.backgroundColor = [UIColor whiteColor];
 //    gbl_toolbarHomeMaintenance.backgroundColor = [UIColor yellowColor];
-    gbl_toolbarHomeMaintenance.backgroundColor = [UIColor clearColor];
+//    gbl_toolbarHomeMaintenance.backgroundColor = [UIColor whiteColor];
+//    gbl_toolbarHomeMaintenance.backgroundColor = [UIColor clearColor];
+    gbl_toolbarHomeMaintenance.backgroundColor = [UIColor whiteColor];
 
 //<.>
 //439://      gbl_myCellBgView =[[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, [cell frame].size.width -20, [cell frame].size.height)];
@@ -2915,6 +3338,16 @@ tn();
 //
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
 {
+tn();
+  NSLog(@"in sectionIndexTitlesForTableView !");
+
+//return nil;  // test no section index
+
+    // turn off section index if in yellow edit mode (make room for big "Delete" button on right)
+    //
+    if ( [gbl_homeUseMODE isEqualToString: @"edit mode" ]) return nil;   // yellow
+
+
     //   NSMutableArray *myEmptyArray = [NSMutableArray array];
     NSInteger myCountOfRows;
     myCountOfRows = 0;
@@ -2960,15 +3393,67 @@ nbn(162);
 //         @"A", @"B", @"C", @"D",  @"E", @"F", @"G", @"H", @"I", @"J",  @"K", @"L", @"M",
 //         @"N", @"O", @"P",  @"Q", @"R", @"S", @"T", @"U", @"V",  @"W", @"X", @"Y", @"Z",   nil ];
 
+//            @"TOP",
+//         @" ", @" ", @" ", @" ",  @" ", @" ",
+//         @" ", @" ", @" ", @" ",  @" ", @" ",
+//         @" ", @" ", @" ", @" ",  @" ", @" ",
+//         @" ", @" ", @" ", @" ",  @" ", @" ",
+//            @"END",
+//            nil
+
+//            @"______",
+//            @"__TOP_",
+//         @"      ", @"      ", @"      ", @"      ",  @"      ", 
+//            @"______",
+//         @"      ", @"      ", @"      ", @"      ",  @"      ",
+//            @"______",
+//         @"      ", @"      ", @"      ", @"      ",  @"      ", 
+//            @"______",
+//         @"      ", @"      ", @"      ", @"      ",  @"      ", 
+//            @"__END_",
+//            @"______",
+//            nil
+//
+
+
+
+//            @"___",
+//            @"TOP",
+//            @"   ", @"   ", @"   ", @"   ",  @"   ", 
+//            @" _ ",
+//            @"   ", @"   ", @"   ", @"   ",  @"   ",
+//            @" _ ",
+//            @"   ", @"   ", @"   ", @"   ",  @"   ", 
+//            @" _ ",
+//            @"   ", @"   ", @"   ", @"   ",  @"   ", 
+//            @"END",
+//            @"___",
+//            nil
+//
+
+
+
+//            @"_________",
+            @"_______",
             @"TOP",
-         @" ", @" ", @" ", @" ",  @" ", @" ",
+            @"     ", @"     ", @"     ", @"     ",  @"     ", 
             @"__",
-         @" ", @" ", @" ", @" ",  @" ", @" ",
+            @"     ", @"     ", @"     ", @"     ",  @"     ",
             @"__",
-         @" ", @" ", @" ", @" ",  @" ", @" ",
+            @"     ", @"     ", @"     ", @"     ",  @"     ", 
             @"__",
-         @" ", @" ", @" ", @" ",  @" ", @" ",
-            @"END", nil ];
+            @"     ", @"     ", @"     ", @"     ",  @"     ", 
+            @"END",
+            @"_______",
+//            @"_________",
+            nil
+
+
+
+    ];
+//            @"END", nil ];
+//            @"bottom", nil ];
+//            @"_END_", nil ];
 
 
     gbl_numSectionIndexTitles = mySectionIndexTitles.count;
@@ -3113,17 +3598,26 @@ nbn(162);
     }
 
 
-    if ([title isEqualToString:@"TOP"]) newRow = 0;
-    if ([title isEqualToString:@"END"]) newRow = myCountOfRows - 1;
-    if (   [title isEqualToString:@" "]
-        || [title isEqualToString:@"__"]
-    )   newRow = ((double) (index + 1) / (double) gbl_numSectionIndexTitles ) * (double)myCountOfRows ;
-    if (   [title isEqualToString:@"x"] )
-    {  // position at row last used  (highlight row)
-nbn(151);
-        gbl_scrollToCorrectRow = 1;
-        [self putHighlightOnCorrectRow ];
-    }
+    if (     [title isEqualToString:@"TOP"]) newRow = 0;
+    else if ([title isEqualToString:@"END"]) newRow = myCountOfRows - 1;
+    else                                     newRow = ((double) (index + 1) / (double) gbl_numSectionIndexTitles ) * (double)myCountOfRows ;
+//    else if ([title isEqualToString:@"     "]
+//        || [title isEqualToString:@"__"]
+//        || [title isEqualToString:@"_____"] 
+//    )   newRow = ((double) (index + 1) / (double) gbl_numSectionIndexTitles ) * (double)myCountOfRows ;
+
+    if (newRow == myCountOfRows)  newRow = newRow - 1;
+
+  NSLog(@"gbl_numSectionIndexTitles =[%ld]",(long)gbl_numSectionIndexTitles );
+  NSLog(@"newRow                    =[%ld]", (long)newRow);
+  NSLog(@"myCountOfRows             =[%ld]", (long)myCountOfRows   );
+
+//    if (   [title isEqualToString:@"x"] )
+//    {  // position at row last used  (highlight row)
+//nbn(151);
+//        gbl_scrollToCorrectRow = 1;
+//        [self putHighlightOnCorrectRow ];
+//    }
 
     newIndexPath = [NSIndexPath indexPathForRow: newRow inSection: 0];
     [tableView scrollToRowAtIndexPath: newIndexPath atScrollPosition: UITableViewScrollPositionMiddle animated: NO];
@@ -3188,6 +3682,7 @@ nbn(151);
 //--------------------------------------------------------------------------------------------
 
 // ===  EDITING  ================================================================================
+
 //
 //   https://developer.apple.com/library/ios/featuredarticles/ViewControllerPGforiPhoneOS/EnablingEditModeinaViewController/EnablingEditModeinaViewController.html#//apple_ref/doc/uid/TP40007457-CH14-SW5
 //
@@ -3199,6 +3694,17 @@ nbn(151);
 // CALLS YOUR VIEW CONTROLLER’S  setEditing:animated:  METHOD WITH APPROPRIATE VALUES.
 //
 // You can also call this method from your own code (or modify the value of your view controller’s editing property) to toggle between modes.
+//
+
+//
+// SETEDITING
+//
+// When you call this method with the value of editing set to YES,
+// the table view goes into editing mode by calling setEditing:animated: on each visible UITableViewCell object.
+// Calling this method with editing set to NO turns off editing mode.
+// In editing mode, the cells of the table might show an insertion or deletion control on the left side of each cell
+// and a reordering control on the right side, depending on how the cell is configured.
+// The data source of the table view can selectively exclude cells from editing mode by implementing tableView:canEditRowAtIndexPath:.
 //
 - (void)setEditing: (BOOL)flag // editButtomItem AUTOMATICALLY TOGGLES BETWEEN AN Edit(flag=y) & Done(flag=n) BUTTON AND CALLS setEditing
           animated: (BOOL)animated
@@ -3242,12 +3748,31 @@ tn();  NSLog(@"setEditing !!!!!!  pressed Edit or Done  !!!!!!!!!!!!!!!");
 
 
 
+    // put on a bottom FOOTER to account for BOTTOM TOOLBAR if this is yellow edit mode
+    //
+    if (flag == YES) { // Change views to edit mode.   USER TAPPED EDIT BUTTON HERE
+       // magic 44 is the specified height of bottom footer
+        self.tableView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 44.0);
+
+        UIView *footer = [[UIView alloc] initWithFrame: CGRectMake(0, 0, 1, 44)];  // magic 44 is the specified height of bottom footer
+        footer.backgroundColor = [UIColor clearColor];
+        self.tableView.tableFooterView = footer;
+
+
+    } else {
+        self.tableView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height       );
+
+        self.tableView.tableFooterView = nil;
+    }
+
 
     if (flag == YES) { // Change views to edit mode.   USER TAPPED EDIT BUTTON HERE
 
 
   NSLog(@"EDIT BUTTON 2    ");
   NSLog(@"gbl_homeUseMODE 1   =[%@]",gbl_homeUseMODE );
+
+
 
         gbl_homeUseMODE = @"edit mode";   // determines home mode  @"edit mode" or @"regular mode"
   NSLog(@"gbl_homeUseMODE 2   =[%@]",gbl_homeUseMODE );
@@ -3291,20 +3816,24 @@ nbn(300);
 //        self.segEntityOutlet.backgroundColor = gbl_colorEditingBG;     
 
 
-        // UITableViewCellAccessoryDisclosureIndicator,    tapping the cell triggers a push action
-        // UITableViewCellAccessoryDetailDisclosureButton, tapping the cell allows the user to configure the cell’s contents
-        //
+//
+//        // UITableViewCellAccessoryDisclosureIndicator,    tapping the cell triggers a push action
+//        // UITableViewCellAccessoryDetailDisclosureButton, tapping the cell allows the user to configure the cell’s contents
+//        //
+//
+//        // GOLD:  http://stackoverflow.com/questions/18740594/in-ios7-uitableviewcellaccessorydetaildisclosurebutton-is-divided-into-two-diff
+//        // This is the correct behavior.
+//        // In iOS 7, 
+//        // UITableViewCellAccessoryDetailDisclosureButton    you show both the "detail button" and the "disclosure indicator" 
+//        // UITableViewCellAccessoryDetailButton              If you'd only like the "i" button
+//        // UITableViewCellAccessoryDisclosureIndicator       if you'd only like the "disclosure indicator
+//        // 
+//        gbl_home_cell_AccessoryType        = UITableViewCellAccessoryNone;
+////      gbl_home_cell_editingAccessoryType = UITableViewCellAccessoryDetailDisclosureButton; // home mode edit    with tap giving record details
+//        gbl_home_cell_editingAccessoryType = UITableViewCellAccessoryDetailButton; // home mode edit    with tap giving record details
+//
+//
 
-        // GOLD:  http://stackoverflow.com/questions/18740594/in-ios7-uitableviewcellaccessorydetaildisclosurebutton-is-divided-into-two-diff
-        // This is the correct behavior.
-        // In iOS 7, 
-        // UITableViewCellAccessoryDetailDisclosureButton    you show both the "detail button" and the "disclosure indicator" 
-        // UITableViewCellAccessoryDetailButton              If you'd only like the "i" button
-        // UITableViewCellAccessoryDisclosureIndicator       if you'd only like the "disclosure indicator
-        // 
-        gbl_home_cell_AccessoryType        = UITableViewCellAccessoryNone;
-//      gbl_home_cell_editingAccessoryType = UITableViewCellAccessoryDetailDisclosureButton; // home mode edit    with tap giving record details
-        gbl_home_cell_editingAccessoryType = UITableViewCellAccessoryDetailButton; // home mode edit    with tap giving record details
 
     
         [self.tableView reloadData]; // reload to    edit mode    reload reload reload reload reload reload ");
@@ -3407,13 +3936,19 @@ nbn(311);
         if ([gbl_lastSelectionType isEqualToString:@"group" ]) gbl_colorHomeBG = gbl_colorHomeBG_grp;
         self.tableView.backgroundColor = gbl_colorHomeBG;       // WORKS
 
-        // UITableViewCellAccessoryDisclosureIndicator,    tapping the cell triggers a push action
-        // UITableViewCellAccessoryDetailDisclosureButton, tapping the cell allows the user to configure the cell’s contents
-        //
-        gbl_home_cell_AccessoryType        = UITableViewCellAccessoryDisclosureIndicator; // home mode regular with tap giving report list
-        gbl_home_cell_editingAccessoryType = UITableViewCellAccessoryNone;                // home mode regular with tap giving report list
+
+
+//
+//        // UITableViewCellAccessoryDisclosureIndicator,    tapping the cell triggers a push action
+//        // UITableViewCellAccessoryDetailDisclosureButton, tapping the cell allows the user to configure the cell’s contents
+//        //
+//        gbl_home_cell_AccessoryType        = UITableViewCellAccessoryDisclosureIndicator; // home mode regular with tap giving report list
+//        gbl_home_cell_editingAccessoryType = UITableViewCellAccessoryNone;                // home mode regular with tap giving report list
+//
+//
 
         [self.tableView reloadData]; // reload to regular mode    reload reload reload reload reload reload ");
+
 
 //        tn();trn("reload to regular mode    reload reload reload reload reload reload ");
 
@@ -3476,6 +4011,27 @@ nbn(142);
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath{
 tn();    NSLog(@"reaching accessoryButtonTappedForRowWithIndexPath:");
+
+//    // where was the tap exactly
+//    //
+//
+//        UITableViewCell *tmpCell = [self.tableView cellForRowAtIndexPath: indexPath ];
+//        CGPoint pointInCell = [tap locationInView: tmpCell ];
+//tn(); tr("tapped here in cell      = ");kd(pointInCell.x); kd(pointInCell.y);
+//
+//        CGPoint pointInTableView = [tap locationInView: self.tableView ];
+//tn(); tr("tapped here in tableView = ");kd(pointInTableView.x); kd(pointInTableView.y);
+//
+//        // You can use the locationInView: method on UIGestureRecognizer.
+//        // If you pass nil for the view, this method will return the location of the touch in the window.
+//        //
+////        CGPoint pointInWindow   = [tap locationInView: nil ];
+//        CGPoint pointInWindow   = [tap locationInView: self.view ];
+//tn(); tr("tapped here in Window    = ");kd(pointInWindow.x); kd(pointInWindow.y);
+//tn();
+//
+//
+
 
 
     gbl_accessoryButtonTapped = 1;
@@ -4891,6 +5447,5 @@ nbn(357);
 //        //
 //        // end of  UILabel for the disclosure indicator, ">",  for tappable cells
 //
-
 
 

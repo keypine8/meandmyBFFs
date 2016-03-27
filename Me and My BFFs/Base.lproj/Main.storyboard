@@ -3,7 +3,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--home Table View Controller-->
@@ -11,7 +10,7 @@
             <objects>
                 <tableViewController id="ayc-8Y-7x0" customClass="MAMB09_homeTableViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" restorationIdentifier="MyCell1" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="32" sectionHeaderHeight="22" sectionFooterHeight="22" id="3XP-nJ-qJg">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="524"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MyCell1" id="Loe-rs-xmp">
@@ -28,6 +27,7 @@
                             <outlet property="delegate" destination="ayc-8Y-7x0" id="9MB-u2-bY9"/>
                         </connections>
                     </tableView>
+                    <extendedEdge key="edgesForExtendedLayout" top="YES"/>
                     <navigationItem key="navigationItem" id="DQv-UV-LF6">
                         <nil key="title"/>
                         <barButtonItem key="leftBarButtonItem" image="rounded_MAMB09_144" id="d9Q-aF-H9x">
@@ -276,26 +276,20 @@
             <objects>
                 <viewController storyboardIdentifier="ViewHTMLViewController" title="view HTML file View Controller" id="9OC-3u-Jhm" customClass="MAMB09_viewHTMLViewController" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="BpX-ZL-Y6E"/>
-                        <viewControllerLayoutGuide type="bottom" id="78r-nk-y8r"/>
+                        <viewControllerLayoutGuide type="top" id="q22-zP-hb0"/>
+                        <viewControllerLayoutGuide type="bottom" id="S57-eI-Nlu"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="i4S-L4-eKP">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <webView contentMode="scaleToFill" scalesPageToFit="YES" allowsInlineMediaPlayback="NO" mediaPlaybackRequiresUserAction="NO" mediaPlaybackAllowsAirPlay="NO" keyboardDisplayRequiresUserAction="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V68-Cu-vhc">
+                            <webView contentMode="scaleToFill" fixedFrame="YES" scalesPageToFit="YES" allowsInlineMediaPlayback="NO" mediaPlaybackRequiresUserAction="NO" mediaPlaybackAllowsAirPlay="NO" keyboardDisplayRequiresUserAction="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V68-Cu-vhc">
                                 <rect key="frame" x="6" y="13" width="320" height="568"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <dataDetectorType key="dataDetectorTypes"/>
                             </webView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="V68-Cu-vhc" secondAttribute="trailing" constant="-22" id="3zc-Ug-PQc"/>
-                            <constraint firstItem="V68-Cu-vhc" firstAttribute="top" secondItem="i4S-L4-eKP" secondAttribute="topMargin" constant="13" id="4VE-9o-IIL"/>
-                            <constraint firstAttribute="bottomMargin" secondItem="V68-Cu-vhc" secondAttribute="bottom" constant="-13" id="8VV-wp-lfH"/>
-                            <constraint firstItem="V68-Cu-vhc" firstAttribute="leading" secondItem="i4S-L4-eKP" secondAttribute="leadingMargin" constant="-10" id="JGN-wA-SJF"/>
-                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="ow0-4f-nTr">
                         <barButtonItem key="rightBarButtonItem" id="6Jt-ez-AV4">
@@ -345,14 +339,14 @@
             <objects>
                 <viewController id="TFL-tU-gN8" customClass="MAMB09_selYearViewController" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="7q8-DK-K8k"/>
-                        <viewControllerLayoutGuide type="bottom" id="K2n-D5-ogJ"/>
+                        <viewControllerLayoutGuide type="top" id="R5L-ST-Ldf"/>
+                        <viewControllerLayoutGuide type="bottom" id="Xd8-vH-jOP"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="4F6-lK-C1a">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <pickerView contentMode="top" translatesAutoresizingMaskIntoConstraints="NO" id="JIh-Y7-k8C">
+                            <pickerView contentMode="top" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JIh-Y7-k8C">
                                 <rect key="frame" x="0.0" y="178" width="320" height="216"/>
                                 <accessibility key="accessibilityConfiguration">
                                     <accessibilityTraits key="traits" playsSound="YES" updatesFrequently="YES"/>
@@ -362,14 +356,11 @@
                                     <outlet property="delegate" destination="4F6-lK-C1a" id="cuR-rR-iBv"/>
                                 </connections>
                             </pickerView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0yE-gv-atJ">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0yE-gv-atJ">
                                 <rect key="frame" x="149" y="112" width="100" height="35"/>
                                 <accessibility key="accessibilityConfiguration">
                                     <accessibilityTraits key="traits" none="YES"/>
                                 </accessibility>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="100" id="Ngf-32-taY"/>
-                                </constraints>
                                 <attributedString key="attributedText">
                                     <fragment content=" ">
                                         <attributes>
@@ -382,13 +373,6 @@
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="0yE-gv-atJ" secondAttribute="trailing" constant="55" id="8JD-Qk-bFk"/>
-                            <constraint firstItem="JIh-Y7-k8C" firstAttribute="top" secondItem="0yE-gv-atJ" secondAttribute="bottom" constant="31" id="D8m-HW-faq"/>
-                            <constraint firstItem="JIh-Y7-k8C" firstAttribute="top" secondItem="7q8-DK-K8k" secondAttribute="bottom" constant="114" id="G10-zl-5FF"/>
-                            <constraint firstAttribute="centerX" secondItem="JIh-Y7-k8C" secondAttribute="centerX" id="TAF-vf-bj8"/>
-                            <constraint firstItem="0yE-gv-atJ" firstAttribute="top" secondItem="7q8-DK-K8k" secondAttribute="bottom" constant="48" id="uxc-yW-WH8"/>
-                        </constraints>
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="pN1-tL-K5G"/>
@@ -569,17 +553,17 @@
             <objects>
                 <viewController id="ssd-vJ-8lM" customClass="MAMB09_selDateViewController2" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="kem-m2-SCO"/>
-                        <viewControllerLayoutGuide type="bottom" id="mJl-6D-C5M"/>
+                        <viewControllerLayoutGuide type="top" id="w8f-FY-OyD"/>
+                        <viewControllerLayoutGuide type="bottom" id="KQm-0p-vIv"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="e40-pc-2MG">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <pickerView contentMode="TopLeft" translatesAutoresizingMaskIntoConstraints="NO" id="dy8-9A-phT">
+                            <pickerView contentMode="TopLeft" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dy8-9A-phT">
                                 <rect key="frame" x="16" y="177" width="288" height="180"/>
                             </pickerView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U2q-xg-HuS">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U2q-xg-HuS">
                                 <rect key="frame" x="279" y="102" width="0.0" height="41"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="25"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -587,15 +571,6 @@
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="dy8-9A-phT" firstAttribute="top" secondItem="kem-m2-SCO" secondAttribute="bottom" constant="113" id="FEf-6t-QcQ"/>
-                            <constraint firstItem="dy8-9A-phT" firstAttribute="top" secondItem="U2q-xg-HuS" secondAttribute="bottom" constant="34" id="ONA-am-YpB"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="U2q-xg-HuS" secondAttribute="trailing" constant="25" id="YDZ-fv-TmB"/>
-                            <constraint firstItem="dy8-9A-phT" firstAttribute="leading" secondItem="e40-pc-2MG" secondAttribute="leadingMargin" id="kVN-yn-Cdm"/>
-                            <constraint firstItem="U2q-xg-HuS" firstAttribute="top" secondItem="kem-m2-SCO" secondAttribute="bottom" constant="38" id="nIi-JM-ecm"/>
-                            <constraint firstItem="dy8-9A-phT" firstAttribute="trailing" secondItem="e40-pc-2MG" secondAttribute="trailingMargin" id="u5K-S3-jZH"/>
-                            <constraint firstItem="mJl-6D-C5M" firstAttribute="top" secondItem="dy8-9A-phT" secondAttribute="bottom" constant="167" id="vZu-eY-Ye7"/>
-                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="4w0-a9-bQe"/>
                     <connections>
@@ -648,9 +623,9 @@
         <image name="rounded_MAMB09_144" width="144" height="144"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="nxl-xA-9Hd"/>
         <segue reference="2Rt-iZ-59y"/>
+        <segue reference="nxl-xA-9Hd"/>
+        <segue reference="0US-NI-9lF"/>
         <segue reference="pER-Pc-lnw"/>
-        <segue reference="Cp1-j3-FiA"/>
     </inferredMetricsTieBreakers>
 </document>

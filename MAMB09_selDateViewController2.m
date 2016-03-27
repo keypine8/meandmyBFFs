@@ -144,7 +144,14 @@
 
     UILabel *mySelDate_Label      = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 480.0, 44.0)];
 
-    NSString *myNavBar2lineTitle  = [NSString stringWithFormat:  @"%@\nSelect Day", gbl_lastSelectedPerson ];
+
+    NSString *myNavBar2lineTitle;
+    if (   [gbl_currentMenuPlusReportCode isEqualToString: @"hompwc"]  ) {
+        myNavBar2lineTitle  = [NSString stringWithFormat:  @"%@\nSelect Day", gbl_lastSelectedPerson ];
+    }
+    if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgbd"]  ) {
+        myNavBar2lineTitle  = [NSString stringWithFormat:  @"%@\nSelect Day", gbl_lastSelectedGroup ];
+    }
 
     mySelDate_Label.numberOfLines = 2;
 //        mySelDate_Label.font          = [UIFont boldSystemFontOfSize: 16.0];
@@ -159,7 +166,7 @@
     // TWO-LINE NAV BAR TITLE
     //
     dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
-        self.navigationItem.rightBarButtonItem = _goToReportButton;
+        self.navigationItem.rightBarButtonItem  = _goToReportButton;
         self.navigationItem.titleView           = mySelDate_Label; // mySelDate_Label.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
         self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerForTitle];
         [self.navigationItem.rightBarButtonItem setImageInsets:UIEdgeInsetsMake(0, 0, -2.0, 0)];  // lower > a bit
