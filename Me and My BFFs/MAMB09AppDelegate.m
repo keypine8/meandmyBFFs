@@ -266,12 +266,13 @@
     // N.B.  HUNG when gbl_bgColor_brownHdr set to gbl_color_cAplDarkBlue in appdel .m
 
 
-    gbl_myname = [[UITextField alloc] initWithFrame:CGRectMake(16, 8, 200, 40)]; // arg 1=x 2=y 3=width 4=height
-    gbl_myname.multipleTouchEnabled = NO;
+//    gbl_myname = [[UITextField alloc] initWithFrame:CGRectMake(16, 8, 200, 40)]; // arg 1=x 2=y 3=width 4=height
+//    gbl_myname.multipleTouchEnabled = NO;
 //    gbl_myname.exclusiveTouch       = YES;
-//    gbl_myname  = [
-//        [MAMB09_UITextField_noCopyPaste alloc]  initWithFrame: CGRectMake(16, 8, 200, 40) // arg 1=x 2=y 3=width 4=height
-//    ];
+
+    gbl_myname  = [
+        [MAMB09_UITextField_noCopyPaste alloc]  initWithFrame: CGRectMake(16, 8, 200, 40) // arg 1=x 2=y 3=width 4=height
+    ];
 
 
 //UIView *overlay = [[UIView alloc] init];  

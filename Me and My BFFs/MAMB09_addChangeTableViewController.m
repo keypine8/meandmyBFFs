@@ -84,15 +84,75 @@
 
 @implementation MAMB09_addChangeTableViewController
 
+//
+//// The copy:, cut:, delete:, paste:, select:, and selectAll: methods   this list is ACTION LIST
+////
 //- (BOOL)canPerformAction:(SEL)action withSender:(id)sender { //  NOTE  still shows paste
 //  NSLog(@"in canPerformAction  pppppppppppppppppppppppppppppppppppppppppppp pppppppp pppppppp ppppppppp");
-////     return YES;
-//    if (action == @selector(paste:)) return NO;
-////    return [super canPerformAction:action withSender:sender];
+//  NSLog(@"function=[%s] sender=[%@] selector=[%s]",   __FUNCTION__,   sender,  sel_getName(action) );
 //
-//     return NO;
+//    NSString *myStringForAction;
+//    myStringForAction = NSStringFromSelector(action);
+//
+//  NSLog(@"myStringForAction =[%@]",myStringForAction );
+//  NSLog(@" EVERYTHING   return NO");
+//       return NO;
+//
+////
+//////  NSLog(@"NSStringFromSelector(action)=[%@]",NSStringFromSelector(action));
+////
+//////    if (action == @selector(delete:))
+////
+////    // allow copy, cut
+////    if ([ myStringForAction isEqualToString: @"cut:" ])   
+////    {
+////  NSLog(@"myStringForAction=[cut:]  return NO");
+////       return NO;
+////    }
+////    if ([ myStringForAction isEqualToString: @"copy:" ])   
+////    {
+////  NSLog(@"myStringForAction=[copy:]  return NO");
+////       return NO;
+////    }
+////
+//////    if ([ myStringForAction isEqualToString: @"delete:" ])
+//////    {
+//////  NSLog(@"myStringForAction=[delete:]  return NO");
+//////       return NO;
+//////    }
+////    if ([ myStringForAction isEqualToString: @"paste:" ])   
+////    {
+////  NSLog(@"myStringForAction=[paste:]  return NO");
+////       return NO;
+////    }
+////    if ([ myStringForAction isEqualToString: @"selectAll:" ])
+////    {
+////  NSLog(@"myStringForAction=[selectAll:]  return NO" );
+////       return NO;
+////    }
+////
+////    if ([ myStringForAction isEqualToString: @"makeTextWritingDirectionRightToLeft:" ])  
+////    {
+////  NSLog(@"myStringForAction=[makeTextWritingDirectionRightToLeft:]  return NO");
+////       return NO;
+////    }
+////    if ([ myStringForAction isEqualToString: @"makeTextWritingDirectionRightToLeft:" ])  
+////    {
+////  NSLog(@"myStringForAction=[makeTextWritingDirectionLeftTORight:]  return NO");
+////       return NO;
+////    }
+////
+////    // no delete: no share:  allowed  ( vars beginning with "_"   protected ? )
+////
+//////    return [super canPerformAction:action withSender:sender];
+////
+////  NSLog(@"action=[%@]  return YES", myStringForAction);
+////    return YES;
+////
 //}
 //
+//
+
 
 
 
@@ -342,10 +402,12 @@
 //- (void) process_dblTapRecog_InNameCell:(UITapGestureRecognizer *)sender { NSLog(@"in process_dblTapRecog_InNameCell!  do nothing"); }
 
 
-- (void) touchDownIn_gbl_mynameFld: (id)sender
-{
-  NSLog(@"in touchDownIn_gbl_myname !  do nothing");
-}
+//- (void) touchDownIn_gbl_mynameFld: (id)sender
+//{
+//  NSLog(@"in touchDownIn_gbl_myname !  do nothing");
+//}
+//
+
 //- (void) touchDownIn_gbl_mynameCell: (id)sender
 //{
 //  NSLog(@"in touchDownIn_gbl_mynameCell !  do nothing");
@@ -358,26 +420,58 @@
 -(void)myMenuWillBeShown  // NSNotification  for DISABLE showing of select/paste/cut etc (flashes a bit, but only the 1st time)
 {
   NSLog(@"in myMenuWillBeShown !");
-    UIMenuController *menu = [UIMenuController sharedMenuController];
 
-    [menu setMenuVisible: NO];
+    UIMenuController *theMenu = [UIMenuController sharedMenuController];
 
-    [menu performSelector: @selector(setMenuVisible:)
-               withObject: [NSNumber numberWithBool: NO]
-//               afterDelay: 0.1
-               afterDelay: 0.0
-    ]; //also tried 0 as interval both look quite similar
+    [theMenu setMenuVisible: NO   animated: NO ];
+
+
+
+//    UIMenuController *menu = [UIMenuController sharedMenuController];
+
+
+
+//    [menu setMenuVisible: NO];
+
+//    [menu performSelector: @selector(setMenuVisible:)
+//               withObject: [NSNumber numberWithBool: NO]
+////               afterDelay: 0.1
+//               afterDelay: 0.2
+//    ]; //also tried 0 as interval both look quite similar
+
 }
 
 
--(void)myTextFieldBeginEditing
+-(void)myTextFieldBeganEditing
 {
 tn();
-  NSLog(@"in myTextFieldBeginEditing!");
+  NSLog(@"in myTextFieldBeganEditing!");
 //    gbl_myname.userInteractionEnabled = NO;
 //  NSLog(@"gbl_myname.userInteractionEnabled = NO!");
 
+//    [gbl_singleTapGestureRecognizer    setCancelsTouchesInView: YES];
+  NSLog(@"[gestureRecognizer description ]=[%@]",[gbl_singleTapGestureRecognizer description ]);
 }
+
+
+-(void)myTextFieldEndedEditing
+{
+tn();
+  NSLog(@"in myTextFieldEndedEditing!");
+//    gbl_myname.userInteractionEnabled = NO;
+//  NSLog(@"gbl_myname.userInteractionEnabled = NO!");
+
+//    [gbl_singleTapGestureRecognizer    setCancelsTouchesInView: NO];
+  NSLog(@"[gestureRecognizer description ]=[%@]",[gbl_singleTapGestureRecognizer description ]);
+}
+
+
+
+//- (void) processSingleTap:(UITapGestureRecognizer *)sender
+//{
+//  NSLog(@"processSingleTap   do nothing");
+//  NSLog(@"[gestureRecognizer description ]=[%@]",[sender description ]);
+//}
 
 
 - (void)viewDidLoad
@@ -391,35 +485,31 @@ tn();
     gbl_myname.delegate = self;
 
 
-//----------------------------------
-//CancelsTouchesInView
-//----------------------------------
-//name gets focus  firstrespond
-//set gesture tap in name
-//set CancelsTouchesInView = YES
-//name loses  firstrespond
-//removeGestureRecognizer
-//----------------------------------
-
-
-//UITextFieldTextDidBeginEditingNotification
-
 
 
 // add removeObs...
 
     [[NSNotificationCenter defaultCenter] addObserver: self  // DISABLE showing of select/paste/cut etc (flashes a bit)
-                                             selector: @selector(myTextFieldBeginEditing)
+                                             selector: @selector(myTextFieldBeganEditing)
                                                  name: UITextFieldTextDidBeginEditingNotification   // <<<====----
-                                               object: nil
+//                                               object: nil
+                                               object: gbl_myname
+    ];
+    [[NSNotificationCenter defaultCenter] addObserver: self  // DISABLE showing of select/paste/cut etc (flashes a bit)
+                                             selector: @selector(myTextFieldEndedEditing)
+                                                 name: UITextFieldTextDidEndEditingNotification   // <<<====----
+//                                               object: nil
+                                               object: gbl_myname
     ];
 
 
-    [gbl_myname  addTarget: self
-                    action: @selector(touchDownIn_gbl_mynameFld: )
-          forControlEvents: UIControlEventAllTouchEvents
-//          forControlEvents: UIControlEventTouchDown
-    ];
+
+//    [gbl_myname  addTarget: self
+//                    action: @selector(touchDownIn_gbl_mynameFld: )
+//          forControlEvents: UIControlEventAllTouchEvents
+////          forControlEvents: UIControlEventTouchDown
+//    ];
+//
 
             //typedef enum UIControlEvents : NSUInteger {
             //   UIControlEventTouchDown               = 1 << 0,
@@ -472,12 +562,45 @@ tn();
 //    self.view.exclusiveTouch       = YES;
 
 
+
+
+        //----------------------------------
+        //CancelsTouchesInView
+        //----------------------------------
+        //name gets focus  firstrespond
+        //set gesture tap in name
+        //set CancelsTouchesInView = YES
+        //name loses  firstrespond
+        //removeGestureRecognizer
+        //----------------------------------
+
+//    gbl_singleTapGestureRecognizer = [
+//       [UITapGestureRecognizer alloc] initWithTarget: gbl_myname 
+////       [UITapGestureRecognizer alloc] initWithTarget: self 
+//                                              action: @selector( processSingleTap: )
+//    ];
+//    [gbl_singleTapGestureRecognizer    setNumberOfTapsRequired: 1];
+//    [gbl_singleTapGestureRecognizer setNumberOfTouchesRequired: 1];
 //
+//    [gbl_singleTapGestureRecognizer    setCancelsTouchesInView: NO];
+////    [gbl_singleTapGestureRecognizer    setCancelsTouchesInView: YES];
+//
+////    [gbl_singleTapGestureRecognizer requireGestureRecognizerToFail: gbl_doubleTapGestureRecognizer ];
+////    gbl_singleTapGestureRecognizer.delaysTouchesBegan        = YES;   
+////    gbl_singleTapGestureRecognizer.delegate                  = self;   
+//    [self.view addGestureRecognizer: gbl_singleTapGestureRecognizer ];
+//
+
+
+
+
+
 //    gbl_oneTapRecog_InNameFld = [
 //       [UITapGestureRecognizer alloc] initWithTarget: gbl_myname 
 ////       [UITapGestureRecognizer alloc] initWithTarget: self 
 //                                              action: @selector( process_oneTapRecog_InNameFld: )
 //    ];
+
 //    [gbl_doubleTapGestureRecognizer    setNumberOfTapsRequired: 1];
 //    [gbl_doubleTapGestureRecognizer setNumberOfTouchesRequired: 1];
 ////    [gbl_doubleTapGestureRecognizer requireGestureRecognizerToFail: gbl_dblTapRecog_InNameFld ];
@@ -581,22 +704,6 @@ NSLog(@"in ADD CHANGE  viewDidLoad!");
 //
 
 
-//
-//
-//    gbl_singleTapGestureRecognizer = [
-////       [UITapGestureRecognizer alloc] initWithTarget: gbl_myname 
-//       [UITapGestureRecognizer alloc] initWithTarget: self 
-//                                              action: @selector( processSingleTap: )
-//    ];
-//    [gbl_singleTapGestureRecognizer    setNumberOfTapsRequired: 2];
-//    [gbl_singleTapGestureRecognizer setNumberOfTouchesRequired: 1];
-//    [gbl_singleTapGestureRecognizer requireGestureRecognizerToFail: gbl_doubleTapGestureRecognizer ];
-//    gbl_singleTapGestureRecognizer.delaysTouchesBegan        = YES;   
-////    gbl_singleTapGestureRecognizer.delegate                  = self;   
-//    [self.view addGestureRecognizer: gbl_singleTapGestureRecognizer ];
-//
-//
-
 
 
 
@@ -694,11 +801,12 @@ NSLog(@"in ADD CHANGE  viewDidLoad!");
 
 
 
-//    [[NSNotificationCenter defaultCenter] addObserver: self  // DISABLE showing of select/paste/cut etc (flashes a bit)
-//                                             selector: @selector(myMenuWillBeShown)
-//                                                 name: UIMenuControllerWillShowMenuNotification   // <<<====----
+    [[NSNotificationCenter defaultCenter] addObserver: self  // DISABLE showing of select/paste/cut etc (flashes a bit)
+                                             selector: @selector(myMenuWillBeShown)
+                                                 name: UIMenuControllerWillShowMenuNotification   // <<<====----
 //                                               object: nil
-//    ];
+                                               object: gbl_myname
+    ];
 
 
 

@@ -249,8 +249,8 @@ UIColor *gbl_bgColor_editFocus_YES;   // something else
 
 //NSString    *incomingNameAtBegOfAddChange;  // when 
 
-UITextField *gbl_myname;                   // for add new person or group         // one of THE THREE  "FIELDS"  =====
-//MAMB09_UITextField_noCopyPaste *gbl_myname;  // for add new person or group         // one of THE THREE  "FIELDS"  =====
+//UITextField *gbl_myname;                   // for add new person or group         // one of THE THREE  "FIELDS"  =====
+MAMB09_UITextField_noCopyPaste *gbl_myname;  // for add new person or group         // one of THE THREE  "FIELDS"  =====
 
 UITextField *gbl_mycitySearchString;  // for add new person  SEARCH STRING
 UILabel     *gbl_mycityprovcounLabel; // for display found city,prov,coun    // one of THE THREE  "FIELDS"  =====
