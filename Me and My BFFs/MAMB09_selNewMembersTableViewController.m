@@ -28,6 +28,7 @@
 tn();
     NSLog(@"in SELECT New MEMBEFRS   viewDidLoad!");
 
+//  NSLog(@"gbl_arrayMem in viewdidload TOP =[%@]",gbl_arrayMem );
 
     [gbl_selectedMembers_toAdd  removeAllObjects];
      gbl_selectedMembers_toAdd  = [[NSMutableArray alloc] init];
@@ -56,11 +57,12 @@ tn();
         UIBarButtonItem *navCancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
                                                                                          target: self
                                                                                          action: @selector(pressedCancel:)];
-        // put info button on Nav Bar
-        UIButton *myInfoButton     =  [UIButton buttonWithType: UIButtonTypeInfoDark] ;
-        [myInfoButton addTarget: self action: @selector(pressedInfoButton:) forControlEvents:UIControlEventTouchUpInside];
-
-        UIBarButtonItem *navToInfoButton = [[UIBarButtonItem alloc] initWithCustomView: myInfoButton ];
+//        // put info button on Nav Bar
+//        UIButton *myInfoButton     =  [UIButton buttonWithType: UIButtonTypeInfoDark] ;
+//        [myInfoButton addTarget: self action: @selector(pressedInfoButton:) forControlEvents:UIControlEventTouchUpInside];
+//
+//        UIBarButtonItem *navToInfoButton = [[UIBarButtonItem alloc] initWithCustomView: myInfoButton ];
+//
 
 
   NSLog(@"navSaveButton=[%@]",navSaveButton);
@@ -145,7 +147,7 @@ tn();
 //                gbl_flexibleSpace,
 
             self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects: 
-                navToInfoButton,
+//                navToInfoButton,
                 navSaveButton,
                 nil
             ]; 
@@ -268,9 +270,8 @@ tn();
 
         if ( [grpmemNameArray containsObject: candidateMember] ) continue;   // in the group already
 
-        // 20160309  allow edit, etc of example "~" data
         //   // EXCLUDE       people who are example data ("~")
-        //  if ([candidateMember hasPrefix: @"~" ])                  continue;   // no example people to be member
+        if ([candidateMember hasPrefix: @"~" ])                  continue;   // no example people to be member
        
         [gbl_arrayNewMembersToPickFrom addObject: candidateMember ];         //  Person name for pick
     } // for each groupmember
@@ -281,6 +282,13 @@ tn();
 
 //    [self updateButtonsToMatchTableState]; // make our view consistent - Update the delete button's title based on how many items are selected.
     //    [self updateButtonsToMatchTableState]; // Update the delete button's title based on how many items are selected.
+
+
+
+  NSLog(@" // set up sectionindex  or not");
+    [self sectionIndexTitlesForTableView: self.tableView ];  // set up sectionindex  or not
+
+//  NSLog(@"gbl_arrayMem in viewdidload BOTTOM =[%@]",gbl_arrayMem );
 
 } //   viewDidLoad 
 
@@ -294,6 +302,7 @@ NSLog(@"in viewDidAppear()");
     MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
     [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.0 ];    // after arg seconds
                                                     
+//  NSLog(@"gbl_arrayMem in viewdidappear =[%@]",gbl_arrayMem );
 NSLog(@"in viewDidAppear()");
 } // end of viewDidAppear
 
@@ -314,6 +323,7 @@ NSLog(@"in viewDidAppear()");
     } ];
     [alert addAction:  okButton];
     [self presentViewController: alert  animated: YES  completion: nil   ];
+
     [super didReceiveMemoryWarning];
 } // didReceiveMemoryWarning 
 
@@ -327,6 +337,8 @@ NSLog(@"in viewDidAppear()");
     NSString *tmpMemberName = cell.textLabel.text;
     [gbl_selectedMembers_toAdd  addObject: tmpMemberName ];          //  Person name for pick
 
+//  NSLog(@"gbl_arrayMem didselectrow     =[%@]",gbl_arrayMem );
+//  NSLog(@"gbl_selectedMembers_toAdd  =[%@]",gbl_selectedMembers_toAdd  );
 }
 
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -342,6 +354,26 @@ NSLog(@"in viewDidAppear()");
 - (IBAction)pressedSaveDone:(id)sender
 {
   NSLog(@"in pressedSAVEDONE!!");
+
+
+    if ([gbl_lastSelectedGroup hasPrefix: @"~" ]) 
+    {
+        UIAlertController* myAlert = [
+            UIAlertController alertControllerWithTitle: @"An Example Group Cannot be Changed"
+                                               message: @"You cannot add new members to an example group."
+                                        preferredStyle: UIAlertControllerStyleAlert 
+        ];
+        UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                            style: UIAlertActionStyleDefault
+                                                          handler: ^(UIAlertAction * action) {
+            NSLog(@"Ok button pressed");
+        } ];
+        [myAlert addAction:  okButton];
+
+        [self presentViewController: myAlert  animated: YES  completion: nil   ]; // cannot save because of missing information
+
+        return;
+    }
 
 
     // PROBLEM:  CANNOT TRUST  [self.tableView indexPathsForSelectedRows] when scrolling off screen
@@ -386,15 +418,21 @@ nbn(3);
 
     [myappDelegate mamb_beginIgnoringInteractionEvents ];
    
-
+tn();
 nbn(4);
 
     NSString *member_record;
-    for (id add_me in gbl_selectedMembers_toAdd)   // add each new member
+    for (NSString *add_me in gbl_selectedMembers_toAdd)   // add each new member
     {
-        member_record = [NSString stringWithFormat:  @"%@|%@||", gbl_lastSelectedGroup, add_me ];
+        member_record = [NSString stringWithFormat:  @"%@|%@|", gbl_lastSelectedGroup, add_me ];
+
+//  NSLog(@"ADDED MEMBERSHIP     = [%@]", member_record);
+//  NSLog(@"gbl_lastSelectedGroup=[%@]",gbl_lastSelectedGroup);
+//  NSLog(@"gbl_arrayMem before add new mbr=[%@]",gbl_arrayMem );
 
         [gbl_arrayMem addObject: member_record ];                        //  Person name for pick
+
+//  NSLog(@"gbl_arrayMem after add new mbr=[%@]",gbl_arrayMem );
 
     }
 nbn(5);
@@ -415,6 +453,8 @@ nbn(6);
 
     gbl_justWroteMemberFile = 1;
 
+    // go back to home and ask for what kind of save there
+    //
     dispatch_async(dispatch_get_main_queue(), ^{  
         [self.navigationController popViewControllerAnimated: YES]; // actually do the "Back" action
     });
@@ -435,12 +475,15 @@ nbn(6);
     });
 } // pressedCancel
 
-- (IBAction)pressedInfoButton:(id)sender     // this is the Cancel on left of Nav Bar
-{
-  NSLog(@"pressedInfoButton");
-  NSLog(@" // go to info screen ");
 
-} // pressedInfoButton
+
+//- (IBAction)pressedInfoButton:(id)sender     // this is the Cancel on left of Nav Bar
+//{
+//  NSLog(@"pressedInfoButton");
+//  NSLog(@" // go to info screen ");
+//
+//} // pressedInfoButton
+//
 
 
 
@@ -521,6 +564,148 @@ nbn(6);
 
   return 44.0; // matches report height
 }
+
+
+
+
+//--------------------------------------------------------------------------------------------
+// SECTION INDEX VIEW
+//
+//- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView;  // return list of section titles to display in section index view (e.g. "ABCD...Z#")
+//- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index;  // tell table which section corresponds to section title/index (e.g. "B",1))
+
+
+//
+// iPhone UITableView. How do turn on the single letter alphabetical list like the Music App?
+//
+//
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
+{
+tn();
+  NSLog(@"in sectionIndexTitlesForTableView !");
+
+//return nil;  // test no section index
+
+    NSInteger myCountOfRows;
+    myCountOfRows = 0;
+
+
+    //    if ([gbl_ExampleData_show isEqualToString: @"yes"])
+    //    {
+    //       myCountOfRows = gbl_arrayPer.count;
+    //    } else {
+    //       // Here we do not want to show example data.
+    //       // Because example data names start with "~", they sort last,
+    //       // so we can just reduce the number of rows to exclude example data from showing on the screen.
+    //       myCountOfRows = gbl_arrayPer.count - gbl_ExampleData_count_per ;
+    //    }
+
+    // myCountOfRows = gbl_arrayPer.count - gbl_ExampleData_count_per ;  //  never show ~ example data to pick as members
+
+    // myCountOfRows =  [gbl_arrayNewMembersToPickFrom count ];         //  Person name for picking as members
+
+    // gbl_arrayNewMembersToPickFrom  is not created yet so 
+    // do calculation
+    //
+    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
+    [myappDelegate get_gbl_numMembersInCurrentGroup ];   // populates gbl_numMembersInCurrentGroup  using  gbl_lastSelectedGroup
+
+     myCountOfRows = gbl_arrayPer.count - gbl_ExampleData_count_per - gbl_numMembersInCurrentGroup ;  //  never show ~ example data to pick as members
+
+//tn();
+//  NSLog(@"gbl_arrayPer.count           =[%ld]",(long) gbl_arrayPer.count );
+//  NSLog(@"gbl_ExampleData_count_per    =[%ld]",(long) gbl_ExampleData_count_per );
+//  NSLog(@"gbl_numMembersInCurrentGroup =[%ld]",(long) gbl_numMembersInCurrentGroup );
+//  NSLog(@"myCountOfRows                =[%ld]",(long) myCountOfRows          );
+
+nbn(160);
+  NSLog(@"myCountOfRows              =[%ld]", (long)myCountOfRows );
+  NSLog(@"gbl_numRowsToTriggerIndexBar=[%ld]", (long)gbl_numRowsToTriggerIndexBar);
+    if (myCountOfRows <= gbl_numRowsToTriggerIndexBar) {
+nbn(161);
+//        return myEmptyArray ;  // no sectionindex
+        return nil ;  // no sectionindex
+    }
+nbn(162);
+
+    NSArray *mySectionIndexTitles = [NSArray arrayWithObjects:  // 33 items  last index=32
+//         @"A", @"B", @"C", @"D",  @"E", @"F", @"G", @"H", @"I", @"J",  @"K", @"L", @"M",
+//         @"N", @"O", @"P",  @"Q", @"R", @"S", @"T", @"U", @"V",  @"W", @"X", @"Y", @"Z",   nil ];
+
+            @"_______",
+            @"TOP",
+            @"     ", @"     ", @"     ", @"     ",  @"     ", 
+            @"__",
+            @"     ", @"     ", @"     ", @"     ",  @"     ",
+            @"__",
+            @"     ", @"     ", @"     ", @"     ",  @"     ", 
+            @"__",
+            @"     ", @"     ", @"     ", @"     ",  @"     ", 
+            @"END",
+            @"_______",
+            nil
+    ];
+
+
+    gbl_numSectionIndexTitles = mySectionIndexTitles.count;
+
+    return mySectionIndexTitles;
+
+} // end of sectionIndexTitlesForTableView
+
+
+
+- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
+{
+
+  NSLog(@"sectionForSectionIndexTitle!  in HOME");
+  NSLog(@"title=[%@]",title);
+  NSLog(@"atIndex=[%ld]",(long)index);
+
+
+
+    // find first group starting with title letter (guaranteed to be there, see sectionIndexTitlesForTableView )
+    NSInteger newRow;  newRow = 0;
+    NSIndexPath *newIndexPath;
+    NSInteger myCountOfRows;
+    myCountOfRows = 0;
+
+    //        if ([gbl_ExampleData_show isEqualToString: @"yes"] ) 
+    //        {
+    //           myCountOfRows = gbl_arrayPer.count;
+    //        } else {
+    //           // Here we do not want to show example data.
+    //           // Because example data names start with "~", they sort last,
+    //           // so we can just reduce the number of rows to exclude example data from showing on the screen.
+    //           myCountOfRows = gbl_arrayPer.count - gbl_ExampleData_count_per ;
+    //        }
+    //
+
+    // myCountOfRows = gbl_arrayPer.count - gbl_ExampleData_count_per ;  //  never show ~ example data to pick as members
+    myCountOfRows =  [gbl_arrayNewMembersToPickFrom count ];         //  Person name for picking as members
+
+    if (     [title isEqualToString:@"TOP"]) newRow = 0;
+    else if ([title isEqualToString:@"END"]) newRow = myCountOfRows - 1;
+    else                                     newRow = ((double) (index + 1) / (double) gbl_numSectionIndexTitles ) * (double)myCountOfRows ;
+
+    if (newRow == myCountOfRows)  newRow = newRow - 1;
+
+  NSLog(@"gbl_numSectionIndexTitles =[%ld]",(long)gbl_numSectionIndexTitles );
+  NSLog(@"newRow                    =[%ld]", (long)newRow);
+  NSLog(@"myCountOfRows             =[%ld]", (long)myCountOfRows   );
+
+
+    newIndexPath = [NSIndexPath indexPathForRow: newRow inSection: 0];
+    [tableView scrollToRowAtIndexPath: newIndexPath atScrollPosition: UITableViewScrollPositionMiddle animated: NO];
+
+    return index;
+
+} // sectionForSectionIndexTitle
+
+
+// end of SECTION INDEX VIEW
+//--------------------------------------------------------------------------------------------
+
 
 
 /*

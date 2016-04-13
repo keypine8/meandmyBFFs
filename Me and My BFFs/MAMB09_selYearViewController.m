@@ -145,7 +145,7 @@ NSLog(@"in viewDidAppear()   in sel year");
     MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
     [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.0 ];    // after arg seconds
                                                     
-    // this MOVED to viewDidAppear to get latest date then going to home and back
+    // this MOVED to viewWillAppear to get latest date then going to rpt and back
     // do {    // populate array yearsToPickFrom for uiPickerView and init picker and calendar year text field
 
 
@@ -263,7 +263,7 @@ nbn(0);
         NSLog(@"gbl_fromHomeCurrentEntityName =%@",gbl_fromHomeCurrentEntityName );
         NSLog(@"psvRememberedYear=%@", psvRememberedYear);
 
-//        if (psvRememberedYear == NULL || [psvRememberedYear intValue] == 0) {
+//        if (psvRememberedYear == NULL || [psvRememberedYear intValue] == 0) 
         if (psvRememberedYear == nil || [psvRememberedYear intValue] == 0) {
 
   NSLog(@"psvRememberedYear IS NOT THERE");
@@ -377,7 +377,9 @@ nbn(9);
 
     
 nbn(10);
-}
+
+} // viewWillAppear
+
 
 
 -(bool) anySubViewScrolling: (UIView*)view
@@ -651,8 +653,8 @@ nbn(103);
 // Capture the picker view selection
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component   // opt
 {
-    // tn();tn();trn("??????");
-    // NSLog(@"in didSelectRow in Year Picker!");
+tn();
+NSLog(@"in didSelectRow in Year Picker!");
     
     // This method is triggered whenever the user makes a change to the picker selection.
     // The parameter named row and component represents what was selected.
@@ -661,10 +663,12 @@ nbn(103);
     
     //   NSLog(@"[_outletToYearPicker selectedRowInComponent:0]=%ld",(long)[_outletToYearPicker selectedRowInComponent:0]);
     
+  NSLog(@"gbl_lastSelectedYear 1 =[%ld]",(long)gbl_lastSelectedYear );
     gbl_lastSelectedYear = [self pickerView: _outletYearPicker
                                 titleForRow: [_outletYearPicker selectedRowInComponent: 0]
                                forComponent: 0
     ];
+  NSLog(@"gbl_lastSelectedYear 2 =[%ld]",(long)gbl_lastSelectedYear );
     
     // self.outletPickedYear.text = gbl_lastSelectedYear;
 

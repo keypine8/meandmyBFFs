@@ -17,6 +17,8 @@
 #import "rkdebug_externs.h"
 #import "MAMB09AppDelegate.h"   // to get globals
 #import "mamblib.h"
+//#import "MAMB09_UITextField_noCopyPaste.h"
+
 
 //#import <AudioToolbox/AudioToolbox.h>
 //AudioServicesPlaySystemSound(1103);  // C functions
@@ -93,17 +95,22 @@
 //
 
 
--(void)myMenuWillBeShown  // NSNotification  for DISABLE showing of select/paste/cut etc (flashes a bit, but only the 1st time)
-{
-    UIMenuController *menu = [UIMenuController sharedMenuController];
-    [menu setMenuVisible: NO];
-    [menu performSelector: @selector(setMenuVisible:)
-               withObject: [NSNumber numberWithBool: NO]
-//               afterDelay: 0.1
-               afterDelay: 0.0
-    ]; //also tried 0 as interval both look quite similar
 
-}
+
+//
+//// The copy:, cut:, delete:, paste:, select:, and selectAll: methods
+//// are invoked when users tap the corresponding command
+//// in the menu managed by the UIMenuController shared instance.
+////
+//- (BOOL)canPerformAction: (SEL)action
+//              withSender: (id)sender
+//{
+//  NSLog(@"canPerformAction=!");
+//    return NO;
+//}
+//
+//
+
 
 //
 //- (IBAction) handleTapFrom: (UIGestureRecognizer*) myRecognizer   // recognizer view is one of the 3 above
@@ -158,73 +165,442 @@
 //
 
 
+//
+//- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+//    NSLog(@"gestureRecognizerShouldBegin:0x%x", (int)gestureRecognizer);
+//  NSLog(@"gestureRecognizer.numberOfTouches =[%ld]", (long)gestureRecognizer.numberOfTouches);
+//  NSLog(@"NSStringFromClass([gestureRecognizer class])                    =[%@]",NSStringFromClass([gestureRecognizer class]) );
+//  NSLog(@"[gestureRecognizer isKindOfClass:[UITapGestureRecognizer class]]=[%d]",[gestureRecognizer isKindOfClass:[UITapGestureRecognizer class]]);
+//  NSLog(@"[gestureRecognizer description ]=[%@]",[gestureRecognizer description ]);
+//
+//
+//  NSLog(@" returning YES  all the time !");tn();
+//        return YES;
+//
+//
+//
+//    if (gbl_haveEnteredGestureRecognizerShouldBegin == 0) {
+//        gbl_haveEnteredGestureRecognizerShouldBegin = 1;
+//  NSLog(@" returning YES  the first time !");tn();
+//        return YES;
+//    }
+//
+//  NSLog(@" returning NO  rest of the time !");tn();
+//return NO;
+//
+//
+//
+//    NSInteger myNumberOfTapsRequired;
+//    myNumberOfTapsRequired = 0;
+//
+//    NSArray *myarr  = [ [gestureRecognizer description] componentsSeparatedByString: @";" ] ;
+//    for (NSString *item in myarr)
+//    {
+////  NSLog(@"item=[%@]",item);
+//
+//
+//        NSRange range = [item  rangeOfString: @"numberOfTapsRequired"  options: NSCaseInsensitiveSearch ];
+////  NSLog(@"range.location =[%d]",range.location );
+////  NSLog(@"found: %@", (range.location != NSNotFound) ? @"Yes" : @"No");
+//        if (range.location != NSNotFound) {
+//            // here item contains string "numberOfTapsRequired"   like    item=[ numberOfTapsRequired = 2]
+//            // find first integer in string  item       
+//            //
+//            // If the number is not always at the beginning:
+//            NSCharacterSet* nonDigits = [[NSCharacterSet decimalDigitCharacterSet] invertedSet ];
+//            myNumberOfTapsRequired    = [[item stringByTrimmingCharactersInSet:nonDigits] intValue ];
+//  NSLog(@"myNumberOfTapsRequired    =[%ld]", (long) myNumberOfTapsRequired    );
+//            break;   // myNumberOfTapsRequired   can occur twice
+//        }
+//    }
+//  NSLog(@"myNumberOfTapsRequired    =[%ld]", (long) myNumberOfTapsRequired    );
+//
+//
+////
+////    // if this is a UITapGestureRecognizert  (assume double tap)
+////    // and number of taps required is > 1
+////    // do not process it.
+////    //
+////    if (    [gestureRecognizer isKindOfClass:[UITapGestureRecognizer class]]
+////         &&  myNumberOfTapsRequired > 1                             )
+////    {
+////  NSLog(@"return NO");  tn();
+////       return NO;
+////    } else {
+////  NSLog(@"return YES");  tn();
+////       return YES;
+////    }
+////
+//
+//  NSLog(@"gbl_firstResponder_current  =[%@]",gbl_firstResponder_current );
+//  NSLog(@"gbl_firstResponder_previous =[%@]",gbl_firstResponder_previous );
+//    if ([gbl_firstResponder_current isEqualToString: @"name" ] )
+//    {
+//        if ([gbl_firstResponder_previous isEqualToString: @"name" ] )
+//        {
+//  NSLog(@"1st responder=name, prev=name returning NO !");tn();
+//            return NO;
+//        } else {
+//           if (gbl_firstResponder_previous == nil ) {
+//
+//  NSLog(@"1st responder=name, prev= NIL returning NO !");tn();
+//            return NO;
+//           } else {
+//  NSLog(@"1st responder=name, prev= different from name and NOT NIL   returning YES !");tn();
+//            return YES;
+//           }
+//        }
+//
+//    } else {
+//  NSLog(@"1st responder NOT =name,  returning NO !");tn();
+//        return NO;
+//    } 
+//
+//  NSLog(@"at end returning YES !");tn();
+//return YES;
+//
+//
+//
+//
+//} // end of gestureRecognizerShouldBegin
+//
+//
+
+
+//
+//// never called
+//- (void)touchesEnded: (NSSet *)   touches
+//           withEvent: (UIEvent *) event
+// {
+//  NSLog(@"in touchesEnded !  1 ");
+//    [super touchesEnded: touches withEvent: event];
+//
+//  NSLog(@"in touchesEnded !  2 ");
+//
+//     if(((UITouch *)[touches anyObject]).tapCount == 2)
+//    {
+//    NSLog(@"DOUBLE TOUCH");
+//    }
+//}
+//
+
+
+
+//- (void) processSingleTap:(UITapGestureRecognizer *)sender { NSLog(@"process SINGLE Tap  do nothing"); }
+//- (void) processDoubleTap:(UITapGestureRecognizer *)sender { NSLog(@"process DOUBLE Tap  do nothing"); }
+//- (void) processDoubleTap:(UITapGestureRecognizer *)recognizer {
+
+//- (void) processDoubleTap:(UITapGestureRecognizer *)sender {
+//  NSLog(@"process DOUBLE Tap  xxx  do nothing");
+//
+////<.>
+////// Selecting the last 5 characters before the caret would be like this:
+////
+////// Get current selected range , this example assumes is an insertion point or empty selection
+////UITextRange *selectedRange = [textField selectedTextRange];
+////
+////// Calculate the new position, - for left and + for right
+////UITextPosition *newPosition = [textField positionFromPosition:selectedRange.start offset:-5];
+////
+////// Construct a new range using the object that adopts the UITextInput, our textfield
+////UITextRange *newRange = [textField textRangeFromPosition:newPosition toPosition:selectedRange.start];
+////
+////// Set new range
+////[textField setSelectedTextRange:newRange];
+////<.>
+////
+//
+//
+////
+////// Construct a new range using the object that adopts the UITextInput, our textfield
+//////UITextRange *newRange = [textField textRangeFromPosition:newPosition toPosition:selectedRange.start];
+////if (gbl_myname == nil) gbl_myname.text = @"";
+//////UITextRange *newRange = [gbl_myname  textRangeFromPosition: (UITextPosition * _NonNull) 0   toPosition: (UITextPosition * _NonNull) 0 ];
+////UITextRange *newRange = [gbl_myname  textRangeFromPosition: (UITextPosition * ) 0   toPosition: (UITextPosition * ) 0 ];
+//////UITextRange *newRange = [@"abc"  textRangeFromPosition: 0   toPosition: 0 ];
+////
+////// Set new range
+////[gbl_myname  setSelectedTextRange: newRange ];
+////
+//
+//
+//
+//
+////     if (recognizer.state == UIGestureRecognizerStateRecognized) {
+////         gbl_myname.selectedTextRange =   (UITextRange * _Nullable)  NSMakeRange(0, 0 ,0 ,0 );
+////     }
+//} // end of  (void) processDoubleTap:(UITapGestureRecognizer *)sender 
+//
+
+//- (void) processTripleTap:(UITapGestureRecognizer *)sender { NSLog(@"process TripleTap  do nothing"); }
+//- (void) processQuad__Tap:(UITapGestureRecognizer *)sender { NSLog(@"process Quad__Tap  do nothing"); }
+//- (void) processPenta_Tap:(UITapGestureRecognizer *)sender { NSLog(@"process Penta_tap  do nothing"); }
+
+
+
+//- (void) process_dblTapRecog_InNameFld: (UITapGestureRecognizer *)sender { NSLog(@"in process_dblTapRecog_InNameFld!  do nothing"); }
+//- (void) process_dblTapRecog_InNameCell:(UITapGestureRecognizer *)sender { NSLog(@"in process_dblTapRecog_InNameCell!  do nothing"); }
+
+
+- (void) touchDownIn_gbl_mynameFld: (id)sender
+{
+  NSLog(@"in touchDownIn_gbl_myname !  do nothing");
+}
+//- (void) touchDownIn_gbl_mynameCell: (id)sender
+//{
+//  NSLog(@"in touchDownIn_gbl_mynameCell !  do nothing");
+//}
+//
+
+
+// there is no menu select/...  BUT   this still allows blue-handle selection 
+//
+-(void)myMenuWillBeShown  // NSNotification  for DISABLE showing of select/paste/cut etc (flashes a bit, but only the 1st time)
+{
+  NSLog(@"in myMenuWillBeShown !");
+    UIMenuController *menu = [UIMenuController sharedMenuController];
+
+    [menu setMenuVisible: NO];
+
+    [menu performSelector: @selector(setMenuVisible:)
+               withObject: [NSNumber numberWithBool: NO]
+//               afterDelay: 0.1
+               afterDelay: 0.0
+    ]; //also tried 0 as interval both look quite similar
+}
+
+
+-(void)myTextFieldBeginEditing
+{
+tn();
+  NSLog(@"in myTextFieldBeginEditing!");
+//    gbl_myname.userInteractionEnabled = NO;
+//  NSLog(@"gbl_myname.userInteractionEnabled = NO!");
+
+}
+
+
 - (void)viewDidLoad
 {
+tn();
+  NSLog(@"viewDidLoad in add/change");
     [super viewDidLoad];
 
+    gbl_haveEnteredGestureRecognizerShouldBegin = 0;
+
+    gbl_myname.delegate = self;
+
+
+//----------------------------------
+//CancelsTouchesInView
+//----------------------------------
+//name gets focus  firstrespond
+//set gesture tap in name
+//set CancelsTouchesInView = YES
+//name loses  firstrespond
+//removeGestureRecognizer
+//----------------------------------
+
+
+//UITextFieldTextDidBeginEditingNotification
+
+
+
+// add removeObs...
+
+    [[NSNotificationCenter defaultCenter] addObserver: self  // DISABLE showing of select/paste/cut etc (flashes a bit)
+                                             selector: @selector(myTextFieldBeginEditing)
+                                                 name: UITextFieldTextDidBeginEditingNotification   // <<<====----
+                                               object: nil
+    ];
+
+
+    [gbl_myname  addTarget: self
+                    action: @selector(touchDownIn_gbl_mynameFld: )
+          forControlEvents: UIControlEventAllTouchEvents
+//          forControlEvents: UIControlEventTouchDown
+    ];
+
+            //typedef enum UIControlEvents : NSUInteger {
+            //   UIControlEventTouchDown               = 1 << 0,
+            //   UIControlEventTouchDownRepeat         = 1 << 1,
+            //   UIControlEventTouchDragInside         = 1 << 2,
+            //   UIControlEventTouchDragOutside        = 1 << 3,
+            //   UIControlEventTouchDragEnter          = 1 << 4,
+            //   UIControlEventTouchDragExit           = 1 << 5,
+            //   UIControlEventTouchUpInside           = 1 << 6,
+            //   UIControlEventTouchUpOutside          = 1 << 7,
+            //   UIControlEventTouchCancel             = 1 << 8,
+            //   
+            //   UIControlEventValueChanged            = 1 << 12,
+            //   UIControlEventPrimaryActionTriggered  = 1 << 13,
+            //   UIControlEventEditingDidBegin         = 1 << 16,
+            //   UIControlEventEditingChanged          = 1 << 17,
+            //   UIControlEventEditingDidEnd           = 1 << 18,
+            //   UIControlEventEditingDidEndOnExit     = 1 << 19,
+            //   
+            //   UIControlEventAllTouchEvents          = 0x00000FFF,
+            //   UIControlEventAllEditingEvents        = 0x000F0000,
+            //   UIControlEventApplicationReserved     = 0x0F000000,
+            //   UIControlEventSystemReserved          = 0xF0000000,
+            //   UIControlEventAllEvents               = 0xFFFFFFFF 
+            //} UIControlEvents;
+            //
+
+
+
+
+    // -------------------------------------
+    //    self.multipleTouchEnabled = NO;
+    // -------------------------------------
+    // When set to YES, the receiver receives all touches associated with a multi-touch sequence.
+    // When set to NO, the receiver receives only the first touch event in a multi-touch sequence.
+    // The default value of this property is NO.
+    // 
+    // Other views in the same window can still receive touch events when this property is NO.
+    // If you want this view to handle multi-touch events exclusively,
+    //  set the values of both this property and the exclusiveTouch property to YES.
+    // 
+    // -------------------------------------
+    //    self.exclusiveTouch       = YES;
+    // -------------------------------------
+    // Setting this property to YES causes the receiver to block
+    // the delivery of touch events to other views in the same window.
+    // The default value of this property is NO.
+    //
+    self.view.multipleTouchEnabled = NO;
+//    self.view.exclusiveTouch       = YES;
+
+
+//
+//    gbl_oneTapRecog_InNameFld = [
+//       [UITapGestureRecognizer alloc] initWithTarget: gbl_myname 
+////       [UITapGestureRecognizer alloc] initWithTarget: self 
+//                                              action: @selector( process_oneTapRecog_InNameFld: )
+//    ];
+//    [gbl_doubleTapGestureRecognizer    setNumberOfTapsRequired: 1];
+//    [gbl_doubleTapGestureRecognizer setNumberOfTouchesRequired: 1];
+////    [gbl_doubleTapGestureRecognizer requireGestureRecognizerToFail: gbl_dblTapRecog_InNameFld ];
+////    gbl_doubleTapGestureRecognizer.delaysTouchesBegan        = YES;   
+////    gbl_doubleTapGestureRecognizer.delaysTouchesBegan        = NO;   
+////    gbl_doubleTapGestureRecognizer.cancelsTouchesInView        = YES;   
+//
+//    gbl_doubleTapGestureRecognizer.delegate                  = self;   
+////    [self.view addGestureRecognizer: gbl_doubleTapGestureRecognizer ];
+//    [gbl_myname addGestureRecognizer: gbl_oneTapRecog_InNameFld ];
+//
+//
+//    gbl_dblTapRecog_InNameFld = [
+//       [UITapGestureRecognizer alloc] initWithTarget: gbl_myname 
+////       [UITapGestureRecognizer alloc] initWithTarget: self 
+//                                              action: @selector( process_dblTapRecog_InNameFld : )
+//    ];
+//    [gbl_doubleTapGestureRecognizer    setNumberOfTapsRequired: 2];
+//    [gbl_doubleTapGestureRecognizer setNumberOfTouchesRequired: 1];
+//    [gbl_doubleTapGestureRecognizer requireGestureRecognizerToFail: gbl_oneTapRecog_InNameFld ];
+////    [gbl_doubleTapGestureRecognizer requireGestureRecognizerToFail: gbl_tripleTapGestureRecognizer ];
+////    gbl_doubleTapGestureRecognizer.delaysTouchesBegan        = YES;   
+////    gbl_doubleTapGestureRecognizer.delaysTouchesBegan        = NO;   
+////    gbl_doubleTapGestureRecognizer.cancelsTouchesInView        = YES;   
+//
+//    gbl_doubleTapGestureRecognizer.delegate                  = self;   
+////    [self.view addGestureRecognizer: gbl_doubleTapGestureRecognizer ];
+//    [gbl_myname addGestureRecognizer: gbl_dblTapRecog_InNameFld ];
+//
+
+
+
     gbl_didAddDoneButtonInAddChange = 0;   // 1=yes, 0=no  set=0 in add/change viewDidLoad  set=1 when Done is added to nav bar
-
-//    
-////  for test
-//    uint64_t        mystart;
-//    uint64_t        myend;
-////    uint64_t        elapsed;
-////    Nanoseconds     elapsedNano;
-//    uint64_t     elapsedNano;
-////    uint64_t     elapsedNano;
-//    uint64_t        myInterval;
-//    mystart = mach_absolute_time();
-//  NSLog(@"mystart=%lld",mystart);
-////    (void) getpid();
-////    (void) getpid();
-////    (void) getpid();
-////    (void) getpid();
-////    (void) getpid();
-//sleep(1);
-//    myend = mach_absolute_time();
-//  NSLog(@"myend=%lld",myend);
-////    elapsedNano = AbsoluteToNanoseconds( *(AbsoluteTime *) &elapsed );
-//
-////    myInterval =  * (uint64_t *) &elapsedNano;
-//    myInterval =  myend - mystart;
-//  NSLog(@"myInterval=%lld",myInterval);
-//
-////
-//  NSDate *mytoday = [NSDate date];
-//	NSTimeInterval oldTime = [mytoday timeIntervalSince1970] * 1000;
-//	NSString *timeStamp = [[NSString alloc] initWithFormat:@"%0.0f", oldTime];
-//	NSLog(@"%@", timeStamp);
-//
-//  sleep(2);
-////    (void) getpid();
-////    (void) getpid();
-////    (void) getpid();
-////    (void) getpid();
-////    (void) getpid();
-////
-//
-//  mytoday = [NSDate date];
-//	NSTimeInterval oldTime2 = [mytoday timeIntervalSince1970] * 1000;
-//	NSString *timeStamp2 = [[NSString alloc] initWithFormat:@"%0.0f", oldTime2];
-//	NSLog(@"%@", timeStamp);
-//	NSLog(@"%f", oldTime2 - oldTime);
-//
-////
-////
-//CFTimeInterval startTime = CACurrentMediaTime();  // returns double CFTimeInterval
-//sleep(2);
-//CFTimeInterval endTime = CACurrentMediaTime();
-//NSLog(@"Total Runtime: %g s", endTime - startTime);
-//
-////
-//
-//
-
 tn();
 NSLog(@"in ADD CHANGE  viewDidLoad!");
-  NSLog(@"gbl_homeUseMODE       =[%@]",gbl_homeUseMODE     );
-  NSLog(@"gbl_homeEditingState  =[%@]",gbl_homeEditingState);
-  NSLog(@"gbl_lastSelectedPerson=[%@]",gbl_lastSelectedPerson);
+
+  gbl_currentMenuPlusReportCode = @"HOMEaddchange";   // add/change screen   (used in info screen)
+
+  NSLog(@"gbl_homeUseMODE               =[%@]",gbl_homeUseMODE     );
+  NSLog(@"gbl_homeEditingState          =[%@]",gbl_homeEditingState);
+  NSLog(@"gbl_lastSelectedPerson        =[%@]",gbl_lastSelectedPerson);
+  NSLog(@"gbl_currentMenuPlusReportCode =[%@]",gbl_currentMenuPlusReportCode );
+
+
+
+
+    // add a method (processMultipleTap) to run on double tap/triple tap etc
+    //
+//    gbl_penta_TapGestureRecognizer = [
+//       [UITapGestureRecognizer alloc] initWithTarget: self 
+//                                              action: @selector( processPenta_Tap: )
+//    ];
+//    [gbl_penta_TapGestureRecognizer    setNumberOfTapsRequired: 5];
+//    [gbl_penta_TapGestureRecognizer setNumberOfTouchesRequired: 1];
+//    gbl_penta_TapGestureRecognizer.delaysTouchesBegan        = YES;      
+//    gbl_penta_TapGestureRecognizer.delegate                  = self;   
+//    [self.view addGestureRecognizer: gbl_penta_TapGestureRecognizer ];
+//
+//    gbl_quad__TapGestureRecognizer = [
+//       [UITapGestureRecognizer alloc] initWithTarget: self 
+//                                              action: @selector( processQuad__Tap: )
+//    ];
+//    [gbl_quad__TapGestureRecognizer    setNumberOfTapsRequired: 4];
+//    [gbl_quad__TapGestureRecognizer setNumberOfTouchesRequired: 1];
+//    gbl_quad__TapGestureRecognizer.delaysTouchesBegan        = YES;     
+//    gbl_quad__TapGestureRecognizer.delegate                  = self;   
+//    [self.view addGestureRecognizer: gbl_quad__TapGestureRecognizer ];
+//
+
+
+//    gbl_tripleTapGestureRecognizer = [
+//       [UITapGestureRecognizer alloc] initWithTarget: self 
+//                                              action: @selector( processTripleTap: )
+//    ];
+//    [gbl_tripleTapGestureRecognizer    setNumberOfTapsRequired: 3];
+//    [gbl_tripleTapGestureRecognizer setNumberOfTouchesRequired: 1];
+//    [gbl_doubleTapGestureRecognizer requireGestureRecognizerToFail: gbl_doubleTapGestureRecognizer ];
+//    gbl_tripleTapGestureRecognizer.delaysTouchesBegan        = YES;    
+//    gbl_tripleTapGestureRecognizer.delegate                  = self;   
+//    [self.view addGestureRecognizer: gbl_tripleTapGestureRecognizer ];
+//
+
+
+
+//    gbl_doubleTapGestureRecognizer = [
+////       [UITapGestureRecognizer alloc] initWithTarget: gbl_myname 
+//       [UITapGestureRecognizer alloc] initWithTarget: self 
+//                                              action: @selector( processDoubleTap: )
+//    ];
+//    [gbl_doubleTapGestureRecognizer    setNumberOfTapsRequired: 2];
+//    [gbl_doubleTapGestureRecognizer setNumberOfTouchesRequired: 1];
+////    [gbl_doubleTapGestureRecognizer requireGestureRecognizerToFail: gbl_tripleTapGestureRecognizer ];
+////    gbl_doubleTapGestureRecognizer.delaysTouchesBegan        = YES;   
+////    gbl_doubleTapGestureRecognizer.delaysTouchesBegan        = NO;   
+//
+//    gbl_doubleTapGestureRecognizer.cancelsTouchesInView        = YES;   
+//
+//    gbl_doubleTapGestureRecognizer.delegate                  = self;   
+////    [self.view addGestureRecognizer: gbl_doubleTapGestureRecognizer ];
+//    [gbl_myname addGestureRecognizer: gbl_doubleTapGestureRecognizer ];
+//
+
+
+//
+//
+//    gbl_singleTapGestureRecognizer = [
+////       [UITapGestureRecognizer alloc] initWithTarget: gbl_myname 
+//       [UITapGestureRecognizer alloc] initWithTarget: self 
+//                                              action: @selector( processSingleTap: )
+//    ];
+//    [gbl_singleTapGestureRecognizer    setNumberOfTapsRequired: 2];
+//    [gbl_singleTapGestureRecognizer setNumberOfTouchesRequired: 1];
+//    [gbl_singleTapGestureRecognizer requireGestureRecognizerToFail: gbl_doubleTapGestureRecognizer ];
+//    gbl_singleTapGestureRecognizer.delaysTouchesBegan        = YES;   
+////    gbl_singleTapGestureRecognizer.delegate                  = self;   
+//    [self.view addGestureRecognizer: gbl_singleTapGestureRecognizer ];
+//
+//
+
+
+
+
+
 
 
     if (   [gbl_homeEditingState  isEqualToString: @"add" ])   {
@@ -266,14 +642,14 @@ NSLog(@"in ADD CHANGE  viewDidLoad!");
     {
         self.tableView.userInteractionEnabled =  NO;
     }
-//    if (   [gbl_homeEditingState  isEqualToString: @"add" ])
-    if (   [gbl_homeUseMODE  isEqualToString: @"edit mode" ])    // not "regular mode"
+
+    //    if (   [gbl_homeEditingState  isEqualToString: @"add" ])
+    if (   [gbl_homeUseMODE  isEqualToString: @"edit mode" ])    // not "report mode"
     {
-trn("got rid of picker input view");
         self.tableView.userInteractionEnabled = YES;
 
         // gbl_mycitySearchString.inputView = nil ;          // this has to be here to put up keyboard
-         gbl_mycitySearchString.inputView = nil ;  // get rid of picker input view   // necessary ?  works?=yes
+        gbl_mycitySearchString.inputView = nil ;  // get rid of picker input view   // necessary ?  works?=yes
     }
   NSLog(@"self.tableView.userInteractionEnabled 2 in add/change viewDidLoad=[%d]",self.tableView.userInteractionEnabled );
 
@@ -308,16 +684,34 @@ trn("got rid of picker input view");
 
      // Disable the swipe to make sure you get your chance to save  
      // self.navigationController?.interactivePopGestureRecognizer.enabled = false
-     self.navigationController.interactivePopGestureRecognizer.enabled = false ;
+//     self.navigationController.interactivePopGestureRecognizer.enabled = false ;
 
 
 
 
-    [[NSNotificationCenter defaultCenter] addObserver: self  // DISABLE showing of select/paste/cut etc (flashes a bit)
-                                             selector: @selector(myMenuWillBeShown)
-                                                 name: UIMenuControllerWillShowMenuNotification   // <<<====----
-                                               object: nil
-    ];
+// Note that there is also the "replace" menu item which cannot be disabled (in a safe way) from canPerformAction:withSender.
+// To turn off paste, disable spell checking via the UITextField's UIInputTraits protocol. – Adam Kaplan Jan 10 at 17:49
+
+
+
+//    [[NSNotificationCenter defaultCenter] addObserver: self  // DISABLE showing of select/paste/cut etc (flashes a bit)
+//                                             selector: @selector(myMenuWillBeShown)
+//                                                 name: UIMenuControllerWillShowMenuNotification   // <<<====----
+//                                               object: nil
+//    ];
+
+
+
+//
+//    UIMenuController *menu = [UIMenuController sharedMenuController];
+//    [menu setMenuVisible: NO];
+//    [menu performSelector: @selector(setMenuVisible:)
+//               withObject: [NSNumber numberWithBool: NO]
+////               afterDelay: 0.1
+//               afterDelay: 0.0
+//    ]; //also tried 0 as interval both look quite similar
+
+
 
 //    [[NSNotificationCenter defaultCenter] addObserver: self  // run method doStuff_2_OnEnteringForeground()  when entering Foreground
 //                                             selector: @selector(doStuff_2_OnEnteringForeground)
@@ -457,7 +851,6 @@ NSLog(@"currentScreenWidthHeight.height =%f",currentScreenWidthHeight.height );
     self.pickerViewCity.delegate   = self;
     self.pickerViewCity.dataSource = self;
     self.pickerViewCity.hidden     =  NO;
-nbn(881);
 
     // set up default picker to use
     // this changes to "city picker"         in city    tag=2, textFieldDidBeginEditing
@@ -488,7 +881,7 @@ nbn(881);
     // initialize the  3  toolbars  For City inputView  accessory
     //
     //  1. gbl_ToolbarForCityPicklist                "< Keyboard"   tor             
-    //  2.  gbl_ToolbarForCityKeyboardWithPicklist    "Clear"        tor     "Picklist >" 
+    //  2.  gbl_ToolbarForCityKeyboardWithPicklist    "Clear"        tor     "Wheel >" 
     //  3.  gbl_ToolbarForCityKeyboardNoPicklist      "Clear"        tor     
     // 
         // create buttons for toolbars 
@@ -505,7 +898,8 @@ nbn(881);
                                                                        target: self
                                                                        action: @selector( oncityInputViewClearButton1: )
         ];
-        self.outletToButtonToGetPicklist = [[UIBarButtonItem alloc]initWithTitle: @"Picklist >"  
+//        self.outletToButtonToGetPicklist = [[UIBarButtonItem alloc]initWithTitle: @"Picklist >"  
+        self.outletToButtonToGetPicklist = [[UIBarButtonItem alloc]initWithTitle: @"Wheel  >"  
                                                                       style: UIBarButtonItemStylePlain
                                                                      target: self
                                                                      action: @selector( oncityInputViewPicklistButton: )
@@ -839,7 +1233,7 @@ nbn(881);
         //  INIT DATE PICKER roller values   for "add"
         //
         if (   (   [gbl_homeUseMODE      isEqualToString: @"edit mode" ]
-                || [gbl_homeUseMODE      isEqualToString: @"regular mode" ]    // 'add' "+" is now on both blue and yellow home screens
+                || [gbl_homeUseMODE      isEqualToString: @"report mode" ]    // 'add' "+" is now on both brown and yellow home screens
                )
             && [gbl_homeEditingState isEqualToString: @"add" ]
         ) {
@@ -977,7 +1371,6 @@ nbn(881);
         [gbl_myname             resignFirstResponder];
         [gbl_mycitySearchString resignFirstResponder];  // control goes to textFieldShouldEndEditing > textFieldDidEndEditing > back here
         [gbl_mybirthinformation resignFirstResponder]; 
-nbn(829);
     }
 
 //    gbl_fieldTap_goingto = @"date";
@@ -1003,6 +1396,7 @@ NSLog(@"in viewDidAppear()  in add/change   ");
 
     MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
     [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.0 ];    // when view first appears on screen   after arg seconds
+  tn();NSLog(@"igx in viewDidAppear add/change top    after ENDIgnor  ignoring=[%d]", [[UIApplication sharedApplication] isIgnoringInteractionEvents]);
 
 } // viewDidAppear
 
@@ -1187,9 +1581,13 @@ tn();
   NSLog(@"gbl_fromHomeCurrentEntity       =%@",gbl_fromHomeCurrentEntity);
   NSLog(@"gbl_fromHomeCurrentSelectionType=%@",gbl_fromHomeCurrentSelectionType);
   NSLog(@"gbl_fromHomeCurrentEntityName   =[%@]",gbl_fromHomeCurrentEntityName);
+  NSLog(@"gbl_fromHomeCurrentSelectionPSV =[%@]",gbl_fromHomeCurrentSelectionPSV);
 
 
     gbl_justEnteredAddChangeView = 1;  // 1=y,0=n
+
+    gbl_dblTapRecog_InNameCell = nil;  // force create a gesture recognizer for cell
+    gbl_oneTapRecog_InNameCell = nil;  // force create a gesture recognizer for cell
 
     if (   [gbl_homeUseMODE      isEqualToString: @"edit mode" ]
         && [gbl_homeEditingState isEqualToString: @"view or change" ]
@@ -1267,7 +1665,7 @@ tn();
 
             if (   [fldKindOfSave  isEqualToString: @"hs" ] )
             {
-                gbl_kindOfSave = @"high security save";  // this var is used throughout
+                gbl_kindOfSave = @"no look no change save";  // this var is used throughout
             } else {
                 gbl_kindOfSave = @"regular save";        // this var is used throughout
             }
@@ -1331,14 +1729,14 @@ tn();
                 if ( [fldAmPm isEqualToString: @"0" ] )  gbl_rollerBirth_amPm  = @"am";
                 if ( [fldAmPm isEqualToString: @"1" ] )  gbl_rollerBirth_amPm  = @"pm";
 
-                NSString *myInitDateFormatted = gbl_initPromptDate ; // is @"Birth Date and Time"
-      NSLog(@"myInitDateFormatted =%@",myInitDateFormatted );
-      NSLog(@" 0 gbl_rollerBirth_yyyy =%@",gbl_rollerBirth_yyyy );
-      NSLog(@" 0 gbl_rollerBirth_mth  =%@",gbl_rollerBirth_mth  );
-      NSLog(@" 0 gbl_rollerBirth_dd   =%@",gbl_rollerBirth_dd   );
-      NSLog(@" 0 gbl_rollerBirth_hour =%@",gbl_rollerBirth_hour );
-      NSLog(@" 0 gbl_rollerBirth_min  =%@",gbl_rollerBirth_min  );
-      NSLog(@" 0 gbl_rollerBirth_amPm =%@",gbl_rollerBirth_amPm );
+                //            NSString *myInitDateFormatted = gbl_initPromptDate ; // is @"Birth Date and Time"
+//      NSLog(@"myInitDateFormatted =%@",myInitDateFormatted );
+//      NSLog(@" 0 gbl_rollerBirth_yyyy =%@",gbl_rollerBirth_yyyy );
+//      NSLog(@" 0 gbl_rollerBirth_mth  =%@",gbl_rollerBirth_mth  );
+//      NSLog(@" 0 gbl_rollerBirth_dd   =%@",gbl_rollerBirth_dd   );
+//      NSLog(@" 0 gbl_rollerBirth_hour =%@",gbl_rollerBirth_hour );
+//      NSLog(@" 0 gbl_rollerBirth_min  =%@",gbl_rollerBirth_min  );
+//      NSLog(@" 0 gbl_rollerBirth_amPm =%@",gbl_rollerBirth_amPm );
 
 
                 // show  selected day field on screen    fmt "2016 Dec 25  12:01 am"
@@ -1468,14 +1866,14 @@ tn();
 
     // set blue  or  yellow  background color
     //
-    if (   [gbl_homeUseMODE      isEqualToString: @"regular mode" ]
+    if (   [gbl_homeUseMODE      isEqualToString: @"report mode" ]
         && [gbl_homeEditingState isEqualToString: @"add" ]
     ) {
-        self.view.backgroundColor     = gbl_colorHomeBG;     // BLUE
-        gbl_colorEditingBG_current    = gbl_colorHomeBG;     // is now yellow or blue for add a record screen  (addChange view)
+        self.view.backgroundColor     = gbl_colorHomeBG;     // BROWN
+        gbl_colorEditingBG_current    = gbl_colorHomeBG;     // is now yellow or brown for add a record screen  (addChange view)
     } else {
         self.view.backgroundColor     = gbl_colorEditingBG;  // set YELLOW bg for editing screens
-        gbl_colorEditingBG_current    = gbl_colorEditingBG;  // is now yellow or blue for add a record screen  (addChange view)
+        gbl_colorEditingBG_current    = gbl_colorEditingBG;  // is now yellow or brown for add a record screen  (addChange view)
     }
 
 
@@ -1517,10 +1915,17 @@ tn();
   //            self.navigationItem.backBarButtonItem    = navCancelButton; // replace what's there with  CANCEL BUTTON   Notice no "s" on item
  
   
-  // gold
+
+                 self.navigationItem.rightBarButtonItems  =
+                     [self.navigationItem.rightBarButtonItems  arrayByAddingObject: gbl_flexibleSpace ]; // add spacer
+
                  self.navigationItem.rightBarButtonItems  =
                      [self.navigationItem.rightBarButtonItems  arrayByAddingObject: navSaveButton  ]; // add SAVE   BUTTON
  
+                 self.navigationItem.rightBarButtonItems  =
+                     [self.navigationItem.rightBarButtonItems  arrayByAddingObject: gbl_flexibleSpace ]; // add spacer
+
+
   //            self.navigationItem.rightBarButtonItems =
   //                [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerForTitle];
  
@@ -1539,13 +1944,13 @@ tn();
             if ( [gbl_fromHomeCurrentSelectionType isEqualToString: @"person"] ) {
                 dispatch_async(dispatch_get_main_queue(), ^{  
 //                    [[self navigationItem] setTitle: @"Add Person"];
-                    [[self navigationItem] setTitle: @"New Person"];
+                    [[self navigationItem] setTitle: @"Add New Person"];
                 });
             }
             if ( [gbl_fromHomeCurrentSelectionType isEqualToString: @"group"] ) {
                 dispatch_async(dispatch_get_main_queue(), ^{   
 //                    [[self navigationItem] setTitle: @"Add Group"];
-                    [[self navigationItem] setTitle: @"New Group"];
+                    [[self navigationItem] setTitle: @"Add New Group"];
                 });
             }
         }
@@ -1582,15 +1987,16 @@ tn();
             myNavBarLabel.textColor     = [UIColor blackColor];
             myNavBarLabel.textAlignment = NSTextAlignmentCenter; 
             if ( [gbl_fromHomeCurrentSelectionType isEqualToString: @"person"] ) {
-                myNavBarLabel.text          = [NSString stringWithFormat:@"%@", gbl_lastSelectedPerson ];
+//                myNavBarLabel.text          = [NSString stringWithFormat:@"%@", gbl_lastSelectedPerson ];
+                myNavBarLabel.text          = @"Edit Person";
             }
             if ( [gbl_fromHomeCurrentSelectionType isEqualToString: @"group"] ) {
-                myNavBarLabel.text          = [NSString stringWithFormat:@"%@", gbl_lastSelectedGroup ];
+//                myNavBarLabel.text          = [NSString stringWithFormat:@"%@", gbl_lastSelectedGroup ];
+                myNavBarLabel.text          = @"Change Group Name";
             }
             myNavBarLabel.font          = [UIFont boldSystemFontOfSize: 17.0];
             myNavBarLabel.adjustsFontSizeToFitWidth = YES;
             [myNavBarLabel sizeToFit];
-nbn(33);
 
             dispatch_async(dispatch_get_main_queue(), ^{  
                 self.navigationItem.titleView = myNavBarLabel; // myNavBarLabel.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
@@ -1781,7 +2187,7 @@ nbn(33);
 
 
 
-// add the button "Picklist >"  to  the inputViewAccessory toolbar
+// add the button "Wheel >"  to  the inputViewAccessory toolbar
 // but only if gbl_fewEnoughCitiesToMakePicklist == 1  yes
 //
 - (void) showHide_ButtonToSeePicklist
@@ -1902,7 +2308,6 @@ tn();trn("gbl_mycitySearchString resignFirstResponder        get rid of picker  
   NSLog(@"--onc ----- VASSIGN gbl_mycitySearchString.inputView --- old=[%@]  new=[%@] ---", gbltmpstr, [ gbl_mycitySearchString.inputView.description substringToIndex: 15]);
 
 
-nbn(2332);
 tn();trn("gbl_mycitySearchString becomeFirstResponder        put up keyboard 1  KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK");
             // put up keyboard   works?=
             //
@@ -1971,6 +2376,7 @@ NSLog(@"end of  oncityInputViewKeyboardButton!"); tn();
     MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
 
     [myappDelegate mamb_beginIgnoringInteractionEvents ];  // XXXXX  BEGIN  ignor #01   XXXXXXXXX  pressed Cancel  XXXXXXXXXXXXXXXXXXXXX
+  tn();NSLog(@"igx in pressedCancel top after beginIgnor  ignoring=[%d]", [[UIApplication sharedApplication] isIgnoringInteractionEvents]);
 
 
      gbl_mycityInputView = @"keyboard";  // init to this in case we last used picker view
@@ -2143,7 +2549,6 @@ NSLog(@"end of  oncityInputViewKeyboardButton!"); tn();
 - (IBAction)pressedSaveDone:(id)sender
 {
   NSLog(@"in pressedSAVEDONE!!");
-nbn(700);
   NSLog(@"gbl_myname.text=[%@]",gbl_myname.text       );
   NSLog(@"gbl_enteredCity=[%@]",gbl_enteredCity);
   NSLog(@"gbl_enteredProv=[%@]",gbl_enteredProv);
@@ -2174,8 +2579,10 @@ nbn(700);
         if (   gbl_editingChangeNAMEHasOccurred == 0 )
         {
             [myappDelegate mamb_beginIgnoringInteractionEvents ];  // XXXXX  BEGIN  ignor #02   grp   do back- no editing changes XXXXXXXXX
+  tn();NSLog(@"igx in pressedSaveDone group  editing HAS happened  after beginIgnor  ignoring=[%d]", [[UIApplication sharedApplication] isIgnoringInteractionEvents]);
 
             // here editing changes have NOT happened
+            //
   NSLog(@" // 111-0 actually do the BACK action  when Done hit and there are no editing changes");
 
   NSLog(@"          POP  VIEW   #2");
@@ -2192,7 +2599,6 @@ nbn(700);
 //                [self.navigationController popToRootViewControllerAnimated: YES]; // pop to root view controller (actually do the "Back" action)
                 [self.navigationController popViewControllerAnimated: YES]; // actually do the "Back" action
             });
-nbn(490);
 
             return;
         } // editing changes have NOT happened  --  return
@@ -2202,7 +2608,6 @@ nbn(490);
         // here editing changes have happened
         //
 
-nbn(491);
 
         // set the current values in each field
         if ([gbl_myname.text       isEqualToString: gbl_initPromptName ] ) gbl_DisplayName = @"";
@@ -2214,6 +2619,7 @@ nbn(491);
 NSLog(@" // 111a actually do the BACK action on when changes net out to nothing");
 
             [myappDelegate mamb_beginIgnoringInteractionEvents ];  // XXXXX  BEGIN  ignor #03   grp  do back- edit changes net to nothing XXXXXX
+  tn();NSLog(@"igx in pressedSaveDone group, displayname="" after beginIgnor  ignoring=[%d]", [[UIApplication sharedApplication] isIgnoringInteractionEvents]);
 
   NSLog(@"          POP  VIEW   #3");
             dispatch_async(dispatch_get_main_queue(), ^{  
@@ -2231,14 +2637,12 @@ NSLog(@" // 111a actually do the BACK action on when changes net out to nothing"
             
             return;
         } // 111a actually do the BACK action on when changes net out to nothing");
-nbn(600);
 
 
         // before save of New Group,  check for missing information  name  same as prompt
         //
         if (   [gbl_DisplayName isEqualToString: @"" ]
         ) {
-nbn(601);
             // here info is missing
             NSString *namePrompt; NSString *cityPrompt; NSString *datePrompt;
             namePrompt = @"";     cityPrompt = @"";     datePrompt = @"";
@@ -2266,7 +2670,6 @@ nbn(601);
             return;  // cannot save because of missing information > stay in this screen
 
         } // before save of New Group,  check for missing information 
-nbn(609);
 
         // ONLY IF    [gbl_homeEditingState isEqualToString:  @"add" ] 
         //      OR    (
@@ -2289,7 +2692,6 @@ nbn(609);
 
                 )
         ) {  // add mode - check for duplicate name     // here name has changed
-nbn(502);
             // here name has changed
 
             NSString *nameOfGrpOrPer;
@@ -2351,6 +2753,7 @@ nbn(502);
         // before write of array data to file, disallow/ignore user interaction events
         //
         [myappDelegate mamb_beginIgnoringInteractionEvents ];  // XXXXX  BEGIN  ignor #04   grp   before grp write + go back XXXXXXXXXXXXX
+  tn();NSLog(@"igx in pressedSaveDone group displayname="" after actually do save  BEGIN ignoring=[%d]", [[UIApplication sharedApplication] isIgnoringInteractionEvents]);
 
 
         // ONLY IF    [gbl_homeEditingState isEqualToString:  @"view or change" ] 
@@ -2359,7 +2762,6 @@ nbn(502);
         //
         if ([gbl_homeEditingState isEqualToString:  @"view or change" ] )
         {
-nbn(503);
 //                NSString *prefixStr = [NSString stringWithFormat: @"%@|", gbl_DisplayName ];
             NSString *prefixStr = [NSString stringWithFormat: @"%@|", gbl_lastSelectedGroupBeforeChange ];
 
@@ -2384,7 +2786,6 @@ NSLog(@"foundIdx =[%ld]",(long)foundIdx );
 
         } // ONLY IF    [gbl_homeEditingState isEqualToString:  @"view or change" ] , DELETE  the existing record first
 
-nbn(504);
         // add the new Group database record in a string to the group array
         //
         [gbl_arrayGrp addObject: myNewGroupRecord]; // add the new Group database record in a string to the Group array
@@ -2399,13 +2800,20 @@ nbn(504);
         //
         if ([gbl_homeEditingState isEqualToString:  @"view or change" ] )
         {
-tn();
-  NSLog(@" // if necessary, update MEMBERSHIP  file  (gbl_arrayMem)");
-  NSLog(@"gbl_fromHomeCurrentEntityName =[%@]",gbl_fromHomeCurrentEntityName );
-  NSLog(@"gbl_myname.text               =[%@]",gbl_myname.text );
+//tn();
+//  NSLog(@" // if necessary, update MEMBERSHIP  file  (gbl_arrayMem)");
+//  NSLog(@"gbl_fromHomeCurrentEntityName =[%@]",gbl_fromHomeCurrentEntityName );
+//  NSLog(@"gbl_myname.text               =[%@]",gbl_myname.text );
+
             BOOL originalNameHasChanged;
+
             // true if original name in db record has changed 
-            originalNameHasChanged = ! [gbl_fromHomeCurrentEntityName isEqualToString: gbl_myname.text ];
+//            originalNameHasChanged = ! [gbl_fromHomeCurrentEntityName isEqualToString: gbl_myname.text ];
+
+            originalNameHasChanged =   [gbl_homeUseMODE      isEqualToString: @"edit mode" ]
+                                    && [gbl_homeEditingState isEqualToString: @"view or change" ]
+                                    &&  ! [gbl_fromHomeCurrentEntityName isEqualToString: gbl_myname.text ] ;
+
             if (originalNameHasChanged )
             {
                 [myappDelegate mambChangeGRPMEM_groupNameFrom: (NSString *) gbl_fromHomeCurrentEntityName 
@@ -2414,6 +2822,7 @@ tn();
                 [myappDelegate mambWriteNSArrayWithDescription:              (NSString *) @"member"]; // write new array data to file
    //           [myappDelegate mambReadArrayFileWithDescription:             (NSString *) @"member"]; // read new data from file to array
                 [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription: (NSString *) @"member"]; // sort array by name
+//  NSLog(@"gbl_arrayMem in MEM UPDATE #1 =[%@]",gbl_arrayMem );
             }
         } // in change mode, if necessary, update MEMBERSHIP  file  (gbl_arrayMem)
 
@@ -2426,9 +2835,9 @@ tn();
         gbl_fromHomeCurrentSelectionPSV = myNewGroupRecord;
         gbl_fromHomeCurrentEntityName   = gbl_DisplayName;
 
-NSLog(@"gbl_lastSelectedGroup           =[%@]",gbl_lastSelectedGroup );
-NSLog(@"gbl_fromHomeCurrentEntityName=[%@]",gbl_fromHomeCurrentEntityName);
-NSLog(@"gbl_fromHomeCurrentSelectionPSV =[%@]",gbl_fromHomeCurrentSelectionPSV );
+//NSLog(@"gbl_lastSelectedGroup           =[%@]",gbl_lastSelectedGroup );
+//NSLog(@"gbl_fromHomeCurrentEntityName=[%@]",gbl_fromHomeCurrentEntityName);
+//NSLog(@"gbl_fromHomeCurrentSelectionPSV =[%@]",gbl_fromHomeCurrentSelectionPSV );
 
 
 //        // after write of array data to file, allow user interaction events again
@@ -2437,6 +2846,7 @@ NSLog(@"gbl_fromHomeCurrentSelectionPSV =[%@]",gbl_fromHomeCurrentSelectionPSV )
 //            [[UIApplication sharedApplication] endIgnoringInteractionEvents];       // typically call this after an animation or transitiion.
 //NSLog(@"STOP IGnoring events");
 //        }
+  NSLog(@"igx  commented out end ignore here");
 
 NSLog(@"          POP  VIEW   #6");
         dispatch_async(dispatch_get_main_queue(), ^{  
@@ -2465,11 +2875,9 @@ NSLog(@"          POP  VIEW   #6");
 
 
 
-nbn(509);
         return;
     } // end of group saveDone logic  -----------------------------------------------------------------------------------
 
-nbn(510);
 
 
 
@@ -2486,6 +2894,7 @@ nbn(510);
 
 
             [myappDelegate mamb_beginIgnoringInteractionEvents ];  // XXXXX  BEGIN  ignor #05   per  do back- no edit changes  XXXXXXXXXXXXXXXX
+  tn();NSLog(@"igx in pressedSaveDone person  in no editing changes BEGIN ignoring=[%d]", [[UIApplication sharedApplication] isIgnoringInteractionEvents]);
 
   NSLog(@"          POP  VIEW   #4");
             dispatch_async(dispatch_get_main_queue(), ^{  
@@ -2545,6 +2954,7 @@ nbn(510);
 
 
                     [myappDelegate mamb_beginIgnoringInteractionEvents ];  // XXXXX  BEGIN  ignor #06   per  do back, edit changes net zeroXX
+  tn();NSLog(@"igx in pressedSaveDone person  after changes net to zilch  BEGIN ignoring=[%d]", [[UIApplication sharedApplication] isIgnoringInteractionEvents]);
 
   NSLog(@"          POP  VIEW   #5");
                     dispatch_async(dispatch_get_main_queue(), ^{  
@@ -2671,28 +3081,31 @@ nbn(510);
                 }  // add mode - check for duplicate name
 
 
-      NSLog(@" // Actually do save of New Person   here");
+//      NSLog(@" // Actually do save of New Person   here");
+//  NSLog(@"gbl_arrayMem before doActualPersonSave =[%@]",gbl_arrayMem );
+
+
                 // Actually do save of New Person   here");
 
 
                 // if person was saved with high security
                 // do not offer a  choice of kind of save (see below)
                 // 
-                if (   [gbl_kindOfSave isEqualToString:  @"high security save" ] )
+                if (   [gbl_kindOfSave isEqualToString:  @"no look no change save" ] )
                 {
                     [self doActualPersonSave ];
 
+//  NSLog(@"gbl_arrayMem after  doActualPersonSave =[%@]",gbl_arrayMem );
                     return;
                 }
 
-                // offer to save person with high security
+
+                // choose kind of save
+                // offer to save person with no look no change
                 //
                 NSString *saveTitle;
                 NSString *saveMsg;
                 saveTitle = @"Choose Kind of Save\n";
-//                saveMsg   = @"note:\n   The High Security Save prevents EVERYONE, including yourself and this device owner, from EVER seeing this birth place or this birth time again.\n\n";
-//                saveMsg   = @"note:\n   The High Security Save prevents EVERYONE, including yourself and this device owner, from EVER seeing this birth place or birth time again.\n\n";
-//                saveMsg   = @"note:\n   The High Security Save prevents EVERYONE, including yourself and this device owner, from EVER seeing this person\'s birth date or city.\n\n";
 
                 NSString *nameInPossessiveForm;
                 if (   [gbl_myname.text  hasSuffix: @"s" ]
@@ -2704,9 +3117,6 @@ nbn(510);
                 } else {
                      nameInPossessiveForm = [NSString stringWithFormat: @"%@\'s", gbl_myname.text ];
                 }
-//                saveMsg = [NSString stringWithFormat: @"note:\n   The High Security Save prevents EVERYONE, including yourself and this device owner, from EVER seeing %@ birth date or city.\n\n", nameInPossessiveForm ];
-//                saveMsg = [NSString stringWithFormat: @"note:\n   The High Security Save prevents EVERYONE, including yourself and this device owner, from EVER seeing or changing %@\'s birth date or city.\n\n", gbl_myname.text ];
-//                saveMsg = [NSString stringWithFormat: @"\n   The High Security Save prevents EVERYONE, including yourself and this device owner, from EVER seeing or changing %@\'s birth date or city.\n\n", gbl_myname.text ];
                 saveMsg = [NSString stringWithFormat: @"\n   The No Look, No Change Save prevents EVERYONE, including yourself and this device owner, from ever seeing or changing %@\'s birth date or city.\n\n", gbl_myname.text ];
 
 
@@ -2771,7 +3181,6 @@ nbn(510);
                                  forKey: @"attributedMessage"
                 ];
 
-nbn(0);
                 [myActionSheet addAction: 
                     [UIAlertAction actionWithTitle: @"Cancel"
                                              style: UIAlertActionStyleCancel
@@ -2780,14 +3189,13 @@ nbn(0);
                                            }
                     ]
                 ];
-nbn(1);
                 [myActionSheet addAction:
                     [UIAlertAction actionWithTitle: @"Regular Save"
             //                                 style: UIAlertActionStyleDestructive
                                              style: UIAlertActionStyleDefault
                                            handler: ^(UIAlertAction *action) {
   NSLog(@"pressed   regular save");
-                                               gbl_kindOfSave = @"regular save";   // or  "high security save"
+                                               gbl_kindOfSave = @"regular save";   // or  "no look no change save"
   NSLog(@"gbl_kindOfSave 11 =[%@]",gbl_kindOfSave);
 //                                               [view dismissViewControllerAnimated: YES  completion: nil];
 //                [self.navigationController popViewControllerAnimated: YES]; // "Back" out of save dialogue
@@ -2797,7 +3205,6 @@ nbn(1);
                                            }
                     ]
                 ];
-nbn(2);
                 [myActionSheet addAction:
 //                    [UIAlertAction actionWithTitle: @"High Security Save"
                     [UIAlertAction actionWithTitle: @"No Look, No Change Save"
@@ -2805,8 +3212,8 @@ nbn(2);
                                              style: UIAlertActionStyleDefault
                                            handler: ^(UIAlertAction *action) {
 
-  NSLog(@"pressed   high security save");
-                                               gbl_kindOfSave = @"high security save";   // or  "regular save"
+  NSLog(@"pressed   no look no change save");
+                                               gbl_kindOfSave = @"no look no change save";   // or  "regular save"
   NSLog(@"gbl_kindOfSave 12 =[%@]",gbl_kindOfSave);
 //                                               [self doMeInsideBlock ];
                                                [self doActualPersonSave ];
@@ -2826,11 +3233,9 @@ nbn(2);
 
                 // Present action sheet.
                 //
-nbn(9);
                 [self presentViewController: myActionSheet animated: YES completion: nil];
 
   NSLog(@"gbl_kindOfSave 1 =[%@]",gbl_kindOfSave);
-nbn(10);
                 return;
 
         } // here editing changes have happened
@@ -2869,6 +3274,7 @@ nbn(10);
 //                }
                   [myappDelegate mamb_beginIgnoringInteractionEvents ];  // XXXXX  BEGIN  ignor #07   per before write + do back XXXXXXXXXXXX
 
+  tn();NSLog(@"igx in doActualPersonSave top   BEGIN ignoring=[%d]", [[UIApplication sharedApplication] isIgnoringInteractionEvents]);
 
 
                 // Actually do save of New Person   here
@@ -2933,8 +3339,8 @@ nbn(10);
 
                 NSString *myNewPersonRecord;
                 NSString *mySaveCode;
-                if ([gbl_kindOfSave isEqualToString:  @"regular save" ] )        mySaveCode = @"";
-                if ([gbl_kindOfSave isEqualToString:  @"high security save" ] )  mySaveCode = @"hs";
+                if ([gbl_kindOfSave isEqualToString:  @"regular save" ] )            mySaveCode = @"";
+                if ([gbl_kindOfSave isEqualToString:  @"no look no change save" ] )  mySaveCode = @"hs";
                     
                 myNewPersonRecord = [NSString stringWithFormat: @"%@|%@|%@|%@|%@|%@|%@|%@|%@|%@|%@|",
                     gbl_DisplayName,
@@ -2987,7 +3393,7 @@ nbn(10);
 
                 } // ONLY IF    [gbl_homeEditingState isEqualToString:  @"view or change" ] , DELETE  the existing record first
 
-    nbn(704);
+nbn(704);
                 // add the new Person database record in a string to the person array
                 //
                 [gbl_arrayPer addObject: myNewPersonRecord]; // add the new Person database record in a string to the person array
@@ -3004,16 +3410,29 @@ nbn(10);
                 //
                 BOOL originalNameHasChanged;
                 // true if original name in db record has changed 
-                originalNameHasChanged = ! [gbl_fromHomeCurrentEntityName isEqualToString: gbl_myname.text ];
+//  NSLog(@"gbl_homeUseMODE      =[%@]",gbl_homeUseMODE      );
+//  NSLog(@"gbl_homeEditingState =[%@]",gbl_homeEditingState );
+//  NSLog(@"gbl_fromHomeCurrentEntityName =[%@]",gbl_fromHomeCurrentEntityName );
+//  NSLog(@"gbl_myname.text               =[%@]",gbl_myname.text );
+
+//                originalNameHasChanged = ! [gbl_fromHomeCurrentEntityName isEqualToString: gbl_myname.text ];
+                // original name has changed if this is edit mode + change mode and name is different
+                originalNameHasChanged =   [gbl_homeUseMODE      isEqualToString: @"edit mode" ]
+                                        && [gbl_homeEditingState isEqualToString: @"view or change" ]
+                                        &&  ! [gbl_fromHomeCurrentEntityName isEqualToString: gbl_myname.text ] ;
+
+
 
                 if (originalNameHasChanged )
                 {
+nbn(705);
                     [myappDelegate mambChangeGRPMEM_memberNameFrom: (NSString *) gbl_fromHomeCurrentEntityName 
                                                          toNewName: (NSString *) gbl_myname.text
                     ];
                     [myappDelegate mambWriteNSArrayWithDescription:              (NSString *) @"member"]; // write new array data to file
 //                    [myappDelegate mambReadArrayFileWithDescription:             (NSString *) @"member"]; // read new data from file to array
                     [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription: (NSString *) @"member"]; // sort array by name
+//  NSLog(@"gbl_arrayMem in MEM UPDATE #2 =[%@]",gbl_arrayMem );
                 }
 
                 gbl_justAddedPersonRecord  = 1;  // cause reload of home data
@@ -3175,13 +3594,12 @@ tn();   NSLog(@"in textFieldShouldBeginEditing #################################
 //                && [gbl_homeEditingState isEqualToString: @"view or change" ]
               if ( [gbl_homeEditingState isEqualToString: @"add" ]
             ) {
-                [self showCityProvCountryForTypedInCity:  gbl_myCitySoFar ];   // and possibly shown button  "Picklist >"
+                [self showCityProvCountryForTypedInCity:  gbl_myCitySoFar ];   // and possibly shown button  "Wheel >"
             }
         }
     }
 
 
-nbn(801);
     [ self setFieldTap_currPrev ];
 
   NSLog(@"gbl_firstResponder_current =[%@]",gbl_firstResponder_current );
@@ -3368,7 +3786,6 @@ tn();   NSLog(@"in textFieldDidBeginEditing ####################################
 
   NSLog(@"gbl_fieldTap_goingto =%@  tap tap tap ",gbl_fieldTap_goingto );
 
-nbn(802);
     [ self setFieldTap_currPrev ];
 
 
@@ -3439,7 +3856,6 @@ tn();   NSLog(@"in textFieldShouldEndEditing ###################################
     if (gbl_mycitySearchString.isFirstResponder == 1)  gbl_fieldTap_leaving = @"city"; 
     if (gbl_mybirthinformation.isFirstResponder == 1)  gbl_fieldTap_leaving = @"date";
   NSLog(@"gbl_fieldTap_leaving =%@  tap tap tap ",gbl_fieldTap_leaving );
-nbn(803);
     [ self setFieldTap_currPrev ];
 
 
@@ -3460,7 +3876,6 @@ tn();   NSLog(@"in textFieldDidEndEditing ######################################
   NSLog(@"gbl_myCitySoFar=%@",gbl_myCitySoFar);
   NSLog(@"gbl_myname.text1=[%@]",gbl_myname.text);
 
-nbn(805);
     [ self setFieldTap_currPrev ];
 
 
@@ -3516,7 +3931,6 @@ tn();trn("CATCH  CATCH  CATCH  CATCH  CATCH  CATCH  CATCH  CATCH  ");
             gbl_fieldTap_goingto = @"date";
     }
 
-nbn(806);
     [ self setFieldTap_currPrev ];
 trn("END OF  textFieldDidEndEditing ########################################################################################## ");tn();
 
@@ -3591,20 +4005,22 @@ nb(3);
                                                         replacementString: (NSString *) arg_typedCharAsNSString
 {
 
-    NSLog(@"in textField: shouldChangeCharactersInRange: replacementString: rrrrrrrrr rrrrrrrr rrrrrrrr rrrrrrrr rrrrrrrr rrrrrrrr rrrrrrrr");
-//  NSLog(@"=%@", [@"" stringByPaddingToLength:100 withString: @"abc" startingAtIndex:0]);
-  NSLog(@"arg_typedCharAsNSString=[%@]",arg_typedCharAsNSString);
+NSLog(@"in textField: shouldChangeCharactersInRange: replacementString: rrrrrrrrr rrrrrrrr rrrrrrrr rrrrrrrr rrrrrrrr rrrrrrrr rrrrrrrr");
+NSLog(@"arg_typedCharAsNSString=[%@]",arg_typedCharAsNSString);
 
-  if (arg_typedCharAsNSString.length != 0  && arg_typedCharAsNSString != nil) {
-  NSLog(@"in textField: shouldChangeCharactersInRange: replacementString: =%@", [@"" stringByPaddingToLength: 20 withString: arg_typedCharAsNSString  startingAtIndex: 0] );
-  }
+//  NSLog(@"=%@", [@"" stringByPaddingToLength:100 withString: @"abc" startingAtIndex:0]);
+
+// log typed thing
+//  if (arg_typedCharAsNSString.length != 0  && arg_typedCharAsNSString != nil) {
+//NSLog(@"in textField: shouldChangeCharactersInRange: replacementString: =%@", [@"" stringByPaddingToLength: 20 withString: arg_typedCharAsNSString  startingAtIndex: 0] );
+//  }
 
   //  NSLog(@"textField.description=%@",textField.description);
-  NSLog(@"textField.tag=%ld",(long)textField.tag);
-  NSLog(@"textField.text=[%@]",textField.text);
-  NSLog(@"gbl_myCitySoFar=%@",gbl_myCitySoFar);
-  NSLog(@"gbl_myname.text=[%@]",gbl_myname.text);
-  NSLog(@"gbl_previousCharTypedWasSpace =%ld",(long)gbl_previousCharTypedWasSpace );
+//  NSLog(@"textField.tag=%ld",(long)textField.tag);
+//  NSLog(@"textField.text=[%@]",textField.text);
+//  NSLog(@"gbl_myCitySoFar=%@",gbl_myCitySoFar);
+//  NSLog(@"gbl_myname.text=[%@]",gbl_myname.text);
+//  NSLog(@"gbl_previousCharTypedWasSpace =%ld",(long)gbl_previousCharTypedWasSpace );
 
 
         // this WORKS  for detecting when backspace was pressed:
@@ -3680,7 +4096,7 @@ tn(); NSLog(@"HEY!    BACKSPACE     was pressed");
                 if (tmpIndex > 0) gbl_myCitySoFar = [gbl_myCitySoFar substringToIndex: tmpIndex - 1];  // end char out of  gbl_myCitySoFar
 NSLog(@"=gbl_myCitySoFar %@",gbl_myCitySoFar );
 
-                [self showCityProvCountryForTypedInCity:  gbl_myCitySoFar ];   // and possibly shown button  "Picklist >"
+                [self showCityProvCountryForTypedInCity:  gbl_myCitySoFar ];   // and possibly shown button  "Wheel >"
 
                 if (gbl_CITY_NOT_FOUND == YES) {
 
@@ -3908,7 +4324,7 @@ NSLog(@"after remove last char (bad char) gbl_myCitySoFar=[%@]",gbl_myCitySoFar 
         return NO;
     }
 
-    NSLog(@"GOOD  GOOD   allowedCharacters contains typed char!");
+//    NSLog(@"GOOD  GOOD   allowedCharacters contains typed char!");
 
     if (   gbl_previousCharTypedWasSpace == 1   
         && [arg_typedCharAsNSString isEqualToString: @" "] )   return NO;   // NO MULTIPLE CONSECUTIVE SPACES
@@ -3938,7 +4354,7 @@ NSLog(@"after remove last char (bad char) gbl_myCitySoFar=[%@]",gbl_myCitySoFar 
 
 
   NSLog(@"in CITY field, so show latest city/prov/coun  ");
-        [self showCityProvCountryForTypedInCity:  gbl_myCitySoFar ];   // and possibly shown button  "Picklist >"
+        [self showCityProvCountryForTypedInCity:  gbl_myCitySoFar ];   // and possibly shown button  "Wheel >"
 
         if (gbl_CITY_NOT_FOUND == YES) {
 
@@ -3996,7 +4412,7 @@ NSLog(@"after remove last char (not found) gbl_myCitySoFar=[%@]",gbl_myCitySoFar
 
     }  // is city field
 
-  NSLog(@"----- END OF  shouldChangeCharactersInRange  -----"); tn();
+//  NSLog(@"----- END OF  shouldChangeCharactersInRange  -----"); tn();
 
 
     if (textField.tag == 1) { // name
@@ -4168,7 +4584,6 @@ NSLog(@"in textFieldShouldReturn:");
 
    
      if (indexPath.row == 0) {   //  filler row 0
-nbn(200);
         dispatch_async(dispatch_get_main_queue(), ^{        
             cell.contentView.backgroundColor    = gbl_colorEditingBG_current;
             cell.selectionStyle                 = UITableViewCellSelectionStyleNone;
@@ -4178,9 +4593,57 @@ nbn(200);
 
      if (indexPath.row == 1) {   //  NAME of Person or Group
 
+
+//    [cell addTarget: self
+//                          action: @selector(touchDownIn_gbl_mynameCell: )
+//                forControlEvents: UIControlEventTouchDown
+//    ];
+
+
+//
+//        if (gbl_oneTapRecog_InNameCell == nil)
+//        {
+//            gbl_oneTapRecog_InNameCell = [
+//               [UITapGestureRecognizer alloc] initWithTarget: cell.contentView
+////       [UITapGestureRecognizer alloc] initWithTarget: self 
+//                                                      action: @selector( process_oneTapRecog_InNameCell: )
+//            ];
+//            [gbl_doubleTapGestureRecognizer    setNumberOfTapsRequired: 2];
+//            [gbl_doubleTapGestureRecognizer setNumberOfTouchesRequired: 1];
+////    [gbl_doubleTapGestureRecognizer requireGestureRecognizerToFail: gbl_tripleTapGestureRecognizer ];
+////    gbl_doubleTapGestureRecognizer.delaysTouchesBegan        = YES;   
+////    gbl_doubleTapGestureRecognizer.delaysTouchesBegan        = NO;   
+////    gbl_doubleTapGestureRecognizer.cancelsTouchesInView        = YES;   
+//
+//            gbl_doubleTapGestureRecognizer.delegate                  = self;   
+////    [self.view addGestureRecognizer: gbl_doubleTapGestureRecognizer ];
+//            [gbl_myname addGestureRecognizer: gbl_oneTapRecog_InNameCell ];
+//        }
+//
+//        if (gbl_dblTapRecog_InNameCell == nil)
+//        {
+//            gbl_dblTapRecog_InNameCell = [
+//               [UITapGestureRecognizer alloc] initWithTarget: cell.contentView
+////       [UITapGestureRecognizer alloc] initWithTarget: self 
+//                                                      action: @selector( process_dblTapRecog_InNameCell: )
+//            ];
+//            [gbl_doubleTapGestureRecognizer    setNumberOfTapsRequired: 2];
+//            [gbl_doubleTapGestureRecognizer setNumberOfTouchesRequired: 1];
+////    [gbl_doubleTapGestureRecognizer requireGestureRecognizerToFail: gbl_tripleTapGestureRecognizer ];
+////    gbl_doubleTapGestureRecognizer.delaysTouchesBegan        = YES;   
+////    gbl_doubleTapGestureRecognizer.delaysTouchesBegan        = NO;   
+////    gbl_doubleTapGestureRecognizer.cancelsTouchesInView        = YES;   
+//
+//            gbl_doubleTapGestureRecognizer.delegate                  = self;   
+////    [self.view addGestureRecognizer: gbl_doubleTapGestureRecognizer ];
+//            [gbl_myname addGestureRecognizer: gbl_dblTapRecog_InNameCell ];
+//        }
+//
+
+
+
         if ([gbl_fromHomeCurrentSelectionType isEqualToString: @"group" ] )
         {   // do group   name row
-nbn(100);        
   NSLog(@"group  name row (1)   gbl_myname.text =[%@]",gbl_myname.text );
   NSLog(@"gbl_homeUseMODE=[%@]",gbl_homeUseMODE);
   NSLog(@"gbl_homeEditingState=[%@]",gbl_homeEditingState);
@@ -4212,6 +4675,8 @@ nbn(100);
                     gbl_myname.textColor                = [UIColor blackColor];
                 }
     
+                gbl_myname.spellCheckingType        =   UITextSpellCheckingTypeNo;
+
                 gbl_myname.font                     = myFontMiddle;
                 gbl_myname.borderStyle              = UITextBorderStyleRoundedRect;
                 gbl_myname.textAlignment            = NSTextAlignmentLeft;
@@ -4220,6 +4685,7 @@ nbn(100);
                 gbl_myname.autocapitalizationType   = UITextAutocapitalizationTypeNone;
 
         gbl_myname.inputAccessoryView = gbl_ToolbarForGroupName ; // for group name input field
+
       NSLog(@"gbl_myname.inputAccessoryView 01_A  SET SET SET SET SET SET SET SET SET  SET ");
 
 
@@ -4230,7 +4696,6 @@ nbn(100);
 
         if ([gbl_fromHomeCurrentSelectionType isEqualToString: @"person" ] )
         {   // do person   name row
-nbn(201);
   NSLog(@"person name row    gbl_myname.text =[%@]",gbl_myname.text );
   NSLog(@"gbl_homeUseMODE=[%@]",gbl_homeUseMODE);
   NSLog(@"gbl_homeEditingState=[%@]",gbl_homeEditingState);
@@ -4274,6 +4739,7 @@ nbn(201);
                 }
 
 
+                gbl_myname.spellCheckingType        =   UITextSpellCheckingTypeNo;
     //            gbl_myname.font                     = myFont;
                 gbl_myname.font                     = myFontMiddle;
                 gbl_myname.borderStyle              = UITextBorderStyleRoundedRect;
@@ -4294,7 +4760,6 @@ nbn(201);
 
 
      if (indexPath.row == 3) {   // "LABEL" for  city,proc,coun  of Birth of Person
-nbn(203);
   NSLog(@"city row   gbl_fieldTap_goingto =[%@]",gbl_fieldTap_goingto );
 
         NSString *myTextCity;
@@ -4307,16 +4772,13 @@ nbn(203);
   NSLog(@"gbl_enteredCity= [%@]",gbl_enteredCity);
   NSLog(@"gbl_enteredProv= [%@]",gbl_enteredProv);
   NSLog(@"gbl_enteredCoun= [%@]",gbl_enteredCoun);
-nbn(1);
         if ([gbl_homeEditingState isEqualToString: @"view or change" ] )
         {
-nbn(2);
 
-            if ([gbl_kindOfSave isEqualToString: @"high security save" ] )
+            if ([gbl_kindOfSave isEqualToString: @"no look no change save" ] )
             {
-nbn(3);
-                // OVErrIDE displayed city info  here, if gbl_kindOfSave   is  "high security save"
-                //    put "Saved with High Security"
+                // OVErrIDE displayed city info  here, if gbl_kindOfSave   is  "no look no change save"
+                //    put "Saved with No Look, No Change"
 
         NSString *exceptionalSearchStr = [NSString stringWithFormat:@" %@",
             gbl_initPromptCity  // is  gbl_initPromptCity  (@"Birth City or Town")  with LEADING SPACE  with LEADING SPACE
@@ -4325,7 +4787,6 @@ nbn(3);
 
 
                     gbl_mycityprovcounLabel.attributedText =
-//                 [[NSAttributedString alloc] initWithString: @" Saved with High Security\n Saved with High Security\n Saved with High Security"
                  [[NSAttributedString alloc] initWithString: @" Saved with No Look, No Change\n Saved with No Look, No Change\n Saved with No Look, No Change"
                      attributes: @{
                          NSForegroundColorAttributeName:  [UIColor lightGrayColor]
@@ -4389,18 +4850,14 @@ nbn(3);
             cell.contentView.backgroundColor    = gbl_colorEditingBG_current;
 //            cell.contentView.backgroundColor    = currentBGfieldColor;
 
-//            gbl_mycityprovcounLabel.text             = myTextCity;
-//                    gbl_mycityprovcounLabel.text            = @" Saved with High Security\n Saved with High Security\n Saved with High Security";
             [cell addSubview: gbl_mycityprovcounLabel ];
 
 
                 });
 
-nbn(5);
                 return cell;
 
-            }   // if ([gbl_kindOfSave isEqualToString: @"high security save" ] )
-nbn(6);
+            }   // if ([gbl_kindOfSave isEqualToString: @"no look no change save" ] )
 
 
             if (gbl_citySetLabelValue == 1 ) {  // 1=y,0=n  // set initial value  when first entering City in "edit mode"  yellow
@@ -4411,7 +4868,11 @@ nbn(6);
             }
 
 //            myTextCity = [NSString stringWithFormat:@" %@\n %@\n %@", fldCity, fldProv, fldCountry ]; // edit current row
-        } else {  // is "add"
+
+        } // end of ([gbl_homeEditingState isEqualToString: @"view or change" ] )
+
+
+        else {  // is "add"
             myTextCity = [NSString stringWithFormat:@" %@\n %@\n %@", gbl_enteredCity, gbl_enteredProv, gbl_enteredCoun ];
         }
 
@@ -4499,13 +4960,12 @@ nb(205);
   NSLog(@"                                    gbl_pickerToUse9        =[%@]",gbl_pickerToUse );
   NSLog(@"gbl_kindOfSave                                              =[%@]",gbl_kindOfSave);
 
-        // OVErrIDE displayed date info  here, if gbl_kindOfSave   is  "high security save"
-        //    put "Saved with High Security"
+        // OVErrIDE displayed date info  here, if gbl_kindOfSave   is  "no look no change save"
+        //    put "Saved with no look no change"
         //
-        if ([gbl_kindOfSave isEqualToString: @"high security save" ] )
+        if ([gbl_kindOfSave isEqualToString: @"no look no change save" ] )
         {
 
-nbn(21);
 
     //            gbl_mybirthinformation.clearButtonMode          = UITextFieldViewModeWhileEditing ;
     //            gbl_mybirthinformation.clearButtonMode          = UITextFieldViewModeAlways ;
@@ -4525,7 +4985,6 @@ nbn(21);
 
 
                 gbl_mybirthinformation.textAlignment            = NSTextAlignmentLeft;
-//                gbl_mybirthinformation.text                     = @" Saved with High Security";
                 gbl_mybirthinformation.text                     = @" Saved with No Look, No Change";
 
 //                gbl_mybirthinformation.textColor                = [UIColor greenColor]; // is @"Birth Date and Time" 
@@ -4648,7 +5107,6 @@ tn();trn("DATE field was drawn  hey   hey   hey   hey   hey   hey   hey   ");
 
 
      if (indexPath.row == 2) {   // data entry for  City of Birth of Person  THIS is HIDDEN and stuck in rownum=2 for scrollRectToVisible use
-nbn(206);
   NSLog(@"data entry for  City of Birth of Person!");
 
         gbl_mycitySearchString.delegate = self;
@@ -4743,7 +5201,6 @@ nbn(206);
 //
 //
 
-nbn(299);
     return cell;
 
 } // cellForRowAtIndexPath
@@ -4799,7 +5256,7 @@ tn();
     NSLog(@"willSelectRowAtIndexPath! in  add/change");
     
 
-    // DISALLOW  SELECTION  in high security case (city and date when person was saved with high security)
+    // DISALLOW  SELECTION  in high security case (city and date when person was saved with no look no change)
     //
     //     if (indexPath.row == 3) {   // "LABEL" for  city,proc,coun  of Birth of Person
     //         gbl_mycityprovcounLabel.tag         = 2;
@@ -4812,7 +5269,7 @@ tn();
   NSLog(@"myTag         =[%ld]",(long)myTag         );
   NSLog(@"indexPath.row =[%ld]",(long)indexPath.row );
 
-    if (   [gbl_kindOfSave isEqualToString:  @"high security save" ]
+    if (   [gbl_kindOfSave isEqualToString:  @"no look no change save" ]
         && (
             indexPath.row == 3   ||   indexPath.row == 5
         )
@@ -4838,12 +5295,11 @@ NSLog(@"indexPath.row =%ld",(long)indexPath.row );
 
         // put APPROPRIATE  inputview   KEYBOARD   or   CITY PICKER
         //
-nbn(121); trn("kdkdkdkkk selected row 3 =city/prov/coun   kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
+trn("kdkdkdkkk selected row 3 =city/prov/coun   kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
 
 
         if ( [ gbl_mycityInputView  isEqualToString: @"picker" ] )
         {   // show city picker
-nbn(123);
             dispatch_async(dispatch_get_main_queue(), ^{        
 
                 [gbl_myname             resignFirstResponder];
@@ -4884,7 +5340,6 @@ nbn(123);
             // show city KB
 
 
-nbn(124);
 
   NSLog(@"--- ooo -------- show city keyboard  --------------------------");
   NSLog(@"            gbl_myname.isFirstResponder=%d",gbl_myname.isFirstResponder);
@@ -5104,7 +5559,7 @@ tn();
 // this is called for every valid keyboard keystroke in city field
 //
 //    ALWAYS     shows first city starting with typed sofar (in 3 city fields)
-//    SOMETIMES  unhides inputview toolbar  right button "Picklist >"
+//    SOMETIMES  unhides inputview toolbar  right button "Wheel >"
 //
 - (void) showCityProvCountryForTypedInCity: (NSString *) arg_citySoFar     // either first one in 3 labels or picklist uitable
 {
@@ -5139,7 +5594,7 @@ ksn(arg_cityBeginsWith);
     //
 tn();
 trn("bin_find_first_city  IN showCityProvCountryForTypedInCity ");
-  NSLog(@"    ( determine whether or  not to show   Right Button  \"Picklist >\"  )");
+  NSLog(@"    ( determine whether or  not to show   Right Button  \"Wheel >\"  )");
     idx_into_placetab = bin_find_first_city(  // **********  ==========   GET CITY,prov,coun
         arg_cityBeginsWith,
         gbl_numCitiesToTriggerPicklist,  // is type  int
@@ -5164,7 +5619,7 @@ kin(num_PSVs_found);
         gbl_pickerToUse                   = @"city picker";
   NSLog(@"gbl_pickerToUse  44      =[%@]",gbl_pickerToUse          );
 
-  NSLog(@"  5  SHOW   Right Button  \"Picklist >\"  )");
+  NSLog(@"  5  SHOW   Right Button  \"Wheel >\"  )");
 
 //        gbl_mycitySearchString.inputAccessoryView = gbl_ToolbarForCityKeyboardHavingPicklist;
 //        [self setCityInputAccessoryViewFor: gbl_mycityInputView ];  // arg is "keyboard" or "picker"
@@ -5195,7 +5650,6 @@ kin(num_PSVs_found);
         [self setCitySearchStringTitleTo: gbl_myCitySoFar ];
 
 
-nbn(555);
 
     } // else { // show latest city,prov,coun  beginning with city chars typed so far
 //    }
@@ -5401,7 +5855,7 @@ tn(); NSLog(@"=in setCitySearchStringTitleTo");
 
 // SET inputAccessoryView for CITY:     gbl_mycitySearchString.inputAccessoryView
 //
-////  For Keyboard inputView  "Clear"        tor     "Picklist >"  (hidden or not hidden depends on num cities <= 25)
+////  For Keyboard inputView  "Clear"        tor     "Wheel >"  (hidden or not hidden depends on num cities <= 25)
 ////  For Picklist inputView  "< Keyboard"   tor   
 //// 
 - (void)setCityInputAccessoryViewFor : (NSString *) arg_toolbarToUse   // arg is "keyboard" or "picker" (gbl_mycityInputView)
@@ -5431,7 +5885,6 @@ tn(); NSLog(@"=in setCityInputAccessoryViewFor ");
 //    gbl_mycitySearchString.inputView          = nil ; // necessary  ?
 
     if ( [ arg_toolbarToUse isEqualToString: @"picker" ] ) {
-nbn(39);
         gbl_mycitySearchString.inputAccessoryView = gbl_ToolbarForCityPicklist;
   NSLog(@"gbl_mycitySearchString.inputAccessoryView 03 SET  picker  SET SET SET SET SET SET SET SET  SET ");
 
@@ -5439,7 +5892,6 @@ nbn(39);
 
 
     if ( [ arg_toolbarToUse isEqualToString: @"keyboard" ] ) {
-nbn(40);
         
 //        if ( gbl_fewEnoughCitiesToMakePicklist == 1 ) {
 //nbn(41);
@@ -5588,10 +6040,8 @@ ksn(myPSVbuf);
         }
         if (foundAtIdx == -1)  // not found at all
         {
-nbn(601);
             [self.pickerViewCity selectRow: 0           inComponent: 0 animated: YES];
         } else {
-nbn(602);
             [self.pickerViewCity selectRow: foundAtIdx  inComponent: 0 animated: YES];
         }
 
@@ -5658,7 +6108,6 @@ tn();
     NSIndexPath *indexPathLabelCityProvCoun = [NSIndexPath indexPathForRow: 3 inSection: 0];
 
     NSArray *indexPathsToUpdate = [NSArray arrayWithObjects: indexPathLabelCityProvCoun, nil];
-nbn(1100);
     dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
 
         [self.tableView beginUpdates];
@@ -5814,9 +6263,9 @@ nbn(1100);
     NSString *titleForRowRetval;
     titleForRowRetval =  @"component not 0,1,2,4,6 or 7";
 
-trn("in titleForRow in pickerview BIRTH !");
-NSLog(@"      row=%ld",(long)row);
-NSLog(@"component=%ld",(long)component);
+//trn("in titleForRow in pickerview BIRTH !");
+//NSLog(@"      row=%ld",(long)row);
+//NSLog(@"component=%ld",(long)component);
 
 //            [self.pickerViewDateTime selectRow: myIndex inComponent: 0 animated: YES]; // This is how you manually SET(!!) a selection!
 //            [self.pickerViewDateTime selectRow:       0 inComponent: 1 animated: YES]; // mth  = jan
@@ -5836,7 +6285,8 @@ NSLog(@"component=%ld",(long)component);
     if (component == 6)  titleForRowRetval = [self.array_Min_0_59    objectAtIndex: row];
     if (component == 7)  titleForRowRetval = [self.array_am_pm       objectAtIndex: row];
 
-NSLog(@"RETURN titleForRowRetval=%@",titleForRowRetval);
+//NSLog(@"RETURN titleForRowRetval=%@",titleForRowRetval);
+
     return titleForRowRetval;
 
 } // titleForRow
@@ -5997,8 +6447,8 @@ NSLog(@"RETURN titleForRowRetval=%@",titleForRowRetval);
   
             // set value of  attributed string
             [ myAttributedTextLabel addAttribute: NSBackgroundColorAttributeName 
-//                                           value: [UIColor yellowColor]
-                                           value: gbl_colorEditingBG_current
+//                                           value: gbl_colorEditingBG_current
+                                           value: [UIColor yellowColor]
                                            range: NSMakeRange(1, gbl_myCitySoFar.length)  // offset, length
             ];
 
@@ -6171,14 +6621,14 @@ tn();trn("in didSelectRow in some  PICKER !!   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
   NSLog(@"                                    gbl_pickerToUse11       =%@",gbl_pickerToUse );
 
         trn("in didSelectRow in BIRTH DATE  PICKER !! ");
-    NSLog(@"row=%ld",(long)row);
-    NSLog(@"component=%ld",(long)component);
-      NSLog(@" 1 gbl_rollerBirth_yyyy =%@",gbl_rollerBirth_yyyy );
-      NSLog(@" 1 gbl_rollerBirth_mth  =%@",gbl_rollerBirth_mth  );
-      NSLog(@" 1 gbl_rollerBirth_dd   =%@",gbl_rollerBirth_dd   );
-      NSLog(@" 1 gbl_rollerBirth_hour =%@",gbl_rollerBirth_hour );
-      NSLog(@" 1 gbl_rollerBirth_min  =%@",gbl_rollerBirth_min  );
-      NSLog(@" 1 gbl_rollerBirth_amPm =%@",gbl_rollerBirth_amPm );
+//    NSLog(@"row=%ld",(long)row);
+//    NSLog(@"component=%ld",(long)component);
+//      NSLog(@" 1 gbl_rollerBirth_yyyy =%@",gbl_rollerBirth_yyyy );
+//      NSLog(@" 1 gbl_rollerBirth_mth  =%@",gbl_rollerBirth_mth  );
+//      NSLog(@" 1 gbl_rollerBirth_dd   =%@",gbl_rollerBirth_dd   );
+//      NSLog(@" 1 gbl_rollerBirth_hour =%@",gbl_rollerBirth_hour );
+//      NSLog(@" 1 gbl_rollerBirth_min  =%@",gbl_rollerBirth_min  );
+//      NSLog(@" 1 gbl_rollerBirth_amPm =%@",gbl_rollerBirth_amPm );
 
 
 
@@ -6222,14 +6672,14 @@ tn();trn("in didSelectRow in some  PICKER !!   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
                                             titleForRow: [self.pickerViewDateTime  selectedRowInComponent: 1 ]
                                            forComponent: 1  ];
 //                mm_format = [NSString stringWithFormat:@"%02d",  (int) (row + 1)];    // mm is one-base, row is zero-based
-  NSLog(@" 2 gbl_rollerBirth_mth  =%@",gbl_rollerBirth_mth  );
 //  NSLog(@"mm_format 2 =[%@]",mm_format );
+//  NSLog(@" 2 gbl_rollerBirth_mth  =%@",gbl_rollerBirth_mth  );
             }
             if (component == 2) {
                 gbl_rollerBirth_dd   = [self pickerView:  self.pickerViewDateTime
                                             titleForRow: [self.pickerViewDateTime  selectedRowInComponent: 2 ]
                                            forComponent: 2  ];
-  NSLog(@" 2 gbl_rollerBirth_dd   =%@",gbl_rollerBirth_dd   );
+//  NSLog(@" 2 gbl_rollerBirth_dd   =%@",gbl_rollerBirth_dd   );
             }
             if (component == 4) {
                 gbl_rollerBirth_hour = [self pickerView:  self.pickerViewDateTime
@@ -6246,12 +6696,12 @@ tn();trn("in didSelectRow in some  PICKER !!   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
                                             titleForRow: [self.pickerViewDateTime  selectedRowInComponent: 7 ]
                                            forComponent: 7  ];
             }
-      NSLog(@" 2 gbl_rollerBirth_yyyy =%@",gbl_rollerBirth_yyyy );
-      NSLog(@" 2 gbl_rollerBirth_mth  =%@",gbl_rollerBirth_mth  );
-      NSLog(@" 2 gbl_rollerBirth_dd   =%@",gbl_rollerBirth_dd   );
-      NSLog(@" 2 gbl_rollerBirth_hour =%@",gbl_rollerBirth_hour );
-      NSLog(@" 2 gbl_rollerBirth_min  =%@",gbl_rollerBirth_min  );
-      NSLog(@" 2 gbl_rollerBirth_amPm =%@",gbl_rollerBirth_amPm );
+//      NSLog(@" 2 gbl_rollerBirth_yyyy =%@",gbl_rollerBirth_yyyy );
+//      NSLog(@" 2 gbl_rollerBirth_mth  =%@",gbl_rollerBirth_mth  );
+//      NSLog(@" 2 gbl_rollerBirth_dd   =%@",gbl_rollerBirth_dd   );
+//      NSLog(@" 2 gbl_rollerBirth_hour =%@",gbl_rollerBirth_hour );
+//      NSLog(@" 2 gbl_rollerBirth_min  =%@",gbl_rollerBirth_min  );
+//      NSLog(@" 2 gbl_rollerBirth_amPm =%@",gbl_rollerBirth_amPm );
 
 
 
@@ -6298,25 +6748,25 @@ tn();trn("in didSelectRow in some  PICKER !!   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
                 if (    rollerYYYY % 400 == 0
                     || (rollerYYYY % 100 != 0 && rollerYYYY % 4 == 0))   daysinmonth[1] = 29; // if leap year, make 29 days in february
 
-kin(rollerYYYY);
-kin(rollerMM);
-kin(rollerDD);
+//kin(rollerYYYY);
+//kin(rollerMM);
+//kin(rollerDD);
                 if (rollerDD > daysinmonth[rollerMM-1]) {
                     rollerDD = daysinmonth[rollerMM-1]; // day of month too big, make equal to last day in that month and year
                     gbl_rollerBirth_dd = [NSString stringWithFormat:@"%02d", rollerDD];
 
                     // set the changed value on the day  roller
                     myNewIndex = rollerDD - 1;               // initMM and initDD are "one-based" real m and d values
-  NSLog(@"myNewIndex =[%ld]",(long)myNewIndex );
+//  NSLog(@"myNewIndex =[%ld]",(long)myNewIndex );
                     [self.pickerViewDateTime selectRow:myNewIndex inComponent: 2 animated:YES]; // This is how you manually SET(!!) a selection!
                 }
 
-      NSLog(@" 3 gbl_rollerBirth_yyyy =%@",gbl_rollerBirth_yyyy );
-      NSLog(@" 3 gbl_rollerBirth_mth  =%@",gbl_rollerBirth_mth  );
-      NSLog(@" 3 gbl_rollerBirth_dd   =%@",gbl_rollerBirth_dd   );
-      NSLog(@" 3 gbl_rollerBirth_hour =%@",gbl_rollerBirth_hour );
-      NSLog(@" 3 gbl_rollerBirth_min  =%@",gbl_rollerBirth_min  );
-      NSLog(@" 3 gbl_rollerBirth_amPm =%@",gbl_rollerBirth_amPm );
+//      NSLog(@" 3 gbl_rollerBirth_yyyy =%@",gbl_rollerBirth_yyyy );
+//      NSLog(@" 3 gbl_rollerBirth_mth  =%@",gbl_rollerBirth_mth  );
+//      NSLog(@" 3 gbl_rollerBirth_dd   =%@",gbl_rollerBirth_dd   );
+//      NSLog(@" 3 gbl_rollerBirth_hour =%@",gbl_rollerBirth_hour );
+//      NSLog(@" 3 gbl_rollerBirth_min  =%@",gbl_rollerBirth_min  );
+//      NSLog(@" 3 gbl_rollerBirth_amPm =%@",gbl_rollerBirth_amPm );
 
 
 
@@ -6425,12 +6875,10 @@ kin(rollerDD);
     });
 
 
-nbn(301);
 //    // want to never dismiss pickerview on didselect
 //    [gbl_mybirthinformation becomeFirstResponder];
 //    self.pickerViewDateTime.hidden     =  NO; 
 //    gbl_mybirthinformation.hidden = NO;
-nbn(302);
 
   NSLog(@"SELECTED a date  picker value");
 
@@ -6937,7 +7385,7 @@ trn("!!!!!!!!!  END OF  didSelectRow in some  PICKER !!   !!!!!!!!!!!!!!!!!!!!!!
 
        // try multiple inputView toolbars
        // 
-       //  For Keyboard inputView  "Clear"        tor     "Picklist >"  (hidden or not hidden depends on num cities <= 25)
+       //  For Keyboard inputView  "Clear"        tor     "Wheel >"  (hidden or not hidden depends on num cities <= 25)
        //  For Picklist inputView  "< Keyboard"   tor   
        // 
        // 
@@ -7188,4 +7636,61 @@ trn("!!!!!!!!!  END OF  didSelectRow in some  PICKER !!   !!!!!!!!!!!!!!!!!!!!!!
 //                    [rootViewController presentViewController: myActionSheet animated:YES completion:nil];
 //
 
+
+
+//    
+////  for test
+//    uint64_t        mystart;
+//    uint64_t        myend;
+////    uint64_t        elapsed;
+////    Nanoseconds     elapsedNano;
+//    uint64_t     elapsedNano;
+////    uint64_t     elapsedNano;
+//    uint64_t        myInterval;
+//    mystart = mach_absolute_time();
+//  NSLog(@"mystart=%lld",mystart);
+////    (void) getpid();
+////    (void) getpid();
+////    (void) getpid();
+////    (void) getpid();
+////    (void) getpid();
+//sleep(1);
+//    myend = mach_absolute_time();
+//  NSLog(@"myend=%lld",myend);
+////    elapsedNano = AbsoluteToNanoseconds( *(AbsoluteTime *) &elapsed );
+//
+////    myInterval =  * (uint64_t *) &elapsedNano;
+//    myInterval =  myend - mystart;
+//  NSLog(@"myInterval=%lld",myInterval);
+//
+////
+//  NSDate *mytoday = [NSDate date];
+//	NSTimeInterval oldTime = [mytoday timeIntervalSince1970] * 1000;
+//	NSString *timeStamp = [[NSString alloc] initWithFormat:@"%0.0f", oldTime];
+//	NSLog(@"%@", timeStamp);
+//
+//  sleep(2);
+////    (void) getpid();
+////    (void) getpid();
+////    (void) getpid();
+////    (void) getpid();
+////    (void) getpid();
+////
+//
+//  mytoday = [NSDate date];
+//	NSTimeInterval oldTime2 = [mytoday timeIntervalSince1970] * 1000;
+//	NSString *timeStamp2 = [[NSString alloc] initWithFormat:@"%0.0f", oldTime2];
+//	NSLog(@"%@", timeStamp);
+//	NSLog(@"%f", oldTime2 - oldTime);
+//
+////
+////
+//CFTimeInterval startTime = CACurrentMediaTime();  // returns double CFTimeInterval
+//sleep(2);
+//CFTimeInterval endTime = CACurrentMediaTime();
+//NSLog(@"Total Runtime: %g s", endTime - startTime);
+//
+////
+//
+//
 

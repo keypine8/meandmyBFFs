@@ -123,24 +123,26 @@ tn();
     [gbl_arrayMembersToDisplay removeAllObjects];
     gbl_arrayMembersToDisplay = [[NSMutableArray alloc] init];
 
-
-    if ([gbl_lastSelectedGroup isEqualToString: gbl_nameOfGrpHavingAllPeopleIhaveAdded])
-    {
-        // special group  "#allpeople"
-        for (NSString *element in gbl_arrayPer) {
-
-            NSArray *psvArray;
-            NSString *currPersonName;
-
-            psvArray = [element componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"|"]];
-            currPersonName  = psvArray[0];
-
-            if ([element hasPrefix: @"~"]) continue;
-
-            [gbl_arrayMembersToDisplay addObject: currPersonName];                        //  Person name for pick
-        }
-
-    } else {
+// no yellow for #allpeople
+//    if ([gbl_lastSelectedGroup isEqualToString: gbl_nameOfGrpHavingAllPeopleIhaveAdded])
+//    {
+//        // special group  "#allpeople"
+//        for (NSString *element in gbl_arrayPer) {
+//
+//            NSArray *psvArray;
+//            NSString *currPersonName;
+//
+//            psvArray = [element componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"|"]];
+//            currPersonName  = psvArray[0];
+//
+//            if ([element hasPrefix: @"~"]) continue;
+//
+//            [gbl_arrayMembersToDisplay addObject: currPersonName];                        //  Person name for pick
+//        }
+//
+//    } else {
+//    }
+//
         // ordinary group
         for (id myMemberRec in gbl_arrayMem) {
 
@@ -157,7 +159,6 @@ tn();
                 [gbl_arrayMembersToDisplay addObject: currMember ];                        //  Person name for pick
             }
         } // for each groupmember
-    }
 
  NSLog(@"gbl_arrayMembersToDisplay=%@",gbl_arrayMembersToDisplay);
  NSLog(@"gbl_arrayMembersToDisplay.count=%lu",(unsigned long)gbl_arrayMembersToDisplay.count);
@@ -180,7 +181,9 @@ tn();
     // allow edit, etc of example "~" data
     // if ([gbl_lastSelectedGroup hasPrefix: @"~" ])  return;  // use viewWillAppear only for bottom toolbar setup
 
-    if ([gbl_lastSelectedGroup hasPrefix: @"#" ])  return;  // use viewWillAppear only for bottom toolbar setup
+    if ([gbl_lastSelectedGroup hasPrefix: @"#" ]) {
+        return;  // no bottom toolbar setup  for add/del members
+    }
 
 
     // set up toolbar at bottom of screen
@@ -189,7 +192,8 @@ tn();
     // If we are here returning from add member or del member,
     // we do not want to paint the toolbar again
     //
-    if (self.isBeingPresented || self.isMovingToParentViewController) {   // "first time" entering from below
+    if (self.isBeingPresented || self.isMovingToParentViewController)    // "first time" entering from below
+    {
         // here we got to this screen from "below"
         //
 

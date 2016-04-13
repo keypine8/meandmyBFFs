@@ -61,11 +61,12 @@ tn();
         UIBarButtonItem *navCancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
                                                                                          target: self
                                                                                          action: @selector(pressedCancel:)];
-        // put info button on Nav Bar
-        UIButton *myInfoButton     =  [UIButton buttonWithType: UIButtonTypeInfoDark] ;
-        [myInfoButton addTarget: self action: @selector(pressedInfoButton:) forControlEvents:UIControlEventTouchUpInside];
-
-        UIBarButtonItem *navToInfoButton = [[UIBarButtonItem alloc] initWithCustomView: myInfoButton ];
+//        // put info button on Nav Bar
+//        UIButton *myInfoButton     =  [UIButton buttonWithType: UIButtonTypeInfoDark] ;
+//        [myInfoButton addTarget: self action: @selector(pressedInfoButton:) forControlEvents:UIControlEventTouchUpInside];
+//
+//        UIBarButtonItem *navToInfoButton = [[UIBarButtonItem alloc] initWithCustomView: myInfoButton ];
+//
 
 
   NSLog(@"navSaveButton=[%@]",navSaveButton);
@@ -160,7 +161,7 @@ tn();
 //                gbl_flexibleSpace,
 
             self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects: 
-                navToInfoButton,
+//                navToInfoButton,
                 navSaveButton,
                 nil
             ]; 
@@ -223,6 +224,11 @@ tn();
 
 //    [self updateButtonsToMatchTableState]; // make our view consistent - Update the delete button's title based on how many items are selected.
     //    [self updateButtonsToMatchTableState]; // Update the delete button's title based on how many items are selected.
+
+
+
+    [self sectionIndexTitlesForTableView: self.tableView ];  // set up sectionindex  or not
+
 
 } //   viewDidLoad 
 
@@ -292,6 +298,26 @@ NSLog(@"in viewDidAppear()");
     //    }
 
 
+    if ([gbl_lastSelectedGroup hasPrefix: @"~" ]) 
+    {
+        UIAlertController* myAlert = [
+            UIAlertController alertControllerWithTitle: @"An Example Group Cannot be Changed"
+                                               message: @"You cannot delete members from an example group."
+                                        preferredStyle: UIAlertControllerStyleAlert 
+        ];
+        UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                            style: UIAlertActionStyleDefault
+                                                          handler: ^(UIAlertAction * action) {
+            NSLog(@"Ok button pressed");
+        } ];
+        [myAlert addAction:  okButton];
+
+        [self presentViewController: myAlert  animated: YES  completion: nil   ]; // cannot save because of missing information
+
+        return;
+    }
+
+
 
     // sort array  gbl_selectedMembers_toDel 
     if (gbl_selectedMembers_toDel)  { [gbl_selectedMembers_toDel  sortUsingSelector: @selector(caseInsensitiveCompare:)]; }
@@ -357,6 +383,8 @@ NSLog(@"in viewDidAppear()");
 
     gbl_justWroteMemberFile = 1;
 
+    // go back to home and ask for  What Kind of Delete  there
+    //
     dispatch_async(dispatch_get_main_queue(), ^{  
         [self.navigationController popViewControllerAnimated: YES]; // actually do the "Back" action
     });
@@ -378,12 +406,15 @@ NSLog(@"in viewDidAppear()");
     });
 } // pressedCancel
 
-- (IBAction)pressedInfoButton:(id)sender     // this is the Cancel on left of Nav Bar
-{
-  NSLog(@"pressedInfoButton");
-  NSLog(@" // go to info screen ");
 
-} // pressedInfoButton
+
+//- (IBAction)pressedInfoButton:(id)sender     // this is the Cancel on left of Nav Bar
+//{
+//  NSLog(@"pressedInfoButton");
+//  NSLog(@" // go to info screen ");
+//
+//} // pressedInfoButton
+//
 
 
 
@@ -455,6 +486,112 @@ NSLog(@"in viewDidAppear()");
 
   return 44.0; // matches report height
 }
+
+//--------------------------------------------------------------------------------------------
+// SECTION INDEX VIEW
+//
+//- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView;  // return list of section titles to display in section index view (e.g. "ABCD...Z#")
+//- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index;  // tell table which section corresponds to section title/index (e.g. "B",1))
+
+
+//
+// iPhone UITableView. How do turn on the single letter alphabetical list like the Music App?
+//
+//
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
+{
+tn();
+  NSLog(@"in sectionIndexTitlesForTableView !");
+
+//return nil;  // test no section index
+
+    NSInteger myCountOfRows;
+    myCountOfRows = 0;
+
+
+    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
+    [myappDelegate get_gbl_numMembersInCurrentGroup ];   // populates gbl_numMembersInCurrentGroup  using  gbl_lastSelectedGroup
+    myCountOfRows = gbl_numMembersInCurrentGroup ;
+
+    if (myCountOfRows <= gbl_numRowsToTriggerIndexBar)  return nil ;  // no sectionindex }
+
+
+
+    NSArray *mySectionIndexTitles = [NSArray arrayWithObjects:  // 33 items  last index=32
+//         @"A", @"B", @"C", @"D",  @"E", @"F", @"G", @"H", @"I", @"J",  @"K", @"L", @"M",
+//         @"N", @"O", @"P",  @"Q", @"R", @"S", @"T", @"U", @"V",  @"W", @"X", @"Y", @"Z",   nil ];
+
+            @"_______",
+            @"TOP",
+            @"     ", @"     ", @"     ", @"     ",  @"     ", 
+            @"__",
+            @"     ", @"     ", @"     ", @"     ",  @"     ",
+            @"__",
+            @"     ", @"     ", @"     ", @"     ",  @"     ", 
+            @"__",
+            @"     ", @"     ", @"     ", @"     ",  @"     ", 
+            @"END",
+            @"_______",
+            nil
+    ];
+
+
+    gbl_numSectionIndexTitles = mySectionIndexTitles.count;
+
+    return mySectionIndexTitles;
+
+} // end of sectionIndexTitlesForTableView
+
+
+
+- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
+{
+
+  NSLog(@"sectionForSectionIndexTitle!  in HOME");
+//  NSLog(@"title=[%@]",title);
+//  NSLog(@"atIndex=[%ld]",(long)index);
+
+
+
+    // find first group starting with title letter (guaranteed to be there, see sectionIndexTitlesForTableView )
+    NSInteger newRow;  newRow = 0;
+    NSIndexPath *newIndexPath;
+    NSInteger myCountOfRows;
+    myCountOfRows = 0;
+
+        if ([gbl_ExampleData_show isEqualToString: @"yes"] ) 
+        {
+           myCountOfRows = gbl_arrayPer.count;
+        } else {
+           // Here we do not want to show example data.
+           // Because example data names start with "~", they sort last,
+           // so we can just reduce the number of rows to exclude example data from showing on the screen.
+           myCountOfRows = gbl_arrayPer.count - gbl_ExampleData_count_per ;
+        }
+
+    if (     [title isEqualToString:@"TOP"]) newRow = 0;
+    else if ([title isEqualToString:@"END"]) newRow = myCountOfRows - 1;
+    else                                     newRow = ((double) (index + 1) / (double) gbl_numSectionIndexTitles ) * (double)myCountOfRows ;
+
+    if (newRow == myCountOfRows)  newRow = newRow - 1;
+
+//  NSLog(@"gbl_numSectionIndexTitles =[%ld]",(long)gbl_numSectionIndexTitles );
+//  NSLog(@"newRow                    =[%ld]", (long)newRow);
+//  NSLog(@"myCountOfRows             =[%ld]", (long)myCountOfRows   );
+
+
+    newIndexPath = [NSIndexPath indexPathForRow: newRow inSection: 0];
+    [tableView scrollToRowAtIndexPath: newIndexPath atScrollPosition: UITableViewScrollPositionMiddle animated: NO];
+
+    return index;
+
+} // sectionForSectionIndexTitle
+
+
+// end of SECTION INDEX VIEW
+//--------------------------------------------------------------------------------------------
+
+
 
 
 /*

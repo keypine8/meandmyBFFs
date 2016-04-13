@@ -4921,7 +4921,7 @@ tn();
     ];
 
 //    done in home
-//        //    gbl_numRowsToTurnOnIndexBar    = 90;
+//        //    gbl_numRowsToTriggerIndexBar    = 90;
 //        //
 //        // CGFloat   gbl_heightForScreen;  // 6+  = 736.0 x 414  and 6s+  (self.view.bounds.size.width) and height
 //        //                                 // 6s  = 667.0 x 375  and 6
@@ -4931,20 +4931,20 @@ tn();
 //        //  NSLog(@"self.view.bounds.size.height  =[%f]",self.view.bounds.size.height  );
 //        if (   self.view.bounds.size.width >= 414.0        // 6+ and 6s+  and bigger
 //        ) {
-//            gbl_numRowsToTurnOnIndexBar    = 50;
+//            gbl_numRowsToTriggerIndexBar    = 50;
 //        }
 //        else if (   self.view.bounds.size.width  < 414.0    // 6 and 6s
 //                 && self.view.bounds.size.width  > 320.0
 //        ) {
-//            gbl_numRowsToTurnOnIndexBar    = 45;
+//            gbl_numRowsToTriggerIndexBar    = 45;
 //        }
 //        else if (   self.view.bounds.size.width <= 320.0   //  5s and 5 and 4s and smaller
 //        ) {
-//            gbl_numRowsToTurnOnIndexBar    = 38;
+//            gbl_numRowsToTriggerIndexBar    = 38;
 //        }
 //        else if (   self.view.bounds.size.width <= 320.0   //  5s and 5 and 4s and smaller
 //        ) {
-//            gbl_numRowsToTurnOnIndexBar    = 33;
+//            gbl_numRowsToTriggerIndexBar    = 33;
 //        }
 
 
@@ -5662,7 +5662,7 @@ NSLog(@"Ok button pressed");
 {
 
 
-//    if (group_report_output_idx_B <= gbl_numRowsToTurnOnIndexBar) return nil;
+//    if (group_report_output_idx_B <= gbl_numRowsToTriggerIndexBar) return nil;
 //
 //    return[NSArray arrayWithObjects:
 //            @"__",
@@ -5696,8 +5696,8 @@ NSLog(@"Ok button pressed");
   NSLog(@"myCountOfRows B =[%ld]", (long)myCountOfRows );
 
 
-//    if (lcl_group_report_output_idx <= gbl_numRowsToTurnOnIndexBar) {
-    if (myCountOfRows <= gbl_numRowsToTurnOnIndexBar) {
+//    if (lcl_group_report_output_idx <= gbl_numRowsToTriggerIndexBar) {
+    if (myCountOfRows <= gbl_numRowsToTriggerIndexBar) {
         return nil;
     }
 

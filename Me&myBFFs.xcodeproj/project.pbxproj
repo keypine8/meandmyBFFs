@@ -43,6 +43,7 @@
 		504B299A1A4350AB009A6A25 /* icon_MAMB09_0029.png in Resources */ = {isa = PBXBuildFile; fileRef = 504B29821A4350AB009A6A25 /* icon_MAMB09_0029.png */; };
 		504B299B1A4350AB009A6A25 /* icon_MAMB09_0144.png in Resources */ = {isa = PBXBuildFile; fileRef = 504B29831A4350AB009A6A25 /* icon_MAMB09_0144.png */; };
 		504B299C1A4350AB009A6A25 /* icon_MAMB09_0072.png in Resources */ = {isa = PBXBuildFile; fileRef = 504B29841A4350AB009A6A25 /* icon_MAMB09_0072.png */; };
+		505386581CBAD4BE0092743F /* MAMB09_UITextField_noCopyPaste.m in Sources */ = {isa = PBXBuildFile; fileRef = 505386571CBAD4BE0092743F /* MAMB09_UITextField_noCopyPaste.m */; };
 		5055382E1A9F79C5003DC816 /* MAMB09viewTBLRPTs_1_TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5055382D1A9F79C5003DC816 /* MAMB09viewTBLRPTs_1_TableViewController.m */; };
 		505538341A9FAA6D003DC816 /* MAMB09viewTBLRPTs_2_TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 505538331A9FAA6D003DC816 /* MAMB09viewTBLRPTs_2_TableViewController.m */; };
 		50661E641B41F5AA005BDFCC /* MAMB09_addChangeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50661E631B41F5AA005BDFCC /* MAMB09_addChangeTableViewController.m */; };
@@ -133,6 +134,8 @@
 		504B29821A4350AB009A6A25 /* icon_MAMB09_0029.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_MAMB09_0029.png; path = ../../_old/icon/planet_54jb2a/icon_MAMB09/icon_MAMB09_0029.png; sourceTree = "<group>"; };
 		504B29831A4350AB009A6A25 /* icon_MAMB09_0144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_MAMB09_0144.png; path = ../../_old/icon/planet_54jb2a/icon_MAMB09/icon_MAMB09_0144.png; sourceTree = "<group>"; };
 		504B29841A4350AB009A6A25 /* icon_MAMB09_0072.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_MAMB09_0072.png; path = ../../_old/icon/planet_54jb2a/icon_MAMB09/icon_MAMB09_0072.png; sourceTree = "<group>"; };
+		505386561CBAD4BE0092743F /* MAMB09_UITextField_noCopyPaste.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAMB09_UITextField_noCopyPaste.h; sourceTree = "<group>"; };
+		505386571CBAD4BE0092743F /* MAMB09_UITextField_noCopyPaste.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAMB09_UITextField_noCopyPaste.m; sourceTree = "<group>"; };
 		5055382C1A9F79C5003DC816 /* MAMB09viewTBLRPTs_1_TableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAMB09viewTBLRPTs_1_TableViewController.h; sourceTree = "<group>"; };
 		5055382D1A9F79C5003DC816 /* MAMB09viewTBLRPTs_1_TableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MAMB09viewTBLRPTs_1_TableViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		505538321A9FAA6D003DC816 /* MAMB09viewTBLRPTs_2_TableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAMB09viewTBLRPTs_2_TableViewController.h; sourceTree = "<group>"; };
@@ -257,6 +260,8 @@
 				50AC390519D082EB00FF3997 /* Main.storyboard */,
 				50AC390219D082EB00FF3997 /* MAMB09AppDelegate.h */,
 				50AC390319D082EB00FF3997 /* MAMB09AppDelegate.m */,
+				505386561CBAD4BE0092743F /* MAMB09_UITextField_noCopyPaste.h */,
+				505386571CBAD4BE0092743F /* MAMB09_UITextField_noCopyPaste.m */,
 				50AC390B19D082EB00FF3997 /* Images.xcassets */,
 				50E05BF61A2F994100B48107 /* iTunesArtwork */,
 				50EB4F701A3552CE001F15C0 /* iTunesArtwork@2x */,
@@ -522,6 +527,7 @@
 				50C0BAB21A2108CE005B79F4 /* perhtm.c in Sources */,
 				50C0BAAD1A2108CE005B79F4 /* grphtm.c in Sources */,
 				5049021E1C3ACDA50031DFC4 /* MAMB09_listMembersTableViewController.m in Sources */,
+				505386581CBAD4BE0092743F /* MAMB09_UITextField_noCopyPaste.m in Sources */,
 				50C0BAB11A2108CE005B79F4 /* perdoc.c in Sources */,
 				50AC392A19D0864A00FF3997 /* MAMB09_homeTableViewController.m in Sources */,
 				50C0BAB01A2108CE005B79F4 /* futhtm.c in Sources */,

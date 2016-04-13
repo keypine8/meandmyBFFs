@@ -5800,7 +5800,7 @@ NSLog(@"gbl_TBLRPTS1_saveSelectedIndexPath.row=%ld",(long)gbl_TBLRPTS1_saveSelec
     ];
 
 //    
-//        //    gbl_numRowsToTurnOnIndexBar    = 90;
+//        //    gbl_numRowsToTriggerIndexBar    = 90;
 //        //
 //        // CGFloat   gbl_heightForScreen;  // 6+  = 736.0 x 414  and 6s+  (self.view.bounds.size.width) and height
 //        //                                 // 6s  = 667.0 x 375  and 6
@@ -5810,20 +5810,20 @@ NSLog(@"gbl_TBLRPTS1_saveSelectedIndexPath.row=%ld",(long)gbl_TBLRPTS1_saveSelec
 //        //  NSLog(@"self.view.bounds.size.height  =[%f]",self.view.bounds.size.height  );
 //        if (   self.view.bounds.size.width >= 414.0        // 6+ and 6s+  and bigger
 //        ) {
-//            gbl_numRowsToTurnOnIndexBar    = 50;
+//            gbl_numRowsToTriggerIndexBar    = 50;
 //        }
 //        else if (   self.view.bounds.size.width  < 414.0    // 6 and 6s
 //                 && self.view.bounds.size.width  > 320.0
 //        ) {
-//            gbl_numRowsToTurnOnIndexBar    = 45;
+//            gbl_numRowsToTriggerIndexBar    = 45;
 //        }
 //        else if (   self.view.bounds.size.width <= 320.0   //  5s and 5 and 4s and smaller
 //        ) {
-//            gbl_numRowsToTurnOnIndexBar    = 38;
+//            gbl_numRowsToTriggerIndexBar    = 38;
 //        }
 //        else if (   self.view.bounds.size.width <= 320.0   //  5s and 5 and 4s and smaller
 //        ) {
-//            gbl_numRowsToTurnOnIndexBar    = 33;
+//            gbl_numRowsToTriggerIndexBar    = 33;
 //        }
 //
 
@@ -8260,7 +8260,7 @@ tn();trn("// set new gbl_currentMenuPlusReportCode    for info in next report");
 //
 //nbn(29);
 //  NSLog(@"lcl_group_report_output_idx =[%d]",lcl_group_report_output_idx );
-//  NSLog(@"gbl_numRowsToTurnOnIndexBar =[%ld]",(long)gbl_numRowsToTurnOnIndexBar);
+//  NSLog(@"gbl_numRowsToTriggerIndexBar =[%ld]",(long)gbl_numRowsToTriggerIndexBar);
 
     //NSMutableArray *myEmptyArray = [NSMutableArray array];
 
@@ -8282,7 +8282,7 @@ tn();trn("// set new gbl_currentMenuPlusReportCode    for info in next report");
   NSLog(@"myCountOfRows =[%ld]", (long)myCountOfRows );
 
 
-    if (myCountOfRows <= gbl_numRowsToTurnOnIndexBar) {
+    if (myCountOfRows <= gbl_numRowsToTriggerIndexBar) {
         return nil;
         //     return myEmptyArray ;
     }

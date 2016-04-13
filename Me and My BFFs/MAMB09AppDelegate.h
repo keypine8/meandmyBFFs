@@ -6,6 +6,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MAMB09_UITextField_noCopyPaste.h"
+
+NSInteger gbl_haveEnteredGestureRecognizerShouldBegin;
+
 
 //UIActivityIndicatorView *gbl_bestMatchActivityIndicator;  // for best match (could run 2,3 sec)
 //UIAlertView             *gbl_alert;
@@ -76,20 +80,53 @@ NSString *gbl_cd_apl;               // format "nn"  day of mth
 //NSInteger gbl_firstResponder_prev_was_DATE;
 //
 NSString *gbltmpstr; // for debug
+
 NSInteger gbltmpint; // for debug
 
 //NSTimeInterval  gbl_lastClick;
 //NSTimeInterval  gbl_mynow;
 //NSIndexPath    *gbl_lastIndexPath;
 
+//UISwipeGestureRecognizer *gbl_swipeLeftGestureRecognizer;
+UITapGestureRecognizer *gbl_singleTapGestureRecognizer;
 UITapGestureRecognizer *gbl_doubleTapGestureRecognizer;
+UITapGestureRecognizer *gbl_tripleTapGestureRecognizer;  // for add/change
+UITapGestureRecognizer *gbl_quad__TapGestureRecognizer;  // for add/change
+UITapGestureRecognizer *gbl_penta_TapGestureRecognizer;  // for add/change
 
-// cell.accessoryType = UITableViewCellAccessoryDisclosurebutton;    // home mode edit    with tap giving record details 
-// cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator; // home mode regular with tap giving report list
+UITapGestureRecognizer *gbl_oneTapRecog_InNameFld;
+UITapGestureRecognizer *gbl_oneTapRecog_InNameCell;
+UITapGestureRecognizer *gbl_dblTapRecog_InNameFld;
+UITapGestureRecognizer *gbl_dblTapRecog_InNameCell;
+// cell.accessoryType = UITableViewCellAccessoryDisclosurebutton;    // home mode edit   with tap giving record details 
+// cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator; // home mode report with tap giving report list
 //
-NSString *gbl_homeUseMODE;      // "edit mode" (yellow)   or   "regular mode" (blue)
+
+        //  ----------------------------     --------------------------
+        //        HOME DATA                       HOME USES
+        //  ----------------------------     --------------------------
+        //    gbl_fromHomeCurrentEntity          gbl_homeUseMODE      
+        //
+        //     "person"                      "edit mode"   (yellow bg) 
+        //     "group"                       "report mode" (brown  bg)                          
+        //  ----------------------------     ---------------------------
+        //
+        //  ------------------------------------------------------------
+        //         HOME TRANSFER ROUTES to EDITING STATES
+        //  ------------------------------------------------------------
+        //          gbl_homeUseMODE               gbl_homeEditingState
+        //
+        //      "edit mode"   (yellow bg) ----->  "view or change"
+        //      "edit mode"   (yellow bg) ----->  "add"
+        //      "report mode" (brown  bg) ----->  "add"
+        //   ----------------------------  -----------------------------
+        //
+//
+//
+NSString *gbl_homeUseMODE;      // "edit mode" (yellow)   or   "report mode" (blue)
 NSString *gbl_homeEditingState; // if gbl_homeUseMODE = "edit mode"    then can be "add" or "view or change"   for tapped person or group
-// no, i think  // if gbl_homeUseMODE = "regular mode" then can be "add" or nil                for tapped person or group
+// no, i think  // if gbl_homeUseMODE = "report mode" then can be "add" or nil                for tapped person or group
+
 
 NSString *gbl_ExampleData_show;           // "yes"  OR  "no"
 NSString *gbl_ExampleData_show_entering;  // (home info)  "yes"  OR  "no"
@@ -101,6 +138,8 @@ NSInteger gbl_numRowsToDisplayFor_per;    // this is number of persons could be 
 NSInteger gbl_numRowsToDisplayFor_grp;    // this is number of groups  could be  zero if  gbl_ExampleData_show is "no"
 NSInteger gbl_numMembersInCurrentGroup;   // (meaning gbl_lastSelectedGroup)
 NSInteger gbl_numMembersToTriggerSpinner; // best match rpt (50 = 1 sec wait)
+
+NSMutableArray * gbl_namesInCurrentGroup;   //  member Names
 
 int       gbl_numCitiesToTriggerPicklist;     // is type  int  for passing to C function
 
@@ -118,6 +157,8 @@ int       gbl_numCitiesToTriggerPicklist;     // is type  int  for passing to C 
 NSInteger gbl_justLookedAtInfoScreen;
 NSInteger gbl_justAddedPersonRecord;
 NSInteger gbl_justAddedGroupRecord;
+//NSInteger gbl_justHitRedCircleMinusButtonArea;
+//NSInteger gbl_justEnteredRedDeleteButtonMode;
 
 // A is for tblrpts_1,  B is for tblrpts_2
 //
@@ -168,7 +209,7 @@ UIImage *gbl_yellowEdit ;
 UIColor *gbl_bgColor_brownDone;
 UIColor *gbl_bgColor_brownHdr;
 UIColor *gbl_bgColor_brownSwitch;
-UIColor *gbl_colorVlightBurly;
+//UIColor *gbl_colorVlightBurly;
 UIColor *gbl_bgColor_yellowEdit;
 //UIImage *gbl_chevronRight ;
 //UIImage *gbl_chevronLeft  ;
@@ -187,7 +228,8 @@ NSInteger gbl_dateSetEditingValue;  // 1=y,0=n  // set initial values when first
 // this is set when person record is saved in savedone button choice
 // also set when person record is read in   in addchange when method global var fldKindOfSave is also set
 // 
-NSString *gbl_kindOfSave;   // "regular save"  or  "high security save"
+NSString *gbl_kindOfSave;    // in pressedSaveDone of Add Person    "regular save"       or  "no look no change save"
+NSString *gbl_kindOfDelete;  // in pressedSaveDone of Delete Group  "delete group only"  or  "delete group and members"
 
 
 // all 4 of these have possible values  "name" or "city" or "date" or "" or nil
@@ -206,7 +248,10 @@ UIColor *gbl_bgColor_editFocus_YES;   // something else
 //char gbl_allowedCharactersInCity[128] = "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-";
 
 //NSString    *incomingNameAtBegOfAddChange;  // when 
-UITextField *gbl_myname;              // for add new person or group         // one of THE THREE  "FIELDS"  =====
+
+UITextField *gbl_myname;                   // for add new person or group         // one of THE THREE  "FIELDS"  =====
+//MAMB09_UITextField_noCopyPaste *gbl_myname;  // for add new person or group         // one of THE THREE  "FIELDS"  =====
+
 UITextField *gbl_mycitySearchString;  // for add new person  SEARCH STRING
 UILabel     *gbl_mycityprovcounLabel; // for display found city,prov,coun    // one of THE THREE  "FIELDS"  =====
 NSString    *gbl_mycityInputView;     // = "keyboard" or "picker" (purpose is to reflect which one it is- not assigned)
@@ -260,7 +305,11 @@ NSArray *gbl_buttonArrayForPicklist;
 NSMutableArray *gbl_buttonArrayForKeyboard;  // mutable to show/hide picklist button
 NSArray *gbl_buttonArrayForBirthDate;
 
-UITextField *gbl_mybirthinformation;  // for add new person    // one of THE THREE  "FIELDS"  =====
+
+
+ UITextField *gbl_mybirthinformation;  // for add new person    // one of THE THREE  "FIELDS"  =====
+//MAMB09_UITextField_noCopyPaste *gbl_mybirthinformation;  // for add new person or group         // one of THE THREE  "FIELDS"  =====
+
 
 NSInteger gbl_previousCharTypedWasSpace; // for no multiple consecutive spaces
 CGFloat   gbl_widthForLabelsForCityProvCoun;
@@ -324,7 +373,7 @@ NSString *gbl_currentCityPicklistIsForTypedSoFar;  // like "toron"  or "toro"
 //   use the editingAccessoryType property to set the accessory type for the cell during editing mode.
 //   If this property is not set for both states, the cell is animated to slide in or out, as necessary.
 // 
-//NSInteger  gbl_home_cell_AccessoryType;        // in regular mode =  UITableViewCellAccessoryDisclosureIndicator
+//NSInteger  gbl_home_cell_AccessoryType;        // in report mode =  UITableViewCellAccessoryDisclosureIndicator
 //NSInteger  gbl_home_cell_editingAccessoryType; 
 
 //NSInteger  gbl_home_cell_editingAccessoryView; // in editing mode =  UITableViewCellAccessoryDetailDisclosureButton
@@ -382,6 +431,7 @@ CGFloat    gbl_listMemberToolbar_y;   // to set y offset of bottom toolbar on li
 NSMutableArray *gbl_selectedMembers_toAdd;
 NSMutableArray *gbl_selectedMembers_toDel;
 NSInteger  gbl_justWroteMemberFile;  // 1=y,0=n
+NSInteger  gbl_justWrotePersonFile;  // 1=y,0=n
 
 NSIndexPath *gbl_IdxPathSaved_SelPerson;          // for highlight previous choice when come back to SelPerson
 NSIndexPath *gbl_TBLRPTS1_saveSelectedIndexPath;  // for deselecting with animation when return to TBLRPTS1
@@ -739,6 +789,7 @@ NSArray *gbl_arrayExaPerRem;
 
 
 NSInteger       gbl_haveSetUpHomeNavButtons;      // 0=n, 1=y
+NSInteger       gbl_haveAddedNavBarRightItems;    // 0=n, 1=y
 NSMutableArray *gbl_homeLeftItemsWithAddButton;
 NSMutableArray *gbl_homeLeftItemsWithNoAddButton;
 
@@ -817,7 +868,7 @@ UIColor *gbl_color_cAplDarkerBlue;
 // data arrays
 NSMutableArray *gbl_arrayGrp;
 NSMutableArray *gbl_arrayPer;
-NSMutableArray *gbl_arrayMem;
+NSMutableArray *gbl_arrayMem; // members of  groups
 NSMutableArray *gbl_arrayGrpRem; // REMEMBER DATA 
 NSMutableArray *gbl_arrayPerRem; // REMEMBER DATA 
 
@@ -826,7 +877,7 @@ NSMutableArray *gbl_arrayTEST; // for test
 NSString *gbl_nameOfGrpHavingAllPeopleIhaveAdded; // "#allpeople"
 NSString *gbl_recOfAllPeopleIhaveAdded;           //  = [ NSString stringWithFormat: @"%@||||||||||||||", // 14 flds for misc
 
-NSInteger gbl_numRowsToTurnOnIndexBar;  // varies by screen size
+NSInteger gbl_numRowsToTriggerIndexBar;  // varies by screen size
 
     //                                  NSArray *arrayMAMBexampleGroupRemember = 
     // REMEMBER DATA for each Group 
@@ -1077,8 +1128,10 @@ NSIndexPath *gbl_savePrevIndexPath;  // for scrolling to the prev row you were o
              doingMapOrUnmap: (NSString *) mapOrUnmap
 ;
 
-- (NSData *) mambKriptOnThisNSData:  (NSData *)  argMyNSData;
-- (NSData *) mambKriptOffThisNSData: (NSData *)  argMyNSData ;
+//- (NSData *) mambKriptOnThisNSData:  (NSData *)  argMyNSData;
+//- (NSData *) mambKriptOffThisNSData: (NSData *)  argMyNSData ;
+- (NSData *) mambPreWriteForThisNSData: (NSData *)  argMyNSData;
+- (NSData *) mambPostReadForThisNSData: (NSData *)  argMyNSData ;
 
 - (void) mambWriteLastEntityFile;      // for home, 1 grp  or per, which one
 - (NSString *) mambReadLastEntityFile;
@@ -1108,6 +1161,7 @@ NSIndexPath *gbl_savePrevIndexPath;  // for scrolling to the prev row you were o
 
 - (NSString *) getCSVforPersonName: (NSString *) argPersonName; 
 - (NSString *) getPSVforPersonName: (NSString *) argPersonName; 
+- (NSString *) getPSVforGroupName:  (NSString *) argGroupName; 
 
 
 - (UIFont *)boldFontWithFont: (UIFont *) argFont;  // return Bold version of Font
@@ -1130,6 +1184,8 @@ NSIndexPath *gbl_savePrevIndexPath;  // for scrolling to the prev row you were o
                               toNewName: (NSString *) arg_newGroupName;
 
 - (void) gcy;
+
+- (void) get_gbl_numMembersInCurrentGroup;
 
 - (void) doBackupAll;
 

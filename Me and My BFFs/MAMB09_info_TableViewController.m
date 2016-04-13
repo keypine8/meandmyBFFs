@@ -216,34 +216,93 @@ tn();
     myNavBarLabel.font          = [UIFont boldSystemFontOfSize: 16.0];
 
 
-
-    // HOME screen EDITING help
+  
+    // HOME screen EDITING help   // home screen for app (startup screen)
     //
-    if (  [gbl_currentMenuPlusReportCode isEqualToString: @"HOME"] )  // home screen for app (startup screen)
+        //  ----------------------------     --------------------------
+        //        HOME DATA                       HOME USES
+        //  ----------------------------     --------------------------
+        //    gbl_fromHomeCurrentEntity          gbl_homeUseMODE      
+        //
+        //     "person"                      "edit mode"   (yellow bg) 
+        //     "group"                       "report mode" (brown  bg)                          
+        //  ----------------------------     ---------------------------
+        //
+        //  ------------------------------------------------------------
+        //         HOME TRANSFER ROUTES to EDITING STATES
+        //  ------------------------------------------------------------
+        //          gbl_homeUseMODE               gbl_homeEditingState
+        //
+        //      "edit mode"   (yellow bg) ----->  "view or change"
+        //      "edit mode"   (yellow bg) ----->  "add"
+        //      "report mode" (brown  bg) ----->  "add"
+        //   ----------------------------  -----------------------------
+        //
+    //
+
+  NSLog(@"gbl_currentMenuPlusReportCode =[%@]",gbl_currentMenuPlusReportCode );
+  NSLog(@"gbl_fromHomeCurrentEntity     =[%@]",gbl_fromHomeCurrentEntity);
+  NSLog(@"gbl_homeUseMODE               =[%@]",gbl_homeUseMODE);
+  NSLog(@"gbl_homeEditingState          =[%@]",gbl_homeEditingState);
+
+    if (   [gbl_currentMenuPlusReportCode isEqualToString: @"HOME" ]  
+        && [gbl_homeUseMODE               isEqualToString: @"report mode" ] ) 
     {
-        if (   [gbl_homeEditingState isEqualToString: @"add" ]       // have "+" button in  gbl_homeUseMODE = "regular mode"
-            || [gbl_homeUseMODE      isEqualToString: @"edit mode" ] // covers         gbl_homeEditingState = "add"  or "view or change"
+nbn(1);
+        gbl_helpScreenDescription = @"HOME";
+
+        myNavBarLabel.text                      = @"Me and my BFFS ";
+        myNavBarLabel.adjustsFontSizeToFitWidth = YES;
+        [myNavBarLabel sizeToFit];
+
+        self.navigationItem.titleView = myNavBarLabel; // myNavBarLabel.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
+
+    }  // "HOME" screen
+
+    //  WHEN TO SHOW EDIT INFO
+    //
+    //    1.  add/change screen (always yellow)
+    //    2.  home screen in yellow edit mode
+    //    3.  home screen in brown report mode and "+" hit
+    //
+    if (   [gbl_currentMenuPlusReportCode isEqualToString: @"HOMEaddchange" ]      // add/change screen (always yellow)
+        || (
+                [gbl_currentMenuPlusReportCode isEqualToString: @"HOME"      ]  
+             && [gbl_homeUseMODE               isEqualToString: @"edit mode" ]    // home screen in yellow edit mode
            )
+        || (
+                [gbl_currentMenuPlusReportCode isEqualToString: @"HOME"        ]  
+             && [gbl_homeUseMODE               isEqualToString: @"report mode" ]
+             && [gbl_homeEditingState          isEqualToString: @"add"         ]  // home screen in brown report mode and "+" hit
+           )
+      )
+    {
+        if ([gbl_fromHomeCurrentEntity  isEqualToString: @"group" ])
         {
-            gbl_helpScreenDescription = @"HOME yellow";
+            gbl_helpScreenDescription = @"HOMEaddchangeGROUP";
 
-            myNavBarLabel.text          = @"Editing and Data Movement";
-            myNavBarLabel.adjustsFontSizeToFitWidth = YES;
-            [myNavBarLabel sizeToFit];
-
-            self.navigationItem.titleView = myNavBarLabel; // myNavBarLabel.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
-
-        } else {
-
-            gbl_helpScreenDescription = @"HOME brown";
-
-            myNavBarLabel.text          = @"Me and my BFFS ";
+            myNavBarLabel.text                      = @"Edit Group";
             myNavBarLabel.adjustsFontSizeToFitWidth = YES;
             [myNavBarLabel sizeToFit];
 
             self.navigationItem.titleView = myNavBarLabel; // myNavBarLabel.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
         }
-    }  // "HOME" screen
+
+        if ([gbl_fromHomeCurrentEntity  isEqualToString: @"person" ])
+        {
+            gbl_helpScreenDescription = @"HOMEaddchangePERSON";
+
+            myNavBarLabel.text                      = @"Edit Person";
+            myNavBarLabel.adjustsFontSizeToFitWidth = YES;
+            [myNavBarLabel sizeToFit];
+
+            self.navigationItem.titleView = myNavBarLabel; // myNavBarLabel.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
+        }
+
+    }
+
+
+
 
 
 
@@ -2465,7 +2524,8 @@ nbn(100);
     } // end of gbl_helpScreenDescription   "best day"
 
 
-    if (  [gbl_helpScreenDescription isEqualToString: @"HOME yellow"] )
+
+    if ([gbl_helpScreenDescription isEqualToString: @"HOMEaddchangePERSON"] )
     { 
         if (indexPath.row == 0) {
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
@@ -2489,13 +2549,9 @@ nbn(100);
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
                 cell.textLabel.font          = myTitleFont;
-//                cell.backgroundColor         = gbl_color_cHed;
-//                cell.backgroundColor         = gbl_bgColor_blueDoneH;
-                cell.backgroundColor         = gbl_bgColor_brownDone;
+                cell.backgroundColor         = gbl_color_cHed;
                 cell.textLabel.numberOfLines = 0;
-                //                cell.textLabel.text          = @"Blue Home is for Reports";
-//                cell.textLabel.text          = @"Brown Home is for Reports";
-                cell.textLabel.text          = @"Brown is for Reports";
+                cell.textLabel.text          = @"Adding a Person";
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -2506,13 +2562,301 @@ nbn(100);
 
 
         if (indexPath.row == 2) {
-            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== text
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== text  Add Person
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
                 cell.textLabel.font          = myFontForText;
-                cell.backgroundColor         = gbl_bgColor_brownDone;
+                cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
-                cell.textLabel.text          = @"View reports for people and groups you have added.\nShare reports by email.";
+                cell.textLabel.text          = @"There are 3 fields: name, birth city and birth date.  Tap in each field to enter information for it.  When you are done entering all the information, tap \"Done\".";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
+            });
+            return cell;
+        }
+
+        if (indexPath.row == 3) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myFontForText;
+                cell.backgroundColor         = gbl_color_cBgr;
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.text          = @"";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
+            });
+            return cell;
+        }
+
+        if (indexPath.row == 4) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== title for Personal privacy
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myTitleFont;
+                cell.backgroundColor         = gbl_color_cHed;
+                cell.textLabel.numberOfLines = 0;
+//                cell.textLabel.text          = @"PERSONAL PRIVACY";
+                cell.textLabel.text          = @"Personal Privacy";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
+            });
+            return cell;
+        }
+
+        if (indexPath.row == 5) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== text for  Personal privacy
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myFontForText;
+                cell.backgroundColor         = gbl_color_cBgr;
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.text          = @"When you tap \"Done\" you get a choice of two Kinds of Save.\n\n     1. \"Regular Save\"\nThis lets you or anyone go back in this app and look at and change the Birth City and Birth Date.\n\n     2. \"No Look, No Change Save\"\nThis is for when you want personal privacy for the person at all times.  When you use this save choice, it means NOBODY, neither you nor the device owner nor anybody else can ever again change or even look at the Birth City or Birth Date.\n\nThat means, if you want to look at the personal information in the future, you need to write it down somewhere safe outside this app.\n\nWhenever personal information goes outside this app running in memory, the No Look, No Change mode is used:\n\n  - whenever you share people or groups\n  - whenever you do a full backup\n  - whenever the app saves information\n    for its own use.";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
+            });
+            return cell;
+        }
+
+
+        if (indexPath.row == 6) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myFontForText;
+                cell.backgroundColor         = gbl_color_cBgr;
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.text          = @"";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
+            });
+            return cell;
+        }
+
+        if (indexPath.row == 7) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== title for Person Name
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myTitleFont;
+                cell.backgroundColor         = gbl_color_cHed;
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.text          = @"Person Name";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
+            });
+            return cell;
+        }
+
+        if (indexPath.row == 8) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== text for person name
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myFontForText;
+                cell.backgroundColor         = gbl_color_cBgr;
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.text          = @"Characters you can use in the person name:\n\n   abc defghijklmnopqrstuvwxyz\n   ABC DEFGHIJKLMNOPQRSTUVWXYZ1234567890\n\nMaximum number of characters is 15.";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
+            });
+            return cell;
+        }
+
+        if (indexPath.row == 9) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myFontForText;
+                cell.backgroundColor         = gbl_color_cBgr;
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.text          = @"";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
+            });
+            return cell;
+        }
+
+        if (indexPath.row == 10) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== title for  place of birth
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myTitleFont;
+                cell.backgroundColor         = gbl_color_cHed;
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.text          = @"Birth City or Town";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
+            });
+            return cell;
+        }
+
+        if (indexPath.row == 11) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== text for place of birth
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myFontForText;
+                cell.backgroundColor         = gbl_color_cBgr;
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.text          = @"Characters you can use in the place name:\n\n   abc defghijklmnopqrstuvwxyz\n   ABC DEFGHIJKLMNOPQRSTUVWXYZ1234567890-\n\nType letters in the city name until the city you want appears in the city field.\n\nAs you type each letter, the first city that starts with what you have typed so far appears in the city field.\n\nAs a shortcut, when there are fewer than 25 cities starting with the letters you have typed so far, a yellow button appears - \"Wheel\".  Tap that button to get a wheel you can spin to the city you want.\n\nIt's possible the city or town cannot be found.  In that case, type in a city nearby- especially a bigger city.";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
+            });
+            return cell;
+        }
+
+
+        if (indexPath.row == 12) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myFontForText;
+                cell.backgroundColor         = gbl_color_cBgr;
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.text          = @"";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
+            });
+            return cell;
+        }
+
+        if (indexPath.row == 13) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== title for  birth date and time
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myTitleFont;
+                cell.backgroundColor         = gbl_color_cHed;
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.text          = @"Birth Date and Time";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
+            });
+            return cell;
+        }
+
+        if (indexPath.row == 14) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== text for birth date and time
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myFontForText;
+                cell.backgroundColor         = gbl_color_cBgr;
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.text          = @"You may not know the time of birth.  Don't worry about it.\n\nIf you have no idea of what the time was, just accept the default time of one minute past noon.\n\nIf you know the approximate time, enter your best guess.\n\nIf you know there was Daylight Saving Time or some such in effect, then subtract an hour from the time.";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
+            });
+            return cell;
+        }
+
+
+        if (indexPath.row == 15) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myFontForText;
+                cell.backgroundColor         = gbl_color_cBgr;
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.text          = @"";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
+            });
+            return cell;
+        }
+
+
+
+        if (indexPath.row ==  16) {                           // <=== disclaimer 
+            dispatch_async(dispatch_get_main_queue(), ^{  
+//                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.textLabel.textColor     = [UIColor redColor]; 
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myDisclaimerFont;
+                cell.backgroundColor         = gbl_color_cBgr;
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.text          = @"All reports are for entertainment purposes only.";
+                cell.imageView.image         = nil;
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentCenter;
+                cell.accessoryView = nil;
+
+            });
+            return cell;
+        }
+
+    } // end of gbl_helpScreenDescription   @"HOMEaddchangePERSON";
+
+
+
+    if ([gbl_helpScreenDescription isEqualToString: @"HOMEaddchangeGROUP"] )
+    { 
+        if (indexPath.row == 0) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myFontForText;
+                cell.backgroundColor         = gbl_color_cBgr;
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.text          = @"";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
+            });
+            return cell;
+        }
+
+
+        if (indexPath.row == 1) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                  // <=== title for 
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myTitleFont;
+                cell.backgroundColor         = gbl_color_cHed;
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.text          = @"Adding a Group";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
+            });
+            return cell;
+        }
+
+
+        if (indexPath.row == 2) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== text  Add Group
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myFontForText;
+                cell.backgroundColor         = gbl_color_cBgr;
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.text          = @"Tap the name field.\nType the name of the new group.\nWhen you are done typing, tap \"Done\".\nYou can see the new group showing up in the group list.";
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -2538,9 +2882,155 @@ nbn(100);
             return cell;
         }
 
+        if (indexPath.row == 4) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== title for Add Group Members
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myTitleFont;
+                cell.backgroundColor         = gbl_color_cHed;
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.text          = @"Add New People to a Group";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
+            });
+            return cell;
+        }
+
+        if (indexPath.row == 5) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== text for Add group members
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myFontForText;
+                cell.backgroundColor         = gbl_color_cBgr;
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.text          = @"You have to be in home screen edit mode (yellow background) to add members to a group.  So if you are in report mode (brown background), tap the yellow Edit button.  The screen turns into yellow edit mode.\n\nTap Groups.\nTap the group you want to add members to.\nTap the green \"+\".\nTap all the people you want to add.\nTap \"Done\".\nYou can see the new people appearing in the group.";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
+            });
+            return cell;
+        }
 
 
-        if (indexPath.row ==   4) {                           // <=== disclaimer 
+        if (indexPath.row == 6) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myFontForText;
+                cell.backgroundColor         = gbl_color_cBgr;
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.text          = @"";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
+            });
+            return cell;
+        }
+
+        if (indexPath.row == 7) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== title for Delete Group Members
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myTitleFont;
+                cell.backgroundColor         = gbl_color_cHed;
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.text          = @"Delete People from a Group";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
+            });
+            return cell;
+        }
+
+        if (indexPath.row == 8) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== text for Delete group members
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myFontForText;
+                cell.backgroundColor         = gbl_color_cBgr;
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.text          = @"You have to be in home screen edit mode (yellow background) to delete members from a group.  So if you are in report mode (brown background), tap the yellow Edit button.  The screen turns into yellow edit mode.\n\nTap Groups.\nTap the group you want to delete members from.\nTap the red \"-\".\nTap all the people you want to delete.\nTap \"Done\".\nYou can see the selected people have disappeared from the group.";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
+            });
+            return cell;
+        }
+
+        if (indexPath.row == 9) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myFontForText;
+                cell.backgroundColor         = gbl_color_cBgr;
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.text          = @"";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
+            });
+            return cell;
+        }
+
+        if (indexPath.row == 10) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== title for Share Groups
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myTitleFont;
+                cell.backgroundColor         = gbl_color_cHed;
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.text          = @"Share groups by email";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
+            });
+            return cell;
+        }
+
+        if (indexPath.row == 11) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== text for Share groups
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myFontForText;
+                cell.backgroundColor         = gbl_color_cBgr;
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.text          = @"Tap on \"Share_groups_by_email\".\nDo this.\nDo this.\nDo this.\nDo this.\nDo this.\n ";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
+            });
+            return cell;
+        }
+
+
+        if (indexPath.row == 12) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myFontForText;
+                cell.backgroundColor         = gbl_color_cBgr;
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.text          = @"";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
+            });
+            return cell;
+        }
+
+
+
+        if (indexPath.row ==  13) {                           // <=== disclaimer 
             dispatch_async(dispatch_get_main_queue(), ^{  
 //                cell.textLabel.textColor     = [UIColor blackColor];
                 cell.textLabel.textColor     = [UIColor redColor]; 
@@ -2558,11 +3048,11 @@ nbn(100);
             return cell;
         }
 
-    } // end of gbl_helpScreenDescription   "HOME yellow"
+    } // end of gbl_helpScreenDescription   @"HOMEaddchangeGROUP";
 
 
 
-    if (  [gbl_helpScreenDescription isEqualToString: @"HOME brown"] )
+    if (  [gbl_helpScreenDescription isEqualToString: @"HOME"] )
     { 
 
         if (indexPath.row == 0) {
@@ -2608,11 +3098,12 @@ nbn(100);
                 cell.textLabel.font          = myTitleFont;
 //                cell.backgroundColor         = gbl_color_cHed;
 //                cell.backgroundColor         = gbl_bgColor_blueDoneH;
-                cell.backgroundColor         = gbl_bgColor_brownDone;
+//                cell.backgroundColor         = gbl_bgColor_brownDone;
+                cell.backgroundColor         = gbl_colorHomeBG_per;
                 cell.textLabel.numberOfLines = 0;
                 //                cell.textLabel.text          = @"Blue Home is for Reports";
-//                cell.textLabel.text          = @"Brown Home is for Reports";
-                cell.textLabel.text          = @"Brown is for Reports";
+//                cell.textLabel.text          = @"Brown is for Reports";
+                cell.textLabel.text          = @"Brown Home is for Reports";
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -2629,7 +3120,8 @@ nbn(100);
                 cell.textLabel.font          = myFontForText;
 //                cell.backgroundColor         = gbl_color_cBgr;
 //                cell.backgroundColor         = gbl_bgColor_blueDone;
-                cell.backgroundColor         = gbl_bgColor_brownDone;
+//                cell.backgroundColor         = gbl_bgColor_brownDone;
+                cell.backgroundColor         = gbl_colorHomeBG_per;
                 cell.textLabel.numberOfLines = 0;
 //                cell.textLabel.text          = @"Look at reports for all the people and groups you have entered.";
 //                cell.textLabel.text          = @"Look at reports for all of your people and groups.";
@@ -2668,11 +3160,13 @@ nbn(100);
                 cell.userInteractionEnabled  = NO;
                 cell.textLabel.font          = myTitleFont;
 //                cell.backgroundColor         = gbl_color_cHed;
+//                cell.backgroundColor         = gbl_colorEditingBG;
                 cell.backgroundColor         = gbl_bgColor_yellowEdit;
                 cell.textLabel.numberOfLines = 0;
 //                cell.textLabel.text          = @"Yellow Home is for Editing";
 //                cell.textLabel.text          = @"Yellow is for Maintenance";
-                cell.textLabel.text          = @"Yellow is for Editing";
+//                cell.textLabel.text          = @"Yellow is for Editing";
+                cell.textLabel.text          = @"Yellow Home is for Editing";
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -2687,6 +3181,7 @@ nbn(100);
                 cell.userInteractionEnabled  = NO;
                 cell.textLabel.font          = myFontForText;
 //                cell.backgroundColor         = gbl_color_cBgr;
+//                cell.backgroundColor         = gbl_colorEditingBG;
                 cell.backgroundColor         = gbl_bgColor_yellowEdit;
                 cell.textLabel.numberOfLines = 0;
 //                cell.textLabel.text          = @"Entering people and group information and changing stuff is done from the YELLOW home";
@@ -2743,7 +3238,7 @@ nbn(100);
                 cell.textLabel.numberOfLines = 0;
 //                cell.textLabel.text          = @"Example people and groups have names starting with \"~\".\n\nThe example data lets you explore all the different reports and how the app works before you enter any new people or groups yourself.\n\nWhen you want to enter a new person go to the home screen.  You can tell the home screen because it has the black, red and yellow app icon on the top left.  Tap \"+\" beside it to add a new person.\n\nAfter a while, you might want to not see the example data.  Check the \"hide example data\" checkbox below.";
 //                cell.textLabel.text          = @"Example people and groups have names starting with \"~\".\n\nThe example data lets you explore all the different reports and how the app works before you enter any new people or groups yourself.\n\nWhen you want to enter a new person go to the home screen.  You can tell the home screen because it has the app icon on the top left.  Tap \"+\" beside it to add a new person.\n\nAfter a while, you might want to not see the example data.  If so, tap the switch below to off.";
-                cell.textLabel.text          = @"Example people and groups have names starting with \"~\".\n\nThe example data lets you explore all the different reports and how the app works before you enter any new people or groups yourself.\n\nWhen you want to enter a new person go to the home screen.  You can tell the home screen because it has the app icon on the top left.  Tap \"+\" to add a new person.";
+                cell.textLabel.text          = @"Example people and groups have names starting with \"~\".\n\nThe example data lets you explore all the different reports and see how the app works before you enter any new people or groups yourself.\n\nExample people and groups cannot be changed.\n\nWhen you want to enter a new person or group, go back to the home screen.  You can tell the home screen because it has the app icon on the top left.  Tap \"+\" to add a new person or group.";
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -2798,7 +3293,7 @@ nbn(100);
 
             NSString *switchPrompt;
 
-                //    gbl_numRowsToTurnOnIndexBar    = 90;
+                //    gbl_numRowsToTriggerIndexBar    = 90;
                 //
                 // CGFloat   gbl_heightForScreen;  // 6+  = 736.0 x 414  and 6s+  (self.view.bounds.size.width) and height
                 //                                 // 6s  = 667.0 x 375  and 6
@@ -2824,7 +3319,7 @@ nbn(100);
                 }
                 else if (   self.view.bounds.size.width <= 320.0   // ??
                 ) {
-                    ;  // gbl_numRowsToTurnOnIndexBar    = 33;
+                    ;  // gbl_numRowsToTriggerIndexBar    = 33;
                 }
 
 
@@ -2911,7 +3406,7 @@ nbn(100);
                 cell.textLabel.numberOfLines = 0;
 //                cell.textLabel.text          = @"The special group #allpeople is a group that holds all the people you have added to Me and My BFFs.\n\nA person that you add is automatically added to group #allpeople.\nA person that you delete is automatically removed from group #allpeople.\n\n Group #allpeople lets you quickly get a Best Match or other group report for everyone.";
 //                cell.textLabel.text          = @"The special group #allpeople is a group that holds all the people you have added to Me and My BFFs.\n\nPeople that you add or delete from the app are automatically added or deleted from group #allpeople.\n\nGroup #allpeople lets you quickly get a Best Match or other group report for everyone.";
-                cell.textLabel.text          = @"The special group #allpeople is a group that holds all the people you have added to Me and My BFFs.\n\nPeople that you add or delete are automatically added or deleted from group #allpeople.\n\nGroup #allpeople lets you quickly get a Best Match or other group report for everyone.";
+                cell.textLabel.text          = @"The special group #allpeople is a group that holds all the people you have added to Me and My BFFs.\n\nPeople that you add or delete are automatically added to or deleted from group #allpeople.\n\nGroup #allpeople lets you quickly get a Best Match or other group report for every person you have added.";
 
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
@@ -3006,7 +3501,7 @@ nbn(100);
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
 //                cell.textLabel.text          = @"To send ANY REPORT as an email attachment, tap \"Share\"\n\nTo email a Group to a BFF who has this app, go to the Group, then tap \"Share\"\n\nTo import a Group someone has emailed you, open the email on the device where you have this app, and tap and hold on the email attachment";
-                cell.textLabel.text          = @"To send ANY REPORT as an email attachment, tap \"Share\"\n\nTo email a Group to a BFF who has this app, go to the Group, then tap \"Share\"\n\nTo import a Group someone has emailed you, open the email on the device where you have this app, and tap and hold on the email attachment\n\nTo have fun, get \"Me and my BFFs\" together and use this app.";
+                cell.textLabel.text          = @"To send ANY REPORT as an email attachment, tap \"Share\"\n\nTo email a Group to a BFF who has this app, go to the Group, then tap \"Share\"\n\nTo import a Group someone has emailed you, open the email on the device where you have this app.  Then tap and hold on the email attachment\n\nTo have fun, get \"Me and my BFFs\" together and use this app.";
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -3067,7 +3562,7 @@ nbn(100);
             });
             return cell;
         }
-    } // end of gbl_helpScreenDescription   "HOME brown"
+    } // end of gbl_helpScreenDescription   "HOME"
 
 
 
@@ -3134,9 +3629,10 @@ nbn(100);
     if ([gbl_helpScreenDescription isEqualToString: @"calendar year"] ) { return 15; } 
     if ([gbl_helpScreenDescription isEqualToString: @"best year"    ] ) { return  7; } 
     if ([gbl_helpScreenDescription isEqualToString: @"best day"     ] ) { return  7; } 
-    if ([gbl_helpScreenDescription isEqualToString: @"HOME brown"   ] ) { return 20; } 
+    if ([gbl_helpScreenDescription isEqualToString: @"HOME"         ] ) { return 20; } 
 
-    if ([gbl_helpScreenDescription isEqualToString: @"HOME yellow"  ] ) { return  5; } 
+    if ([gbl_helpScreenDescription isEqualToString: @"HOMEaddchangeGROUP" ] ) { return  14; } 
+    if ([gbl_helpScreenDescription isEqualToString: @"HOMEaddchangePERSON"] ) { return  17; } 
     return 1;
 }
 
@@ -3145,18 +3641,57 @@ nbn(100);
 {
 //  NSLog(@"in heightForRowAtIndexPath  INFO ");
 
-    if (   [gbl_helpScreenDescription isEqualToString: @"HOME yellow"] ) {
+    if (   [gbl_helpScreenDescription isEqualToString: @"HOMEaddchangePERSON"] ) {
 
         if (indexPath.row ==   0) return    16.0;  // spacer
-        if (indexPath.row ==   1) return    30.0;  // title for 
-        if (indexPath.row ==   2) return    50.0;  // text  for
-        if (indexPath.row ==   3) return    16.0;  // spacer
+        if (indexPath.row ==   1) return    30.0;  // title for  add person
+        if (indexPath.row ==   2) return    70.0;  // text  for add person
 
-        if (indexPath.row ==   4) return    30.0;  // text for disclaimer
+        if (indexPath.row ==   3) return    16.0;  // spacer
+        if (indexPath.row ==   4) return    36.0;  // title for personal privacy
+        if (indexPath.row ==   5) return   395.0;  // text  for personal privacy
+
+        if (indexPath.row ==   6) return    16.0;  // spacer
+        if (indexPath.row ==   7) return    30.0;  // title for person name
+        if (indexPath.row ==   8) return   110.0;  // text  for person name
+
+        if (indexPath.row ==   9) return    16.0;  // spacer
+        if (indexPath.row ==  10) return    30.0;  // title for birth city
+        if (indexPath.row ==  11) return   310.0;  // text  for birth city
+
+        if (indexPath.row ==  12) return    16.0;  // spacer
+        if (indexPath.row ==  13) return    30.0;  // title for birth date and time
+        if (indexPath.row ==  14) return   185.0;  // text  for birth date and time
+
+        if (indexPath.row ==  15) return    12.0;  // spacer
+        if (indexPath.row ==  16) return    30.0;  // text for disclaimer
     }
 
 
-    if (   [gbl_helpScreenDescription isEqualToString: @"HOME brown"] ) {
+    if (   [gbl_helpScreenDescription isEqualToString: @"HOMEaddchangeGROUP"] ) {
+
+        if (indexPath.row ==   0) return    16.0;  // spacer
+        if (indexPath.row ==   1) return    30.0;  // title for  add group
+        if (indexPath.row ==   2) return    80.0;  // text  for add group
+
+        if (indexPath.row ==   3) return    16.0;  // spacer
+        if (indexPath.row ==   4) return    30.0;  // title for add members
+        if (indexPath.row ==   5) return   200.0;  // text  for add members
+
+        if (indexPath.row ==   6) return    16.0;  // spacer
+        if (indexPath.row ==   7) return    30.0;  // title for del members
+        if (indexPath.row ==   8) return   200.0;  // text  for del members
+
+        if (indexPath.row ==   9) return    16.0;  // spacer
+        if (indexPath.row ==  10) return    30.0;  // title for share groups
+        if (indexPath.row ==  11) return   120.0;  // text  for share groups
+
+        if (indexPath.row ==  12) return    16.0;  // spacer
+        if (indexPath.row ==  13) return    30.0;  // text for disclaimer
+    }
+
+
+    if (   [gbl_helpScreenDescription isEqualToString: @"HOME"] ) {
 
         if (indexPath.row ==   0) return    16.0;  // spacer
         if (indexPath.row ==   1) return    30.0;  // title for brown home
@@ -3167,7 +3702,7 @@ nbn(100);
         if (indexPath.row ==   6) return    32.0;  // spacer
 
         if (indexPath.row ==   7) return    30.0;  // title for Example Data
-        if (indexPath.row ==   8) return   200.0;  // text  for Example Data
+        if (indexPath.row ==   8) return   225.0;  // text  for Example Data
 //        if (indexPath.row ==   9) return    50.0;  // check box for "Show Example Data"
         if (indexPath.row ==   9) return    70.0;  // check box for "Show Example Data"
 
@@ -3524,4 +4059,3 @@ nbn(100);
 //  p_fn_prtlin("");
 
 //
-

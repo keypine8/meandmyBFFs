@@ -221,7 +221,7 @@ int mamb_report_year_in_the_life(  /* called from cocoa */
 //kin(testt);
 //  if(testt != 0) {  // log only if not best year
   if(strcmp(instructions,  "return only year stress score") != 0) {  // log only if not best year
- tn();tr("in mamb_report_year_in_the_life() 2"); 
+tn();tr("in mamb_report_year_in_the_life() 2"); 
 ksn(html_f_file_name);
 ksn(csv_person_string);
 ksn(year_todo_yyyy);
@@ -282,7 +282,7 @@ ksn(instructions);
 
 /* <.> */
   } else if(strcmp(gbl_instructions,  "do day stress report and return stress score") == 0) {
-b(5);tn();ksn( gbl_csv_person_string);
+//b(5);tn();ksn( gbl_csv_person_string);
 
     allow_docin_puts = 0;   /* so short we can hard code html with no docin_puts */
 
@@ -396,7 +396,7 @@ b(5);tn();ksn( gbl_csv_person_string);
 */
 
   } else if(strcmp(gbl_instructions,  "do day stress report and return stress score") == 0) {
-b(6);
+//b(6);
     int itarget_mm;
     int itarget_dd;
     int itarget_yyyy;
@@ -416,7 +416,7 @@ b(6);
       itarget_yyyy,
       gblTargetDayScore
     );
-kin(gblTargetDayScore);
+//kin(gblTargetDayScore);
 
     /* set up return value to mamb_report_year_in_the_life()
     */
@@ -449,7 +449,7 @@ kin(gblTargetDayScore);
     strcpy(gbl_instructions,  "");  /* init gbl */
     allow_docin_puts = 1;           /* init gbl */
     fclose_fpdb_for_debug();
-b(7);trn("small end");
+//b(7);trn("small end");
     return(0);
 
   } else {
@@ -2085,8 +2085,8 @@ void do_grhs(void)
     in_stress = 0;
     out_of_stress = 0;
 
-    stress_num = Stress_val[SUBSCRIPT_FOR_HIGH_STRESS_LEVEL]
-      / SIZE_EPH_GRH_INCREMENT;  /* "stress-" label */
+    stress_num = Stress_val[SUBSCRIPT_FOR_HIGH_STRESS_LEVEL] / SIZE_EPH_GRH_INCREMENT;  /* "stress-" label */
+
     /*  Stress_val[SUBSCRIPT_FOR_LO_STRESS_LEVEL] "good-" label */
 
     /* init TABLES
@@ -2609,10 +2609,10 @@ void reverse_grh_body_and_prt(void)  /* grh used to have high stress at top */
   char linebuf[2048];
   char *p = &Swk[0];
   char *q = &Grh_body[0];
-  int we_have_hit_great_line;  /* 1=y,0=n */
-  int we_have_hit_good_line;  /* 1=y,0=n */
+  int we_have_hit_great_line;   /* 1=y,0=n */
+  int we_have_hit_good_line;    /* 1=y,0=n */
   int we_have_hit_stress_line;  /* 1=y,0=n */
-  int we_have_hit_omg_line;  /* 1=y,0=n */
+  int we_have_hit_omg_line;     /* 1=y,0=n */
   char myLastLine[2024];
   int  first_star_is_in_great, myidx;
   int  first_star_is_in_good;
@@ -2903,20 +2903,20 @@ int  have_printed_blank_top_line;  /* <.> take out */
   /* get color of last line and print an empty grh line with it */
 /* tn();b(420);ksn(gbl_save_last_line); */
   if (strstr(gbl_save_last_line, "STRESS") == NULL) {  /* only if not on stress line */
-/* ksn("PPUTTING blank line"); */
+//ksn("futdoc.c PPUTTING blank line 1");
     if (strstr(gbl_save_last_line, "cRed") != NULL) {
       sfill(myLastLine, Num_eph_grh_pts, ' '); 
       bracket_string_of(" ", myLastLine, "<span class=\"cRed\">", "</span>");
       n = sprintf(p,"       %s\n", myLastLine );  /* left margin = 7 spaces */
       f_docin_put(p,n);
-/* ksn("PPUTTING blank line"); */
+//ksn("futdoc.c PPUTTING blank line 2");
     }
     if (strstr(gbl_save_last_line, "cRe2") != NULL) {
       sfill(myLastLine, Num_eph_grh_pts, ' '); 
       bracket_string_of(" ", myLastLine, "<span class=\"cRe2\">", "</span>");
       n = sprintf(p,"       %s\n", myLastLine );  /* left margin = 7 spaces */
       f_docin_put(p,n);
-/* ksn("PPUTTING blank line"); */
+//ksn("futdoc.c PPUTTING blank line 3");
     }
   }
 

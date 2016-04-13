@@ -2048,10 +2048,10 @@ kin(my_num_elements);
   }
   len = (int)strlen(begins_with_buf);
 
-tn();trn("start saving city|prov|coun");
-  int save_idx,   dbctr;
+//tn();trn("start saving city|prov|coun");
+  int save_idx;
   save_idx = -1;  // zero-based
-  dbctr = 0; 
+  int dbctr; dbctr = 0; 
   while (starting_index_into_cities + num_places_found <= my_num_elements) {
 
     strcpy(city_buf, gbl_placetab[starting_index_into_cities + num_places_found].my_city); // <<<<===--- ------
@@ -2066,9 +2066,11 @@ tn();trn("start saving city|prov|coun");
     for(int i = 0; city_buf[i]; i++){
       city_buf_tolower[i] = tolower(city_buf[i]);
     }
-dbctr = dbctr + 1;
+
+//dbctr = dbctr + 1;
+//ki(dbctr);ks(city_buf);ks(prov_buf);ksn(coun_buf);
+
 //ki(dbctr);ks(city_buf);ki(idx_of_prov);kin(idx_of_coun);
-ki(dbctr);ks(city_buf);ks(prov_buf);ksn(coun_buf);
 //ksn(city_buf_tolower);
 
 

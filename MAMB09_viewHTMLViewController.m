@@ -26,7 +26,7 @@
     // http://stackoverflow.com/questions/18552416/uiwebview-full-screen-size
 //    webView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
 
-
+        // fill whole screen, no top/leftside gaps  in  webview  THIS WORKED
         self.outletWebView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);  // this worked
 
 
@@ -46,6 +46,59 @@
 
 
 
+
+// SOMEHOW, THIS TAKES AWAY SCRAMBLED HTML IN CAL YR WHEN ZOOMING IN WITH PINCH
+//
+//  UIWebView disable zooming when scalesPageToFit is ON
+// http://stackoverflow.com/questions/9062195/uiwebview-disable-zooming-when-scalespagetofit-is-on 
+//
+// You can use this:
+// webview.scrollView.delegate = self;   in viewDidLoad
+//
+// This  option is better and full-proof. First logic could fail in future SDKs.
+//
+-(UIView*)viewForZoomingInScrollView:(UIScrollView*)scrollView {
+    return nil;
+}
+
+
+//
+//// The copy:, cut:, delete:, paste:, select:, and selectAll: methods   this list is ACTION LIST
+//// are invoked when users tap the corresponding command
+//// in the menu managed by the UIMenuController shared instance.
+////
+//- (BOOL)canPerformAction: (SEL)action
+//              withSender: (id)sender
+//{
+////  NSLog(@"canPerformAction=!");
+//    return NO;
+//
+////    BOOL retvalue;
+////  
+////    if (action == @selector(cut:  ) ) return NO;
+////    if (action == @selector(copy: ) ) return NO;
+////    if (action == @selector(paste:) ) return NO;
+////
+////    retvalue = [super canPerformAction:action withSender:sender];
+////    return retvalue;
+//}
+//
+
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView {   // want to disable cut, copy, paste etc...
+
+  NSLog(@"webViewDidFinishLoad !");
+    // want to disable cut, copy, paste etc...
+    //
+//    [self.outletWebView  stringByEvaluatingJavaScriptFromString:@"document.documentElement.style.webkitUserSelect='none';"]; // Disable selection
+//    [self.outletWebView  stringByEvaluatingJavaScriptFromString:@"document.documentElement.style.webkitTouchCallout='none';"]; // Disable callout
+
+    [webView  stringByEvaluatingJavaScriptFromString:@"document.documentElement.style.webkitUserSelect='none';"]; // Disable selection
+    [webView  stringByEvaluatingJavaScriptFromString:@"document.documentElement.style.webkitTouchCallout='none';"]; // Disable callout
+} // end of webViewDidFinishLoad
+
+
+
 - (void)viewDidLoad
 {
     
@@ -54,6 +107,49 @@
     // Do any additional setup after loading the view.
     NSLog(@"in viewHTML viewDidLoad!");
 
+    self.outletWebView.delegate = self; // in viewDidLoad
+
+
+
+
+
+    // want to disable cut, copy, paste etc...
+//    self.outletWebView.delegate = self; // in viewDidLoad
+
+    // self.outletWebView.userInteractionEnabled = NO;  // cannot even scroll
+//<.>
+//    [[NSNotificationCenter defaultCenter] addObserver: self  // DISABLE showing of select/paste/cut etc (flashes a bit)
+//                                             selector: @selector(myMenuWillBeShown)
+//                                                 name: UIMenuControllerWillShowMenuNotification   // <<<====----
+//                                               object: nil
+//    ];
+//
+//
+//-(void)myMenuWillBeShown  // NSNotification  for DISABLE showing of select/paste/cut etc (flashes a bit, but only the 1st time)
+//{
+//    UIMenuController *menu = [UIMenuController sharedMenuController];
+//    [menu setMenuVisible: NO];
+//    [menu performSelector: @selector(setMenuVisible:)
+//               withObject: [NSNumber numberWithBool: NO]
+////               afterDelay: 0.1
+//               afterDelay: 0.0
+//    ]; //also tried 0 as interval both look quite similar
+//} // end of myMenuWillBeShown  
+//<.>
+//
+
+    // want to disable cut, copy, paste etc...
+    //
+// did not work
+//    NSString * jsCallBack = @"window.getSelection().removeAllRanges();";    
+//    [self.outletWebView  stringByEvaluatingJavaScriptFromString: jsCallBack];
+
+
+// did not work here,    try in webViewDidFinishLoad
+//    // want to disable cut, copy, paste etc...
+//    //
+//    [self.outletWebView  stringByEvaluatingJavaScriptFromString:@"document.documentElement.style.webkitUserSelect='none';"]; // Disable selection
+//    [self.outletWebView  stringByEvaluatingJavaScriptFromString:@"document.documentElement.style.webkitTouchCallout='none';"]; // Disable callout
 
 
 
@@ -832,8 +928,13 @@ nbn(901);
 //              [self.outletWebView  loadRequest: HTML_URLrequest ];
                 [self.outletWebView  loadHTMLString: myHTML_FileContents  baseURL: nil];
 
+// did not work
+//nbn(902);
+//    [self.outletWebView  stringByEvaluatingJavaScriptFromString:@"document.documentElement.style.webkitUserSelect='none';"]; // Disable selection
+//    [self.outletWebView  stringByEvaluatingJavaScriptFromString:@"document.documentElement.style.webkitTouchCallout='none';"]; // Disable callout
+
             });
-nbn(902);
+nbn(903);
 
         }  // show cal yr html
 

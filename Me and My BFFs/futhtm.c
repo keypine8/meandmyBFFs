@@ -2155,7 +2155,7 @@ void f_fn_prtlin(char *lin)
   //char myLastLine[8192], next_doclin[8192], current_prtlin[8192], thirdline[8192];
   char                   next_doclin[8192], current_prtlin[8192], thirdline[8192];
   char *ptr;
-//tn(); tr("f_fn_prtlin ="); ksn(lin);
+//tn(); tr("f_fn_prtlin         ="); ksn(lin);
 
 //ki(gbl_do_readahead);
 
@@ -2176,8 +2176,11 @@ void f_fn_prtlin(char *lin)
 /* ksn(next_doclin); */
 /* ksn(thirdline); */
 
-    //if (strstr(next_doclin, "||||||||||||||") == NULL) 
-    if (strstr(next_doclin, "''''''''''''''") == NULL) {
+    //if (strstr(next_doclin, "||||||||||||||") == NULL) /^[bkt]
+
+    
+    if (strstr(next_doclin, "''''''''''''''") == NULL)
+    {
 
       insert_minus_benchmark( lin);
 /* trn("after insert minus");ks(lin); */
@@ -2227,7 +2230,8 @@ void f_fn_prtlin(char *lin)
 
 
 /* tn();trn("in 1st line G"); */
-/* ksn(lin); */
+//tr("in 1st line G lin =");
+//ksn(lin); 
         n = sprintf(p,"%s%s", lin, myEOL);
         fput(p, n, Fp_f_HTML_file);        /* PRINT the line */
         strcpy(gbl_prtlin_lastline, p); /* save last line printed in gbl */
@@ -2266,7 +2270,7 @@ void f_fn_prtlin(char *lin)
 
       n = sprintf(p,"%s%s", writebuf, myEOL);
 /*       n = sprintf(p,"%s", writebuf); */
-/* trn("GREAT next printed=");ks(p); */
+//trn("GREAT next printed=");ks(p);
       fput(p, n, Fp_f_HTML_file);        /* PRINT the CURRENT line */
       strcpy(gbl_prtlin_lastline, p); /* save last line printed in gbl */
       return;
@@ -2293,7 +2297,7 @@ void f_fn_prtlin(char *lin)
 
 
       n = sprintf(p,"%s%s", writebuf, myEOL);
-/* trn("GOOD next printed=");ks(p); */
+//trn("GOOD next printed=");ks(p); 
       fput(p, n, Fp_f_HTML_file);
       strcpy(gbl_prtlin_lastline, p);
 
@@ -2316,7 +2320,7 @@ void f_fn_prtlin(char *lin)
 
       n = sprintf(p,"%s%s", writebuf, myEOL);
 
-/* trn("GREAT curr printed=");ks(p); */
+//trn("GREAT curr printed=");ks(p);
       fput(p, n, Fp_f_HTML_file);
       strcpy(gbl_prtlin_lastline, p);
 
@@ -2336,7 +2340,7 @@ void f_fn_prtlin(char *lin)
       memcpy(myptrtest, "       \0", 8);
 
       n = sprintf(p,"%s%s", writebuf, myEOL);
-/* trn("GOOD curr printed=");ks(p); */
+//trn("GOOD curr printed=");ks(p);
       fput(p, n, Fp_f_HTML_file);
       strcpy(gbl_prtlin_lastline, p);
 
@@ -2384,6 +2388,7 @@ void f_fn_prtlin(char *lin)
 /*     n = sprintf(p,"%s%s", "", myEOL); */
  
      n = sprintf(p,"%s",  myEOL);
+//trn("blank under 6 mths=");ks(p);
      fput(p, n, Fp_f_HTML_file);
      strcpy(gbl_prtlin_lastline, p); /* save last line printed in gbl */
 
@@ -2414,6 +2419,7 @@ void f_fn_prtlin(char *lin)
      ) {
 /*     n = sprintf(p,"%s\n", "" ); */
     n = sprintf(p,"%s%s", "", myEOL);
+//trn("second 6 mths=");ks(p);
     fput(p, n, Fp_f_HTML_file);
     strcpy(gbl_prtlin_lastline, p); /* save last line printed in gbl */
 
@@ -2448,6 +2454,7 @@ void f_fn_prtlin(char *lin)
 
       if (   strstr(gbl_prtlin_lastline, "LEVELS") != NULL) {  // put blank line after grh title
         n = sprintf(p,"%s",  myEOL);
+//trn("prt blank line after grh title");ks(p);
         fput(p, n, Fp_f_HTML_file);
         strcpy(gbl_prtlin_lastline, p); /* save last line printed in gbl */
       }
@@ -2503,7 +2510,7 @@ void f_fn_prtlin(char *lin)
      strcpy(p, " <span style=\"background-color:#ff4477\"> </span><span style=\"color:#ff4477\">---</span><span style=\"background-color:#ff4477\"> </span><span class=\"cRe2\">                                                                                       </span> ");
 
     n = (int)strlen(p);
-tr("in weird fix #3");kin(n);
+//tr("prt in weird fix #3");ks(p);
     fput(p, n, Fp_f_HTML_file);
     strcpy(gbl_prtlin_lastline, p); /* save last line printed in gbl */
 
@@ -2557,13 +2564,14 @@ tr("in weird fix #3");kin(n);
   // during bug bottom star is on stress line, get "-" in char postition 1 (should always be " ")
   //
   if (*p == '-') {   // global      char *p = &writebuf[0];
-ksn("hey");
+//ksn("hey");
       *p  = ' ';
   }
 
 
 
   fput(p, n, Fp_f_HTML_file);        /* PRINT the line */
+//tr("prt at bottom of prtlin");ks(p);tn();
   strcpy(gbl_prtlin_lastline, p); /* save last line printed in gbl */
 
 /* trn("end of f_fn_prtlin()"); */
@@ -3344,7 +3352,7 @@ void write_calendar_day_score(char *pname, int istress_score) {
 /*   sprintf(writebuf, "  <tr><td> %s</td><td> %d  </td><td></td></tr>", pname, istress_score); */
   sprintf(writebuf, "  <tr %s><td> %s</td><td> %d  </td><td></td></tr>", rowcolor, pname, istress_score);
 
-tn();tr("calendar day score=");ksn(writebuf);tn();
+//tn();tr("calendar day score=");ksn(writebuf);tn();
 
   f_fn_prtlin(writebuf);  //  this does extra processing to mess up
 
@@ -5242,7 +5250,7 @@ int insert_label_benchmark(char *line_curr, char * line_next) {
   } else {
     retval_goodtogo = 7;  // flag to run   void  change_last_7_chars()
   }
-//kin(retval_goodtogo); 
+//kin(retval_goodtogo); tr("7 means  flag to run   void  change_last_7_chars()  1=good  0=bad");
 //tn();
   return retval_goodtogo;
 
@@ -5370,12 +5378,15 @@ void  change_last_7_chars(char *line_to_print) {
       return;
     }
   }
+//ksn(line_to_print);
+
   // here trailing chars are removed, now append one sp
   sprintf(line_to_print, "%s ", workline);
 
   return;
 
 } // end of  change_last_7_chars(char *line_to_print) {
+
 
 // should be left with raw chars no html
 //

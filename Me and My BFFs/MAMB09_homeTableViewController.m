@@ -34,7 +34,18 @@
 
 @end
 
-//UITapGestureRecognizer *doubleTapGesture;   // used gbl_
+
+
+    // globals to this source module
+    //
+    // is this now visible throughout  MAMB09_homeTableViewController.m ?   YES
+    //
+    NSString *lcl_groupNameToDelete;
+    NSInteger lcl_arrayCountBeforeDelete;
+    NSInteger lcl_arrayIndexToDelete;
+    NSInteger lcl_arrayIndexOfNew_gbl_lastSelectedGroup;
+
+
 
 
 @implementation MAMB09_homeTableViewController
@@ -137,6 +148,18 @@ return YES;
     }
     return NO;
 }
+
+
+
+
+//- (void)handleSwipeLeft: (UITapGestureRecognizer *)tap
+//{
+//tn();
+//  NSLog(@"in handleSwipeLeft  in HOME! swipe");
+//} // end of handleSwipeLeft
+
+
+
 
 //
 //// Once we have determined if the user has clicked in a cell,
@@ -272,7 +295,10 @@ tn(); tr("tapped here in cell      = ");kd(pointInCell.x); kd(pointInCell.y);
 
 
     } // (UIGestureRecognizerStateEnded == tap.state) 
-}
+
+} // end of handleSingleTapInCell:(UITapGestureRecognizer *)tap
+
+
 
 //- (void)handleSingleTapInWindow:(UITapGestureRecognizer *)tap
 //{
@@ -320,6 +346,25 @@ tn(); tr("tapped here in cell      = ");kd(pointInCell.x); kd(pointInCell.y);
 
 tn();
   NSLog(@"in viewDidLoad   555  in HOME  HOME  ");
+//  NSLog(@"gbl_arrayMem HOME viewdidload =[%@]",gbl_arrayMem );
+    
+
+    gbl_currentMenuPlusReportCode = @"HOME";  // also set in viewWillAppear for coming back to HOME from other places (INFO ptr)
+  NSLog(@"gbl_currentMenuPlusReportCode =%@",gbl_currentMenuPlusReportCode );
+
+//
+//    // add a method (handleSwipeLeft) to run on SWIPE LEFT
+//    //
+//    gbl_swipeLeftGestureRecognizer = [
+//        [UISwipeGestureRecognizer alloc] initWithTarget: self
+//                                                 action: @selector( handleSwipeLeft: )
+//    ];
+//    [gbl_swipeLeftGestureRecognizer setDirection: (UISwipeGestureRecognizerDirectionLeft) ];
+//    [self.tableView addGestureRecognizer: gbl_swipeLeftGestureRecognizer ];
+//
+//    self.tableView.allowsMultipleSelectionDuringEditing = NO;  // supposed to support  swipe to delete
+
+
 
 
     // add a method (processDoubleTap) to run on double tap
@@ -483,16 +528,11 @@ tn();
 //    gbl_fromHomeCurrentSelectionType = @"person";  // set default on startup
 //    gbl_lastSelectionType            = @"person";  // set default on startup
 
-    
-
-    gbl_currentMenuPlusReportCode = @"HOME";  // also set in viewWillAppear for coming back to HOME from other places (INFO ptr)
-  NSLog(@"gbl_currentMenuPlusReportCode =%@",gbl_currentMenuPlusReportCode );
-
 
   NSLog(@"EDIT BUTTON 1   gbl_homeUseMODE = @regular mode; ");
   NSLog(@"gbl_homeUseMODE 1   =[%@]",gbl_homeUseMODE );
 
-    gbl_homeUseMODE = @"regular mode";  // determines home mode  "edit mode" or "regular mode"
+    gbl_homeUseMODE = @"report mode";  // determines home mode  "edit mode" or "report mode"
   NSLog(@"gbl_homeUseMODE 2   =[%@]",gbl_homeUseMODE );
   NSLog(@"gbl_homeEditingState=[%@]",gbl_homeEditingState);
     // gbl_homeEditingState;  // if gbl_homeUseMODE = "edit mode" then either "add" or "view or change"   for tapped person or group
@@ -556,6 +596,8 @@ tn();
 
     // set up the two nav bar arrays, one with + button for add a record, one without
     //
+            // try with always add button
+    //
     if (gbl_haveSetUpHomeNavButtons == 0) {
 nbn(100);
         gbl_haveSetUpHomeNavButtons = 1;
@@ -577,6 +619,7 @@ nbn(100);
         dispatch_async(dispatch_get_main_queue(), ^{
 
             // try with always add button
+
             // self.navigationItem.leftBarButtonItems  = gbl_homeLeftItemsWithNoAddButton;
             self.navigationItem.leftBarButtonItems     = gbl_homeLeftItemsWithAddButton;
 
@@ -587,13 +630,77 @@ nbn(100);
 //            UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 4, 44)];  // 3rd arg is horizontal length
 
   NSLog(@"EDIT BUTTON 1   set title  edit tab");
-//            self.editButtonItem.title = @"Ed2t\t";  // pretty good
-            self.editButtonItem.title = @"Edit";  // ok with no tab
 
-            UIView *tmpView = (UIView *)[self.editButtonItem performSelector:@selector(view)];
+//           self.editButtonItem.title = @"";
 
-//            self.editButtonItem.view.layer.backgroundColor = [[UIColor clearColor] CGColor];
-            tmpView.layer.backgroundColor = [[UIColor clearColor] CGColor];
+//            UIView *tmpView = (UIView *)[self.editButtonItem performSelector:@selector(view)];
+//            tmpView.layer.backgroundColor = [[UIColor clearColor] CGColor];
+
+//            [self.editButtonItem  setTitleTextAttributes: @{
+////                                     NSFontAttributeName: [UIFont fontWithName:@"Menlo-Bold" size: 19.0],
+//                                     NSFontAttributeName: [UIFont fontWithName:@"Menlo-bold"  size: 11.0]
+////                                     ,
+////                          NSForegroundColorAttributeName: [UIColor blackColor ],
+////                          NSBackgroundColorAttributeName: [UIColor cyanColor ]
+//                                  }
+//                                                forState: UIControlStateNormal
+//            ];
+//
+
+
+//            [self.editButtonItem setTitlePositionAdjustment: UIOffsetMake(-16.0f, 0.0f)  forBarMetrics: UIBarMetricsDefault]; // 
+//            [self.editButtonItem setTitlePositionAdjustment: UIOffsetMake(-12.0f, 0.0f)  forBarMetrics: UIBarMetricsDefault]; // 
+
+
+//            [self.editButtonItem setImage: gbl_yellowEdit          // edit mode bg color for button
+//            ];
+
+            //            [self.editButtonItem setImage: nil        /vi
+            // edit mode bg color for button
+//            ];
+
+
+
+//    self.editButtonItem.title = nil;   // this gets rid of left/right shift of Edit/Done buttons when pressed
+//
+//    // this gets set below to Edit or Done button image
+//    [self.editButtonItem setImage:  [[UIImage alloc] init]];     // edit mode bg color for button
+
+            [self.editButtonItem setImage: gbl_yellowEdit ];     // edit mode bg color for button
+
+
+//<.>
+//
+//    UIImage *backBtn = [UIImage imageNamed:@"iconChevronLeft_66"]; // actually left arrow
+//    backBtn = [backBtn imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal];
+//<.>
+//[[UIBarButtonItem alloc] initWithImage:
+//[[UIImage imageNamed:@"info.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
+// style: UIBarButtonItemStylePlain
+//target: self
+//action: @selector(info:)];
+//
+//<.>
+//
+
+  NSLog(@"EDIT BUTTON 1   set yellow          ");
+
+//            [self.editButtonItem setBackgroundImage: gbl_yellowEdit          // edit mode bg color for button
+//            [self.editButtonItem setBackgroundImage: nil          // edit mode bg color for button
+//                                           forState: UIControlStateNormal  
+//                                         barMetrics: UIBarMetricsDefault
+//            ];
+
+
+            self.navigationItem.rightBarButtonItems =   // "editButtonItem" is magic Apple functionality
+              [self.navigationItem.rightBarButtonItems arrayByAddingObject: self.editButtonItem]; //editButtonItem=ADD apple-provided EDIT BUTTON
+
+
+
+
+        }); // end of  dispatch_async(dispatch_get_main_queue()
+
+    } // end of   set up the two nav bar arrays, one with + button for add a record, one without
 
 
 
@@ -628,7 +735,14 @@ nbn(100);
             // [[UIBarButtonItem appearance] setTitlePositionAdjustment: UIOffsetMake(0.0f, 5.0f)  forBarMetrics: UIBarMetricsDefault];
 //            [self.editButtonItem setTitlePositionAdjustment: UIOffsetMake(-6.0f, 0.0f)  forBarMetrics: UIBarMetricsDefault];
 //            [self.editButtonItem setTitlePositionAdjustment: UIOffsetMake(-16.0f, 0.0f)  forBarMetrics: UIBarMetricsDefault]; // just right
-            [self.editButtonItem setTitlePositionAdjustment: UIOffsetMake(-16.0f, 0.0f)  forBarMetrics: UIBarMetricsDefault]; // 
+
+
+
+
+
+
+
+
             
 
 //            self.editButtonItem.layer.borderWidth = 1.0f;
@@ -665,10 +779,11 @@ nbn(100);
 //            [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerForTitle];
 
 
-
-          self.navigationItem.rightBarButtonItems =   // "editButtonItem" is magic Apple functionality
-              [self.navigationItem.rightBarButtonItems arrayByAddingObject: self.editButtonItem]; //editButtonItem=ADD apple-provided EDIT BUTTON
-
+//
+//          self.navigationItem.rightBarButtonItems =   // "editButtonItem" is magic Apple functionality
+//              [self.navigationItem.rightBarButtonItems arrayByAddingObject: self.editButtonItem]; //editButtonItem=ADD apple-provided EDIT BUTTON
+//
+//
 
 
 //  [[UINavigationBar appearance] setTranslucent: NO];
@@ -721,19 +836,25 @@ nbn(100);
 //          self.editButtonItem.backgroundImage = gbl_YellowBG  ;  // view startup default color
 
 
-  NSLog(@"EDIT BUTTON 1   set yellow          ");
-//            [self.editButtonItem setBackgroundImage: gbl_YellowBG          // edit mode bg color for button
-            [self.editButtonItem setBackgroundImage: gbl_yellowEdit          // edit mode bg color for button
-                                           forState: UIControlStateNormal  
-                                         barMetrics: UIBarMetricsDefault
-            ];
+
+//  NSLog(@"EDIT BUTTON 1   set yellow          ");
+////            [self.editButtonItem setBackgroundImage: gbl_YellowBG          // edit mode bg color for button
+//            [self.editButtonItem setBackgroundImage: gbl_yellowEdit          // edit mode bg color for button
+//                                           forState: UIControlStateNormal  
+//                                         barMetrics: UIBarMetricsDefault
+//            ];
+
+
 
 //            self.navigationItem.leftBarButtonItems = gbl_homeLeftItemsWithAddButton;
-
-
-        }); // end of  dispatch_async(dispatch_get_main_queue()
-
-    } // end of   set up the two nav bar arrays, one with + button for add a record, one without
+//nbn(200);
+//
+//        }); // end of  dispatch_async(dispatch_get_main_queue()
+//nbn(201);
+//
+//    } // end of   set up the two nav bar arrays, one with + button for add a record, one without
+//nbn(202);
+//
 
 
 
@@ -843,6 +964,8 @@ nbn(15);
 //
 //
 //
+
+
 
 
 
@@ -1208,6 +1331,7 @@ ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
 nbn(45);
     [self sectionIndexTitlesForTableView: self.tableView ];  // set up sectionindex or not after switch
 
+//  NSLog(@"gbl_arrayMem HOME viewdidload BOTTOM =[%@]",gbl_arrayMem );
 
 } // - (void)viewDidLoad
 
@@ -1324,13 +1448,13 @@ nbn(45);
 
     if ([gbl_lastSelectionType isEqualToString:@"group"]) {
         gbl_colorDIfor_home = gbl_colorSepara_grp ;
-        currentLine = [gbl_arrayGrp objectAtIndex:indexPath.row];
+        currentLine = [gbl_arrayGrp objectAtIndex: indexPath.row];
     } else {
         if ([gbl_lastSelectionType isEqualToString:@"person"]) {
-            currentLine = [gbl_arrayPer objectAtIndex:indexPath.row];
+            currentLine = [gbl_arrayPer objectAtIndex: indexPath.row];
             gbl_colorDIfor_home = gbl_colorSepara_per ;
         } else {
-            currentLine = @"Unknown|";
+            currentLine = @"Unknown";
         }
     }
     // NSLog(@"currentLine=%@",currentLine);
@@ -1381,7 +1505,7 @@ nbn(45);
             if ([gbl_lastSelectionType isEqualToString:@"group"])  myDisclosureIndicatorLabel.backgroundColor = gbl_colorHomeBG_grp; 
             if ([gbl_lastSelectionType isEqualToString:@"person"]) myDisclosureIndicatorLabel.backgroundColor = gbl_colorHomeBG_per; 
 
-//    if ([gbl_homeUseMODE isEqualToString: @"regular mode"]) 
+//    if ([gbl_homeUseMODE isEqualToString: @"report mode"]) 
 //    {
 //    } // brown regular mode, not yellow edit
 
@@ -1441,22 +1565,37 @@ nbn(45);
         // PROBLEM  name slides left off screen when you hit red round delete "-" button
         //          and delete button slides from right into screen
         //
-        cell.indentationWidth = 12.0; // these 2 keep the name on screen when hit red round delete and delete button slides from right
-        cell.indentationLevel =  3;   // these 2 keep the name on screen when hit red round delete and delete button slides from right
+//        cell.indentationWidth = 12.0; // these 2 keep the name on screen when hit red round delete and delete button slides from right
+//        cell.indentationLevel =  3;   // these 2 keep the name on screen when hit red round delete and delete button slides from right
+
+        // in yellow edit mode, for groups mode    row=0, "#allpeople"  is not editable
+        //
+        if (    [gbl_homeUseMODE            isEqualToString: @"edit mode" ]
+             && [gbl_fromHomeCurrentEntity  isEqualToString: @"group"     ] 
+             && indexPath.row               == 0                            )
+        {
+            // this worked great
+            cell.indentationWidth = 12.0; // these 2 keep the name on screen when hit red round delete and delete button slides from right
+            cell.indentationLevel =  6;   // these 2 keep the name on screen when hit red round delete and delete button slides from right
+        } else {
+            cell.indentationWidth = 12.0; // these 2 keep the name on screen when hit red round delete and delete button slides from right
+            cell.indentationLevel =  3;   // these 2 keep the name on screen when hit red round delete and delete button slides from right
+        }
 
         if ([gbl_homeUseMODE isEqualToString: @"edit mode"]) cell.tintColor = [UIColor blackColor];
 
-        if ([gbl_homeUseMODE isEqualToString: @"regular mode"]) 
+        if ([gbl_homeUseMODE isEqualToString: @"report mode"]) 
         {
 //        cell.accessoryView                       = gbl_disclosureIndicatorLabel;
             cell.accessoryView                       = myDisclosureIndicatorLabel;
             cell.accessoryType                       = UITableViewCellAccessoryDisclosureIndicator;
+
         } else {
-            // edit mode
             cell.accessoryView                       = nil;
             cell.accessoryType                       = UITableViewCellAccessoryNone;
-
         }
+
+
 
 //        cell.autoresizingMask     = UIViewAutoresizingFlexibleRightMargin;
 
@@ -1484,7 +1623,7 @@ nbn(45);
 //
 //    // rows in yellow edit mode  should not be selectable
 //    //
-//    // NSString *gbl_homeUseMODE;      // "edit mode" (yellow)   or   "regular mode" (blue)
+//    // NSString *gbl_homeUseMODE;      // "edit mode" (yellow)   or   "report mode" (blue)
 //    //
 //    if ([gbl_homeUseMODE isEqualToString: @"edit mode"]) return nil;
 //
@@ -1517,6 +1656,49 @@ nbn(45);
     cell.backgroundColor = [UIColor clearColor];
 }
 
+//
+//       // NO SWIPES
+////
+//// In your UITableView delegate, you can use tableView:didEndEditingRowAtIndexPath:
+//// to get notified when the editing of the cell ends,
+//// which is also the state when the Delete button is about to disappear.
+////
+////  ?  exists ? tableView:didBeginEditingRowAtIndexPath
+////
+////
+//// This method is called when the user swipes horizontally across a row;
+//// as a consequence, the table view sets its editing property to YES (thereby entering editing mode)
+//// and displays a Delete button in the row identified by indexPath.
+//// In this "swipe to delete" mode the table view does not display any insertion, deletion, and reordering controls.
+//// This method gives the delegate an opportunity to adjust the application's user interface to editing mode.
+//// When the table exits editing mode (for example, the user taps the Delete button), the table view calls tableView:didEndEditingRowAtIndexPath:.
+////
+//// NOTE
+//// A swipe motion across a cell does not cause the display of a Delete button
+//// unless the table view's data source implements the tableView:commitEditingStyle:forRowAtIndexPath: method.
+////
+//- (void)tableView:(UITableView *)tableView  willBeginEditingRowAtIndexPath: (NSIndexPath *)indexPath
+//{
+//tn();
+//  NSLog(@"in willBeginEditingRowAtIndexPath!");
+//} // end of willBeginEditingRowAtIndexPath
+//
+//
+//// This method is called when the table view exits editing mode
+//// after having been put into the mode by the user swiping across the row identified by indexPath.
+//// As a result, a Delete button appears in the row;
+//// however, in this "swipe to delete" mode the table view does not display any insertion, deletion, and reordering controls.
+//// When entering this "swipe to delete" editing mode,
+//// the table view sends a tableView:willBeginEditingRowAtIndexPath: message to the delegate to allow it to adjust its user interface.
+////
+//- (void)tableView:(UITableView *)tableView  didEndEditingRowAtIndexPath: (NSIndexPath *)indexPath
+//{
+//tn();
+//  NSLog(@"in didEndEditingRowAtIndexPath!");
+//} // end of didEndEditingRowAtIndexPath
+//
+//
+
 
 /*
 //// Override to support conditional editing of the table view.
@@ -1529,7 +1711,7 @@ nbn(45);
 
 /*
 // Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+//- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
 //    if (editingStyle == UITableViewCellEditingStyleDelete) {
 //        // Delete the row from the data source
@@ -1537,7 +1719,7 @@ nbn(45);
 //    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
 //        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
 //    }   
-}
+//}
 
 */
 
@@ -1559,16 +1741,23 @@ nbn(45);
 
 
 // Override to support conditional editing of the table view.
+//    // Return NO if you do not want the specified item to be editable.
+//
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
 //  NSLog(@"in canEditRowAtIndexPath!");
-//  NSLog(@"indexPath.row =%ld",indexPath.row );
+//  NSLog(@"indexPath.ro               =%ld",indexPath.row );
+//  NSLog(@"gbl_homeUseMODE            =[%@]",gbl_homeUseMODE);
+//  NSLog(@"gbl_fromHomeCurrentEntity  =[%@]",gbl_fromHomeCurrentEntity  );
 
-//
-//    // Return NO if you do not want the specified item to be editable.
-//    if (indexPath.row == 5 ) return  NO;
-//    else                     return YES;
-//
-
+    // in yellow edit mode, for groups mode    row=0, "#allpeople"  is not editable
+    //
+    if (    [gbl_homeUseMODE            isEqualToString: @"edit mode" ]
+         && [gbl_fromHomeCurrentEntity  isEqualToString: @"group"     ] 
+         && indexPath.row               == 0                            )
+    {
+  NSLog(@"in canEditRowAtIndexPath!   returning NO ");
+        return NO;   // in yellow edit mode, for groups mode    row=0, "#allpeople"  is not editable
+    }
 
     return YES;
 }
@@ -1608,6 +1797,9 @@ tn();
   NSLog(@"editingStyle =[%ld]",(long)editingStyle);
   NSLog(@"indexPath.row=%ld",(long)indexPath.row);
 
+//  NSLog(@"gbl_arrayMem  start =[%@]",gbl_arrayMem);
+tn();
+
     
     [self commitEditingStyleGUTS: editingStyle  // want to call this here and from  handleSingleTapInCell:(UITapGestureRecognizer *)tap
                forRowAtIndexPath: indexPath
@@ -1621,6 +1813,9 @@ tn();
 
 //- (void)tableView:(UITableView *)tableView commitEditingStyleGUTS: (UITableViewCellEditingStyle)  editingStyle  // DELETE METHOD, DELETE METHOD
 //                                                forRowAtIndexPath: (NSIndexPath *)                indexPath
+//
+//   DELETE METHOD  DELETE METHOD  DELETE METHOD  DELETE METHOD  DELETE METHOD  DELETE METHOD  DELETE METHOD  DELETE METHOD DELETE METHOD
+//
 - (void) commitEditingStyleGUTS: (UITableViewCellEditingStyle)  editingStyle  // DELETE METHOD GUTS, DELETE METHOD GUTS
               forRowAtIndexPath: (NSIndexPath *)                indexPath
 {
@@ -1633,15 +1828,20 @@ tn();
 
     //how can I get the text of the cell here?
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
-    NSString *nameToDelete = cell.textLabel.text;
+    NSString *personNameToDelete = cell.textLabel.text;
 
-  NSLog(@"nameToDelete =[%@]",nameToDelete );
+    if ([gbl_lastSelectionType isEqualToString: @"group" ])   lcl_groupNameToDelete = cell.textLabel.text;
+  NSLog(@"lcl_groupNameToDelete =[%@]",lcl_groupNameToDelete );
+
+
+  NSLog(@"personNameToDelete =[%@]",personNameToDelete );
 
 
 
     if (   editingStyle == UITableViewCellEditingStyleDelete
         && [gbl_lastSelectionType isEqualToString: @"person" ]
-    ) {
+    )
+    {
   NSLog(@"in commitEditingStyle  2222222");
 
 //
@@ -1674,7 +1874,7 @@ tn();
 //nbn(334);
 //
 
-        NSInteger arrayCountBeforeDelete;
+        NSInteger arrayCountBeforeDelete;   // person
         NSInteger arrayIndexToDelete;
         NSInteger arrayIndexOfNew_gbl_lastSelectedPerson;
 
@@ -1693,7 +1893,7 @@ tn();
         // here the array index to delete matches the incoming  indexPath.row
         //
         [gbl_arrayPer removeObjectAtIndex:  arrayIndexToDelete ]; 
-  NSLog(@"DELETED Person =[%@]",nameToDelete);
+  NSLog(@"DELETED Person =[%@]",personNameToDelete);
         // gbl_arrayPer  is now golden  (was sorted before)
 
         // was sorted before anyway, but sort it for safety
@@ -1724,21 +1924,25 @@ tn();
   NSLog(@"after  gbl_lastSelectedPerson          =[%@]",gbl_lastSelectedPerson);
 
 
+
+
         // delete all memberships of the deleted person
         //
         // searchfor element in gbl_arrayMem
         // matching   any group    and   member = del_me_indexPath.text
         // delete that element in gbl_arrayMem
         // 
+        // Delete by  going backwards from the highest index value to the lowest
+        //
         NSString *currGroupMemberRec;
         NSString *currGroupMemberName;  // name of group member 
 
-        for (int i=0;  i < gbl_arrayMem.count;  i++) {
+        for (int i = (int)gbl_arrayMem.count - 1;  i >= 0 ;  i--) {
 
             currGroupMemberRec  = gbl_arrayMem[i];
             currGroupMemberName = [currGroupMemberRec componentsSeparatedByString: @"|"][1]; // get fld#2 (name) - arr is 0-based 
 
-            if ( [currGroupMemberName isEqualToString: nameToDelete ] )
+            if ( [currGroupMemberName isEqualToString: personNameToDelete ] )
             {
                 // delete this array element
                 [gbl_arrayMem removeObjectAtIndex:  i ]; 
@@ -1751,6 +1955,10 @@ tn();
         gbl_justWroteMemberFile = 1;
         //
         // delete all memberships of the deleted person
+tn();
+  NSLog(@"after   delete all memberships of the deleted person!");
+//  NSLog(@"gbl_arrayMem=[%@]",gbl_arrayMem);
+tn();
 
 
         // now delete the row on the screen
@@ -1771,35 +1979,228 @@ tn();
         //
         [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.5 ];    // after arg seconds
 
-    }  // if (editingStyle == UITableViewCellEditingStyleDelete) 
+    }  // if (editingStyle == UITableViewCellEditingStyleDelete)  AND  is person
 
 
 
     if (   editingStyle == UITableViewCellEditingStyleDelete
         && [gbl_lastSelectionType isEqualToString: @"group" ]
-    ) {
+    )
+    {
   NSLog(@"in commitEditingStyle  3333333");
 
-        NSInteger arrayCountBeforeDelete;
-        NSInteger arrayIndexToDelete;
-        NSInteger arrayIndexOfNew_gbl_lastSelectedGroup;
+//        NSInteger arrayCountBeforeDelete;   // group
+//        NSInteger arrayIndexToDelete;
+//        NSInteger arrayIndexOfNew_gbl_lastSelectedGroup;
 
-        arrayCountBeforeDelete = gbl_arrayGrp.count;
-        arrayIndexToDelete     = indexPath.row;
+        lcl_arrayCountBeforeDelete = gbl_arrayGrp.count;
+        lcl_arrayIndexToDelete     = indexPath.row;
 
 
-        // before write of array data to file, disallow/ignore user interaction events
+
+        //  kind of delete DIALOGUE    where to put it ?
+        // answer; put it here so user can CANCEL before any db stuff
+
+tn();
+  NSLog(@"CHOOSE KIND OF DELETE !");
+        do { // CHOOSE KIND OF DELETE  =============================================================================================
+
+//            gbl_kindOfDelete  = @"delete group only";  // default
+
+            gbl_kindOfDelete  = nil;  // default
+
+            // choose kind of delete
+            // offer to do cascading delete
+            //
+            NSString *saveTitle;
+            NSString *saveMsg;
+            saveTitle = @"Choose Kind of Delete\n";
+
+            saveMsg = @"Delete Group Only\n  Each person in the group remains in the app.\n\nDelete Group and Members\n  Each person in the group is deleted from the app\n  and also removed from any other groups he is a member of.";
+
+
+            NSMutableParagraphStyle *myParagraphStyle = [[NSMutableParagraphStyle alloc] init];
+            myParagraphStyle.alignment                = NSTextAlignmentLeft;
+            myParagraphStyle.headIndent               = 12;
+            //                myParagraphStyle.firstLineHeadIndent      = 12;
+
+
+            NSDictionary *myNeededAttribsMessage = @{
+                //   e.g.
+                ////                                      NSForegroundColorAttributeName: self.label.textColor,
+                ////                                      NSBackgroundColorAttributeName: cell.textLabel.attributedText
+                ////                                      NSBackgroundColorAttributeName: cell.textLabel.textColor
+                //                                      NSFontAttributeName: cell.textLabel.font,
+                //                                      NSBackgroundColorAttributeName: cell.textLabel.backgroundColor
+                //
+                //
+                //            NSMutableAttributedString *myAttributedTextLabelExplain = 
+                //                [[NSMutableAttributedString alloc] initWithString: allLabelExplaintext
+                //                                                       attributes: myNeededAttribs     ];
+                //
+
+                //                NSBackgroundColorAttributeName: retvalUILabel.attributedText.backgroundColor
+                //                NSBackgroundColorAttributeName: retvalUILabel.backgroundColor
+
+                  NSParagraphStyleAttributeName : myParagraphStyle,
+                  NSForegroundColorAttributeName: [UIColor blackColor],
+                  NSBackgroundColorAttributeName: gbl_colorEditingBG,
+                             NSFontAttributeName: [UIFont systemFontOfSize: 16]
+
+            };
+            NSDictionary *myNeededAttribsTitle = @{
+        //                                 NSFontAttributeName: [UIFont boldSystemFontOfSize: 16]
+        //                      NSForegroundColorAttributeName: [UIColor blueColor],
+        //                      NSForegroundColorAttributeName: gbl_color_cAplBlue,
+        //                      NSForegroundColorAttributeName: [UIColor darkGrayColor],
+                  NSForegroundColorAttributeName: [UIColor blackColor],
+                             NSFontAttributeName: [UIFont boldSystemFontOfSize: 18]
+
+            };
+
+
+            NSMutableAttributedString *myAttributedMessage = [
+                [ NSMutableAttributedString alloc ] initWithString: saveMsg
+                                                        attributes: myNeededAttribsMessage
+            ];
+            NSMutableAttributedString *myAttributedTitle = [
+                [ NSMutableAttributedString alloc ] initWithString: saveTitle
+                                                        attributes: myNeededAttribsTitle
+            ];
+
+
+
+            UIAlertController *myActionSheet = [UIAlertController alertControllerWithTitle: saveTitle
+                                                                                   message: saveMsg
+                                                                            preferredStyle: UIAlertControllerStyleActionSheet];
+            [myActionSheet setValue: myAttributedTitle 
+                             forKey: @"attributedTitle"
+            ];
+            [myActionSheet setValue: myAttributedMessage 
+                             forKey: @"attributedMessage"
+            ];
+
+            [myActionSheet addAction: 
+                [UIAlertAction actionWithTitle: @"Cancel"
+                                         style: UIAlertActionStyleCancel
+                                       handler: ^(UIAlertAction *action) {
+                                           [self dismissViewControllerAnimated: YES completion: ^{   }  ];
+                                       }
+                ]
+            ];
+            [myActionSheet addAction:
+                [UIAlertAction actionWithTitle: @"Delete Group Only"
+        //                                 style: UIAlertActionStyleDestructive
+                                         style: UIAlertActionStyleDefault
+                                       handler: ^(UIAlertAction *action) {
+  NSLog(@"pressed   delete group only");
+                                           gbl_kindOfDelete = @"delete group only";   // or  "delete group and members"
+  NSLog(@"gbl_kindOfDelete 11 =[%@]",gbl_kindOfDelete);
+        //                                               [view dismissViewControllerAnimated: YES  completion: nil];
+        //                [self.navigationController popViewControllerAnimated: YES]; // "Back" out of save dialogue
+        //                [myActionSheet popViewControllerAnimated: YES]; // "Back" out of save dialogue
+
+
+                              // before write of array data to file, disallow/ignore user interaction events
+                              //
+                              MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
+                              [myappDelegate mamb_beginIgnoringInteractionEvents ];
+
+
+                                           [self doActualGroupDelete ];
+                                           [myActionSheet dismissViewControllerAnimated: YES  completion: nil];
+                                       }
+                ]
+            ];
+            [myActionSheet addAction:
+                [UIAlertAction actionWithTitle: @"Delete Group and Members"
+        //                                 style: UIAlertActionStyleDestructive
+                                         style: UIAlertActionStyleDefault
+                                       handler: ^(UIAlertAction *action) {
+
+  NSLog(@"pressed   delete group and members");
+                                           gbl_kindOfDelete = @"delete group and members";   // or  "delete group only"
+  NSLog(@"gbl_kindOfDelete 12 =[%@]",gbl_kindOfDelete);
+
+
+                              // before write of array data to file, disallow/ignore user interaction events
+                              //
+                              MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
+                              [myappDelegate mamb_beginIgnoringInteractionEvents ];
+
+
+                                           [self doActualGroupDelete ];
+                                           [myActionSheet dismissViewControllerAnimated: YES  completion: nil];
+        //                                               [self dismissViewControllerAnimated: YES completion: ^{   } ];
+                                       }
+                ]
+            ];
+
+        //    myActionSheet.view.transparent = NO;
+        //    myActionSheet.view.backgroundColor = [UIColor whiteColor];
+        //    myActionSheet.view.backgroundColor = [UIColor greenColor];
+        //    myActionSheet.view.backgroundColor = gbl_colorHomeBG;
+        //    myActionSheet.view.tintColor =  [UIColor blackColor];  // colors choices
+        //                myActionSheet.view.backgroundColor = gbl_colorEditingBG;
+
+
+            // Present action sheet.
+            //
+            [self presentViewController: myActionSheet animated: YES completion: nil];
+
+  NSLog(@"gbl_kindOfDelete 1 =[%@]",gbl_kindOfDelete);
+            return;
+
+    } while (FALSE); // CHOOSE KIND OF DELETE  ==============================================================================
+
+        // end of CHOOSE KIND OF DELETE  ======================================================================================
+
+
+        // now delete the row on the screen
+        // and put highlight on row number for  arrayIndexOfNew_gbl_lastSelectedPerson
+        //
+        dispatch_async(dispatch_get_main_queue(), ^{  
+
+            [self.tableView deleteRowsAtIndexPaths: [NSArray arrayWithObject: indexPath]   // now delete the row on the screen
+                                  withRowAnimation: UITableViewRowAnimationFade
+            ];
+
+            gbl_scrollToCorrectRow = 1;
+            [self putHighlightOnCorrectRow ];
+        });
+
+
+        // after write of array data to file, allow user interaction events again
         //
         MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
+        [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.5 ];    // after arg seconds
 
-        [myappDelegate mamb_beginIgnoringInteractionEvents ];
+
+    }  // if (editingStyle == UITableViewCellEditingStyleDelete)  AND  is GROUP
 
 
-        // delete the array element for this cell
+
+}  // end of commitEditingStyleGUTS
+
+
+
+- (void) doActualGroupDelete  //  all db actions    screen actions come just after this
+{
+tn();
+  NSLog(@"doActualGroupDelete ");
+
+
+        // all DB STUFF for the delete follows here
+
+        MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
+
+        // 1. of 3   DELETE THE   gbl_arrayGrp   ARRAY ELEMENT for this cell
         // here the array index to delete matches the incoming  indexPath.row
         //
-        [gbl_arrayGrp removeObjectAtIndex:  arrayIndexToDelete ]; 
-  NSLog(@"DELETED Group =[%@]",nameToDelete);
+
+        [gbl_arrayGrp removeObjectAtIndex:  lcl_arrayIndexToDelete ]; 
+  NSLog(@"DELETED Group  !");
+  NSLog(@"lcl_arrayIndexToDelete=[%ld]", (long) lcl_arrayIndexToDelete);
 
         // gbl_arrayGrp  is now golden  (was sorted before)
 
@@ -1816,40 +2217,51 @@ tn();
         // to be the "nearest" group after this deleted one 
         // UNLESS deleted one IS the last group, then the one before.
         //
-        if ( arrayIndexToDelete == arrayCountBeforeDelete - 1) {                       // if deleted last element
-            arrayIndexOfNew_gbl_lastSelectedGroup  = arrayCountBeforeDelete - 1 - 1;  //      new = last element minus one
+        if ( lcl_arrayIndexToDelete == lcl_arrayCountBeforeDelete - 1) {                       // if deleted last element
+            lcl_arrayIndexOfNew_gbl_lastSelectedGroup  = lcl_arrayCountBeforeDelete - 1 - 1;  //      new = last element minus one
         } else {
-            arrayIndexOfNew_gbl_lastSelectedGroup  = arrayIndexToDelete;              // else new = last element
+            lcl_arrayIndexOfNew_gbl_lastSelectedGroup  = lcl_arrayIndexToDelete;              // else new = last element
         }
   NSLog(@"before gbl_fromHomeCurrentSelectionPSV =[%@]",gbl_fromHomeCurrentSelectionPSV );
   NSLog(@"before gbl_lastSelectedGroup   I       =[%@]",gbl_lastSelectedGroup);
 
-        gbl_fromHomeCurrentSelectionPSV  = gbl_arrayGrp[arrayIndexOfNew_gbl_lastSelectedGroup];
+        gbl_fromHomeCurrentSelectionPSV  = gbl_arrayGrp[lcl_arrayIndexOfNew_gbl_lastSelectedGroup];
         gbl_lastSelectedGroup            = [gbl_fromHomeCurrentSelectionPSV  componentsSeparatedByString:@"|"][0]; // get fld1 (name) 0-based 
 
   NSLog(@"after  gbl_fromHomeCurrentSelectionPSV =[%@]",gbl_fromHomeCurrentSelectionPSV );
   NSLog(@"after  gbl_lastSelectedGroup           =[%@]",gbl_lastSelectedGroup);
 
 
-        // delete all memberships of the deleted group
+
+  NSLog(@"2. of 3  DELETE ALL MEMBERSHIPS of people in the deleted group!");
+
+        // 2. of 3  DELETE ALL MEMBERSHIPS of people in the deleted group
         //
         // searchfor element in gbl_arrayMem
         // matching   any group    and   member = del_me_indexPath.text
         // delete that element in gbl_arrayMem
         // 
+        // Delete by  going backwards from the highest index value to the lowest
+        // 
         NSString *currGroupMemberRec;
         NSString *currGroupName;  // name of group 
+        NSString *currMemberName;  // name of group mbr
 
-        for (int i=0;  i < gbl_arrayMem.count;  i++) {
+
+//        for (int i=0;  i < gbl_arrayMem.count;  i++) {
+        for (int i = (int)gbl_arrayMem.count - 1;  i >= 0 ;  i--) {
 
             currGroupMemberRec  = gbl_arrayMem[i];
-            currGroupName       = [currGroupMemberRec componentsSeparatedByString: @"|"][1]; // get fld#2 (name) - arr is 0-based 
+            currGroupName       = [currGroupMemberRec componentsSeparatedByString: @"|"][0]; // get fld#1 (grpname) - arr is 0-based 
+            currMemberName      = [currGroupMemberRec componentsSeparatedByString: @"|"][1]; // get fld#1 (grpname) - arr is 0-based 
+  NSLog(@"currGroupName       =[%@]",currGroupName       );
+  NSLog(@"currMemberName      =[%@]",currMemberName       );
 
-            if ( [currGroupName isEqualToString: nameToDelete ] )
+            if ( [currGroupName isEqualToString: lcl_groupNameToDelete ] )
             {
                 // delete this array element
                 [gbl_arrayMem removeObjectAtIndex:  i ]; 
-  NSLog(@"DELETED membership =[%@]",currGroupMemberRec);
+  NSLog(@"DELETED membership =[%@]", currGroupMemberRec);
             }
         }  // for each group member of all groups
         // was sorted before anyway, but sort it for safety
@@ -1859,28 +2271,63 @@ tn();
         //
         // delete all memberships of the deleted group
 
+return;
 
-        // now delete the row on the screen
-        // and put highlight on row number for  arrayIndexOfNew_gbl_lastSelectedGroup
+        // 3. of 3  DELETE EACH  PERSON IN THE GROUP   // answer = NO     can there be ~ example people in the group ?
         //
-        dispatch_async(dispatch_get_main_queue(), ^{  
 
-            [self.tableView deleteRowsAtIndexPaths: [NSArray arrayWithObject: indexPath]   // now delete the row on the screen
-                                  withRowAnimation: UITableViewRowAnimationFade
-            ];
+        if ([gbl_kindOfDelete isEqualToString: @"delete group and members" ])
+        {
+  NSLog(@"// 3. of 3  DELETE EACH  PERSON IN THE GROUP !");
+            // delete each person in the deleted group from gbl_arrayPer 
 
-            gbl_scrollToCorrectRow = 1;
-            [self putHighlightOnCorrectRow ];
-        });
-
-        // after write of array data to file, allow user interaction events again
-        //
-        [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.5 ];    // after arg seconds
-
-    }  // if (editingStyle == UITableViewCellEditingStyleDelete) 
+            // get array  gbl_namesInCurrentGroup
+            [myappDelegate get_gbl_numMembersInCurrentGroup ];   // also populates gbl_numMembersInCurrentGroup  using  gbl_lastSelectedGroup
 
 
-}  // end of commitEditingStyleGUTS
+            // delete each member person in this group   from gbl_arrayPer 
+            //
+            NSString *prefixStr7;
+
+            for (NSString *mbrName  in  gbl_namesInCurrentGroup )  // delete all these persons from  gbl_arrayPer
+            {
+  NSLog(@"mbrName=[%@]",mbrName);
+                NSInteger idx;
+                idx = -1;
+                prefixStr7 = [NSString stringWithFormat: @"%@|", mbrName];  // notice '|'
+                for (NSString *elt in gbl_arrayPer) {
+                    idx = idx + 1;
+                    if ([elt hasPrefix: prefixStr7]) { 
+  NSLog(@"DELETED PERSON=[%@]", elt);
+                        [gbl_arrayPer removeObjectAtIndex:  idx ]; // delete this array element
+                        break;
+                    }
+  NSLog(@"DID NOT DELETE PERSON=[%@]", prefixStr7 );
+                }
+
+            } // for each member to delete
+
+
+            // was sorted before anyway, but sort it for safety
+            [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription:  (NSString *) @"member"]; // sort array by name
+
+            [myappDelegate mambWriteNSArrayWithDescription:               (NSString *) @"member"]; // write new array data to file
+            //  [myappDelegate mambReadArrayFileWithDescription:              (NSString *) @"person"]; // read new data from file to array
+
+
+            gbl_justWrotePersonFile = 1;
+
+
+        } // 3. of 3   delete each person in group  (if appropriate)
+
+
+    dispatch_async(dispatch_get_main_queue(), ^{  
+        [self.navigationController popViewControllerAnimated: YES]; // actually do the "Back" action
+    });
+
+
+} // end of doActualGroupDelete 
+
 
 
 
@@ -1927,6 +2374,31 @@ tn();
 } // end of  prepareForSegue 
 
 
+-(IBAction) pressedChangeGroupName  
+{
+tn();
+  NSLog(@"in  pressedChangeGroupName !");
+  NSLog(@"gbl_lastSelectedGroup=[%@]",gbl_lastSelectedGroup);
+
+    gbl_homeEditingState = @"view or change";
+    
+
+    //  REMOVE OLD  gbl_toolbarHomeMaintenance 
+    //
+    for( UIView *sub_view in [ self.navigationController.view subviews ] ) { // remove subview (gbl_toolbarHomeMaintenance  - tag=34 ) , if existing
+  NSLog(@"sub_view =[%@]",sub_view );
+  NSLog(@"sub_view.tag =[%ld]",(long)sub_view.tag );
+        if(sub_view.tag == 34) {
+  NSLog(@" REMOVED OLD  gbl_toolbarHomeMaintenance  ");
+            [sub_view removeFromSuperview ];
+        }
+    }
+
+    [self performSegueWithIdentifier: @"segueHomeToAddChange"  sender: self ]; //  
+
+} // end of pressedChangeGroupName  
+
+
 
 -(IBAction) pressedShareEntities    // People or Groups 
 {
@@ -1950,29 +2422,35 @@ tn();
         }
 
         // new segue "segueHomeToSelPerson"   to pick people or groups to share
-        [self performSegueWithIdentifier:@"segueHomeToSelPerson" sender:self]; //  
+//        [self performSegueWithIdentifier:@"segueHomeToSelPerson" sender:self]; //  
 //<.>
+       // here call screen to pick entities to share
+       // TODO  
+
 
     });
 } // end of pressedShareEntities
 
 
--(IBAction) pressedBackupAll       // all People, all Groups
-{
-  NSLog(@"in   pressedBackupAll!  in HOME");
-
-    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
-    [myappDelegate mamb_beginIgnoringInteractionEvents ];
-   
-
-    [myappDelegate mamb_beginIgnoringInteractionEvents ];
-   
-
-    [myappDelegate doBackupAll ];  //  all People, all Groups  
-
-  NSLog(@"back from [myappDelegate doBackupAll ];  ");
-
-} // end of pressedBackupAll
+// 20160401 put this button in HOME info at bottom
+//
+//-(IBAction) pressedBackupAll       // all People, all Groups
+//{
+//  NSLog(@"in   pressedBackupAll!  in HOME");
+//
+//    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
+//    [myappDelegate mamb_beginIgnoringInteractionEvents ];
+//   
+//
+//    [myappDelegate mamb_beginIgnoringInteractionEvents ];
+//   
+//
+//    [myappDelegate doBackupAll ];  //  all People, all Groups  
+//
+//  NSLog(@"back from [myappDelegate doBackupAll ];  ");
+//
+//} // end of pressedBackupAll
+//
 
 
 
@@ -1980,6 +2458,20 @@ tn();
 {
   NSLog(@"in   infoButtonAction!  in HOME");
 //tn();
+
+    dispatch_async(dispatch_get_main_queue(), ^{                                
+//                for( UIView *sub_view in [ self.view subviews ] ) { // remove subview (gbl_toolbarHomeMaintenance  - tag=34 ) , if existing
+        for( UIView *sub_view in [ self.navigationController.view subviews ] ) { // remove subview (gbl_toolbarHomeMaintenance  - tag=34 ) , if existing
+  NSLog(@"sub_view =[%@]",sub_view );
+  NSLog(@"sub_view.tag =[%ld]",(long)sub_view.tag );
+            if(sub_view.tag == 34) {
+  NSLog(@" REMOVED OLD  gbl_toolbarHomeMaintenance  ");
+                [sub_view removeFromSuperview ];
+            }
+        }
+    });
+
+
     // if 2 rows have highlight, remove one
 
 //
@@ -2025,11 +2517,12 @@ tn();
 //  // gbl_homeEditingState   "add" for add a new person or group, "view or change" for tapped person or group
 //  gbl_homeEditingState = @"view or change";  // this is default state when entering edit mode (addChangeViewController)
 //
-//  gbl_homeUseMODE = @"edit mode";   // determines home mode  @"edit mode" or @"regular mode"
+//  gbl_homeUseMODE = @"edit mode";   // determines home mode  @"edit mode" or @"report mode"
 //  [self.tableView reloadData];
 //
 //
 //} // end of  pressedEditButtonAction
+//
 
 
 
@@ -2214,31 +2707,64 @@ tn();
 
     dispatch_after(mytime, dispatch_get_main_queue(), ^{       // do after delay of mytime    dispatch    dispatch    dispatch   dispatch  
 
+//  NSLog(@"---------- 1 ---- in switchentity ----------------------------------------");
+//  NSLog(@"gbl_currentMenuPrefixFromHome    =[%@]",gbl_currentMenuPrefixFromHome);
+//  NSLog(@"gbl_lastSelectionType            =[%@]",gbl_lastSelectionType            );
+//  NSLog(@"gbl_lastSelectedGroup            =[%@]",gbl_lastSelectedGroup     );
+//  NSLog(@"gbl_lastSelectedPerson           =[%@]",gbl_lastSelectedPerson     );
+//  NSLog(@"gbl_fromHomeCurrentSelectionType =[%@]",gbl_fromHomeCurrentSelectionType );
+//  NSLog(@"gbl_fromHomeCurrentSelectionPSV  =[%@]",gbl_fromHomeCurrentSelectionPSV);
+//  NSLog(@"gbl_fromHomeCurrentEntity        =[%@]",gbl_fromHomeCurrentEntity        );
+//  NSLog(@"gbl_fromHomeCurrentEntityName    =[%@]",gbl_fromHomeCurrentEntityName   );
+//  NSLog(@"--------------------------------------------------------------------------");
+//
         //// start DO STUFF HERE
     if ([gbl_lastSelectionType isEqualToString:@"group"]) {
-        // NSLog(@"change grp to per!");
+
+        // if, coming into switchEntity, gbl_lastSelectionType  is "group",
+        // we need to change everything to "person" here
+
+//  NSLog(@"change grp to per!");
         //_mambCurrentSelectionType = @"person";
         gbl_fromHomeCurrentEntity        = @"person";
         gbl_fromHomeCurrentSelectionType = @"person";
         gbl_lastSelectionType            = @"person";
+        gbl_fromHomeCurrentEntityName    = gbl_lastSelectedPerson; 
         gbl_currentMenuPrefixFromHome    = @"homp"; 
         gbl_colorHomeBG                  = gbl_colorHomeBG_per;
         self.tableView.separatorColor    = gbl_colorSepara_per;
+
+        gbl_fromHomeCurrentSelectionPSV = [myappDelegate getPSVforPersonName: (NSString *) gbl_lastSelectedPerson]; 
+
     } else if ([gbl_lastSelectionType isEqualToString:@"person"]){
-        // NSLog(@"change per to grp!");
+
+        // if, coming into switchEntity, gbl_lastSelectionType  is "person",
+        // we need to change everything to "group" here
+
+//  NSLog(@"change per to grp!");
         //_mambCurrentSelectionType = @"person";
         gbl_fromHomeCurrentEntity        = @"group";
         gbl_fromHomeCurrentSelectionType = @"group";
         gbl_lastSelectionType            = @"group";
+        gbl_fromHomeCurrentEntityName    = gbl_lastSelectedGroup;           
         gbl_currentMenuPrefixFromHome    = @"homg"; 
         gbl_colorHomeBG                  = gbl_colorHomeBG_grp;
         self.tableView.separatorColor    = gbl_colorSepara_grp;
 
+        gbl_fromHomeCurrentSelectionPSV = [myappDelegate getPSVforGroupName: (NSString *) gbl_lastSelectedGroup]; 
     }
-    NSLog(@"gbl_fromHomeCurrentEntity        =%@",gbl_fromHomeCurrentEntity        );
-    NSLog(@"gbl_fromHomeCurrentSelectionType =%@",gbl_fromHomeCurrentSelectionType );
-    NSLog(@"gbl_lastSelectionType            =%@",gbl_lastSelectionType            );
-    NSLog(@"gbl_currentMenuPrefixFromHome              =%@",gbl_currentMenuPrefixFromHome);
+//tn();
+//  NSLog(@"---------- 2 -------------------------------------------------------------");
+//  NSLog(@"gbl_currentMenuPrefixFromHome    =[%@]",gbl_currentMenuPrefixFromHome);
+//  NSLog(@"gbl_lastSelectionType            =[%@]",gbl_lastSelectionType            );
+//  NSLog(@"gbl_lastSelectedGroup            =[%@]",gbl_lastSelectedGroup     );
+//  NSLog(@"gbl_lastSelectedPerson           =[%@]",gbl_lastSelectedPerson     );
+//  NSLog(@"gbl_fromHomeCurrentSelectionType =[%@]",gbl_fromHomeCurrentSelectionType );
+//  NSLog(@"gbl_fromHomeCurrentSelectionPSV  =[%@]",gbl_fromHomeCurrentSelectionPSV);
+//  NSLog(@"gbl_fromHomeCurrentEntity        =[%@]",gbl_fromHomeCurrentEntity        );
+//  NSLog(@"gbl_fromHomeCurrentEntityName    =[%@]",gbl_fromHomeCurrentEntityName   );
+//  NSLog(@"--------------------------------------------------------------------------");
+//
 
 
   NSLog(@"in switchEntity,  do handleMaintenanceToolbar  ");
@@ -2259,7 +2785,7 @@ tn();
         if ([gbl_fromHomeCurrentEntity isEqualToString: @"group"]) {
 nbn(50);
 
-            // NSLog(@"reload table here!");
+NSLog(@"in switchEntity, GROUP  reload table here!");
             [self.tableView reloadData];
 nbn(51);
 
@@ -2338,7 +2864,7 @@ nbn(55);
         if ([gbl_fromHomeCurrentEntity isEqualToString: @"person"]) {
 
 
-            // NSLog(@"reload table here!");
+NSLog(@"in switchEntity, PERSON  reload table here!");
             [self.tableView reloadData];
 
             // highlight lastEntity row in tableview
@@ -2439,6 +2965,7 @@ NSLog(@"in viewDidAppear()  in HOME");
   NSLog(@"gbl_ExampleData_show=[%@]",gbl_ExampleData_show);
   NSLog(@"gbl_homeUseMODE     =[%@]",gbl_homeUseMODE );
 
+//  NSLog(@"gbl_arrayMem HOME viewdidAppear TOP =[%@]",gbl_arrayMem );
 
 //            if ([gbl_homeUseMODE isEqualToString: @"edit mode" ] )
 //            {
@@ -2473,7 +3000,7 @@ NSLog(@"in viewDidAppear()  in HOME");
 
     if (gbl_ExampleData_show_switchChanged == 1)
     {
-  NSLog(@"reloading tableview because gbl_ExampleData_show_switchChanged == 1");
+  NSLog(@"reload tableview because gbl_ExampleData_show_switchChanged == 1");
 
         gbl_ExampleData_show_switchChanged = 0;
 
@@ -2488,7 +3015,7 @@ NSLog(@"in viewDidAppear()  in HOME");
     ) {
         gbl_justAddedPersonRecord  = 0;
         gbl_justAddedGroupRecord   = 0;
-  NSLog(@"reloading tableview because have added an entity");
+  NSLog(@"reload tableview because have added an entity");
 
         [self.tableView reloadData];
 
@@ -2637,6 +3164,30 @@ tn();
   NSLog(@"gbl_colorHomeBG=[%@]",gbl_colorHomeBG);
 
 
+    // in yellow edit mode, for groups mode    row=0, "#allpeople"  is not editable
+    //
+    if (    [gbl_homeUseMODE            isEqualToString: @"edit mode" ]
+         && [gbl_fromHomeCurrentEntity  isEqualToString: @"group"     ] 
+         && indexPath.row               == 0                            )
+    {
+        // put up dialogue   cannot edit group  #allpeople
+        //
+        UIAlertController* alert = [UIAlertController alertControllerWithTitle: @"Cannot Edit #allpeople"
+                                                                       message: @"The app automatically maintains it."
+                                                                preferredStyle: UIAlertControllerStyleAlert  ];
+         
+        UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                            style: UIAlertActionStyleDefault
+                                                          handler: ^(UIAlertAction * action) {
+            NSLog(@"Ok button pressed");
+        } ];
+         
+        [alert addAction:  okButton];
+
+        [self presentViewController: alert  animated: YES  completion: nil   ];
+        
+    }
+
 //    gbl_mynow = [[[NSDate alloc] init] timeIntervalSince1970];
 //
 //  NSLog(@"gbl_mynow        =[%f]",gbl_mynow );
@@ -2660,7 +3211,7 @@ tn();
         gbl_homeEditingState = @"view or change";  // "add" for add a new person or group, "view or change" for tapped person or group
     }
 
-    if ( [gbl_homeUseMODE isEqualToString: @"regular mode" ] )
+    if ( [gbl_homeUseMODE isEqualToString: @"report mode" ] )
     {
         gbl_homeEditingState = nil;
         ;  // just go ahead with regular report selection functionality
@@ -2805,6 +3356,10 @@ tn();
   NSLog(@"gbl_ExampleData_show=[%@]",gbl_ExampleData_show);
 
 
+    gbl_haveAddedNavBarRightItems = 0;  // init
+
+//  NSLog(@"gbl_arrayMem viewWillAppear   =[%@]",gbl_arrayMem );
+
 //
 //    // put on a bottom FOOTER to account for BOTTOM TOOLBAR if this is yellow edit mode
 //    //
@@ -2826,7 +3381,7 @@ tn();
 //
 
 
-    //   gbl_homeUseMODE;      // "edit mode" (yellow)   or   "regular mode" (blue)
+    //   gbl_homeUseMODE;      // "edit mode" (yellow)   or   "report mode" (blue)
     if ([gbl_homeUseMODE isEqualToString:@"edit mode"]) {
 
         [self.tableView setEditing: YES animated: YES];  // turn cocoa editing mode on
@@ -2889,7 +3444,7 @@ nbn(140);
   NSLog(@" in handleMaintenanceToolbar! in HOME ");
   NSLog(@"gbl_homeUseMODE =[%@]",gbl_homeUseMODE );
 
-//    if ([gbl_homeUseMODE isEqualToString: @"regular mode" ] )   // = brown
+//    if ([gbl_homeUseMODE isEqualToString: @"report mode" ] )   // = brown
 //    {
 //        gbl_toolbarHomeMaintenance              = nil;
 //        self.navigationController.toolbarHidden =  NO;  // ensure that the bottom of screen toolbar IS NOT visible 
@@ -2925,19 +3480,31 @@ nbn(140);
 //    if ([gbl_homeUseMODE isEqualToString: @"edit mode" ] )   // = yellow
 //    {
         NSString *shareTitle; 
-        if ([gbl_lastSelectionType isEqualToString:@"person"])  shareTitle = @"Share_people";
-        if ([gbl_lastSelectionType isEqualToString:@"group" ])  shareTitle = @"Share_groups";
+//        if ([gbl_lastSelectionType isEqualToString:@"person"])  shareTitle = @"Share_people_by_email";
+        if ([gbl_lastSelectionType isEqualToString:@"person"])  shareTitle = @"Share people by email";
+//        if ([gbl_lastSelectionType isEqualToString:@"group" ])  shareTitle = @"Share_groups_by_email";
+//        if ([gbl_lastSelectionType isEqualToString:@"group" ])  shareTitle = @"Share_groups";
+        if ([gbl_lastSelectionType isEqualToString:@"group" ])  shareTitle = @"Share groups";
         UIBarButtonItem *shareEntity = [[UIBarButtonItem alloc]initWithTitle: shareTitle
                                                                    style: UIBarButtonItemStylePlain
                                                                 //style: UIBarButtonItemStyleBordered
                                                                   target: self
                                                                   action: @selector(pressedShareEntities)]; // People or Groups 
 
-//        UIBarButtonItem *backupAll   = [[UIBarButtonItem alloc]initWithTitle: @"Backup_by_email" 
-        UIBarButtonItem *backupAll   = [[UIBarButtonItem alloc]initWithTitle: @"Backup" 
-                                                                   style: UIBarButtonItemStylePlain
-                                                                  target: self
-                                                                  action: @selector(pressedBackupAll)];
+        // 20160401 put this button in HOME info at bottom
+        //
+        //        UIBarButtonItem *backupAll   = [[UIBarButtonItem alloc]initWithTitle: @"Backup_all" 
+        //                                                                   style: UIBarButtonItemStylePlain
+        //                                                                  target: self
+        //                                                                  action: @selector(pressedBackupAll)];
+        //
+
+
+//        UIBarButtonItem *changeGroupName   = [[UIBarButtonItem alloc]initWithTitle: @"Change_group_name" 
+        UIBarButtonItem *changeGroupName   = [[UIBarButtonItem alloc]initWithTitle: @"Change group name" 
+                                                                             style: UIBarButtonItemStylePlain
+                                                                            target: self
+                                                                            action: @selector(pressedChangeGroupName)];
 
 
         UIBarButtonItem *myFlexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemFlexibleSpace
@@ -3015,7 +3582,7 @@ nbn(140);
   NSLog(@" SET toolbar hidden =  NO");
 
   NSLog(@"gbl_homeUseMODE =[%@]",gbl_homeUseMODE );
-    if ([gbl_homeUseMODE isEqualToString:@"regular mode"])
+    if ([gbl_homeUseMODE isEqualToString:@"report mode"])
     {
   NSLog(@"SET toolbar hidden = YES");
         y_value_of_toolbar  = y_value_of_toolbar  + 100.0;  // MOVE the bottom toolbar off the bottom of the screen  *****
@@ -3051,9 +3618,24 @@ nbn(140);
 //<.>
 
         // make array of buttons for the Toolbar
-        NSArray *myButtonArray =  [NSArray arrayWithObjects:
-            myFlexibleSpace, shareEntity, myFlexibleSpace, backupAll, myFlexibleSpace, nil
-        ]; 
+        //
+        NSArray *myButtonArray;
+        if ([gbl_lastSelectionType isEqualToString:@"group" ])
+        {
+            myButtonArray =  [NSArray arrayWithObjects:
+    //            myFlexibleSpace, shareEntity, myFlexibleSpace, backupAll, myFlexibleSpace, nil
+    //            myFlexibleSpace, shareEntity, myFlexibleSpace,                             nil
+                myFlexibleSpace, shareEntity, myFlexibleSpace, changeGroupName, myFlexibleSpace,   nil
+
+            ]; 
+        }
+        if ([gbl_lastSelectionType isEqualToString:@"person"]) 
+        {
+            myButtonArray =  [NSArray arrayWithObjects:
+                myFlexibleSpace, shareEntity, myFlexibleSpace,  nil
+
+            ]; 
+        }
 
   NSLog(@"gbl_toolbarHomeMaintenance.tag         =[%ld]",(long)gbl_toolbarHomeMaintenance.tag         );
         // put the array of buttons in the Toolbar
@@ -3094,7 +3676,7 @@ nbn(156);
         });
 
 
-//    }  // in "edit mode"  PUT  bottom toolbar  for home screen add Share_people / Backup_by_email   on bottom of screen
+//    }  // in "edit mode"  PUT  bottom toolbar  for home screen add Share_people_by_email (+ grp)   on bottom of screen
 
 } // end of handleMaintenanceToolbar
 
@@ -3217,7 +3799,7 @@ tn();trn("in doStuffOnEnteringForeground()   NOTIFICATION method     lastEntity 
 //    NSString *gbl_appDocDirStr = [gbl_appDocDirURL path];
     
     
-        //    gbl_numRowsToTurnOnIndexBar    = 90;
+        //    gbl_numRowsToTriggerIndexBar    = 90;
         //
         // CGFloat   gbl_heightForScreen;  // 6+  = 736.0 x 414  and 6s+  (self.view.bounds.size.width) and height
         //                                 // 6s  = 667.0 x 375  and 6
@@ -3227,23 +3809,23 @@ tn();trn("in doStuffOnEnteringForeground()   NOTIFICATION method     lastEntity 
         //  NSLog(@"self.view.bounds.size.height  =[%f]",self.view.bounds.size.height  );
         if (   self.view.bounds.size.width >= 414.0        // 6+ and 6s+  and bigger
         ) {
-            gbl_numRowsToTurnOnIndexBar    = 50;  
-            gbl_numRowsToTurnOnIndexBar    = 20;   // for test
+            gbl_numRowsToTriggerIndexBar    = 50;  
+//            gbl_numRowsToTriggerIndexBar    = 20;   // for test
         }
         else if (   self.view.bounds.size.width  < 414.0    // 6 and 6s
                  && self.view.bounds.size.width  > 320.0
         ) {
-            gbl_numRowsToTurnOnIndexBar    = 45;
-            gbl_numRowsToTurnOnIndexBar    = 20;   // for test
+            gbl_numRowsToTriggerIndexBar    = 45;
+//            gbl_numRowsToTriggerIndexBar    = 20;   // for test
         }
         else if (   self.view.bounds.size.width <= 320.0   //  5s and 5 and 4s and smaller
         ) {
-            gbl_numRowsToTurnOnIndexBar    = 38;
-            gbl_numRowsToTurnOnIndexBar    = 20;   // for test
+            gbl_numRowsToTriggerIndexBar    = 38;
+//            gbl_numRowsToTriggerIndexBar    = 20;   // for test
         }
         else if (   self.view.bounds.size.width <= 320.0   // ??
         ) {
-            gbl_numRowsToTurnOnIndexBar    = 33;
+            gbl_numRowsToTriggerIndexBar    = 33;
         }
 
     
@@ -3280,12 +3862,16 @@ tn();trn("in doStuffOnEnteringForeground()   NOTIFICATION method     lastEntity 
   NSLog(@"gbl_homeUseMODE5    =[%@]",gbl_homeUseMODE );
 
 
+    // set dependent gbl vars for highlighted group
+    //
     if ([gbl_lastSelectionType isEqualToString:@"group"]) {
         gbl_lastSelectedGroup            = _arr[1];  // like "~Swim Team"
         gbl_lastSelectedPerson           = _arr[3];  // like "~Dave"
         gbl_colorHomeBG                  = gbl_colorHomeBG_grp;
         gbl_currentMenuPrefixFromHome    = @"homg";
         self.tableView.separatorColor    = gbl_colorSepara_grp;
+
+
     }
     if ([gbl_lastSelectionType isEqualToString:@"person"]) {
         gbl_lastSelectedPerson           = _arr[1];  // like "~Dave"
@@ -3294,6 +3880,11 @@ tn();trn("in doStuffOnEnteringForeground()   NOTIFICATION method     lastEntity 
         gbl_currentMenuPrefixFromHome    = @"homp";
         self.tableView.separatorColor    = gbl_colorSepara_per;
     }
+
+
+
+
+
     // override 2 brown BG colors for YELLOW  if this is in edit mode
     if ([gbl_homeUseMODE       isEqualToString:@"edit mode"]) {
         gbl_colorHomeBG                  = gbl_colorEditingBG;  // temporary yellow color for editing 
@@ -3381,8 +3972,8 @@ tn();
 
 nbn(160);
   NSLog(@"myCountOfRows              =[%ld]", (long)myCountOfRows );
-  NSLog(@"gbl_numRowsToTurnOnIndexBar=[%ld]", (long)gbl_numRowsToTurnOnIndexBar);
-    if (myCountOfRows <= gbl_numRowsToTurnOnIndexBar) {
+  NSLog(@"gbl_numRowsToTriggerIndexBar=[%ld]", (long)gbl_numRowsToTriggerIndexBar);
+    if (myCountOfRows <= gbl_numRowsToTriggerIndexBar) {
 nbn(161);
 //        return myEmptyArray ;  // no sectionindex
         return nil ;  // no sectionindex
@@ -3716,6 +4307,18 @@ tn();  NSLog(@"setEditing !!!!!!  pressed Edit or Done  !!!!!!!!!!!!!!!");
   NSLog(@"=%d",animated);
 
 
+    //    [self.editButtonItem setImage: nil ];     // edit mode bg color for button
+    //    self.editButtonItem.title = @"";  
+    self.editButtonItem.title = nil;   // this gets rid of left/right shift of Edit/Done buttons when pressed
+
+    // this gets set below to Edit or Done button image
+//    [self.editButtonItem setImage:  [[UIImage alloc] init]];     // edit mode bg color for button
+
+
+
+
+
+
 //    if (flag == YES)   //  USER TAPPED  EDIT  BUTTON HERE
 //    {
 //        self.navigationController.toolbarHidden =  NO;  // ensure that the bottom of screen toolbar is NOT visible 
@@ -3728,12 +4331,18 @@ tn();  NSLog(@"setEditing !!!!!!  pressed Edit or Done  !!!!!!!!!!!!!!!");
     [myappDelegate mamb_beginIgnoringInteractionEvents ];
 
 
-//    int64_t myDelayInSec   = 2.33 * (double)NSEC_PER_SEC;
-//    int64_t myDelayInSec   = 0.33 * (double)NSEC_PER_SEC;
-    int64_t myDelayInSec   = 0.38 * (double)NSEC_PER_SEC;
-    dispatch_time_t mytime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)myDelayInSec);
 
-    dispatch_after(mytime, dispatch_get_main_queue(), ^{                     // do after delay of  mytime
+    // delay was to prevent double/triple etc. clicks on Edit/Done button
+    // delay abandoned  20160406  (caused flash when hit  Edit/Done )  (double clicks apparently OK);
+    ////    int64_t myDelayInSec   = 2.33 * (double)NSEC_PER_SEC;
+    ////    int64_t myDelayInSec   = 0.33 * (double)NSEC_PER_SEC;
+    //    int64_t myDelayInSec   = 0.38 * (double)NSEC_PER_SEC;
+    //    dispatch_time_t mytime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)myDelayInSec);
+    //
+    //    dispatch_after(mytime, dispatch_get_main_queue(), ^{                     // do after delay of  mytime
+    //
+    //
+
 
         //// start DO STUFF HERE
 
@@ -3751,18 +4360,23 @@ tn();  NSLog(@"setEditing !!!!!!  pressed Edit or Done  !!!!!!!!!!!!!!!");
     // put on a bottom FOOTER to account for BOTTOM TOOLBAR if this is yellow edit mode
     //
     if (flag == YES) { // Change views to edit mode.   USER TAPPED EDIT BUTTON HERE
-       // magic 44 is the specified height of bottom footer
-        self.tableView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 44.0);
 
-        UIView *footer = [[UIView alloc] initWithFrame: CGRectMake(0, 0, 1, 44)];  // magic 44 is the specified height of bottom footer
-        footer.backgroundColor = [UIColor clearColor];
-        self.tableView.tableFooterView = footer;
+       gbl_homeUseMODE = @"edit mode";
+
+       // magic 44 is the specified height of bottom footer
+       self.tableView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 44.0);
+
+       UIView *footer = [[UIView alloc] initWithFrame: CGRectMake(0, 0, 1, 44)];  // magic 44 is the specified height of bottom footer
+       footer.backgroundColor = [UIColor clearColor];
+       self.tableView.tableFooterView = footer;
 
 
     } else {
-        self.tableView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height       );
 
-        self.tableView.tableFooterView = nil;
+       gbl_homeUseMODE = @"report mode";
+       self.tableView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height       );
+
+       self.tableView.tableFooterView = nil;
     }
 
 
@@ -3774,7 +4388,7 @@ tn();  NSLog(@"setEditing !!!!!!  pressed Edit or Done  !!!!!!!!!!!!!!!");
 
 
 
-        gbl_homeUseMODE = @"edit mode";   // determines home mode  @"edit mode" or @"regular mode"
+        gbl_homeUseMODE = @"edit mode";   // determines home mode  @"edit mode" or @"report mode"
   NSLog(@"gbl_homeUseMODE 2   =[%@]",gbl_homeUseMODE );
   NSLog(@"gbl_homeEditingState=[%@]",gbl_homeEditingState);
 nbn(300);
@@ -3785,24 +4399,69 @@ nbn(300);
 
   NSLog(@"gbl_colorEditingBG=[%@]",gbl_colorEditingBG);
 
+        // Change views to edit mode.   USER TAPPED EDIT BUTTON HERE
+
         dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
 
 //            [self.editButtonItem setBackgroundImage: gbl_BlueBG          // regular report mode bg color for button
 //            [self.editButtonItem setBackgroundImage: gbl_blueDone          // regular report mode bg color for button
-            [self.editButtonItem setBackgroundImage: gbl_brownDone          // regular report mode bg color for button
-                                           forState: UIControlStateNormal  
-                                         barMetrics: UIBarMetricsDefault
-            ];
 
-//            self.navigationItem.leftBarButtonItems = gbl_homeLeftItemsWithAddButton;
+
+
+//            [self.editButtonItem setBackgroundImage: gbl_brownDone          // regular report mode bg color for button
+//                                           forState: UIControlStateNormal  
+//                                         barMetrics: UIBarMetricsDefault
+//            ];
+
+//            [self.editButtonItem setImage: nil        // edit mode bg color for button
+//            ];
+
+//            self.editButtonItem.title = nil;
+//            [self.editButtonItem setBackgroundImage: nil          // regular report mode bg color for button
+//                                           forState: UIControlStateNormal  
+//                                         barMetrics: UIBarMetricsDefault
+//            ];
+// still flashed
+
+
+            self.editButtonItem.title = nil;   // this gets rid of left/right shift of Edit/Done buttons when pressed
+            // this gets set below to Edit or Done button image
+            [self.editButtonItem setImage:  [[UIImage alloc] init]];     // edit mode bg color for button
+            [self.editButtonItem setImage: gbl_brownDone ];     // report mode bg color for button
+
+
   NSLog(@"EDIT BUTTON 2   set title  done tab");
-            // self.editButtonItem.title = @"Done\t";  // pretty good
-            self.editButtonItem.title = @"Done";  // ok with no tab
-            [self.editButtonItem setTitlePositionAdjustment: UIOffsetMake(-8.0f, 0.0f)  forBarMetrics: UIBarMetricsDefault]; // 
 
-            self.view.backgroundColor     = gbl_colorEditingBG;
+//            [self.editButtonItem setBackgroundImage: gbl_yellowEdit          // edit mode bg color for button
+//            [self.editButtonItem setBackgroundImage: nil          // edit mode bg color for button
+//                                           forState: UIControlStateNormal  
+//                                         barMetrics: UIBarMetricsDefault
+//            ];
 
-        });
+//            self.navigationItem.rightBarButtonItems =   // "editButtonItem" is magic Apple functionality
+//              [self.navigationItem.rightBarButtonItems arrayByAddingObject: self.editButtonItem]; //editButtonItem=ADD apple-provided EDIT BUTTON
+
+
+
+//            self.editButtonItem.title = @"Done";  // ok with no tab
+//
+//            [self.editButtonItem  setTitleTextAttributes: @{
+////                                     NSFontAttributeName: [UIFont fontWithName:@"Menlo-Bold" size: 19.0],
+//                                     NSFontAttributeName: [UIFont fontWithName:@"Menlo-bold"  size: 11.0],
+//                          NSForegroundColorAttributeName: [UIColor blackColor ]
+////                          ,
+////                          NSBackgroundColorAttributeName: [UIColor cyanColor ]
+//                                  }
+//                                                forState: UIControlStateNormal
+//            ];
+//
+////            [self.editButtonItem setTitlePositionAdjustment: UIOffsetMake(-8.0f, 0.0f)  forBarMetrics: UIBarMetricsDefault]; // 
+////            [self.editButtonItem setTitlePositionAdjustment: UIOffsetMake(-16.0f, 0.0f)  forBarMetrics: UIBarMetricsDefault]; // 
+//            [self.editButtonItem setTitlePositionAdjustment: UIOffsetMake(-12.0f, 0.0f)  forBarMetrics: UIBarMetricsDefault]; // 
+//
+//            self.view.backgroundColor     = gbl_colorEditingBG;
+//
+
 
 
 
@@ -3836,9 +4495,19 @@ nbn(300);
 
 
     
+
+NSLog(@"in setEditing, PERSON  reload table here!  USER TAPPED EDIT BUTTON HERE");
+
         [self.tableView reloadData]; // reload to    edit mode    reload reload reload reload reload reload ");
 
 //tn();trn("reload to    edit mode    reload reload reload reload reload reload ");
+
+
+
+
+        });  // <.>
+
+
 
 
 //
@@ -3883,45 +4552,89 @@ nbn(141);
 
         // Change views to   edit mode.
 
+
+
     } else { // Save the changes if needed and change the views to noneditable.   USER TAPPED  DONE BUTTON HERE
+
+
+        //  USER TAPPED  DONE BUTTON HERE
+        //  USER TAPPED  DONE BUTTON HERE
+        //  USER TAPPED  DONE BUTTON HERE
+
 
         // Change views from edit mode.
 
   NSLog(@"EDIT BUTTON 3 ");
   NSLog(@"gbl_homeUseMODE 1   =[%@]",gbl_homeUseMODE );
 
-        gbl_homeUseMODE = @"regular mode";   // determines home mode  @"edit mode" or @"regular mode"
+        gbl_homeUseMODE = @"report mode";   // determines home mode  @"edit mode" or @"report mode"
   NSLog(@"gbl_homeUseMODE 2   =[%@]",gbl_homeUseMODE );
   NSLog(@"gbl_homeEditingState=[%@]",gbl_homeEditingState);
 nbn(311);
 
 
-  NSLog(@"EDIT BUTTON 3   set home non-edit   BG color");
+  NSLog(@"EDIT BUTTON 3   ");
         dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
 
-//            [self.editButtonItem setBackgroundImage: gbl_YellowBG          // regular report mode bg color for button
-            [self.editButtonItem setBackgroundImage: gbl_yellowEdit          // edit mode bg color for button
-                                           forState: UIControlStateNormal  
-                                         barMetrics: UIBarMetricsDefault
+//
+////            [self.editButtonItem setBackgroundImage: gbl_YellowBG          // regular report mode bg color for button
+//            [self.editButtonItem setBackgroundImage: gbl_yellowEdit          // edit mode bg color for button
+//                                           forState: UIControlStateNormal  
+//                                         barMetrics: UIBarMetricsDefault
+//            ];
+//
+////            self.navigationItem.leftBarButtonItems = gbl_homeLeftItemsWithAddButton;
+//  NSLog(@"EDIT BUTTON 3   set title  edit tab");
+////            self.editButtonItem.title = @"Edit\t";  // pretty good
+//            self.editButtonItem.title = @"Edit";  // ok with no tab
+//
+//
+////            [self.editButtonItem setTitlePositionAdjustment: UIOffsetMake(-12.0f, 0.0f)  forBarMetrics: UIBarMetricsDefault]; // 
+////            [self.editButtonItem setTitlePositionAdjustment: UIOffsetMake(-8.0f, 0.0f)  forBarMetrics: UIBarMetricsDefault]; // 
+//            [self.editButtonItem setTitlePositionAdjustment: UIOffsetMake(-16.0f, 0.0f)  forBarMetrics: UIBarMetricsDefault]; // 
+//
+
+
+//            [self.editButtonItem setImage: nil        // edit mode bg color for button
+//            ];
+
+
+
+    self.editButtonItem.title = nil;   // this gets rid of left/right shift of Edit/Done buttons when pressed
+    // this gets set below to Edit or Done button image
+    [self.editButtonItem setImage:  [[UIImage alloc] init]];     // edit mode bg color for button
+
+
+//            [self.editButtonItem setImage:  [[UIImage alloc] init]];     // set to nothing
+            [self.editButtonItem setImage: gbl_yellowEdit        // edit mode bg color for button
             ];
 
-//            self.navigationItem.leftBarButtonItems = gbl_homeLeftItemsWithAddButton;
-  NSLog(@"EDIT BUTTON 3   set title  edit tab");
-//            self.editButtonItem.title = @"Edit\t";  // pretty good
-            self.editButtonItem.title = @"Edit";  // ok with no tab
+  NSLog(@"EDIT BUTTON 3   set yellow          ");
+
+//            [self.editButtonItem setBackgroundImage: gbl_yellowEdit          // edit mode bg color for button
+//            [self.editButtonItem setBackgroundImage: nil          // edit mode bg color for button
+//                                           forState: UIControlStateNormal  
+//                                         barMetrics: UIBarMetricsDefault
+//            ];
 
 
-//            [self.editButtonItem setTitlePositionAdjustment: UIOffsetMake(-12.0f, 0.0f)  forBarMetrics: UIBarMetricsDefault]; // 
-//            [self.editButtonItem setTitlePositionAdjustment: UIOffsetMake(-8.0f, 0.0f)  forBarMetrics: UIBarMetricsDefault]; // 
-            [self.editButtonItem setTitlePositionAdjustment: UIOffsetMake(-16.0f, 0.0f)  forBarMetrics: UIBarMetricsDefault]; // 
+  NSLog(@"gbl_haveAddedNavBarRightItems =[%ld]",(long)gbl_haveAddedNavBarRightItems );
+//            if (gbl_haveAddedNavBarRightItems == 0)
+//            {
+//nbn(12);
+//              gbl_haveAddedNavBarRightItems = 1;
+//            }
 
-//            self.view.backgroundColor     = gbl_colorEditingBG;
+//              self.navigationItem.rightBarButtonItems =   // "editButtonItem" is magic Apple functionality
+//            [self.navigationItem.rightBarButtonItems arrayByAddingObject: self.editButtonItem]; //editButtonItem=ADD apple-provided EDIT BUTTON
+
+
+
 
             if (     [gbl_homeUseMODE isEqualToString: @"edit mode" ] ) [self.tableView setBackgroundColor: gbl_colorEditingBG];
             else if ([gbl_lastSelectionType isEqualToString:@"person"]) [self.tableView setBackgroundColor: gbl_colorHomeBG_per];
             else if ([gbl_lastSelectionType isEqualToString:@"group" ]) [self.tableView setBackgroundColor: gbl_colorHomeBG_grp];
 
-        });
 
  
 
@@ -3947,7 +4660,15 @@ nbn(311);
 //
 //
 
+NSLog(@"in setEditing, PERSON  reload table here!  USER TAPPED DONE BUTTON HERE");
         [self.tableView reloadData]; // reload to regular mode    reload reload reload reload reload reload ");
+
+
+
+
+   });  // <.>
+
+
 
 
 //        tn();trn("reload to regular mode    reload reload reload reload reload reload ");
@@ -3994,7 +4715,12 @@ nbn(142);
 
     [self.view setUserInteractionEnabled: YES];                          // this works to disable user interaction for "mytime"
 
-    }); // do after delay of  mytime
+
+
+// delay was to prevent double/triple etc. clicks on Edit/Done button
+// delay abandoned  20160406  (caused flash when hit  Edit/Done )  (double clicks apparently OK);
+//    }); // do after delay of  mytime = dispatch_after(mytime, dispatch_get_main_queue  // do after delay of  mytime
+
 
 
 //nbn(141);
@@ -4009,7 +4735,8 @@ nbn(142);
 
 
 
-- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath{
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
+{
 tn();    NSLog(@"reaching accessoryButtonTappedForRowWithIndexPath:");
 
 //    // where was the tap exactly
@@ -4044,7 +4771,7 @@ tn();    NSLog(@"reaching accessoryButtonTappedForRowWithIndexPath:");
 }
 
 
-//NSString *gbl_homeUseMODE;      // "edit mode" (yellow)   or   "regular mode" (blue)
+//NSString *gbl_homeUseMODE;      // "edit mode" (yellow)   or   "report mode" (blue)
 //NSString *gbl_homeEditingState; // if gbl_homeUseMODE = "edit mode"    then can be "add" or "view or change"   for tapped person or group
 ///
 - (void) codeForCellTapOrAccessoryButtonTapWithIndexPath:(NSIndexPath *)indexPath  // for  gbl_homeUseMODE  =  "edit mode" (yellow)
@@ -4284,7 +5011,7 @@ nbn(3);
     }  // if edit mode
 
     else
-    { // this is "regular mode"  as opposed to "edit mode"
+    { // this is "report mode"  as opposed to "edit mode"
 
         if ([gbl_fromHomeCurrentEntity isEqualToString:@"group"])  {
             // check for not enough group members  to do a report
@@ -4402,30 +5129,30 @@ nbn(357);
 
 
 
-    if ([gbl_lastSelectionType isEqualToString:@"person"])
-    {
-        if ([gbl_ExampleData_show isEqualToString: @"yes"] )
+        if ([gbl_lastSelectionType isEqualToString:@"person"])
         {
-           gbl_numRowsToDisplayFor_per = gbl_arrayPer.count;
-        } else {
-           // Here we do not want to show example data.
-           // Because example data names start with "~", they sort last,
-           // so we can just reduce the number of rows to exclude example data from showing on the screen.
-           gbl_numRowsToDisplayFor_per = gbl_arrayPer.count - gbl_ExampleData_count_per ;
+            if ([gbl_ExampleData_show isEqualToString: @"yes"] )
+            {
+               gbl_numRowsToDisplayFor_per = gbl_arrayPer.count;
+            } else {
+               // Here we do not want to show example data.
+               // Because example data names start with "~", they sort last,
+               // so we can just reduce the number of rows to exclude example data from showing on the screen.
+               gbl_numRowsToDisplayFor_per = gbl_arrayPer.count - gbl_ExampleData_count_per ;
+            }
         }
-    }
-    if ([gbl_lastSelectionType isEqualToString:@"group"])
-    {
-        if ([gbl_ExampleData_show isEqualToString: @"yes"] )
+        if ([gbl_lastSelectionType isEqualToString:@"group"])
         {
-           gbl_numRowsToDisplayFor_grp = gbl_arrayGrp.count;
-        } else {
-           // Here we do not want to show example data.
-           // Because example data names start with "~", they sort last,
-           // so we can just reduce the number of rows to exclude example data from showing on the screen.
-           gbl_numRowsToDisplayFor_grp = gbl_arrayGrp.count - gbl_ExampleData_count_grp ;
+            if ([gbl_ExampleData_show isEqualToString: @"yes"] )
+            {
+               gbl_numRowsToDisplayFor_grp = gbl_arrayGrp.count;
+            } else {
+               // Here we do not want to show example data.
+               // Because example data names start with "~", they sort last,
+               // so we can just reduce the number of rows to exclude example data from showing on the screen.
+               gbl_numRowsToDisplayFor_grp = gbl_arrayGrp.count - gbl_ExampleData_count_grp ;
+            }
         }
-    }
   NSLog(@"gbl_numRowsToDisplayFor_per=[%ld]",(long)gbl_numRowsToDisplayFor_per);
   NSLog(@"gbl_numRowsToDisplayFor_grp=[%ld]",(long)gbl_numRowsToDisplayFor_grp);
 
@@ -4433,10 +5160,20 @@ nbn(357);
         NSString  *nameOfGrpOrPer;
         NSInteger idxGrpOrPer;
         NSArray *arrayGrpOrper;
+
+        NSString  *foundGrpRec;
+        NSString  *foundGrpName;
+        foundGrpRec  = nil;
+        foundGrpName = nil;
+        NSString  *foundPerRec;
+        NSString  *foundPerName;
+        foundPerRec  = nil;
+        foundPerName = nil;
+
         idxGrpOrPer = -1;   // zero-based idx
 
         if ([gbl_lastSelectionType isEqualToString:@"group"]) {
-
+nbn(100);
             if (gbl_numRowsToDisplayFor_grp == 0) return;
 
             // Check for gbl_lastSelectedPerson being example data person
@@ -4452,25 +5189,39 @@ nbn(357);
                return;
             }
 
+
+tn();trn(" GRAB gbl_fromHomeCurrentSelectionPSV for group");
+tn();trn(" GRAB gbl_fromHomeCurrentEntityName   for group");
+  NSLog(@"gbl_lastSelectedGroup=[%@]",gbl_lastSelectedGroup);
             for (id eltGrp in gbl_arrayGrp) { // find index of gbl_lastSelectedGroup (like "~Family") in gbl_arrayGrp
               idxGrpOrPer = idxGrpOrPer + 1;
-    //NSLog(@"idxGrpOrPer =%ld", (long)idxGrpOrPer );
-    //NSLog(@"eltGrp=%@", eltGrp);
+//  NSLog(@"idxGrpOrPer =%ld", (long)idxGrpOrPer );
+//  NSLog(@"eltGrp=%@", eltGrp);
               NSCharacterSet *mySeparators = [NSCharacterSet characterSetWithCharactersInString:@"|"];
               arrayGrpOrper  = [eltGrp componentsSeparatedByCharactersInSet: mySeparators];
               nameOfGrpOrPer = arrayGrpOrper[0];  // name is 1st fld
+//  NSLog(@"nameOfGrpOrPer =[%@]",nameOfGrpOrPer );
 
               if ([nameOfGrpOrPer isEqualToString: gbl_lastSelectedGroup]) {
+                foundGrpRec  = eltGrp;
+                foundGrpName = nameOfGrpOrPer;
                 break;
               }
             } // search thru gbl_arrayGrp
     //NSLog(@"FOUND !=%ld", (long)idxGrpOrPer);
 
+            gbl_fromHomeCurrentSelectionPSV  = foundGrpRec;
+            gbl_fromHomeCurrentEntityName    = foundGrpName;
+  NSLog(@"gbl_fromHomeCurrentSelectionPSV hi g =[%@]",gbl_fromHomeCurrentSelectionPSV  );
+  NSLog(@"gbl_fromHomeCurrentEntityName   hi g =[%@]",gbl_fromHomeCurrentEntityName    );
+
+
+
             dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
 
 
         // get the indexpath of row num idxGrpOrPer in tableview
-                NSIndexPath *foundIndexPath = [NSIndexPath indexPathForRow:idxGrpOrPer inSection:0];
+                NSIndexPath *foundIndexPath = [NSIndexPath indexPathForRow: idxGrpOrPer  inSection: 0];
         //tn();trn("SCROLL 111111111111111111111111111111111111111111111111111111111");
 
                 if (gbl_scrollToCorrectRow == 1) {
@@ -4498,13 +5249,15 @@ nbn(357);
                 }
             });
 
-        }   // if ([gbl_lastSelectionType isEqualToString:@"group"]) {
+        }   // if ([gbl_lastSelectionType isEqualToString:@"group"]) 
 
 
 
         if ([gbl_lastSelectionType isEqualToString:@"person"]) {
+nbn(200);
 
             if (gbl_numRowsToDisplayFor_per == 0) return;
+nbn(201);
 
             // Check for gbl_lastSelectedPerson being example data person
             // and example data being turned off.
@@ -4521,22 +5274,54 @@ nbn(357);
 
 //            NSLog(@"gbl_lastSelectedPerson=%@",gbl_lastSelectedPerson);
             
+nbn(202);
             do { // highlight gbl_lastSelectedPerson row in tableview
 
-                for (id eltPer in gbl_arrayPer) {  // find index of gbl_lastSelectedPerson (like "~Dave") in gbl_arrayPer
-                    idxGrpOrPer = idxGrpOrPer + 1; 
-//              NSLog(@"idxGrpOrPer =%ld", (long)idxGrpOrPer );
-//              NSLog(@"eltPer=%@", eltPer);
+//                for (id eltPer in gbl_arrayPer) {  // find index of gbl_lastSelectedPerson (like "~Dave") in gbl_arrayPer
+//                    idxGrpOrPer = idxGrpOrPer + 1; 
+////              NSLog(@"idxGrpOrPer =%ld", (long)idxGrpOrPer );
+////              NSLog(@"eltPer=%@", eltPer);
+//
+//                  NSCharacterSet *mySeparators = [NSCharacterSet characterSetWithCharactersInString:@"|"];
+//                  arrayGrpOrper  = [eltPer componentsSeparatedByCharactersInSet: mySeparators];
+//                  nameOfGrpOrPer = arrayGrpOrper[0];  // name is 1st fld
+//
+//                  if ([nameOfGrpOrPer isEqualToString: gbl_lastSelectedPerson]) {
+//                    break;
+//                  }
+//                } // search thru gbl_arrayPer
+////        NSLog(@"FOUND !=%ld", (long)idxGrpOrPer);
+//
+//
 
-                  NSCharacterSet *mySeparators = [NSCharacterSet characterSetWithCharactersInString:@"|"];
-                  arrayGrpOrper  = [eltPer componentsSeparatedByCharactersInSet: mySeparators];
-                  nameOfGrpOrPer = arrayGrpOrper[0];  // name is 1st fld
+tn();trn(" GRAB gbl_fromHomeCurrentSelectionPSV for person");
+tn();trn(" GRAB gbl_fromHomeCurrentEntityName   for person");
+  NSLog(@"gbl_lastSelectedPerson=[%@]",gbl_lastSelectedPerson);
 
-                  if ([nameOfGrpOrPer isEqualToString: gbl_lastSelectedPerson]) {
-                    break;
-                  }
+                for (id eltPer in gbl_arrayPer) { // find index of gbl_lastSelectedPerson (like "~Ava") in gbl_arrayPer
+                    idxGrpOrPer = idxGrpOrPer + 1;
+//  NSLog(@"idxGrpOrPer =%ld", (long)idxGrpOrPer );
+//  NSLog(@"eltPer=%@", eltPer);
+                    NSCharacterSet *mySeparators = [NSCharacterSet characterSetWithCharactersInString:@"|"];
+                    arrayGrpOrper  = [eltPer componentsSeparatedByCharactersInSet: mySeparators];
+                    nameOfGrpOrPer = arrayGrpOrper[0];  // name is 1st fld
+//  NSLog(@"nameOfGrpOrPer =[%@]",nameOfGrpOrPer );
+
+                    if ([nameOfGrpOrPer isEqualToString: gbl_lastSelectedPerson]) {
+                      foundPerRec  = eltPer;
+                      foundPerName = nameOfGrpOrPer;
+                      break;
+                    }
                 } // search thru gbl_arrayPer
-//        NSLog(@"FOUND !=%ld", (long)idxGrpOrPer);
+    //NSLog(@"FOUND !=%ld", (long)idxGrpOrPer);
+
+            gbl_fromHomeCurrentSelectionPSV  = foundPerRec;
+            gbl_fromHomeCurrentEntityName    = foundPerName;
+  NSLog(@"gbl_fromHomeCurrentSelectionPSV hi p =[%@]",gbl_fromHomeCurrentSelectionPSV  );
+  NSLog(@"gbl_fromHomeCurrentEntityName   hi p =[%@]",gbl_fromHomeCurrentEntityName    );
+
+
+
 
                 dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
 
@@ -5220,7 +6005,7 @@ nbn(357);
 
 
 
-// this jumps if ([gbl_homeUseMODE isEqualToString: @"regular mode"])
+// this jumps if ([gbl_homeUseMODE isEqualToString: @"report mode"])
 //            {
 //                cell.indentationWidth = 12.0; // these 2 keep the name on screen when hit red round delete and delete button slides from right
 //                cell.indentationLevel =  6;   // these 2 keep the name on screen when hit red round delete and delete button slides from right
@@ -5287,7 +6072,7 @@ nbn(357);
         //
 //        [cell addSubview: lblCellText ];
 
-//        if ([gbl_homeUseMODE isEqualToString: @"regular mode"]) {
+//        if ([gbl_homeUseMODE isEqualToString: @"report mode"]) {
 //            cell.accessoryType        = gbl_home_cell_AccessoryType;           // home mode edit    with tap giving record details
 //            cell.editingAccessoryType = gbl_home_cell_editingAccessoryType;    // home mode edit    with tap giving record details
 //
