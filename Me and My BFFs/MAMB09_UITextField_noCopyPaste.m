@@ -8,6 +8,8 @@
 
 #import "MAMB09_UITextField_noCopyPaste.h"
 #import "mamblib.h"
+#import "MAMB09AppDelegate.h"
+
 
 @implementation MAMB09_UITextField_noCopyPaste
 
@@ -18,6 +20,54 @@
     // Drawing code
 }
 */
+
+
+// Hide the cursor (caret)
+- (CGRect)caretRectForPosition:(UITextPosition*)position
+{
+  NSLog(@"in caretRectForPosition  in MAMB09_UITextField_noCopyPaste.m");
+    return CGRectZero;   // Hide the cursor (caret)
+}
+
+
+//Disables magnifying glass
+-(void)addGestureRecognizer:(UIGestureRecognizer *)gestureRecognizer
+{
+    if ([gestureRecognizer isKindOfClass:[UILongPressGestureRecognizer class]])
+    {
+        gestureRecognizer.enabled = NO;   //Disables magnifying glass
+    }
+    [super addGestureRecognizer:gestureRecognizer];
+}
+
+
+
+// problem:  this is called before textFieldShouldBeginEditing
+//
+////
+//// All touches inside will be ignored
+//// and intercepted by the superview
+//- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event
+//{
+//  NSLog(@"in pointInside !");
+//
+////    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
+//
+//  NSLog(@"gbl_firstResponder_previous=[%@]",gbl_firstResponder_previous);
+//  NSLog(@"gbl_firstResponder_current =[%@]",gbl_firstResponder_current);
+//  NSLog(@"gbl_fieldTap_leaving       =[%@]",gbl_fieldTap_leaving);
+//  NSLog(@"gbl_fieldTap_goingto       =[%@]",gbl_fieldTap_goingto);
+//
+//
+//
+////    if ([gbl_firstResponder_current isEqualToString: gbl_currentEditingField ])  return NO;
+////    else return YES;
+//
+//    return YES;
+//}
+//
+
+
 
 
 - (BOOL)canPerformAction:(SEL)action withSender:(id)sender { //  NOTE  still shows paste

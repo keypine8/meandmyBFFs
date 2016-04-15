@@ -170,10 +170,10 @@
             NSString *person1, *person2;
             
             psvArray = [myPerPSV componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"|"]];
-            person1 = psvArray[0];
+            person1  = psvArray[0];
 
             psvArray = [gbl_fromHomeCurrentSelectionPSV componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString: @"|"] ];
-            person2 = psvArray[0];
+            person2  = psvArray[0];
             if ([person1 isEqualToString: person2]) {            // do not show person himself
                 continue;
             }
@@ -228,6 +228,12 @@
         NSLog(@"_PSVs_for_group_picklist=%@",_PSVs_for_group_picklist);
     }
     // ---------------------------------------------------------------------------------------- 
+
+
+
+  NSLog(@" // set up sectionindex  or not");
+    [self sectionIndexTitlesForTableView: self.tableView ];  // set up sectionindex  or not
+
 
 } /* viewDidLoad */
 
@@ -837,6 +843,153 @@ tn();    NSLog(@"in didSelectRowAtIndexPath!  in SelectPerson !!!!!!!!!!!!");
 
     
 } // didSelectRowAtIndexPath
+
+
+//--------------------------------------------------------------------------------------------
+// SECTION INDEX VIEW
+//
+//- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView;  // return list of section titles to display in section index view (e.g. "ABCD...Z#")
+//- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index;  // tell table which section corresponds to section title/index (e.g. "B",1))
+
+
+//
+// iPhone UITableView. How do turn on the single letter alphabetical list like the Music App?
+//
+//
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
+{
+tn();
+  NSLog(@"in sectionIndexTitlesForTableView !");
+
+//return nil;  // test no section index
+
+    NSInteger myCountOfRows;
+    myCountOfRows = 0;
+
+
+    //    if ([gbl_ExampleData_show isEqualToString: @"yes"])
+    //    {
+    //       myCountOfRows = gbl_arrayPer.count;
+    //    } else {
+    //       // Here we do not want to show example data.
+    //       // Because example data names start with "~", they sort last,
+    //       // so we can just reduce the number of rows to exclude example data from showing on the screen.
+    //       myCountOfRows = gbl_arrayPer.count - gbl_ExampleData_count_per ;
+    //    }
+
+    // myCountOfRows = gbl_arrayPer.count - gbl_ExampleData_count_per ;  //  never show ~ example data to pick as members
+
+    // myCountOfRows =  [gbl_arrayNewMembersToPickFrom count ];         //  Person name for picking as members
+
+    // gbl_arrayNewMembersToPickFrom  is not created yet so 
+    // do calculation
+    //
+    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
+
+
+
+    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompco"])
+    {   
+        myCountOfRows = gbl_arrayPersonsToPickFrom.count;
+    } else {
+        myCountOfRows = gbl_arrayGroupsToPickFrom.count;
+    }   
+
+
+
+//tn();
+//  NSLog(@"gbl_arrayPer.count           =[%ld]",(long) gbl_arrayPer.count );
+//  NSLog(@"gbl_ExampleData_count_per    =[%ld]",(long) gbl_ExampleData_count_per );
+//  NSLog(@"gbl_numMembersInCurrentGroup =[%ld]",(long) gbl_numMembersInCurrentGroup );
+//  NSLog(@"myCountOfRows                =[%ld]",(long) myCountOfRows          );
+
+nbn(160);
+  NSLog(@"myCountOfRows              =[%ld]", (long)myCountOfRows );
+  NSLog(@"gbl_numRowsToTriggerIndexBar=[%ld]", (long)gbl_numRowsToTriggerIndexBar);
+    if (myCountOfRows <= gbl_numRowsToTriggerIndexBar) {
+nbn(161);
+//        return myEmptyArray ;  // no sectionindex
+        return nil ;  // no sectionindex
+    }
+nbn(162);
+
+    NSArray *mySectionIndexTitles = [NSArray arrayWithObjects:  // 33 items  last index=32
+//         @"A", @"B", @"C", @"D",  @"E", @"F", @"G", @"H", @"I", @"J",  @"K", @"L", @"M",
+//         @"N", @"O", @"P",  @"Q", @"R", @"S", @"T", @"U", @"V",  @"W", @"X", @"Y", @"Z",   nil ];
+
+            @"_______",
+            @"TOP",
+            @"     ", @"     ", @"     ", @"     ",  @"     ", 
+            @"__",
+            @"     ", @"     ", @"     ", @"     ",  @"     ",
+            @"__",
+            @"     ", @"     ", @"     ", @"     ",  @"     ", 
+            @"__",
+            @"     ", @"     ", @"     ", @"     ",  @"     ", 
+            @"END",
+            @"_______",
+            nil
+    ];
+
+
+    gbl_numSectionIndexTitles = mySectionIndexTitles.count;
+
+    return mySectionIndexTitles;
+
+} // end of sectionIndexTitlesForTableView
+
+
+
+- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
+{
+
+  NSLog(@"sectionForSectionIndexTitle!  in HOME");
+  NSLog(@"title=[%@]",title);
+  NSLog(@"atIndex=[%ld]",(long)index);
+
+
+
+    // find first group starting with title letter (guaranteed to be there, see sectionIndexTitlesForTableView )
+    NSInteger newRow;  newRow = 0;
+    NSIndexPath *newIndexPath;
+    NSInteger myCountOfRows;
+    myCountOfRows = 0;
+
+    //        if ([gbl_ExampleData_show isEqualToString: @"yes"] ) 
+    //        {
+    //           myCountOfRows = gbl_arrayPer.count;
+    //        } else {
+    //           // Here we do not want to show example data.
+    //           // Because example data names start with "~", they sort last,
+    //           // so we can just reduce the number of rows to exclude example data from showing on the screen.
+    //           myCountOfRows = gbl_arrayPer.count - gbl_ExampleData_count_per ;
+    //        }
+    //
+
+    // myCountOfRows = gbl_arrayPer.count - gbl_ExampleData_count_per ;  //  never show ~ example data to pick as members
+    myCountOfRows =  [gbl_arrayPersonsToPickFrom count ];         //  Person name for picking as members
+
+    if (     [title isEqualToString:@"TOP"]) newRow = 0;
+    else if ([title isEqualToString:@"END"]) newRow = myCountOfRows - 1;
+    else                                     newRow = ((double) (index + 1) / (double) gbl_numSectionIndexTitles ) * (double)myCountOfRows ;
+
+    if (newRow == myCountOfRows)  newRow = newRow - 1;
+
+  NSLog(@"gbl_numSectionIndexTitles =[%ld]",(long)gbl_numSectionIndexTitles );
+  NSLog(@"newRow                    =[%ld]", (long)newRow);
+  NSLog(@"myCountOfRows             =[%ld]", (long)myCountOfRows   );
+
+
+    newIndexPath = [NSIndexPath indexPathForRow: newRow inSection: 0];
+    [tableView scrollToRowAtIndexPath: newIndexPath atScrollPosition: UITableViewScrollPositionMiddle animated: NO];
+
+    return index;
+
+} // sectionForSectionIndexTitle
+
+
+// end of SECTION INDEX VIEW
+//--------------------------------------------------------------------------------------------
 
 
 @end

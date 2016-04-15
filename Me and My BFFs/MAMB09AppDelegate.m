@@ -528,10 +528,25 @@
 //    gbl_colorforAddMembers = [UIColor colorWithRed:064.0/255.0 green:164.0/255.0 blue:064.0/255.0 alpha:1.0]; //
 //    gbl_colorforAddMembers = [UIColor colorWithRed:128.0/255.0 green:164.0/255.0 blue:128.0/255.0 alpha:1.0]; //
 
-    gbl_colorforAddMembers = [UIColor colorWithRed:144.0/255.0 green:188.0/255.0 blue:144.0/255.0 alpha:1.0]; //  GOLD #7
+//    gbl_colorforAddMembers = [UIColor colorWithRed:144.0/255.0 green:188.0/255.0 blue:144.0/255.0 alpha:1.0]; //  GOLD #7
 
     //  try for lighter color   using guide apl Notes yellow is =  RGB(254, 239, 181)
-    gbl_colorforAddMembers = [UIColor colorWithRed:182.0/255.0 green:255.0/255.0 blue:182.0/255.0 alpha:1.0]; //  GOLD #8  green for add
+//    gbl_colorforAddMembers = [UIColor colorWithRed:182.0/255.0 green:255.0/255.0 blue:182.0/255.0 alpha:1.0]; //  GOLD #8  green for add
+
+
+//    gbl_colorforAddMembers = [UIColor colorWithRed:229.0/255.0 green:232.0/255.0 blue:163.0/255.0 alpha:1.0]; //  green for add
+//    gbl_colorforAddMembers = [UIColor colorWithRed:229.0/255.0 green:248.0/255.0 blue:238.0/255.0 alpha:1.0]; //  ottoman
+//    gbl_colorforAddMembers = [UIColor colorWithRed:221.0/255.0 green:246.0/255.0 blue:229.0/255.0 alpha:1.0]; //  cosmic latte
+//    gbl_colorforAddMembers = [UIColor colorWithRed:206.0/255.0 green:236.0/255.0 blue:206.0/255.0 alpha:1.0]; //  surf crest good
+//    gbl_colorforAddMembers = [UIColor colorWithRed:201.0/255.0 green:232.0/255.0 blue:201.0/255.0 alpha:1.0]; //  granny apple ok
+//    gbl_colorforAddMembers = [UIColor colorWithRed:242.0/255.0 green:255.0/255.0 blue:251.0/255.0 alpha:1.0]; //  green for add
+//    gbl_colorforAddMembers = [UIColor colorWithRed:222.0/255.0 green:243.0/255.0 blue:225.0/255.0 alpha:1.0]; //  green for add
+//    gbl_colorforAddMembers = [UIColor colorWithRed:212.0/255.0 green:232.0/255.0 blue:212.0/255.0 alpha:1.0]; //
+//    gbl_colorforAddMembers = [UIColor colorWithRed:182.0/255.0 green:255.0/255.0 blue:182.0/255.0 alpha:1.0]; // 
+//
+
+    gbl_colorforAddMembers = [UIColor colorWithRed:195.0/255.0 green:240.0/255.0 blue:195.0/255.0 alpha:1.0]; //   GOLD #9  green for add
+
 
 
 
@@ -618,7 +633,12 @@
 //    gbl_colorforDelMembers = [UIColor colorWithRed:253.0/255.0 green:180.0/255.0 blue:180.0/255.0 alpha:1.0]; // 
 //    gbl_colorforDelMembers = [UIColor colorWithRed:253.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1.0]; //
 //    gbl_colorforDelMembers = [UIColor colorWithRed:253.0/255.0 green:190.0/255.0 blue:190.0/255.0 alpha:1.0]; //
-    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:215.0/255.0 blue:215.0/255.0 alpha:1.0]; //  GOLD #8
+//    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:215.0/255.0 blue:215.0/255.0 alpha:1.0]; //  
+
+    gbl_colorforDelMembers = [UIColor colorWithRed:255.0/255.0 green:205.0/255.0 blue:205.0/255.0 alpha:1.0]; //  GOLD #8
+
+//    gbl_colorforDelMembers = [UIColor colorWithRed:234.0/255.0 green:212.0/255.0 blue:224.0/255.0 alpha:1.0]; //  piggy pink
+//    gbl_colorforDelMembers = [UIColor colorWithRed:243.0/255.0 green:223.0/255.0 blue:247.0/255.0 alpha:1.0]; //  prim
 
 
 //
@@ -1494,7 +1514,6 @@
 //    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:040.0/255.0 blue:112.0/255.0 alpha:1.0]; // best
 //
 
-    // try  colors for delete members
 //    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0]; // 
 //    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:096.0/255.0 blue:096.0/255.0 alpha:1.0]; //
 //    gbl_colorHomeBG_per  = [UIColor colorWithRed:255.0/255.0 green:112.0/255.0 blue:128.0/255.0 alpha:1.0]; //
@@ -2306,7 +2325,7 @@ NSLog(@"end of ggggg  grabLastSelectionValueForEntity   myReturnStr=NIL");
     //                                                           -------------------------------------------------------------------------
 
 
-//NSLog(@"in writensarray BEFORE WRITE  my EXAMPLE Array=%@",myArray);
+//NSLog(@"in mambWriteNSArrayWithDescription   BEFORE WRITE  my EXAMPLE Array=%@",myArray);
 
     //NSLog(@"gbl_URLToGroup=%@",gbl_URLToGroup);
 //    NSLog(@"myURLtoWriteTo  =%@",myURLtoWriteTo  );
@@ -2337,9 +2356,9 @@ NSLog(@"end of ggggg  grabLastSelectionValueForEntity   myReturnStr=NIL");
     haveGrpRem = [gbl_sharedFM fileExistsAtPath: gbl_pathToGrpRem];
     havePerRem = [gbl_sharedFM fileExistsAtPath: gbl_pathToPerRem];
 
-//ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
-//tn();tr("end of mambWriteNSArrayWithDescription         ");
-//tn();
+ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
+tr("end of mambWriteNSArrayWithDescription         ");
+tn();
 
 
 } // end of mambWriteNSArrayWithDescription
@@ -2928,6 +2947,7 @@ tn();trn("in PreWrite");
         }
 //tn();  NSLog(@"myb64DataOBFUSCATED=     PreWriteFor\n%@",myb64Muta);
 
+trn("end of  PreWrite");
     return myb64Muta;
 
 } // end of mambPreWriteForThisNSData
@@ -2952,6 +2972,7 @@ tn();trn("in PostRead");
                                                     options: 0];  
 //    NSLog(@"myArchive=     PostReadFor\n%@",myArchive);
 //printf("myArchiveSTR=\n%s\n", [[myArchive description] UTF8String]);
+trn("end of  PostRead");
 
     return myArchive;
 

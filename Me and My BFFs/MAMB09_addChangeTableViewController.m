@@ -2785,7 +2785,7 @@ NSLog(@" // 111a actually do the BACK action on when changes net out to nothing"
         //              AND original name in the db record has changed (gbl_myname.txt is different)
         //            )
         //
-        // before save of New Person,  check if entered name already exists in database
+        // before save of New Person,  CHECK IF ENTERED NAME ALREADY EXISTS in database
         // OR  save of changed person with changed name
         //
   NSLog(@"gbl_fromHomeCurrentEntityName=[%@]",gbl_fromHomeCurrentEntityName);
@@ -2943,9 +2943,21 @@ NSLog(@"foundIdx =[%ld]",(long)foundIdx );
         gbl_fromHomeCurrentSelectionPSV = myNewGroupRecord;
         gbl_fromHomeCurrentEntityName   = gbl_DisplayName;
 
-//NSLog(@"gbl_lastSelectedGroup           =[%@]",gbl_lastSelectedGroup );
-//NSLog(@"gbl_fromHomeCurrentEntityName=[%@]",gbl_fromHomeCurrentEntityName);
-//NSLog(@"gbl_fromHomeCurrentSelectionPSV =[%@]",gbl_fromHomeCurrentSelectionPSV );
+tn();trn("ggggggggggggggggggggggggggggggggggggggggggggggg");
+  NSLog(@"gbl_lastSelectedGroup            =[%@]",gbl_lastSelectedGroup );
+  NSLog(@"gbl_fromHomeCurrentEntityName    =[%@]",gbl_fromHomeCurrentEntityName);
+  NSLog(@"gbl_fromHomeCurrentSelectionPSV  =[%@]",gbl_fromHomeCurrentSelectionPSV );
+  NSLog(@"gbl_lastSelectionType            =[%@]",gbl_lastSelectionType            );
+  NSLog(@"gbl_fromHomeCurrentSelectionType =[%@]",gbl_fromHomeCurrentSelectionType );
+  NSLog(@"gbl_fromHomeCurrentEntity        =[%@]",gbl_fromHomeCurrentEntity        );
+trn("ggggggggggggggggggggggggggggggggggggggggggggggg");
+tn();
+
+
+//        gbl_lastSelectedGroupBeforeChange  = gbl_lastSelectedGroup ;   // like "~Dave"   used in YELLOW gbl_homeUseMODE "edit mode"
+
+
+
 
 
 //        // after write of array data to file, allow user interaction events again

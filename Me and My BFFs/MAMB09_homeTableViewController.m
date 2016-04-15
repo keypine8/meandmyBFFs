@@ -296,6 +296,9 @@ tn(); tr("tapped here in cell      = ");kd(pointInCell.x); kd(pointInCell.y);
 
     } // (UIGestureRecognizerStateEnded == tap.state) 
 
+  NSLog(@"end of  handleSingleTapInCell  in HOME! ttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt");
+tn();
+
 } // end of handleSingleTapInCell:(UITapGestureRecognizer *)tap
 
 
@@ -1374,17 +1377,27 @@ nbn(45);
     return 1;
 } // numberOfSectionsInTableView
 
+
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
   NSLog(@"in numberOfRowsInSection");
     // Return the number of rows in the section.
 
+  NSLog(@"gbl_lastSelectionType     =[%@]",gbl_lastSelectionType );
+  NSLog(@"gbl_ExampleData_show      =[%@]",gbl_ExampleData_show );
+  NSLog(@"gbl_arrayGrp.count        =[%ld]",(long)gbl_arrayGrp.count);
+  NSLog(@"gbl_ExampleData_count_grp =[%ld]",(long)gbl_ExampleData_count_grp );
+  NSLog(@"gbl_arrayGrp              =[%@]",gbl_arrayGrp);
+
     if ([gbl_lastSelectionType isEqualToString:@"group"]) 
     {
         if ([gbl_ExampleData_show isEqualToString: @"yes"] )     
         {
+nbn(200);
            gbl_numRowsToDisplayFor_grp = gbl_arrayGrp.count;
         } else {
+nbn(201);
            // Here we do not want to show example data.
            // Because example data names start with "~", they sort last,
            // so we can just reduce the number of rows to exclude example data from showing on the screen.
@@ -1805,6 +1818,39 @@ tn();
                forRowAtIndexPath: indexPath
     ];
 
+    // cleanup for delete function (group delete)
+    // 
+    if ([gbl_lastSelectionType isEqualToString: @"group" ]) 
+    {
+
+  NSLog(@"now delete the row on the screen   ");
+        // now delete the row on the screen
+        // and put highlight on row number for  arrayIndexOfNew_gbl_lastSelectedPerson
+        //
+        dispatch_async(dispatch_get_main_queue(), ^{  
+
+            [self.tableView deleteRowsAtIndexPaths: [NSArray arrayWithObject: indexPath]   // now delete the row on the screen
+                                  withRowAnimation: UITableViewRowAnimationFade
+            ];
+
+            gbl_scrollToCorrectRow = 1;
+            [self putHighlightOnCorrectRow ];
+
+//            [self.tableView reloadData];
+
+            // after write of array data to file, allow user interaction events again
+            //
+            MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
+//        [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.5 ];    // after arg seconds
+            [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.0 ];    // after arg seconds
+
+            });
+
+    }  // group delete cleanup
+
+
+  NSLog(@"end of  commitEditingStyle  (DELETE function)");
+
 }  // end of commitEditingStyle
 //
 //   DELETE METHOD  DELETE METHOD  DELETE METHOD  DELETE METHOD  DELETE METHOD  DELETE METHOD  DELETE METHOD  DELETE METHOD DELETE METHOD
@@ -1842,7 +1888,7 @@ tn();
         && [gbl_lastSelectionType isEqualToString: @"person" ]
     )
     {
-  NSLog(@"in commitEditingStyle  2222222");
+  NSLog(@"in commitEditingStyle  for person");
 
 //
 //    // Here the red delete button has slid over from the right edge
@@ -1979,6 +2025,7 @@ tn();
         //
         [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.5 ];    // after arg seconds
 
+  NSLog(@"end of delete  for   person");
     }  // if (editingStyle == UITableViewCellEditingStyleDelete)  AND  is person
 
 
@@ -1987,207 +2034,67 @@ tn();
         && [gbl_lastSelectionType isEqualToString: @"group" ]
     )
     {
-  NSLog(@"in commitEditingStyle  3333333");
+  NSLog(@"in commitEditingStyle  for group");
 
 //        NSInteger arrayCountBeforeDelete;   // group
 //        NSInteger arrayIndexToDelete;
 //        NSInteger arrayIndexOfNew_gbl_lastSelectedGroup;
 
         lcl_arrayCountBeforeDelete = gbl_arrayGrp.count;
-        lcl_arrayIndexToDelete     = indexPath.row;
+
+        // get array index into gbl_arrayGrp for lcl_groupNameToDelete
+        //
+        NSString *prefixStr9 = [NSString stringWithFormat: @"%@|", lcl_groupNameToDelete ];  // notice '|'
+        NSInteger arrayIdxIntoArrayGrp;
+        arrayIdxIntoArrayGrp = -1;
+        for (NSString *elt in gbl_arrayGrp) {
+            arrayIdxIntoArrayGrp = arrayIdxIntoArrayGrp + 1;
+            if ([elt hasPrefix: prefixStr9]) { 
+                lcl_arrayIndexToDelete = arrayIdxIntoArrayGrp;
+                break;
+            }
+        }
+        if (arrayIdxIntoArrayGrp == -1) return;  // should not happen     no delete if cannot find grp record
+
+//        lcl_arrayIndexToDelete     = indexPath.row;
+  NSLog(@"setting  lcl_arrayIndexToDelete to  =[%ld]",(long)lcl_arrayIndexToDelete     );
+  NSLog(@"gbl_arrayGrp=[%@]",gbl_arrayGrp);
 
 
-
-        //  kind of delete DIALOGUE    where to put it ?
-        // answer; put it here so user can CANCEL before any db stuff
-
-tn();
-  NSLog(@"CHOOSE KIND OF DELETE !");
-        do { // CHOOSE KIND OF DELETE  =============================================================================================
-
-//            gbl_kindOfDelete  = @"delete group only";  // default
-
-            gbl_kindOfDelete  = nil;  // default
-
-            // choose kind of delete
-            // offer to do cascading delete
-            //
-            NSString *saveTitle;
-            NSString *saveMsg;
-            saveTitle = @"Choose Kind of Delete\n";
-
-            saveMsg = @"Delete Group Only\n  Each person in the group remains in the app.\n\nDelete Group and Members\n  Each person in the group is deleted from the app\n  and also removed from any other groups he is a member of.";
-
-
-            NSMutableParagraphStyle *myParagraphStyle = [[NSMutableParagraphStyle alloc] init];
-            myParagraphStyle.alignment                = NSTextAlignmentLeft;
-            myParagraphStyle.headIndent               = 12;
-            //                myParagraphStyle.firstLineHeadIndent      = 12;
-
-
-            NSDictionary *myNeededAttribsMessage = @{
-                //   e.g.
-                ////                                      NSForegroundColorAttributeName: self.label.textColor,
-                ////                                      NSBackgroundColorAttributeName: cell.textLabel.attributedText
-                ////                                      NSBackgroundColorAttributeName: cell.textLabel.textColor
-                //                                      NSFontAttributeName: cell.textLabel.font,
-                //                                      NSBackgroundColorAttributeName: cell.textLabel.backgroundColor
-                //
-                //
-                //            NSMutableAttributedString *myAttributedTextLabelExplain = 
-                //                [[NSMutableAttributedString alloc] initWithString: allLabelExplaintext
-                //                                                       attributes: myNeededAttribs     ];
-                //
-
-                //                NSBackgroundColorAttributeName: retvalUILabel.attributedText.backgroundColor
-                //                NSBackgroundColorAttributeName: retvalUILabel.backgroundColor
-
-                  NSParagraphStyleAttributeName : myParagraphStyle,
-                  NSForegroundColorAttributeName: [UIColor blackColor],
-                  NSBackgroundColorAttributeName: gbl_colorEditingBG,
-                             NSFontAttributeName: [UIFont systemFontOfSize: 16]
-
-            };
-            NSDictionary *myNeededAttribsTitle = @{
-        //                                 NSFontAttributeName: [UIFont boldSystemFontOfSize: 16]
-        //                      NSForegroundColorAttributeName: [UIColor blueColor],
-        //                      NSForegroundColorAttributeName: gbl_color_cAplBlue,
-        //                      NSForegroundColorAttributeName: [UIColor darkGrayColor],
-                  NSForegroundColorAttributeName: [UIColor blackColor],
-                             NSFontAttributeName: [UIFont boldSystemFontOfSize: 18]
-
-            };
-
-
-            NSMutableAttributedString *myAttributedMessage = [
-                [ NSMutableAttributedString alloc ] initWithString: saveMsg
-                                                        attributes: myNeededAttribsMessage
-            ];
-            NSMutableAttributedString *myAttributedTitle = [
-                [ NSMutableAttributedString alloc ] initWithString: saveTitle
-                                                        attributes: myNeededAttribsTitle
-            ];
-
-
-
-            UIAlertController *myActionSheet = [UIAlertController alertControllerWithTitle: saveTitle
-                                                                                   message: saveMsg
-                                                                            preferredStyle: UIAlertControllerStyleActionSheet];
-            [myActionSheet setValue: myAttributedTitle 
-                             forKey: @"attributedTitle"
-            ];
-            [myActionSheet setValue: myAttributedMessage 
-                             forKey: @"attributedMessage"
-            ];
-
-            [myActionSheet addAction: 
-                [UIAlertAction actionWithTitle: @"Cancel"
-                                         style: UIAlertActionStyleCancel
-                                       handler: ^(UIAlertAction *action) {
-                                           [self dismissViewControllerAnimated: YES completion: ^{   }  ];
-                                       }
-                ]
-            ];
-            [myActionSheet addAction:
-                [UIAlertAction actionWithTitle: @"Delete Group Only"
-        //                                 style: UIAlertActionStyleDestructive
-                                         style: UIAlertActionStyleDefault
-                                       handler: ^(UIAlertAction *action) {
-  NSLog(@"pressed   delete group only");
-                                           gbl_kindOfDelete = @"delete group only";   // or  "delete group and members"
-  NSLog(@"gbl_kindOfDelete 11 =[%@]",gbl_kindOfDelete);
-        //                                               [view dismissViewControllerAnimated: YES  completion: nil];
-        //                [self.navigationController popViewControllerAnimated: YES]; // "Back" out of save dialogue
-        //                [myActionSheet popViewControllerAnimated: YES]; // "Back" out of save dialogue
-
-
-                              // before write of array data to file, disallow/ignore user interaction events
-                              //
-                              MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
-                              [myappDelegate mamb_beginIgnoringInteractionEvents ];
-
-
-                                           [self doActualGroupDelete ];
-                                           [myActionSheet dismissViewControllerAnimated: YES  completion: nil];
-                                       }
-                ]
-            ];
-            [myActionSheet addAction:
-                [UIAlertAction actionWithTitle: @"Delete Group and Members"
-        //                                 style: UIAlertActionStyleDestructive
-                                         style: UIAlertActionStyleDefault
-                                       handler: ^(UIAlertAction *action) {
-
-  NSLog(@"pressed   delete group and members");
-                                           gbl_kindOfDelete = @"delete group and members";   // or  "delete group only"
-  NSLog(@"gbl_kindOfDelete 12 =[%@]",gbl_kindOfDelete);
-
-
-                              // before write of array data to file, disallow/ignore user interaction events
-                              //
-                              MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
-                              [myappDelegate mamb_beginIgnoringInteractionEvents ];
-
-
-                                           [self doActualGroupDelete ];
-                                           [myActionSheet dismissViewControllerAnimated: YES  completion: nil];
-        //                                               [self dismissViewControllerAnimated: YES completion: ^{   } ];
-                                       }
-                ]
-            ];
-
-        //    myActionSheet.view.transparent = NO;
-        //    myActionSheet.view.backgroundColor = [UIColor whiteColor];
-        //    myActionSheet.view.backgroundColor = [UIColor greenColor];
-        //    myActionSheet.view.backgroundColor = gbl_colorHomeBG;
-        //    myActionSheet.view.tintColor =  [UIColor blackColor];  // colors choices
-        //                myActionSheet.view.backgroundColor = gbl_colorEditingBG;
-
-
-            // Present action sheet.
-            //
-            [self presentViewController: myActionSheet animated: YES completion: nil];
-
-  NSLog(@"gbl_kindOfDelete 1 =[%@]",gbl_kindOfDelete);
-            return;
-
-    } while (FALSE); // CHOOSE KIND OF DELETE  ==============================================================================
-
+        //  kind of delete DIALOGUE   removed from right here
         // end of CHOOSE KIND OF DELETE  ======================================================================================
 
 
-        // now delete the row on the screen
-        // and put highlight on row number for  arrayIndexOfNew_gbl_lastSelectedPerson
+        // before write of array data to file, disallow/ignore user interaction events
         //
-        dispatch_async(dispatch_get_main_queue(), ^{  
+        MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
+        [myappDelegate mamb_beginIgnoringInteractionEvents ];
 
-            [self.tableView deleteRowsAtIndexPaths: [NSArray arrayWithObject: indexPath]   // now delete the row on the screen
-                                  withRowAnimation: UITableViewRowAnimationFade
-            ];
 
-            gbl_scrollToCorrectRow = 1;
-            [self putHighlightOnCorrectRow ];
-        });
+        [self doActualGroupDelete ];
 
 
         // after write of array data to file, allow user interaction events again
         //
-        MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
         [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.5 ];    // after arg seconds
 
+
+  NSLog(@"end of delete  for   group");
 
     }  // if (editingStyle == UITableViewCellEditingStyleDelete)  AND  is GROUP
 
 
+  NSLog(@" end of commitEditingStyleGUTS");
 
 }  // end of commitEditingStyleGUTS
 
 
 
-- (void) doActualGroupDelete  //  all db actions    screen actions come just after this
+- (void) doActualGroupDelete  //  all db actions    screen actions come at the end in here
 {
 tn();
   NSLog(@"doActualGroupDelete ");
+  NSLog(@"gbl_kindOfDelete=[%@]",gbl_kindOfDelete);
 
 
         // all DB STUFF for the delete follows here
@@ -2198,6 +2105,7 @@ tn();
         // here the array index to delete matches the incoming  indexPath.row
         //
 
+//  has to be wrong, yet compiled      [gbl_arrayGrp removeObjectAtIndex:  handleSingleTapInCell ]; 
         [gbl_arrayGrp removeObjectAtIndex:  lcl_arrayIndexToDelete ]; 
   NSLog(@"DELETED Group  !");
   NSLog(@"lcl_arrayIndexToDelete=[%ld]", (long) lcl_arrayIndexToDelete);
@@ -2233,9 +2141,9 @@ tn();
 
 
 
-  NSLog(@"2. of 3  DELETE ALL MEMBERSHIPS of people in the deleted group!");
+  NSLog(@"2. of 3  DELETE ALL MEMBERSHIPS of  the deleted group!");
 
-        // 2. of 3  DELETE ALL MEMBERSHIPS of people in the deleted group
+        // 2. of 3  DELETE ALL MEMBERSHIPS of the deleted group
         //
         // searchfor element in gbl_arrayMem
         // matching   any group    and   member = del_me_indexPath.text
@@ -2248,14 +2156,14 @@ tn();
         NSString *currMemberName;  // name of group mbr
 
 
-//        for (int i=0;  i < gbl_arrayMem.count;  i++) {
+//        for (int i=0;  i < gbl_arrayMem.count;  i++) 
         for (int i = (int)gbl_arrayMem.count - 1;  i >= 0 ;  i--) {
 
             currGroupMemberRec  = gbl_arrayMem[i];
             currGroupName       = [currGroupMemberRec componentsSeparatedByString: @"|"][0]; // get fld#1 (grpname) - arr is 0-based 
             currMemberName      = [currGroupMemberRec componentsSeparatedByString: @"|"][1]; // get fld#1 (grpname) - arr is 0-based 
-  NSLog(@"currGroupName       =[%@]",currGroupName       );
-  NSLog(@"currMemberName      =[%@]",currMemberName       );
+//  NSLog(@"currGroupName       =[%@]",currGroupName       );
+//  NSLog(@"currMemberName      =[%@]",currMemberName       );
 
             if ( [currGroupName isEqualToString: lcl_groupNameToDelete ] )
             {
@@ -2271,54 +2179,62 @@ tn();
         //
         // delete all memberships of the deleted group
 
-return;
 
-        // 3. of 3  DELETE EACH  PERSON IN THE GROUP   // answer = NO     can there be ~ example people in the group ?
+//<.> debug this 
+//  NSLog(@"testing RETURN 1");
+//return;
+
+  // 20160414   group delete is always "delete group only"  and add "Delete Multiple People" to  > people > edit > bottom bar
+        //        // 3. of 3  DELETE EACH  PERSON IN THE GROUP   // answer = NO     can there be ~ example people in the group ?
+        //        //
+        //
+        //        if ([gbl_kindOfDelete isEqualToString: @"delete group and members" ])
+        //        {
+        //  NSLog(@"// 3. of 3  DELETE EACH  PERSON IN THE GROUP !");
+        //            // delete each person in the deleted group from gbl_arrayPer 
+        //
+        //            // get array  gbl_namesInCurrentGroup
+        //            [myappDelegate get_gbl_numMembersInCurrentGroup ];   // also populates gbl_numMembersInCurrentGroup  using  gbl_lastSelectedGroup
+        //
+        //
+        //            // delete each member person in this group   from gbl_arrayPer 
+        //            //
+        //            NSString *prefixStr7;
+        //
+        //            for (NSString *mbrName  in  gbl_namesInCurrentGroup )  // delete all these persons from  gbl_arrayPer
+        //            {
+        //  NSLog(@"mbrName=[%@]",mbrName);
+        //                NSInteger idx;
+        //                idx = -1;
+        //                prefixStr7 = [NSString stringWithFormat: @"%@|", mbrName];  // notice '|'
+        //                for (NSString *elt in gbl_arrayPer) {
+        //                    idx = idx + 1;
+        //                    if ([elt hasPrefix: prefixStr7]) { 
+        //  NSLog(@"DELETED PERSON=[%@]", elt);
+        //                        [gbl_arrayPer removeObjectAtIndex:  idx ]; // delete this array element
+        //                        break;
+        //                    }
+        ////  NSLog(@"DID NOT DELETE PERSON=[%@]", prefixStr7 );
+        //                }
+        //
+        //            } // for each member to delete
+        //
+        //
+        //            // was sorted before anyway, but sort it for safety
+        //            [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription:  (NSString *) @"member"]; // sort array by name
+        //
+        //            [myappDelegate mambWriteNSArrayWithDescription:               (NSString *) @"member"]; // write new array data to file
+        //            //  [myappDelegate mambReadArrayFileWithDescription:              (NSString *) @"person"]; // read new data from file to array
+        //
+        //
+        //            gbl_justWrotePersonFile = 1;
+        //
+        //
+        //        } // 3. of 3   delete each person in group  (if appropriate)
         //
 
-        if ([gbl_kindOfDelete isEqualToString: @"delete group and members" ])
-        {
-  NSLog(@"// 3. of 3  DELETE EACH  PERSON IN THE GROUP !");
-            // delete each person in the deleted group from gbl_arrayPer 
-
-            // get array  gbl_namesInCurrentGroup
-            [myappDelegate get_gbl_numMembersInCurrentGroup ];   // also populates gbl_numMembersInCurrentGroup  using  gbl_lastSelectedGroup
-
-
-            // delete each member person in this group   from gbl_arrayPer 
-            //
-            NSString *prefixStr7;
-
-            for (NSString *mbrName  in  gbl_namesInCurrentGroup )  // delete all these persons from  gbl_arrayPer
-            {
-  NSLog(@"mbrName=[%@]",mbrName);
-                NSInteger idx;
-                idx = -1;
-                prefixStr7 = [NSString stringWithFormat: @"%@|", mbrName];  // notice '|'
-                for (NSString *elt in gbl_arrayPer) {
-                    idx = idx + 1;
-                    if ([elt hasPrefix: prefixStr7]) { 
-  NSLog(@"DELETED PERSON=[%@]", elt);
-                        [gbl_arrayPer removeObjectAtIndex:  idx ]; // delete this array element
-                        break;
-                    }
-  NSLog(@"DID NOT DELETE PERSON=[%@]", prefixStr7 );
-                }
-
-            } // for each member to delete
-
-
-            // was sorted before anyway, but sort it for safety
-            [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription:  (NSString *) @"member"]; // sort array by name
-
-            [myappDelegate mambWriteNSArrayWithDescription:               (NSString *) @"member"]; // write new array data to file
-            //  [myappDelegate mambReadArrayFileWithDescription:              (NSString *) @"person"]; // read new data from file to array
-
-
-            gbl_justWrotePersonFile = 1;
-
-
-        } // 3. of 3   delete each person in group  (if appropriate)
+  NSLog(@"near end of doActualGroupDelete");
+  NSLog(@" next is    [self.navigationController popViewControllerAnimated: YES]; // actually do the \"Back\" action ");
 
 
     dispatch_async(dispatch_get_main_queue(), ^{  
@@ -3491,6 +3407,20 @@ nbn(140);
                                                                   target: self
                                                                   action: @selector(pressedShareEntities)]; // People or Groups 
 
+        [shareEntity setTitleTextAttributes: @{
+    //                    NSFontAttributeName: [UIFont fontWithName:@"Helvetica-Bold" size:26.0],
+//                        NSFontAttributeName: [UIFont boldSystemFontOfSize: 20.0],
+//                        NSFontAttributeName: [UIFont systemFontOfSize: 16.0],
+//                        NSFontAttributeName: [UIFont systemFontOfSize: 14.0],
+//                        NSFontAttributeName: [UIFont systemFontOfSize: 15.0],
+                        NSFontAttributeName: [UIFont systemFontOfSize: 16.0],
+    //         NSForegroundColorAttributeName: [UIColor greenColor]
+//             NSForegroundColorAttributeName: [UIColor blackColor]
+           }
+                                   forState: UIControlStateNormal
+        ];
+
+
         // 20160401 put this button in HOME info at bottom
         //
         //        UIBarButtonItem *backupAll   = [[UIBarButtonItem alloc]initWithTitle: @"Backup_all" 
@@ -3505,6 +3435,11 @@ nbn(140);
                                                                              style: UIBarButtonItemStylePlain
                                                                             target: self
                                                                             action: @selector(pressedChangeGroupName)];
+        [changeGroupName   setTitleTextAttributes: @{
+              NSFontAttributeName: [UIFont systemFontOfSize: 16.0],
+           }
+                                         forState: UIControlStateNormal
+        ];
 
 
         UIBarButtonItem *myFlexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemFlexibleSpace
@@ -5076,7 +5011,7 @@ nbn(3);
                 //
                 [self presentViewController: myAlert  animated: YES  completion: nil   ];
 
-                return;  // cannot got rpt list   because of missing information > stay in this screen
+                return;  // cannot goto rpt list   because of missing information > stay in this screen
             }
         } // if we are in group, check for enough members for a report
 
@@ -5254,10 +5189,10 @@ tn();trn(" GRAB gbl_fromHomeCurrentEntityName   for group");
 
 
         if ([gbl_lastSelectionType isEqualToString:@"person"]) {
-nbn(200);
+nbn(230);
 
             if (gbl_numRowsToDisplayFor_per == 0) return;
-nbn(201);
+nbn(231);
 
             // Check for gbl_lastSelectedPerson being example data person
             // and example data being turned off.
@@ -5274,7 +5209,7 @@ nbn(201);
 
 //            NSLog(@"gbl_lastSelectedPerson=%@",gbl_lastSelectedPerson);
             
-nbn(202);
+nbn(232);
             do { // highlight gbl_lastSelectedPerson row in tableview
 
 //                for (id eltPer in gbl_arrayPer) {  // find index of gbl_lastSelectedPerson (like "~Dave") in gbl_arrayPer
@@ -6232,5 +6167,228 @@ tn();trn(" GRAB gbl_fromHomeCurrentEntityName   for person");
 //        //
 //        // end of  UILabel for the disclosure indicator, ">",  for tappable cells
 //
+
+//
+//        //  kind of delete DIALOGUE    where to put it ?
+//        // answer; put it here so user can CANCEL before any db stuff
+//
+//tn();
+//  NSLog(@"CHOOSE KIND OF DELETE !");
+//        do { // CHOOSE KIND OF DELETE  =============================================================================================
+//
+//  NSLog(@"CHOOSE KIND OF DELETE 2!");
+//
+////            gbl_kindOfDelete  = @"delete group only";  // default
+//
+//            gbl_kindOfDelete  = nil;  // default
+//
+//            // choose kind of delete
+//            // offer to do cascading delete
+//            //
+//            NSString *saveTitle;
+//            NSString *saveMsg;
+//            saveTitle = @"Choose Kind of Delete\n";
+//
+////            saveMsg = @"Delete Group Only\nEach person in the group remains in the app.\n\nDelete Group and Members\nEach person in the group is deleted from the app\nand also removed from any other groups he is a member of.";
+////            saveMsg = @"Delete Group Only\nEach person in the group remains in the app.\n\nDelete Group and Members\nEach person in the group is deleted from the app.\nEach person in the group is also removed from any other groups he is a member of.";
+////            saveMsg = @"Delete Group Only\nEach person in the group remains in the app, but the group is gone.\n\nDelete Group and Members\nEach person in the group is deleted from the app.\nEach person in the group is also removed from any other groups he is a member of.";
+//
+////            saveMsg = @"Delete Group Only\nDelete the group.\nKeep each person in the group in the app.\n\nDelete Group and Members\nDelete the group.\nDelete each group member from the app.\nRemove each group member from any other groups he is a member of.";
+////            saveMsg = @"DELETE GROUP ONLY\nDelete the group.\nKeep each person in the group in the app.\n\nDELETE GROUP AND MEMBERS\nDelete the group.\nDelete each group member from the app.\nRemove each group member from any other groups he is a member of.";
+////            saveMsg = @"DELETE GROUP ONLY\nDelete the group.\nKeep each person in the group in the app.\n\nDELETE GROUP AND MEMBERS\nDelete the group.\nDelete each group member from the app.";
+//            saveMsg = @"DELETE GROUP ONLY\nDelete the group.\nKeep each person in the group in the app.\n\nDELETE GROUP AND MEMBERS\nDelete the group.\nDelete each person in the group from the app.";
+//
+//
+//  NSLog(@"CHOOSE KIND OF DELETE 3!");
+//            NSMutableParagraphStyle *myParagraphStyle = [[NSMutableParagraphStyle alloc] init];
+//            myParagraphStyle.alignment                = NSTextAlignmentLeft;
+////            myParagraphStyle.headIndent               = 12;
+//            //                myParagraphStyle.firstLineHeadIndent      = 12;
+//
+//
+//            NSDictionary *myNeededAttribsMessage = @{
+//                //   e.g.
+//                ////                                      NSForegroundColorAttributeName: self.label.textColor,
+//                ////                                      NSBackgroundColorAttributeName: cell.textLabel.attributedText
+//                ////                                      NSBackgroundColorAttributeName: cell.textLabel.textColor
+//                //                                      NSFontAttributeName: cell.textLabel.font,
+//                //                                      NSBackgroundColorAttributeName: cell.textLabel.backgroundColor
+//                //
+//                //
+//                //            NSMutableAttributedString *myAttributedTextLabelExplain = 
+//                //                [[NSMutableAttributedString alloc] initWithString: allLabelExplaintext
+//                //                                                       attributes: myNeededAttribs     ];
+//                //
+//
+//                //                NSBackgroundColorAttributeName: retvalUILabel.attributedText.backgroundColor
+//                //                NSBackgroundColorAttributeName: retvalUILabel.backgroundColor
+//
+//                  NSParagraphStyleAttributeName : myParagraphStyle,
+//                  NSForegroundColorAttributeName: [UIColor blackColor],
+//                  NSBackgroundColorAttributeName: gbl_colorEditingBG,
+////                             NSFontAttributeName: [UIFont systemFontOfSize: 16]
+//                             NSFontAttributeName: [UIFont systemFontOfSize: 14]
+//
+//            };
+//            NSDictionary *myNeededAttribsTitle = @{
+//        //                                 NSFontAttributeName: [UIFont boldSystemFontOfSize: 16]
+//        //                      NSForegroundColorAttributeName: [UIColor blueColor],
+//        //                      NSForegroundColorAttributeName: gbl_color_cAplBlue,
+//        //                      NSForegroundColorAttributeName: [UIColor darkGrayColor],
+//                  NSForegroundColorAttributeName: [UIColor blackColor],
+//                             NSFontAttributeName: [UIFont boldSystemFontOfSize: 18]
+//
+//            };
+//
+//  NSLog(@"CHOOSE KIND OF DELETE 4!");
+//
+//            NSMutableAttributedString *myAttributedMessage = [
+//                [ NSMutableAttributedString alloc ] initWithString: saveMsg
+//                                                        attributes: myNeededAttribsMessage
+//            ];
+//            NSMutableAttributedString *myAttributedTitle = [
+//                [ NSMutableAttributedString alloc ] initWithString: saveTitle
+//                                                        attributes: myNeededAttribsTitle
+//            ];
+//
+//
+//
+//  NSLog(@"CHOOSE KIND OF DELETE 5!");
+//            UIAlertController *myActionSheet = [UIAlertController alertControllerWithTitle: saveTitle
+//                                                                                   message: saveMsg
+//                                                                            preferredStyle: UIAlertControllerStyleActionSheet];
+//            [myActionSheet setValue: myAttributedTitle 
+//                             forKey: @"attributedTitle"
+//            ];
+//            [myActionSheet setValue: myAttributedMessage 
+//                             forKey: @"attributedMessage"
+//            ];
+//
+//            [myActionSheet addAction: 
+//                [UIAlertAction actionWithTitle: @"Cancel"
+//                                         style: UIAlertActionStyleCancel
+//                                       handler: ^(UIAlertAction *action) {
+//                                           [self dismissViewControllerAnimated: YES completion: ^{   }  ];
+//                                       }
+//                ]
+//            ];
+//  NSLog(@"CHOOSE KIND OF DELETE addaction   del grp only!");
+//            [myActionSheet addAction:
+//                [UIAlertAction actionWithTitle: @"Delete Group Only"
+//        //                                 style: UIAlertActionStyleDestructive
+//                                         style: UIAlertActionStyleDefault
+//                                       handler: ^(UIAlertAction *action) {
+//  NSLog(@"pressed   delete group only");
+//                                           gbl_kindOfDelete = @"delete group only";   // or  "delete group and members"
+//  NSLog(@"gbl_kindOfDelete 11 =[%@]",gbl_kindOfDelete);
+//        //                                               [view dismissViewControllerAnimated: YES  completion: nil];
+//        //                [self.navigationController popViewControllerAnimated: YES]; // "Back" out of save dialogue
+//        //                [myActionSheet popViewControllerAnimated: YES]; // "Back" out of save dialogue
+//
+//
+//                                           // before write of array data to file, disallow/ignore user interaction events
+//                                           //
+//                                           MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
+//                                           [myappDelegate mamb_beginIgnoringInteractionEvents ];
+//
+//
+//                                           [self doActualGroupDelete ];
+//                                           [myActionSheet dismissViewControllerAnimated: YES  completion: nil];
+//                                       }
+//                ]
+//            ];
+//  NSLog(@"CHOOSE KIND OF DELETE addaction   del grp + mbrs!");
+//            [myActionSheet addAction:
+//                [UIAlertAction actionWithTitle: @"Delete Group and Members"
+//        //                                 style: UIAlertActionStyleDestructive
+//                                         style: UIAlertActionStyleDefault
+//                                       handler: ^(UIAlertAction *action) {
+//
+//  NSLog(@"pressed   delete group and members");
+//                                           gbl_kindOfDelete = @"delete group and members";   // or  "delete group only"
+//  NSLog(@"gbl_kindOfDelete 12 =[%@]",gbl_kindOfDelete);
+//
+//
+//                                           // before write of array data to file, disallow/ignore user interaction events
+//                                           //
+//                                           MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
+//                                           [myappDelegate mamb_beginIgnoringInteractionEvents ];
+//
+//
+//
+//                                           [self doActualGroupDelete ];
+//                                           [myActionSheet dismissViewControllerAnimated: YES  completion: nil];
+//        //                                               [self dismissViewControllerAnimated: YES completion: ^{   } ];
+//                                       }
+//                ]
+//            ];
+//
+//        //    myActionSheet.view.transparent = NO;
+//        //    myActionSheet.view.backgroundColor = [UIColor whiteColor];
+//        //    myActionSheet.view.backgroundColor = [UIColor greenColor];
+//        //    myActionSheet.view.backgroundColor = gbl_colorHomeBG;
+//        //    myActionSheet.view.tintColor =  [UIColor blackColor];  // colors choices
+//        //                myActionSheet.view.backgroundColor = gbl_colorEditingBG;
+//
+//
+//  NSLog(@"CHOOSE KIND OF DELETE   present action sheet!");
+//            // Present action sheet.
+//            //
+//            [self presentViewController: myActionSheet animated: YES completion: nil];
+//
+//  NSLog(@"back from action sheet   gbl_kindOfDelete 1 =[%@]",gbl_kindOfDelete);
+//
+//
+////<.> debug this
+//  NSLog(@"testing RETURN 0");
+//  NSLog(@" return from   commitEditingStyleGUTS");
+//            return;
+//
+//
+//
+////            // Dismiss action sheet.
+////            //
+////            [self dismissViewControllerAnimated: YES  completion: nil];
+//
+//
+//
+//
+//
+////  NSLog(@"now delete the row on the screen   ");
+////        // now delete the row on the screen
+////        // and put highlight on row number for  arrayIndexOfNew_gbl_lastSelectedPerson
+////        //
+////        dispatch_async(dispatch_get_main_queue(), ^{  
+////
+////            [self.tableView deleteRowsAtIndexPaths: [NSArray arrayWithObject: indexPath]   // now delete the row on the screen
+////                                  withRowAnimation: UITableViewRowAnimationFade
+////            ];
+////
+////            gbl_scrollToCorrectRow = 1;
+////            [self putHighlightOnCorrectRow ];
+////
+//////            [self.tableView reloadData];
+////
+////            // after write of array data to file, allow user interaction events again
+////            //
+////            MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
+//////        [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.5 ];    // after arg seconds
+////            [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.0 ];    // after arg seconds
+////
+////            });
+////
+////
+//
+////        // after write of array data to file, allow user interaction events again
+////        //
+////        MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
+//////        [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.5 ];    // after arg seconds
+////        [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.0 ];    // after arg seconds
+////
+//
+//
+//
+//    } while (FALSE); // CHOOSE KIND OF DELETE  ==============================================================================
+//        // end of CHOOSE KIND OF DELETE  ======================================================================================
 
 
