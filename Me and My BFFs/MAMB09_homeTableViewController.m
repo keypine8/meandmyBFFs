@@ -1331,8 +1331,14 @@ ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
     for (NSString *fil in docFiles2) { NSLog(@"doc fil=%@",fil); }
     // for test  LOOK AT all files in doc dir
 
-nbn(45);
+
+
+
+// comment out       for test create empty Launch screen shot 
     [self sectionIndexTitlesForTableView: self.tableView ];  // set up sectionindex or not after switch
+
+
+
 
 //  NSLog(@"gbl_arrayMem HOME viewdidload BOTTOM =[%@]",gbl_arrayMem );
 
@@ -1536,9 +1542,9 @@ nbn(201);
 //       cell.textLabel.autoresizesSubviews = NO;
 
 
-//  cell.textLabel.text = @"";           // for test create empty Launch screen shot 
-//  cell.accessoryType        = nil;      // for test create empty Launch screen shot
-//  cell.editingAccessoryType = nil;     // for test create empty Launch screen shot
+//  cell.textLabel.text = @"";           // uncomment  for test create empty Launch screen shot 
+//  cell.accessoryType        = nil;     // uncomment  for test create empty Launch screen shot
+//  cell.editingAccessoryType = nil;     // uncomment  for test create empty Launch screen shot
   //
   // For instance let's say your app supports iPhones > 4s, so iPhone: 4s, 5, 5s, 6 and 6plus.
   // Make sure to make launch-images which have the following dimensions:
@@ -1549,7 +1555,7 @@ nbn(201);
   //
 
 
-//  ALSO for test only    comment out between her and  <.x  below
+//  ALSO for test only    comment out between here  and  <.x  below       Launch
 // for test create empty Launch screen shot by commenting out from here to <.x
 
         cell.textLabel.text = nameOfGrpOrPer;
@@ -1613,7 +1619,8 @@ nbn(201);
 //        cell.autoresizingMask     = UIViewAutoresizingFlexibleRightMargin;
 
 
-  //<.x for test create empty Launch screen shot  //  ALSO comment out between the 2  <.  above
+  //<.x for test create empty Launch screen shot  //  ALSO comment out between the 2  <.x above
+
 
 
     });
@@ -2855,7 +2862,14 @@ nbn(55);
 
     [self.view setUserInteractionEnabled: YES];      
 
+
+
+
+// comment out       for test create empty Launch screen shot 
     [self sectionIndexTitlesForTableView: self.tableView ];  // set up sectionindex or not after switch
+
+
+
 //nbn(145);
 //    [self.tableView reloadSectionIndexTitles];
 
@@ -3406,6 +3420,33 @@ nbn(140);
                                                                 //style: UIBarButtonItemStyleBordered
                                                                   target: self
                                                                   action: @selector(pressedShareEntities)]; // People or Groups 
+        // choose fonts for bottom toolbar
+        //
+        // CGFloat   gbl_heightForScreen;  // 6+  = 736.0 x 414  and 6s+  (self.view.bounds.size.width) and height
+        //                                 // 6s  = 667.0 x 375  and 6
+        //                                 // 5s  = 568.0 x 320  and 5 
+        //                                 // 4s  = 480.0 x 320  and 5 
+        //
+        //  NSLog(@"self.view.bounds.size.height  =[%f]",self.view.bounds.size.height  );
+        UIFont *myBottomToolbarFont;
+        if (   self.view.bounds.size.width >= 414.0        // 6+ and 6s+  and bigger
+        ) {
+            myBottomToolbarFont = [UIFont systemFontOfSize: 16.0];
+        }
+        else if (   self.view.bounds.size.width  < 414.0    // 6 and 6s
+                 && self.view.bounds.size.width  > 320.0
+        ) {
+            myBottomToolbarFont = [UIFont systemFontOfSize: 16.0];
+        }
+        else if (   self.view.bounds.size.width <= 320.0   //  5s and 5 and 4s and smaller
+        ) {
+            myBottomToolbarFont = [UIFont systemFontOfSize: 14];
+        }
+        else if (   self.view.bounds.size.width <= 320.0   // ??
+        ) {
+            myBottomToolbarFont = [UIFont systemFontOfSize: 15.0];
+        }
+
 
         [shareEntity setTitleTextAttributes: @{
     //                    NSFontAttributeName: [UIFont fontWithName:@"Helvetica-Bold" size:26.0],
@@ -3413,7 +3454,8 @@ nbn(140);
 //                        NSFontAttributeName: [UIFont systemFontOfSize: 16.0],
 //                        NSFontAttributeName: [UIFont systemFontOfSize: 14.0],
 //                        NSFontAttributeName: [UIFont systemFontOfSize: 15.0],
-                        NSFontAttributeName: [UIFont systemFontOfSize: 16.0],
+//                        NSFontAttributeName: [UIFont systemFontOfSize: 16.0],
+                        NSFontAttributeName: myBottomToolbarFont,
     //         NSForegroundColorAttributeName: [UIColor greenColor]
 //             NSForegroundColorAttributeName: [UIColor blackColor]
            }
@@ -3436,7 +3478,7 @@ nbn(140);
                                                                             target: self
                                                                             action: @selector(pressedChangeGroupName)];
         [changeGroupName   setTitleTextAttributes: @{
-              NSFontAttributeName: [UIFont systemFontOfSize: 16.0],
+              NSFontAttributeName: myBottomToolbarFont,
            }
                                          forState: UIControlStateNormal
         ];
@@ -3851,6 +3893,8 @@ tn();
 }
 
 
+     // comment out entire   // SECTION INDEX VIEW     for test create empty Launch screen shot 
+
 //--------------------------------------------------------------------------------------------
 // SECTION INDEX VIEW
 //
@@ -4206,6 +4250,11 @@ nbn(162);
 
 // end of SECTION INDEX VIEW
 //--------------------------------------------------------------------------------------------
+
+
+  // END of comment out entire    // SECTION INDEX VIEW     for test create empty Launch screen shot 
+
+
 
 // ===  EDITING  ================================================================================
 
@@ -5052,7 +5101,7 @@ nbn(357);
   NSLog(@"in putHighlightOnCorrectRow  ");
 
 
-// return; // for test empty Launch image
+// return; // uncomment  for test empty Launch image
 
 
 
