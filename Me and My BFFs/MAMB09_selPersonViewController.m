@@ -884,7 +884,7 @@ tn();
     // gbl_arrayNewMembersToPickFrom  is not created yet so 
     // do calculation
     //
-    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
+    //   MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
 
 
 

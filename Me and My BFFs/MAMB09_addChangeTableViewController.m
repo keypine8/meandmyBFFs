@@ -18,6 +18,7 @@
 #import "MAMB09AppDelegate.h"   // to get globals
 #import "mamblib.h"
 //#import "MAMB09_UITextField_noCopyPaste.h"
+#import <QuartzCore/QuartzCore.h>
 
 
 //#import <AudioToolbox/AudioToolbox.h>
@@ -484,7 +485,8 @@ tn();
 
     gbl_myname.delegate = self;
 
-
+    //    scrollView.bounces = NO;
+    self.tableView.bounces   = NO;
 
 
 // add removeObs...
@@ -1694,8 +1696,8 @@ tn();
 
     gbl_justEnteredAddChangeView = 1;  // 1=y,0=n
 
-    gbl_dblTapRecog_InNameCell = nil;  // force create a gesture recognizer for cell
-    gbl_oneTapRecog_InNameCell = nil;  // force create a gesture recognizer for cell
+//    gbl_dblTapRecog_InNameCell = nil;  // force create a gesture recognizer for cell
+//    gbl_oneTapRecog_InNameCell = nil;  // force create a gesture recognizer for cell
 
     if (   [gbl_homeUseMODE      isEqualToString: @"edit mode" ]
         && [gbl_homeEditingState isEqualToString: @"view or change" ]
@@ -3237,7 +3239,8 @@ NSLog(@"          POP  VIEW   #6");
                 } else {
                      nameInPossessiveForm = [NSString stringWithFormat: @"%@\'s", gbl_myname.text ];
                 }
-                saveMsg = [NSString stringWithFormat: @"\n   The No Look, No Change Save prevents EVERYONE, including yourself and this device owner, from ever seeing or changing %@\'s birth date or city.\n\n", gbl_myname.text ];
+//                saveMsg = [NSString stringWithFormat: @"\n   The No Look, No Change Save prevents EVERYONE, including yourself and this device owner, from ever seeing or changing %@\'s birth date or city.\n\n", gbl_myname.text ];
+                saveMsg = [NSString stringWithFormat: @"\n   Hide Birth Information Save prevents EVERYONE, including yourself and this device owner, from ever seeing or changing %@\'s birth date or city.\n\n", gbl_myname.text ];
 
 
 
@@ -3327,7 +3330,8 @@ NSLog(@"          POP  VIEW   #6");
                 ];
                 [myActionSheet addAction:
 //                    [UIAlertAction actionWithTitle: @"High Security Save"
-                    [UIAlertAction actionWithTitle: @"No Look, No Change Save"
+//                    [UIAlertAction actionWithTitle: @"No Look, No Change Save"
+                    [UIAlertAction actionWithTitle: @"Hide Birth Information Save"
             //                                 style: UIAlertActionStyleDestructive
                                              style: UIAlertActionStyleDefault
                                            handler: ^(UIAlertAction *action) {
@@ -3677,7 +3681,14 @@ nbn(705);
 
     if ([gbl_fromHomeCurrentSelectionType isEqualToString: @"person" ] )
     { 
-      return 6;  // hidden gbl_mycitySearchString   moved to rownum=2 from rownum=6 (for scrollRectToVisible)
+      // rows are (index-usage)  0-spacer, 1-name, 2-spacer, 3-city, 4-spacer, 5-date
+      // return 6;  // hidden gbl_mycitySearchString   moved to rownum=2 from rownum=6 (for scrollRectToVisible)
+
+      // rows are (index-usage)  0-spacer, 1-name, 2-spacer, 3-city, 4-spacer, 5-date, 6-spacer, 7-group memberships
+      //    note that row with index 2 has hidden field for city search string
+      return 8;    
+
+
     } 
     if ([gbl_fromHomeCurrentSelectionType isEqualToString: @"group" ] )
     { 
@@ -4694,6 +4705,17 @@ NSLog(@"in textFieldShouldReturn:");
 //    UIFont *myFontSmaller2 = [UIFont fontWithName: @"Menlo" size: 14.0];
     UIFont *myFontSmaller2 = [UIFont fontWithName: @"Menlo" size: 16.0];
     UIFont *myFontSmaller3 = [UIFont fontWithName: @"Menlo" size: 13.0];
+    UIFont *myFontSmaller4 = [UIFont fontWithName:@"Menlo" size: 12.0];
+//    UIFont *myFontSmaller5 = [UIFont fontWithName: @"Menlo" size: 10.0];
+//    UIFont *myFontSmaller5 = [UIFont systemFontOfSize:10.0f];
+//    UIFont *myFontSmaller5 = [UIFont boldSystemFontOfSize:12.0f];
+//    UIFont *myFontSmaller5 = [UIFont systemFontOfSize:12.0f];
+//    UIFont *myFontSmaller5 = [UIFont fontWithName:@"HelveticaNeue-Bold" size: 12.0];
+//    UIFont *myFontSmaller5 = [UIFont fontWithName:@"HelveticaNeue" size: 12.0];
+//    UIFont *myFontSmaller5 = [UIFont fontWithName:@"Menlo" size: 10.0];
+
+//    NSFontAttributeName: [UIFont fontWithName:@"HelveticaNeue" size: 18.0],
+
 //    UIFont *myFontSmaller14 = [UIFont fontWithName: @"Menlo" size: 14.0];
 
     // invisible button for taking away the disclosure indicator
@@ -4705,7 +4727,7 @@ NSLog(@"in textFieldShouldReturn:");
    
      if (indexPath.row == 0) {   //  filler row 0
         dispatch_async(dispatch_get_main_queue(), ^{        
-            cell.contentView.backgroundColor    = gbl_colorEditingBG_current;
+            cell.userInteractionEnabled         = NO;
             cell.selectionStyle                 = UITableViewCellSelectionStyleNone;
             cell.contentView.backgroundColor    = gbl_colorEditingBG_current;
         });
@@ -4907,7 +4929,9 @@ NSLog(@"in textFieldShouldReturn:");
 
 
                     gbl_mycityprovcounLabel.attributedText =
-                 [[NSAttributedString alloc] initWithString: @" Saved with No Look, No Change\n Saved with No Look, No Change\n Saved with No Look, No Change"
+//                 [[NSAttributedString alloc] initWithString: @" Saved with No Look, No Change\n Saved with No Look, No Change\n Saved with No Look, No Change"
+//                 [[NSAttributedString alloc] initWithString: @" Hide Birth Information Save\n Hide Birth Information Save\n Hide Birth Information Save"
+                 [[NSAttributedString alloc] initWithString: @" Saved with Hide Birth Information\n Saved with Hide Birth Information\n Saved with Hide Birth Information"
                      attributes: @{
                          NSForegroundColorAttributeName:  [UIColor lightGrayColor]
                      }
@@ -4928,7 +4952,8 @@ NSLog(@"in textFieldShouldReturn:");
             }
             gbl_mycityprovcounLabel.numberOfLines    = 0;
             gbl_mycityprovcounLabel.tag              = 2;
-            gbl_mycityprovcounLabel.font             = myFontSmaller2;
+//            gbl_mycityprovcounLabel.font             = myFontSmaller2;
+            gbl_mycityprovcounLabel.font             = myFontSmaller3;
 
 //            gbl_mybirthinformation.font                    = myFontSmaller14;
 //                    gbl_mycityprovcounLabel.font             = [UIFont fontWithName: @"Menlo" size: 10.0];
@@ -5060,8 +5085,8 @@ NSLog(@"in textFieldShouldReturn:");
 
 
      if (indexPath.row == 4) {   //  filler 
-nb(204);
         dispatch_async(dispatch_get_main_queue(), ^{        
+            cell.userInteractionEnabled         = NO;
             cell.contentView.backgroundColor    = gbl_colorEditingBG_current;
             cell.selectionStyle                 = UITableViewCellSelectionStyleNone;
             cell.contentView.backgroundColor    = gbl_colorEditingBG_current;
@@ -5074,7 +5099,6 @@ nb(204);
 
      if (indexPath.row == 5)     // "LABEl" for  time of birth information
      {
-nb(205);
   NSLog(@"date row                            DRAWING        CELL  having LABEl for  DATE/time of birth ");
   NSLog(@"                                    gbl_lastInputFieldTapped=[%@]",gbl_lastInputFieldTapped);
   NSLog(@"                                    gbl_pickerToUse9        =[%@]",gbl_pickerToUse );
@@ -5098,14 +5122,18 @@ nb(205);
 //                gbl_mybirthinformation.font                     = myFontMiddle;
 //                gbl_mybirthinformation.font                    = myFontSmaller14;
 //            gbl_mycityprovcounLabel.font             = myFontSmaller2;
-             gbl_mybirthinformation.font             = myFontSmaller3;   // for no look, ...
+//             gbl_mybirthinformation.font             = myFontSmaller3;   // for no look, ...
+             gbl_mybirthinformation.font             = myFontSmaller4;   // for no look, ...
 
              gbl_mybirthinformation.borderStyle              = UITextBorderStyleRoundedRect;
 //            gbl_mybirthinformation.borderStyle              = UITextBorderStyleLine;
 
 
                 gbl_mybirthinformation.textAlignment            = NSTextAlignmentLeft;
-                gbl_mybirthinformation.text                     = @" Saved with No Look, No Change";
+//                gbl_mybirthinformation.text                     = @" Saved with No Look, No Change";
+//                gbl_mybirthinformation.text                     = @" Saved with Hide Birth Information";
+//                gbl_mybirthinformation.text                     = @" Hide Birth Information Save";
+                gbl_mybirthinformation.text                     = @" Saved with Hide Birth Information";
 
 //                gbl_mybirthinformation.textColor                = [UIColor greenColor]; // is @"Birth Date and Time" 
                 gbl_mybirthinformation.textColor                = [UIColor lightGrayColor]; // is @"Birth Date and Time" 
@@ -5229,9 +5257,9 @@ tn();trn("DATE field was drawn  hey   hey   hey   hey   hey   hey   hey   ");
      if (indexPath.row == 2) {   // data entry for  City of Birth of Person  THIS is HIDDEN and stuck in rownum=2 for scrollRectToVisible use
   NSLog(@"data entry for  City of Birth of Person!");
 
-        gbl_mycitySearchString.delegate = self;
+        dispatch_async(dispatch_get_main_queue(), ^{
 
-
+            gbl_mycitySearchString.delegate = self;
 
             gbl_mycitySearchString.autocorrectionType       = UITextAutocorrectionTypeNo;
 
@@ -5263,11 +5291,11 @@ tn();trn("DATE field was drawn  hey   hey   hey   hey   hey   hey   hey   ");
             gbl_mycitySearchString.tag                    = 2;  // no   USE TAG for gbl_mycityprovcounLabel because that's where people tap
             gbl_mycitySearchString.autocapitalizationType   = UITextAutocapitalizationTypeNone;
 
-        dispatch_async(dispatch_get_main_queue(), ^{            // <===  short line and long line
 
 //            cell.textLabel.backgroundColor           = gbl_colorEditing;
             cell.contentView.backgroundColor    = gbl_colorEditingBG_current;
-            cell.userInteractionEnabled         = YES;
+//            cell.userInteractionEnabled         = YES;
+            cell.userInteractionEnabled         = NO;
             cell.selectionStyle                 = UITableViewCellSelectionStyleNone;
 
 
@@ -5304,7 +5332,7 @@ tn();trn("DATE field was drawn  hey   hey   hey   hey   hey   hey   hey   ");
 
 
 
-//   textfield fields
+//   textfield properties
 //UITextField *passwordTextField = [[UITextField alloc] initWithFrame:passwordTextFieldFrame];
 //passwordTextField.placeholder = @"Password";
 //passwordTextField.backgroundColor = [UIColor whiteColor];
@@ -5320,6 +5348,154 @@ tn();trn("DATE field was drawn  hey   hey   hey   hey   hey   hey   hey   ");
 //[self.view addSubview:passwordTextField];
 //
 //
+      // 20160417   2 new rows on bottom
+      // rows are (index-usage)  0-spacer, 1-name, 2-spacer, 3-city, 4-spacer, 5-date, 6-spacer, 7-group memberships
+      // 
+
+     if (indexPath.row == 6) {   //  filler 
+  NSLog(@"in cellforrow  row=6");
+        dispatch_async(dispatch_get_main_queue(), ^{        
+            cell.userInteractionEnabled         = NO;
+            cell.contentView.backgroundColor    = gbl_colorEditingBG_current;
+            cell.selectionStyle                 = UITableViewCellSelectionStyleNone;
+            cell.contentView.backgroundColor    = gbl_colorEditingBG_current;
+        });
+     }
+
+
+     if (indexPath.row == 7) {   //  multi-line label  listing groups the person belongs to
+
+  NSLog(@"in cellforrow  row=7");
+
+//            gbl_whatMemberships.delegate   = self;
+
+            // only show memberships in edit mode
+            //
+            NSString *myLabelText;
+            NSMutableString *myMemberships = [[NSMutableString alloc] init];
+
+            if (   [gbl_homeEditingState  isEqualToString: @"add" ])   {
+                myLabelText  = @"";
+            } else {
+//                myLabelText  = @"mxxWWWWWiiiiiWWWlll cc is a member of these groups:  #allpeople, oijsdf, wewlwekjrl;, ciejjie, sodkfjok, #allpeople2, oijsdf, wewlwekjrl;, ciejjie, sodkfjok, #allpeople3, oijsdf, wewlwekjrl;, ciejjie, sodkfjok, #allpeople4, oijsdf, wewlwekjrl;, ciejjie, sodkfjok, #allpeople5, oijsdf, wewlwekjrl;, ciejjie, sodkfjok";
+//                myLabelText  = @"mxxWWWWWiiiiiWWWlll cc is a member of these groups:  #allpeople, oijsdf, wewlwekjrl";
+
+//                myMemberships = @"#allpeople";
+                [myMemberships appendString: @"#allpeople" ];
+                for (NSString *myMemberRec in gbl_arrayMem) {
+
+                    NSArray *psvArray;
+                    NSString *currGroup;
+                    NSString *currMember;
+                    
+                    psvArray = [myMemberRec componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"|"]];
+                    currGroup  = psvArray[0];
+                    currMember = psvArray[1];
+
+                    if ([currMember isEqualToString: gbl_lastSelectedPerson ] )
+                    {
+                        // append ", " membername 
+                        [myMemberships appendString: @", " ];
+                        [myMemberships appendString: currGroup ];
+                    }
+                } // for each groupmember
+
+
+                myLabelText = [NSString stringWithFormat:     // gbl_lastSelectedPerson gbl_fromHomeCurrentEntityName
+                    @"%@ is a member of these groups: %@",
+                    gbl_lastSelectedPerson,
+                    myMemberships
+                ];
+
+            }
+
+
+
+        //            CGFloat myScreenWidth, myFontSize;  // determine font size
+        //            myScreenWidth = self.view.bounds.size.width;
+        //            if (        myScreenWidth >= 414.0)  { myFontSize = 16.0; }  // 6+ and 6s+  and bigger
+        //            else if (   myScreenWidth  < 414.0   
+        //                     && myScreenWidth  > 320.0)  { myFontSize = 16.0; }  // 6 and 6s
+        //            else if (   myScreenWidth <= 320.0)  { myFontSize = 10.0; }  //  5s and 5 and 4s and smaller
+        //            else                                 { myFontSize = 16.0; }  //  other ?
+        //
+        // CGFloat   gbl_heightForScreen;  // 6+  = 736.0 x 414  and 6s+  (self.view.bounds.size.width) and height
+        //                                 // 6s  = 667.0 x 375  and 6
+        //                                 // 5s  = 568.0 x 320  and 5 
+        //                                 // 4s  = 480.0 x 320  and 5 
+        //
+//  NSLog(@"self.view.bounds.size.height  =[%f]",self.view.bounds.size.height  );
+
+            UILabel *myLabel;
+            CGFloat myLabelWidth;
+            CGFloat myLabelHeight;
+            UIFont *myLabelFont;
+            if (   self.view.bounds.size.width >= 414.0        // 6+ and 6s+  and bigger
+            ) {
+                myLabelFont   = [UIFont fontWithName:@"Menlo" size: 12.0];
+                myLabelWidth  = 320.0f;
+                myLabelHeight =  90.0f;
+            }
+            else if (   self.view.bounds.size.width  < 414.0    // 6 and 6s
+                     && self.view.bounds.size.width  > 320.0
+            ) {
+                myLabelFont   = [UIFont fontWithName:@"Menlo" size: 11.0];
+                myLabelWidth  = 290.0f;
+                myLabelHeight =  70.0f;
+            }
+            else if (   self.view.bounds.size.width <= 320.0   //  5s and 5 and 4s and smaller
+            ) {
+                myLabelFont   = [UIFont fontWithName:@"Menlo" size: 10.0];
+                myLabelWidth  = 260.0f;
+                myLabelHeight =  65.0f;
+            }
+            else if (   self.view.bounds.size.width <= 320.0   // ??
+            ) {
+                myLabelFont   = [UIFont fontWithName:@"Menlo" size: 10.0];
+                myLabelWidth  = 240.0f;
+                myLabelHeight =  50.0f;
+            }
+            myLabel      = [[UILabel alloc] initWithFrame:CGRectMake( 1.0f, 1.0f, myLabelWidth, myLabelHeight )]; 
+            myLabel.font = myLabelFont;
+
+
+
+            // fragile magic - do not change anything
+            //
+            dispatch_async(dispatch_get_main_queue(), ^{  
+
+                myLabel.text            = myLabelText;             
+                myLabel.lineBreakMode   = NSLineBreakByWordWrapping;  
+                myLabel.numberOfLines   = 0;                          // set number of lines to zero
+                myLabel.backgroundColor = gbl_colorEditingBG_current;
+                myLabel.textColor = [UIColor darkGrayColor ];
+//                myLabel.backgroundColor = [UIColor cyanColor ];
+                [myLabel sizeToFit];                                 // resize label - can make label vertically long, so scrolls
+
+
+                UIScrollView *myScroll  = [[UIScrollView alloc] initWithFrame:CGRectMake(32.0f, 8.0f, myLabelWidth, myLabelHeight )]; 
+
+
+                myScroll.contentSize   =
+                    CGSizeMake(myScroll.contentSize.width, myLabel.frame.size.height );           // set scroll view size
+
+                myScroll.backgroundColor = gbl_colorEditingBG_current;
+
+                [myScroll addSubview: myLabel];            // add myLabel to myScroll view
+
+                [cell.contentView addSubview: myScroll ];  // add scroll view to main view
+//                [cell addSubview: myScroll ];            // add scroll view to main view
+
+                cell.userInteractionEnabled         = YES;
+                cell.contentView.backgroundColor    = gbl_colorEditingBG_current;
+//                cell.backgroundColor    = [UIColor greenColor] ;
+            });
+
+  NSLog(@"END of   cellforrow  row=7");
+
+    }   //  multi-line label  listing groups the person belongs to
+
+
 
     return cell;
 
@@ -5340,7 +5516,8 @@ tn();trn("DATE field was drawn  hey   hey   hey   hey   hey   hey   hey   ");
 //     if (indexPath.row == 6)     // data entry for  City of Birth of Person
 //
    
-   if (indexPath.row == 0) return  8;  // fill
+//   if (indexPath.row == 0) return  8;  // fill
+   if (indexPath.row == 0) return 16;  // fill
 
 //   if (indexPath.row == 1) return 40;  // name 
    if (indexPath.row == 1) return 50;  // name 
@@ -5354,7 +5531,14 @@ tn();trn("DATE field was drawn  hey   hey   hey   hey   hey   hey   hey   ");
 //   if (indexPath.row == 5) return 40;  // "LABEl" for  time of birth information
    if (indexPath.row == 5) return 50;  // "LABEl" for  time of birth information
 
-   if (indexPath.row == 6) return 40;  // city seach field   ?
+   // if (indexPath.row == 6) return 40;  // city seach field   ?
+   //    note that row with index 2 has hidden field for city search string
+
+   if (indexPath.row == 6) return 20;  // fill
+
+//   if (indexPath.row == 7) return 40;  // label to list group memberships
+//   if (indexPath.row == 7) return 60;  // label to list group memberships
+   if (indexPath.row == 7) return 90;  // label to list group memberships
 
     return 32.0;
 
@@ -5376,9 +5560,15 @@ tn();
     NSLog(@"willSelectRowAtIndexPath! in  add/change");
     
 
+    if (indexPath.row == 7) {
+//  NSLog(@" // gbl_whatMemberships gets no highlight");
+        return nil;  // gbl_whatMemberships gets no highlight
+    }
+
+
     // DISALLOW  SELECTION  in high security case (city and date when person was saved with no look no change)
     //
-    //     if (indexPath.row == 3) {   // "LABEL" for  city,proc,coun  of Birth of Person
+    //     if (indexPath.row == 3)     // "LABEL" for  city,proc,coun  of Birth of Person
     //         gbl_mycityprovcounLabel.tag         = 2;
     //
     //     if (indexPath.row == 5)     // "LABEl" for  time of birth information
@@ -5409,6 +5599,11 @@ tn();
 tn();    NSLog(@"in didSelectRowAtIndexPath!  in AddChange !!");
 NSLog(@"indexPath.row =%ld",(long)indexPath.row );
     
+//    if (indexPath.row == 7 ) {  // gbl_whatMemberships
+//  NSLog(@"row = 7 return");
+//        return;
+//    }
+
   NSLog(@"gbl_currentMenuPlusReportCode=%@", gbl_currentMenuPlusReportCode);
 
     if (indexPath.row == 3 ) {  // LABEL for city,coun,prov    CITY  CITY  CITY  CITY  CITY  CITY  CITY  CITY CITY  CITY
@@ -5539,28 +5734,6 @@ tn();
             });
         } // show kb
 
-
-//        // if current orientation is landscape, shift field into view
-//        //
-//        //  typedef enum : NSInteger {
-//        //     UIInterfaceOrientationUnknown            = UIDeviceOrientationUnknown,
-//        //     UIInterfaceOrientationPortrait           = UIDeviceOrientationPortrait,
-//        //     UIInterfaceOrientationPortraitUpsideDown = UIDeviceOrientationPortraitUpsideDown,
-//        //     UIInterfaceOrientationLandscapeLeft      = UIDeviceOrientationLandscapeRight,
-//        //     UIInterfaceOrientationLandscapeRight     = UIDeviceOrientationLandscapeLeft 
-//        //  } UIInterfaceOrientation;
-//        //
-//        NSInteger myOrientation = [UIApplication sharedApplication].statusBarOrientation;
-//  NSLog(@"myOrientation =%ld", (long)myOrientation );
-//        if (   myOrientation == UIInterfaceOrientationLandscapeLeft      
-//            || myOrientation == UIInterfaceOrientationLandscapeRight  
-//        ) {
-//            dispatch_async(dispatch_get_main_queue(), ^{        
-//                [self.tableView setContentOffset: CGPointMake(-44,0) animated:YES];
-//            });
-//        }
-//
-    
   NSLog(@"end of didSelectRowAtIndexPath   for row = 3");
 tn();
     } // row == 3
@@ -7812,5 +7985,98 @@ trn("!!!!!!!!!  END OF  didSelectRow in some  PICKER !!   !!!!!!!!!!!!!!!!!!!!!!
 //
 ////
 //
+//
+
+//<.>
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//
+//            cell.contentView.backgroundColor             = gbl_colorEditingBG_current;
+//            cell.selectionStyle                          = UITableViewCellSelectionStyleNone;
+//            gbl_whatMemberships.autocorrectionType       = UITextAutocorrectionTypeNo;
+//            gbl_whatMemberships.keyboardType             = UIKeyboardTypeASCIICapable; // disables emoji keyboard
+//            gbl_whatMemberships.backgroundColor          = gbl_colorEditingBGforInputField;
+//
+//textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+//textLabel.numberOfLines = 0;
+//
+//            gbl_whatMemberships.text                     = @"xxyyyyyyyyy cc is a member of the following groups:  #allpeople, oijsdf, wewlwekjrl;, ciejjie, sodkfjok";
+//            gbl_whatMemberships.textColor                = [UIColor darkGrayColor];
+//
+//            gbl_whatMemberships.spellCheckingType        =   UITextSpellCheckingTypeNo;
+//
+//            gbl_whatMemberships.font                     = myFontMiddle;
+////            gbl_whatMemberships.borderStyle              = UITextBorderStyleRoundedRect;
+//            gbl_whatMemberships.borderStyle              = UITextBorderStyleNone;
+//            gbl_whatMemberships.textAlignment            = NSTextAlignmentLeft;
+//            gbl_whatMemberships.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+////            gbl_whatMemberships.tag                      = 1;
+//            gbl_whatMemberships.autocapitalizationType   = UITextAutocapitalizationTypeNone;
+//
+//            [cell addSubview: gbl_whatMemberships ];
+//        });
+//<.>
+//
+
+
+
+//
+//            // only show memberships in edit mode
+//            //
+//            gbl_whatMemberships.delegate  = self;
+//            if (   [gbl_homeEditingState  isEqualToString: @"add" ])   {
+//                gbl_whatMemberships.text  = @"";
+//            } else {
+//                gbl_whatMemberships.text  = @"mxxWWWWWiiiiiWWWlll cc is a member of the following groups:  #allpeople, oijsdf, wewlwekjrl;, ciejjie, sodkfjok, #allpeople2, oijsdf, wewlwekjrl;, ciejjie, sodkfjok, #allpeople3, oijsdf, wewlwekjrl;, ciejjie, sodkfjok, #allpeople4, oijsdf, wewlwekjrl;, ciejjie, sodkfjok, #allpeople5, oijsdf, wewlwekjrl;, ciejjie, sodkfjok, ";
+//            }
+//
+////            gbl_whatMemberships.allowsEditingTextAttributes =  NO;
+////            gbl_whatMemberships.selectable                  =  YES;
+////            gbl_whatMemberships.editable                    =  YES;
+//            gbl_whatMemberships.userInteractionEnabled      = YES;
+//            gbl_whatMemberships.scrollEnabled               = YES;
+//            gbl_whatMemberships.bounces                     = YES;
+//            gbl_whatMemberships.alwaysBounceVertical        = YES;
+//
+//
+////            gbl_whatMemberships.showsVerticalScrollIndicator = YES;
+////            gbl_whatMemberships.delaysContentTouches = NO;  // def is y
+//            gbl_whatMemberships.font             = myFontSmaller5;
+//            gbl_whatMemberships.textColor        = [UIColor darkGrayColor];
+//            gbl_whatMemberships.textAlignment    = NSTextAlignmentLeft;
+//
+////            gbl_whatMemberships.backgroundColor  = gbl_colorEditingBG_current;
+//            gbl_whatMemberships.backgroundColor  = [UIColor cyanColor];
+//
+
+
+//        // if current orientation is landscape, shift field into view
+//        //
+//        //  typedef enum : NSInteger {
+//        //     UIInterfaceOrientationUnknown            = UIDeviceOrientationUnknown,
+//        //     UIInterfaceOrientationPortrait           = UIDeviceOrientationPortrait,
+//        //     UIInterfaceOrientationPortraitUpsideDown = UIDeviceOrientationPortraitUpsideDown,
+//        //     UIInterfaceOrientationLandscapeLeft      = UIDeviceOrientationLandscapeRight,
+//        //     UIInterfaceOrientationLandscapeRight     = UIDeviceOrientationLandscapeLeft 
+//        //  } UIInterfaceOrientation;
+//        //
+//        NSInteger myOrientation = [UIApplication sharedApplication].statusBarOrientation;
+//  NSLog(@"myOrientation =%ld", (long)myOrientation );
+//        if (   myOrientation == UIInterfaceOrientationLandscapeLeft      
+//            || myOrientation == UIInterfaceOrientationLandscapeRight  
+//        ) {
+//            dispatch_async(dispatch_get_main_queue(), ^{        
+//                [self.tableView setContentOffset: CGPointMake(-44,0) animated:YES];
+//            });
+//        }
+//
+    
+//                //    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0, 10, 0, 0);
+//                //    CGRect paddedFrame = UIEdgeInsetsInsetRect(initialFrame, contentInsets);
+//                //    self.label = [[UILabel alloc] initWithFrame:paddedFrame];
+//                //
+////                CGRect initialFrame = CGRectMake(1.0, 1.0, 242.0, myLabelOriginalHeight + 2.0);
+//                CGRect initialFrame = CGRectMake(1.0, 1.0, 240.0, myLabelOriginalHeight);
+//                UIEdgeInsets contentInsets = UIEdgeInsetsMake(2, 2, 2, 2);
+//                CGRect paddedFrame = UIEdgeInsetsInsetRect(initialFrame, contentInsets);
 //
 

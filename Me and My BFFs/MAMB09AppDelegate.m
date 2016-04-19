@@ -267,12 +267,13 @@
 
 
 //    gbl_myname = [[UITextField alloc] initWithFrame:CGRectMake(16, 8, 200, 40)]; // arg 1=x 2=y 3=width 4=height
-//    gbl_myname.multipleTouchEnabled = NO;
-//    gbl_myname.exclusiveTouch       = YES;
-
     gbl_myname  = [
         [MAMB09_UITextField_noCopyPaste alloc]  initWithFrame: CGRectMake(16, 8, 200, 40) // arg 1=x 2=y 3=width 4=height
     ];
+
+//    gbl_whatMemberships  = [[UILabel alloc]initWithFrame: CGRectMake(32, 0, 240, 77)];
+//    gbl_whatMemberships  = [[UITextView alloc]initWithFrame: CGRectMake(32, 0, 240, 75)];
+
 
 
 //UIView *overlay = [[UIView alloc] init];  
@@ -298,10 +299,10 @@
 //    gbl_mybirthinformation   = [[UITextField alloc] initWithFrame:CGRectMake(16, 8, 250, 30)]; // arg 1=x 2=y 3=width 4=height
 //    gbl_mybirthinformation   = [[UITextField alloc] initWithFrame:CGRectMake(16, 8, 265, 30)]; // arg 1=x 2=y 3=width 4=height
 
-    gbl_mybirthinformation   = [[UITextField alloc] initWithFrame:CGRectMake(16, 8, 265, 40)]; // arg 1=x 2=y 3=width 4=height
-//    gbl_mybirthinformation  = [
-//        [MAMB09_UITextField_noCopyPaste alloc]  initWithFrame: CGRectMake(16, 8, 265, 40) // arg 1=x 2=y 3=width 4=height
-//    ];
+//    gbl_mybirthinformation   = [[UITextField alloc] initWithFrame:CGRectMake(16, 8, 265, 40)]; // arg 1=x 2=y 3=width 4=height
+    gbl_mybirthinformation  = [
+        [MAMB09_UITextField_noCopyPaste alloc]  initWithFrame: CGRectMake(16, 8, 265, 40) // arg 1=x 2=y 3=width 4=height
+    ];
 
 
 

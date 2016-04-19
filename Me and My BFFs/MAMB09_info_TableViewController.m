@@ -670,6 +670,7 @@ nbn(88);
             });
             return cell;
         }
+
         if (indexPath.row == 1) {
             NSString *myIntroString;
             myIntroString = [NSString stringWithFormat: 
@@ -704,7 +705,39 @@ nbn(88);
             });
             return cell;
         }
+
         if (indexPath.row == 3) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== title for quick start guide 
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myTitleFont;
+                cell.backgroundColor         = gbl_color_cHed;
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.text          = @"Quick Start Guide";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+            });
+            return cell;
+        }
+
+        if (indexPath.row == 4) {
+
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== text  for quick start guide
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myFontForText;
+                cell.backgroundColor         = gbl_color_cBgr;
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.text          = @"Look for times when the graph goes below the red \"STRESS\" line into the red zones.  When the graph stays in the red zones for a few weeks or months, then it is more likely to be a stressful time.\n\nThe bottom of the graph has the months of the year marked.\n\nWhen the graph goes up into the green zones it means more peaceful times are likely.\n";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+            });
+            return cell;
+        }
+
+        if (indexPath.row == 5) {
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== title for score info 
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
@@ -718,7 +751,7 @@ nbn(88);
             });
             return cell;
         }
-        if (indexPath.row == 4) {
+        if (indexPath.row == 6) {
             NSString *text_cGr2 = @" GREAT  ";
             NSString *text_cGre = @" GOOD   ";
             NSString *text_cNeu = @"          neutral gray area (no label)     ";
@@ -830,7 +863,7 @@ nbn(88);
         }
 
 
-        if (indexPath.row == 5) {
+        if (indexPath.row == 7) {
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
@@ -844,7 +877,7 @@ nbn(88);
             });
             return cell;
         }
-        if (indexPath.row == 6) {
+        if (indexPath.row == 8) {
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== title for time frame influences
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
@@ -859,7 +892,7 @@ nbn(88);
             });
             return cell;
         }
-        if (indexPath.row == 7) {
+        if (indexPath.row == 9) {
 
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== text  for time frame influences
                 cell.textLabel.textColor     = [UIColor blackColor];
@@ -877,7 +910,7 @@ nbn(88);
             return cell;
         }
 
-        if (indexPath.row == 8) {
+        if (indexPath.row == 10) {
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
@@ -891,7 +924,7 @@ nbn(88);
             });
             return cell;
         }
-        if (indexPath.row == 9) {
+        if (indexPath.row == 11) {
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== title for whole year score
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
@@ -906,7 +939,7 @@ nbn(88);
             });
             return cell;
         }
-        if (indexPath.row == 10) {
+        if (indexPath.row == 12) {
 
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== text  for year summary score
                 cell.textLabel.textColor     = [UIColor blackColor];
@@ -921,7 +954,7 @@ nbn(88);
             });
             return cell;
         }
-        if (indexPath.row == 11) {
+        if (indexPath.row == 13) {
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
@@ -936,7 +969,7 @@ nbn(88);
             });
             return cell;
         }
-        if (indexPath.row == 12) {                            // <=== overcome destiny image
+        if (indexPath.row == 14) {                            // <=== overcome destiny image
             dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
                 cell.textLabel.textColor     = [UIColor blackColor]; // black textcolor HAS TO BE FIRST, then cell.userInteractionEnabled = NO;
                 cell.userInteractionEnabled  = NO;                   // black textcolor HAS TO BE FIRST, then cell.userInteractionEnabled = NO;
@@ -958,7 +991,7 @@ nbn(88);
             });
             return cell;
         }
-        if (indexPath.row == 13) {
+        if (indexPath.row == 15) {
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
@@ -973,7 +1006,7 @@ nbn(88);
             });
             return cell;
         }
-        if (indexPath.row == 14) {                           // <=== disclaimer 
+        if (indexPath.row == 16) {                           // <=== disclaimer 
             dispatch_async(dispatch_get_main_queue(), ^{  
 //                cell.textLabel.textColor     = [UIColor blackColor];
                 cell.textLabel.textColor     = [UIColor redColor]; 
@@ -1636,7 +1669,8 @@ nbn(100);
 //                cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
 //                cell.textLabel.text          = nil;
 //                cell.textLabel.text          = @"xxxxx";
-                cell.textLabel.text          = @" ";
+//                cell.textLabel.text          = @" ";
+                cell.textLabel.text          = @"example";
 
 //                cell.imageView.image         = nil;
 //                cell.backgroundView = [[UIImageView alloc] initWithImage: myImageCategories3] ;
@@ -1709,6 +1743,26 @@ nbn(100);
         }
 
         if (indexPath.row == 21) {                           // <=== 
+
+            // CGSize currentScreenWidthHeight = [myappDelegate currentScreenSize];
+            // NSLog(@"currentScreenWidthHeight.width  =%f",currentScreenWidthHeight.width );
+            // NSLog(@"currentScreenWidthHeight.height =%f",currentScreenWidthHeight.height );
+            //
+            CGSize myTextSize = [@"WWW"  sizeWithAttributes: @{ NSFontAttributeName: myFontForText } ];  // menlo
+            float  mySizeIndent =  myTextSize.width;
+  NSLog(@"mySizeIndent =[%f]",mySizeIndent );
+
+            NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+            paragraphStyle.headIndent               = mySizeIndent;
+
+            NSAttributedString *myAttributedStr = [[NSAttributedString alloc]
+                initWithString:
+@"The Compatibility Potential number from 1 to 99 gives an overall score for the relationship.\n\nIt's a very hard job to combine all the influences affecting a relationship to get an overall picture.\n\nThis report has\n \u2022 the Compatibility Potential score\n \u2022 the 3 relationship categories\n \u2022 all the relationship influences\n\nThe personality report has\n \u2022 all the personality influences for each of the 2 people\n\nRelationships are complex."
+                    attributes: @{ NSParagraphStyleAttributeName: paragraphStyle }
+            ];
+
+
+
             dispatch_async(dispatch_get_main_queue(), ^{  
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
@@ -1717,10 +1771,16 @@ nbn(100);
                 cell.textLabel.numberOfLines = 0;
 //                cell.textLabel.text          = @"The compatibility details on the bottom give a LOT of detail.  It's hard work to combine the differing influences into an overall picture.\n\nIn doing his integration you have\n  - the 3 categories\n  - details at the bottom\n  - a personality report for each\n    of the 2 people\n\nA lot of the integration is done for you in the compatibility Potential score from 1 to 99.";
 
-//                cell.textLabel.text          = @"The Compatibility Potential number from 1 to 99 gives an overall score for the relationship.\n\nIt's a very hard job to combine all the influences affecting a relationship to get an overall picture.\n\nThis report has\n  - the Compatibility Potential score\n  - the 3 relationship categories\n  - the description of relationship influences\n\nThe personality report has\n  - descriptions of personality influences\n    for each of the 2 people\n\nRelationships are complex.";
-                cell.textLabel.text          = @"The Compatibility Potential number from 1 to 99 gives an overall score for the relationship.\n\nIt's a very hard job to combine all the influences affecting a relationship to get an overall picture.\n\nThis report has\n  - the Compatibility Potential score\n  - the 3 relationship categories\n  - all the relationship influences\n\nThe personality report has\n  - all the personality influences\n    for each of the 2 people\n\nRelationships are complex.";
-
 //This is why consulting astrologers can make a living meeting with people for an hour to sort everything out
+//                cell.textLabel.text          = @"The Compatibility Potential number from 1 to 99 gives an overall score for the relationship.\n\nIt's a very hard job to combine all the influences affecting a relationship to get an overall picture.\n\nThis report has\n  - the Compatibility Potential score\n  - the 3 relationship categories\n  - the description of relationship influences\n\nThe personality report has\n  - descriptions of personality influences\n    for each of the 2 people\n\nRelationships are complex.";
+//                cell.textLabel.text          = @"The Compatibility Potential number from 1 to 99 gives an overall score for the relationship.\n\nIt's a very hard job to combine all the influences affecting a relationship to get an overall picture.\n\nThis report has\n  - the Compatibility Potential score\n  - the 3 relationship categories\n  - all the relationship influences\n\nThe personality report has\n  - all the personality influences\n    for each of the 2 people\n\nRelationships are complex.";
+
+
+
+                cell.textLabel.text           = @" "; // for test
+                cell.textLabel.attributedText = myAttributedStr;
+
+
 
                 cell.imageView.image         = nil;
                 cell.backgroundView          = nil ;
@@ -1930,7 +1990,8 @@ nbn(100);
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;   // 0 means unlimited number of lines
                 cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
-                cell.textLabel.text          = @"e.g.";
+//                cell.textLabel.text          = @"e.g.";
+                cell.textLabel.text          = @"example";
 
                 cell.imageView.image = myImagePersonality;
                 cell.backgroundView          = nil ;
@@ -2192,7 +2253,8 @@ nbn(100);
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;   // 0 means unlimited number of lines
 //                cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
-                cell.textLabel.text          = @"The Personality report for each person gives you the \"quality\" of the personality traits of that person.\n\nIn the Personality report look at the text below the table.  This is where favorable and challenging influences are.";
+//                cell.textLabel.text          = @"The Personality report for each person gives you the \"quality\" of the personality traits of that person.\n\nIn the Personality report look at the text below the table.  This is where favorable and challenging influences are.";
+                cell.textLabel.text          = @"Tap on a person to get their Personality Report.  This report gives you the \"quality\" of the personality traits of that person.\n\nIn the Personality report look at the text below the table.  This is where favorable and challenging influences are.";
                 cell.imageView.image         = nil;
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -2611,13 +2673,39 @@ nbn(100);
         }
 
         if (indexPath.row == 5) {
+
+            // CGSize currentScreenWidthHeight = [myappDelegate currentScreenSize];
+            // NSLog(@"currentScreenWidthHeight.width  =%f",currentScreenWidthHeight.width );
+            // NSLog(@"currentScreenWidthHeight.height =%f",currentScreenWidthHeight.height );
+            //
+            CGSize myTextSize = [@"WWW"  sizeWithAttributes: @{ NSFontAttributeName: myFontForText } ];  // menlo
+            float  mySizeIndent =  myTextSize.width;
+  NSLog(@"mySizeIndent =[%f]",mySizeIndent );
+
+            NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+            paragraphStyle.headIndent               = mySizeIndent;
+
+            NSAttributedString *myAttributedStr = [[NSAttributedString alloc]
+                initWithString:
+@"When you tap \"Done\" you get a choice of two Kinds of Save.\n\n1. \"Regular Save\"\n   This lets you or anyone go back in this app and look at and change the Birth City and Birth Date.\n\n2. \"Hide Birth Information Save\"\n   This is for when you want personal privacy for the person at all times.  When you use this save choice, it means NOBODY, neither you nor the device owner nor anybody else can ever again change or even look at the Birth City or Birth Date.\n\n   That means, if you want to look at the birth information in the future, you need to write it down somewhere safe outside this app.\n\n\n   Furthermore, whenever birth information goes outside this app, the Hide Birth Information mode is used:\n \u2022 when you share people or groups\n \u2022 when you do a full backup\n \u2022 when the app saves data for its own use"
+                    attributes: @{ NSParagraphStyleAttributeName: paragraphStyle }
+            ];
+
+
+
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== text for  Personal privacy
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
                 cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
-                cell.textLabel.text          = @"When you tap \"Done\" you get a choice of two Kinds of Save.\n\n     1. \"Regular Save\"\nThis lets you or anyone go back in this app and look at and change the Birth City and Birth Date.\n\n     2. \"No Look, No Change Save\"\nThis is for when you want personal privacy for the person at all times.  When you use this save choice, it means NOBODY, neither you nor the device owner nor anybody else can ever again change or even look at the Birth City or Birth Date.\n\nThat means, if you want to look at the personal information in the future, you need to write it down somewhere safe outside this app.\n\nWhenever personal information goes outside this app running in memory, the No Look, No Change mode is used:\n\n  - whenever you share people or groups\n  - whenever you do a full backup\n  - whenever the app saves information\n    for its own use.";
+//                cell.textLabel.text          = @"When you tap \"Done\" you get a choice of two Kinds of Save.\n\n     1. \"Regular Save\"\nThis lets you or anyone go back in this app and look at and change the Birth City and Birth Date.\n\n     2. \"No Look, No Change Save\"\nThis is for when you want personal privacy for the person at all times.  When you use this save choice, it means NOBODY, neither you nor the device owner nor anybody else can ever again change or even look at the Birth City or Birth Date.\n\nThat means, if you want to look at the personal information in the future, you need to write it down somewhere safe outside this app.\n\nWhenever personal information goes outside this app running in memory, the No Look, No Change mode is used:\n\n  - whenever you share people or groups\n  - whenever you do a full backup\n  - whenever the app saves information\n    for its own use.";
+
+
+                cell.textLabel.text           = @" "; // for test
+                cell.textLabel.attributedText = myAttributedStr;
+
+
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -2763,7 +2851,7 @@ nbn(100);
                 cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
-                cell.textLabel.text          = @"You may not know the time of birth.  Don't worry about it.\n\nIf you have no idea of what the time was, just accept the default time of one minute past noon.\n\nIf you know the approximate time, enter your best guess.\n\nIf you know there was Daylight Saving Time or some such in effect, then subtract an hour from the time.";
+                cell.textLabel.text          = @"You may not know the time of birth.  Don't worry about it.\n\nIf you have no idea of what the time was, just accept the default time of one minute past noon.\n\nIf you know the approximate time, enter your best guess.\n\nIf you know there was Daylight Saving Time in effect, then subtract an hour from the time.";
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -3114,6 +3202,23 @@ nbn(100);
 
 
         if (indexPath.row == 2) {
+
+            // CGSize currentScreenWidthHeight = [myappDelegate currentScreenSize];
+            // NSLog(@"currentScreenWidthHeight.width  =%f",currentScreenWidthHeight.width );
+            // NSLog(@"currentScreenWidthHeight.height =%f",currentScreenWidthHeight.height );
+            //
+            CGSize myTextSize = [@"WW"  sizeWithAttributes: @{ NSFontAttributeName: myFontForText } ];  // menlo
+            float  mySizeTwoCharsIndent =  myTextSize.width;
+  NSLog(@"mySizeTwoCharsIndent =[%f]",mySizeTwoCharsIndent );
+
+            NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+            paragraphStyle.headIndent               = mySizeTwoCharsIndent;
+
+            NSAttributedString *myAttributedStr = [[NSAttributedString alloc] initWithString:
+@"\u2022 View reports for people and groups you have added.\n\u2022 Share reports by email."
+    attributes: @{NSParagraphStyleAttributeName: paragraphStyle}];
+
+
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== brown text
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
@@ -3128,7 +3233,14 @@ nbn(100);
 //                cell.textLabel.text          = @"Look at reports for the people and groups you have added.";
 //                cell.textLabel.text          = @"Look at reports for people and groups you have added.";
 //                cell.textLabel.text          = @"View reports for people and groups you have added.";
-                cell.textLabel.text          = @"View reports for people and groups you have added.\nShare reports by email.";
+//                cell.textLabel.text          = @"View reports for people and groups you have added.\nShare reports by email.";
+//                cell.textLabel.text          = @"\u2022 View reports for people and groups you have added.\n\u2022 Share reports by email.";
+
+
+                cell.textLabel.text           = @" "; // for test
+                cell.textLabel.attributedText = myAttributedStr;
+
+
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -3176,10 +3288,30 @@ nbn(100);
         }
 
         if (indexPath.row == 5) {
+
+            // CGSize currentScreenWidthHeight = [myappDelegate currentScreenSize];
+            // NSLog(@"currentScreenWidthHeight.width  =%f",currentScreenWidthHeight.width );
+            // NSLog(@"currentScreenWidthHeight.height =%f",currentScreenWidthHeight.height );
+            //
+            CGSize myTextSize = [@"WW"  sizeWithAttributes: @{ NSFontAttributeName: myFontForText } ];
+            float  mySizeTwoCharsIndent =  myTextSize.width;
+  NSLog(@"mySizeTwoCharsIndent =[%f]",mySizeTwoCharsIndent );
+
+            NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+            paragraphStyle.headIndent               = mySizeTwoCharsIndent;
+
+            NSAttributedString *myAttributedStr = [[NSAttributedString alloc] initWithString:
+            @"\u2022 Add people and groups and make changes to them.\n\u2022 Share people or groups by email.\n\u2022 Backup all your data to an email attachment."
+    attributes: @{NSParagraphStyleAttributeName: paragraphStyle}];
+
+
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== yellow text
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
                 cell.textLabel.font          = myFontForText;
+
+
+
 //                cell.backgroundColor         = gbl_color_cBgr;
 //                cell.backgroundColor         = gbl_colorEditingBG;
                 cell.backgroundColor         = gbl_bgColor_yellowEdit;
@@ -3187,7 +3319,12 @@ nbn(100);
 //                cell.textLabel.text          = @"Entering people and group information and changing stuff is done from the YELLOW home";
 //                cell.textLabel.text          = @"Enter people and groups and make changes to them.\nShare people or groups by email.\nBackup all your data to an email attachment.";
 //                cell.textLabel.text          = @"Enter people and groups and make changes to them.\nShare people or groups by email.\nBackup your people and groups to an email attachment.";
-                cell.textLabel.text          = @"Enter people and groups and make changes to them.\nShare people or groups by email.\nBackup all your data to an email attachment.";
+//                cell.textLabel.text          = @"\u2022 Enter people and groups and make changes to them.\n\u2022 Share people or groups by email.\n\u2022 Backup all your data to an email attachment.";
+
+
+                cell.textLabel.text           = @" "; // for test
+                cell.textLabel.attributedText = myAttributedStr;
+
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -3238,7 +3375,7 @@ nbn(100);
                 cell.textLabel.numberOfLines = 0;
 //                cell.textLabel.text          = @"Example people and groups have names starting with \"~\".\n\nThe example data lets you explore all the different reports and how the app works before you enter any new people or groups yourself.\n\nWhen you want to enter a new person go to the home screen.  You can tell the home screen because it has the black, red and yellow app icon on the top left.  Tap \"+\" beside it to add a new person.\n\nAfter a while, you might want to not see the example data.  Check the \"hide example data\" checkbox below.";
 //                cell.textLabel.text          = @"Example people and groups have names starting with \"~\".\n\nThe example data lets you explore all the different reports and how the app works before you enter any new people or groups yourself.\n\nWhen you want to enter a new person go to the home screen.  You can tell the home screen because it has the app icon on the top left.  Tap \"+\" beside it to add a new person.\n\nAfter a while, you might want to not see the example data.  If so, tap the switch below to off.";
-                cell.textLabel.text          = @"Example people and groups have names starting with \"~\".\n\nThe example data lets you explore all the different reports and see how the app works before you enter any new people or groups yourself.\n\nExample people and groups cannot be changed.\n\nWhen you want to enter a new person or group, go back to the home screen.  You can tell the home screen because it has the app icon on the top left.  Tap \"+\" to add a new person or group.";
+                cell.textLabel.text          = @"Example people and groups have names starting with \"~\".\n\nThe example data lets you explore all the different reports and see how the app works before you add any new people or groups yourself.\n\nExample people and groups cannot be changed.\n\nWhen you want to add a new person or group, go back to the home screen.  You can tell the home screen because it has the app icon on the top left.  Tap \"+\" to add a new person or group.";
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -3436,6 +3573,26 @@ nbn(100);
 
 
         if (indexPath.row == 14) {
+
+            // CGSize currentScreenWidthHeight = [myappDelegate currentScreenSize];
+            // NSLog(@"currentScreenWidthHeight.width  =%f",currentScreenWidthHeight.width );
+            // NSLog(@"currentScreenWidthHeight.height =%f",currentScreenWidthHeight.height );
+            //
+            CGSize myTextSize = [@"WW"  sizeWithAttributes: @{ NSFontAttributeName: myFontForText } ];  // menlo
+            float  mySizeTwoCharsIndent =  myTextSize.width;
+  NSLog(@"mySizeTwoCharsIndent =[%f]",mySizeTwoCharsIndent );
+
+            NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+            paragraphStyle.headIndent               = mySizeTwoCharsIndent;
+
+            NSAttributedString *myAttributedStr = [[NSAttributedString alloc]
+                initWithString:
+@"\u2022 Calendar Year stress levels\n\u2022 What Color is Today for Me?\n\u2022 Personality\n\u2022 Compatibility Potential of two people\n\u2022 Best Match for a Person in a Group\n\n\u2022 in a Group, Best Matched Pair\n\u2022 in a Group, Most Emotional Person\n\u2022 in a Group, Most Down-to-earth Person\n\u2022 in a Group, Most Passionate Person\n\u2022 in a Group, Most Assertive Person\n\u2022 in a Group, Most Restless Person"
+                    attributes: @{ NSParagraphStyleAttributeName: paragraphStyle }
+            ];
+
+
+
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== report list 
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
@@ -3443,7 +3600,13 @@ nbn(100);
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
 //                cell.textLabel.text          = @" - Calendar Year stress levels\n - Personality\n - Compatibility Potential of two people\n - What Color is Today for Me?\n - Best Match for a Person in a Group\n\n - in a Group, Best Matched Pair\n - in a Group, Most Emotional Person\n - in a Group, Most Down-to-earth Person\n - in a Group, Most Passionate Person\n - in a Group, Most Assertive Person\n - in a Group, Most Restless Person";
-                cell.textLabel.text          = @" - Calendar Year stress levels\n - What Color is Today for Me?\n - Personality\n - Compatibility Potential of two people\n - Best Match for a Person in a Group\n\n - in a Group, Best Matched Pair\n - in a Group, Most Emotional Person\n - in a Group, Most Down-to-earth Person\n - in a Group, Most Passionate Person\n - in a Group, Most Assertive Person\n - in a Group, Most Restless Person";
+//                cell.textLabel.text          = @" - Calendar Year stress levels\n - What Color is Today for Me?\n - Personality\n - Compatibility Potential of two people\n - Best Match for a Person in a Group\n\n - in a Group, Best Matched Pair\n - in a Group, Most Emotional Person\n - in a Group, Most Down-to-earth Person\n - in a Group, Most Passionate Person\n - in a Group, Most Assertive Person\n - in a Group, Most Restless Person";
+
+
+                cell.textLabel.text           = @" "; // for test
+                cell.textLabel.attributedText = myAttributedStr;
+
+
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -3626,7 +3789,7 @@ nbn(100);
     if ([gbl_helpScreenDescription isEqualToString: @"best match"   ] ) { return 15; }  
     if ([gbl_helpScreenDescription isEqualToString: @"what color"   ] ) { return  7; }
     if ([gbl_helpScreenDescription isEqualToString: @"just 2"       ] ) { return 23; }  // compatibility just 2 people
-    if ([gbl_helpScreenDescription isEqualToString: @"calendar year"] ) { return 15; } 
+    if ([gbl_helpScreenDescription isEqualToString: @"calendar year"] ) { return 17; } 
     if ([gbl_helpScreenDescription isEqualToString: @"best year"    ] ) { return  7; } 
     if ([gbl_helpScreenDescription isEqualToString: @"best day"     ] ) { return  7; } 
     if ([gbl_helpScreenDescription isEqualToString: @"HOME"         ] ) { return 20; } 
@@ -3649,7 +3812,7 @@ nbn(100);
 
         if (indexPath.row ==   3) return    16.0;  // spacer
         if (indexPath.row ==   4) return    36.0;  // title for personal privacy
-        if (indexPath.row ==   5) return   395.0;  // text  for personal privacy
+        if (indexPath.row ==   5) return   400.0;  // text  for personal privacy
 
         if (indexPath.row ==   6) return    16.0;  // spacer
         if (indexPath.row ==   7) return    30.0;  // title for person name
@@ -3778,22 +3941,26 @@ nbn(100);
         if (indexPath.row ==   0) return     8.0;  // spacer
         if (indexPath.row ==   1) return    60.0;  // intro string
         if (indexPath.row ==   2) return     8.0;  // spacer
-        if (indexPath.row ==   3) return    30.0;  // title for Labels inside the Graph
-        if (indexPath.row ==   4) return   240.0;  // text  for Labels inside the Graph
-        if (indexPath.row ==   5) return     8.0;  // spacer
-        if (indexPath.row ==   6) return    30.0;  // title for Time Frame Influences
-//        if (indexPath.row ==   7) return   250.0;  // text  for Time Frame Influences
-        if (indexPath.row ==   7) return   150.0;  // text  for Time Frame Influences
-        if (indexPath.row ==   8) return     8.0;  // spacer
-        if (indexPath.row ==   9) return    30.0;  // title for Score for the Year
-        if (indexPath.row ==  10) return   175.0;  // text  for Score for the Year
-        if (indexPath.row ==  11) return     8.0;  // spacer
 
-        if (indexPath.row ==  12) return    75.0;  // image for overcome destiny
+        if (indexPath.row ==   3) return    30.0;  // title for quick start guide
+        if (indexPath.row ==   4) return   190.0;  // text  quick start guide
+
+        if (indexPath.row ==   5) return    30.0;  // title for Labels inside the Graph
+        if (indexPath.row ==   6) return   240.0;  // text  for Labels inside the Graph
+        if (indexPath.row ==   7) return     8.0;  // spacer
+        if (indexPath.row ==   8) return    30.0;  // title for Time Frame Influences
+//        if (indexPath.row ==   7) return   250.0;  // text  for Time Frame Influences
+        if (indexPath.row ==   9) return   150.0;  // text  for Time Frame Influences
+        if (indexPath.row ==  10) return     8.0;  // spacer
+        if (indexPath.row ==  11) return    30.0;  // title for Score for the Year
+        if (indexPath.row ==  12) return   175.0;  // text  for Score for the Year
+        if (indexPath.row ==  13) return     8.0;  // spacer
+
+        if (indexPath.row ==  14) return    75.0;  // image for overcome destiny
 //        if (indexPath.row ==  12) return    75.0;  // image for overcome destiny
 
-        if (indexPath.row ==  13) return     8.0;  // spacer
-        if (indexPath.row ==  14) return    20.0;  // text for disclaimer
+        if (indexPath.row ==  15) return     8.0;  // spacer
+        if (indexPath.row ==  16) return    20.0;  // text for disclaimer
         return 40;
     }
     if (   [gbl_helpScreenDescription isEqualToString: @"just 2"]  ) {
@@ -4047,7 +4214,7 @@ nbn(100);
 //  p_fn_prtlin("     Assertive     - competitive, authoritative, outspoken");
 //  p_fn_prtlin("     Emotional     - protective, sensitive, possessive");
 //  p_fn_prtlin("     Restless      - versatile, changeable, independent");
-//  p_fn_prtlin("     Down-to-earth - stable, practical, ambitious");
+//Enter/  p_fn_prtlin("     Down-to-earth - stable, practical, ambitious");
 //
 //
 //  p_fn_prtlin("     Ups and Downs - having very high ups ");

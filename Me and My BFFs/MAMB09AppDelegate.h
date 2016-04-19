@@ -94,10 +94,10 @@ UITapGestureRecognizer *gbl_tripleTapGestureRecognizer;  // for add/change
 UITapGestureRecognizer *gbl_quad__TapGestureRecognizer;  // for add/change
 UITapGestureRecognizer *gbl_penta_TapGestureRecognizer;  // for add/change
 
-UITapGestureRecognizer *gbl_oneTapRecog_InNameFld;
-UITapGestureRecognizer *gbl_oneTapRecog_InNameCell;
-UITapGestureRecognizer *gbl_dblTapRecog_InNameFld;
-UITapGestureRecognizer *gbl_dblTapRecog_InNameCell;
+//UITapGestureRecognizer *gbl_oneTapRecog_InNameFld;
+//UITapGestureRecognizer *gbl_oneTapRecog_InNameCell;
+//UITapGestureRecognizer *gbl_dblTapRecog_InNameFld;
+//UITapGestureRecognizer *gbl_dblTapRecog_InNameCell;
 // cell.accessoryType = UITableViewCellAccessoryDisclosurebutton;    // home mode edit   with tap giving record details 
 // cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator; // home mode report with tap giving report list
 //
@@ -265,6 +265,13 @@ NSString *gbl_initPromptCoun;
 NSString *gbl_initPromptDate;
 UIColor  *gbl_colorPlaceHolderPrompt; // gray
 
+//     UILabel     *gbl_whatMemberships;     // what group memberships does person have ?
+//     UITextView  *gbl_whatMemberships;     // what group memberships does person have ?
+//
+//UILabel  *gbl_whatMemberships;     // what group memberships does person have ?
+//UITextView  *gbl_whatMemberships;     // what group memberships does person have ?
+
+
 UIColor  *gbl_colorDIfor_home;
 UIColor  *gbl_colorDIfor_cGr2;
 UIColor  *gbl_colorDIfor_cGre;
@@ -307,8 +314,8 @@ NSArray *gbl_buttonArrayForBirthDate;
 
 
 
- UITextField *gbl_mybirthinformation;  // for add new person    // one of THE THREE  "FIELDS"  =====
-//MAMB09_UITextField_noCopyPaste *gbl_mybirthinformation;  // for add new person or group         // one of THE THREE  "FIELDS"  =====
+// UITextField *gbl_mybirthinformation;  // for add new person    // one of THE THREE  "FIELDS"  =====
+MAMB09_UITextField_noCopyPaste *gbl_mybirthinformation;  // for add new person or group         // one of THE THREE  "FIELDS"  =====
 
 
 NSInteger gbl_previousCharTypedWasSpace; // for no multiple consecutive spaces

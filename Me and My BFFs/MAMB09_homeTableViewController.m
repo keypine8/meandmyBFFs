@@ -2325,7 +2325,7 @@ tn();
 
 -(IBAction) pressedShareEntities    // People or Groups 
 {
-  NSLog(@"in   pressedShareEntities! (People or Groups) in HOME");
+  NSLog(@"in   pressedShareEntities! (Share People  or  Share Groups) in HOME");
 
     MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
     [myappDelegate mamb_beginIgnoringInteractionEvents ];
@@ -2345,6 +2345,7 @@ tn();
         }
 
         // new segue "segueHomeToSelPerson"   to pick people or groups to share
+<.>
 //        [self performSegueWithIdentifier:@"segueHomeToSelPerson" sender:self]; //  
 //<.>
        // here call screen to pick entities to share
