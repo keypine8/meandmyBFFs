@@ -6016,6 +6016,8 @@ kin(num_PSVs_found);
 
     [super viewWillDisappear:animated];
 
+    gbl_justPressedChangeGroupName = 0;  // reset to default
+
 // did not work  - no kb comes up
 //        // I'm using a UIPickerView as the inputView for a TextField (thus replacing the onscreen keyboard).
 //        // I use the following delegate to dismiss the view.

@@ -75,6 +75,7 @@
                         <segue destination="c6B-B7-05J" kind="push" identifier="segueHomeToReportList" id="FMb-AS-tJX"/>
                         <segue destination="lj1-OQ-gPo" kind="push" identifier="segueHomeToListMembers" id="HYE-Hx-QR6"/>
                         <segue destination="QgP-dY-i4R" kind="push" identifier="segueHomeToSelPerson" id="nxl-xA-9Hd"/>
+                        <segue destination="QiK-eJ-AqB" kind="push" identifier="segueHomeToSelShareEntity" id="AKd-Cn-LGm"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BbN-gl-Rsk" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -311,6 +312,35 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fif-Uv-eXj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-10316" y="-13568"/>
+        </scene>
+        <!--sel Share Entity Table View Controller-->
+        <scene sceneID="ivh-kX-RTn">
+            <objects>
+                <tableViewController id="QiK-eJ-AqB" customClass="MAMB09_selShareEntityTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="nDh-Mv-udu">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SelShareEntityCellIdentifier" id="2ol-OZ-AHn">
+                                <rect key="frame" x="0.0" y="92" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2ol-OZ-AHn" id="ZjR-7s-6kq">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="QiK-eJ-AqB" id="5mt-kp-DsX"/>
+                            <outlet property="delegate" destination="QiK-eJ-AqB" id="nTN-gm-RSj"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="QE6-XW-9CK"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="C1j-yc-cai" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-14002" y="-13369"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="K1K-qc-EtB">
@@ -624,8 +654,8 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="nxl-xA-9Hd"/>
+        <segue reference="0US-NI-9lF"/>
         <segue reference="2Rt-iZ-59y"/>
         <segue reference="pER-Pc-lnw"/>
-        <segue reference="DWm-0p-Qrr"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -159,6 +159,7 @@ NSInteger gbl_justAddedPersonRecord;
 NSInteger gbl_justAddedGroupRecord;
 //NSInteger gbl_justHitRedCircleMinusButtonArea;
 //NSInteger gbl_justEnteredRedDeleteButtonMode;
+NSInteger gbl_justPressedChangeGroupName;
 
 // A is for tblrpts_1,  B is for tblrpts_2
 //
@@ -197,8 +198,11 @@ NSInteger gbl_ThresholdshortTblLineLen;
 BOOL      gbl_disclosureSetAlready;
 
 
+
+
 // EDITING stuff
 //
+UIColor *gbl_colorSelShareEntityBG;  // for MAMB09_selShareEntityTableViewController.m
 
 UIImage *gbl_YellowBG ;
 UIImage *gbl_BlueBG ;
@@ -434,6 +438,13 @@ UIToolbar *gbl_toolbarHomeMaintenance; // for home screen Share_people / Backup_
 UIToolbar *gbl_toolbarForwBack;       // for what color
 UIToolbar *gbl_toolbarMemberAddDel;   // for group member list screen
 CGFloat    gbl_listMemberToolbar_y;   // to set y offset of bottom toolbar on list members screen
+
+
+
+NSMutableArray *gbl_peopleToPickFrom;
+NSMutableArray *gbl_groupsToPickFrom;
+NSMutableArray *gbl_selectedPeople_toShare;
+NSMutableArray *gbl_selectedGroups_toShare;
 
 NSMutableArray *gbl_selectedMembers_toAdd;
 NSMutableArray *gbl_selectedMembers_toDel;

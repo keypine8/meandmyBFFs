@@ -7,7 +7,7 @@
 //
 //dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
 //    code here
-//});
+//})pressedChangeGroupName;
 //
 //When you tap a cell, the willSelectRowAtIndexPath and didSelectRowAtIndexPath are called - supplying you the currently selected NSIndexPath
 //– tableView:willSelectRowAtIndexPath:
@@ -2303,6 +2303,8 @@ tn();
   NSLog(@"in  pressedChangeGroupName !");
   NSLog(@"gbl_lastSelectedGroup=[%@]",gbl_lastSelectedGroup);
 
+    gbl_justPressedChangeGroupName = 1;
+
     gbl_homeEditingState = @"view or change";
     
 
@@ -2344,15 +2346,13 @@ tn();
             }
         }
 
-        // new segue "segueHomeToSelPerson"   to pick people or groups to share
-<.>
-//        [self performSegueWithIdentifier:@"segueHomeToSelPerson" sender:self]; //  
-//<.>
-       // here call screen to pick entities to share
-       // TODO  
+        // new segue "segueHomeToSelShareEntity"   to pick people  or  groups  to share
+        //
+        // here call screen to pick entities to share
 
-
+        [self performSegueWithIdentifier:@"segueHomeToSelShareEntity" sender:self]; 
     });
+
 } // end of pressedShareEntities
 
 

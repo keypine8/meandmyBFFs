@@ -19,6 +19,7 @@
 		5035460B1A434EEB00FE7853 /* icon_MAMB09_288.png in Resources */ = {isa = PBXBuildFile; fileRef = 503546011A434EEB00FE7853 /* icon_MAMB09_288.png */; };
 		5035460C1A434EEB00FE7853 /* rounded_MAMB09_087.png in Resources */ = {isa = PBXBuildFile; fileRef = 503546021A434EEB00FE7853 /* rounded_MAMB09_087.png */; };
 		5035460D1A434EEB00FE7853 /* rounded_MAMB09_058.png in Resources */ = {isa = PBXBuildFile; fileRef = 503546031A434EEB00FE7853 /* rounded_MAMB09_058.png */; };
+		5047342C1CC6D4F10067CEE3 /* MAMB09_selShareEntityTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5047342B1CC6D4F10067CEE3 /* MAMB09_selShareEntityTableViewController.m */; };
 		5049021E1C3ACDA50031DFC4 /* MAMB09_listMembersTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5049021D1C3ACDA50031DFC4 /* MAMB09_listMembersTableViewController.m */; };
 		504902211C3AFBB20031DFC4 /* MAMB09_selNewMembersTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 504902201C3AFBB20031DFC4 /* MAMB09_selNewMembersTableViewController.m */; };
 		504B29851A4350AB009A6A25 /* rounded_MAMB09_029.png in Resources */ = {isa = PBXBuildFile; fileRef = 504B296D1A4350AB009A6A25 /* rounded_MAMB09_029.png */; };
@@ -108,6 +109,8 @@
 		503546011A434EEB00FE7853 /* icon_MAMB09_288.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_MAMB09_288.png; sourceTree = "<group>"; };
 		503546021A434EEB00FE7853 /* rounded_MAMB09_087.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rounded_MAMB09_087.png; sourceTree = "<group>"; };
 		503546031A434EEB00FE7853 /* rounded_MAMB09_058.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rounded_MAMB09_058.png; sourceTree = "<group>"; };
+		5047342A1CC6D4F10067CEE3 /* MAMB09_selShareEntityTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAMB09_selShareEntityTableViewController.h; sourceTree = "<group>"; };
+		5047342B1CC6D4F10067CEE3 /* MAMB09_selShareEntityTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAMB09_selShareEntityTableViewController.m; sourceTree = "<group>"; };
 		5049021C1C3ACDA50031DFC4 /* MAMB09_listMembersTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAMB09_listMembersTableViewController.h; sourceTree = "<group>"; };
 		5049021D1C3ACDA50031DFC4 /* MAMB09_listMembersTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAMB09_listMembersTableViewController.m; sourceTree = "<group>"; };
 		5049021F1C3AFBB20031DFC4 /* MAMB09_selNewMembersTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAMB09_selNewMembersTableViewController.h; sourceTree = "<group>"; };
@@ -260,8 +263,6 @@
 				50AC390519D082EB00FF3997 /* Main.storyboard */,
 				50AC390219D082EB00FF3997 /* MAMB09AppDelegate.h */,
 				50AC390319D082EB00FF3997 /* MAMB09AppDelegate.m */,
-				505386561CBAD4BE0092743F /* MAMB09_UITextField_noCopyPaste.h */,
-				505386571CBAD4BE0092743F /* MAMB09_UITextField_noCopyPaste.m */,
 				50AC390B19D082EB00FF3997 /* Images.xcassets */,
 				50E05BF61A2F994100B48107 /* iTunesArtwork */,
 				50EB4F701A3552CE001F15C0 /* iTunesArtwork@2x */,
@@ -269,6 +270,8 @@
 				5004DD391ACC426A0094BA14 /* MAMB09_info_TableViewController.m */,
 				50AC392819D0864A00FF3997 /* MAMB09_homeTableViewController.h */,
 				50AC392919D0864A00FF3997 /* MAMB09_homeTableViewController.m */,
+				5047342A1CC6D4F10067CEE3 /* MAMB09_selShareEntityTableViewController.h */,
+				5047342B1CC6D4F10067CEE3 /* MAMB09_selShareEntityTableViewController.m */,
 				5049021C1C3ACDA50031DFC4 /* MAMB09_listMembersTableViewController.h */,
 				5049021D1C3ACDA50031DFC4 /* MAMB09_listMembersTableViewController.m */,
 				5049021F1C3AFBB20031DFC4 /* MAMB09_selNewMembersTableViewController.h */,
@@ -293,6 +296,8 @@
 				50796A7B1ADC286000360BA4 /* MAMB09_selectReports_B_TableViewController.m */,
 				505538321A9FAA6D003DC816 /* MAMB09viewTBLRPTs_2_TableViewController.h */,
 				505538331A9FAA6D003DC816 /* MAMB09viewTBLRPTs_2_TableViewController.m */,
+				505386561CBAD4BE0092743F /* MAMB09_UITextField_noCopyPaste.h */,
+				505386571CBAD4BE0092743F /* MAMB09_UITextField_noCopyPaste.m */,
 				50C0BAA21A2108CE005B79F4 /* mamblib.h */,
 				50C0BA9D1A2108CE005B79F4 /* futasp.c */,
 				50C0BA9E1A2108CE005B79F4 /* futdefs.h */,
@@ -520,6 +525,7 @@
 				50796A7C1ADC286000360BA4 /* MAMB09_selectReports_B_TableViewController.m in Sources */,
 				50661E641B41F5AA005BDFCC /* MAMB09_addChangeTableViewController.m in Sources */,
 				50AC390419D082EB00FF3997 /* MAMB09AppDelegate.m in Sources */,
+				5047342C1CC6D4F10067CEE3 /* MAMB09_selShareEntityTableViewController.m in Sources */,
 				5004DD3A1ACC426A0094BA14 /* MAMB09_info_TableViewController.m in Sources */,
 				5055382E1A9F79C5003DC816 /* MAMB09viewTBLRPTs_1_TableViewController.m in Sources */,
 				5019A6471A87FDBB002408DA /* MAMB09_selDateViewController2.m in Sources */,

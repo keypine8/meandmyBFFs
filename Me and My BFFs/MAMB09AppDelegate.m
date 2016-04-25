@@ -241,6 +241,13 @@
 
 
 
+// eg.gbl_color_cPerGreen1 = [UIColor colorWithRed:240.0/255.0 green:248.0/255.0 blue:255.0/255.0 alpha:1.0]; // f0f8ff (light blue) 
+// eg.gbl_color_cPerGreen2 = [UIColor colorWithRed:192.0/255.0 green:224.0/255.0 blue:255.0/255.0 alpha:1.0]; //  c0e0ff
+//    gbl_colorSelShareEntityBG = [UIColor colorWithRed:240.0/255.0 green:248.0/255.0 blue:255.0/255.0 alpha:1.0]; // f0f8ff (light blue)
+//    gbl_colorSelShareEntityBG = [UIColor colorWithRed:182.0/255.0 green:212.0/255.0 blue:242.0/255.0 alpha:1.0]; //  -5%
+    gbl_colorSelShareEntityBG = [UIColor colorWithRed:212.0/255.0 green:236.0/255.0 blue:255.0/255.0 alpha:1.0]; //  GOLD #1
+    gbl_colorSelShareEntityBG = [UIColor colorWithRed:192.0/255.0 green:224.0/255.0 blue:255.0/255.0 alpha:1.0]; //  c0e0ff
+
 
     // ONLY used in info
 //    gbl_bgColor_blueDone   = [UIColor colorWithRed:235.0/255.0 green:245.0/255.0 blue:255.0/255.0 alpha:1.0]; 
