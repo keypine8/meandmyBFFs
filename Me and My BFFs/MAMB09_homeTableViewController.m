@@ -4300,10 +4300,6 @@ tn();  NSLog(@"setEditing !!!!!!  pressed Edit or Done  !!!!!!!!!!!!!!!");
 //    [self.editButtonItem setImage:  [[UIImage alloc] init]];     // edit mode bg color for button
 
 
-
-
-
-
 //    if (flag == YES)   //  USER TAPPED  EDIT  BUTTON HERE
 //    {
 //        self.navigationController.toolbarHidden =  NO;  // ensure that the bottom of screen toolbar is NOT visible 
@@ -4330,11 +4326,6 @@ tn();  NSLog(@"setEditing !!!!!!  pressed Edit or Done  !!!!!!!!!!!!!!!");
 
 
         //// start DO STUFF HERE
-
-
-//    [super setEditing: flag animated: animated];
-//
-
 
 //    // HIDE BOTTOM TOOLBAR (used for edit mode - tap edit button)
 //    //
@@ -4365,7 +4356,8 @@ tn();  NSLog(@"setEditing !!!!!!  pressed Edit or Done  !!!!!!!!!!!!!!!");
     }
 
 
-    if (flag == YES) { // Change views to edit mode.   USER TAPPED EDIT BUTTON HERE
+    if (flag == YES) // Change views to edit mode.   USER TAPPED EDIT BUTTON HERE
+    {                // Change views to edit mode.   USER TAPPED EDIT BUTTON HERE
 
 
   NSLog(@"EDIT BUTTON 2    ");
@@ -4388,26 +4380,6 @@ nbn(300);
 
         dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
 
-//            [self.editButtonItem setBackgroundImage: gbl_BlueBG          // regular report mode bg color for button
-//            [self.editButtonItem setBackgroundImage: gbl_blueDone          // regular report mode bg color for button
-
-
-
-//            [self.editButtonItem setBackgroundImage: gbl_brownDone          // regular report mode bg color for button
-//                                           forState: UIControlStateNormal  
-//                                         barMetrics: UIBarMetricsDefault
-//            ];
-
-//            [self.editButtonItem setImage: nil        // edit mode bg color for button
-//            ];
-
-//            self.editButtonItem.title = nil;
-//            [self.editButtonItem setBackgroundImage: nil          // regular report mode bg color for button
-//                                           forState: UIControlStateNormal  
-//                                         barMetrics: UIBarMetricsDefault
-//            ];
-// still flashed
-
 
             self.editButtonItem.title = nil;   // this gets rid of left/right shift of Edit/Done buttons when pressed
             // this gets set below to Edit or Done button image
@@ -4417,35 +4389,11 @@ nbn(300);
 
   NSLog(@"EDIT BUTTON 2   set title  done tab");
 
-//            [self.editButtonItem setBackgroundImage: gbl_yellowEdit          // edit mode bg color for button
-//            [self.editButtonItem setBackgroundImage: nil          // edit mode bg color for button
-//                                           forState: UIControlStateNormal  
-//                                         barMetrics: UIBarMetricsDefault
-//            ];
+<.>
+            // remove left app icon and replace  with share icon
+            //
 
-//            self.navigationItem.rightBarButtonItems =   // "editButtonItem" is magic Apple functionality
-//              [self.navigationItem.rightBarButtonItems arrayByAddingObject: self.editButtonItem]; //editButtonItem=ADD apple-provided EDIT BUTTON
-
-
-
-//            self.editButtonItem.title = @"Done";  // ok with no tab
-//
-//            [self.editButtonItem  setTitleTextAttributes: @{
-////                                     NSFontAttributeName: [UIFont fontWithName:@"Menlo-Bold" size: 19.0],
-//                                     NSFontAttributeName: [UIFont fontWithName:@"Menlo-bold"  size: 11.0],
-//                          NSForegroundColorAttributeName: [UIColor blackColor ]
-////                          ,
-////                          NSBackgroundColorAttributeName: [UIColor cyanColor ]
-//                                  }
-//                                                forState: UIControlStateNormal
-//            ];
-//
-////            [self.editButtonItem setTitlePositionAdjustment: UIOffsetMake(-8.0f, 0.0f)  forBarMetrics: UIBarMetricsDefault]; // 
-////            [self.editButtonItem setTitlePositionAdjustment: UIOffsetMake(-16.0f, 0.0f)  forBarMetrics: UIBarMetricsDefault]; // 
-//            [self.editButtonItem setTitlePositionAdjustment: UIOffsetMake(-12.0f, 0.0f)  forBarMetrics: UIBarMetricsDefault]; // 
-//
-//            self.view.backgroundColor     = gbl_colorEditingBG;
-//
+<.>
 
 
 
@@ -4473,7 +4421,7 @@ nbn(300);
 //        // UITableViewCellAccessoryDisclosureIndicator       if you'd only like the "disclosure indicator
 //        // 
 //        gbl_home_cell_AccessoryType        = UITableViewCellAccessoryNone;
-////      gbl_home_cell_editingAccessoryType = UITableViewCellAccessoryDetailDisclosureButton; // home mode edit    with tap giving record details
+////      gbl_home_cell_editingAccessoryType = UITableViewCellAccessoryDetailDisclosureButton; // home mode edit  with tap giving record details
 //        gbl_home_cell_editingAccessoryType = UITableViewCellAccessoryDetailButton; // home mode edit    with tap giving record details
 //
 //
@@ -4489,8 +4437,7 @@ NSLog(@"in setEditing, PERSON  reload table here!  USER TAPPED EDIT BUTTON HERE"
 
 
 
-
-        });  // <.>
+        });  // dispatch_async(dispatch_get_main_queue()
 
 
 
@@ -6441,4 +6388,57 @@ tn();trn(" GRAB gbl_fromHomeCurrentEntityName   for person");
 //    } while (FALSE); // CHOOSE KIND OF DELETE  ==============================================================================
 //        // end of CHOOSE KIND OF DELETE  ======================================================================================
 
+
+
+
+//            [self.editButtonItem setBackgroundImage: gbl_yellowEdit          // edit mode bg color for button
+//            [self.editButtonItem setBackgroundImage: nil          // edit mode bg color for button
+//                                           forState: UIControlStateNormal  
+//                                         barMetrics: UIBarMetricsDefault
+//            ];
+
+//            self.navigationItem.rightBarButtonItems =   // "editButtonItem" is magic Apple functionality
+//              [self.navigationItem.rightBarButtonItems arrayByAddingObject: self.editButtonItem]; //editButtonItem=ADD apple-provided EDIT BUTTON
+
+
+
+//            self.editButtonItem.title = @"Done";  // ok with no tab
+//
+//            [self.editButtonItem  setTitleTextAttributes: @{
+////                                     NSFontAttributeName: [UIFont fontWithName:@"Menlo-Bold" size: 19.0],
+//                                     NSFontAttributeName: [UIFont fontWithName:@"Menlo-bold"  size: 11.0],
+//                          NSForegroundColorAttributeName: [UIColor blackColor ]
+////                          ,
+////                          NSBackgroundColorAttributeName: [UIColor cyanColor ]
+//                                  }
+//                                                forState: UIControlStateNormal
+//            ];
+//
+////            [self.editButtonItem setTitlePositionAdjustment: UIOffsetMake(-8.0f, 0.0f)  forBarMetrics: UIBarMetricsDefault]; // 
+////            [self.editButtonItem setTitlePositionAdjustment: UIOffsetMake(-16.0f, 0.0f)  forBarMetrics: UIBarMetricsDefault]; // 
+//            [self.editButtonItem setTitlePositionAdjustment: UIOffsetMake(-12.0f, 0.0f)  forBarMetrics: UIBarMetricsDefault]; // 
+//
+//            self.view.backgroundColor     = gbl_colorEditingBG;
+//
+
+
+//            [self.editButtonItem setBackgroundImage: gbl_BlueBG          // regular report mode bg color for button
+//            [self.editButtonItem setBackgroundImage: gbl_blueDone          // regular report mode bg color for button
+
+
+
+//            [self.editButtonItem setBackgroundImage: gbl_brownDone          // regular report mode bg color for button
+//                                           forState: UIControlStateNormal  
+//                                         barMetrics: UIBarMetricsDefault
+//            ];
+
+//            [self.editButtonItem setImage: nil        // edit mode bg color for button
+//            ];
+
+//            self.editButtonItem.title = nil;
+//            [self.editButtonItem setBackgroundImage: nil          // regular report mode bg color for button
+//                                           forState: UIControlStateNormal  
+//                                         barMetrics: UIBarMetricsDefault
+//            ];
+// still flashed
 

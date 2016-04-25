@@ -2883,7 +2883,7 @@ nbn(100);
                 cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
-                cell.textLabel.text          = @"Characters you can use in the place name:\n\n   abc defghijklmnopqrstuvwxyz\n   ABC DEFGHIJKLMNOPQRSTUVWXYZ1234567890-\n\nType letters in the city name until the city you want appears in the city field.\n\nAs you type each letter, the first city that starts with what you have typed so far appears in the city field.\n\nAs a SHORTCUT, when there are fewer than 25 cities starting with the letters you have typed so far, a yellow button appears - \"Wheel\".  Tap that button to get a wheel you can spin to the city you want.\n\nIt's possible the city or town cannot be found.  In that case, type in a city nearby- especially a bigger city.";
+                cell.textLabel.text          = @"Characters you can use in the place name:\n\n   abc defghijklmnopqrstuvwxyz-\n   ABC DEFGHIJKLMNOPQRSTUVWXYZ1234567890\n\nType letters in the city name until the city you want appears in the city field.\n\nAs you type each letter, the first city that starts with what you have typed so far appears in the city field.\n\nAs a SHORTCUT, when there are fewer than 25 cities starting with the letters you have typed so far, a yellow button appears - \"Wheel\".  Tap that button to get a wheel you can spin to the city you want.\n\nIt's possible the city or town cannot be found.  In that case, type in a city nearby- especially a bigger city.";
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -2976,8 +2976,72 @@ nbn(100);
         }
 
 
+        if (indexPath.row == 16) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== title for Delete Person
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myTitleFont;
+                cell.backgroundColor         = gbl_color_cHed;
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.text          = @"Deleting a Person";
+                cell.accessoryView = nil;
+            });
+            return cell;
+        }
 
-        if (indexPath.row ==  16) {                           // <=== disclaimer 
+        if (indexPath.row == 17) {
+
+            CGSize myTextSize = [@"WW"  sizeWithAttributes: @{ NSFontAttributeName: myFontForText } ];  // menlo
+            float  mySizeTwoCharsIndent =  myTextSize.width;
+
+            NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+            paragraphStyle.headIndent               = mySizeTwoCharsIndent;
+
+            NSAttributedString *myAttributedStr = [[NSAttributedString alloc]
+                initWithString:
+@"\u2022 Tap red \"-\" button on the left.\n\u2022 A red \"Delete\" button slides over from the right edge of the screen.\n\u2022 You can Cancel out here if you want.\n\u2022 Tap the red \"Delete\" button to CONFIRM you want to delete this person.\n\u2022 You can see the person disappearing from the people list."
+                    attributes: @{ NSParagraphStyleAttributeName: paragraphStyle }
+            ];
+
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== text for Delete group
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myFontForText;
+                cell.backgroundColor         = gbl_color_cBgr;
+                cell.textLabel.numberOfLines = 0;
+//                cell.textLabel.text          = @"Tap red \"-\" button.\nA red \"Delete\" button slides over from the right edge of the screen.\nYou can Cancel out here if you want.\nTap the red \"Delete\" button to confirm you want to delete this group.\nYou can see the group disappearing from the group list.";
+
+                cell.textLabel.text           = @" "; // for test
+                cell.textLabel.attributedText = myAttributedStr;
+
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
+            });
+            return cell;
+        }
+
+
+        if (indexPath.row == 18) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myFontForText;
+                cell.backgroundColor         = gbl_color_cBgr;
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.text          = @"";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryView = nil;
+            });
+            return cell;
+        }
+
+
+
+        if (indexPath.row ==  19) {                           // <=== disclaimer 
             dispatch_async(dispatch_get_main_queue(), ^{  
 //                cell.textLabel.textColor     = [UIColor blackColor];
                 cell.textLabel.textColor     = [UIColor redColor]; 
@@ -4047,7 +4111,7 @@ nbn(100);
     if ([gbl_helpScreenDescription isEqualToString: @"HOME"         ] ) { return 20; } 
 
     if ([gbl_helpScreenDescription isEqualToString: @"HOMEaddchangeGROUP" ] ) { return  17; } 
-    if ([gbl_helpScreenDescription isEqualToString: @"HOMEaddchangePERSON"] ) { return  17; } 
+    if ([gbl_helpScreenDescription isEqualToString: @"HOMEaddchangePERSON"] ) { return  20; } 
     return 1;
 }
 
@@ -4078,8 +4142,12 @@ nbn(100);
         if (indexPath.row ==  13) return    30.0;  // title for birth date and time
         if (indexPath.row ==  14) return   135.0;  // text  for birth date and time
 
-        if (indexPath.row ==  15) return    12.0;  // spacer
-        if (indexPath.row ==  16) return    30.0;  // text for disclaimer
+        if (indexPath.row ==  15) return    16.0;  // spacer
+        if (indexPath.row ==  16) return    30.0;  // title for delete person
+        if (indexPath.row ==  17) return   135.0;  // text  for delete person
+
+        if (indexPath.row ==  18) return    12.0;  // spacer
+        if (indexPath.row ==  19) return    30.0;  // text for disclaimer
     }
 
 

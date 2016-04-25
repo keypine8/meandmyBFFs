@@ -4376,6 +4376,7 @@ NSLog(@"=gbl_myCitySoFar %@",gbl_myCitySoFar );
 
 
     NSString *allowedCharactersInName = @"abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+//    NSString *allowedCharactersInCity = @"abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-";
     NSString *allowedCharactersInCity = @"abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-";
 //    NSString *allowedCharactersInName = [[NSString alloc] initWithUTF8String: gbl_allowedCharactersInName ];
 //    NSString *allowedCharactersInCity = [[NSString alloc] initWithUTF8String: gbl_allowedCharactersInCity ];
