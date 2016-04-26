@@ -123,14 +123,15 @@
     return NO;  // means do not call supportedInterfaceOrientations
 }
 
-
-//- (void) processDoubleTap
-- (void) processDoubleTap:(UITapGestureRecognizer *)sender
-{
-  NSLog(@"GOT A DOUBLE tap");
-    gbl_scrollToCorrectRow = 1;
-    [self putHighlightOnCorrectRow ];
-}
+//
+////- (void) processDoubleTap
+//- (void) processDoubleTap:(UITapGestureRecognizer *)sender
+//{
+//  NSLog(@"GOT A DOUBLE tap");
+//    gbl_scrollToCorrectRow = 1;
+//    [self putHighlightOnCorrectRow ];
+//}
+//
 
 
 //
@@ -159,148 +160,230 @@ return YES;
 //} // end of handleSwipeLeft
 
 
-
-
-//
-//// Once we have determined if the user has clicked in a cell,
-//// the handleTap: method is called,
-//// which then decides if the user touched the image, or any other part of the cell.
-////
-- (void)handleSingleTapInCell:(UITapGestureRecognizer *)tap
+- (void)handleSingleTap :(UITapGestureRecognizer *)tap
 {
 tn();
-  NSLog(@"in handleSingleTapInCell  in HOME! ttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt");
-    if (UIGestureRecognizerStateEnded == tap.state)
-    {
+  NSLog(@"in handleSingleTap  in HOME! ttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt");
+}
+
+
+- (void)handleDoubleTapInCell:(UITapGestureRecognizer *)tap
+{
+tn();
+  NSLog(@"in handleDoubleTapInCell  in HOME! ttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt");
+
+
+    if ([gbl_fromHomeCurrentEntity isEqualToString:@"person"])             return;
+
+    if (   [gbl_fromHomeCurrentEntity isEqualToString: @"group"]
+        && [gbl_homeUseMODE           isEqualToString: @"report mode" ])   return; 
+
+    // if double tap was in yellow group
+    // and in a legal cell,
+    // then segue to listmembers
+    //
 
         UITableView *tmpTableView = (UITableView *)tap.view;
 
         CGPoint p = [tap locationInView: tap.view ];
         NSIndexPath* indexPathTappedIn = [tmpTableView indexPathForRowAtPoint: p ];
+  NSLog(@"indexPathTappedIn =[%@]",indexPathTappedIn );
+  NSLog(@"indexPathTappedIn.row =[%ld]", (long)indexPathTappedIn.row );
 
-//        [tmpTableView deselectRowAtIndexPath: indexPathTappedIn animated: NO ];
 
-        UITableViewCell *cellTappedIn = [tmpTableView cellForRowAtIndexPath: indexPathTappedIn ];
-        CGPoint pointInCell = [tap locationInView: cellTappedIn ];
 
-tn(); tr("tapped here in cell      = ");kd(pointInCell.x); kd(pointInCell.y);
+        if (indexPathTappedIn  == nil) return;  // no double tap in a cell
 
-//<.>
-        // if tap is in area of red delete circle with "-",
-        // then
-        //     move name to right to accomodate big red "Delete" button sliding in from the right
-        //     call delete cell  method
+
+//    UITableViewCell *cellTappedIn = [tmpTableView cellForRowAtIndexPath: indexPathTappedIn ];
+
+        gbl_fromHomeCurrentSelectionPSV = [gbl_arrayGrp objectAtIndex: indexPathTappedIn.row];  /* PSV */
+
+        const char *my_psvc;  // psv=pipe-separated values
+        char my_psv[1024], psvName[32];
+        my_psvc = [gbl_fromHomeCurrentSelectionPSV cStringUsingEncoding:NSUTF8StringEncoding]; // convert NSString to c string
+        strcpy(my_psv, my_psvc);
+        strcpy(psvName, csv_get_field(my_psv, "|", 1));
+        NSString *myNameOstr =  [NSString stringWithUTF8String:psvName];  // convert c string to NSString
+
+        gbl_fromHomeCurrentEntityName = myNameOstr;  // like "~Anya" or "~Swim Team"
+
+        if ([gbl_fromHomeCurrentSelectionType isEqualToString:@"group"]) {
+            gbl_lastSelectedGroup  = myNameOstr;
+        }
+
+  NSLog(@"gbl_fromHomeCurrentSelectionPSV =[%@]",gbl_fromHomeCurrentSelectionPSV );
+  NSLog(@"gbl_fromHomeCurrentEntityName   =[%@]",gbl_fromHomeCurrentEntityName );
+  NSLog(@"gbl_lastSelectedGroup           =[%@]",gbl_lastSelectedGroup  );
+
+
+        // segue to list members on double tap in yellow groups
         //
-        if (pointInCell.x <= 45.0)    // 0.0 - 45.0 within cell = hit area for red circle with "-" on left side of cell
-        {
-            if ( [gbl_homeUseMODE isEqualToString: @"edit mode" ])   // yellow
-            {
+        gbl_groupMemberSelectionMode = @"none";  // to set this, have to tap "+" or "-" in selPerson
 
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//                 cellTappedIn.textLabel.textAlignment = NSTextAlignmentRight;
+        MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
+        [myappDelegate mamb_beginIgnoringInteractionEvents ];
 
-//nbn(334);
-//    NSArray*     rowsToReload = [NSArray arrayWithObjects: indexPathTappedIn , nil ];
-//        [self.tableView reloadRowsAtIndexPaths: rowsToReload
-//                              withRowAnimation: UITableViewRowAnimationLeft
-//        ];
-//
-//nbn(335);
-//
-//        }); // end of  dispatch_async(dispatch_get_main_queue()
-
-//
-//               // name has shifted off or partly off left side of screen
-//               // so put label with name 
-//               //
-////               UILabel *nameToDeleteLabel = [[UILabel alloc]initWithFrame: CGRectMake(160, 0, 240, 44)];
-////               UILabel *nameToDeleteLabel = [[UILabel alloc]initWithFrame: CGRectMake(130, 0, 285, 44)];
-//               UILabel *nameToDeleteLabel = [[UILabel alloc]initWithFrame: CGRectMake(100, 200, 285, 44)];
-//               nameToDeleteLabel.text     = cellTappedIn.textLabel.text ;
-//
-//               nameToDeleteLabel.backgroundColor   = [UIColor redColor];
-//               nameToDeleteLabel.textColor   = [UIColor whiteColor];
-////               nameToDeleteLabel.backgroundColor   = gbl_colorEditingBG;
-////               nameToDeleteLabel.textColor   = [UIColor blackColor];
-//
-//               nameToDeleteLabel.textAlignment = NSTextAlignmentCenter;
-//
-////               [cellTappedIn addSubview: nameToDeleteLabel ];
-//               [self.tableView addSubview: nameToDeleteLabel ];
-//
+NSLog(@"sub_view #99");
+        dispatch_async(dispatch_get_main_queue(), ^{                                
+//                for( UIView *sub_view in [ self.view subviews ] )  // remove subview (gbl_toolbarHomeMaintenance  - tag=34 ) , if existing
+            for( UIView *sub_view in [ self.navigationController.view subviews ] ) { // remove subview (gbl_toolbarHomeMaintenance  - tag=34 ) , if existing
+NSLog(@"sub_view =[%@]",sub_view );
+NSLog(@"sub_view.tag =[%ld]",(long)sub_view.tag );
+                if(sub_view.tag == 34) {
+NSLog(@" REMOVED OLD  gbl_toolbarHomeMaintenance  ");
+                    [sub_view removeFromSuperview ];
+                }
+            }
+            [self performSegueWithIdentifier: @"segueHomeToListMembers" sender:self]; // selPerson screen where you can "+" or "-" group members
+        });
 
 
-//- (void)tableView:(UITableView *)tableView commitEditingStyle: (UITableViewCellEditingStyle)  editingStyle  // DELETE METHOD, DELETE METHOD
-//                                            forRowAtIndexPath: (NSIndexPath *)                indexPath
 
+} // end of handleDoubleTapInCell  
 
+//
+////
+////// Once we have determined if the user has clicked in a cell,
+////// the handleTap: method is called,
+////// which then decides if the user touched the image, or any other part of the cell.
+//////
+//- (void)handleSingleTapInCell:(UITapGestureRecognizer *)tap
+//{
 //tn();
-//  NSLog(@"SHIFT name TO RIGHT here !");
-//        // PROBLEM  name slides left off screen when you hit red round delete "-" button
-//        //          and delete button slides from right into screen
+//  NSLog(@"in handleSingleTapInCell  in HOME! ttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt");
+//    if (UIGestureRecognizerStateEnded == tap.state)
+//    {
+//
+//        UITableView *tmpTableView = (UITableView *)tap.view;
+//
+//        CGPoint p = [tap locationInView: tap.view ];
+//        NSIndexPath* indexPathTappedIn = [tmpTableView indexPathForRowAtPoint: p ];
+//
+////        [tmpTableView deselectRowAtIndexPath: indexPathTappedIn animated: NO ];
+//
+//        UITableViewCell *cellTappedIn = [tmpTableView cellForRowAtIndexPath: indexPathTappedIn ];
+//        CGPoint pointInCell = [tap locationInView: cellTappedIn ];
+//
+//tn(); tr("tapped here in cell      = ");kd(pointInCell.x); kd(pointInCell.y);
+//
+////<.>
+//        // if tap is in area of red delete circle with "-",
+//        // then
+//        //     move name to right to accomodate big red "Delete" button sliding in from the right
+//        //     call delete cell  method
 //        //
-//        // these 2 keep the name on screen when hit red round delete and big delete button slides from right
-//        //
-//        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
-//
-//            cellTappedIn.indentationWidth = 12.0; // these 2 keep the name on screen 
-////            cellTappedIn.indentationLevel =  7;   // these 2 keep the name on screen // orig = 3
-////            cellTappedIn.indentationLevel =  9;   // these 2 keep the name on screen // orig = 3
-//            cellTappedIn.indentationLevel =  8;   // these 2 keep the name on screen // orig = 3
-//
-//        }); // end of  dispatch_async(dispatch_get_main_queue()
-//
-
-//                 cellTappedIn.textLabel.frame.origin.x = cellTappedIn.textLabel.frame.origin.x +  2 * 45.0 ; 
-
-//
-//                //When users tap the insertion (green plus) control or Delete button associated with a UITableViewCell object in the table view, the table view sends this message to the data source, asking it to commit the change. (If the user taps the deletion (red minus) control, the table view then displays the Delete button to get confirmation.) 
-//                //
-//                [self commitEditingStyleGUTS: UITableViewCellEditingStyleDelete // DELETE METHOD, DELETE METHOD
-//                           forRowAtIndexPath: indexPathTappedIn
-//                ];
-//
-
-            } // "edit mode"
-
-        } // tapped in cell where x = 0.0 - 45.0
-
-//
-
-//        CGPoint pointInTableView = [tap locationInView: self.tableView ];
-//tn(); tr("tapped here in tableView = ");kd(pointInTableView.x); kd(pointInTableView.y);
-
-//
-//        // You can use the locationInView: method on UIGestureRecognizer.
-//        // If you pass nil for the view, this method will return the location of the touch in the window.
-//        //
-////        CGPoint pointInWindow   = [tap locationInView: nil ];
-//        CGPoint pointInWindow   = [tap locationInView: self.view ];
-//tn(); tr("tapped here in Window    = ");kd(pointInWindow.x); kd(pointInWindow.y);
-//tn();
-//
-////        if (CGRectContainsPoint(tmpCell.imageView.frame, pointInCell)) {
-//        if (       CGRectContainsPoint(tmpCell.textLabel.frame, pointInCell) )
+//        if (pointInCell.x <= 45.0)    // 0.0 - 45.0 within cell = hit area for red circle with "-" on left side of cell
 //        {
-//  NSLog(@"  // user tapped tmpCell.textLabel");
+//            if ( [gbl_homeUseMODE isEqualToString: @"edit mode" ])   // yellow
+//            {
 //
-//        } else {
-////            if ( [gbl_homeUseMODE isEqualToString: @"edit mode")   // yellow
-////            && CGRectContainsPoint(tmpCell.textLabel.frame, pointInCell))
+////        dispatch_async(dispatch_get_main_queue(), ^{
+////                 cellTappedIn.textLabel.textAlignment = NSTextAlignmentRight;
+//
+////nbn(334);
+////    NSArray*     rowsToReload = [NSArray arrayWithObjects: indexPathTappedIn , nil ];
+////        [self.tableView reloadRowsAtIndexPaths: rowsToReload
+////                              withRowAnimation: UITableViewRowAnimationLeft
+////        ];
+////
+////nbn(335);
+////
+////        }); // end of  dispatch_async(dispatch_get_main_queue()
+//
+////
+////               // name has shifted off or partly off left side of screen
+////               // so put label with name 
+////               //
+//////               UILabel *nameToDeleteLabel = [[UILabel alloc]initWithFrame: CGRectMake(160, 0, 240, 44)];
+//////               UILabel *nameToDeleteLabel = [[UILabel alloc]initWithFrame: CGRectMake(130, 0, 285, 44)];
+////               UILabel *nameToDeleteLabel = [[UILabel alloc]initWithFrame: CGRectMake(100, 200, 285, 44)];
+////               nameToDeleteLabel.text     = cellTappedIn.textLabel.text ;
+////
+////               nameToDeleteLabel.backgroundColor   = [UIColor redColor];
+////               nameToDeleteLabel.textColor   = [UIColor whiteColor];
+//////               nameToDeleteLabel.backgroundColor   = gbl_colorEditingBG;
+//////               nameToDeleteLabel.textColor   = [UIColor blackColor];
+////
+////               nameToDeleteLabel.textAlignment = NSTextAlignmentCenter;
+////
+//////               [cellTappedIn addSubview: nameToDeleteLabel ];
+////               [self.tableView addSubview: nameToDeleteLabel ];
+////
+//
+//
+////- (void)tableView:(UITableView *)tableView commitEditingStyle: (UITableViewCellEditingStyle)  editingStyle  // DELETE METHOD, DELETE METHOD
+////                                            forRowAtIndexPath: (NSIndexPath *)                indexPath
+//
+//
+////tn();
+////  NSLog(@"SHIFT name TO RIGHT here !");
+////        // PROBLEM  name slides left off screen when you hit red round delete "-" button
+////        //          and delete button slides from right into screen
+////        //
+////        // these 2 keep the name on screen when hit red round delete and big delete button slides from right
+////        //
+////        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+////
+////            cellTappedIn.indentationWidth = 12.0; // these 2 keep the name on screen 
+//////            cellTappedIn.indentationLevel =  7;   // these 2 keep the name on screen // orig = 3
+//////            cellTappedIn.indentationLevel =  9;   // these 2 keep the name on screen // orig = 3
+////            cellTappedIn.indentationLevel =  8;   // these 2 keep the name on screen // orig = 3
+////
+////        }); // end of  dispatch_async(dispatch_get_main_queue()
+////
+//
+////                 cellTappedIn.textLabel.frame.origin.x = cellTappedIn.textLabel.frame.origin.x +  2 * 45.0 ; 
+//
+////
+////                //When users tap the insertion (green plus) control or Delete button associated with a UITableViewCell object in the table view, the table view sends this message to the data source, asking it to commit the change. (If the user taps the deletion (red minus) control, the table view then displays the Delete button to get confirmation.) 
+////                //
+////                [self commitEditingStyleGUTS: UITableViewCellEditingStyleDelete // DELETE METHOD, DELETE METHOD
+////                           forRowAtIndexPath: indexPathTappedIn
+////                ];
+////
+//
+//            } // "edit mode"
+//
+//        } // tapped in cell where x = 0.0 - 45.0
+//
+////
+//
+////        CGPoint pointInTableView = [tap locationInView: self.tableView ];
+////tn(); tr("tapped here in tableView = ");kd(pointInTableView.x); kd(pointInTableView.y);
+//
+////
+////        // You can use the locationInView: method on UIGestureRecognizer.
+////        // If you pass nil for the view, this method will return the location of the touch in the window.
+////        //
+//////        CGPoint pointInWindow   = [tap locationInView: nil ];
+////        CGPoint pointInWindow   = [tap locationInView: self.view ];
+////tn(); tr("tapped here in Window    = ");kd(pointInWindow.x); kd(pointInWindow.y);
+////tn();
+////
+//////        if (CGRectContainsPoint(tmpCell.imageView.frame, pointInCell)) {
+////        if (       CGRectContainsPoint(tmpCell.textLabel.frame, pointInCell) )
+////        {
+////  NSLog(@"  // user tapped tmpCell.textLabel");
+////
+////        } else {
+//////            if ( [gbl_homeUseMODE isEqualToString: @"edit mode")   // yellow
+//////            && CGRectContainsPoint(tmpCell.textLabel.frame, pointInCell))
+//////        }
+////  NSLog(@"  // user tapped CELL");
 ////        }
-//  NSLog(@"  // user tapped CELL");
-//        }
+////
 //
-
-
-
-    } // (UIGestureRecognizerStateEnded == tap.state) 
-
-  NSLog(@"end of  handleSingleTapInCell  in HOME! ttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt");
-tn();
-
-} // end of handleSingleTapInCell:(UITapGestureRecognizer *)tap
-
+//
+//
+//    } // (UIGestureRecognizerStateEnded == tap.state) 
+//
+//  NSLog(@"end of  handleSingleTapInCell  in HOME! ttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt");
+//tn();
+//
+//} // end of handleSingleTapInCell:(UITapGestureRecognizer *)tap
+//
+//
 
 
 //- (void)handleSingleTapInWindow:(UITapGestureRecognizer *)tap
@@ -369,31 +452,49 @@ tn();
 
 
 
-
-    // add a method (processDoubleTap) to run on double tap
-    //
-    gbl_doubleTapGestureRecognizer = [
-       [UITapGestureRecognizer alloc] initWithTarget: self 
-                                              action: @selector( processDoubleTap: )
-    ];
-    [gbl_doubleTapGestureRecognizer    setNumberOfTapsRequired: 2];
-    [gbl_doubleTapGestureRecognizer setNumberOfTouchesRequired: 1];
-    gbl_doubleTapGestureRecognizer.delaysTouchesBegan = YES;       // for uitableview
-    [self.tableView addGestureRecognizer: gbl_doubleTapGestureRecognizer ];
+//
+//    // add a method (processDoubleTap) to run on double tap
+//    //
+//    gbl_doubleTapGestureRecognizer = [
+//       [UITapGestureRecognizer alloc] initWithTarget: self 
+//                                              action: @selector( processDoubleTap: )
+//    ];
+//    [gbl_doubleTapGestureRecognizer    setNumberOfTapsRequired: 2];
+//    [gbl_doubleTapGestureRecognizer setNumberOfTouchesRequired: 1];
+//    gbl_doubleTapGestureRecognizer.delaysTouchesBegan = YES;       // for uitableview
+//    [self.tableView addGestureRecognizer: gbl_doubleTapGestureRecognizer ];
+//
 
 //
 //    // to avoid tap in widened section index to act like a tap of cell
 //    // when tapping on left side of section index 8 chars wide ("___TOP__")
 //    //
-    UITapGestureRecognizer *singleTapInCell = [[UITapGestureRecognizer alloc] initWithTarget: self
-                                                                                      action: @selector( handleSingleTapInCell: )
-    ];
-    singleTapInCell.delegate                = self;
-    singleTapInCell.numberOfTapsRequired    = 1;
-    singleTapInCell.numberOfTouchesRequired = 1;
-    singleTapInCell.cancelsTouchesInView    = NO;
+//    UITapGestureRecognizer *singleTapInCell = [[UITapGestureRecognizer alloc] initWithTarget: self
+//                                                                                      action: @selector( handleSingleTapInCell: )
+//    ];
+//    singleTapInCell.delegate                = self;
+//    singleTapInCell.numberOfTapsRequired    = 1;
+//    singleTapInCell.numberOfTouchesRequired = 1;
+//    singleTapInCell.cancelsTouchesInView    = NO;
+//
+//    [self.tableView addGestureRecognizer: singleTapInCell];
+//
 
-    [self.tableView addGestureRecognizer: singleTapInCell];
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:    self action:@selector(handleSingleTap:)] ;
+    singleTap.numberOfTapsRequired = 1; 
+    [self.view addGestureRecognizer: singleTap];
+
+    UITapGestureRecognizer *doubleTapInCell = [[UITapGestureRecognizer alloc] initWithTarget: self
+                                                                                      action: @selector( handleDoubleTapInCell: )
+    ];
+    doubleTapInCell.delegate                = self;
+    doubleTapInCell.numberOfTapsRequired    = 2;
+    doubleTapInCell.numberOfTouchesRequired = 1;
+    doubleTapInCell.cancelsTouchesInView    = NO;
+
+    [self.tableView addGestureRecognizer: doubleTapInCell ];
+
+    [singleTap requireGestureRecognizerToFail: doubleTapInCell ];
 
 
 //    UIWindow *mainWindow = [[[UIApplication sharedApplication] delegate] window];
@@ -605,26 +706,50 @@ tn();
 nbn(100);
         gbl_haveSetUpHomeNavButtons = 1;
 
+
         UIBarButtonItem *navAddButton  = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemAdd
                                                                                     target: self
                                                                                     action: @selector(navAddButtonAction:)];
-//        navAddButton.tintColor = [UIColor blackColor];   // colors text
 
-        self.navigationItem.leftBarButtonItems  = [self.navigationItem.leftBarButtonItems  arrayByAddingObject: navAddButton]; // ADD ADD BUTTON
-        gbl_homeLeftItemsWithAddButton = [NSMutableArray arrayWithArray: self.navigationItem.leftBarButtonItems ];
+//        UIImage *iconImage = [UIImage imageNamed: @"rounded_MAMB09_029.png"];
+//        iconImage          = [iconImage imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal];
+//        UIBarButtonItem *iconButton = [[UIBarButtonItem alloc] initWithImage: iconImage 
+//                                                                       style: UIBarButtonItemStylePlain
+//                                                                      target: self
+//                                                                      action: nil
+//        ];
+//
+
+//        UIImageView *myImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"rounded_MAMB09_029.png"]];
+//        myImageView.frame = CGRectMake(0, 0, 30, 30);
+//        UIBarButtonItem *iconButton = [[UIBarButtonItem alloc] initWithCustomView: myImageView];
+//
 
 
 
-//        gbl_homeLeftItemsWithNoAddButton = [NSMutableArray arrayWithArray: gbl_homeLeftItemsWithAddButton ]; // make COPY
-//        [ gbl_homeLeftItemsWithNoAddButton removeObjectAtIndex: 1 ];                 // remove add button from array copy
 
+
+        //        navAddButton.tintColor = [UIColor blackColor];   // colors text
+
+
+//        gbl_homeLeftItemsWithAddButton = [NSMutableArray arrayWithArray: self.navigationItem.leftBarButtonItems ];
 
         dispatch_async(dispatch_get_main_queue(), ^{
 
             // try with always add button
 
             // self.navigationItem.leftBarButtonItems  = gbl_homeLeftItemsWithNoAddButton;
-            self.navigationItem.leftBarButtonItems     = gbl_homeLeftItemsWithAddButton;
+//            self.navigationItem.leftBarButtonItems     = gbl_homeLeftItemsWithAddButton;
+
+
+
+            // at startup, add left top app icon button
+            //
+            self.navigationItem.leftBarButtonItem  = nil; 
+            self.navigationItem.leftBarButtonItem  = gbl_icon_UIBarButtonItem;
+            self.navigationItem.leftBarButtonItems = [self.navigationItem.leftBarButtonItems  arrayByAddingObject: navAddButton];
+
+
 
 //        UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 11, 44)];  // 3rd arg is horizontal length
 //        UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 15, 44)];  // 3rd arg is horizontal length
@@ -2325,7 +2450,9 @@ tn();
 
 
 
--(IBAction) pressedShareEntities    // People or Groups 
+
+//-(IBAction) pressedShareEntities    // People or Groups 
+-(IBAction) pressedShareEntities: (id)sender   // People or Groups 
 {
   NSLog(@"in   pressedShareEntities! (Share People  or  Share Groups) in HOME");
 
@@ -2354,6 +2481,34 @@ tn();
     });
 
 } // end of pressedShareEntities
+
+
+-(IBAction) pressedSeeMembersButton: (id)sender   
+{
+  NSLog(@"in  pressedSeeMembersButton,   go to  selPerson screen with group members");
+  
+            //   CASE_B   - tap on name in cell - for "group"   get group list (selPerson screen where you can "+" or "-" group members)
+
+            gbl_groupMemberSelectionMode = @"none";  // to set this, have to tap "+" or "-" in selPerson
+
+            MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
+            [myappDelegate mamb_beginIgnoringInteractionEvents ];
+
+  NSLog(@"sub_view #04");
+            dispatch_async(dispatch_get_main_queue(), ^{                                
+//                for( UIView *sub_view in [ self.view subviews ] )  // remove subview (gbl_toolbarHomeMaintenance  - tag=34 ) , if existing
+                for( UIView *sub_view in [ self.navigationController.view subviews ] ) { // remove subview (gbl_toolbarHomeMaintenance  - tag=34 ) , if existing
+  NSLog(@"sub_view =[%@]",sub_view );
+  NSLog(@"sub_view.tag =[%ld]",(long)sub_view.tag );
+                    if(sub_view.tag == 34) {
+  NSLog(@" REMOVED OLD  gbl_toolbarHomeMaintenance  ");
+                        [sub_view removeFromSuperview ];
+                    }
+                }
+                [self performSegueWithIdentifier: @"segueHomeToListMembers" sender:self]; // selPerson screen where you can "+" or "-" group members
+            });
+
+} // end of pressedSeeMembersButton
 
 
 // 20160401 put this button in HOME info at bottom
@@ -3149,7 +3304,8 @@ tn();
     }
   NSLog(@"gbl_homeEditingState =[%@]",gbl_homeEditingState );
 
-    [self codeForCellTapOrAccessoryButtonTapWithIndexPath: indexPath ];
+//    [self codeForCellTapOrAccessoryButtonTapWithIndexPath: indexPath ];
+    [self codeForCellTapWithIndexPath: indexPath ];
 
 
 //
@@ -3387,7 +3543,9 @@ nbn(140);
 //    gbl_toolbarHomeMaintenance              = nil;
 //    self.navigationController.toolbarHidden = YES;  // ensure that the bottom of screen toolbar is NOT visible 
 
-    // remove the subview (gbl_toolbarHomeMaintenance  - tag=34 ) from before, if any
+
+
+    // remove the subview (gbl_toolbarHomeMaintenance  - tag=34 MAGIC ) from before, if any
     // 
   NSLog(@"sub_view #02");
 //  UIView *ptrToView = (UITextField *)[self.view viewWithTag: 2 ];
@@ -3405,22 +3563,59 @@ nbn(140);
         }
     }
 
-    // use 2 buttons in a toolbar on bottom of home screen 
-    //   to   add Share_people + Backup_all_by_email   
+    // here, there is no bottom toolbar
     //
-//    if ([gbl_homeUseMODE isEqualToString: @"edit mode" ] )   // = yellow
-//    {
-        NSString *shareTitle; 
-//        if ([gbl_lastSelectionType isEqualToString:@"person"])  shareTitle = @"Share_people_by_email";
-        if ([gbl_lastSelectionType isEqualToString:@"person"])  shareTitle = @"Share people by email";
-//        if ([gbl_lastSelectionType isEqualToString:@"group" ])  shareTitle = @"Share_groups_by_email";
-//        if ([gbl_lastSelectionType isEqualToString:@"group" ])  shareTitle = @"Share_groups";
-        if ([gbl_lastSelectionType isEqualToString:@"group" ])  shareTitle = @"Share groups";
-        UIBarButtonItem *shareEntity = [[UIBarButtonItem alloc]initWithTitle: shareTitle
+    if (   [gbl_homeUseMODE       isEqualToString: @"edit mode" ]
+        && [gbl_lastSelectionType isEqualToString: @"person"] )  
+    {
+        return;   // no bottom toobar for yellow people
+    }
+    
+
+
+//
+////    if ([gbl_homeUseMODE isEqualToString: @"edit mode" ] )   // = yellow
+////    {
+//        NSString *shareTitle; 
+////        if ([gbl_lastSelectionType isEqualToString:@"person"])  shareTitle = @"Share_people_by_email";
+//        if ([gbl_lastSelectionType isEqualToString: @"person"])  shareTitle = @"Share people by email";
+////        if ([gbl_lastSelectionType isEqualToString:@"group" ])  shareTitle = @"Share_groups_by_email";
+////        if ([gbl_lastSelectionType isEqualToString:@"group" ])  shareTitle = @"Share_groups";
+//        if ([gbl_lastSelectionType isEqualToString: @"group" ])  shareTitle = @"Share groups";
+//
+//        UIBarButtonItem *shareEntity = [[UIBarButtonItem alloc]initWithTitle: shareTitle
+//                                                                   style: UIBarButtonItemStylePlain
+//                                                                //style: UIBarButtonItemStyleBordered
+//                                                                  target: self
+//                                                                  action: @selector(pressedShareEntities)]; // People or Groups 
+//
+
+        //    [buttonItem setTitleTextAttributes:@{
+        //         NSFontAttributeName: [UIFont fontWithName:@"Helvetica-Bold" size:26.0],
+        //         NSForegroundColorAttributeName: [UIColor greenColor]
+        //    } forState:UIControlStateNormal];
+        //
+
+        UIBarButtonItem *seeMembersButton = [[UIBarButtonItem alloc]initWithTitle: @"Members"
                                                                    style: UIBarButtonItemStylePlain
                                                                 //style: UIBarButtonItemStyleBordered
                                                                   target: self
-                                                                  action: @selector(pressedShareEntities)]; // People or Groups 
+                                                                  action: @selector(pressedSeeMembersButton: )
+        ]; 
+        [seeMembersButton setTitleTextAttributes: @{
+//            UIFont *font1 = [UIFont fontWithName:@"HelveticaNeue-Light" size: 18.0f];
+//                         NSFontAttributeName: [UIFont boldSystemFontOfSize: 14.0],
+//              NSForegroundColorAttributeName: [UIColor greenColor]                            
+//                         NSFontAttributeName: [UIFont fontWithName: @"HelveticaNeue-Bold" size: 18.0f]
+//                         NSFontAttributeName: [UIFont boldSystemFontOfSize: 18.0],
+//                         NSFontAttributeName: [UIFont fontWithName: @"HelveticaNeue-Medium" size: 18.0f]
+//                         NSFontAttributeName: [UIFont fontWithName: @"HelveticaNeue-Medium" size: 16.0f]
+                         NSFontAttributeName: [UIFont fontWithName: @"HelveticaNeue-Medium" size: 17.0f]
+              }
+                                        forState: UIControlStateNormal
+        ];
+
+
         // choose fonts for bottom toolbar
         //
         // CGFloat   gbl_heightForScreen;  // 6+  = 736.0 x 414  and 6s+  (self.view.bounds.size.width) and height
@@ -3449,19 +3644,20 @@ nbn(140);
         }
 
 
-        [shareEntity setTitleTextAttributes: @{
-    //                    NSFontAttributeName: [UIFont fontWithName:@"Helvetica-Bold" size:26.0],
-//                        NSFontAttributeName: [UIFont boldSystemFontOfSize: 20.0],
-//                        NSFontAttributeName: [UIFont systemFontOfSize: 16.0],
-//                        NSFontAttributeName: [UIFont systemFontOfSize: 14.0],
-//                        NSFontAttributeName: [UIFont systemFontOfSize: 15.0],
-//                        NSFontAttributeName: [UIFont systemFontOfSize: 16.0],
-                        NSFontAttributeName: myBottomToolbarFont,
-    //         NSForegroundColorAttributeName: [UIColor greenColor]
-//             NSForegroundColorAttributeName: [UIColor blackColor]
-           }
-                                   forState: UIControlStateNormal
-        ];
+//        [shareEntity setTitleTextAttributes: @{
+//    //                    NSFontAttributeName: [UIFont fontWithName:@"Helvetica-Bold" size:26.0],
+////                        NSFontAttributeName: [UIFont boldSystemFontOfSize: 20.0],
+////                        NSFontAttributeName: [UIFont systemFontOfSize: 16.0],
+////                        NSFontAttributeName: [UIFont systemFontOfSize: 14.0],
+////                        NSFontAttributeName: [UIFont systemFontOfSize: 15.0],
+////                        NSFontAttributeName: [UIFont systemFontOfSize: 16.0],
+//                        NSFontAttributeName: myBottomToolbarFont,
+//    //         NSForegroundColorAttributeName: [UIColor greenColor]
+////             NSForegroundColorAttributeName: [UIColor blackColor]
+//           }
+//                                   forState: UIControlStateNormal
+//        ];
+//
 
 
         // 20160401 put this button in HOME info at bottom
@@ -3478,11 +3674,21 @@ nbn(140);
                                                                              style: UIBarButtonItemStylePlain
                                                                             target: self
                                                                             action: @selector(pressedChangeGroupName)];
+//        [changeGroupName   setTitleTextAttributes: @{
+//              NSFontAttributeName: myBottomToolbarFont,
+//           }
+//                                         forState: UIControlStateNormal
+//        ];
+//
         [changeGroupName   setTitleTextAttributes: @{
-              NSFontAttributeName: myBottomToolbarFont,
-           }
-                                         forState: UIControlStateNormal
+//              NSForegroundColorAttributeName: [UIColor greenColor]                            
+//                         NSFontAttributeName: [UIFont fontWithName: @"HelveticaNeue-Medium" size: 17.0f]
+//                         NSFontAttributeName: [UIFont fontWithName: @"HelveticaNeue" size: 16.5f]
+                         NSFontAttributeName: [UIFont fontWithName: @"HelveticaNeue-Medium" size: 16.0f]
+              }
+                                        forState: UIControlStateNormal
         ];
+
 
 
         UIBarButtonItem *myFlexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemFlexibleSpace
@@ -3519,42 +3725,6 @@ nbn(140);
 
 
     float y_value_of_toolbar; 
-//    y_value_of_toolbar  = currentScreenWidthHeight.height - 44.0;
-//    y_value_of_toolbar  = 400.0;
-//    y_value_of_toolbar  = 436.0;
-//    y_value_of_toolbar  = 480.0;
-//    y_value_of_toolbar  = 472.0;// too low
-//    y_value_of_toolbar  = 464.0; // very close
-//    y_value_of_toolbar  = 458.0; // too high
-//    y_value_of_toolbar  = 456.0; // too high
-//    y_value_of_toolbar  = 459.0; // too high
-//    y_value_of_toolbar  = 460.0; // very close   exact
-
-//            if ([gbl_homeUseMODE isEqualToString: @"edit mode" ] )
-//            {
-//nbn(157);
-////                self.navigationController.toolbar.hidden =  NO;
-////                [self.navigationController setToolbarHidden:  NO   animated: YES ];
-////                gbl_toolbarHomeMaintenance.hidden  =  NO;
-////                gbl_toolbarHomeMaintenance.enabled =  NO;
-//    y_value_of_toolbar  = my_screen_height  - my_status_bar_height  - my_nav_bar_height - my_toolbar_height;
-//            } else {
-//nbn(158);
-////                self.navigationController.toolbar.hidden = YES;
-////                [self.navigationController setToolbarHidden: YES   animated: YES ];
-////                gbl_toolbarHomeMaintenance.hidden  = YES;
-////                gbl_toolbarHomeMaintenance.enabled = YES;
-//    y_value_of_toolbar  = my_screen_height   + 100.00                                                      ;
-//            }
-//
-
-
-//    y_value_of_toolbar  = my_screen_height  - my_status_bar_height  - my_nav_bar_height - my_toolbar_height;
-//    y_value_of_toolbar  = my_screen_height  - my_status_bar_height  - my_nav_bar_height ;
-//    y_value_of_toolbar  = my_screen_height  - my_status_bar_height  - my_toolbar_height;
-//    y_value_of_toolbar  = 300.0;
-
-//    y_value_of_toolbar  = my_screen_height  - my_status_bar_height                      - my_toolbar_height;
     y_value_of_toolbar  = my_screen_height                                              - my_toolbar_height;
     gbl_toolbarHomeMaintenance.hidden =  NO;
   NSLog(@" SET toolbar hidden =  NO");
@@ -3577,23 +3747,13 @@ nbn(140);
 //        100.0,
         y_value_of_toolbar, 
         currentScreenWidthHeight.width,
-        44.0)];  // magic
+        44.0)
+    ];  // magic
 
     gbl_toolbarHomeMaintenance.tag         = 34;
     gbl_toolbarHomeMaintenance.translucent = NO;
-//    gbl_toolbarHomeMaintenance.translucent = YES;
-//    gbl_toolbarHomeMaintenance.backgroundColor = [UIColor redColor];
-//    gbl_toolbarHomeMaintenance.backgroundColor = [UIColor whiteColor];
-//    gbl_toolbarHomeMaintenance.backgroundColor = [UIColor yellowColor];
-//    gbl_toolbarHomeMaintenance.backgroundColor = [UIColor whiteColor];
-//    gbl_toolbarHomeMaintenance.backgroundColor = [UIColor clearColor];
     gbl_toolbarHomeMaintenance.backgroundColor = [UIColor whiteColor];
 
-//<.>
-//439://      gbl_myCellBgView =[[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, [cell frame].size.width -20, [cell frame].size.height)];
-//906:// CGRect pickerFrame = CGRectMake(0.0, viewFrame.size.height-pickerHeight, viewFrame.size.width, pickerHeight);
-//28:    self.outletWebView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
-//<.>
 
         // make array of buttons for the Toolbar
         //
@@ -3601,19 +3761,19 @@ nbn(140);
         if ([gbl_lastSelectionType isEqualToString:@"group" ])
         {
             myButtonArray =  [NSArray arrayWithObjects:
-    //            myFlexibleSpace, shareEntity, myFlexibleSpace, backupAll, myFlexibleSpace, nil
-    //            myFlexibleSpace, shareEntity, myFlexibleSpace,                             nil
-                myFlexibleSpace, shareEntity, myFlexibleSpace, changeGroupName, myFlexibleSpace,   nil
+//                myFlexibleSpace, shareEntity, myFlexibleSpace, changeGroupName, myFlexibleSpace,   nil
+                myFlexibleSpace, seeMembersButton, myFlexibleSpace, changeGroupName, myFlexibleSpace,   nil
 
             ]; 
         }
-        if ([gbl_lastSelectionType isEqualToString:@"person"]) 
-        {
-            myButtonArray =  [NSArray arrayWithObjects:
-                myFlexibleSpace, shareEntity, myFlexibleSpace,  nil
-
-            ]; 
-        }
+//        if ([gbl_lastSelectionType isEqualToString:@"person"]) 
+//        {
+//            myButtonArray =  [NSArray arrayWithObjects:
+//                myFlexibleSpace, shareEntity, myFlexibleSpace,  nil
+//
+//            ]; 
+//        }
+//
 
   NSLog(@"gbl_toolbarHomeMaintenance.tag         =[%ld]",(long)gbl_toolbarHomeMaintenance.tag         );
         // put the array of buttons in the Toolbar
@@ -4296,6 +4456,14 @@ tn();  NSLog(@"setEditing !!!!!!  pressed Edit or Done  !!!!!!!!!!!!!!!");
     //    self.editButtonItem.title = @"";  
     self.editButtonItem.title = nil;   // this gets rid of left/right shift of Edit/Done buttons when pressed
 
+
+
+    UIBarButtonItem *navAddButton  = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemAdd
+                                                                                   target: self
+                                                                                   action: @selector(navAddButtonAction:)
+    ];
+
+
     // this gets set below to Edit or Done button image
 //    [self.editButtonItem setImage:  [[UIImage alloc] init]];     // edit mode bg color for button
 
@@ -4389,11 +4557,30 @@ nbn(300);
 
   NSLog(@"EDIT BUTTON 2   set title  done tab");
 
-<.>
+
             // remove left app icon and replace  with share icon
             //
+            UIBarButtonItem *shareButton  = [[UIBarButtonItem alloc]
+                                            initWithBarButtonSystemItem: UIBarButtonSystemItemAction
+                                                                 target: self
+                                                                 action: @selector(pressedShareEntities:)];
+            self.navigationItem.leftBarButtonItem  = nil;
+            self.navigationItem.leftBarButtonItem  = shareButton;
+            self.navigationItem.leftBarButtonItems = [self.navigationItem.leftBarButtonItems  arrayByAddingObject: navAddButton];
 
-<.>
+
+//        UIImage *iconImage = [UIImage imageNamed: @"rounded_MAMB09_029.png"];
+//        iconImage          = [iconImage imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal];
+//        UIBarButtonItem *iconButton = [[UIBarButtonItem alloc] initWithImage: iconImage 
+//                                                                       style: UIBarButtonItemStylePlain
+//                                                                      target: self
+//                                                                      action: nil
+//        ];
+
+//            self.navigationItem.leftBarButtonItem  = iconButton; 
+//            self.navigationItem.leftBarButtonItems = [self.navigationItem.leftBarButtonItems  arrayByAddingObject: navAddButton];
+
+
 
 
 
@@ -4550,6 +4737,24 @@ nbn(311);
 //            ];
 
 
+
+            // remove left share icon and replace  with  app icon
+            //
+//            UIImage *iconImage = [UIImage imageNamed: @"rounded_MAMB09_029.png"];
+//            iconImage          = [iconImage imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal];
+//            UIBarButtonItem *iconButton = [[UIBarButtonItem alloc] initWithImage: iconImage 
+//                                                                           style: UIBarButtonItemStylePlain
+//                                                                          target: self
+//                                                                          action: nil
+//
+//            ];
+
+            self.navigationItem.leftBarButtonItem  = nil;
+            self.navigationItem.leftBarButtonItem  = gbl_icon_UIBarButtonItem ;
+            self.navigationItem.leftBarButtonItems = [self.navigationItem.leftBarButtonItems  arrayByAddingObject: navAddButton];
+
+
+
   NSLog(@"gbl_haveAddedNavBarRightItems =[%ld]",(long)gbl_haveAddedNavBarRightItems );
 //            if (gbl_haveAddedNavBarRightItems == 0)
 //            {
@@ -4596,9 +4801,7 @@ NSLog(@"in setEditing, PERSON  reload table here!  USER TAPPED DONE BUTTON HERE"
         [self.tableView reloadData]; // reload to regular mode    reload reload reload reload reload reload ");
 
 
-
-
-   });  // <.>
+   });  // dispatch_async(dispatch_get_main_queue()
 
 
 
@@ -4667,48 +4870,13 @@ nbn(142);
 
 
 
-- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
-{
-tn();    NSLog(@"reaching accessoryButtonTappedForRowWithIndexPath:");
-
-//    // where was the tap exactly
-//    //
-//
-//        UITableViewCell *tmpCell = [self.tableView cellForRowAtIndexPath: indexPath ];
-//        CGPoint pointInCell = [tap locationInView: tmpCell ];
-//tn(); tr("tapped here in cell      = ");kd(pointInCell.x); kd(pointInCell.y);
-//
-//        CGPoint pointInTableView = [tap locationInView: self.tableView ];
-//tn(); tr("tapped here in tableView = ");kd(pointInTableView.x); kd(pointInTableView.y);
-//
-//        // You can use the locationInView: method on UIGestureRecognizer.
-//        // If you pass nil for the view, this method will return the location of the touch in the window.
-//        //
-////        CGPoint pointInWindow   = [tap locationInView: nil ];
-//        CGPoint pointInWindow   = [tap locationInView: self.view ];
-//tn(); tr("tapped here in Window    = ");kd(pointInWindow.x); kd(pointInWindow.y);
-//tn();
-//
-//
-
-
-
-    gbl_accessoryButtonTapped = 1;
-
-
-    [self codeForCellTapOrAccessoryButtonTapWithIndexPath: indexPath ];
-
-    gbl_homeUseMODE      = @"edit mode" ;
-    gbl_homeEditingState = @"view or change" ;
-}
-
-
 //NSString *gbl_homeUseMODE;      // "edit mode" (yellow)   or   "report mode" (blue)
 //NSString *gbl_homeEditingState; // if gbl_homeUseMODE = "edit mode"    then can be "add" or "view or change"   for tapped person or group
 ///
-- (void) codeForCellTapOrAccessoryButtonTapWithIndexPath:(NSIndexPath *)indexPath  // for  gbl_homeUseMODE  =  "edit mode" (yellow)
+//- (void) codeForCellTapOrAccessoryButtonTapWithIndexPath:(NSIndexPath *)indexPath  // for  gbl_homeUseMODE  =  "edit mode" (yellow)
+- (void) codeForCellTapWithIndexPath:(NSIndexPath *)indexPath  // for  gbl_homeUseMODE  =  "edit mode" (yellow)
 {
-tn();    NSLog(@"in codeForCellTapOrAccessoryButtonTapWithIndexPath:");
+tn();    NSLog(@"in codeForCellTapWithIndexPath:");
   NSLog(@"gbl_homeUseMODE           =[%@]",gbl_homeUseMODE           );
   NSLog(@"gbl_fromHomeCurrentEntity =[%@]",gbl_fromHomeCurrentEntity );
 
@@ -4843,68 +5011,73 @@ nbn(3);
         //   CASE_C   - tap on name in cell - for "person"  get nothing  (see above)
         //
 
-        // oN TAP of accessory button (\"i\") in edit mode,   always  go to  add/change screen");
-        if (gbl_accessoryButtonTapped == 1)  {
-  NSLog(@"ON TAP of accessory button (\"i\"); // go to  add/change screen");
-
-            //   CASE_A   - tap on right side "i" button  ALWAYS  get add/change  screen
-
-            gbl_accessoryButtonTapped = 0;   // reset this to default  (could be = 1 here)
-
-            MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
-            [myappDelegate mamb_beginIgnoringInteractionEvents ];
-
-            // Because background threads are not prioritized and will wait a very long time
-            // before you see results, unlike the mainthread, which is high priority for the system.
-            //
-            // Also, all UI-related stuff must be done on the *main queue*. That's way you need that dispatch_async.
-            //
-  NSLog(@"sub_view #03");
-            dispatch_async(dispatch_get_main_queue(), ^{                           
-//                for( UIView *sub_view in [ self.view subviews ] ) { // remove subview (gbl_toolbarHomeMaintenance  - tag=34 ) , if existing
-                for( UIView *sub_view in [ self.navigationController.view subviews ] ) { // remove subview (gbl_toolbarHomeMaintenance  - tag=34 ) , if existing
-  NSLog(@"sub_view =[%@]",sub_view );
-  NSLog(@"sub_view.tag =[%ld]",(long)sub_view.tag );
-                    if(sub_view.tag == 34) {
-  NSLog(@" REMOVED OLD  gbl_toolbarHomeMaintenance  ");
-                        [sub_view removeFromSuperview ];
-                    }
-                }
-                [self performSegueWithIdentifier: @"segueHomeToAddChange" sender:self]; //  
-            });
-            
-            return;
-        }
+//
+//        // oN TAP of accessory button (\"i\") in edit mode,   always  go to  add/change screen");
+//        if (gbl_accessoryButtonTapped == 1)  {
+//  NSLog(@"ON TAP of accessory button (\"i\"); // go to  add/change screen");
+//
+//            //   CASE_A   - tap on right side "i" button  ALWAYS  get add/change  screen
+//
+//            gbl_accessoryButtonTapped = 0;   // reset this to default  (could be = 1 here)
+//
+//            MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
+//            [myappDelegate mamb_beginIgnoringInteractionEvents ];
+//
+//            // Because background threads are not prioritized and will wait a very long time
+//            // before you see results, unlike the mainthread, which is high priority for the system.
+//            //
+//            // Also, all UI-related stuff must be done on the *main queue*. That's way you need that dispatch_async.
+//            //
+//  NSLog(@"sub_view #03");
+//            dispatch_async(dispatch_get_main_queue(), ^{                           
+////                for( UIView *sub_view in [ self.view subviews ] )  // remove subview (gbl_toolbarHomeMaintenance  - tag=34 ) , if existing
+//                for( UIView *sub_view in [ self.navigationController.view subviews ] ) { // remove subview (gbl_toolbarHomeMaintenance  - tag=34 ) , if existing
+//  NSLog(@"sub_view =[%@]",sub_view );
+//  NSLog(@"sub_view.tag =[%ld]",(long)sub_view.tag );
+//                    if(sub_view.tag == 34) {
+//  NSLog(@" REMOVED OLD  gbl_toolbarHomeMaintenance  ");
+//                        [sub_view removeFromSuperview ];
+//                    }
+//                }
+//                [self performSegueWithIdentifier: @"segueHomeToAddChange" sender:self]; //  
+//            });
+//            
+//            return;
+//        }
+//
 
 
 
         if ([gbl_fromHomeCurrentSelectionType isEqualToString: @"group"])
         {
-  NSLog(@"ON TAP of ROW in yellow edit mode and Group list,   go to  selPerson screen with group members");
-  
-            //   CASE_B   - tap on name in cell - for "group"   get group list (selPerson screen where you can "+" or "-" group members)
 
-            gbl_groupMemberSelectionMode = @"none";  // to set this, have to tap "+" or "-" in selPerson
+//  NSLog(@"ON TAP of ROW in yellow edit mode and Group list,   go to  selPerson screen with group members");
+//  
+//            //   CASE_B   - tap on name in cell - for "group"   get group list (selPerson screen where you can "+" or "-" group members)
+//
+//            gbl_groupMemberSelectionMode = @"none";  // to set this, have to tap "+" or "-" in selPerson
+//
+//            MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
+//            [myappDelegate mamb_beginIgnoringInteractionEvents ];
+//
+//  NSLog(@"sub_view #04");
+//            dispatch_async(dispatch_get_main_queue(), ^{                                
+////                for( UIView *sub_view in [ self.view subviews ] )  // remove subview (gbl_toolbarHomeMaintenance  - tag=34 ) , if existing
+//                for( UIView *sub_view in [ self.navigationController.view subviews ] ) { // remove subview (gbl_toolbarHomeMaintenance  - tag=34 ) , if existing
+//  NSLog(@"sub_view =[%@]",sub_view );
+//  NSLog(@"sub_view.tag =[%ld]",(long)sub_view.tag );
+//                    if(sub_view.tag == 34) {
+//  NSLog(@" REMOVED OLD  gbl_toolbarHomeMaintenance  ");
+//                        [sub_view removeFromSuperview ];
+//                    }
+//                }
+//                [self performSegueWithIdentifier: @"segueHomeToListMembers" sender:self]; // selPerson screen where you can "+" or "-" group members
+//            });
+//
+//            return;
+//
+        }  // group
 
-            MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
-            [myappDelegate mamb_beginIgnoringInteractionEvents ];
-
-  NSLog(@"sub_view #04");
-            dispatch_async(dispatch_get_main_queue(), ^{                                
-//                for( UIView *sub_view in [ self.view subviews ] ) { // remove subview (gbl_toolbarHomeMaintenance  - tag=34 ) , if existing
-                for( UIView *sub_view in [ self.navigationController.view subviews ] ) { // remove subview (gbl_toolbarHomeMaintenance  - tag=34 ) , if existing
-  NSLog(@"sub_view =[%@]",sub_view );
-  NSLog(@"sub_view.tag =[%ld]",(long)sub_view.tag );
-                    if(sub_view.tag == 34) {
-  NSLog(@" REMOVED OLD  gbl_toolbarHomeMaintenance  ");
-                        [sub_view removeFromSuperview ];
-                    }
-                }
-                [self performSegueWithIdentifier: @"segueHomeToListMembers" sender:self]; // selPerson screen where you can "+" or "-" group members
-            });
-
-            return;
-        }
         if ([gbl_fromHomeCurrentSelectionType isEqualToString: @"person"])
         {
 
@@ -4924,7 +5097,7 @@ nbn(3);
   UIView *ptrToView = [self.view viewWithTag: 34 ];
   NSLog(@"ptrToView =[%@]",ptrToView );
 
-//                for( UIView *sub_view in [ self.view subviews ] ) { // remove subview (gbl_toolbarHomeMaintenance  - tag=34 ) , if existing
+//                for( UIView *sub_view in [ self.view subviews ] )  // remove subview (gbl_toolbarHomeMaintenance  - tag=34 ) , if existing
                 for( UIView *sub_view in [ self.navigationController.view subviews ] ) { // remove subview (gbl_toolbarHomeMaintenance  - tag=34 ) , if existing
   NSLog(@"sub_view =[%@]",sub_view );
   NSLog(@"sub_view.tag =[%ld]",(long)sub_view.tag );
@@ -5017,7 +5190,7 @@ nbn(3);
 
   NSLog(@"sub_view #06");
         dispatch_async(dispatch_get_main_queue(), ^{                                 // <===  
-//            for( UIView *sub_view in [ self.view subviews ] ) { // remove subview (gbl_toolbarHomeMaintenance  - tag=34 ) , if existing
+//            for( UIView *sub_view in [ self.view subviews ] )  // remove subview (gbl_toolbarHomeMaintenance  - tag=34 ) , if existing
               for( UIView *sub_view in [ self.navigationController.view subviews ] ) { // remove subview (gbl_toolbarHomeMaintenance  - tag=34 ) , if existing
   NSLog(@"sub_view     =[%@]",sub_view );
   NSLog(@"sub_view.tag =[%ld]",(long)sub_view.tag );
@@ -5035,7 +5208,7 @@ nbn(3);
 
     b(32);
         
-} // end of codeForCellTapOrAccessoryButtonTap  
+} // end of codeForCellTapWithIndexPath
 
 
 
@@ -6441,4 +6614,78 @@ tn();trn(" GRAB gbl_fromHomeCurrentEntityName   for person");
 //                                         barMetrics: UIBarMetricsDefault
 //            ];
 // still flashed
+
+//    y_value_of_toolbar  = currentScreenWidthHeight.height - 44.0;
+//    y_value_of_toolbar  = 400.0;
+//    y_value_of_toolbar  = 436.0;
+//    y_value_of_toolbar  = 480.0;
+//    y_value_of_toolbar  = 472.0;// too low
+//    y_value_of_toolbar  = 464.0; // very close
+//    y_value_of_toolbar  = 458.0; // too high
+//    y_value_of_toolbar  = 456.0; // too high
+//    y_value_of_toolbar  = 459.0; // too high
+//    y_value_of_toolbar  = 460.0; // very close   exact
+
+//            if ([gbl_homeUseMODE isEqualToString: @"edit mode" ] )
+//            {
+//nbn(157);
+////                self.navigationController.toolbar.hidden =  NO;
+////                [self.navigationController setToolbarHidden:  NO   animated: YES ];
+////                gbl_toolbarHomeMaintenance.hidden  =  NO;
+////                gbl_toolbarHomeMaintenance.enabled =  NO;
+//    y_value_of_toolbar  = my_screen_height  - my_status_bar_height  - my_nav_bar_height - my_toolbar_height;
+//            } else {
+//nbn(158);
+////                self.navigationController.toolbar.hidden = YES;
+////                [self.navigationController setToolbarHidden: YES   animated: YES ];
+////                gbl_toolbarHomeMaintenance.hidden  = YES;
+////                gbl_toolbarHomeMaintenance.enabled = YES;
+//    y_value_of_toolbar  = my_screen_height   + 100.00                                                      ;
+//            }
+//
+
+
+//    y_value_of_toolbar  = my_screen_height  - my_status_bar_height  - my_nav_bar_height - my_toolbar_height;
+//    y_value_of_toolbar  = my_screen_height  - my_status_bar_height  - my_nav_bar_height ;
+//    y_value_of_toolbar  = my_screen_height  - my_status_bar_height  - my_toolbar_height;
+//    y_value_of_toolbar  = 300.0;
+
+//    y_value_of_toolbar  = my_screen_height  - my_status_bar_height                      - my_toolbar_height;
+
+//
+//- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
+//{
+//tn();    NSLog(@"reaching accessoryButtonTappedForRowWithIndexPath:");
+//
+////    // where was the tap exactly
+////    //
+////
+////        UITableViewCell *tmpCell = [self.tableView cellForRowAtIndexPath: indexPath ];
+////        CGPoint pointInCell = [tap locationInView: tmpCell ];
+////tn(); tr("tapped here in cell      = ");kd(pointInCell.x); kd(pointInCell.y);
+////
+////        CGPoint pointInTableView = [tap locationInView: self.tableView ];
+////tn(); tr("tapped here in tableView = ");kd(pointInTableView.x); kd(pointInTableView.y);
+////
+////        // You can use the locationInView: method on UIGestureRecognizer.
+////        // If you pass nil for the view, this method will return the location of the touch in the window.
+////        //
+//////        CGPoint pointInWindow   = [tap locationInView: nil ];
+////        CGPoint pointInWindow   = [tap locationInView: self.view ];
+////tn(); tr("tapped here in Window    = ");kd(pointInWindow.x); kd(pointInWindow.y);
+////tn();
+////
+////
+//
+//
+//
+//    gbl_accessoryButtonTapped = 1;
+//
+//
+//    [self codeForCellTapOrAccessoryButtonTapWithIndexPath: indexPath ];
+//
+//    gbl_homeUseMODE      = @"edit mode" ;
+//    gbl_homeEditingState = @"view or change" ;
+//}
+//
 

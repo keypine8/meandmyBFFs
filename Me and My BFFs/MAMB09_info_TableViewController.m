@@ -180,10 +180,24 @@ tn();
     //    backBtn = [backBtn imageWithRenderingMode: UIImageRenderingModeAutomatic];
     backBtn = [backBtn imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal];
 
+    UILabel *myNavBarLabel      = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 480.0, 44.0)];
+//    myNavBarLabel.textColor     = [UIColor greenColor];
+
     dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+
         self.navigationItem.backBarButtonItem.title=@"";
+
+//        [[self navigationItem] setTitle: nil];  // moving this from the bottom of dispatch_async block to top solved the problem of nav bar title stuttering from left to right (about 1 sec)   why does it work?
+//       self.navigationItem.titleView = nil;
+
+
         self.navigationController.navigationBar.backIndicatorImage = backBtn;
         self.navigationController.navigationBar.backIndicatorTransitionMaskImage = backBtn;
+
+//    myNavBarLabel.textColor     = [UIColor blackColor];
+//    myNavBarLabel.textAlignment = NSTextAlignmentCenter; 
+//    myNavBarLabel.font          = [UIFont boldSystemFontOfSize: 16.0];
+//        self.navigationItem.titleView = myNavBarLabel; // myNavBarLabel.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
 
 
         [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone]; // remove separator lines between cells
@@ -209,11 +223,11 @@ tn();
 
 
 
-    UILabel *myNavBarLabel      = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 480.0, 44.0)];
-
-    myNavBarLabel.textColor     = [UIColor blackColor];
-    myNavBarLabel.textAlignment = NSTextAlignmentCenter; 
-    myNavBarLabel.font          = [UIFont boldSystemFontOfSize: 16.0];
+//    UILabel *myNavBarLabel      = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 480.0, 44.0)];
+//    myNavBarLabel.textColor     = [UIColor blackColor];
+//    myNavBarLabel.textAlignment = NSTextAlignmentCenter; 
+//    myNavBarLabel.font          = [UIFont boldSystemFontOfSize: 16.0];
+//
 
 
   
@@ -337,7 +351,7 @@ nbn(1);
 //             self.navigationItem.titleView = Tlabel;
 //self.navigationController.navigationBar.topItem.backBarButtonItem = nil;
 
-    self.navigationItem.backBarButtonItem.title=@"";
+        self.navigationItem.backBarButtonItem.title=@"";
     }
 
 
@@ -351,7 +365,7 @@ nbn(1);
     ) {
         gbl_helpScreenDescription = @"best match";
         dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
-//            [[self navigationItem] setTitle: @"Best Match"];
+//           [[self navigationItem] setTitle: @"#################"];
            myNavBarLabel.text          =  @"Best match";
            myNavBarLabel.adjustsFontSizeToFitWidth = YES;
            [myNavBarLabel sizeToFit];
@@ -410,9 +424,16 @@ nbn(88);
         dispatch_async( dispatch_get_main_queue(), ^{                                // <===  
 //            [[self navigationItem] setTitle: @"Compatibility Potential"];
             myNavBarLabel.text          =  @"Compatibility Potential";
+//    myNavBarLabel.textColor     = [UIColor cyanColor];
             myNavBarLabel.adjustsFontSizeToFitWidth = YES;
             [myNavBarLabel sizeToFit];
-            self.navigationItem.titleView = myNavBarLabel; // myNavBarLabel.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
+
+//            self.navigationItem.titleView = myNavBarLabel; // myNavBarLabel.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
+//            dispatch_async(dispatch_get_main_queue(), ^{  
+//self.navigationItem.rightBarButtonItems = self.navigationItem.rightBarButtonItems;
+//self.navigationItem.leftBarButtonItems  = self.navigationItem.leftBarButtonItems;
+                self.navigationItem.titleView = myNavBarLabel; // myNavBarLabel.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
+//            });
 
         });
     }
@@ -4431,6 +4452,13 @@ nbn(100);
 //
 
 
+
+    dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+
+
+//self.navigationController.toolbarHidden = YES;  // ensure that the bottom of screen toolbar is NOT visible 
+//[self.navigationController.navigationBar setHidden:YES];  
+
     // set up navigation bar  right button  with mamb icon
     //
         UIImage *myImage = [[UIImage imageNamed: @"rounded_MAMB09_029.png"]
@@ -4443,8 +4471,13 @@ nbn(100);
         [myMAMBicon setEnabled:NO];
 //        myMAMBicon.userInteractionEnabled = NO;
 
+//        [[self navigationItem] setTitle: myNavBarTitle];  // moving this from the bottom of dispatch_async block to top solved the problem of nav bar title stuttering from left to right (about 1 sec)   why does it work?
+//        titleLabel.textAlignment = UITextAlignmentCenter
+//        self.navigationItem.titleLabel.textAlignment = UITextAlignmentCenter;
+//<.>
 
         self.navigationItem.rightBarButtonItem = myMAMBicon;
+
 //
 //        // try to fix title listing to right
 //        if (    [gbl_currentMenuPlusReportCode isEqualToString: @"hompcy" ]
@@ -4458,6 +4491,7 @@ nbn(100);
 //
 
         self.tableView.allowsSelection = NO;   // see shouldHighlightRowAtIndexPath just below
+    });
 
 
 

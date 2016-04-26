@@ -162,6 +162,15 @@
     // set font and size for all Nav Bars
     //  see addchange 
 
+    // HOME  NavBar  left UIBarButtonItem s
+    //
+    UIImageView *myImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"rounded_MAMB09_029.png"]];
+    myImageView.frame = CGRectMake(0, 0, 30, 30);
+    gbl_icon_UIBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView: myImageView];
+
+
+
+
     
     // to access global method in appDelegate .h and .m
     //MAMB09AppDelegate *gbl_myappDelegate=[[UIApplication sharedApplication] delegate];

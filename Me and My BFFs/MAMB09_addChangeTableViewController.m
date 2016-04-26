@@ -2102,10 +2102,51 @@ tn();
             }
             if ( [gbl_fromHomeCurrentSelectionType isEqualToString: @"group"] ) {
 //                myNavBarLabel.text          = [NSString stringWithFormat:@"%@", gbl_lastSelectedGroup ];
-                myNavBarLabel.text          = @"Change Group Name";
+//                myNavBarLabel.text          = @"Change Group Name  ";
+                myNavBarLabel.text          = @"Change Group Name ";
             }
-            myNavBarLabel.font          = [UIFont boldSystemFontOfSize: 17.0];
-            myNavBarLabel.adjustsFontSizeToFitWidth = YES;
+
+
+// instead, use            myNavBarLabel.adjustsFontSizeToFitWidth = YES;  + do not set font size
+
+        //            CGFloat myScreenWidth, myFontSize;  // determine font size
+        //            myScreenWidth = self.view.bounds.size.width;
+        //            if (        myScreenWidth >= 414.0)  { myFontSize = 16.0; }  // 6+ and 6s+  and bigger
+        //            else if (   myScreenWidth  < 414.0   
+        //                     && myScreenWidth  > 320.0)  { myFontSize = 16.0; }  // 6 and 6s
+        //            else if (   myScreenWidth <= 320.0)  { myFontSize = 10.0; }  //  5s and 5 and 4s and smaller
+        //            else                                 { myFontSize = 16.0; }  //  other ?
+        //
+        // CGFloat   gbl_heightForScreen;  // 6+  = 736.0 x 414  and 6s+  (self.view.bounds.size.width) and height
+        //                                 // 6s  = 667.0 x 375  and 6
+        //                                 // 5s  = 568.0 x 320  and 5 
+        //                                 // 4s  = 480.0 x 320  and 5 
+        //
+//  NSLog(@"self.view.bounds.size.height  =[%f]",self.view.bounds.size.height  );
+
+            if (   self.view.bounds.size.width >= 414.0        // 6+ and 6s+  and bigger
+            ) {
+                myNavBarLabel.font = [UIFont boldSystemFontOfSize: 17.0];
+            }
+            else if (   self.view.bounds.size.width  < 414.0    // 6 and 6s
+                     && self.view.bounds.size.width  > 320.0
+            ) {
+                myNavBarLabel.font = [UIFont boldSystemFontOfSize: 17.0];
+            }
+            else if (   self.view.bounds.size.width <= 320.0   //  5s and 5 and 4s and smaller
+            ) {
+                if ([myNavBarLabel.text isEqualToString: @"Edit Person"]) myNavBarLabel.font = [UIFont boldSystemFontOfSize: 14.0];
+                else                                                      myNavBarLabel.font = [UIFont boldSystemFontOfSize: 12.0];
+            }
+            else if (   self.view.bounds.size.width <= 320.0   // ??
+            ) {
+                myNavBarLabel.font = [UIFont boldSystemFontOfSize: 12.0];
+            }
+//            myNavBarLabel.font          = [UIFont boldSystemFontOfSize: 17.0];
+
+
+
+//            myNavBarLabel.adjustsFontSizeToFitWidth = YES;
             [myNavBarLabel sizeToFit];
 
             dispatch_async(dispatch_get_main_queue(), ^{  
