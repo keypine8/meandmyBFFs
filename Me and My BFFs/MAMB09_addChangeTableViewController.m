@@ -443,29 +443,34 @@
 }
 
 
--(void)myTextFieldBeganEditing
-{
-tn();
-  NSLog(@"in myTextFieldBeganEditing!");
-//    gbl_myname.userInteractionEnabled = NO;
-//  NSLog(@"gbl_myname.userInteractionEnabled = NO!");
-
-//    [gbl_singleTapGestureRecognizer    setCancelsTouchesInView: YES];
-  NSLog(@"[gestureRecognizer description ]=[%@]",[gbl_singleTapGestureRecognizer description ]);
-}
 
 
--(void)myTextFieldEndedEditing
-{
-tn();
-  NSLog(@"in myTextFieldEndedEditing!");
-//    gbl_myname.userInteractionEnabled = NO;
-//  NSLog(@"gbl_myname.userInteractionEnabled = NO!");
 
-//    [gbl_singleTapGestureRecognizer    setCancelsTouchesInView: NO];
-  NSLog(@"[gestureRecognizer description ]=[%@]",[gbl_singleTapGestureRecognizer description ]);
-}
-
+//
+//-(void)myTextFieldBeganEditing
+//{
+//tn();
+//  NSLog(@"in myTextFieldBeganEditing!");
+////    gbl_myname.userInteractionEnabled = NO;
+////  NSLog(@"gbl_myname.userInteractionEnabled = NO!");
+//
+////    [gbl_singleTapGestureRecognizer    setCancelsTouchesInView: YES];
+//  NSLog(@"[gestureRecognizer description ]=[%@]",[gbl_singleTapGestureRecognizer description ]);
+//}
+//
+//
+//-(void)myTextFieldEndedEditing
+//{
+//tn();
+//  NSLog(@"in myTextFieldEndedEditing!");
+////    gbl_myname.userInteractionEnabled = NO;
+////  NSLog(@"gbl_myname.userInteractionEnabled = NO!");
+//
+////    [gbl_singleTapGestureRecognizer    setCancelsTouchesInView: NO];
+//  NSLog(@"[gestureRecognizer description ]=[%@]",[gbl_singleTapGestureRecognizer description ]);
+//}
+//
+//
 
 
 //- (void) processSingleTap:(UITapGestureRecognizer *)sender
@@ -481,7 +486,10 @@ tn();
   NSLog(@"viewDidLoad in add/change");
     [super viewDidLoad];
 
-    gbl_haveEnteredGestureRecognizerShouldBegin = 0;
+//    gbl_haveEnteredGestureRecognizerShouldBegin = 0;
+
+    gbl_justLookedAtInfoScreen = 0;
+  NSLog(@"gbl_justLookedAtInfoScreen  in ViewDidLoad in add/change =[%ld]",(long)gbl_justLookedAtInfoScreen );
 
     gbl_myname.delegate = self;
 
@@ -491,18 +499,19 @@ tn();
 
 // add removeObs...
 
-    [[NSNotificationCenter defaultCenter] addObserver: self  // DISABLE showing of select/paste/cut etc (flashes a bit)
-                                             selector: @selector(myTextFieldBeganEditing)
-                                                 name: UITextFieldTextDidBeginEditingNotification   // <<<====----
-//                                               object: nil
-                                               object: gbl_myname
-    ];
-    [[NSNotificationCenter defaultCenter] addObserver: self  // DISABLE showing of select/paste/cut etc (flashes a bit)
-                                             selector: @selector(myTextFieldEndedEditing)
-                                                 name: UITextFieldTextDidEndEditingNotification   // <<<====----
-//                                               object: nil
-                                               object: gbl_myname
-    ];
+//    [[NSNotificationCenter defaultCenter] addObserver: self  // DISABLE showing of select/paste/cut etc (flashes a bit)
+//                                             selector: @selector(myTextFieldBeganEditing)
+//                                                 name: UITextFieldTextDidBeginEditingNotification   // <<<====----
+////                                               object: nil
+//                                               object: gbl_myname
+//    ];
+//    [[NSNotificationCenter defaultCenter] addObserver: self  // DISABLE showing of select/paste/cut etc (flashes a bit)
+//                                             selector: @selector(myTextFieldEndedEditing)
+//                                                 name: UITextFieldTextDidEndEditingNotification   // <<<====----
+////                                               object: nil
+//                                               object: gbl_myname
+//    ];
+//
 
 
 
@@ -700,6 +709,20 @@ NSLog(@"in ADD CHANGE  viewDidLoad!");
 //
 //    gbl_doubleTapGestureRecognizer.cancelsTouchesInView        = YES;   
 //
+//    gbl_doubleTapGestureRecognizer.delegate                  = self;   
+////    [self.view addGestureRecognizer: gbl_doubleTapGestureRecognizer ];
+//    [gbl_myname addGestureRecognizer: gbl_doubleTapGestureRecognizer ];
+//
+
+//nbn(47);
+//    // try doubleTapGestureRecognizer that does nil
+//    gbl_doubleTapGestureRecognizer = [
+//       [UITapGestureRecognizer alloc] initWithTarget: self 
+//                                              action: nil
+//    ];
+//    [gbl_doubleTapGestureRecognizer    setNumberOfTapsRequired: 2];
+//    [gbl_doubleTapGestureRecognizer setNumberOfTouchesRequired: 1];
+////    gbl_doubleTapGestureRecognizer.cancelsTouchesInView        = YES;   
 //    gbl_doubleTapGestureRecognizer.delegate                  = self;   
 ////    [self.view addGestureRecognizer: gbl_doubleTapGestureRecognizer ];
 //    [gbl_myname addGestureRecognizer: gbl_doubleTapGestureRecognizer ];
@@ -1129,6 +1152,13 @@ NSLog(@"currentScreenWidthHeight.height =%f",currentScreenWidthHeight.height );
         gbl_ToolbarForCityPicklist  = [[UIToolbar alloc] initWithFrame: CGRectMake(0, self.view.frame.size.height - 44, 320, 44)];
         gbl_ToolbarForCityKeyboard  = [[UIToolbar alloc] initWithFrame: gbl_ToolbarForCityPicklist.bounds ];
 
+
+        gbl_ToolbarForPersonName.translucent   = NO;  // prevent black background flash when returning from INFO screen
+        gbl_ToolbarForGroupName.translucent    = NO;  // prevent black background flash when returning from INFO screen
+        gbl_ToolbarForBirthDate.translucent    = NO;  // prevent black background flash when returning from INFO screen
+        gbl_ToolbarForCityPicklist.translucent = NO;  // prevent black background flash when returning from INFO screen
+        gbl_ToolbarForCityKeyboard.translucent = NO;  // prevent black background flash when returning from INFO screen
+
         float heightKeyboard; 
         heightKeyboard = 216.0; 
         float heightKeyboardToolbar;  
@@ -1160,6 +1190,7 @@ NSLog(@"currentScreenWidthHeight.height =%f",currentScreenWidthHeight.height );
                 heightPickerToolbar                                   // height
             )
         ];
+        gbl_ToolbarForBirthDate.translucent    = NO;  // prevent black background flash when returning from INFO screen
 
 
 //        gbl_ToolbarForCityKeyboardHavingPicklist = [[UIToolbar alloc] initWithFrame: gbl_ToolbarForCityPicklist.bounds ];
@@ -1178,7 +1209,6 @@ NSLog(@"currentScreenWidthHeight.height =%f",currentScreenWidthHeight.height );
                 gbl_nameButtonToClearKeyboard, gbl_flexibleSpace,
                 gbl_title_personName         , gbl_flexibleSpace,
                 gbl_flexibleSpace            , nil ]; 
-
 
             gbl_buttonArrayForPicklist    =  [NSArray arrayWithObjects:  // like  " < KeyBoard    toron     _____      "
                 gbl_cityButtonToGetKeyboard, gbl_flexibleSpace,
@@ -1508,6 +1538,8 @@ NSLog(@"in viewDidAppear()  in add/change   ");
     [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.0 ];    // when view first appears on screen   after arg seconds
   tn();NSLog(@"igx in viewDidAppear add/change top    after ENDIgnor  ignoring=[%d]", [[UIApplication sharedApplication] isIgnoringInteractionEvents]);
 
+
+
 } // viewDidAppear
 
 
@@ -1696,12 +1728,45 @@ tn();
 
     gbl_justEnteredAddChangeView = 1;  // 1=y,0=n
 
+tn();trn("--qx--- in ADD/CHANGE viewWillAppear  TOP ==================================================================");
+  NSLog(@"gbl_myname.text        =[%@]",gbl_myname.text);
+  NSLog(@"gbl_mycityprovcounLabel=[%@]",gbl_mycityprovcounLabel.text);
+  NSLog(@"gbl_mybirthinformatione=[%@]",gbl_mybirthinformation.text);
+  NSLog(@"gbl_userSpecifiedPersonName  =[%@]",gbl_userSpecifiedPersonName  );
+  NSLog(@"gbl_userSpecifiedCity        =[%@]",gbl_userSpecifiedCity        );
+  NSLog(@"gbl_userSpecifiedProv        =[%@]",gbl_userSpecifiedProv        );
+  NSLog(@"gbl_userSpecifiedCoun        =[%@]",gbl_userSpecifiedCoun        );
+  NSLog(@"gbl_selectedBirthInfo        =[%@]",gbl_selectedBirthInfo        );
+  NSLog(@"gbl_DisplayName              =[%@]",gbl_DisplayName );
+  NSLog(@"gbl_DisplayDate              =[%@]",gbl_DisplayDate );
+  NSLog(@"gbl_DisplayCity              =[%@]",gbl_DisplayCity );
+  NSLog(@"gbl_DisplayProv              =[%@]",gbl_DisplayProv );
+  NSLog(@"gbl_DisplayCoun              =[%@]",gbl_DisplayCoun );
+  NSLog(@"gbl_enteredCity              =[%@]",gbl_enteredCity );
+  NSLog(@"gbl_enteredProv              =[%@]",gbl_enteredProv );
+  NSLog(@"gbl_enteredCoun              =[%@]",gbl_enteredCoun );
+trn("-------------------------------------------");
+  NSLog(@"gbl_fromHomeCurrentSelectionPSV    = [%@]",gbl_fromHomeCurrentSelectionPSV);
+  NSLog(@"gbl_justEnteredAddChangeView       = [%ld]",(long)gbl_justEnteredAddChangeView);
+  NSLog(@"gbl_myCitySoFar                    = [%@]",gbl_myCitySoFar );
+  NSLog(@"gbl_lastSelectedGroup              = [%@]",gbl_lastSelectedGroup);
+  NSLog(@"gbl_lastSelectedPerson             = [%@]",gbl_lastSelectedPerson);
+  NSLog(@"gbl_lastSelectedPersonBeforeChange = [%@]",gbl_lastSelectedPersonBeforeChange);
+  NSLog(@"gbl_lastSelectedGroupBeforeChange  = [%@]",gbl_lastSelectedGroupBeforeChange);
+  NSLog(@"gbl_rollerBirthInfo                = [%@]",gbl_rollerBirthInfo);
+trn("-------------------------------------------"); tn();
+
+
+
 //    gbl_dblTapRecog_InNameCell = nil;  // force create a gesture recognizer for cell
 //    gbl_oneTapRecog_InNameCell = nil;  // force create a gesture recognizer for cell
 
+
+nbn(100);
     if (   [gbl_homeUseMODE      isEqualToString: @"edit mode" ]
         && [gbl_homeEditingState isEqualToString: @"view or change" ]
     ) {
+nbn(101);
         gbl_citySetEditingValue  = 1;  // 1=y,0=n  // set initial value  when first entering City in "edit mode"  yellow
         gbl_citySetPickerValue   = 1;  // 1=y,0=n  // set initial value  when first entering City in "edit mode"  yellow
         gbl_citySetLabelValue    = 1;  // 1=y,0=n  // set initial value  when first entering City in "edit mode"  yellow
@@ -1709,6 +1774,7 @@ tn();
         gbl_dateSetEditingValue  = 1;  // 1=y,0=n  // set initial values when first entering Date in "edit mode"  yellow
 
     } else {
+nbn(102);
         gbl_citySetEditingValue  = 0;  // 1=y,0=n  // set initial value  when first entering City in "edit mode"  yellow
         gbl_citySetPickerValue   = 0;  // 1=y,0=n  // set initial value  when first entering City in "edit mode"  yellow
         gbl_citySetLabelValue    = 0;  // 1=y,0=n  // set initial value  when first entering City in "edit mode"  yellow
@@ -1716,6 +1782,7 @@ tn();
         gbl_dateSetEditingValue  = 0;  // 1=y,0=n  // set initial values when first entering Date in "edit mode"  yellow
 
     }
+nbn(103);
 
     // grab all personal information of gbl_fromHomeCurrentSelectionPSV 
     //
@@ -1725,9 +1792,11 @@ tn();
     if (   [gbl_homeUseMODE      isEqualToString: @"edit mode" ]
         && [gbl_homeEditingState isEqualToString: @"view or change" ]
     ) {
+nbn(104);
 
         if ([gbl_fromHomeCurrentSelectionType isEqualToString: @"person" ] )
         {  // "person" gbl_fromHomeCurrentSelectionType 
+nbn(105);
 
             //
             //        // NSString object to C
@@ -1812,12 +1881,13 @@ tn();
       NSLog(@" -1 gbl_enteredProv  =[%@]",gbl_enteredProv );
       NSLog(@" -1 gbl_enteredCoun  =[%@]",gbl_enteredCoun );
 
-    nbn(710);
+nbn(106);
             //  INIT DATE PICKER roller values   for "view or change"
             //
             if (   [gbl_homeUseMODE      isEqualToString: @"edit mode" ]
                 && [gbl_homeEditingState isEqualToString: @"view or change" ]
             ) {
+nbn(107);
                 // gbl_rollerBirth_yyyy  = @"2000"; 
                 // gbl_rollerBirth_mth   = @"Jan";
                 // gbl_rollerBirth_dd    = @"01";
@@ -1911,11 +1981,9 @@ tn();
                 // for (id member in self.array_BirthYearsToPick)    // loop thru year array
 
                 if (myIdxInPicker_Year == NSNotFound) {                // should not happen
-    nbn(711);
                     myIdxInPicker_Year = yearsToPickFrom3.count - 1;   // ?
                 }
 
-    nbn(712);
                 dispatch_async(dispatch_get_main_queue(), ^{    //  INIT  PICKER roller values
 
                     [self.pickerViewDateTime selectRow: myIdxInPicker_Year inComponent: 0 animated: YES]; // This is how you manually SET(!!) a selection!
@@ -1927,7 +1995,6 @@ tn();
                     [self.pickerViewDateTime selectRow: myIdxInPicker_Min  inComponent: 6 animated: YES]; // min  = 01   2nd one
                     [self.pickerViewDateTime selectRow: myIdxInPicker_AmPm inComponent: 7 animated: YES]; // ampm = 12   2nd one
                 });
-    nbn(714);
 
             } 
                 
@@ -1940,6 +2007,7 @@ tn();
 
         } // end of   "person" gbl_fromHomeCurrentSelectionType 
 
+nbn(108);
 
 
 
@@ -1951,7 +2019,6 @@ tn();
 
             fldNameG        = fieldsG[0];
             gbl_myname.text = fldNameG;
-  nbn(1);
   NSLog(@"gbl_fromHomeCurrentSelectionPSV =[%@]",gbl_fromHomeCurrentSelectionPSV );
   NSLog(@"fldNameG                        =[%@]",fldNameG  );
   NSLog(@"gbl_myname.text                 =[%@]",gbl_myname.text );
@@ -1960,9 +2027,19 @@ tn();
 
         // this WAS view/change mode 
     } else {
-
+nbn(128);
         // this is add mode 
-        gbl_myname.text = gbl_initPromptName;
+
+        // set "Name"  initial prompt, but only if its not set already
+        // So, if we have just looked at info screen, do not set it
+        //
+        if (gbl_justLookedAtInfoScreen ==  1) {
+            // name is set already
+nbn(129);
+        } else  {
+nbn(130);
+            gbl_myname.text = gbl_initPromptName;
+        }
 
         gbl_enteredCity        = gbl_initPromptCity;  // @"City or Town";  for display in gbl_mycityprovcounLabel= found city,prov,counl
         gbl_enteredProv        = gbl_initPromptProv;  // @"State or Province";
@@ -1987,6 +2064,7 @@ tn();
     }
 
 
+nbn(133);
     do {  // set up NAV BAR
 
 
@@ -2177,6 +2255,37 @@ tn();
     } while (false);   // set up NAV BAR
 
 
+tn();trn("--qx--- in ADD/CHANGE viewWillAppear  BOTTom ==================================================================");
+  NSLog(@"gbl_myname.text        =[%@]",gbl_myname.text);
+  NSLog(@"gbl_mycityprovcounLabel=[%@]",gbl_mycityprovcounLabel.text);
+  NSLog(@"gbl_mybirthinformatione=[%@]",gbl_mybirthinformation.text);
+  NSLog(@"gbl_userSpecifiedPersonName  =[%@]",gbl_userSpecifiedPersonName  );
+  NSLog(@"gbl_userSpecifiedCity        =[%@]",gbl_userSpecifiedCity        );
+  NSLog(@"gbl_userSpecifiedProv        =[%@]",gbl_userSpecifiedProv        );
+  NSLog(@"gbl_userSpecifiedCoun        =[%@]",gbl_userSpecifiedCoun        );
+  NSLog(@"gbl_selectedBirthInfo        =[%@]",gbl_selectedBirthInfo        );
+  NSLog(@"gbl_DisplayName              =[%@]",gbl_DisplayName );
+  NSLog(@"gbl_DisplayDate              =[%@]",gbl_DisplayDate );
+  NSLog(@"gbl_DisplayCity              =[%@]",gbl_DisplayCity );
+  NSLog(@"gbl_DisplayProv              =[%@]",gbl_DisplayProv );
+  NSLog(@"gbl_DisplayCoun              =[%@]",gbl_DisplayCoun );
+  NSLog(@"gbl_enteredCity              =[%@]",gbl_enteredCity );
+  NSLog(@"gbl_enteredProv              =[%@]",gbl_enteredProv );
+  NSLog(@"gbl_enteredCoun              =[%@]",gbl_enteredCoun );
+trn("-------------------------------------------");
+  NSLog(@"gbl_fromHomeCurrentSelectionPSV    = [%@]",gbl_fromHomeCurrentSelectionPSV);
+  NSLog(@"gbl_justEnteredAddChangeView       = [%ld]",(long)gbl_justEnteredAddChangeView);
+  NSLog(@"gbl_myCitySoFar                    = [%@]",gbl_myCitySoFar );
+  NSLog(@"gbl_lastSelectedGroup              = [%@]",gbl_lastSelectedGroup);
+  NSLog(@"gbl_lastSelectedPerson             = [%@]",gbl_lastSelectedPerson);
+  NSLog(@"gbl_lastSelectedPersonBeforeChange = [%@]",gbl_lastSelectedPersonBeforeChange);
+  NSLog(@"gbl_lastSelectedGroupBeforeChange  = [%@]",gbl_lastSelectedGroupBeforeChange);
+  NSLog(@"gbl_rollerBirthInfo                = [%@]",gbl_rollerBirthInfo);
+trn("-------------------------------------------"); tn();
+
+
+
+
 
 } // end of   viewWillAppear
 
@@ -2206,7 +2315,9 @@ tn();
 
 
         gbl_myname.text          = @"";
+
         gbl_myname.placeholder   = @"Name";
+
 //        gbl_myname.placeholder   = gbl_initPromptName;
 //        gbl_myname.placeholder   = @"";
 
@@ -3106,11 +3217,11 @@ NSLog(@"          POP  VIEW   #6");
 
                 // 111b actually do the BACK action on when changes net out to nothing");
                 //
-                if (   [gbl_DisplayName   isEqualToString: @"" ]
-                    && [gbl_DisplayCity   isEqualToString: @"" ]
-                    && [gbl_DisplayProv   isEqualToString: @"" ]
-                    && [gbl_DisplayCoun   isEqualToString: @"" ]
-                    && [gbl_DisplayDate   isEqualToString: @"" ]
+                if (   [gbl_DisplayName   isEqualToString: @"" ]   // use gbl_Display*  for this, other below
+                    && [gbl_DisplayCity   isEqualToString: @"" ]   // use gbl_Display*  for this, other below
+                    && [gbl_DisplayProv   isEqualToString: @"" ]   // use gbl_Display*  for this, other below
+                    && [gbl_DisplayCoun   isEqualToString: @"" ]   // use gbl_Display*  for this, other below
+                    && [gbl_DisplayDate   isEqualToString: @"" ]   // use gbl_Display*  for this, other below
                 ) {
       NSLog(@" // 111b actually do the BACK action on when changes net out to nothing");
 
@@ -3138,17 +3249,63 @@ NSLog(@"          POP  VIEW   #6");
 
 
                 // before save of New Person,  check for missing information  name,city,date  same as prompt
-                //
-                if (   [gbl_DisplayName isEqualToString: @"" ]
-                    || [gbl_DisplayCity isEqualToString: @"" ]
-                    || [gbl_DisplayDate isEqualToString: @"" ]
-                ) {
-                    // here info is missing
+                // and set prompts for missing info   missing_name, missing_city, missing_date;
+
+
+//                if (   [gbl_DisplayName isEqualToString: @"" ]
+//                    || [gbl_DisplayCity isEqualToString: @"" ]
+//                    || [gbl_DisplayDate isEqualToString: @"" ]
+//                ) {
+//                    // here info is missing
+//                    NSString *namePrompt; NSString *cityPrompt; NSString *datePrompt;
+//                    namePrompt = @"";     cityPrompt = @"";     datePrompt = @"";
+//                    if (  [gbl_DisplayName isEqualToString: @"" ]) namePrompt = @" Name ";
+//                    if (  [gbl_DisplayCity isEqualToString: @"" ]) cityPrompt = @" Birth City or Town ";
+//                    if (  [gbl_DisplayDate isEqualToString: @"" ]) datePrompt = @" Birth Date and Time ";
+//        ...
+//                }
+
+                NSInteger missing_name, missing_city, missing_date;
+                NSString *namePrompt; NSString *cityPrompt; NSString *datePrompt;
+                missing_name = 0;   missing_city = 0;    missing_date = 0;
+                  namePrompt = @"";   cityPrompt = @"";    datePrompt = @"";
+
+                if (   [gbl_userSpecifiedPersonName  isEqualToString: @"" ]
+                    ||  gbl_userSpecifiedPersonName  == nil  
+                   )
+                {
+                    missing_name = 1;
+                }
+
+                if (   [gbl_userSpecifiedCity        isEqualToString: @"" ]
+                    ||  gbl_userSpecifiedCity        == nil                
+                   )
+                {
+                    missing_city = 1;
+                }
+
+                if (   [gbl_selectedBirthInfo        isEqualToString: @"" ]
+                    ||  gbl_selectedBirthInfo        == nil
+                    || [gbl_selectedBirthInfo isEqualToString: @"Birth Date and Time" ]  // beg prompt
+                   )
+                {
+                    missing_date = 1;
+                }
+
+                if (   missing_name == 1
+                    || missing_city == 1
+                    || missing_date == 1  )
+                {
+                    // here info is missing, so build the prompts
+                    //
                     NSString *namePrompt; NSString *cityPrompt; NSString *datePrompt;
                     namePrompt = @"";     cityPrompt = @"";     datePrompt = @"";
-                    if (  [gbl_DisplayName isEqualToString: @"" ]) namePrompt = @" Name ";
-                    if (  [gbl_DisplayCity isEqualToString: @"" ]) cityPrompt = @" Birth City or Town ";
-                    if (  [gbl_DisplayDate isEqualToString: @"" ]) datePrompt = @" Birth Date and Time ";
+
+                    if (missing_name == 1) namePrompt = @" Name ";
+                    if (missing_city == 1) cityPrompt = @" Birth City or Town ";
+                    if (missing_date == 1) datePrompt = @" Birth Date and Time ";
+
+
                     NSString *missingMsg =  [NSString stringWithFormat:@"Missing Information:\n%@\n%@\n%@",
                         namePrompt, cityPrompt, datePrompt
                     ];
@@ -3518,9 +3675,14 @@ NSLog(@"          POP  VIEW   #6");
                     gbl_rollerBirth_min,
     //                gbl_rollerBirth_amPm,
                     myampmnum,
-                    gbl_enteredCity,
-                    gbl_enteredProv,
-                    gbl_enteredCoun,
+
+//                    gbl_enteredCity,
+//                    gbl_enteredProv,
+//                    gbl_enteredCoun,
+                    gbl_userSpecifiedCity,
+                    gbl_userSpecifiedProv,
+                    gbl_userSpecifiedCoun,
+
                     mySaveCode               // "" or "hs"
                 ];
       NSLog(@"myNewPersonRecord =[%@]",myNewPersonRecord );
@@ -3857,6 +4019,9 @@ tn();   NSLog(@"in textFieldDidBeginEditing ####################################
 //  NSLog(@"gbl_justCancelledOutOfCityPicker =%ld",gbl_justCancelledOutOfCityPicker );
   NSLog(@"gbl_myCitySoFar=%@",gbl_myCitySoFar);
 
+//   [self setSelectedRange: NSMakeRange(0, 0) ];
+
+
 //  NSLog(@"-- USAGE  gbl_justCancelledOutOfCityPicker --  in  textFieldDidBeginEditing --  rm last char from textField.text ?");
 //
 //    if (gbl_justCancelledOutOfCityPicker == 1) {   // NO  = 0 here
@@ -3885,6 +4050,7 @@ tn();   NSLog(@"in textFieldDidBeginEditing ####################################
   // which  picker is up
   NSLog(@"gbl_firstResponder_previous=[%@]",gbl_firstResponder_previous);
   NSLog(@"gbl_firstResponder_current =[%@]",gbl_firstResponder_current);
+
 
 
     if (textField.tag == 2) {              // city
@@ -3959,6 +4125,10 @@ tn();   NSLog(@"in textFieldDidBeginEditing ####################################
   NSLog(@"gbl_fieldTap_goingto =%@  tap tap tap ",gbl_fieldTap_goingto );
 
     [ self setFieldTap_currPrev ];
+
+    // gbl_mybirthinformation.tag                      = 3;
+    //
+    // note that birth date/time does not come here, instead, _(in didSelectRow in some  PICKER !!   !!!!!
 
 
 trn("END OF  textFieldDidBeginEditing ########################################################################################## ");tn();
@@ -4510,7 +4680,6 @@ NSLog(@"after remove last char (bad char) gbl_myCitySoFar=[%@]",gbl_myCitySoFar 
 //  NSLog(@"  #3 gbl_previousCharTypedWasSpace =%ld",gbl_previousCharTypedWasSpace );
 
 
-
     if (textField.tag == 2)  // city
     {
 
@@ -4590,6 +4759,7 @@ NSLog(@"after remove last char (not found) gbl_myCitySoFar=[%@]",gbl_myCitySoFar
 
     if (textField.tag == 1) { // name
         gbl_editingChangeNAMEHasOccurred = 1;   // default 0 at startup (after hitting "Edit" button on home page)
+        gbl_DisplayName = textField.text;  // latest value
     }
     if (textField.tag == 2) { // city
         gbl_editingChangeCITYHasOccurred = 1;   // default 0 at startup (after hitting "Edit" button on home page)
@@ -4868,9 +5038,13 @@ NSLog(@"in textFieldShouldReturn:");
                 gbl_myname.tag                      = 1;
                 gbl_myname.autocapitalizationType   = UITextAutocapitalizationTypeNone;
 
+    if (gbl_justLookedAtInfoScreen ==  0) {
+
         gbl_myname.inputAccessoryView = gbl_ToolbarForGroupName ; // for group name input field
 
-      NSLog(@"gbl_myname.inputAccessoryView 01_A  SET SET SET SET SET SET SET SET SET  SET ");
+      NSLog(@"gbl_myname.inputAccessoryView 01_G for group SET SET SET SET SET SET SET SET SET  SET ");
+
+    } // end of if (gbl_justLookedAtInfoScreen ==  0)
 
 
                 [cell addSubview: gbl_myname ];
@@ -4911,7 +5085,17 @@ NSLog(@"in textFieldShouldReturn:");
                     &&  gbl_editingChangeNAMEHasOccurred == 0                 // default 0 at startup (after hitting "Edit" button on home page)
                     && ! [gbl_homeEditingState isEqualToString: @"view or change" ] 
                 ) {
-                    gbl_myname.text                     = gbl_initPromptName ; // is  @"Name"
+                    // set "Name"  initial prompt, but only if its not set already
+                    // So, if we have just looked at info screen, do not set it
+                    //
+tn();
+
+  NSLog(@"gbl_justLookedAtInfoScreen  in celForRow in add/change  =[%ld]",(long)gbl_justLookedAtInfoScreen );
+                    if (gbl_justLookedAtInfoScreen ==  1) {
+                       // it is set already
+                    } else {
+                       gbl_myname.text                     = gbl_initPromptName ; // is  @"Name"
+                    }
                     gbl_myname.textColor                = [UIColor colorWithRed: 128.0/255.0    // use KVC    gray
                                                                           green: 128.0/255.0
                                                                            blue: 128.0/255.0
@@ -4932,9 +5116,19 @@ NSLog(@"in textFieldShouldReturn:");
                 gbl_myname.tag                      = 1;
                 gbl_myname.autocapitalizationType   = UITextAutocapitalizationTypeNone;
 
+                gbl_userSpecifiedPersonName = gbl_myname.text;
+
+
+nbn(200);
+    if (gbl_justLookedAtInfoScreen ==  0) {
+
+nbn(201);
+
         gbl_myname.inputAccessoryView = gbl_ToolbarForPersonName ; // for person name input field
       NSLog(@"gbl_myname.inputAccessoryView 01_B  SET SET SET SET SET SET SET SET SET  SET ");
 
+    } // end of if (gbl_justLookedAtInfoScreen ==  0)
+nbn(202);
 
                 [cell addSubview: gbl_myname ];
             });
@@ -5050,8 +5244,16 @@ NSLog(@"in textFieldShouldReturn:");
             if (gbl_citySetLabelValue == 1 ) {  // 1=y,0=n  // set initial value  when first entering City in "edit mode"  yellow
                 gbl_citySetLabelValue  = 0;     // 1=y,0=n  // set initial value  when first entering City in "edit mode"  yellow
                 myTextCity = [NSString stringWithFormat:@" %@\n %@\n %@", fldCity, fldProv, fldCountry ]; // edit current row
+
+                gbl_userSpecifiedCity = fldCity;
+                gbl_userSpecifiedProv = fldProv;
+                gbl_userSpecifiedCoun = fldCountry;
             } else {
                 myTextCity = [NSString stringWithFormat:@" %@\n %@\n %@", gbl_enteredCity, gbl_enteredProv, gbl_enteredCoun ];
+
+                gbl_userSpecifiedCity = gbl_enteredCity;
+                gbl_userSpecifiedProv = gbl_enteredProv;
+                gbl_userSpecifiedCoun = gbl_enteredCoun;
             }
 
 //            myTextCity = [NSString stringWithFormat:@" %@\n %@\n %@", fldCity, fldProv, fldCountry ]; // edit current row
@@ -6004,11 +6206,13 @@ kin(num_PSVs_found);
     strcpy(myCityName, gbl_placetab[idx_of_first_city_found].my_city); 
     NSString *myLatestCity =  [NSString stringWithUTF8String: myCityName ];  // convert c string to NSString
     gbl_enteredCity = myLatestCity ;
+    gbl_DisplayCity = myLatestCity ;
 
     char myProvName [64];
     strcpy(myProvName, array_prov[gbl_placetab[idx_of_first_city_found].idx_prov]); 
     NSString *myLatestProv =  [NSString stringWithUTF8String: myProvName];  // convert c string to NSString
     gbl_enteredProv = myLatestProv ;
+    gbl_DisplayProv = myLatestProv ;
 
     char myCounName [64];
     strcpy(myCounName, array_coun[gbl_placetab[idx_of_first_city_found].idx_coun]); 
@@ -6017,6 +6221,7 @@ kin(num_PSVs_found);
 
 
     [self showHide_ButtonToSeePicklist ];
+    gbl_DisplayCoun = myLatestCoun ;
 
 
 // NSString *myLatestCity =  [NSString stringWithUTF8String: gbl_placetab[idx_of_first_city_found]->my_city ];  // convert c string to NSString
@@ -6059,6 +6264,37 @@ kin(num_PSVs_found);
     [super viewWillDisappear:animated];
 
     gbl_justPressedChangeGroupName = 0;  // reset to default
+
+
+tn();trn("--qx--- in ADD/CHANGE viewWillDisappear  TOP ==================================================================");
+  NSLog(@"gbl_myname.text        =[%@]",gbl_myname.text);
+  NSLog(@"gbl_mycityprovcounLabel=[%@]",gbl_mycityprovcounLabel.text);
+  NSLog(@"gbl_mybirthinformatione=[%@]",gbl_mybirthinformation.text);
+  NSLog(@"gbl_userSpecifiedPersonName  =[%@]",gbl_userSpecifiedPersonName  );
+  NSLog(@"gbl_userSpecifiedCity        =[%@]",gbl_userSpecifiedCity        );
+  NSLog(@"gbl_userSpecifiedProv        =[%@]",gbl_userSpecifiedProv        );
+  NSLog(@"gbl_userSpecifiedCoun        =[%@]",gbl_userSpecifiedCoun        );
+  NSLog(@"gbl_selectedBirthInfo        =[%@]",gbl_selectedBirthInfo        );
+  NSLog(@"gbl_DisplayName              =[%@]",gbl_DisplayName );
+  NSLog(@"gbl_DisplayDate              =[%@]",gbl_DisplayDate );
+  NSLog(@"gbl_DisplayCity              =[%@]",gbl_DisplayCity );
+  NSLog(@"gbl_DisplayProv              =[%@]",gbl_DisplayProv );
+  NSLog(@"gbl_DisplayCoun              =[%@]",gbl_DisplayCoun );
+  NSLog(@"gbl_enteredCity              =[%@]",gbl_enteredCity );
+  NSLog(@"gbl_enteredProv              =[%@]",gbl_enteredProv );
+  NSLog(@"gbl_enteredCoun              =[%@]",gbl_enteredCoun );
+trn("-------------------------------------------");
+  NSLog(@"gbl_fromHomeCurrentSelectionPSV    = [%@]",gbl_fromHomeCurrentSelectionPSV);
+  NSLog(@"gbl_justEnteredAddChangeView       = [%ld]",(long)gbl_justEnteredAddChangeView);
+  NSLog(@"gbl_myCitySoFar                    = [%@]",gbl_myCitySoFar );
+  NSLog(@"gbl_lastSelectedGroup              = [%@]",gbl_lastSelectedGroup);
+  NSLog(@"gbl_lastSelectedPerson             = [%@]",gbl_lastSelectedPerson);
+  NSLog(@"gbl_lastSelectedPersonBeforeChange = [%@]",gbl_lastSelectedPersonBeforeChange);
+  NSLog(@"gbl_lastSelectedGroupBeforeChange  = [%@]",gbl_lastSelectedGroupBeforeChange);
+  NSLog(@"gbl_rollerBirthInfo                = [%@]",gbl_rollerBirthInfo);
+trn("-------------------------------------------"); tn();
+
+
 
 // did not work  - no kb comes up
 //        // I'm using a UIPickerView as the inputView for a TextField (thus replacing the onscreen keyboard).
@@ -6279,7 +6515,7 @@ tn();  NSLog(@"in putUpCityPicklist !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 //    if ([ gbl_currentCityPicklistIsForTypedSoFar isEqualToString: gbl_myCitySoFar ] )   return;   // picker up already for this typed so far
 //                                                                                                  // like "toron"  or "toro"
 
-    gbl_currentCityPicklistIsForTypedSoFar = gbl_myCitySoFar;   // picker up already for this typed so far
+//    gbl_currentCityPicklistIsForTypedSoFar = gbl_myCitySoFar;   // picker up already for this typed so far
 
     gbl_mycitySearchString.text = gbl_myCitySoFar;
 
@@ -6807,6 +7043,8 @@ tn();
 {
 tn();
   NSLog(@"in getCurrentCityProvCounForRownum");
+  NSLog(@"arg_rownum=[%ld]",(long)arg_rownum);
+
     char my_buff[256];
     NSMutableString *myContentsPSV;
     NSArray  *tmpArray3;
@@ -6814,16 +7052,34 @@ tn();
     strcpy(my_buff, city_prov_coun_PSVs + arg_rownum * 128);  // fixed len rec = 128   get ROW   get ROW   get ROW  get ROW
 
     myContentsPSV = [NSMutableString stringWithUTF8String: my_buff];  // convert c string to NSString
+  NSLog(@"myContentsPSV =[%@]",myContentsPSV );
 
     NSCharacterSet *mySeparators = [NSCharacterSet characterSetWithCharactersInString:@"|"];
     tmpArray3     = [myContentsPSV componentsSeparatedByCharactersInSet: mySeparators ];
+  NSLog(@"tmpArray3     =[%@]",tmpArray3     );
+  NSLog(@"tmpArray3.count =[%ld]",(long)tmpArray3.count );
 
-    gbl_enteredCity = tmpArray3[0];
-    gbl_enteredProv = tmpArray3[1];
-    gbl_enteredCoun = tmpArray3[2];
+    if (   tmpArray3 == nil
+        || tmpArray3.count < 3) 
+    {
+  NSLog(@"1 got gbl_enteredCity from gbl_userSpecifiedCity");
+        gbl_enteredCity = gbl_userSpecifiedCity;
+        gbl_enteredProv = gbl_userSpecifiedProv;
+        gbl_enteredCoun = gbl_userSpecifiedCoun;
+    } else {
+  NSLog(@"2 got gbl_enteredCity from city_prov_coun_PSVs C  ");
+        gbl_enteredCity = tmpArray3[0];
+        gbl_enteredProv = tmpArray3[1];
+        gbl_enteredCoun = tmpArray3[2];
+    }
+
+
   NSLog(@"gbl_enteredCity =[%@]",gbl_enteredCity );
   NSLog(@"gbl_enteredProv =[%@]",gbl_enteredProv );
   NSLog(@"gbl_enteredCoun =[%@]",gbl_enteredCoun );
+
+
+
 }
 
 
@@ -6944,6 +7200,11 @@ tn();trn("in didSelectRow in some  PICKER !!   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
   NSLog(@"gbl_pickerToUse =[%@]",gbl_pickerToUse );
   NSLog(@"row=[%ld]",(long)row);
   NSLog(@"component=[%ld]",(long)component);
+
+
+    // we want to allow picker, but no double tap selection
+//        gbl_mybirthinformation.userInteractionEnabled = NO;
+//       gbl_mybirthinformation.selection = NO;
 
 
 

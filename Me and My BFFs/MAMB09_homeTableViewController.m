@@ -790,38 +790,18 @@ nbn(100);
 
 
 //    self.editButtonItem.title = nil;   // this gets rid of left/right shift of Edit/Done buttons when pressed
+
 //
 //    // this gets set below to Edit or Done button image
 //    [self.editButtonItem setImage:  [[UIImage alloc] init]];     // edit mode bg color for button
 
-            [self.editButtonItem setImage: gbl_yellowEdit ];     // edit mode bg color for button
 
-
-//<.>
-//
-//    UIImage *backBtn = [UIImage imageNamed:@"iconChevronLeft_66"]; // actually left arrow
-//    backBtn = [backBtn imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal];
-//<.>
-//[[UIBarButtonItem alloc] initWithImage:
-//[[UIImage imageNamed:@"info.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
-// style: UIBarButtonItemStylePlain
-//target: self
-//action: @selector(info:)];
-//
-//<.>
-//
 
   NSLog(@"EDIT BUTTON 1   set yellow          ");
-
-//            [self.editButtonItem setBackgroundImage: gbl_yellowEdit          // edit mode bg color for button
-//            [self.editButtonItem setBackgroundImage: nil          // edit mode bg color for button
-//                                           forState: UIControlStateNormal  
-//                                         barMetrics: UIBarMetricsDefault
-//            ];
-
-
+nbn(500);
+            [self.editButtonItem setImage: gbl_yellowEdit ];     // edit mode bg color for button
             self.navigationItem.rightBarButtonItems =   // "editButtonItem" is magic Apple functionality
-              [self.navigationItem.rightBarButtonItems arrayByAddingObject: self.editButtonItem]; //editButtonItem=ADD apple-provided EDIT BUTTON
+            [self.navigationItem.rightBarButtonItems arrayByAddingObject: self.editButtonItem]; //editButtonItem=ADD apple-provided EDIT BUTTON
 
 
 
@@ -1069,7 +1049,7 @@ nbn(15);
 
 
 
-//
+
 //
 //    //   for test   TO SIMULATE first downloading the app-  when there are no data files
 //    //   FOR test   remove all regular named files   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -1092,6 +1072,7 @@ nbn(15);
 //
 //
 //
+
 
 
 
@@ -4548,11 +4529,86 @@ nbn(300);
 
         dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
 
+//<.>
+//  NSLog(@"EDIT BUTTON 1   set yellow          ");
+//nbn(500);
+//            [self.editButtonItem setImage: gbl_yellowEdit ];     // edit mode bg color for button
+//            self.navigationItem.rightBarButtonItems =   // "editButtonItem" is magic Apple functionality
+//            [self.navigationItem.rightBarButtonItems arrayByAddingObject: self.editButtonItem]; //editButtonItem=ADD apple-provided EDIT BUTTON
+//
+//<.>
+//
 
-            self.editButtonItem.title = nil;   // this gets rid of left/right shift of Edit/Done buttons when pressed
-            // this gets set below to Edit or Done button image
-            [self.editButtonItem setImage:  [[UIImage alloc] init]];     // edit mode bg color for button
-            [self.editButtonItem setImage: gbl_brownDone ];     // report mode bg color for button
+        // ORIG version:
+        //
+        //
+        //            //    USER TAPPED EDIT BUTTON HERE
+        //            //
+        //            self.editButtonItem.title = nil;   // this gets rid of left/right shift of Edit/Done buttons when pressed
+        //            // this gets set below to Edit or Done button image
+        //            [self.editButtonItem setImage:  [[UIImage alloc] init]];     // edit mode bg color for button
+        //            [self.editButtonItem setImage: gbl_brownDone ];     // report mode bg color for button
+        //            [self.navigationItem.rightBarButtonItems arrayByAddingObject: self.editButtonItem]; //editButtonItem=ADD apple-provided EDIT BUTTON
+        //
+        //
+        //  NSLog(@"EDIT BUTTON 2   set title  done tab");
+        //
+        //
+
+nbn(335);
+    //
+    //// This is how you remove the button from the toolbar and animate it
+    //[toolbarButtons removeObject:self.myButton];
+    //[self setToolbarItems:toolbarButtons animated:YES];
+    //
+    //// This is how you add the button to the toolbar and animate it
+    //if (![toolbarButtons containsObject:self.myButton]) {
+    //    // The following line adds the object to the end of the array.  
+    //    // If you want to add the button somewhere else, use the `insertObject:atIndex:` 
+    //    // method instead of the `addObject` method.
+    //    [toolbarButtons addObject:self.myButton];
+    //    [self setToolbarItems:toolbarButtons animated:YES];
+    //}
+    //
+//    [self.navigationItem.rightBarButtonItems removeObject: self.editButtonItem]; //editButtonItem=ADD apple-provided EDIT BUTTON
+
+
+//        self.editButtonItem.title = nil;   // this gets rid of left/right shift of Edit/Done buttons when pressed
+////        self.editButtonItem.backgroundimage = nil; 
+//        // this gets set below to Edit or Done button image
+//        [self.editButtonItem setImage:  [[UIImage alloc] init]];     // edit mode bg color for button
+
+        [self.editButtonItem setImage: gbl_brownDone ];     // report mode bg color for button
+
+//
+//
+
+//    if (![self.navigationItem.rightBarButtonItems containsObject: self.editButtonItem ]) {
+//        // The following line adds the object to the end of the array.  
+//        // If you want to add the button somewhere else, use the `insertObject:atIndex:` 
+//        // method instead of the `addObject` method.
+//
+//        [self.navigationItem.rightBarButtonItems addObject: self.editButtonItem]; //editButtonItem=ADD apple-provided EDIT BUTTON
+//
+////        [self setToolbarItems:toolbarButtons animated:YES];
+//    }
+//
+
+
+
+//<.>
+//
+//            // remove left share icon and replace  with  app icon
+//            //
+//            self.navigationItem.leftBarButtonItem  = nil;
+//            self.navigationItem.leftBarButtonItem  = gbl_icon_UIBarButtonItem ;
+//            self.navigationItem.leftBarButtonItems = [self.navigationItem.leftBarButtonItems  arrayByAddingObject: navAddButton];
+//
+//<.>
+//
+
+
+
 
 
   NSLog(@"EDIT BUTTON 2   set title  done tab");
@@ -4721,34 +4777,19 @@ nbn(311);
 
     self.editButtonItem.title = nil;   // this gets rid of left/right shift of Edit/Done buttons when pressed
     // this gets set below to Edit or Done button image
-    [self.editButtonItem setImage:  [[UIImage alloc] init]];     // edit mode bg color for button
-
-
-//            [self.editButtonItem setImage:  [[UIImage alloc] init]];     // set to nothing
+            [self.editButtonItem setImage:  [[UIImage alloc] init]];  
             [self.editButtonItem setImage: gbl_yellowEdit        // edit mode bg color for button
             ];
 
+            // ? apparently do not need this here, although it occurs on press edit button  why? - but it works.
+            //
+            // [self.navigationItem.rightBarButtonItems arrayByAddingObject: self.editButtonItem]; // apple-provided EDIT BUTTON
+
   NSLog(@"EDIT BUTTON 3   set yellow          ");
 
-//            [self.editButtonItem setBackgroundImage: gbl_yellowEdit          // edit mode bg color for button
-//            [self.editButtonItem setBackgroundImage: nil          // edit mode bg color for button
-//                                           forState: UIControlStateNormal  
-//                                         barMetrics: UIBarMetricsDefault
-//            ];
 
-
-
-            // remove left share icon and replace  with  app icon
+            // remove left share icon and replace  with  app icon    barbuttonitem
             //
-//            UIImage *iconImage = [UIImage imageNamed: @"rounded_MAMB09_029.png"];
-//            iconImage          = [iconImage imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal];
-//            UIBarButtonItem *iconButton = [[UIBarButtonItem alloc] initWithImage: iconImage 
-//                                                                           style: UIBarButtonItemStylePlain
-//                                                                          target: self
-//                                                                          action: nil
-//
-//            ];
-
             self.navigationItem.leftBarButtonItem  = nil;
             self.navigationItem.leftBarButtonItem  = gbl_icon_UIBarButtonItem ;
             self.navigationItem.leftBarButtonItems = [self.navigationItem.leftBarButtonItems  arrayByAddingObject: navAddButton];
@@ -4756,17 +4797,6 @@ nbn(311);
 
 
   NSLog(@"gbl_haveAddedNavBarRightItems =[%ld]",(long)gbl_haveAddedNavBarRightItems );
-//            if (gbl_haveAddedNavBarRightItems == 0)
-//            {
-//nbn(12);
-//              gbl_haveAddedNavBarRightItems = 1;
-//            }
-
-//              self.navigationItem.rightBarButtonItems =   // "editButtonItem" is magic Apple functionality
-//            [self.navigationItem.rightBarButtonItems arrayByAddingObject: self.editButtonItem]; //editButtonItem=ADD apple-provided EDIT BUTTON
-
-
-
 
             if (     [gbl_homeUseMODE isEqualToString: @"edit mode" ] ) [self.tableView setBackgroundColor: gbl_colorEditingBG];
             else if ([gbl_lastSelectionType isEqualToString:@"person"]) [self.tableView setBackgroundColor: gbl_colorHomeBG_per];

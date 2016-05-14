@@ -5528,7 +5528,7 @@ NSLog(@"Ok button pressed");
         }
     );
 
-} //  didFinishWithResult:(MFMailComposeResult)result
+} // mailComposeController didFinishWithResult:
 
 
 // ==============   END of email stuff  ====================

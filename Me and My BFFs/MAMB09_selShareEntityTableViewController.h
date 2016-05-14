@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MessageUI/MessageUI.h>
 
-@interface MAMB09_selShareEntityTableViewController : UITableViewController
+
+@interface MAMB09_selShareEntityTableViewController : UITableViewController  <UITableViewDelegate, UITableViewDataSource, MFMailComposeViewControllerDelegate>
 
 @end

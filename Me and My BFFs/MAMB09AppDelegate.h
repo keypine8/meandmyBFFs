@@ -8,7 +8,11 @@
 #import <UIKit/UIKit.h>
 #import "MAMB09_UITextField_noCopyPaste.h"
 
-NSInteger gbl_haveEnteredGestureRecognizerShouldBegin;
+//NSInteger gbl_haveEnteredGestureRecognizerShouldBegin;
+
+
+NSInteger gbl_timesthrusetsel;
+NSString *gbl_mamb_fileNameOnEmail;  // "people.mamb"  or  "groups.mamb"  or  backup_yyyymmddhhmmss.mamb
 
 
 //UIActivityIndicatorView *gbl_bestMatchActivityIndicator;  // for best match (could run 2,3 sec)
@@ -240,14 +244,14 @@ NSString *gbl_kindOfDelete;  // in pressedSaveDone of Delete Group  "delete grou
 
 // all 4 of these have possible values  "name" or "city" or "date" or "" or nil
 //
-NSString *gbl_firstResponder_previous;
-NSString *gbl_firstResponder_current;
+NSString *gbl_firstResponder_previous;  // set once, used never
+NSString *gbl_firstResponder_current;   // set once, used once
 NSString *gbl_fieldTap_leaving; // note that name and city are captured in should/did editing, date in viewForRow uipickerview
 NSString *gbl_fieldTap_goingto; // note that name and city are captured in should/did editing, date in viewForRow uipickerview
 
 
-UIColor *gbl_bgColor_editFocus_NO;    // white
-UIColor *gbl_bgColor_editFocus_YES;   // something else
+//UIColor *gbl_bgColor_editFocus_NO;    // white
+//UIColor *gbl_bgColor_editFocus_YES;   // something else
 
 // in local vars
 //char gbl_allowedCharactersInName[128] = "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
@@ -341,6 +345,7 @@ NSString *gbl_pickerToUse;  //  =  "city picker" or "date/time picker"
 //NSTimer  *gbl_timerToCheckCityPicklistTrigger;   qOLD
 NSInteger gbl_fewEnoughCitiesToMakePicklist;  // if = 1, put up picklist if pause OK
 int       gbl_numCitiesToTriggerPicklist;     // is type  int  for passing to C function
+
 // qOLD
 //double    gbl_numSecondsToTriggerPicklist;    // providing numcities starting with typed so far is <= gbl_numCitiesToTriggerPicklist
 //double    gbl_secondsPauseInCityKeyStrokesToTriggerPicklist;  // 2.0
@@ -355,7 +360,8 @@ int       gbl_numCitiesToTriggerPicklist;     // is type  int  for passing to C 
 //NSString *gbl_typedCharCurr;   // for test
 //double    gbl_intervalBetweenLast2Keystrokes;
 //double    gbl_secondsSinceCurrCityKeyStroke;   // used when typing city name
-NSString *gbl_currentCityPicklistIsForTypedSoFar;  // like "toron"  or "toro"
+
+//NSString *gbl_currentCityPicklistIsForTypedSoFar;  // like "toron"  or "toro"
 
 
 
@@ -892,7 +898,13 @@ NSMutableArray *gbl_arrayMem; // members of  groups
 NSMutableArray *gbl_arrayGrpRem; // REMEMBER DATA 
 NSMutableArray *gbl_arrayPerRem; // REMEMBER DATA 
 
+NSMutableArray *gbl_arraySharePeople;
+NSMutableArray *gbl_arrayShareGroups;
+NSMutableArray *gbl_arrayFullBackup;
+NSMutableArray *gbl_arrayExport;      // for reading ".mamb" for import  of share people or share groups or full backup
+
 NSMutableArray *gbl_arrayTEST; // for test
+
 
 NSString *gbl_nameOfGrpHavingAllPeopleIhaveAdded; // "#allpeople"
 NSString *gbl_recOfAllPeopleIhaveAdded;           //  = [ NSString stringWithFormat: @"%@||||||||||||||", // 14 flds for misc
@@ -948,6 +960,7 @@ NSString *gbl_pathToPerson;
 NSString *gbl_pathToMember;
 NSString *gbl_pathToGrpRem; //  the app can "remember" what to put highlight on for what was last selected.
 NSString *gbl_pathToPerRem; //  the app can "remember" what to put highlight on for what was last selected.
+NSString *gbl_pathToExport;
 
 NSInteger gbl_scrollToCorrectRow;  // flag to set every time before calling [self putHighlightOnCorrectRow ] in HOME
                                    // (do not want to scroll when hitting yellow/Edit and brown/Done)
@@ -958,6 +971,7 @@ NSURL    *gbl_URLToPerson;
 NSURL    *gbl_URLToMember;
 NSURL    *gbl_URLToGrpRem; //  the app can "remember" what to put highlight on for what was last selected.
 NSURL    *gbl_URLToPerRem; //  the app can "remember" what to put highlight on for what was last selected.
+NSURL    *gbl_URLToExport;
 
 
 
@@ -1061,9 +1075,9 @@ NSString *gbl_rollerBirth_amPm;
 
 
 
-NSString *gbl_rollerLast_yyyy;
-NSString *gbl_rollerLast_mth;  // like "Jan"
-NSString *gbl_rollerLast_dd;
+NSString *gbl_rollerLast_yyyy;  // only used in MAMB09_selDateViewController2.m
+NSString *gbl_rollerLast_mth;  // like "Jan"       // only used in MAMB09_selDateViewController2.m
+NSString *gbl_rollerLast_dd;    // only used in MAMB09_selDateViewController2.m
 
 NSString *gbl_selectedBirthInfo;  // shows "prompt" text also at beg
 NSString *gbl_rollerBirthInfo;  // only shows stuff actually selected on the rollers
@@ -1107,6 +1121,7 @@ NSString *gbl_html_file_name_browser;
 NSString *gbl_html_file_name_browser_B;
 NSString *gbl_html_file_name_webview;
 
+NSString *gbl_pathToShareToBeEmailed;
 NSString *gbl_pathToFileToBeEmailed;
 NSString *gbl_pathToFileToBeEmailed_B;
 NSString *gbl_person_name;  // for email

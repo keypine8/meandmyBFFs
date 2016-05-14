@@ -51,6 +51,10 @@ tn();
 
     [super viewWillDisappear:animated];
 
+  NSLog(@"gbl_justLookedAtInfoScreen  bef in ViewWillDisappear in  INFO  =[%ld]",(long)gbl_justLookedAtInfoScreen );
+    gbl_justLookedAtInfoScreen = 1;
+  NSLog(@"gbl_justLookedAtInfoScreen  aft in ViewWillDisappear in  INFO  =[%ld]",(long)gbl_justLookedAtInfoScreen );
+
     // check if gbl_ExampleData_show has changed, and
     // if so,  write out gbl_arrayGrp to save it
     //
@@ -134,15 +138,51 @@ tn();
     [super viewDidLoad];
     
     fopen_fpdb_for_debug();
-    NSLog(@"in INFO   viewDidLoad!");
+
+tn(); NSLog(@"in INFO   viewDidLoad!");
     
+
+//tn();trn("--qx--- in INFO viewdidAppear----------------");
+//  NSLog(@"gbl_userSpecifiedPersonName  =[%@]",gbl_userSpecifiedPersonName  );
+//  NSLog(@"gbl_userSpecifiedCity        =[%@]",gbl_userSpecifiedCity        );
+//  NSLog(@"gbl_userSpecifiedProv        =[%@]",gbl_userSpecifiedProv        );
+//  NSLog(@"gbl_userSpecifiedCoun        =[%@]",gbl_userSpecifiedCoun        );
+//  NSLog(@"gbl_selectedBirthInfo        =[%@]",gbl_selectedBirthInfo        );
+//  NSLog(@"gbl_DisplayName              =[%@]",gbl_DisplayName );
+//  NSLog(@"gbl_DisplayDate              =[%@]",gbl_DisplayDate );
+//  NSLog(@"gbl_DisplayCity              =[%@]",gbl_DisplayCity );
+//  NSLog(@"gbl_DisplayProv              =[%@]",gbl_DisplayProv );
+//  NSLog(@"gbl_DisplayCoun              =[%@]",gbl_DisplayCoun );
+//  NSLog(@"gbl_enteredCity              =[%@]",gbl_enteredCity );
+//  NSLog(@"gbl_enteredProv              =[%@]",gbl_enteredProv );
+//  NSLog(@"gbl_enteredCoun              =[%@]",gbl_enteredCoun );
+//trn("-------------------------------------------");
+//  NSLog(@"gbl_fromHomeCurrentSelectionPSV    = [%@]",gbl_fromHomeCurrentSelectionPSV);
+//  NSLog(@"gbl_justEnteredAddChangeView       = [%ld]",(long)gbl_justEnteredAddChangeView);
+//  NSLog(@"gbl_myCitySoFar                    = [%@]",gbl_myCitySoFar );
+//  NSLog(@"gbl_lastSelectedGroup              = [%@]",gbl_lastSelectedGroup);
+//  NSLog(@"gbl_lastSelectedPerson             = [%@]",gbl_lastSelectedPerson);
+//  NSLog(@"gbl_lastSelectedPersonBeforeChange = [%@]",gbl_lastSelectedPersonBeforeChange);
+//  NSLog(@"gbl_lastSelectedGroupBeforeChange  = [%@]",gbl_lastSelectedGroupBeforeChange);
+//  NSLog(@"gbl_rollerLast_yyyy                = [%@]",gbl_rollerLast_yyyy);
+//  NSLog(@"gbl_rollerLast_mth                 = [%@]",gbl_rollerLast_mth);
+//  NSLog(@"gbl_rollerLast_dd                  = [%@]",gbl_rollerLast_dd);
+//  NSLog(@"gbl_rollerBirthInfo                = [%@]",gbl_rollerBirthInfo);
+//trn("-------------------------------------------"); tn();
+//
+
+
+
     gbl_ExampleData_show_entering = gbl_ExampleData_show;  // save entering value
 
+  NSLog(@"gbl_justLookedAtInfoScreen  bef in ViewDidLoad in  INFO  =[%ld]",(long)gbl_justLookedAtInfoScreen );
     gbl_justLookedAtInfoScreen = 1;
+  NSLog(@"gbl_justLookedAtInfoScreen  aft in ViewDidLoad in  INFO  =[%ld]",(long)gbl_justLookedAtInfoScreen );
+
+
     
   NSLog(@"gbl_currentMenuPlusReportCode=%@",gbl_currentMenuPlusReportCode);
 
-tn(); NSLog(@"in INFO   viewDidLoad!");
   NSLog(@"gbl_PSVtappedPerson_fromGRP=%@",gbl_PSVtappedPerson_fromGRP);      // any of the above 14 RPTs
   NSLog(@"gbl_PSVtappedPersonA_inPair=%@",gbl_PSVtappedPersonA_inPair);      // hompbm,homgbm,pbmco,gbmco
   NSLog(@"gbl_PSVtappedPersonB_inPair=%@",gbl_PSVtappedPersonB_inPair);      // same
@@ -532,6 +572,10 @@ nbn(88);
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+  NSLog(@"gbl_justLookedAtInfoScreen  bef in cellForRow in  INFO  =[%ld]",(long)gbl_justLookedAtInfoScreen );
+    gbl_justLookedAtInfoScreen = 1;
+  NSLog(@"gbl_justLookedAtInfoScreen  aft in cellForRow in  INFO  =[%ld]",(long)gbl_justLookedAtInfoScreen );
+
     
 //  NSLog(@"in IINFO   cellForRowAtIndexPath!");
 //  NSLog(@"indexPath.row=%ld",indexPath.row);
@@ -2367,24 +2411,24 @@ nbn(100);
 
             if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgma"]   // Most Assertive Person in Group
             ) {
-                myGoodBadText = [NSString stringWithFormat: @"A challenging expression of the trait \"%@\" might be a domineering approach or hot-tempered behavior.\n\nA favorable expression of the trait \"%@\" might be acting as a good leader and speaking up against injustices. ", myMostWhat , myMostWhat ];
+                myGoodBadText = [NSString stringWithFormat: @"A challenging expression of the trait \"%@\" is a domineering approach or hot-tempered behavior.\n\nA favorable expression of the trait \"%@\" is acting as a good leader and speaking up against injustices. ", myMostWhat , myMostWhat ];
             }
             if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgme"]   // Most Emotional
             ) {
-                myGoodBadText = [NSString stringWithFormat: @"A challenging expression of the trait \"%@\" might be extreme sensitivity or being too impressionable.\n\nA favorable expression of the trait \"%@\" might be alertness to other's feelings and protecting those less fortunate. ", myMostWhat , myMostWhat ];
+                myGoodBadText = [NSString stringWithFormat: @"A challenging expression of the trait \"%@\" is extreme sensitivity or being too impressionable.\n\nA favorable expression of the trait \"%@\" is alertness to other's feelings and protecting those less fortunate. ", myMostWhat , myMostWhat ];
 
             }
             if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgmr"]   // Most Restless 
             ) {
-                myGoodBadText = [NSString stringWithFormat: @"A challenging expression of the trait \"%@\" might be a scattered approach and changeableness.\n\nA favorable expression of the trait \"%@\" might be independence and versatility.", myMostWhat , myMostWhat ];
+                myGoodBadText = [NSString stringWithFormat: @"A challenging expression of the trait \"%@\" is a scattered approach and changeableness.\n\nA favorable expression of the trait \"%@\" is independence and versatility.", myMostWhat , myMostWhat ];
             }
             if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgmp"]   // Most Passionate
             ) {
-                myGoodBadText = [NSString stringWithFormat: @"A challenging expression of the trait \"%@\" might be overpowering intensity or holding grudges.\n\nA favorable expression of the trait \"%@\" might be an enthusiastic attitude or doing a job with passion.", myMostWhat , myMostWhat ];
+                myGoodBadText = [NSString stringWithFormat: @"A challenging expression of the trait \"%@\" is overpowering intensity or holding grudges.\n\nA favorable expression of the trait \"%@\" is an enthusiastic attitude or doing a job with passion.", myMostWhat , myMostWhat ];
             }
             if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgmd"]   // Most Down-to-earth
             ) {
-                myGoodBadText = [NSString stringWithFormat: @"A challenging expression of the trait \"%@\" might be rigidity and an uncompromising approach.\n\nA favorable expression of the trait \"%@\" might be stability and a practical approach. ", myMostWhat , myMostWhat ];
+                myGoodBadText = [NSString stringWithFormat: @"A challenging expression of the trait \"%@\" is rigidity and an uncompromising approach.\n\nA favorable expression of the trait \"%@\" is stability and a practical approach. ", myMostWhat , myMostWhat ];
             }
 
             dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
@@ -4451,6 +4495,10 @@ nbn(100);
 //    self.navigationItem.rightBarButtonItem = mySpacerForTitle;
 //
 
+  NSLog(@"gbl_justLookedAtInfoScreen  bef in ViewWillAppear in  INFO  =[%ld]",(long)gbl_justLookedAtInfoScreen );
+    gbl_justLookedAtInfoScreen = 1;
+  NSLog(@"gbl_justLookedAtInfoScreen  aft in ViewWillAppear in  INFO  =[%ld]",(long)gbl_justLookedAtInfoScreen );
+
 
 
     dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
@@ -4512,6 +4560,11 @@ nbn(100);
 {
     //     [super viewDidAppear];
     NSLog(@"in INFO   viewDidAppear!");
+
+  NSLog(@"gbl_justLookedAtInfoScreen  bef in ViewDidAppear in  INFO  =[%ld]",(long)gbl_justLookedAtInfoScreen );
+    gbl_justLookedAtInfoScreen = 1;
+  NSLog(@"gbl_justLookedAtInfoScreen  aft in ViewDidAppear in  INFO  =[%ld]",(long)gbl_justLookedAtInfoScreen );
+
 }
 
 @end

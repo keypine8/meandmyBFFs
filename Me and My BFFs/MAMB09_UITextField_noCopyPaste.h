@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+// @interface MAMB09_UITextField_noCopyPaste : UITextField < UITextInputDelegate >
 @interface MAMB09_UITextField_noCopyPaste : UITextField
 
 @end

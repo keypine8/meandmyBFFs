@@ -37,6 +37,15 @@
 // end of  -----   turning off logging for production
 
 
+// ---------------------------------------------------------------------------
+//            Dunbar's Number  ~  150
+// ---------------------------------------------------------------------------
+// “Dunbar’s number is a theoretical cognitive limit to the number of people
+// with whom one can maintain stable social relationships.
+// These are relationships in which an individual knows who each person is,
+// and how each person relates to every other person. 
+// ---------------------------------------------------------------------------
+
 
 @implementation MAMB09AppDelegate
 
@@ -254,8 +263,10 @@
 // eg.gbl_color_cPerGreen2 = [UIColor colorWithRed:192.0/255.0 green:224.0/255.0 blue:255.0/255.0 alpha:1.0]; //  c0e0ff
 //    gbl_colorSelShareEntityBG = [UIColor colorWithRed:240.0/255.0 green:248.0/255.0 blue:255.0/255.0 alpha:1.0]; // f0f8ff (light blue)
 //    gbl_colorSelShareEntityBG = [UIColor colorWithRed:182.0/255.0 green:212.0/255.0 blue:242.0/255.0 alpha:1.0]; //  -5%
-    gbl_colorSelShareEntityBG = [UIColor colorWithRed:212.0/255.0 green:236.0/255.0 blue:255.0/255.0 alpha:1.0]; //  GOLD #1
-    gbl_colorSelShareEntityBG = [UIColor colorWithRed:192.0/255.0 green:224.0/255.0 blue:255.0/255.0 alpha:1.0]; //  c0e0ff
+//    gbl_colorSelShareEntityBG = [UIColor colorWithRed:192.0/255.0 green:224.0/255.0 blue:255.0/255.0 alpha:1.0]; //  c0e0ff
+//    gbl_colorSelShareEntityBG = [UIColor colorWithRed:202.0/255.0 green:230.0/255.0 blue:255.0/255.0 alpha:1.0]; //
+//    gbl_colorSelShareEntityBG = [UIColor colorWithRed:212.0/255.0 green:236.0/255.0 blue:255.0/255.0 alpha:1.0]; //  GOLD #1
+    gbl_colorSelShareEntityBG = [UIColor colorWithRed:207.0/255.0 green:233.0/255.0 blue:255.0/255.0 alpha:1.0]; //  GOLD #2
 
 
     // ONLY used in info
@@ -286,6 +297,18 @@
     gbl_myname  = [
         [MAMB09_UITextField_noCopyPaste alloc]  initWithFrame: CGRectMake(16, 8, 200, 40) // arg 1=x 2=y 3=width 4=height
     ];
+
+//  NSLog(@"                          800 800!");
+
+//    gbl_mybirthinformation.selectable = NO;    no such prop
+
+//UIView *overlay = [[UIView alloc] init];  
+//overlay.userInteractionEnabled = YES;
+//[overlay setFrame:CGRectMake(0, 0, gbl_myname.frame.size.width, gbl_myname.frame.size.height)];  
+//[gbl_myname addSubview:overlay];  
+//
+
+
 
 //    gbl_whatMemberships  = [[UILabel alloc]initWithFrame: CGRectMake(32, 0, 240, 77)];
 //    gbl_whatMemberships  = [[UITextView alloc]initWithFrame: CGRectMake(32, 0, 240, 75)];
@@ -319,6 +342,9 @@
     gbl_mybirthinformation  = [
         [MAMB09_UITextField_noCopyPaste alloc]  initWithFrame: CGRectMake(16, 8, 265, 40) // arg 1=x 2=y 3=width 4=height
     ];
+
+//    gbl_mybirthinformation.userInteractionEnabled = NO; 
+//    gbl_mybirthinformation.gestureRecognizers = nil;
 
 
 
@@ -694,10 +720,11 @@
 //    gbl_bgColor_editFocus_NO   = gbl_colorEditingBGforInputField;    // whitish
 //    gbl_bgColor_editFocus_YES  = [UIColor grayColor];
 //    gbl_bgColor_editFocus_NO   = gbl_colorEditingBGforInputField;    // whitish
-    gbl_bgColor_editFocus_NO   = gbl_color_cRe2;
-    gbl_bgColor_editFocus_YES  = gbl_color_cGr2;
+
+//    gbl_bgColor_editFocus_NO   = gbl_color_cRe2;
+//    gbl_bgColor_editFocus_YES  = gbl_color_cGr2;
+
 // [UIColor cyanColor];
-;   // something else
 
 //    gbl_color_cGr2  = [UIColor colorWithRed:042.0/255.0 green:255.0/255.0 blue:021.0/255.0 alpha:1.0]; // 66ff33  gold #1
 
@@ -1002,6 +1029,7 @@
 //      @"yogi|7|18|1959|4|0|0|Toronto|Ontario|Canada||",
 //    ];
 //
+
 
     gbl_arrayExaGrp =   // field 1=name-of-group  field 2=locked-or-not
     @[
@@ -1911,6 +1939,9 @@
     gbl_pathToMember  = [gbl_appDocDirStr stringByAppendingPathComponent: @"mambd4"];  // @"mambMember.txt"];
     gbl_pathToGrpRem  = [gbl_appDocDirStr stringByAppendingPathComponent: @"mambd5"];  // group  remember data
     gbl_pathToPerRem  = [gbl_appDocDirStr stringByAppendingPathComponent: @"mambd6"];  // person remember data
+    gbl_pathToExport  = [gbl_appDocDirStr stringByAppendingPathComponent: @"mambd7"];  
+//    gbl_pathToSharePeople  = [gbl_appDocDirStr stringByAppendingPathComponent: @"mambd7"];  
+//    gbl_pathToShareGroups  = [gbl_appDocDirStr stringByAppendingPathComponent: @"mambd8"];  
 
 
     gbl_URLToLastEnt = [NSURL fileURLWithPath: gbl_pathToLastEnt isDirectory:NO];
@@ -1919,6 +1950,9 @@
     gbl_URLToMember  = [NSURL fileURLWithPath: gbl_pathToMember  isDirectory:NO];
     gbl_URLToGrpRem  = [NSURL fileURLWithPath: gbl_pathToGrpRem  isDirectory:NO];
     gbl_URLToPerRem  = [NSURL fileURLWithPath: gbl_pathToPerRem  isDirectory:NO];
+    gbl_URLToExport  = [NSURL fileURLWithPath: gbl_pathToExport  isDirectory:NO];  // mambd7  file name
+//    gbl_URLToSharePeople  = [NSURL fileURLWithPath: gbl_pathToSharePeople  isDirectory:NO];
+//    gbl_URLToShareGroups  = [NSURL fileURLWithPath: gbl_pathToShareGroups  isDirectory:NO];
 
     
     //  end of   SET GBL DATA  HERE
@@ -2312,7 +2346,8 @@ NSLog(@"end of ggggg  grabLastSelectionValueForEntity   myReturnStr=NIL");
     NSData  *myArchive;
     NSData  *myWriteable;
 
-    BOOL haveGrp, havePer, haveMem, haveGrpRem, havePerRem;
+//    BOOL haveGrp, havePer, haveMem, haveGrpRem, havePerRem, haveSharePeople, haveShareGroups;
+    BOOL haveGrp, havePer, haveMem, haveGrpRem, havePerRem, haveExport;
 
     //tn();tr("BEG of mambWriteNSArrayWithDescription         ");
     haveGrp    = [gbl_sharedFM fileExistsAtPath: gbl_pathToGroup];
@@ -2324,22 +2359,25 @@ NSLog(@"end of ggggg  grabLastSelectionValueForEntity   myReturnStr=NIL");
  tn();
 
     // determine what array to write  and  where to write it
-    //                                                           -------------------------------------------------------------------------
-    //                                                                              file to write to             array to write           
-    //                                                           -------------------------------------------------------------------------
+    //                                                           ---------------------------------------------------------------------------------
+    //                                                                              file to write to             array to write        write when
+    //                                                           ---------------------------------------------------------------------------------
     //
-    if ([argEntityDescription isEqualToString:@"examplegroup"])  { myURLtoWriteTo = gbl_URLToGroup;    myArray = gbl_arrayExaGrp;    } // write on init app
-    if ([argEntityDescription isEqualToString:@"exampleperson"]) { myURLtoWriteTo = gbl_URLToPerson;   myArray = gbl_arrayExaPer;    } // write on init app
-    if ([argEntityDescription isEqualToString:@"examplemember"]) { myURLtoWriteTo = gbl_URLToMember;   myArray = gbl_arrayExaMem;    } // write on init app
-    if ([argEntityDescription isEqualToString:@"examplegrprem"]) { myURLtoWriteTo = gbl_URLToGrpRem;   myArray = gbl_arrayExaGrpRem; } // write on init app
-    if ([argEntityDescription isEqualToString:@"exampleperrem"]) { myURLtoWriteTo = gbl_URLToPerRem;   myArray = gbl_arrayExaPerRem; } // write on init app
+    if ([argEntityDescription isEqualToString:@"examplegroup"])  { myURLtoWriteTo = gbl_URLToGroup;    myArray = gbl_arrayExaGrp;    } // init app
+    if ([argEntityDescription isEqualToString:@"exampleperson"]) { myURLtoWriteTo = gbl_URLToPerson;   myArray = gbl_arrayExaPer;    } // init app
+    if ([argEntityDescription isEqualToString:@"examplemember"]) { myURLtoWriteTo = gbl_URLToMember;   myArray = gbl_arrayExaMem;    } // init app
+    if ([argEntityDescription isEqualToString:@"examplegrprem"]) { myURLtoWriteTo = gbl_URLToGrpRem;   myArray = gbl_arrayExaGrpRem; } // init app
+    if ([argEntityDescription isEqualToString:@"exampleperrem"]) { myURLtoWriteTo = gbl_URLToPerRem;   myArray = gbl_arrayExaPerRem; } // init app
 
-    if ([argEntityDescription isEqualToString:@"group"])         { myURLtoWriteTo = gbl_URLToGroup;    myArray = gbl_arrayGrp;    }    // write ongoing
-    if ([argEntityDescription isEqualToString:@"person"])        { myURLtoWriteTo = gbl_URLToPerson;   myArray = gbl_arrayPer;    }    // write ongoing
-    if ([argEntityDescription isEqualToString:@"member"])        { myURLtoWriteTo = gbl_URLToMember;   myArray = gbl_arrayMem;    }    // write ongoing
-    if ([argEntityDescription isEqualToString:@"grprem"])        { myURLtoWriteTo = gbl_URLToGrpRem;   myArray = gbl_arrayGrpRem; }    // write ongoing
-    if ([argEntityDescription isEqualToString:@"perrem"])        { myURLtoWriteTo = gbl_URLToPerRem;   myArray = gbl_arrayPerRem; }    // write ongoing
-    //                                                           -------------------------------------------------------------------------
+    if ([argEntityDescription isEqualToString:@"group"])         { myURLtoWriteTo = gbl_URLToGroup;    myArray = gbl_arrayGrp;    }    // ongoing
+    if ([argEntityDescription isEqualToString:@"person"])        { myURLtoWriteTo = gbl_URLToPerson;   myArray = gbl_arrayPer;    }    // ongoing
+    if ([argEntityDescription isEqualToString:@"member"])        { myURLtoWriteTo = gbl_URLToMember;   myArray = gbl_arrayMem;    }    // ongoing
+    if ([argEntityDescription isEqualToString:@"grprem"])        { myURLtoWriteTo = gbl_URLToGrpRem;   myArray = gbl_arrayGrpRem; }    // ongoing
+    if ([argEntityDescription isEqualToString:@"perrem"])        { myURLtoWriteTo = gbl_URLToPerRem;   myArray = gbl_arrayPerRem; }    // ongoing
+    if ([argEntityDescription isEqualToString:@"sharepeople"])   { myURLtoWriteTo = gbl_URLToExport;   myArray = gbl_arraySharePeople; } 
+    if ([argEntityDescription isEqualToString:@"sharegroups"])   { myURLtoWriteTo = gbl_URLToExport;   myArray = gbl_arrayShareGroups; } 
+    //                                                           ---------------------------------------------------------------------------------
+//    if ([argEntityDescription isEqualToString:@"export"])        { myURLtoWriteTo = gbl_URLToExport;   myArray = gbl_arrayExport; } 
 
 
 //NSLog(@"in mambWriteNSArrayWithDescription   BEFORE WRITE  my EXAMPLE Array=%@",myArray);
@@ -2372,8 +2410,12 @@ NSLog(@"end of ggggg  grabLastSelectionValueForEntity   myReturnStr=NIL");
     haveMem    = [gbl_sharedFM fileExistsAtPath: gbl_pathToMember];
     haveGrpRem = [gbl_sharedFM fileExistsAtPath: gbl_pathToGrpRem];
     havePerRem = [gbl_sharedFM fileExistsAtPath: gbl_pathToPerRem];
+    haveExport = [gbl_sharedFM fileExistsAtPath: gbl_pathToExport];
+//    haveSharePeople = [gbl_sharedFM fileExistsAtPath: gbl_pathToSharePeople];
+//    haveShareGroups = [gbl_sharedFM fileExistsAtPath: gbl_pathToShareGroups];
 
-ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
+//ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem); kin(haveSharePeople); kin(haveShareGroups);
+ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem); kin(haveExport);
 tr("end of mambWriteNSArrayWithDescription         ");
 tn();
 
@@ -2392,12 +2434,18 @@ tn();
     NSData  *myWritten;
     NSData  *myNSData;
     NSData  *myUnarchived;
-
+    //                                              -------------------------------------------------------------------------
+    //                                                                  file to read              array to put it in       
+    //                                              -------------------------------------------------------------------------
     if ([entDesc isEqualToString:@"group"])         { myURLtoReadFrom = gbl_URLToGroup;    my_gbl_array = gbl_arrayGrp;    }
     if ([entDesc isEqualToString:@"person"])        { myURLtoReadFrom = gbl_URLToPerson;   my_gbl_array = gbl_arrayPer;    }
     if ([entDesc isEqualToString:@"member"])        { myURLtoReadFrom = gbl_URLToMember;   my_gbl_array = gbl_arrayMem;    }
     if ([entDesc isEqualToString:@"grprem"])        { myURLtoReadFrom = gbl_URLToGrpRem;   my_gbl_array = gbl_arrayGrpRem; }
     if ([entDesc isEqualToString:@"perrem"])        { myURLtoReadFrom = gbl_URLToPerRem;   my_gbl_array = gbl_arrayPerRem; }
+    if ([entDesc isEqualToString:@"export"])        { myURLtoReadFrom = gbl_URLToExport;   my_gbl_array = gbl_arrayExport; } 
+    //                                              -------------------------------------------------------------------------
+//    if ([entDesc isEqualToString:@"sharepeople"])   { myURLtoReadFrom = gbl_URLToSharePeople;  my_gbl_array = gbl_arraySharePeople; } 
+//    if ([entDesc isEqualToString:@"sharegroups"])   { myURLtoReadFrom = gbl_URLToShareGroups;  my_gbl_array = gbl_arrayShareGroups; } 
 
 
     myWritten = [[NSData alloc] initWithContentsOfURL: myURLtoReadFrom];
@@ -2422,6 +2470,9 @@ tn();
     if ([entDesc isEqualToString:@"member"]) { gbl_arrayMem    = [[NSMutableArray alloc]initWithArray: (NSMutableArray*) myUnarchived]; }
     if ([entDesc isEqualToString:@"grprem"]) { gbl_arrayGrpRem = [[NSMutableArray alloc]initWithArray: (NSMutableArray*) myUnarchived]; }
     if ([entDesc isEqualToString:@"perrem"]) { gbl_arrayPerRem = [[NSMutableArray alloc]initWithArray: (NSMutableArray*) myUnarchived]; }
+    if ([entDesc isEqualToString:@"export"]) { gbl_arrayExport = [[NSMutableArray alloc]initWithArray: (NSMutableArray*) myUnarchived]; }
+//    if ([entDesc isEqualToString:@"sharepeople"])   { gbl_arraySharePeople = [[NSMutableArray alloc]initWithArray: (NSMutableArray*) myUnarchived]; }
+//    if ([entDesc isEqualToString:@"sharegroups"])   { gbl_arrayShareGroups = [[NSMutableArray alloc]initWithArray: (NSMutableArray*) myUnarchived]; }
 
 
 } // end of mambReadArrayFileWithDescription

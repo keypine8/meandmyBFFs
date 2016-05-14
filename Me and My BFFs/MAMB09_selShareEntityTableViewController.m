@@ -127,6 +127,7 @@ tn();
     //
     if ([gbl_fromHomeCurrentEntity isEqualToString: @"person" ])
     {
+nbn(410);
         [gbl_peopleToPickFrom removeAllObjects];
          gbl_peopleToPickFrom = [[NSMutableArray alloc] init];
 
@@ -137,11 +138,13 @@ tn();
               
               psvArray = [perRec componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"|"]];
               perName  = psvArray[0];
+  NSLog(@"perName  =[%@]",perName  );
 
               //   // EXCLUDE       people who are example data ("~")
               if ([perName hasPrefix: @"~" ])   continue;         // no example people to share
              
               [gbl_peopleToPickFrom  addObject: perName ];   //  Person name for pick
+nbn(419);
          }
   NSLog(@"gbl_peopleToPickFrom  =[%@]",gbl_peopleToPickFrom  );
 
@@ -167,9 +170,9 @@ tn();
     }
 
 
-//  NSLog(@" // set up sectionindex  or not");
-//    [self sectionIndexTitlesForTableView: self.tableView ];  // set up sectionindex  or not
+    [self sectionIndexTitlesForTableView: self.tableView ];  // set up sectionindex  or not
 
+    [self.tableView reloadSectionIndexTitles ];  // MAGIC do NOT know why this is necessary to show the section index here, but it works
 
 } // viewDidLoad
 
@@ -214,9 +217,9 @@ tn();
 
     if ([gbl_fromHomeCurrentEntity isEqualToString: @"person" ])
     {
-        [gbl_selectedPeople_toShare addObject: tmpName ];          //  Person name for pick
+        [gbl_selectedPeople_toShare addObject: tmpName ];      
     } else {
-        [gbl_selectedGroups_toShare addObject: tmpName ];          //  Person name for pick
+        [gbl_selectedGroups_toShare addObject: tmpName ];     
     }
 } // didSelectRowAtIndexPath
 
@@ -230,126 +233,11 @@ tn();
 
     if ([gbl_fromHomeCurrentEntity isEqualToString: @"person" ])
     {
-        [gbl_selectedPeople_toShare removeObject: tmpName ];          //  Person name for pick
+        [gbl_selectedPeople_toShare removeObject: tmpName ]; 
     } else {
-        [gbl_selectedGroups_toShare removeObject: tmpName ];          //  Person name for pick
+        [gbl_selectedGroups_toShare removeObject: tmpName ];
     }
 } // didDeselectRowAtIndexPath
-
-
-//<.>
-
-- (IBAction)pressedSaveDone:(id)sender
-{
-  NSLog(@"in pressedSAVEDONE!!");
-
-
-    if ([gbl_lastSelectedGroup hasPrefix: @"~" ]) 
-    {
-        UIAlertController* myAlert = [
-            UIAlertController alertControllerWithTitle: @"An Example Group Cannot be Changed"
-                                               message: @"You cannot add new members to an example group."
-                                        preferredStyle: UIAlertControllerStyleAlert 
-        ];
-        UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
-                                                            style: UIAlertActionStyleDefault
-                                                          handler: ^(UIAlertAction * action) {
-            NSLog(@"Ok button pressed");
-        } ];
-        [myAlert addAction:  okButton];
-
-        [self presentViewController: myAlert  animated: YES  completion: nil   ]; // cannot save because of missing information
-
-        return;
-    }
-
-
-    // PROBLEM:  CANNOT TRUST  [self.tableView indexPathsForSelectedRows] when scrolling off screen
-    // therefore,  use gbl_selectedMembers_toAdd  
-    //
-    //nbn(1);        
-    //  NSLog(@"[self.tableView indexPathsForSelectedRows] =[%@]",[self.tableView indexPathsForSelectedRows] );
-    //  NSArray *selectedArr = [self.tableView indexPathsForSelectedRows];
-    //  NSLog(@"selectedArr =[%@]",selectedArr );
-    //    for (id idxpath in [self.tableView indexPathsForSelectedRows] )
-    //    {
-    //        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath: idxpath];
-    //  NSLog(@"a selected member = cell.textLabel.text =[%@]",cell.textLabel.text );
-    ////        if (cell.textLabel.text != nil)
-    //        [gbl_selectedMembers_toAdd  addObject: cell.textLabel.text ];
-    //  NSLog(@"gbl_selectedMembers_toAdd=[%@]",gbl_selectedMembers_toAdd);
-    //    }
-    //
-
-
-nbn(2);        
-  NSLog(@"gbl_selectedMembers_toAdd=[%@]",gbl_selectedMembers_toAdd);
-    // sort array  gbl_selectedMembers_toAdd 
-    if (gbl_selectedMembers_toAdd)  { [gbl_selectedMembers_toAdd  sortUsingSelector: @selector(caseInsensitiveCompare:)]; }
-nbn(3);        
-  NSLog(@"gbl_selectedMembers_toAdd=[%@]",gbl_selectedMembers_toAdd);
-
-
-    // add the members here
-    //
-    if (gbl_selectedMembers_toAdd.count == 0) return;
-
-
-
-    // before write of array data to file, disallow/ignore user interaction events
-    //
-//    if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] ==  NO) {  // suspend handling of touch-related events
-//        [[UIApplication sharedApplication] beginIgnoringInteractionEvents];     // typically call this before an animation or transitiion.
-//NSLog(@"ARE  IGnoring events");
-//    }
-    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
-
-    [myappDelegate mamb_beginIgnoringInteractionEvents ];
-   
-tn();
-nbn(4);
-
-    NSString *member_record;
-    for (NSString *add_me in gbl_selectedMembers_toAdd)   // add each new member
-    {
-        member_record = [NSString stringWithFormat:  @"%@|%@|", gbl_lastSelectedGroup, add_me ];
-
-//  NSLog(@"ADDED MEMBERSHIP     = [%@]", member_record);
-//  NSLog(@"gbl_lastSelectedGroup=[%@]",gbl_lastSelectedGroup);
-//  NSLog(@"gbl_arrayMem before add new mbr=[%@]",gbl_arrayMem );
-
-        [gbl_arrayMem addObject: member_record ];                        //  Person name for pick
-
-//  NSLog(@"gbl_arrayMem after add new mbr=[%@]",gbl_arrayMem );
-
-    }
-nbn(5);
-
-    [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription:  (NSString *) @"member"]; // sort array by name
-    [myappDelegate mambWriteNSArrayWithDescription:               (NSString *) @"member"]; // write new array data to file
-//  [myappDelegate mambReadArrayFileWithDescription:              (NSString *) @"member"]; // read new data from file to array
-
-nbn(6);
-
-//    // after write of array data to file, allow user interaction events again
-//    //
-//    if ([[UIApplication sharedApplication] isIgnoringInteractionEvents] == YES) {  // re-enable handling of touch-related events
-//        [[UIApplication sharedApplication] endIgnoringInteractionEvents];       // typically call this after an animation or transitiion.
-//NSLog(@"STOP IGnoring events");
-//    }
-
-
-    gbl_justWroteMemberFile = 1;
-
-    // go back to home and ask for what kind of save there
-    //
-    dispatch_async(dispatch_get_main_queue(), ^{  
-        [self.navigationController popViewControllerAnimated: YES]; // actually do the "Back" action
-    });
-
-} // pressedSaveDone  for Add selected members
-
-//<.>
 
 
 
@@ -365,6 +253,419 @@ nbn(6);
         [self.navigationController popViewControllerAnimated: YES]; // actually do the "Back" action
     });
 } // pressedCancel
+
+
+
+- (IBAction)pressedSaveDone:(id)sender
+{
+tn();
+  NSLog(@"in pressedSAVEDONE!  in selShareEntity ");
+
+
+    MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global methods in appDelegate.m
+
+    // loop thru the seleced people or groups
+    // and build a text file of the data
+    //
+
+    //    NSArray *fields = [gbl_fromHomeCurrentSelectionPSV componentsSeparatedByString: @"|"];
+    //    fldName      =  fields[ 0];
+    //    fldMth       =  fields[ 1];
+    //    fldDay       =  fields[ 2];
+    //    fldYear      =  fields[ 3];
+    //    fldHour      =  fields[ 4];
+    //    fldMin       =  fields[ 5];
+    //    fldAmPm      =  fields[ 6];
+    //    fldCity      =  fields[ 7];
+    //    fldProv      =  fields[ 8];
+    //    fldCountry   =  fields[ 9];
+    //    fldKindOfSave  = fields[10];  // = "hs" or ""
+    //
+
+
+    if ([gbl_fromHomeCurrentEntity isEqualToString: @"person" ])
+    {
+       [gbl_arraySharePeople removeAllObjects];                  // init before setting
+        gbl_arraySharePeople = [[NSMutableArray alloc] init];    // init before setting
+
+        NSString *myPerson_PSV;
+        NSString *myPerson_PSV_share;
+        for (NSString *selectedPerson  in  gbl_selectedPeople_toShare) 
+        {
+            // get PSV for selectedPerson from gbl_arrayPer
+            myPerson_PSV = [myappDelegate getPSVforPersonName: (NSString *) selectedPerson ]; 
+
+            // make share record for person  import/export
+            // prepend code "p" for person record
+            myPerson_PSV_share = [NSString stringWithFormat:  @"p|%@|", myPerson_PSV ];
+    
+            // add share record for person  import/export  to gbl_arraySharePeople
+            [gbl_arraySharePeople  addObject: myPerson_PSV_share ];
+        }
+  NSLog(@"gbl_arraySharePeople  =[%@]",gbl_arraySharePeople );
+
+
+        gbl_mamb_fileNameOnEmail = @"people.mamb";
+
+        [myappDelegate mambWriteNSArrayWithDescription: (NSString *) @"sharepeople"]; // write gbl_arraySharePeople to mambd7 in gbl_appDocDirStr
+
+
+    } // person
+
+    // worked
+    //  // for test,   read back with mambReadArrayFileWithDescription 
+    //        [gbl_arraySharePeople  removeAllObjects];               // empty array
+    //         gbl_arraySharePeople  = [[NSMutableArray alloc] init];   // init  array
+    //  NSLog(@"gbl_arraySharePeople  =[%@]",gbl_arraySharePeople );
+    //        [myappDelegate mambReadArrayFileWithDescription:  (NSString *) @"sharepeople"]; // read new data from file to array
+    //  NSLog(@"gbl_arraySharePeople  =[%@]",gbl_arraySharePeople );
+    //
+
+
+    if ([gbl_fromHomeCurrentEntity isEqualToString: @"group" ])
+    {
+       [gbl_arrayShareGroups removeAllObjects];                  // init before setting
+        gbl_arrayShareGroups = [[NSMutableArray alloc] init];    // init before setting
+
+        NSString *myGroup_PSV;
+        NSString *myGroup_PSV_share;
+        for (NSString *selectedGroup  in  gbl_selectedGroups_toShare) 
+        {
+            // --------------------------------------------------------
+            // add the group share record for this selected group
+            // --------------------------------------------------------
+
+            // get PSV for selectedGroup from gbl_arrayPer
+            myGroup_PSV = [myappDelegate getPSVforGroupName: (NSString *) selectedGroup ]; 
+
+            // make share record for group  import/export
+            // prepend code "g" for group record
+            myGroup_PSV_share = [NSString stringWithFormat:  @"g|%@|", myGroup_PSV ];
+    
+            // add share record for group  import/export  to gbl_arrayShareGroups
+            [gbl_arrayShareGroups  addObject: myGroup_PSV_share ];
+
+
+            // --------------------------------------------------------
+            // add all member share records for this selected group
+            // add all person share records for this selected group
+            // --------------------------------------------------------
+            for (NSString *myMemberRec in gbl_arrayMem)
+            {
+                NSArray *psvArray;
+                NSString *currGroup;
+                NSString *currMember;
+                NSString *myMember_PSV_share;
+                NSString *myPerson_PSV;
+                NSString *myPerson_PSV_share;
+                
+                psvArray = [myMemberRec componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"|"]];
+                currGroup  = psvArray[0];
+                currMember = psvArray[1];
+
+                if ([currGroup isEqualToString: selectedGroup ] )
+                {
+                    // make share record for group member
+                    // prepend code "m" for group member record
+                    myMember_PSV_share = [NSString stringWithFormat:  @"m|%@|", myMemberRec ];
+            
+                    // add share record for group  import/export  to gbl_arrayShareGroups
+                    [gbl_arrayShareGroups  addObject: myMember_PSV_share ];
+
+
+                    // get PSV for person who is member of selectedGroup
+                    myPerson_PSV = [myappDelegate getPSVforPersonName: (NSString *) currMember ]; 
+
+                    // make share record for person  import/export
+                    // prepend code "p" for person record
+                    myPerson_PSV_share = [NSString stringWithFormat:  @"p|%@|", myPerson_PSV ];
+            
+                    // add share record for person  import/export  to gbl_arraySharePeople
+                    [gbl_arrayShareGroups  addObject: myPerson_PSV_share ];
+
+                } // for member of this selected group
+
+            } // all members of all groups
+
+        } // for each selected group to share
+
+  NSLog(@"gbl_arrayShareGroups  =[%@]",gbl_arrayShareGroups );
+
+
+        gbl_mamb_fileNameOnEmail = @"groups.mamb";
+
+        [myappDelegate mambWriteNSArrayWithDescription: (NSString *) @"sharegroups"]; // write gbl_arrayShareGroups to mambd7 in gbl_appDocDirStr
+
+    } // group
+
+
+    [self doMailComposeSend ];
+
+} // pressedSaveDone  for Add selected members
+
+
+- (void) doMailComposeSend 
+{
+    MFMailComposeViewController *myMailComposeViewController;
+
+tn();    NSLog(@"in doMailComposeSend !  in selShare .m");
+
+    // NSString *gbl_mamb_fileNameOnEmail ;  // "people.mamb"  or  "groups.mamb"  or  backup_yyyymmddhhmmss.mamb
+       
+    // here, export file is in mambd7 in gbl_appDocDirStr
+
+    // remove all "*.mamb" files from TMP directory before creating new one
+    //
+    NSArray *tmpDirFiles;
+    tmpDirFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath: NSTemporaryDirectory()  error: NULL];
+  NSLog(@"tmpDirFiles.count=%lu",(unsigned long)tmpDirFiles.count);
+
+    for (NSString *fil in tmpDirFiles) {
+  NSLog(@"fil=%@",fil);
+        if ([fil hasSuffix: @"mamb"]) {
+            [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), fil] error:NULL];
+  NSLog(@"removed a MAMB file from TMP");
+        }
+    }
+
+    // copy  export file mambd7 in gbl_appDocDirStr  to gbl_mamb_fileNameOnEmail (like "groups.mamb") in NSTemporaryDirectory()
+    //
+    NSURL    *URL_toExport_forEmailing;
+    NSString *pathToExport_forEmailing;
+    URL_toExport_forEmailing = [ NSURL fileURLWithPath: 
+        [NSTemporaryDirectory() stringByAppendingPathComponent: gbl_mamb_fileNameOnEmail ] //  "groups.mamb"  or  "people.mamb"
+    ];
+  NSLog(@"URL_toExport_forEmailing =[%@]",URL_toExport_forEmailing );
+
+
+    NSFileManager* sharedFM3 = [NSFileManager defaultManager];
+    NSError *err05;
+    [sharedFM3 copyItemAtURL: gbl_URLToExport             // mambd7 in gbl_appDocDirStr  
+                       toURL: URL_toExport_forEmailing  // "people.mamb" or "groups.mamb" in tmp dir
+                       error: &err05];
+    if (err05) { NSLog(@"err on cp mambd7 to email name: %@", err05); }
+
+    pathToExport_forEmailing = [
+        NSTemporaryDirectory() stringByAppendingPathComponent: gbl_mamb_fileNameOnEmail  //  "groups.mamb"  or  "people.mamb"
+    ]; 
+  NSLog(@"pathToExport_forEmailing=[%@]",pathToExport_forEmailing);
+
+
+    // Determine the file name and extension
+    // 
+    NSArray *fileparts = [
+        pathToExport_forEmailing componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString: @"./" ]
+    ];
+    
+    NSString *baseFilename = [fileparts objectAtIndex: (fileparts.count -2)] ;  // count -1 is last in array
+    NSString *extension    = [fileparts lastObject];
+    NSString *filenameForAttachment = [NSString stringWithFormat: @"%@.%@", baseFilename, extension];
+    
+
+    // Get the resource path and read the file using NSData
+    // NSString *filePath = [[NSBundle mainBundle] pathForResource:filename ofType:extension];
+    //
+    NSData *MAMBfileData = [NSData dataWithContentsOfFile: pathToExport_forEmailing ];   // ATTACHMENT
+  NSLog(@"MAMBfileData.length=%lu",(unsigned long)MAMBfileData.length);
+
+
+    NSString *emailTitle = [NSString stringWithFormat: @"%@  from Me and my BFFs", filenameForAttachment];
+
+    NSString *myEmailMessage;
+    NSString *first5;
+    if ([gbl_mamb_fileNameOnEmail length] >=6) first5 = [gbl_mamb_fileNameOnEmail substringToIndex: 6];
+    else                                       first5 = @"people or groups";
+
+    myEmailMessage = [ NSString stringWithFormat:
+@"\n\"Someone has sent you one or more %@ who can be imported into the App Me and my BFFs.\n\nOn the device where you have \"Me and my BFFs\" tap and hold on the \".mamb\" attachment icon below.  The app will come up and import the %@ for you.",
+        first5,
+        first5
+    ];
+
+    
+    //   NSArray *toRecipents = [NSArray arrayWithObject:@"ijfo@jldks.com"];
+    NSArray *toRecipients = [NSArray arrayWithObjects:@"", nil];  //  user types it in
+
+
+    // Determine the MIME type
+    NSString *mimeType;
+    mimeType = @"mamb";
+    if ([extension isEqualToString:@"jpg"]) {
+        mimeType = @"image/jpeg";
+    } else if ([extension isEqualToString:@"png"]) {
+        mimeType = @"image/png";
+    } else if ([extension isEqualToString:@"doc"]) {
+        mimeType = @"application/msword";
+    } else if ([extension isEqualToString:@"ppt"]) {
+        mimeType = @"application/vnd.ms-powerpoint";
+    } else if ([extension isEqualToString:@"html"]) {
+        mimeType = @"text/html";
+    } else if ([extension isEqualToString:@"pdf"]) {
+        mimeType = @"application/pdf";
+    }
+    
+    if ([MFMailComposeViewController canSendMail])
+    {
+        myMailComposeViewController = [[MFMailComposeViewController alloc] init];
+
+        NSLog(@"This device CAN send email");
+
+         myMailComposeViewController.mailComposeDelegate = self;
+        [myMailComposeViewController              setSubject: emailTitle
+        ];
+        [myMailComposeViewController          setMessageBody: myEmailMessage
+                                                      isHTML: NO 
+        ];
+        [myMailComposeViewController         setToRecipients: toRecipients 
+        ];
+        [myMailComposeViewController setModalTransitionStyle: UIModalTransitionStyleCrossDissolve 
+        ];
+        [myMailComposeViewController       addAttachmentData: MAMBfileData                // Add attachment    ATTACHMENT
+                                                    mimeType: mimeType
+                                                    fileName: filenameForAttachment
+        ];
+        
+        // Present mail view controller on screen
+        //
+        //[self presentModalViewController:myMailComposeViewController animated:YES completion:NULL];
+
+
+        dispatch_async(dispatch_get_main_queue(), ^(void){
+                [self presentViewController: myMailComposeViewController animated:YES completion:NULL];
+            }
+        );
+    }
+    else
+    {
+//        NSLog(@"This device cannot send email");
+//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Cannot send email"
+//                                                        message: @"Maybe email on this device is not set up."
+//                                                       delegate: nil
+//                                              cancelButtonTitle: @"OK"
+//                                              otherButtonTitles: nil];
+//        [alert show];
+//
+        UIAlertController* alert = [UIAlertController alertControllerWithTitle: @"Cannot send email"
+                                                                       message: @"Maybe email on this device is not set up."
+                                                                preferredStyle: UIAlertControllerStyleAlert  ];
+         
+        UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                            style: UIAlertActionStyleDefault
+                                                          handler: ^(UIAlertAction * action) {
+            NSLog(@"Ok button pressed");
+        } ];
+         
+        [alert addAction:  okButton];
+
+        [self presentViewController: alert  animated: YES  completion: nil   ];
+    }
+} // end of doMailComposeSend 
+
+
+- (void) mailComposeController:(MFMailComposeViewController *)controller
+           didFinishWithResult:(MFMailComposeResult)result
+                         error:(NSError *)error
+{
+    if (error) {
+        UIAlertController* alert = [UIAlertController alertControllerWithTitle: @"An error happened"
+                                                                       message: [error localizedDescription]
+                                                                preferredStyle: UIAlertControllerStyleAlert  ];
+         
+        UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                            style: UIAlertActionStyleDefault
+                                                          handler: ^(UIAlertAction * action) {
+NSLog(@"Ok button pressed");
+        } ];
+        [alert addAction:  okButton];
+        [self presentViewController: alert  animated: YES  completion: nil   ];
+
+        // [self dismissViewControllerAnimated:yes completion:<#^(void)completion#>];
+
+        dispatch_async(dispatch_get_main_queue(), ^(void){
+            [self dismissViewControllerAnimated: YES
+                                     completion:NULL];
+            }
+        );
+    }
+    switch (result)
+    {
+        case MFMailComposeResultCancelled: {
+NSLog(@"Mail cancelled");
+            UIAlertController* alert = [UIAlertController alertControllerWithTitle: @"Mail Send was Cancelled"
+                                                                           message: @""
+                                                                    preferredStyle: UIAlertControllerStyleAlert  ];
+            UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                                style: UIAlertActionStyleDefault
+                                                              handler: ^(UIAlertAction * action) {
+NSLog(@"Ok button pressed");
+            } ];
+            [alert addAction:  okButton];
+            [self presentViewController: alert  animated: YES  completion: nil   ];
+
+            break;
+        }
+        case MFMailComposeResultSaved: {
+            NSLog(@"Mail saved");
+            UIAlertController* alert = [UIAlertController alertControllerWithTitle: @"Mail was Saved"
+                                                                           message: @""
+                                                                    preferredStyle: UIAlertControllerStyleAlert  ];
+            UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                                style: UIAlertActionStyleDefault
+                                                              handler: ^(UIAlertAction * action) {
+NSLog(@"Ok button pressed");
+            } ];
+            [alert addAction:  okButton];
+            [self presentViewController: alert  animated: YES  completion: nil   ];
+
+            break;
+        }
+        case MFMailComposeResultSent: {
+            NSLog(@"Mail sent");
+            UIAlertController* alert = [UIAlertController alertControllerWithTitle: @"Mail was Sent"
+                                                                           message: @""
+                                                                    preferredStyle: UIAlertControllerStyleAlert  ];
+            UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                                style: UIAlertActionStyleDefault
+                                                              handler: ^(UIAlertAction * action) {
+NSLog(@"Ok button pressed");
+            } ];
+            [alert addAction:  okButton];
+            [self presentViewController: alert  animated: YES  completion: nil   ];
+
+
+            break;
+        }
+        case MFMailComposeResultFailed: {
+            NSLog(@"Mail send failure: %@", [error localizedDescription]);
+            UIAlertController* alert = [UIAlertController alertControllerWithTitle: @"Failure of Mail Send"
+                                                                           message: [error localizedDescription]
+                                                                    preferredStyle: UIAlertControllerStyleAlert  ];
+             
+            UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                                style: UIAlertActionStyleDefault
+                                                              handler: ^(UIAlertAction * action) {
+NSLog(@"Ok button pressed");
+            } ];
+            [alert addAction:  okButton];
+            [self presentViewController: alert  animated: YES  completion: nil   ];
+
+            break;
+        }
+        default: { break; }
+    }
+    
+    // Close the Mail Interface
+//    [self becomeFirstResponder];  // from http://stackoverflow.com/questions/14263690/need-help-dismissing-email-composer-screen-in-ios
+
+    //[self dismissModalViewControllerAnimated:YES
+
+    dispatch_async(dispatch_get_main_queue(), ^(void){
+            [self dismissViewControllerAnimated:YES
+                                     completion:NULL];
+        }
+    );
+
+} // mailComposeController didFinishWithResult:
 
 
 
@@ -478,15 +779,12 @@ nbn(6);
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
 {
 tn();
-  NSLog(@"in sectionIndexTitlesForTableView !");
+  NSLog(@"in sectionIndexTitlesForTableView !  in selShareEntity");
 
 //return nil;  // test no section index
 
     NSInteger myCountOfRows;
     myCountOfRows = 0;
-
-    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
-    [myappDelegate get_gbl_numMembersInCurrentGroup ];   // populates gbl_numMembersInCurrentGroup  using  gbl_lastSelectedGroup
 
     if ([gbl_fromHomeCurrentEntity isEqualToString: @"person" ])
     {
@@ -503,7 +801,7 @@ tn();
 //        return myEmptyArray ;  // no sectionindex
         return nil ;  // no sectionindex
     }
-
+nbn(400);
     NSArray *mySectionIndexTitles = [NSArray arrayWithObjects:  // 33 items  last index=32
 //         @"A", @"B", @"C", @"D",  @"E", @"F", @"G", @"H", @"I", @"J",  @"K", @"L", @"M",
 //         @"N", @"O", @"P",  @"Q", @"R", @"S", @"T", @"U", @"V",  @"W", @"X", @"Y", @"Z",   nil ];
@@ -525,16 +823,17 @@ tn();
 
     gbl_numSectionIndexTitles = mySectionIndexTitles.count;
 
+nbn(401);
     return mySectionIndexTitles;
 
 } // end of sectionIndexTitlesForTableView
 
 
 
-- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
+- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle: (NSString *) title
+                                                                    atIndex:  (NSInteger) index
 {
-
-  NSLog(@"sectionForSectionIndexTitle!  in HOME");
+  NSLog(@"sectionForSectionIndexTitle!  in selShareEntity");
   NSLog(@"title=[%@]",title);
   NSLog(@"atIndex=[%ld]",(long)index);
 
