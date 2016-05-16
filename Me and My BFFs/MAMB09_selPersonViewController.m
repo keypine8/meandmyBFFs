@@ -81,7 +81,8 @@
         }
 //        if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"])    // came from "My Best Match in Group ..."
         else {
-            myNavBar2lineTitle = [NSString stringWithFormat: @"%@\nSelect Group",  gbl_lastSelectedPerson ];
+//            myNavBar2lineTitle = [NSString stringWithFormat: @"%@\nSelect Group",  gbl_lastSelectedPerson ];
+            myNavBar2lineTitle = [NSString stringWithFormat: @"%@\nSelect Group for Best Match",  gbl_lastSelectedPerson ];
 //            myNavBar2lineTitle = [NSString stringWithFormat: @"%@\nFind Best Match in Group ...",  gbl_lastSelectedPerson ];
 //            myNavBar2lineTitle = [NSString stringWithFormat: @"%@\nSelect Best Match Group",  gbl_lastSelectedPerson ];
 

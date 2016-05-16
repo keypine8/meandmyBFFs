@@ -4013,7 +4013,7 @@ nbn(100);
 
             NSAttributedString *myAttributedStr = [[NSAttributedString alloc]
                 initWithString:
-@"\u2022 To send ANY REPORT as an email attachment, tap \"Share\"\n\u2022 To email a Group to a BFF who has this app:  Home > Edit > Groups > tap \"Share Groups\"\n\u2022 To import a Group someone has emailed you, open the email on the device where you have this app and tap and hold on the email attachment\n\u2022 To have fun, get \"Me and my BFFs\" together and use this app."
+@"\u2022 To have fun, get \"Me and my BFFs\" together and use this app.\n\u2022 To send ANY REPORT as an email attachment, tap the Share icon (box with arrow coming out) when viewing the report\n\u2022 To email a Group to a BFF who has this app:  Home > Edit > Groups > tap the Share icon > tap on the groups you want to share\n\u2022 To import a Group someone has emailed you, open the email on the device where you have this app and tap and hold on the email attachment"
                     attributes: @{ NSParagraphStyleAttributeName: paragraphStyle }
             ];
 
@@ -4269,7 +4269,7 @@ nbn(100);
         if (indexPath.row ==   14) return   200.0;  // report  list
 
         if (indexPath.row ==   15) return    30.0;  // title for do stuff
-        if (indexPath.row ==   16) return   175.0;  // text  for do stuff
+        if (indexPath.row ==   16) return   190.0;  // text  for do stuff
 
         if (indexPath.row ==   17) return    30.0;  // title for why not ?
         if (indexPath.row ==   18) return    90.0;  // text  for why not ?

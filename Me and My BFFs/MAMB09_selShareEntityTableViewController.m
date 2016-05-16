@@ -127,7 +127,6 @@ tn();
     //
     if ([gbl_fromHomeCurrentEntity isEqualToString: @"person" ])
     {
-nbn(410);
         [gbl_peopleToPickFrom removeAllObjects];
          gbl_peopleToPickFrom = [[NSMutableArray alloc] init];
 
@@ -138,13 +137,12 @@ nbn(410);
               
               psvArray = [perRec componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"|"]];
               perName  = psvArray[0];
-  NSLog(@"perName  =[%@]",perName  );
+//  NSLog(@"perName  =[%@]",perName  );
 
               //   // EXCLUDE       people who are example data ("~")
               if ([perName hasPrefix: @"~" ])   continue;         // no example people to share
              
               [gbl_peopleToPickFrom  addObject: perName ];   //  Person name for pick
-nbn(419);
          }
   NSLog(@"gbl_peopleToPickFrom  =[%@]",gbl_peopleToPickFrom  );
 
@@ -399,6 +397,11 @@ tn();
     } // group
 
 
+    // for test      read export file  into  gbl_arrayExport
+    //[myappDelegate mambReadArrayFileWithDescription: (NSString *) @"export"];
+    //  NSLog(@"gbl_arrayExport=[%@]",gbl_arrayExport);
+
+
     [self doMailComposeSend ];
 
 } // pressedSaveDone  for Add selected members
@@ -477,7 +480,7 @@ tn();    NSLog(@"in doMailComposeSend !  in selShare .m");
     else                                       first5 = @"people or groups";
 
     myEmailMessage = [ NSString stringWithFormat:
-@"\n\"Someone has sent you one or more %@ who can be imported into the App Me and my BFFs.\n\nOn the device where you have \"Me and my BFFs\" tap and hold on the \".mamb\" attachment icon below.  The app will come up and import the %@ for you.",
+@"\n\"Someone has sent you one or more %@ who can be imported into the App Me and my BFFs.\n\nHow to Import\n\nOn the device where you have \"Me and my BFFs\" tap and hold on the \".mamb\" attachment icon below.  The app will come up and import the %@ for you.",
         first5,
         first5
     ];
@@ -801,7 +804,6 @@ tn();
 //        return myEmptyArray ;  // no sectionindex
         return nil ;  // no sectionindex
     }
-nbn(400);
     NSArray *mySectionIndexTitles = [NSArray arrayWithObjects:  // 33 items  last index=32
 //         @"A", @"B", @"C", @"D",  @"E", @"F", @"G", @"H", @"I", @"J",  @"K", @"L", @"M",
 //         @"N", @"O", @"P",  @"Q", @"R", @"S", @"T", @"U", @"V",  @"W", @"X", @"Y", @"Z",   nil ];
@@ -823,7 +825,6 @@ nbn(400);
 
     gbl_numSectionIndexTitles = mySectionIndexTitles.count;
 
-nbn(401);
     return mySectionIndexTitles;
 
 } // end of sectionIndexTitlesForTableView
