@@ -32,6 +32,15 @@
 tn();
     NSLog(@"in viewDidLoad!  in  SELECT Entities to Share   ");
 
+
+    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
+
+    [myappDelegate deleteAll_MAMB_files_fromInbox ]; // del from Inbox dir all "*.mamb"
+
+
+
+
+
 //  NSLog(@"gbl_arrayMem in viewdidload TOP =[%@]",gbl_arrayMem );
 
     [gbl_selectedPeople_toShare  removeAllObjects];
@@ -433,25 +442,28 @@ tn();    NSLog(@"in doMailComposeSend !  in selShare .m");
 
     // copy  export file mambd7 in gbl_appDocDirStr  to gbl_mamb_fileNameOnEmail (like "groups.mamb") in NSTemporaryDirectory()
     //
-    NSURL    *URL_toExport_forEmailing;
-    NSString *pathToExport_forEmailing;
-    URL_toExport_forEmailing = [ NSURL fileURLWithPath: 
-        [NSTemporaryDirectory() stringByAppendingPathComponent: gbl_mamb_fileNameOnEmail ] //  "groups.mamb"  or  "people.mamb"
-    ];
-  NSLog(@"URL_toExport_forEmailing =[%@]",URL_toExport_forEmailing );
+        NSURL    *URL_toExport_forEmailing;
+        NSString *pathToExport_forEmailing;
+        URL_toExport_forEmailing = [ NSURL fileURLWithPath: 
+            [NSTemporaryDirectory() stringByAppendingPathComponent: gbl_mamb_fileNameOnEmail ] //  "groups.mamb"  or  "people.mamb"
+        ];
+    NSLog(@"URL_toExport_forEmailing =[%@]",URL_toExport_forEmailing );
 
 
-    NSFileManager* sharedFM3 = [NSFileManager defaultManager];
-    NSError *err05;
-    [sharedFM3 copyItemAtURL: gbl_URLToExport             // mambd7 in gbl_appDocDirStr  
-                       toURL: URL_toExport_forEmailing  // "people.mamb" or "groups.mamb" in tmp dir
-                       error: &err05];
-    if (err05) { NSLog(@"err on cp mambd7 to email name: %@", err05); }
+        NSFileManager* sharedFM3 = [NSFileManager defaultManager];
+        NSError *err05;
+        [sharedFM3 copyItemAtURL: gbl_URLToExport           // copy mambd7 in gbl_appDocDirStr  to  "people.mamb" or "groups.mamb" in tmp dir
+                           toURL: URL_toExport_forEmailing  // to   "people.mamb" or "groups.mamb" in tmp dir
+                           error: &err05];
+        if (err05) { NSLog(@"err on cp mambd7 to email name: %@", err05); }
 
-    pathToExport_forEmailing = [
-        NSTemporaryDirectory() stringByAppendingPathComponent: gbl_mamb_fileNameOnEmail  //  "groups.mamb"  or  "people.mamb"
-    ]; 
+        pathToExport_forEmailing = [
+            NSTemporaryDirectory() stringByAppendingPathComponent: gbl_mamb_fileNameOnEmail  //  "groups.mamb"  or  "people.mamb"
+        ]; 
   NSLog(@"pathToExport_forEmailing=[%@]",pathToExport_forEmailing);
+
+    // END OF  copy  export file mambd7 in gbl_appDocDirStr  to gbl_mamb_fileNameOnEmail (like "groups.mamb") in NSTemporaryDirectory()
+
 
 
     // Determine the file name and extension
@@ -480,8 +492,9 @@ tn();    NSLog(@"in doMailComposeSend !  in selShare .m");
     else                                       first5 = @"people or groups";
 
     myEmailMessage = [ NSString stringWithFormat:
-@"\n\"Someone has sent you one or more %@ who can be imported into the App Me and my BFFs.\n\nHow to Import\n\nOn the device where you have \"Me and my BFFs\" tap and hold on the \".mamb\" attachment icon below.  The app will come up and import the %@ for you.",
-        first5,
+//@"\n\"Someone has sent you one or more %@ who can be imported into the App Me and my BFFs.\n\nHOW TO IMPORT\nOn the device where you have \"Me and my BFFs\" tap and hold on the \".mamb\" attachment icon below.  The app will come up and import the %@ for you.",
+@"\nSomeone has sent you one or more %@ who can be imported into the app \"Me and my BFFs\".\n\nHOW TO IMPORT\nOn the device where you have Me and my BFFs, tap and hold (long tap) on the \".mamb\" attachment icon below.  A bunch of app icons come up.  Tap on the Me and my BFFs icon and the import begins.",
+//     first5,
         first5
     ];
 
@@ -535,8 +548,7 @@ tn();    NSLog(@"in doMailComposeSend !  in selShare .m");
 
         dispatch_async(dispatch_get_main_queue(), ^(void){
                 [self presentViewController: myMailComposeViewController animated:YES completion:NULL];
-            }
-        );
+        });
     }
     else
     {
@@ -560,7 +572,9 @@ tn();    NSLog(@"in doMailComposeSend !  in selShare .m");
          
         [alert addAction:  okButton];
 
-        [self presentViewController: alert  animated: YES  completion: nil   ];
+        dispatch_async(dispatch_get_main_queue(), ^(void){
+            [self presentViewController: alert  animated: YES  completion: nil   ];
+        });
     }
 } // end of doMailComposeSend 
 
@@ -603,7 +617,9 @@ NSLog(@"Mail cancelled");
 NSLog(@"Ok button pressed");
             } ];
             [alert addAction:  okButton];
-            [self presentViewController: alert  animated: YES  completion: nil   ];
+            dispatch_async(dispatch_get_main_queue(), ^(void){
+                [self presentViewController: alert  animated: YES  completion: nil   ];
+            });
 
             break;
         }
@@ -618,7 +634,9 @@ NSLog(@"Ok button pressed");
 NSLog(@"Ok button pressed");
             } ];
             [alert addAction:  okButton];
-            [self presentViewController: alert  animated: YES  completion: nil   ];
+            dispatch_async(dispatch_get_main_queue(), ^(void){
+                [self presentViewController: alert  animated: YES  completion: nil   ];
+            });
 
             break;
         }
@@ -633,7 +651,11 @@ NSLog(@"Ok button pressed");
 NSLog(@"Ok button pressed");
             } ];
             [alert addAction:  okButton];
-            [self presentViewController: alert  animated: YES  completion: nil   ];
+nbn(1);
+            // see AVOID this ERROR:   BELOW
+            dispatch_async(dispatch_get_main_queue(), ^(void){
+               [self presentViewController: alert  animated: YES  completion: nil   ];
+            });
 
 
             break;
@@ -650,7 +672,9 @@ NSLog(@"Ok button pressed");
 NSLog(@"Ok button pressed");
             } ];
             [alert addAction:  okButton];
-            [self presentViewController: alert  animated: YES  completion: nil   ];
+            dispatch_async(dispatch_get_main_queue(), ^(void){
+                [self presentViewController: alert  animated: YES  completion: nil   ];
+            });
 
             break;
         }
@@ -662,11 +686,19 @@ NSLog(@"Ok button pressed");
 
     //[self dismissModalViewControllerAnimated:YES
 
-    dispatch_async(dispatch_get_main_queue(), ^(void){
-            [self dismissViewControllerAnimated:YES
-                                     completion:NULL];
-        }
-    );
+nbn(2);
+    // AVOID this ERROR:
+    // ios Attempting to load the view of a view controller while it is deallocating is not allowed and may result in undefined behavior
+    //
+    //   use    dispatch_async(dispatch_get_main_queue(), ^(void)
+    //        around presentViewController
+    //   BUT NOT  around   [self dismissViewControllerAnimated:YES completion:NULL];
+    //
+    //    dispatch_async(dispatch_get_main_queue(), ^(void){
+            [self dismissViewControllerAnimated:YES completion:NULL];
+    //    });
+
+
 
 } // mailComposeController didFinishWithResult:
 

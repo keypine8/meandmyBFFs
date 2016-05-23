@@ -252,7 +252,7 @@ tn();
 
 
 
-  NSLog(@"myNavBarTitle =[%@]",myNavBarTitle );
+//  NSLog(@"myNavBarTitle =[%@]",myNavBarTitle );
 
 
 
@@ -402,7 +402,7 @@ tn();
             OpathToHTML_webview     = [NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_webview];
             pathToHTML_webview      = (char *) [OpathToHTML_webview cStringUsingEncoding:NSUTF8StringEncoding];
 
-  NSLog(@"Ohtml_file_name_webview=[%@]",Ohtml_file_name_webview);
+//  NSLog(@"Ohtml_file_name_webview=[%@]",Ohtml_file_name_webview);
             
             URLtoHTML_forWebview = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_webview]];
 //        gbl_URLtoHTML_forWebview            
@@ -442,7 +442,7 @@ tn();
         // gbl_perDataLines;  // used in tblrpts_1 (read in from webview . html file)
         NSString *perDataStr = [NSString stringWithContentsOfURL: URLtoHTML_forWebview  encoding: NSUTF8StringEncoding  error: nil];
         gbl_perDataLines     = [perDataStr componentsSeparatedByCharactersInSet: [NSCharacterSet newlineCharacterSet]];
-  NSLog(@"gbl_perDataLines.count    =[%ld]",(unsigned long)gbl_perDataLines.count    );
+//  NSLog(@"gbl_perDataLines.count    =[%ld]",(unsigned long)gbl_perDataLines.count    );
 
 // Log all data in gbl_perDataLines file array contents    for test 
 for (id eltTst in gbl_perDataLines) { NSLog(@"    gbl_per=%@", eltTst); }
@@ -650,7 +650,7 @@ for (id eltTst in gbl_perDataLines) { NSLog(@"    gbl_per=%@", eltTst); }
         //
         NSString *compDataStr = [NSString stringWithContentsOfURL: URLtoHTML_forWebview  encoding: NSUTF8StringEncoding  error: nil];
         gbl_compDataLines     = [compDataStr componentsSeparatedByCharactersInSet: [NSCharacterSet newlineCharacterSet]];
-  NSLog(@"gbl_compDataLines.count    =[%ld]",(unsigned long)gbl_compDataLines.count    );
+//  NSLog(@"gbl_compDataLines.count    =[%ld]",(unsigned long)gbl_compDataLines.count    );
 
 // Log all data in gbl_compDataLines file array contents    for test <.>
 for (id eltTst in gbl_compDataLines) { NSLog(@"    gbl_comp=%@", eltTst); }
@@ -703,11 +703,11 @@ for (id eltTst in gbl_compDataLines) { NSLog(@"    gbl_comp=%@", eltTst); }
                 break;
             }
         }
-  NSLog(@"gbl_pairScore        =[%@]",gbl_pairScore   );
-  NSLog(@"gbl_pairPersonA      =[%@]",gbl_pairPersonA );
-  NSLog(@"gbl_pairPersonB      =[%@]",gbl_pairPersonB );
-  NSLog(@"gbl_topTableWidth    =[%ld]",(long)gbl_topTableWidth );
-  NSLog(@"gbl_topTablePairLine =[%@]",gbl_topTablePairLine );
+//  NSLog(@"gbl_pairScore        =[%@]",gbl_pairScore   );
+//  NSLog(@"gbl_pairPersonA      =[%@]",gbl_pairPersonA );
+//  NSLog(@"gbl_pairPersonB      =[%@]",gbl_pairPersonB );
+//  NSLog(@"gbl_topTableWidth    =[%ld]",(long)gbl_topTableWidth );
+//  NSLog(@"gbl_topTablePairLine =[%@]",gbl_topTablePairLine );
 
 
         return;
@@ -1363,7 +1363,7 @@ for (id eltTst in gbl_compDataLines) { NSLog(@"    gbl_comp=%@", eltTst); }
         if (tmparr.count > 2) {
             colorFromCalc = tmparr[2];
         }
-  NSLog(@"mylin=[%@]",mylin);
+//  NSLog(@"mylin=[%@]",mylin);
 
 
 //<.> old
@@ -1919,17 +1919,17 @@ for (id eltTst in gbl_compDataLines) { NSLog(@"    gbl_comp=%@", eltTst); }
 
         mySeps    = [NSCharacterSet characterSetWithCharactersInString:  @"|"];
 
- tn();
+// tn();
         mywrk     = gbl_compDataLines[indexPath.row];  
-  NSLog(@"mywrk=[%@]",mywrk);
+//  NSLog(@"mywrk=[%@]",mywrk);
 
         tmparr    = [mywrk  componentsSeparatedByCharactersInSet: mySeps];
         if (tmparr.count > 1) {
             mycode    = tmparr[0];
             mylin     = tmparr[1];
         }
- NSLog(@"mycode=[%@]",mycode);
- NSLog(@"mylin=[%@]",mylin);
+// NSLog(@"mycode=[%@]",mycode);
+// NSLog(@"mylin=[%@]",mylin);
 
 //gbl_color_cNeu 
 //gbl_color_cBgr 
@@ -2125,13 +2125,13 @@ for (id eltTst in gbl_compDataLines) { NSLog(@"    gbl_comp=%@", eltTst); }
             gbl_areInCompatibilityTable = 1;
 
   NSLog(@"in HEADER");
-  NSLog(@"mycode=[%@]",mycode);
-  NSLog(@"mylin =[%@]",mylin);
-  NSLog(@"gbl_heightCellCOMP =[%ld]",(long)gbl_heightCellCOMP );
-  NSLog(@"gbl_topTableWidth=[%ld]",(long)gbl_topTableWidth);
+//  NSLog(@"mycode=[%@]",mycode);
+//  NSLog(@"mylin =[%@]",mylin);
+//  NSLog(@"gbl_heightCellCOMP =[%ld]",(long)gbl_heightCellCOMP );
+//  NSLog(@"gbl_topTableWidth=[%ld]",(long)gbl_topTableWidth);
 
             
-  NSLog(@"mylin hdr=[%@]",mylin);
+//  NSLog(@"mylin hdr=[%@]",mylin);
             NSInteger thisIsHeaderSpace;
             if ([mylin hasPrefix: @"space "]) {
 //                mybgcolor         = [UIColor blueColor];
@@ -2159,7 +2159,7 @@ for (id eltTst in gbl_compDataLines) { NSLog(@"    gbl_comp=%@", eltTst); }
                     mylin 
                 ];
 //                gbl_heightCellCOMP = 18;
-  NSLog(@"gbltmpstr 111  =[%@]",gbltmpstr );
+//  NSLog(@"gbltmpstr 111  =[%@]",gbltmpstr );
             } else {
                 gbltmpstr = [NSString stringWithFormat: @"|%@%@ |",
                     [@"" stringByPaddingToLength: gbl_topTableWidth - mylin.length
@@ -2169,7 +2169,7 @@ for (id eltTst in gbl_compDataLines) { NSLog(@"    gbl_comp=%@", eltTst); }
                     mylin 
                 ];
 //                gbl_heightCellCOMP = 18;
-  NSLog(@"gbltmpstr 222  =[%@]",gbltmpstr );
+//  NSLog(@"gbltmpstr 222  =[%@]",gbltmpstr );
             }
 
 
@@ -2277,7 +2277,7 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
 //            [myAttrString addAttribute: NSBackgroundColorAttributeName value: [UIColor greenColor]   // for test
 //                                                                       range: NSMakeRange(myAttrString.length - 1, 1)];
 
-  NSLog(@"myAttrString =[%@]",[myAttrString string]);
+//  NSLog(@"myAttrString =[%@]",[myAttrString string]);
 
 
 //            UIButton *myInvisibleButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
@@ -2314,7 +2314,7 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
             if (thisIsHeaderSpace  == 0) {
                gbl_heightForCompTable = rect.size.height;  // found NO  "space" in myspace NSString
             }
-  NSLog(@"HEIGHT for tbl hdr=[%f]",gbl_heightForCompTable );
+//  NSLog(@"HEIGHT for tbl hdr=[%f]",gbl_heightForCompTable );
 
             return cell;   //     special case cell      special case       special case       special case      special case   
 
@@ -2363,9 +2363,9 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
                 myscore   = tmparr[1];
                 myspace   = tmparr[2];
             }
-  NSLog(@"mycode2=[%@]",mycode2);
-  NSLog(@"myscore=[%@]",myscore);
-  NSLog(@"myspace=[%@]",myspace);
+//  NSLog(@"mycode2=[%@]",mycode2);
+//  NSLog(@"myscore=[%@]",myscore);
+//  NSLog(@"myspace=[%@]",myspace);
 
 
             // lin=[tabl|label@90@space above]__
@@ -2391,7 +2391,7 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
                 if (gbl_pairPersonA.length + gbl_pairPersonB.length <= gbl_ThresholdshortTblLineLen) { // SHORT line here
                     // SHORT line here
 
-  NSLog(@"1line is short");
+//  NSLog(@"1line is short");
                     if( [myscore isEqualToString: @"90"] ) {
                         mybgcolorfortableline = gbl_color_cGr2;
 
@@ -2407,8 +2407,8 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
                             gbl_heightForCompTable = 18.0;
                         }
                     }
-  NSLog(@"gbltmpstr              =[%@]",gbltmpstr          );
-  NSLog(@"gbl_heightForCompTable =[%f]",gbl_heightForCompTable );
+//  NSLog(@"gbltmpstr              =[%@]",gbltmpstr          );
+//  NSLog(@"gbl_heightForCompTable =[%f]",gbl_heightForCompTable );
 
                     if( [myscore isEqualToString: @"75"] ) {
                         mybgcolorfortableline = gbl_color_cGre;
@@ -2476,11 +2476,11 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
                     ];
                     gbl_heightCellCOMP = 18;
 
-  NSLog(@"[mylin s length]=[%ld]",(unsigned long)[mylin length]);
+//  NSLog(@"[mylin s length]=[%ld]",(unsigned long)[mylin length]);
 
 
                 } else { // LONG  line here
-  NSLog(@"2line is long ");
+//  NSLog(@"2line is long ");
 
                     // if( [myscore isEqualToString: @"90"] ) { mybgcolorfortableline = gbl_color_cGr2; gbltmpstr = @"   Great  90 ";}
                     // if( [myscore isEqualToString: @"75"] ) { mybgcolorfortableline = gbl_color_cGre; gbltmpstr = @"    Good  75 ";}
@@ -2566,7 +2566,7 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
 
                 } // end   LONG  line here
 
-  NSLog(@"[mylin l length]=[%ld]",(unsigned long)[mylin length]);
+//  NSLog(@"[mylin l length]=[%ld]",(unsigned long)[mylin length]);
             } // if ( [mycode2 isEqualToString: @"label"] )
 
 
@@ -2579,14 +2579,14 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
                 //
                 if( [myspace hasPrefix: @"space "] ) {
                     if (gbl_pairPersonA.length + gbl_pairPersonB.length <= gbl_ThresholdshortTblLineLen) { // SHORT line here
-  NSLog(@"3line is short ");
+//  NSLog(@"3line is short ");
                         mylin = [NSString stringWithFormat:@"|%@%@|",
                             [@"" stringByPaddingToLength: gbl_topTableNamesWidth       withString: @" " startingAtIndex: 0],
                             gbltmpstr
                         ];
 
                     } else { // LONG line here
-  NSLog(@"4line is long ");
+//  NSLog(@"4line is long ");
                         mylin = [NSString stringWithFormat:@"|%@%@|",
                             [@"" stringByPaddingToLength: gbl_topTableNamesWidth + 1 - 11 withString: @" " startingAtIndex: 0], // 11 is "  Not Good "
                             gbltmpstr
@@ -2594,12 +2594,12 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
                     }
 
                 } else {
-  NSLog(@"else ");
+//  NSLog(@"else ");
                     mylin = gbl_topTablePairLine;
                 }
-  NSLog(@"[mylin space length]=[%ld]",(unsigned long)[mylin length]);
-  NSLog(@"mylin=[%@]",mylin);
-  NSLog(@"gbltmpstr=[%@]",gbltmpstr);
+//  NSLog(@"[mylin space length]=[%ld]",(unsigned long)[mylin length]);
+//  NSLog(@"mylin=[%@]",mylin);
+//  NSLog(@"gbltmpstr=[%@]",gbltmpstr);
 
 
                 if ( [myspace isEqualToString: @"space above"] ) {
@@ -2607,28 +2607,28 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
                     // gbltmpstr is set above
                     gbl_heightForCompTable =  2.0;
 //                    gbl_heightForCompTable =  20.0;  for test
-  NSLog(@"mylin a =[%@]",mylin);
+//  NSLog(@"mylin a =[%@]",mylin);
                 }
                 if ( [myspace isEqualToString: @"space below"] ) {
                      gbltmpstr              = @"             ";
                     // gbltmpstr is set above
                     gbl_heightForCompTable =  3.0;
 //                    gbl_heightForCompTable =  20.0;  for test
-  NSLog(@"mylin b =[%@]",mylin);
+//  NSLog(@"mylin b =[%@]",mylin);
                 } 
 
                 if (   [myspace isEqualToString: @"space above"]
                     || [myspace isEqualToString: @"space below"]
                 ) {
                     if (gbl_pairPersonA.length + gbl_pairPersonB.length <= gbl_ThresholdshortTblLineLen) { // SHORT line here
-  NSLog(@"10line is short ");
+//  NSLog(@"10line is short ");
                         mylin = [NSString stringWithFormat:@"|%@%@|",
                             [@"" stringByPaddingToLength: gbl_topTableNamesWidth       withString: @" " startingAtIndex: 0],
                             gbltmpstr
                         ];
 
                     } else { // LONG line here
-  NSLog(@"11Iline is long ");
+//  NSLog(@"11Iline is long ");
                         mylin = [NSString stringWithFormat:@"|%@%@|",
                             [@"" stringByPaddingToLength: gbl_topTableNamesWidth + 1 - 11 withString: @" " startingAtIndex: 0], // 11 is "  Not Good "
                             gbltmpstr
@@ -2784,13 +2784,13 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
                                                       context: nil
             ];
 
-  NSLog(@"hey hey=[%@]",myspace);
+//  NSLog(@"hey hey=[%@]",myspace);
             if ([myspace rangeOfString:@"space"].location == NSNotFound) {
 
 //                gbl_heightForCompTable = myAttrString.size.height;  // found NO  "space" in myspace NSString
                 gbl_heightForCompTable = rect.size.height;  // found NO  "space" in myspace NSString
 
-  NSLog(@"gbl_heightForCompTable =[%f]",gbl_heightForCompTable );
+//  NSLog(@"gbl_heightForCompTable =[%f]",gbl_heightForCompTable );
 //                gbl_heightForCompTable = ceil(myAttrString.size.height);  // found NO  "space" in myspace NSString
 //  NSLog(@"gbl_heightForCompTable =[%f]",gbl_heightForCompTable );
             } else {
@@ -2798,7 +2798,7 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
             }
 //kdn(gbl_heightForCompTable );
 
-  NSLog(@"end of tabl|     ");
+//  NSLog(@"end of tabl|     ");
 
 
 
@@ -3046,7 +3046,7 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
             //
             NSInteger n = [mylin integerValue];   // max is 77
 
-  NSLog(@"=n[%ld]",(long)n);
+//  NSLog(@"=n[%ld]",(long)n);
 
             if (n > 0) {   // put plus signs
 
@@ -3055,7 +3055,7 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
                 if (n < 1.0) n = 1;
                 gbl_starsNSInteger = n;
 
-  NSLog(@"=n[%ld]",(long)n);
+//  NSLog(@"=n[%ld]",(long)n);
 
                 NSString *myPlusSigns = 
                     [@"" stringByPaddingToLength: n
@@ -3075,7 +3075,7 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
 //                n = (n * -1 * 50) / 77; // convert -1 -> -77 to 1 -> 50
                 if (n < 1.0) n = 1;
                 gbl_starsNSInteger = n;
-  NSLog(@"=n[%ld]",(long)n);
+//  NSLog(@"=n[%ld]",(long)n);
 
                 NSString *myMinusSigns = 
                     [@"" stringByPaddingToLength: n
@@ -3101,10 +3101,10 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
                 ]
             ;
 
-  NSLog(@"mylin before print             =[%@]",       mylin);
-  NSLog(@"gbl_starsNSInteger             =[%ld]",(long)gbl_starsNSInteger);
-  NSLog(@"gbl_starsNSString              =[%@]",       gbl_starsNSString);
-  NSLog(@"gbl_starsWhiteSpaces           =[%@]",       gbl_starsWhiteSpaces );
+//  NSLog(@"mylin before print             =[%@]",       mylin);
+//  NSLog(@"gbl_starsNSInteger             =[%ld]",(long)gbl_starsNSInteger);
+//  NSLog(@"gbl_starsNSString              =[%@]",       gbl_starsNSString);
+//  NSLog(@"gbl_starsWhiteSpaces           =[%@]",       gbl_starsWhiteSpaces );
 
 
 
@@ -3503,15 +3503,15 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
         //
         NSArray *flds;  NSInteger numflds;
 
-  NSLog(@"starnew mylin  =[%@]",mylin);
+//  NSLog(@"starnew mylin  =[%@]",mylin);
         flds    = [mylin componentsSeparatedByString: @"+"];
 //  NSLog(@"flds           =[%@]",flds);
         numflds = [flds count] -1;
-  NSLog(@"starnew numflds=[%ld]",(long)numflds);
+//  NSLog(@"starnew numflds=[%ld]",(long)numflds);
 
         if (numflds > 0) {  // got pluses here
             myDisplayString = [myPlusesBase substringWithRange: NSMakeRange( 40 - numflds, 40) ];
-  NSLog(@"starnew myDisplayString =[%@]",myDisplayString );
+//  NSLog(@"starnew myDisplayString =[%@]",myDisplayString );
 
             myDisplayString = [NSString stringWithFormat: @"%@%@%@", @"     ", myDisplayString, @"     "];   // prepend + append 5 spaces
 
@@ -3706,7 +3706,7 @@ bn(802);
 
             gbl_areInCompatibilityTable = 0;
 
-  NSLog(@" if ( [mycode isEqualToString: goodrelationship] )   // the text of this is in here, not in input ");
+//  NSLog(@" if ( [mycode isEqualToString: goodrelationship] )   // the text of this is in here, not in input ");
 
             myalign           = NSTextAlignmentLeft;
             mynumlines        = 1;    
@@ -4598,7 +4598,7 @@ trn("// END   END    4 of 3 FOOTER CELLS");
 
 //kdn(gbl_heightForCompTable );
 
-  NSLog(@"return CELL HEIGHT 1 is [%f]", gbl_heightForCompTable );
+//  NSLog(@"return CELL HEIGHT 1 is [%f]", gbl_heightForCompTable );
             return (gbl_heightForCompTable ); 
         } else {
 //  NSLog(@"return CELL HEIGHT 2 is [%ld]", (long)gbl_heightCellCOMP);
@@ -4913,7 +4913,7 @@ tn();
     [super viewWillAppear: animated];
 
 
-  NSLog(@"HEYnotify 2");
+//  NSLog(@"HEYnotify 2");
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(didChangeOrientation:)
                                                  name: UIApplicationDidChangeStatusBarOrientationNotification
@@ -4958,10 +4958,10 @@ tn();
     {
 
 
-  NSLog(@"per pco  RELOAD B ? 2");
+//  NSLog(@"per pco  RELOAD B ? 2");
 
-  NSLog(@"gbl_do_B_per_reload =[%@]",gbl_do_B_per_reload );
-  NSLog(@"gbl_do_B_co__reload =[%@]",gbl_do_B_co__reload );
+//  NSLog(@"gbl_do_B_per_reload =[%@]",gbl_do_B_per_reload );
+//  NSLog(@"gbl_do_B_co__reload =[%@]",gbl_do_B_co__reload );
 
 //        if ([ gbl_do_B_pe_co_reload isEqualToString: @"do the reload only the first time"] )
 //        {
@@ -4994,10 +4994,10 @@ tn();
 
     if (   [gbl_currentMenuPlusReportCode hasSuffix: @"co"])  //  grpof 2
     {
-  NSLog(@"co RELOAD B ? 2");
+//  NSLog(@"co RELOAD B ? 2");
         if ([ gbl_do_B_co__reload isEqualToString: @"do the reload only the first time"] )
         {
-  NSLog(@"co RELOAD B   DO IT");
+//  NSLog(@"co RELOAD B   DO IT");
             gbl_do_B_co__reload = @"this is not reset until new app startup";
 
             // try to get rid of tbl position in middle on startup
@@ -5010,15 +5010,15 @@ tn();
 
     } // suffix co
     else {
-  NSLog(@"co RELOAD B  DID NOT  DO IT");
+//  NSLog(@"co RELOAD B  DID NOT  DO IT");
     }
 
     if (   [gbl_currentMenuPlusReportCode hasSuffix: @"pe"])  //  personality in B
     {
-  NSLog(@"per RELOAD B ? 2");
+//  NSLog(@"per RELOAD B ? 2");
         if ([ gbl_do_B_per_reload isEqualToString: @"do the reload only the first time"] )
         {
-  NSLog(@"per RELOAD B   DO IT");
+//  NSLog(@"per RELOAD B   DO IT");
             gbl_do_B_per_reload = @"this is not reset until new app startup";
 
             // try to get rid of tbl position in middle on startup
@@ -5031,7 +5031,7 @@ tn();
 
     } // suffix co
     else {
-  NSLog(@"per RELOAD B  DID NOT  DO IT");
+//  NSLog(@"per RELOAD B  DID NOT  DO IT");
     }
 
 
@@ -5108,9 +5108,9 @@ tn();
 
     // add Navigation Bar right buttons, if not added alread
     //
-  NSLog(@"gbl_currentMenuPrefixFromMatchRpt =[%@]",gbl_currentMenuPrefixFromMatchRpt );
-  NSLog(@"gbl_lastSelectedPerson =[%@]",gbl_lastSelectedPerson );
-  NSLog(@"gbl_currentMenuPlusReportCode=[%@]",gbl_currentMenuPlusReportCode);
+//  NSLog(@"gbl_currentMenuPrefixFromMatchRpt =[%@]",gbl_currentMenuPrefixFromMatchRpt );
+//  NSLog(@"gbl_lastSelectedPerson =[%@]",gbl_lastSelectedPerson );
+//  NSLog(@"gbl_currentMenuPlusReportCode=[%@]",gbl_currentMenuPlusReportCode);
     NSString *myNavBarTitle;
     if (gbl_tblrpts2_ShouldAddToNavBar == 1) { // init to prevent  multiple programatic adds of nav bar items
 
@@ -5144,7 +5144,7 @@ tn();
             myNavBarTitle = @"Best Match";
         }
 
-  NSLog(@"myNavBarTitle =[%@]",myNavBarTitle );
+//  NSLog(@"myNavBarTitle =[%@]",myNavBarTitle );
 
 //    [UIView performWithoutAnimation:^{          // did not work
 //    }];
@@ -5328,7 +5328,9 @@ tn();    NSLog(@"in shareButtonAction!  in MAMB09viewTBLRPTs_2_TableViewControll
          
         [alert addAction:  okButton];
 
-        [self presentViewController: alert  animated: YES  completion: nil   ];
+        dispatch_async(dispatch_get_main_queue(), ^(void){
+            [self presentViewController: alert  animated: YES  completion: nil   ];
+        });
     }
 } // shareButtonAction
 
@@ -5429,6 +5431,15 @@ tn();    NSLog(@"in shareButtonAction!  in MAMB09viewTBLRPTs_2_TableViewControll
            didFinishWithResult:(MFMailComposeResult)result
                          error:(NSError *)error
 {
+
+    // AVOID this ERROR:
+    // ios Attempting to load the view of a view controller while it is deallocating is not allowed and may result in undefined behavior
+    //
+    //   use    dispatch_async(dispatch_get_main_queue(), ^(void)
+    //        around presentViewController
+    //   BUT NOT  around   [self dismissViewControllerAnimated:YES completion:NULL];
+    //
+
     if (error) {
         UIAlertController* alert = [UIAlertController alertControllerWithTitle: @"An error happened"
                                                                        message: [error localizedDescription]
@@ -5440,15 +5451,16 @@ tn();    NSLog(@"in shareButtonAction!  in MAMB09viewTBLRPTs_2_TableViewControll
 NSLog(@"Ok button pressed");
         } ];
         [alert addAction:  okButton];
-        [self presentViewController: alert  animated: YES  completion: nil   ];
+        dispatch_async(dispatch_get_main_queue(), ^(void){
+            [self presentViewController: alert  animated: YES  completion: nil   ];
+        });
 
         // [self dismissViewControllerAnimated:yes completion:<#^(void)completion#>];
 
-        dispatch_async(dispatch_get_main_queue(), ^(void){
+//        dispatch_async(dispatch_get_main_queue(), ^(void){
             [self dismissViewControllerAnimated: YES
                                      completion:NULL];
-            }
-        );
+//        });
     }
     switch (result)
     {
@@ -5463,7 +5475,9 @@ NSLog(@"Mail cancelled");
 NSLog(@"Ok button pressed");
             } ];
             [alert addAction:  okButton];
-            [self presentViewController: alert  animated: YES  completion: nil   ];
+            dispatch_async(dispatch_get_main_queue(), ^(void){
+                [self presentViewController: alert  animated: YES  completion: nil   ];
+            });
 
             break;
         }
@@ -5478,7 +5492,9 @@ NSLog(@"Ok button pressed");
 NSLog(@"Ok button pressed");
             } ];
             [alert addAction:  okButton];
-            [self presentViewController: alert  animated: YES  completion: nil   ];
+            dispatch_async(dispatch_get_main_queue(), ^(void){
+                [self presentViewController: alert  animated: YES  completion: nil   ];
+            });
 
             break;
         }
@@ -5493,7 +5509,9 @@ NSLog(@"Ok button pressed");
 NSLog(@"Ok button pressed");
             } ];
             [alert addAction:  okButton];
-            [self presentViewController: alert  animated: YES  completion: nil   ];
+            dispatch_async(dispatch_get_main_queue(), ^(void){
+                [self presentViewController: alert  animated: YES  completion: nil   ];
+            });
 
 
             break;
@@ -5510,7 +5528,9 @@ NSLog(@"Ok button pressed");
 NSLog(@"Ok button pressed");
             } ];
             [alert addAction:  okButton];
-            [self presentViewController: alert  animated: YES  completion: nil   ];
+            dispatch_async(dispatch_get_main_queue(), ^(void){
+                [self presentViewController: alert  animated: YES  completion: nil   ];
+            });
 
             break;
         }
@@ -5522,11 +5542,10 @@ NSLog(@"Ok button pressed");
 
     //[self dismissModalViewControllerAnimated:YES
 
-    dispatch_async(dispatch_get_main_queue(), ^(void){
+//    dispatch_async(dispatch_get_main_queue(), ^(void){
             [self dismissViewControllerAnimated:YES
                                      completion:NULL];
-        }
-    );
+//    });
 
 } // mailComposeController didFinishWithResult:
 
@@ -5781,7 +5800,7 @@ NSLog(@"Ok button pressed");
     } else {
           myCountOfRows = group_report_output_idx_B;
     }
-  NSLog(@"myCountOfRows =[%ld]", (long)myCountOfRows );
+//  NSLog(@"myCountOfRows =[%ld]", (long)myCountOfRows );
 
 
     if ([title isEqualToString:@"END"]) newRow = myCountOfRows - 1;
@@ -5790,10 +5809,10 @@ NSLog(@"Ok button pressed");
     )   newRow = ((double) (index + 1) / (double) gbl_numSectionIndexTitles ) * (double)myCountOfRows ;
 
 
-  NSLog(@"index + 1                 =[%ld]",(long)index + 1                 );
-  NSLog(@"gbl_numSectionIndexTitles =[%ld]",(long)gbl_numSectionIndexTitles );
-  NSLog(@"group_report_output_idx_B =[%ld]",(long)group_report_output_idx_B);
-  NSLog(@"newRow                    =[%ld]",(long)newRow );
+//  NSLog(@"index + 1                 =[%ld]",(long)index + 1                 );
+//  NSLog(@"gbl_numSectionIndexTitles =[%ld]",(long)gbl_numSectionIndexTitles );
+//  NSLog(@"group_report_output_idx_B =[%ld]",(long)group_report_output_idx_B);
+//  NSLog(@"newRow                    =[%ld]",(long)newRow );
 
     NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow: newRow inSection: 0];
 

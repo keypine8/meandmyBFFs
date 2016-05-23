@@ -1418,9 +1418,9 @@ NSLog(@"currentScreenWidthHeight.height =%f",currentScreenWidthHeight.height );
 
             // for (id member in self.array_BirthYearsToPick)    // loop thru year array
 
-            if (myIndex == NSNotFound) {
-                myIndex = yearsToPickFrom3.count - 1;
-            }
+//            if (myIndex == NSNotFound) {
+//                myIndex = yearsToPickFrom3.count - 1;
+//            }
 
             dispatch_async(dispatch_get_main_queue(), ^{    //  INIT  PICKER roller values
 
@@ -1962,9 +1962,9 @@ nbn(107);
 
                 myIdxInPicker_Year = [self.array_BirthYearsToPick  indexOfObject: gbl_rollerBirth_yyyy ];
 
-                if (myIdxInPicker_Year == NSNotFound) {
-                    myIdxInPicker_Year = yearsToPickFrom3.count - 1;
-                }
+//                if (myIdxInPicker_Year == NSNotFound) {
+//                    myIdxInPicker_Year = yearsToPickFrom3.count - 1;
+//                }
 
       NSLog(@"myIdxInPicker_Year=[%ld]",(long)myIdxInPicker_Year);
                 myIdxInPicker_Mth      = [fldMth  intValue] - 1; // starts at one
@@ -1980,9 +1980,9 @@ nbn(107);
 
                 // for (id member in self.array_BirthYearsToPick)    // loop thru year array
 
-                if (myIdxInPicker_Year == NSNotFound) {                // should not happen
-                    myIdxInPicker_Year = yearsToPickFrom3.count - 1;   // ?
-                }
+//                if (myIdxInPicker_Year == NSNotFound) {                // should not happen
+//                    myIdxInPicker_Year = yearsToPickFrom3.count - 1;   // ?
+//                }
 
                 dispatch_async(dispatch_get_main_queue(), ^{    //  INIT  PICKER roller values
 
@@ -2363,9 +2363,9 @@ trn("-------------------------------------------"); tn();
 
     // for (id member in self.array_BirthYearsToPick)    // loop thru year array
 
-    if (myIndex == NSNotFound) {
-        myIndex = yearsToPickFrom3.count - 1;
-    }
+//    if (myIndex == NSNotFound) {
+//        myIndex = yearsToPickFrom3.count - 1;
+//    }
 
     dispatch_async(dispatch_get_main_queue(), ^{    //  INIT  PICKER roller values
 

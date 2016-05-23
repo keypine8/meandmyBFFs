@@ -10,6 +10,8 @@
 
 //NSInteger gbl_haveEnteredGestureRecognizerShouldBegin;
 
+//				<key>public.filename-extension</key>
+NSString *public_filename_extension;  // is "mamb"
 
 NSInteger gbl_timesthrusetsel;
 NSString *gbl_mamb_fileNameOnEmail;  // "people.mamb"  or  "groups.mamb"  or  backup_yyyymmddhhmmss.mamb
@@ -1223,6 +1225,9 @@ NSIndexPath *gbl_savePrevIndexPath;  // for scrolling to the prev row you were o
 - (void) get_gbl_numMembersInCurrentGroup;
 
 - (void) doBackupAll;
+
+- (void) deleteAll_MAMB_files_fromInbox;
+
 
 @end
 

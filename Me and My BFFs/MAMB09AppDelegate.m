@@ -61,11 +61,14 @@
 //return UIInterfaceOrientationMaskAll;
 //}
 
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     NSLog(@"in didFinishLaunchingWithOptions()  in appdelegate");
     
+
+    public_filename_extension = @"mamb";   // registered for import/export of groups and people
+
+
     // test cannot have bkt c lang debug functions in  MAMB09AppDelegate.m  in method  didFinishLaunchingWithOptions 
     // test but they appear to work in other method in here (MAMB09AppDelegate.m )
     //tn(); crash    all these crash here
@@ -905,7 +908,7 @@
 
 
 
-//<.>
+//
     //           CURRENT DATE
     //
     //   Method mambCheckForCorruptData  in HOME  in viewDidLoad
@@ -936,7 +939,7 @@
     //     - in memory array gbl_arrayGrp, update #allpeople record containing new data 
     //     - write updated array gbl_arrayGrp to file
 
-//<.>
+//
 
 
     
@@ -2513,11 +2516,11 @@ tn();
 //tn();
 
 
-//<.>
+//
 //    int daysinmonth[12]={31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 //    int rollerMM, rollerDD, rollerYYYY;
 //
-//<.>
+//
 //
 
 
@@ -3272,8 +3275,6 @@ tn();  NSLog(@"at end of   mambReadLastEntityFile  myLastEntityDecoded=\n%@",myL
     // Restart any tasks that were paused (or not yet started) while the application was inactive.
     // If the application was previously in the background, OPTIONALLY REFRESH THE USER INTERFACE.
 
-//    if (gbl/onent
-//<.>
 
 }
 
@@ -3309,8 +3310,29 @@ tn();  NSLog(@"at end of   mambReadLastEntityFile  myLastEntityDecoded=\n%@",myL
 
 //+(BOOL)isJailbroken {
 - (BOOL)isJailbroken {
+
+#if !(TARGET_IPHONE_SIMULATOR)
+
+    NSString *filePath = @"/Applications/Cydia.app";
+    if ([[NSFileManager defaultManager] fileExistsAtPath:filePath])
+    {
+        //Device is jailbroken
+        return YES;
+    }
+
+    // We know that a skilled hacker can just modify the location of the application.
+    // However, we know that 80% or more of the devices that are jailbroken have Cydia installed on them,
+    // and even if the hacker can change the location of the Cydia app,
+    // he most probably won’t change the URL scheme with which the Cydia app is registered.
+    // If calling the Cydia’s URL scheme (cydia://) from your application gives a success,
+    // you can be sure that the device is jailbroken.
+    //
     NSURL* url = [NSURL URLWithString:@"cydia://package/com.example.package"];
     return [[UIApplication sharedApplication] canOpenURL:url];
+#endif
+
+    return NO;  // All checks have failed. Most probably, the device is not jailbroken
+
 }
 
 
@@ -4425,7 +4447,7 @@ tn();
 
 
 
-//<.>
+//
 //[queue addOperationWithBlock:^{
 //
 //    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
@@ -4449,7 +4471,7 @@ tn();
 //    // now carry on with other stuff contingent upon what you did above
 //]);
 //
-//<.>
+//
 //
 
 
@@ -4617,6 +4639,400 @@ trn(" XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 
 } // end of doBackupAll
+
+
+
+- (void) deleteAll_MAMB_files_fromInbox   // del from Inbox dir all "*.mamb"
+{
+  NSLog(@"in deleteAllMAMB_files");
+
+    NSFileManager *filemgr            = [NSFileManager defaultManager];
+    NSArray       *paths              = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString      *documentsDirectory = [paths objectAtIndex: 0];
+    NSString      *inboxPath          = [documentsDirectory stringByAppendingPathComponent: @"Inbox"];
+    NSArray       *dirFiles           = [filemgr contentsOfDirectoryAtPath: inboxPath error: nil]; 
+
+
+    //  2016-05-17 17:39:17.322 Me and My BFFs[4383:2312539] in -(BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation !!!!!!!!!
+    //  2016-05-17 17:39:17.322 Me and My BFFs[4383:2312539] sourceApplication=[com.apple.mobilemail]
+    //  2016-05-17 17:39:17.322 Me and My BFFs[4383:2312539] annotation=[{
+    //  }]
+    //  2016-05-17 17:39:17.322 Me and My BFFs[4383:2312539] paths              =[(
+    //      "/var/mobile/Containers/Data/Application/1DF92173-5E30-415C-AD71-7332B530A100/Documents"
+    //  )]
+    //  2016-05-17 17:39:17.322 Me and My BFFs[4383:2312539] documentsDirectory =[/var/mobile/Containers/Data/Application/1DF92173-5E30-415C-AD71-7332B530A100/Documents]
+    //  2016-05-17 17:39:17.323 Me and My BFFs[4383:2312539] inboxPath          =[/var/mobile/Containers/Data/Application/1DF92173-5E30-415C-AD71-7332B530A100/Documents/Inbox]
+    //  2016-05-17 17:39:17.323 Me and My BFFs[4383:2312539] dirFiles           =[(
+    //      "people-1.mamb",
+    //      "people-2.mamb",
+    //      "people.mamb"
+    //  )]
+    //
+    for (NSString *fil in dirFiles)
+    {
+        if ([fil hasSuffix: @"mamb"]) {
+            NSString *fileToRemove;
+            fileToRemove = [NSString stringWithFormat:@"%@/%@", inboxPath, fil];
+  NSLog(@"fileToRemove =[%@]",fileToRemove );
+            [filemgr   removeItemAtPath: fileToRemove   error: NULL];
+  NSLog(@"removed a MAMB file from Inbox !");
+        }
+    }
+
+//    // for test    check files are gone
+//    NSArray       *dirFiles2          = [filemgr contentsOfDirectoryAtPath: inboxPath error: nil]; 
+//      NSLog(@"dirFiles2=[%@]",dirFiles2);
+
+} // end of deleteAll_MAMB_files_fromInbox 
+
+
+
+
+//  2016-05-18 10:20:01.207 Me and My BFFs[4492:2371941] url                =[file:///private/var/mobile/Containers/Data/Application/5AD0EC42-DA9A-470C-8E58-C48904ED03ED/Documents/Inbox/people.mamb]
+//  2016-05-18 10:20:01.207 Me and My BFFs[4492:2371941] sourceApplication  =[com.apple.mobilemail]
+//  2016-05-18 10:20:01.208 Me and My BFFs[4492:2371941] annotation         =[{
+//  }]
+//  2016-05-18 10:20:01.208 Me and My BFFs[4492:2371941] paths              =[(
+//      "/var/mobile/Containers/Data/Application/5AD0EC42-DA9A-470C-8E58-C48904ED03ED/Documents"
+//  )]
+//  2016-05-18 10:20:01.208 Me and My BFFs[4492:2371941] documentsDirectory =[/var/mobile/Containers/Data/Application/5AD0EC42-DA9A-470C-8E58-C48904ED03ED/Documents]
+//  2016-05-18 10:20:01.208 Me and My BFFs[4492:2371941] inboxPath          =[/var/mobile/Containers/Data/Application/5AD0EC42-DA9A-470C-8E58-C48904ED03ED/Documents/Inbox]
+//  2016-05-18 10:20:01.209 Me and My BFFs[4492:2371941] dirFiles           =[(
+//      "people.mamb"
+//  )]
+//
+
+  // -------------------------------------------------------------------------------------------------------------------
+  // in MAMB09_selShareEntityTableViewController.m     example for  share groups 
+  // -------------------------------------------------------------------------------------------------------------------
+  //   - collect user-chosen people or groups to share in  gbl_arrayShareGroups OR gbl_arraySharePeople 
+  //     -------------------------------------------------------------------------------------------------------------------
+  //     in method  pressedSaveDone
+  //     -------------------------------------------------------------------------------------------------------------------
+  //   - write gbl_arrayShareGroups to mambd7 (GETS INCRIPTION here) in gbl_appDocDirStr
+  //       [myappDelegate mambWriteNSArrayWithDescription: (NSString *) @"sharegroups"];
+  //        -------------------------------------------------------------------------------------------------------------------
+  //        in method mambWriteNSArrayWithDescription
+  //        -------------------------------------------------------------------------------------------------------------------
+  //          set already   gbl_pathToExport = [gbl_appDocDirStr stringByAppendingPathComponent: @"mambd7"];  
+  //          set already   gbl_URLToExport  = [NSURL fileURLWithPath: gbl_pathToExport  isDirectory:NO];  // mambd7  file name
+  //        - if ([argEntityDescription isEqualToString:@"sharegroups"])   {
+  //              myURLtoWriteTo = gbl_URLToExport; 
+  //              myArray        = gbl_arrayShareGroups;
+  //          } 
+  // 
+  // here, selected groups are in Doc dir / mambd7   (has incription)
+  // 
+  //   - at end of method  pressedSaveDone, do this:
+  //     [self doMailComposeSend ];
+  // 
+  //     -------------------------------------------------------------------------------------------------------------------
+  //     in method  doMailComposeSend 
+  //     -------------------------------------------------------------------------------------------------------------------
+  //     - copy  export file mambd7 in gbl_appDocDirStr  to gbl_mamb_fileNameOnEmail (like "groups.mamb") in NSTemporaryDirectory()
+  //     - NOTE:   (NAME CHANGE HERE  from mambdy  to  "groups.mamb")
+  //     - attach  TMP dir / groups.mamb  to the email
+  //
+  //     - put up the MAIL USER DIALOGUE
+  //
+  //       [self presentViewController: myMailComposeViewController animated:YES completion:NULL];
+  //
+  //     - users taps "send" and the email is sent
+  //
+  //
+  // EMAIL GOES THRU THE ETHER
+  //
+  //
+  // -------------------------------------------------------------------------------------------------------------------
+  // receiving user on other (second) iphone opens the share email
+  // -------------------------------------------------------------------------------------------------------------------
+  //   - receiving user LONG TAPS on "groups.mamb" attachment
+  //   - iOS system silently copies attachment to  DocumentsDirectory / Inbox / groups.mamb
+  //   - iOS system calls the method below (openurl)  with these args
+  //       url =[file:///private/var/mobile/Containers/Data/Application/5AD0EC42-DA9A-470C-8E58-C48904ED03ED/Documents/Inbox/people.mamb]
+  //       sourceApplication  =[com.apple.mobilemail]
+  //       annotation         =[{
+  //  }]
+  //
+  // 
+  // here, selected groups are on email opener's device  in   DocumentsDirectory / Inbox / groups.mamb
+  // 
+  // 
+
+    // ==============================
+    //    Documents/Inbox  directory
+    // ==============================
+    //   Use this directory to access files that your app was asked to open by outside entities.
+    //   Specifically, the Mail program places email attachments associated with your app in this directory.
+    //   Document interaction controllers may also place files in it.
+    //
+    //   Your app can read and delete files in this directory but cannot create new files or write to existing files.
+    //   If the user tries to edit a file in this directory,
+    //   your app must silently move it out of the directory before making any changes.
+    //
+    //   THE CONTENTS OF THIS DIRECTORY ARE BACKED UP BY  iTunes.
+    // ==============================
+    //
+
+// for import/export, this method runs on a second device
+// whose user opens an export email and long taps on ".mamb" attachment
+//
+-(BOOL)application: (UIApplication *)application openURL: (NSURL *)url
+                                       sourceApplication: (NSString *)sourceApplication
+                                              annotation: (id)annotation
+{
+tn();
+  NSLog(@"in -(BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation !!!!!!!!!");
+  NSLog(@"url                =[%@]",url);
+  NSLog(@"sourceApplication  =[%@]",sourceApplication);
+  NSLog(@"annotation         =[%@]",annotation);
+
+    NSFileManager *filemgr            = [NSFileManager defaultManager];
+    NSArray       *paths              = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString      *documentsDirectory = [paths objectAtIndex: 0];
+    NSString      *inboxPath          = [documentsDirectory stringByAppendingPathComponent: @"Inbox"];
+    NSArray       *inboxDirFiles      = [filemgr contentsOfDirectoryAtPath: inboxPath error: nil]; 
+
+  NSLog(@"paths              =[%@]",paths);
+  NSLog(@"documentsDirectory =[%@]",documentsDirectory );
+  NSLog(@"inboxPath          =[%@]",inboxPath          );
+  NSLog(@"inboxDirFiles      =[%@]",inboxDirFiles );
+
+    // 
+    // here, selected groups (e.g.) are on email opener's device  in   DocumentsDirectory / Inbox / groups.mamb
+    // 
+
+// for test // this works! to put user interface in appDelegate.m      self.window.rootViewController 
+//    NSString *mymsg = @" this is msg\n osdifjoij";
+//    UIAlertController* alert = [UIAlertController alertControllerWithTitle: @"Corrupt Data has been Found"
+//                                                                   message: mymsg
+//                                                            preferredStyle: UIAlertControllerStyleAlert  ];
+//     
+//    UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+//                                                        style: UIAlertActionStyleDefault
+//                                                      handler: ^(UIAlertAction * action) {
+//        NSLog(@"Ok button pressed    for corrupt data");
+//    } ];
+//     
+//    [alert addAction:  okButton];
+//
+//
+////    [self presentViewController: alert  animated: YES  completion: nil   ];   NO SUCH
+////MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // for global methods in appDelegate.m
+////   [myappDelegate presentViewController: alert  animated: YES  completion: nil   ];   NO SUCH
+//
+////     window.rootViewController.presentViewController...
+////     [ self.window.rootViewController.presentViewController: alert  animated: YES  completion: nil   ];
+//
+//     [ self.window.rootViewController presentViewController: alert  animated: YES  completion: nil   ];  // THIS WORKS! to put user interface in appDelegate.m
+//
+
+
+  NSLog(@"inboxDirFiles.count =[%ld]",(long)inboxDirFiles.count );
+
+    // for each "*.mamb" file in Inbox directory
+    //    1.  if name is not "people.mamb" or "groups.mamb" put dialogue it can not be importeded
+    //    2.  do corruption test 
+    //    3.  do import  line by line into special import arrays
+    //       3b.  collision dialogue when necessary
+    //    4.  segue to new screen MAMB09_confirmImportTableViewController.m
+
+
+    // for each "*.mamb" import file in Inbox directory
+    //    1. if name is not "people.mamb" or "groups.mamb" put dialogue it can not be importeded
+    //
+    for (NSString *inboxFileName in inboxDirFiles) {
+  NSLog(@"inboxFileName=%@",inboxFileName);
+        if (    ! [inboxFileName isEqualToString:@"groups.mamb"]
+            &&  ! [inboxFileName isEqualToString:@"people.mamb"]  )
+        {
+            NSString *mymsg;
+            mymsg = [ NSString stringWithFormat:
+@"In order to be imported, a file has to have one of these two names: \"people.mamb\"  OR  \"groups.mamb\"\n\nThis file has the name \"%@\" and will not be imported.",
+                 inboxFileName
+             ];
+
+            UIAlertController* myAlert = [
+                UIAlertController alertControllerWithTitle: @"Bad Import File Name"
+                                                   message: mymsg
+                                            preferredStyle: UIAlertControllerStyleAlert 
+            ];
+            UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                                style: UIAlertActionStyleDefault
+                                                              handler: ^(UIAlertAction * action) {
+                    NSLog(@"Ok button pressed");
+                }
+            ];
+            [myAlert addAction:  okButton];
+
+            [ self.window.rootViewController presentViewController: myAlert   // THIS WORKS! to put user interface in appDelegate.m
+                                                          animated: YES
+                                                        completion: nil  
+            ];  // THIS WORKS! to put user interface in appDelegate.m
+
+
+            // remove bad file from Inbox         
+            NSString *fileToRemove;
+            fileToRemove = [NSString stringWithFormat:@"%@/%@", inboxDirFiles, inboxFileName];
+  NSLog(@"fileToRemove =[%@]",fileToRemove );
+            [filemgr   removeItemAtPath: fileToRemove   error: NULL];
+  NSLog(@"removed a file from Inbox!  (not named people.mamb OR groups.mamb)");
+
+            continue;  // goto next Inbox file 
+        }
+
+        //    2.  do corruption test 
+        //
+  NSLog(@"  2.  doing corruption test on Inbox file [%@]", inboxFileName );
+
+
+    } // for each file in Inbox dir
+
+
+
+    // here control goes back to here:  Me and My BFFs[4676:2570304] in applicationDidBecomeActive()  in appdelegate
+    // Note:  this is happening on a second iOS device where the user long tapped on export email ".mamb" file attachment
+
+
+
+
+
+//<.>
+//// UIAlertController
+//// - (void)addTextFieldWithConfigurationHandler:(void (^)(UITextField*textField))configurationHandler
+//// You can add a text field only if the preferredStyle property is set to UIAlertControllerStyleAlert. 
+//
+//
+////  http://useyourloaf.com/blog/uialertcontroller-changes-in-ios-8/
+//
+//UIAlertController *alertController = [UIAlertController
+//                              alertControllerWithTitle:alertTitle
+//                              message:alertMessage
+//                              preferredStyle:UIAlertControllerStyleAlert];
+//
+//UIAlertAction *cancelAction = [UIAlertAction 
+//            actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel action")
+//                      style:UIAlertActionStyleCancel
+//                    handler:^(UIAlertAction *action)
+//                    {
+//                      NSLog(@"Cancel action");
+//                    }];
+//
+//UIAlertAction *okAction = [UIAlertAction 
+//            actionWithTitle:NSLocalizedString(@"OK", @"OK action")
+//                      style:UIAlertActionStyleDefault
+//                    handler:^(UIAlertAction *action)
+//                    {
+//                      NSLog(@"OK action");
+//                    }];
+//
+//[alertController addAction:cancelAction];
+//[alertController addAction:okAction];
+//
+//[self presentViewController:alertController animated:YES completion:nil];
+//
+//<.>
+//UIAlertController *alertController = [UIAlertController
+//                    alertControllerWithTitle:alertTitle
+//                                     message:alertMessage
+//                              preferredStyle:UIAlertControllerStyleAlert];
+//
+//[alertController addTextFieldWithConfigurationHandler:^(UITextField *textField)
+// {
+//   textField.placeholder = NSLocalizedString(@"LoginPlaceholder", @"Login");
+// }];
+//
+//[alertController addTextFieldWithConfigurationHandler:^(UITextField *textField)
+// {
+//   textField.placeholder = NSLocalizedString(@"PasswordPlaceholder", @"Password");
+//   textField.secureTextEntry = YES;
+// }];
+//
+//// The values of the text field can be retrieved in the OK action handler:
+//
+//UIAlertAction *okAction = [UIAlertAction
+//  actionWithTitle:NSLocalizedString(@"OK", @"OK action")
+//  style:UIAlertActionStyleDefault
+//  handler:^(UIAlertAction *action)
+//  {
+//    UITextField *login = alertController.textFields.firstObject;
+//    UITextField *password = alertController.textFields.lastObject;
+//    ...
+//  }];
+//
+//
+//[alertController addTextFieldWithConfigurationHandler:^(UITextField *textField)
+// {
+//     textField.placeholder = NSLocalizedString(@"LoginPlaceholder", @"Login");
+//     [textField addTarget:self
+//                   action:@selector(alertTextFieldDidChange:)
+//         forControlEvents:UIControlEventEditingChanged];
+// }];
+//
+//
+//// Dismissing Alert Controllers
+////
+//// Typically the alert controller is dismissed automatically when the user selects an action.
+//// It can also be dismissed programmatically, if required, like any other view controller.
+//// One common reason can be to remove the alert or action sheet when the app moves to the background.
+//// Assuming we are listening for the UIApplicationDidEnterBackgroundNotification notification
+//// we can dismiss any presented view controller in the observer
+//// (see the example code for the setup of the observer in viewDidLoad):
+////
+//- (void)didEnterBackground:(NSNotification *)notification
+//{
+//  [self.presentedViewController dismissViewControllerAnimated:NO completion:nil];
+//}
+//
+//<.>
+//
+
+
+    //    - when import is ready,
+    //
+    //         new screen (tableview)  blue choose export color
+
+    //         - title      Names in this Import
+    //   
+    //           for groups   (3 lines below  are repeated as necessary)
+    //         - GROUP swim team
+    //           fred
+    //           ethyl
+    //           ...
+    //           blank line
+    //         - GROUP family
+    //           Mary
+    //           eva
+    //         
+    //           for people   
+    //         - John Smith
+    //           Mary
+    //    
+    //         - bottom action sheet 
+    //            --------------
+    //            Do this Import
+    //            --------------
+    //            Cancel Import
+    //            --------------
+
+
+
+    // YES!  must delete "*.mamb" because they are created every time   USER   LONG TAPS on ".mamb" attachment
+    //
+    // [myappDelegate deleteAll_MAMB_files_fromInbox ]; // del from Inbox dir all "*.mamb"
+    // is called when   MAMB09_selShareEntityTableViewController.m  STARTS
+    // so NO NEED to del "*.mamb" here when done
+    //
+
+
+  NSLog(@"at END of openURL!");
+tn();
+
+    // Note:  this is happening on a second iOS device where the user long tapped on export email ".mamb" file attachment
+    return YES;  // ???
+
+} // end of openURL
+
 
 
 

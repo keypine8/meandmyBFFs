@@ -51,9 +51,9 @@ tn();
 
     [super viewWillDisappear:animated];
 
-  NSLog(@"gbl_justLookedAtInfoScreen  bef in ViewWillDisappear in  INFO  =[%ld]",(long)gbl_justLookedAtInfoScreen );
+//  NSLog(@"gbl_justLookedAtInfoScreen  bef in ViewWillDisappear in  INFO  =[%ld]",(long)gbl_justLookedAtInfoScreen );
     gbl_justLookedAtInfoScreen = 1;
-  NSLog(@"gbl_justLookedAtInfoScreen  aft in ViewWillDisappear in  INFO  =[%ld]",(long)gbl_justLookedAtInfoScreen );
+//  NSLog(@"gbl_justLookedAtInfoScreen  aft in ViewWillDisappear in  INFO  =[%ld]",(long)gbl_justLookedAtInfoScreen );
 
     // check if gbl_ExampleData_show has changed, and
     // if so,  write out gbl_arrayGrp to save it
@@ -175,9 +175,9 @@ tn(); NSLog(@"in INFO   viewDidLoad!");
 
     gbl_ExampleData_show_entering = gbl_ExampleData_show;  // save entering value
 
-  NSLog(@"gbl_justLookedAtInfoScreen  bef in ViewDidLoad in  INFO  =[%ld]",(long)gbl_justLookedAtInfoScreen );
+//  NSLog(@"gbl_justLookedAtInfoScreen  bef in ViewDidLoad in  INFO  =[%ld]",(long)gbl_justLookedAtInfoScreen );
     gbl_justLookedAtInfoScreen = 1;
-  NSLog(@"gbl_justLookedAtInfoScreen  aft in ViewDidLoad in  INFO  =[%ld]",(long)gbl_justLookedAtInfoScreen );
+//  NSLog(@"gbl_justLookedAtInfoScreen  aft in ViewDidLoad in  INFO  =[%ld]",(long)gbl_justLookedAtInfoScreen );
 
 
     
@@ -335,7 +335,8 @@ nbn(1);
         {
             gbl_helpScreenDescription = @"HOMEaddchangeGROUP";
 
-            myNavBarLabel.text                      = @"Edit Group";
+//            myNavBarLabel.text                      = @"Edit Group";
+            myNavBarLabel.text                      = @"Edit Groups";
             myNavBarLabel.adjustsFontSizeToFitWidth = YES;
             [myNavBarLabel sizeToFit];
 
@@ -346,7 +347,8 @@ nbn(1);
         {
             gbl_helpScreenDescription = @"HOMEaddchangePERSON";
 
-            myNavBarLabel.text                      = @"Edit Person";
+//            myNavBarLabel.text                      = @"Edit Person";
+            myNavBarLabel.text                      = @"Edit People";
             myNavBarLabel.adjustsFontSizeToFitWidth = YES;
             [myNavBarLabel sizeToFit];
 
@@ -572,9 +574,9 @@ nbn(88);
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  NSLog(@"gbl_justLookedAtInfoScreen  bef in cellForRow in  INFO  =[%ld]",(long)gbl_justLookedAtInfoScreen );
+//  NSLog(@"gbl_justLookedAtInfoScreen  bef in cellForRow in  INFO  =[%ld]",(long)gbl_justLookedAtInfoScreen );
     gbl_justLookedAtInfoScreen = 1;
-  NSLog(@"gbl_justLookedAtInfoScreen  aft in cellForRow in  INFO  =[%ld]",(long)gbl_justLookedAtInfoScreen );
+//  NSLog(@"gbl_justLookedAtInfoScreen  aft in cellForRow in  INFO  =[%ld]",(long)gbl_justLookedAtInfoScreen );
 
     
 //  NSLog(@"in IINFO   cellForRowAtIndexPath!");
@@ -2981,7 +2983,8 @@ nbn(100);
                 cell.textLabel.font          = myTitleFont;
                 cell.backgroundColor         = gbl_color_cHed;
                 cell.textLabel.numberOfLines = 0;
-                cell.textLabel.text          = @"Birth Date and Time";
+//                cell.textLabel.text          = @"Birth Date and Time";
+                cell.textLabel.text          = @"Time of Day of Birth";
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -3064,7 +3067,7 @@ nbn(100);
 
             NSAttributedString *myAttributedStr = [[NSAttributedString alloc]
                 initWithString:
-@"\u2022 Tap red \"-\" button on the left.\n\u2022 A red \"Delete\" button slides over from the right edge of the screen.\n\u2022 You can Cancel out here if you want.\n\u2022 Tap the red \"Delete\" button to CONFIRM you want to delete this person.\n\u2022 You can see the person disappearing from the people list."
+@"\u2022 Tap the round red \"-\" button on the left.\n\u2022 A red \"Delete\" button slides over from the right edge of the screen.\n\u2022 You can Cancel out here if you want.\n\u2022 Tap the red \"Delete\" button to CONFIRM you want to delete this person.\n\u2022 You can see the person disappearing from the people list."
                     attributes: @{ NSParagraphStyleAttributeName: paragraphStyle }
             ];
 
@@ -3539,6 +3542,7 @@ nbn(100);
                 //                cell.textLabel.text          = @"Blue Home is for Reports";
 //                cell.textLabel.text          = @"Brown is for Reports";
                 cell.textLabel.text          = @"Brown Home is for Reports";
+//                cell.textLabel.text          = @"Brown Home is for Astrology Reports";
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -3562,7 +3566,8 @@ nbn(100);
             paragraphStyle.headIndent               = mySizeTwoCharsIndent;
 
             NSAttributedString *myAttributedStr = [[NSAttributedString alloc] initWithString:
-@"\u2022 View reports for people and groups you have added.\n\u2022 Share reports by email."
+//@"\u2022 View reports for people and groups you have added.\n\u2022 Share reports by email."
+@"\u2022 View astrology reports for people and groups you have added.\n\u2022 Share reports by email."
     attributes: @{NSParagraphStyleAttributeName: paragraphStyle}];
 
 
@@ -4013,7 +4018,8 @@ nbn(100);
 
             NSAttributedString *myAttributedStr = [[NSAttributedString alloc]
                 initWithString:
-@"\u2022 To have fun, get \"Me and my BFFs\" together and use this app.\n\u2022 To send ANY REPORT as an email attachment, tap the Share icon (box with arrow coming out) when viewing the report\n\u2022 To email a Group to a BFF who has this app:  Home > Edit > Groups > tap the Share icon > tap on the groups you want to share\n\u2022 To import a Group someone has emailed you, open the email on the device where you have this app and tap and hold on the email attachment"
+//@"\u2022 To have fun, get \"Me and my BFFs\" together and use this app.\n\u2022 To send ANY REPORT as an email attachment, tap the Share icon (box with arrow coming out) when viewing the report\n\u2022 To email a Group to a BFF who has this app:  Home > Edit > Groups > tap the Share icon > tap on the groups you want to share\n\u2022 To import a Group someone has emailed you, open the email on the device where you have this app and tap and hold (long tap) on the email attachment.  A bunch of app icons come up.  Tap on the Me and my BFFs icon and the import begins."
+@"\u2022 To have fun, get \"Me and my BFFs\" together and use this app.\n\u2022 To send ANY REPORT as an email attachment, tap the Share icon (box with arrow coming out) when viewing the report\n\u2022 To email a Group to a BFF who has this app:  Home > Edit > Groups > tap the Share icon > tap on the groups you want to share\n\u2022 To import a Group someone has emailed you, open the email on the device where you have this app and tap and hold (long tap) on the email attachment."
                     attributes: @{ NSParagraphStyleAttributeName: paragraphStyle }
             ];
 
@@ -4249,7 +4255,7 @@ nbn(100);
 
         if (indexPath.row ==   0) return    16.0;  // spacer
         if (indexPath.row ==   1) return    30.0;  // title for brown home
-        if (indexPath.row ==   2) return    50.0;  // text  for brown
+        if (indexPath.row ==   2) return    70.0;  // text  for brown
         if (indexPath.row ==   3) return    16.0;  // spacer
         if (indexPath.row ==   4) return    30.0;  // title for yellow home
         if (indexPath.row ==   5) return    72.0;  // text  for yellow
@@ -4269,7 +4275,7 @@ nbn(100);
         if (indexPath.row ==   14) return   200.0;  // report  list
 
         if (indexPath.row ==   15) return    30.0;  // title for do stuff
-        if (indexPath.row ==   16) return   190.0;  // text  for do stuff
+        if (indexPath.row ==   16) return   200.0;  // text  for do stuff
 
         if (indexPath.row ==   17) return    30.0;  // title for why not ?
         if (indexPath.row ==   18) return    90.0;  // text  for why not ?
@@ -4495,9 +4501,9 @@ nbn(100);
 //    self.navigationItem.rightBarButtonItem = mySpacerForTitle;
 //
 
-  NSLog(@"gbl_justLookedAtInfoScreen  bef in ViewWillAppear in  INFO  =[%ld]",(long)gbl_justLookedAtInfoScreen );
+//  NSLog(@"gbl_justLookedAtInfoScreen  bef in ViewWillAppear in  INFO  =[%ld]",(long)gbl_justLookedAtInfoScreen );
     gbl_justLookedAtInfoScreen = 1;
-  NSLog(@"gbl_justLookedAtInfoScreen  aft in ViewWillAppear in  INFO  =[%ld]",(long)gbl_justLookedAtInfoScreen );
+//  NSLog(@"gbl_justLookedAtInfoScreen  aft in ViewWillAppear in  INFO  =[%ld]",(long)gbl_justLookedAtInfoScreen );
 
 
 
@@ -4561,9 +4567,9 @@ nbn(100);
     //     [super viewDidAppear];
     NSLog(@"in INFO   viewDidAppear!");
 
-  NSLog(@"gbl_justLookedAtInfoScreen  bef in ViewDidAppear in  INFO  =[%ld]",(long)gbl_justLookedAtInfoScreen );
+//  NSLog(@"gbl_justLookedAtInfoScreen  bef in ViewDidAppear in  INFO  =[%ld]",(long)gbl_justLookedAtInfoScreen );
     gbl_justLookedAtInfoScreen = 1;
-  NSLog(@"gbl_justLookedAtInfoScreen  aft in ViewDidAppear in  INFO  =[%ld]",(long)gbl_justLookedAtInfoScreen );
+//  NSLog(@"gbl_justLookedAtInfoScreen  aft in ViewDidAppear in  INFO  =[%ld]",(long)gbl_justLookedAtInfoScreen );
 
 }
 

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-NSMutableArray *yearsToPickFrom3;  /* for pickerYearInLife */
+// NSMutableArray *yearsToPickFrom3;  /* for pickerYearInLife */
 
 
 @interface MAMB09_addChangeTableViewController : UITableViewController <UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UIGestureRecognizerDelegate, UITextViewDelegate, UIScrollViewDelegate>

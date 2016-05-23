@@ -15,7 +15,7 @@
 				<string>icon_MAMB09_0320.png</string>
 			</array>
 			<key>CFBundleTypeName</key>
-			<string>Me and my BFFs group data</string>
+			<string>Me and my BFFs export data</string>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>LSHandlerRank</key>
@@ -23,7 +23,6 @@
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>com.funnestastrology.meandmyBFFs.mamb</string>
-				<string>com.funnestastrology.meandmyBFFs.MAMB</string>
 			</array>
 		</dict>
 	</array>
@@ -63,7 +62,7 @@
 				<string>public.data</string>
 			</array>
 			<key>UTTypeDescription</key>
-			<string>Me and my BFFS group data</string>
+			<string>Me and my BFFS export data</string>
 			<key>UTTypeIdentifier</key>
 			<string>com.funnestastrology.meandmyBFFs.mamb</string>
 			<key>UTTypeSize320IconFile</key>
@@ -80,8 +79,31 @@
 			<key>public.filename-extension</key>
 			<array>
 				<string>mamb</string>
-				<string>MAMB</string>
 			</array>
+		</dict>
+	</array>
+	<key>UTImportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.data</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>Me and my BFFS export data</string>
+			<key>UTTypeIdentifier</key>
+			<string>com.funnestastrology.meandmyBFFs.mamb</string>
+			<key>UTTypeSize320IconFile</key>
+			<string>icon_MAMB09_0320</string>
+			<key>UTTypeSize64IconFile</key>
+			<string>icon_MAMB09_0064</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>mamb</string>
+				</array>
+			</dict>
 		</dict>
 	</array>
 </dict>

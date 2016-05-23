@@ -145,8 +145,8 @@ NSLog(@"in viewDidAppear()   in sel year");
     MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
     [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.0 ];    // after arg seconds
                                                     
-    // this MOVED to viewWillAppear to get latest date then going to rpt and back
-    // do {    // populate array yearsToPickFrom for uiPickerView and init picker and calendar year text field
+    // this below  MOVED to viewWillAppear to get latest date when going to rpt and back
+    // do       // populate array yearsToPickFrom for uiPickerView and init picker and calendar year text field
 
 
 NSLog(@"END of viewDidAppear()  in sel Year");
@@ -243,7 +243,7 @@ tn();
 
         // get remembered year, if present
         //
-        //NSString *psvRememberedYear = psvArray[10];  // know remembered year is 11th element
+        // NSString *psvRememberedYear = psvArray[10];  // know remembered year is 11th element
 
 // old way (hard code)
 //        NSString *myRemPSV   = gbl_arrayPerRem[gbl_fromHomeCurrentSelectionArrayIdx];
@@ -312,7 +312,20 @@ nbn(2);
             });
         } else {   
 nbn(3);
+  NSLog(@"gbl_currentYearInt                                        =[%ld]",(long)gbl_currentYearInt);
+  NSLog(@" [ yearsToPickFrom[ yearsToPickFrom.count - 2 ] intValue] =[%ld]", (long)[ yearsToPickFrom[ yearsToPickFrom.count - 2 ] intValue]);
+  NSLog(@"[psvRememberedYear intValue]                              =[%ld]",(long)[psvRememberedYear intValue] );
+            if ([psvRememberedYear intValue] > [ yearsToPickFrom[ yearsToPickFrom.count - 2 ] intValue] )
+            {
+                // psvRememberedYear = @(yearsToPickFrom.count -1 ).stringValue;
+                // psvRememberedYear = [NSString stringWithFormat:@"%d",yearsToPickFrom.count -1 ];
+                psvRememberedYear = yearsToPickFrom[ yearsToPickFrom.count - 2 ]; // second last elt should be current year
+
+            }
+  NSLog(@"psvRememberedYear  2     =[%ld]",(long)psvRememberedYear );
+
             gbl_lastSelectedYear           = psvRememberedYear;
+
             dispatch_async(dispatch_get_main_queue(), ^{                                // <===  <.>
 
                 if ([gbl_lastSelectionType isEqualToString:@"person"]) {
@@ -358,8 +371,7 @@ nbn(6);
         NSInteger myIndex = [yearsToPickFrom indexOfObject: gbl_lastSelectedYear];
         if (myIndex == NSNotFound) {
 nbn(7);
-            // second last elt should be current year
-            myIndex = yearsToPickFrom.count - 2;
+            myIndex = yearsToPickFrom.count - 2; // second last elt should be current year
         }
 nbn(8);
         // This is how you manually SET(!!) a selection!
@@ -634,16 +646,40 @@ nbn(103);
 // The number of rows of data in picker
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component  // req'd
 {
-    //NSLog(@"picker in numberOfRowsInComponent!");
-    //NSLog(@"yearsToPickFrom.count=%lu",(unsigned long)yearsToPickFrom.count);
+  NSLog(@"picker in numberOfRowsInComponent!");
+  NSLog(@" [ yearsToPickFrom[ yearsToPickFrom.count - 2 ] intValue] =[%ld]", (long)[ yearsToPickFrom[ yearsToPickFrom.count - 2 ] intValue] );
+  NSLog(@"[gbl_lastSelectedYear intValue]                           =[%ld]", (long)[gbl_lastSelectedYear intValue] );
+
+
+    if ([gbl_lastSelectedYear intValue] > [ yearsToPickFrom[ yearsToPickFrom.count - 1 ] intValue])
+    {
+       gbl_lastSelectedYear = yearsToPickFrom[ yearsToPickFrom.count - 2 ]; // second last elt should be current year
+    }
+  NSLog(@"gbl_lastSelectedYear 2 =[%@]",gbl_lastSelectedYear );
     
+
     return yearsToPickFrom.count;
 }
 
 // The data to return for the row and component (column) that's being passed in
 - (NSString*)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component   // opt
 {
-    // NSLog(@"picker in titleForRow!");
+  NSLog(@"picker in titleForRow!");
+  NSLog(@"row                  =%lu",(unsigned long)row);
+  NSLog(@" [ yearsToPickFrom[ yearsToPickFrom.count - 2 ] intValue] =[%ld]", (long)[ yearsToPickFrom[ yearsToPickFrom.count - 2 ] intValue] );
+    
+    if (row  >  yearsToPickFrom.count - 1 ) row = yearsToPickFrom.count - 1;
+  NSLog(@"row       2          =%lu",(unsigned long)row);
+
+//    if (gbl_lastSelectedYear >  yearsToPickFrom.count - 1 ) gbl_lastSelectedYear = yearsToPickFrom.count - 1;
+  NSLog(@"gbl_lastSelectedYear 1 =[%@]",gbl_lastSelectedYear );
+    if ([gbl_lastSelectedYear intValue] > [ yearsToPickFrom[ yearsToPickFrom.count - 1 ] intValue])
+    {
+       gbl_lastSelectedYear = yearsToPickFrom[ yearsToPickFrom.count - 2 ]; // second last elt should be current year
+    }
+  NSLog(@"gbl_lastSelectedYear 2 =[%@]",gbl_lastSelectedYear );
+
+
     [[pickerView.subviews objectAtIndex:1] setBackgroundColor: gbl_colorDIfor_home];  // selection indicator lines
     [[pickerView.subviews objectAtIndex:2] setBackgroundColor: gbl_colorDIfor_home];
     

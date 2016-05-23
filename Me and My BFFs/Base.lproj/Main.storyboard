@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="i8R-GB-Xla">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="i8R-GB-Xla">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -30,11 +30,11 @@
                     <extendedEdge key="edgesForExtendedLayout" top="YES"/>
                     <navigationItem key="navigationItem" id="DQv-UV-LF6">
                         <nil key="title"/>
-                        <barButtonItem key="leftBarButtonItem" image="02C3653E-D765-45E8-8F71-BF58B62A26D9" id="d9Q-aF-H9x">
+                        <barButtonItem key="leftBarButtonItem" image="09812DA7-CF7D-48B8-87EC-F64FC56DABA4" id="d9Q-aF-H9x">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" id="CBz-6B-dZ2">
                                 <rect key="frame" x="16" y="7" width="30" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="myicon" image="95EEBE39-EEB4-49A6-BD79-7101ADC07F70">
+                                <state key="normal" title="myicon" image="199C2FB9-3076-49B4-A702-43B21A69E3A5">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                             </button>
@@ -649,7 +649,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="02C3653E-D765-45E8-8F71-BF58B62A26D9" width="144" height="144">
+        <image name="09812DA7-CF7D-48B8-87EC-F64FC56DABA4" width="144" height="144">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGOjtYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBEW
 GxwgISgrLjQ3VSRudWxs1AkKCwwNDg8QViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBzV05TQ29sb3KA
@@ -2083,7 +2083,7 @@ hQABTY0AAU2QAAFNlQABTaQAAU2oAAFNrwABTbcAAU3EAAFNyQABTcsAAU3NAAFN0gABTdoAAU3dAAFN
 4gABTeoAAU3tAAFN/wABTgIAAU4HAAAAAAAABAEAAAAAAAAAPgAAAAAAAAAAAAAAAAABTgk
 </mutableData>
         </image>
-        <image name="95EEBE39-EEB4-49A6-BD79-7101ADC07F70" width="29" height="29">
+        <image name="199C2FB9-3076-49B4-A702-43B21A69E3A5" width="29" height="29">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGOjtYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBEW
 GxwgISgrLjQ3VSRudWxs1AkKCwwNDg8QViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBzV05TQ29sb3KA

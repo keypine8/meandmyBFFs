@@ -1508,8 +1508,7 @@ tn();    NSLog(@"in shareButtonAction!  in viewHTML   ");
 
         dispatch_async(dispatch_get_main_queue(), ^(void){
                 [self presentViewController: myMailComposeViewController animated:YES completion:NULL];
-            }
-        );
+        });
     }
     else
     {
@@ -1532,7 +1531,9 @@ tn();    NSLog(@"in shareButtonAction!  in viewHTML   ");
          
         [alert addAction:  okButton];
 
-        [self presentViewController: alert  animated: YES  completion: nil   ];
+        dispatch_async(dispatch_get_main_queue(), ^(void){
+            [self presentViewController: alert  animated: YES  completion: nil   ];
+        });
     }
 } // shareButtonAction
 
@@ -1541,6 +1542,15 @@ tn();    NSLog(@"in shareButtonAction!  in viewHTML   ");
            didFinishWithResult:(MFMailComposeResult)result
                          error:(NSError *)error
 {
+
+    // AVOID this ERROR:
+    // ios Attempting to load the view of a view controller while it is deallocating is not allowed and may result in undefined behavior
+    //
+    //   use    dispatch_async(dispatch_get_main_queue(), ^(void)
+    //        around presentViewController
+    //   BUT NOT  around   [self dismissViewControllerAnimated:YES completion:NULL];
+    //
+
     if (error) {
 //        UIAlertView *myalert = [[UIAlertView alloc] initWithTitle: @"An error happened"
 //                                                          message: [error localizedDescription]
@@ -1558,15 +1568,16 @@ tn();    NSLog(@"in shareButtonAction!  in viewHTML   ");
 NSLog(@"Ok button pressed");
         } ];
         [alert addAction:  okButton];
-        [self presentViewController: alert  animated: YES  completion: nil   ];
+        dispatch_async(dispatch_get_main_queue(), ^(void){
+            [self presentViewController: alert  animated: YES  completion: nil   ];
+        });
 
         // [self dismissViewControllerAnimated:yes completion:<#^(void)completion#>];
 
-        dispatch_async(dispatch_get_main_queue(), ^(void){
+//        dispatch_async(dispatch_get_main_queue(), ^(void){
             [self dismissViewControllerAnimated: YES
                                      completion:NULL];
-            }
-        );
+//        });
     }
     switch (result)
     {
@@ -1588,7 +1599,9 @@ NSLog(@"Mail cancelled");
 NSLog(@"Ok button pressed");
             } ];
             [alert addAction:  okButton];
-            [self presentViewController: alert  animated: YES  completion: nil   ];
+            dispatch_async(dispatch_get_main_queue(), ^(void){
+                [self presentViewController: alert  animated: YES  completion: nil   ];
+            });
 
             break;
         }
@@ -1610,7 +1623,9 @@ NSLog(@"Ok button pressed");
 NSLog(@"Ok button pressed");
             } ];
             [alert addAction:  okButton];
-            [self presentViewController: alert  animated: YES  completion: nil   ];
+            dispatch_async(dispatch_get_main_queue(), ^(void){
+                [self presentViewController: alert  animated: YES  completion: nil   ];
+            });
 
             break;
         }
@@ -1631,7 +1646,9 @@ NSLog(@"Ok button pressed");
 NSLog(@"Ok button pressed");
             } ];
             [alert addAction:  okButton];
-            [self presentViewController: alert  animated: YES  completion: nil   ];
+            dispatch_async(dispatch_get_main_queue(), ^(void){
+                [self presentViewController: alert  animated: YES  completion: nil   ];
+            });
 
 
             break;
@@ -1654,7 +1671,9 @@ NSLog(@"Ok button pressed");
 NSLog(@"Ok button pressed");
             } ];
             [alert addAction:  okButton];
-            [self presentViewController: alert  animated: YES  completion: nil   ];
+            dispatch_async(dispatch_get_main_queue(), ^(void){
+                [self presentViewController: alert  animated: YES  completion: nil   ];
+            });
 
             break;
         }
@@ -1666,11 +1685,17 @@ NSLog(@"Ok button pressed");
 
     //[self dismissModalViewControllerAnimated:YES
 
-    dispatch_async(dispatch_get_main_queue(), ^(void){
+    // AVOID this ERROR:
+    // ios Attempting to load the view of a view controller while it is deallocating is not allowed and may result in undefined behavior
+    //
+    //   use    dispatch_async(dispatch_get_main_queue(), ^(void)
+    //        around presentViewController
+    //   BUT NOT  around   [self dismissViewControllerAnimated:YES completion:NULL];
+    //
+//    dispatch_async(dispatch_get_main_queue(), ^(void){
             [self dismissViewControllerAnimated:YES
                                      completion:NULL];
-        }
-    );
+//    });
 
 } //  didFinishWithResult:(MFMailComposeResult)result
 
