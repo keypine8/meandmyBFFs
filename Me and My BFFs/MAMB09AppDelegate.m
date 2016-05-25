@@ -11,20 +11,27 @@
 #import "MAMB09_UITextField_noCopyPaste.h"
 
 
-//  -----   turning off logging for production
+// ======================================================================================================================
+//          turning off logging for production    TURN OFF   DISABLE LOGGING
+// ======================================================================================================================
 //
+// --------------------------
 //  FOR  turning off NSLog
+// --------------------------
 //  in file "Me and My BFFs-Prefix.pch"  in xcode folder "supporting files"
 //  at the end of the file
 //
-//  have this for doing logging:
+//  for doing logging:
 //  #define NSLog(...)
 //
-//  have this for doing turning OFF logging:
+//  for turning OFF logging, uncomment this line   right here
 //  // #define NSLog(...)
+// --------------------------
 //
 //
+// --------------------------
 //  FOR turning off  rkdebug  functions for C
+// --------------------------
 //  in rkdebug.c
 //  around line 108:
 //
@@ -33,8 +40,12 @@
 //
 //  have this for doing turning OFF logging:
 //     int RKDEBUG=0;  /* =0 turns off output in all these debug functions */
+// --------------------------
 //
+// ======================================================================================================================
 // end of  -----   turning off logging for production
+// ======================================================================================================================
+
 
 
 // ---------------------------------------------------------------------------
@@ -43,7 +54,7 @@
 // “Dunbar’s number is a theoretical cognitive limit to the number of people
 // with whom one can maintain stable social relationships.
 // These are relationships in which an individual knows who each person is,
-// and how each person relates to every other person. 
+// and how each person relates to every other person." 
 // ---------------------------------------------------------------------------
 
 
@@ -63,6 +74,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+//tn();  causes crash on this line:  void tn(void) { if(RKDEBUG) { fprintf(fpdb,"\n"); fflush(fpdb); } }
+
     NSLog(@"in didFinishLaunchingWithOptions()  in appdelegate");
     
 
@@ -1960,6 +1973,10 @@
     
     //  end of   SET GBL DATA  HERE
     
+  NSLog(@"END OF  didFinishLaunchingWithOptions()  in appdelegate");
+
+//tn();  causes crash on this line:  void tn(void) { if(RKDEBUG) { fprintf(fpdb,"\n"); fflush(fpdb); } }
+
     return YES;
     
 } // didFinishLaunchingWithOptions
@@ -4776,16 +4793,29 @@ trn(" XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 // for import/export, this method runs on a second device
 // whose user opens an export email and long taps on ".mamb" attachment
+
+//-(BOOL)application: (UIApplication *)application openURL: (NSURL *)url
+//                                       sourceApplication: (NSString *)sourceApplication
+//                                              annotation: (id)annotation
 //
+//  I believe there is a better answer now as,
+//  
+//  Both are deprecated in ios 9.
+//  application:handleOpenURL:
+//  application:openURL:sourceApplication:annotation:
+//
+//  Apple suggestion is:   Use application:openURL:options: instead.
+// 
 -(BOOL)application: (UIApplication *)application openURL: (NSURL *)url
-                                       sourceApplication: (NSString *)sourceApplication
-                                              annotation: (id)annotation
+                                                 options: (NSDictionary<NSString *, id> *)options
+
 {
-tn();
-  NSLog(@"in -(BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation !!!!!!!!!");
+//tn();
+  NSLog(@"in openURL: options: !!!!!!!!!");
   NSLog(@"url                =[%@]",url);
-  NSLog(@"sourceApplication  =[%@]",sourceApplication);
-  NSLog(@"annotation         =[%@]",annotation);
+  NSLog(@"options            =[%@]",options);
+//  NSLog(@"sourceApplication  =[%@]",sourceApplication);
+//  NSLog(@"annotation         =[%@]",annotation);
 
     NSFileManager *filemgr            = [NSFileManager defaultManager];
     NSArray       *paths              = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -4831,10 +4861,13 @@ tn();
   NSLog(@"inboxDirFiles.count =[%ld]",(long)inboxDirFiles.count );
 
     // for each "*.mamb" file in Inbox directory
-    //    1.  if name is not "people.mamb" or "groups.mamb" put dialogue it can not be importeded
+    //    1.  if name is not "people.mamb" or "groups.mamb" put dialogue it can not be imported
     //    2.  do corruption test 
-    //    3.  do import  line by line into special import arrays
+    //    3.  do import  line by line into special gbl import arrays
     //       3b.  collision dialogue when necessary
+    //
+    //    // here we have valid import arrays or user has Cancelled out
+    //
     //    4.  segue to new screen MAMB09_confirmImportTableViewController.m
 
 
@@ -4881,9 +4914,39 @@ tn();
             continue;  // goto next Inbox file 
         }
 
-        //    2.  do corruption test 
+        // here we have an Inbox file called  "people.mamb" or "groups.mamb"
+
+
+        //    2.  do corruption test on this inbox file ".mamb"
         //
   NSLog(@"  2.  doing corruption test on Inbox file [%@]", inboxFileName );
+
+
+        // here, user has finished handling collisions for THIS particular ".mamb" file email attachment
+
+
+//  NSLog(@"doing segue   segueOpenUrlToConfirmImport !");
+//        // Put up confirmImport  screen listing all import data in this ".mamb" file email attachment
+//        //
+//        //     segue  to  MAMB09_confirmImportTableViewController.m
+//        //
+//        //        [self performSegueWithIdentifier:@"segueOpenUrlToConfirmImport" sender:self];    DOES NOT WORK here in appDel.m
+//        UINavigationController *navigationController = (UINavigationController*) self.window.rootViewController;
+//        [[[navigationController viewControllers] objectAtIndex:0] performSegueWithIdentifier:@"segueOpenUrlToConfirmImport" sender:self];
+//
+//        // This will only work if the index in viewControllers array matches the one of your view controller
+//        // and if it exists of course. In this case is the first one (in the array and storyboard).
+//        //
+//        // The segue ("goToMeeting") must not be attached to an action.
+//        // The way you do this is by control-dragging from the file owner icon at the bottom of the storyboard scene
+//        // to the destination scene.
+//        //   - A popup will appear that will ask for an option in “Manual Segue”;
+//        //   - pick “Push” as the type.
+//        //   - Tap on the little square and make sure you’re in the Attributes Inspector.
+//        //   - Give it an identifier which you will use to refer to it in code.
+//
+//  NSLog(@"finished segue   segueOpenUrlToConfirmImport !");
+//
 
 
     } // for each file in Inbox dir
@@ -4892,6 +4955,7 @@ tn();
 
     // here control goes back to here:  Me and My BFFs[4676:2570304] in applicationDidBecomeActive()  in appdelegate
     // Note:  this is happening on a second iOS device where the user long tapped on export email ".mamb" file attachment
+
 
 
 
@@ -5025,8 +5089,8 @@ tn();
     //
 
 
-  NSLog(@"at END of openURL!");
-tn();
+  NSLog(@"at END of openURL: options: !!!!!!!!!");
+//tn();
 
     // Note:  this is happening on a second iOS device where the user long tapped on export email ".mamb" file attachment
     return YES;  // ???

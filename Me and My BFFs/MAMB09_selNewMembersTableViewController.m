@@ -90,23 +90,22 @@ tn();
 
         NSString *myNavBar2lineTitle;
         
-        myNavBar2lineTitle = [NSString stringWithFormat:  @"Add New People to\nGroup %@", @"" ]; // default
+//        myNavBar2lineTitle = [NSString stringWithFormat:  @"Add New People to\nGroup %@", @"" ]; // default
+        myNavBar2lineTitle = [NSString stringWithFormat:  @"Pick New People for\nGroup %@", @"" ]; // default
 
         if (   self.view.bounds.size.width >= 414.0        // 6+ and 6s+  and bigger
         ) {
-            myNavBar2lineTitle = [NSString stringWithFormat:  @"Add New People to\nGroup %@",gbl_lastSelectedGroup ];
-//myNavBar2lineTitle = [NSString stringWithFormat:  @"Add New People to\nGroup %@", @"Moon Base w2345"];
+//            myNavBar2lineTitle = [NSString stringWithFormat:  @"Add New People to\nGroup %@",gbl_lastSelectedGroup ];
+            myNavBar2lineTitle = [NSString stringWithFormat:  @"Pick New People for\nGroup %@",gbl_lastSelectedGroup ];
         }
         else if (   self.view.bounds.size.width  < 414.0    // 6 and 6s
                  && self.view.bounds.size.width  > 320.0
         ) {
-            myNavBar2lineTitle = [NSString stringWithFormat:  @"Add New People to\nGroup %@",gbl_lastSelectedGroup ];
-//myNavBar2lineTitle = [NSString stringWithFormat:  @"Add New People to\nGroup %@", @"Moon Base w2345"];
+            myNavBar2lineTitle = [NSString stringWithFormat:  @"Pick New People for\nGroup %@",gbl_lastSelectedGroup ];
         }
         else if (   self.view.bounds.size.width <= 320.0   //  5s and 5 and 4s and smaller
         ) {
-            myNavBar2lineTitle = [NSString stringWithFormat:  @"Add New People to\n%@",gbl_lastSelectedGroup ];
-//myNavBar2lineTitle = [NSString stringWithFormat:  @"Add New People to\n%@", @"Moon Base w2345"];
+            myNavBar2lineTitle = [NSString stringWithFormat:  @"Pick New People for\n%@",gbl_lastSelectedGroup ];
         }
 
 
