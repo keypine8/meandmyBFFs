@@ -2835,7 +2835,8 @@ nbn(100);
             NSAttributedString *myAttributedStr = [[NSAttributedString alloc]
                 initWithString:
 //@"When you tap \"Done\" you get a choice of two Kinds of Save.\n\n1. \"Regular Save\"\n   This lets you or anyone go back in this app and look at and change the Birth City and Birth Date.\n\n2. \"Hide Birth Information Save\"\n   This is for when you want personal privacy for the new person at all times.  When you use this save choice, it means NOBODY, neither you nor the device owner nor anybody else can ever again change or even look at the Birth City or Birth Date.\n\n   That means, if you want to look at the birth information in the future, you need to write it down somewhere safe outside this app.\n\n\n   FURTHERMORE, whenever birth information goes outside this app, the Hide Birth Information mode is used:\n \u2022 when you share people or groups\n \u2022 when you do a full backup\n \u2022 when the app saves data for its own use"
-@"When you tap \"Done\" you get a choice of two Kinds of Save.\n\n1. \"Regular Save\"\n   This lets you or anyone go back in this app and look at and change the Birth City and Birth Date.\n\n2. \"Hide Birth Information Save\"\n   This is for when you want personal privacy for the new person at all times.  When you use this save choice, it means NOBODY, neither you nor the device owner nor anybody else can ever again change or even look at the Birth City or Birth Date.\n\n   That means, if you want to look at the birth information in the future, you need to write it down somewhere safe outside this app.\n\n\n   FURTHERMORE, whenever birth information goes outside this app, the Hide Birth Information mode is used:\n   \u2022 when you share people or groups\n   \u2022 when you do a full backup\n   \u2022 when the app saves data for its own use"
+//@"   When you tap \"Done\" you get a choice of two Kinds of Save.\n\n1. \"Regular Save\"\n   This lets you or anyone go back in this app and look at and change the Birth City and Birth Date.\n\n2. \"Hide Birth Information Save\"\n   This is for when you want personal privacy for the new person at all times.  When you use this save choice, it means NOBODY, neither you nor the device owner nor anybody else can ever again change or even look at the Birth City or Birth Date.\n\n   That means, if you want to look at the birth information in the future, you need to write it down somewhere safe outside this app.\n\n\n   FURTHERMORE, whenever birth information goes outside this app, the Hide Birth Information mode is used:\n   \u2022 when you share people or groups\n   \u2022 when you do a full backup\n   \u2022 when the app saves data for its own use"
+@"   When you tap \"Done\" you get a choice of two Kinds of Save.\n\n1. \"Regular Save\"\n   This kind of save lets you or anyone go back in this app and look at and change the Birth City and Birth Date.\n\n2. \"Hide Birth Information Save\"\n   This kind of save is for when you want personal privacy for the new person at all times.\n\n   NOBODY, neither you nor the device owner nor anybody else can ever again change or even look at the Birth City or Birth Date.\n\n   That means, if you want to look at the birth information in the future, you need to write it down somewhere safe outside this app.\n\n   FURTHERMORE, whenever birth information goes outside this app, the Hide Birth Information mode is always used:\n   \u2022 when you share people or groups\n   \u2022 when you do a full backup\n   \u2022 when the app saves data for its own use"
                     attributes: @{ NSParagraphStyleAttributeName: paragraphStyle }
             ];
 
@@ -2944,13 +2945,99 @@ nbn(100);
         }
 
         if (indexPath.row == 11) {
+
+
+//            NSString *textWithYellowHighlight = @" Wheel > ";
+            NSString *textWithYellowHighlight = gbl_titleForWheelButton;    //  gbl_titleForWheelButton = @"Wheel >";
+
+
+            NSString *allTextBirthCityOrTown = [NSString stringWithFormat:
+// @"Characters you can use in the place name:\n\n   abc defghijklmnopqrstuvwxyz-\n   ABC DEFGHIJKLMNOPQRSTUVWXYZ1234567890\n\nType letters in the city name until the city you want appears in the city field.\n\nAs you type each letter, what you have typed so far appears in the title bar of the keyboard.\n\nAs a SHORTCUT, when there are fewer than 25 cities starting with the letters you have typed so far, a yellow button appears, %@ .  Tap that button to get a wheel you can spin to the city you want.\n\nIt's possible the city or town cannot be found.  In that case, type in a city nearby- especially a bigger city.",
+ @"Characters you can use in the place name:\n\n   abc defghijklmnopqrstuvwxyz-\n   ABC DEFGHIJKLMNOPQRSTUVWXYZ1234567890\n\nType letters in the city name until the city you want appears in the city field.\n\nAs you type each letter, the letters you have typed so far appear in the title bar of the keyboard.\n\nAs a SHORTCUT, when you type a letter and there are fewer than 25 cities starting with the letters you have typed so far, a yellow button appears, %@ .  Tap that button to get a wheel you can spin to the city you want.\n\nIt's possible the city or town cannot be found.  In that case, type in a city nearby- especially a bigger city.",
+                textWithYellowHighlight 
+            ];
+
+            // Define needed attributes for the entire allLabelExplaintext 
+            NSDictionary *myNeededAttribs = @{
+                                      NSFontAttributeName: cell.textLabel.font,
+                                      NSBackgroundColorAttributeName: cell.textLabel.backgroundColor
+                                      };
+
+            NSMutableAttributedString *myAttributedTextBirthCityOrTown = 
+                [[NSMutableAttributedString alloc] initWithString: allTextBirthCityOrTown 
+                                                       attributes: myNeededAttribs     ];
+
+  NSLog(@"myAttributedTextBirthCityOrTown #1 =%@",myAttributedTextBirthCityOrTown);
+
+            // set text attributes on appropriate substring text inside myAttributedTextLabelExplain 
+            // * Notice that usage of rangeOfString here may cause some bugs - I use it here only for demonstration
+            //
+            //       e.g.   range: NSMakeRange(0,9)  ];          // offset, length
+            // 
+            NSRange range_whole = NSMakeRange(0, allTextBirthCityOrTown .length);
+            NSRange range_textWithYellowHighlight = [allTextBirthCityOrTown rangeOfString: textWithYellowHighlight ];
+                
+
+            [myAttributedTextBirthCityOrTown addAttribute: NSBackgroundColorAttributeName 
+                                                    value: gbl_color_cBgr 
+                                                    range: range_whole       ];
+
+            [myAttributedTextBirthCityOrTown addAttribute: NSBackgroundColorAttributeName 
+                                                    value: [UIColor yellowColor] 
+                                                    range: range_textWithYellowHighlight ];          // offset, length
+
+            [myAttributedTextBirthCityOrTown addAttribute: NSFontAttributeName
+                                                    value: myFontForText 
+                                                    range: NSMakeRange(0, myAttributedTextBirthCityOrTown.length)  ];  // offset, length
+
+
+
+  NSLog(@"myAttributedTextBirthCityOrTown #2 =%@",myAttributedTextBirthCityOrTown);
+
+
+//<.>
+//            // BEWARE: the order and what is here is a fragile house of cards    DO NOT CHANGE ANYTHING
+//            //
+//            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== text for label explain
+//                cell.textLabel.textColor      = [UIColor blackColor];
+//                cell.userInteractionEnabled   = NO;
+//                cell.textLabel.font           = myFontForText;
+//                cell.backgroundColor          = gbl_color_cBgr;
+//                cell.textLabel.numberOfLines  = 0;
+////                cell.textLabel.numberOfLines  = 25;
+////                cell.textLabel.text           = allLabelExplaintext; // for test
+//                cell.textLabel.text           = @" "; // for test
+//                cell.textLabel.attributedText = myAttributedTextLabelExplain;
+//                cell.imageView.image          = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+//                cell.backgroundView           = nil ;
+//                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+//            });
+//            return cell;
+//        }
+//<.>
+//
+
+
+
+
+
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== text for place of birth
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
                 cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
-                cell.textLabel.text          = @"Characters you can use in the place name:\n\n   abc defghijklmnopqrstuvwxyz-\n   ABC DEFGHIJKLMNOPQRSTUVWXYZ1234567890\n\nType letters in the city name until the city you want appears in the city field.\n\nAs you type each letter, the first city that starts with what you have typed so far appears in the city field.\n\nAs a SHORTCUT, when there are fewer than 25 cities starting with the letters you have typed so far, a yellow button appears - \"Wheel\".  Tap that button to get a wheel you can spin to the city you want.\n\nIt's possible the city or town cannot be found.  In that case, type in a city nearby- especially a bigger city.";
+//                cell.textLabel.text          = @"Characters you can use in the place name:\n\n   abc defghijklmnopqrstuvwxyz-\n   ABC DEFGHIJKLMNOPQRSTUVWXYZ1234567890\n\nType letters in the city name until the city you want appears in the city field.\n\nAs you type each letter, the first city that starts with what you have typed so far appears in the city field.\n\nAs a SHORTCUT, when there are fewer than 25 cities starting with the letters you have typed so far, a yellow button appears - \"Wheel\".  Tap that button to get a wheel you can spin to the city you want.\n\nIt's possible the city or town cannot be found.  In that case, type in a city nearby- especially a bigger city.";
+//                cell.textLabel.text          = @"Characters you can use in the place name:\n\n   abc defghijklmnopqrstuvwxyz-\n   ABC DEFGHIJKLMNOPQRSTUVWXYZ1234567890\n\nType letters in the city name until the city you want appears in the city field.\n\nAs you type each letter, what you have typed so far appears in the title bar of the keyboard.\n\nAlso, the first city that starts with what you have typed so far appears in the city field.\n\nAs a SHORTCUT, when there are fewer than 25 cities starting with the letters you have typed so far, a yellow button appears - \"Wheel\".  Tap that button to get a wheel you can spin to the city you want.\n\nIt's possible the city or town cannot be found.  In that case, type in a city nearby- especially a bigger city.";
+
+
+
+//                cell.textLabel.text          = @"Characters you can use in the place name:\n\n   abc defghijklmnopqrstuvwxyz-\n   ABC DEFGHIJKLMNOPQRSTUVWXYZ1234567890\n\nType letters in the city name until the city you want appears in the city field.\n\nAs you type each letter, what you have typed so far appears in the title bar of the keyboard.\n\nAs a SHORTCUT, when there are fewer than 25 cities starting with the letters you have typed so far, a yellow button appears - \"Wheel\".  Tap that button to get a wheel you can spin to the city you want.\n\nIt's possible the city or town cannot be found.  In that case, type in a city nearby- especially a bigger city.";
+
+                cell.textLabel.text           = @" "; // for test
+                cell.textLabel.attributedText = myAttributedTextBirthCityOrTown;
+
+
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -3003,7 +3090,8 @@ nbn(100);
 
             NSAttributedString *myAttributedStr = [[NSAttributedString alloc]
                 initWithString:
-@"\u2022 You may not know the time of birth.  Don't worry about it.\n\u2022 If you have no idea of what the time was, just accept the default time of one minute past noon.\n\u2022 If you know the approximate time, enter your best guess.\n\u2022 If you know there was Daylight Saving Time in effect, then subtract an hour from the time."
+//@"\u2022 You may not know the time of birth.  Don't worry about it.\n\u2022 If you have no idea of what the time was, just accept the default time of one minute past noon.\n\u2022 If you know the approximate time, enter your best guess.\n\u2022 If you know there was Daylight Saving Time in effect, then subtract an hour from the time."
+@"\u2022 You may not know the time of birth.  Don't worry about it.\n\u2022 If you have no idea of what the time was, just accept the default time of one minute past noon.\n\u2022 If you know the approximate time, enter your best guess.\n\u2022 If you know Daylight Saving Time was in effect, then subtract an hour from the time."
                     attributes: @{ NSParagraphStyleAttributeName: paragraphStyle }
             ];
 
@@ -3068,6 +3156,7 @@ nbn(100);
             NSAttributedString *myAttributedStr = [[NSAttributedString alloc]
                 initWithString:
 @"\u2022 Tap the round red \"-\" button on the left.\n\u2022 A red \"Delete\" button slides over from the right edge of the screen.\n\u2022 You can Cancel out here if you want.\n\u2022 Tap the red \"Delete\" button to CONFIRM you want to delete this person.\n\u2022 You can see the person disappearing from the people list."
+// There is no undo."
                     attributes: @{ NSParagraphStyleAttributeName: paragraphStyle }
             ];
 
@@ -3428,6 +3517,7 @@ nbn(100);
             NSAttributedString *myAttributedStr = [[NSAttributedString alloc]
                 initWithString:
 @"\u2022 Tap red \"-\" button on the left.\n\u2022 A red \"Delete\" button slides over from the right edge of the screen.\n\u2022 You can Cancel out here if you want.\n\u2022 Tap the red \"Delete\" button to CONFIRM you want to delete this group.\n\u2022 You can see the group disappearing from the group list."
+// There is no undo."
                     attributes: @{ NSParagraphStyleAttributeName: paragraphStyle }
             ];
 
@@ -3541,8 +3631,9 @@ nbn(100);
                 cell.textLabel.numberOfLines = 0;
                 //                cell.textLabel.text          = @"Blue Home is for Reports";
 //                cell.textLabel.text          = @"Brown is for Reports";
-                cell.textLabel.text          = @"Brown Home is for Reports";
+//                cell.textLabel.text          = @"Brown Home is for Reports";
 //                cell.textLabel.text          = @"Brown Home is for Astrology Reports";
+                cell.textLabel.text          = @"Brown Screen is for Reports";
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -3630,7 +3721,8 @@ nbn(100);
 //                cell.textLabel.text          = @"Yellow Home is for Editing";
 //                cell.textLabel.text          = @"Yellow is for Maintenance";
 //                cell.textLabel.text          = @"Yellow is for Editing";
-                cell.textLabel.text          = @"Yellow Home is for Editing";
+//                cell.textLabel.text          = @"Yellow Home is for Editing";
+                cell.textLabel.text          = @"Yellow Screen is for Editing";
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -3652,9 +3744,14 @@ nbn(100);
             NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
             paragraphStyle.headIndent               = mySizeTwoCharsIndent;
 
-            NSAttributedString *myAttributedStr = [[NSAttributedString alloc] initWithString:
-            @"\u2022 Add people and groups and make changes to them.\n\u2022 Share people or groups by email.\n\u2022 Backup all your data to an email attachment."
-    attributes: @{NSParagraphStyleAttributeName: paragraphStyle}];
+            NSAttributedString *myAttributedStr = [ [NSAttributedString alloc] initWithString:
+//            @"\u2022 Add people and groups and make changes to them.\n\u2022 Share people or groups by email.\n\u2022 Backup all your data to an email attachment."
+//            @"\u2022 Add people and groups and make changes to them.\n\u2022 Share people or groups by email."
+//            @"\u2022 Add new people and groups and make changes to them.\n\u2022 Share people or groups by email."
+            @"\u2022 Add new people and new groups and make changes to them.\n\u2022 Share people or groups by email."
+
+    attributes: @{NSParagraphStyleAttributeName: paragraphStyle}
+            ];
 
 
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== yellow text
@@ -3727,7 +3824,16 @@ nbn(100);
                 cell.textLabel.numberOfLines = 0;
 //                cell.textLabel.text          = @"Example people and groups have names starting with \"~\".\n\nThe example data lets you explore all the different reports and how the app works before you enter any new people or groups yourself.\n\nWhen you want to enter a new person go to the home screen.  You can tell the home screen because it has the black, red and yellow app icon on the top left.  Tap \"+\" beside it to add a new person.\n\nAfter a while, you might want to not see the example data.  Check the \"hide example data\" checkbox below.";
 //                cell.textLabel.text          = @"Example people and groups have names starting with \"~\".\n\nThe example data lets you explore all the different reports and how the app works before you enter any new people or groups yourself.\n\nWhen you want to enter a new person go to the home screen.  You can tell the home screen because it has the app icon on the top left.  Tap \"+\" beside it to add a new person.\n\nAfter a while, you might want to not see the example data.  If so, tap the switch below to off.";
-                cell.textLabel.text          = @"Example people and groups have names starting with \"~\".\n\nThe example data lets you explore all the different reports and see how the app works before you add any new people or groups yourself.\n\nExample people and groups cannot be changed.\n\nWhen you want to add a new person or group, go back to the home screen.  You can tell the home screen because it has the app icon on the top left.  Tap \"+\" to add a new person or group.";
+//                cell.textLabel.text          = @"Example people and groups have names starting with \"~\".\n\nThe example data lets you explore all the different reports and see how the app works before you add any new people or groups yourself.\n\nExample people and groups cannot be changed.\n\nWhen you want to add a new person or group, go back to the home screen.  You can tell the home screen because it has the app icon on the top left.  Tap \"+\" to add a new person or group.";
+//                cell.textLabel.text          = @"Example people and groups have names starting with \"~\".\n\nThe example data lets you explore all the different reports and see how the app works before you add any new people or groups yourself.\n\nExample people and groups cannot be changed.\n\nWhen you want to add a new person or group, go back to the home screen.  You can tell the home screen by the app icon on the top left.  Tap \"+\" to add a new person or group.";
+//                cell.textLabel.text          = @"Example people and groups have names starting with a squiggle, \"~\".\n\nThe example data lets you explore all the different reports and see how the app works before you add any new people or groups yourself.\n\nExample people and groups cannot be changed.\n\nWhen you want to add a new person or group, go back to the home screen.  You can tell the home screen by the app icon on the top left.  Tap \"+\" to add a new person or group.";
+//                cell.textLabel.text          = @"Example people and groups have names starting with a squiggle, \"~\".\n\nThe example data lets you explore all the different reports and see how the app works before you add any new people or groups yourself.\n\nExample people and groups cannot be changed.\n\nWhen you want to add a new person or group, go back to the brown home screen.  You can tell the home screen by the app icon on the top left.  Tap \"+\" to add a new person or group.";
+//                cell.textLabel.text          = @"You can tell example people and groups by a squiggle, \"~\" on their names.\n\nThe example data lets you explore all the different reports and see how the app works before you add any new people or groups yourself.\n\nExample people and groups cannot be changed.\n\nWhen you want to add a new person or group, go back to the brown home screen.  You can tell the home screen by the app icon on the top left.  Tap \"+\" to add a new person or group.";
+//                cell.textLabel.text          = @"You can tell example people and example groups by their names starting with a squiggle, \"~\".\n\nThe example data lets you explore all the different reports and see how the app works before you add any new people or groups yourself.\n\nExample people and groups cannot be changed.\n\nWhen you want to add a new person or group, go back to the brown home screen.  You can tell the home screen by the app icon on the top left.  Tap \"+\" to add a new person or group.";
+//                cell.textLabel.text          = @"You can tell example people and example groups by their names starting with a squiggle, \"~\".\n\nThe example data lets you explore all the different reports and see how the app works before you add any new people or groups yourself.\n\nExample people and groups cannot be changed.\n\nTo add a new person or group, go back to the brown home screen.  You can tell the home screen by the app icon on the top left.  Tap \"+\" to add a new person or group.";
+//                cell.textLabel.text          = @"You can tell example people and example groups by their names starting with a squiggle, \"~\".\n\nThe example data lets you explore all the different reports and see how the app works before you add any new people or groups yourself.\n\nExample people and groups cannot be changed.\n\nTo add a new person or group, go back to the brown home screen. The app icon is on the top left.  Tap \"+\" to add a new person or group.";
+//                cell.textLabel.text          = @"Example people and example groups have names starting with a squiggle, \"~\".\n\nThe example data lets you explore all the different reports and see how the app works before you add any new people or groups yourself.\n\nExample people and groups cannot be changed.\n\nTo add a new person or group, go back to the brown home screen. The app icon is on the top left.  Tap \"+\" to add a new person or group.";
+                cell.textLabel.text          = @"Example people and example groups have names starting with a squiggle, \"~\".\n\nThe example data lets you explore all the different reports and see how the app works before you add any new people or groups yourself.\n\nExample people and groups cannot be changed.\n\nTo add a new person or group, tap yellow \"Edit\" button  >  tap \"+\".";
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -3812,7 +3918,7 @@ nbn(100);
                 }
 
 
-            dispatch_async(dispatch_get_main_queue(), ^{                                 // <=== text for example data 
+            dispatch_async(dispatch_get_main_queue(), ^{                           
                 cell.textLabel.textColor     = [UIColor blackColor];
 //                cell.userInteractionEnabled  = NO;
                 cell.userInteractionEnabled  = YES;
@@ -3830,6 +3936,7 @@ nbn(100);
                 cell.textLabel.numberOfLines = 0;
 //                cell.textLabel.text          = @"      Show Example Data";
                 cell.textLabel.text          = switchPrompt;
+//                cell.textLabel.attributedText = nil;
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -3887,17 +3994,52 @@ nbn(100);
 
 
         if (indexPath.row == 12) {
+
+
+            CGSize myTextSize = [@""  sizeWithAttributes: @{ NSFontAttributeName: myFontForText } ];
+            float  mySizeTwoCharsIndent =  myTextSize.width;
+  NSLog(@"mySizeTwoCharsIndent =[%f]",mySizeTwoCharsIndent );
+
+            NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+            paragraphStyle.headIndent               = mySizeTwoCharsIndent;
+
+            NSAttributedString *myAttributedStr = [ [NSAttributedString alloc] initWithString:
+@"The special group #allpeople is a group that holds all the people you have added to Me and My BFFs.\n\nGroup #allpeople lets you quickly get a Best Match or other group report for every person you have added.\n\nPeople that you add or delete in the app are automatically added to or deleted from group #allpeople."
+                attributes: @{ NSParagraphStyleAttributeName: paragraphStyle }
+            ];
+
+
+
             dispatch_async(dispatch_get_main_queue(), ^{                                 // <=== text for #allpeople
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
                 cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
-//                cell.textLabel.text          = @"The special group #allpeople is a group that holds all the people you have added to Me and My BFFs.\n\nA person that you add is automatically added to group #allpeople.\nA person that you delete is automatically removed from group #allpeople.\n\n Group #allpeople lets you quickly get a Best Match or other group report for everyone.";
-//                cell.textLabel.text          = @"The special group #allpeople is a group that holds all the people you have added to Me and My BFFs.\n\nPeople that you add or delete from the app are automatically added or deleted from group #allpeople.\n\nGroup #allpeople lets you quickly get a Best Match or other group report for everyone.";
-//                cell.textLabel.text          = @"The special group #allpeople is a group that holds all the people you have added to Me and My BFFs.\n\nPeople that you add or delete are automatically added to or deleted from group #allpeople.\n\nGroup #allpeople lets you quickly get a Best Match or other group report for every person you have added.";
-                cell.textLabel.text          =
-@"The special group #allpeople is a group that holds all the people you have added to Me and My BFFs.\n\nGroup #allpeople lets you quickly get a Best Match or other group report for every person you have added.\n\nPeople that you add or delete are automatically added to or deleted from group #allpeople.";
+
+//
+////                cell.textLabel.text          = @"The special group #allpeople is a group that holds all the people you have added to Me and My BFFs.\n\nA person that you add is automatically added to group #allpeople.\nA person that you delete is automatically removed from group #allpeople.\n\n Group #allpeople lets you quickly get a Best Match or other group report for everyone.";
+////                cell.textLabel.text          = @"The special group #allpeople is a group that holds all the people you have added to Me and My BFFs.\n\nPeople that you add or delete from the app are automatically added or deleted from group #allpeople.\n\nGroup #allpeople lets you quickly get a Best Match or other group report for everyone.";
+////                cell.textLabel.text          = @"The special group #allpeople is a group that holds all the people you have added to Me and My BFFs.\n\nPeople that you add or delete are automatically added to or deleted from group #allpeople.\n\nGroup #allpeople lets you quickly get a Best Match or other group report for every person you have added.";
+////@"The special group #allpeople is a group that holds all the people you have added to Me and My BFFs.\n\nGroup #allpeople lets you quickly get a Best Match or other group report for every person you have added.\n\nPeople that you add or delete are automatically added to or deleted from group #allpeople.";
+//                cell.textLabel.text          =
+//@"The special group #allpeople is a group that holds all the people you have added to Me and My BFFs.\n\nGroup #allpeople lets you quickly get a Best Match or other group report for every person you have added.\n\nPeople that you add or delete in the app are automatically added to or deleted from group #allpeople.";
+//
+//
+
+
+
+// when scrolled off screen  , text has indent 2 spaces
+//                cell.textLabel.attributedText = @" ";
+//                cell.textLabel.attributedText = nil;   
+
+
+
+                cell.textLabel.text           = @" "; // for test
+                cell.textLabel.attributedText = myAttributedStr;
+
+
+
 
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
@@ -4207,7 +4349,10 @@ nbn(100);
 
         if (indexPath.row ==   9) return    16.0;  // spacer
         if (indexPath.row ==  10) return    30.0;  // title for birth city
-        if (indexPath.row ==  11) return   310.0;  // text  for birth city
+//        if (indexPath.row ==  11) return   310.0;  // text  for birth city
+//        if (indexPath.row ==  11) return   325.0;  // text  for birth city
+//        if (indexPath.row ==  11) return   290.0;  // text  for birth city
+        if (indexPath.row ==  11) return   315.0;  // text  for birth city
 
         if (indexPath.row ==  12) return    16.0;  // spacer
         if (indexPath.row ==  13) return    30.0;  // title for birth date and time
@@ -4262,13 +4407,19 @@ nbn(100);
         if (indexPath.row ==   6) return    32.0;  // spacer
 
         if (indexPath.row ==   7) return    30.0;  // title for Example Data
-        if (indexPath.row ==   8) return   225.0;  // text  for Example Data
+//        if (indexPath.row ==   8) return   225.0;  // text  for Example Data
+//        if (indexPath.row ==   8) return   200;  // text  for Example Data
+//        if (indexPath.row ==   8) return   180;  // text  for Example Data
+//        if (indexPath.row ==   8) return   160;  // text  for Example Data
+        if (indexPath.row ==   8) return   170;  // text  for Example Data
+
 //        if (indexPath.row ==   9) return    50.0;  // check box for "Show Example Data"
         if (indexPath.row ==   9) return    70.0;  // check box for "Show Example Data"
 
         if (indexPath.row ==   10) return    32.0;  // spacer
         if (indexPath.row ==   11) return    30.0;  // title for #allpeople
-        if (indexPath.row ==   12) return   160.0;  // text  for #allpeople
+//        if (indexPath.row ==   12) return   160.0;  // text  for #allpeople
+        if (indexPath.row ==   12) return   170.0;  // text  for #allpeople
 
 
         if (indexPath.row ==   13) return    30.0;  // title for report list

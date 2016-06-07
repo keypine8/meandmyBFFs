@@ -233,8 +233,10 @@ NSInteger gbl_justEnteredAddChangeView;  // 1=y,0=n
 NSInteger gbl_citySetEditingValue;  // 1=y,0=n  // set initial value  when first entering City in "edit mode"  yellow
 NSInteger gbl_citySetPickerValue;   // 1=y,0=n  // set initial value  when first entering City in "edit mode"  yellow
 NSInteger gbl_citySetLabelValue;    // 1=y,0=n  // set initial value  when first entering City in "edit mode"  yellow
+NSInteger gbl_lastSelectedCityPickerRownum;     // for setting wheel on return to screen from looking at info screen
 //NSInteger gbl_citySetValue;   // 1=y,0=n  // set initial value  when first entering City in "edit mode"  yellow
 NSInteger gbl_dateSetEditingValue;  // 1=y,0=n  // set initial values when first entering Date in "edit mode"  yellow
+NSString  *gbl_titleForWheelButton;
 
 
 // this is set when person record is saved in savedone button choice
@@ -267,6 +269,8 @@ MAMB09_UITextField_noCopyPaste *gbl_myname;  // for add new person or group     
 UITextField *gbl_mycitySearchString;  // for add new person  SEARCH STRING
 UILabel     *gbl_mycityprovcounLabel; // for display found city,prov,coun    // one of THE THREE  "FIELDS"  =====
 NSString    *gbl_mycityInputView;     // = "keyboard" or "picker" (purpose is to reflect which one it is- not assigned)
+
+NSInteger   gbl_keyboardIsShowing;    // automatically set in notifications keyboardWillShowAction and keyboardWillHideAction
 
 NSInteger gbl_numCityLines;        // = 1 or 2 or 3
 

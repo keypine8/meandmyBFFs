@@ -432,6 +432,7 @@
 //                                                                style: UIBarButtonItemStyleBordered
 //                                                               target: self
 //                                                               action: nil ];
+   gbl_titleForWheelButton = @"Wheel >";
 
 
 
@@ -3220,7 +3221,7 @@ tn();  NSLog(@"at end of   mambReadLastEntityFile  myLastEntityDecoded=\n%@",myL
     // Games should use this method to pause the game.
 
     NSLog(@"in applicationWillResignActive()  in appdelegate");
-
+  NSLog(@"gbl_currentMenuPlusReportCode =[%@]",gbl_currentMenuPlusReportCode );
 
   NSLog(@"[[UIApplication sharedApplication] isIgnoringInteractionEvents] =[%d]",[[UIApplication sharedApplication] isIgnoringInteractionEvents] );
       // testing - came here on rapid fire tapping Person/Group on home screen  (one time only)
@@ -4923,6 +4924,8 @@ trn(" XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 
         // here, user has finished handling collisions for THIS particular ".mamb" file email attachment
+
+
 
 
 //  NSLog(@"doing segue   segueOpenUrlToConfirmImport !");
