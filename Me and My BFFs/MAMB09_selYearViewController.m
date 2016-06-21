@@ -259,7 +259,6 @@ tn();
                                                       fromRememberCategory: (NSString *) @"year"  ];
 
 
-nbn(0);
         NSLog(@"gbl_fromHomeCurrentEntityName =%@",gbl_fromHomeCurrentEntityName );
         NSLog(@"psvRememberedYear=%@", psvRememberedYear);
 
@@ -273,7 +272,7 @@ nbn(0);
 
   NSLog(@"gbl_lastSelectionType=[%@]",gbl_lastSelectionType);
 
-nbn(1);
+
             dispatch_async(dispatch_get_main_queue(), ^{
 
                     if ([gbl_lastSelectionType isEqualToString:@"person"]) {
@@ -291,7 +290,7 @@ nbn(1);
                         self.outletYearSelected.attributedText = myAttrYear;
                     }
                     if ([gbl_lastSelectionType isEqualToString:@"group" ]) {
-nbn(2);
+
                         NSMutableAttributedString *myAttrYear;
                         myAttrYear = [[NSMutableAttributedString alloc] initWithString:   [@(gbl_currentYearInt) stringValue]
                             attributes : @{
@@ -311,25 +310,26 @@ nbn(2);
 //                [self.outletYearSelected setTextColor: gbl_colorDIfor_home];
             });
         } else {   
-nbn(3);
+
   NSLog(@"gbl_currentYearInt                                        =[%ld]",(long)gbl_currentYearInt);
   NSLog(@" [ yearsToPickFrom[ yearsToPickFrom.count - 2 ] intValue] =[%ld]", (long)[ yearsToPickFrom[ yearsToPickFrom.count - 2 ] intValue]);
   NSLog(@"[psvRememberedYear intValue]                              =[%ld]",(long)[psvRememberedYear intValue] );
-            if ([psvRememberedYear intValue] > [ yearsToPickFrom[ yearsToPickFrom.count - 2 ] intValue] )
+//            if ([psvRememberedYear intValue] > [ yearsToPickFrom[ yearsToPickFrom.count - 2 ] intValue] )
+            if ([psvRememberedYear intValue] > [ yearsToPickFrom[ yearsToPickFrom.count - 1 ] intValue] ) // if > last yr in picklist (curr+1)
             {
                 // psvRememberedYear = @(yearsToPickFrom.count -1 ).stringValue;
                 // psvRememberedYear = [NSString stringWithFormat:@"%d",yearsToPickFrom.count -1 ];
                 psvRememberedYear = yearsToPickFrom[ yearsToPickFrom.count - 2 ]; // second last elt should be current year
 
             }
-  NSLog(@"psvRememberedYear  2     =[%ld]",(long)psvRememberedYear );
+  NSLog(@"psvRememberedYear  2     =[%@]",psvRememberedYear );
 
             gbl_lastSelectedYear           = psvRememberedYear;
 
             dispatch_async(dispatch_get_main_queue(), ^{                                // <===  <.>
 
                 if ([gbl_lastSelectionType isEqualToString:@"person"]) {
-nbn(4);
+
                     NSMutableAttributedString *myAttrYear;
                     myAttrYear = [[NSMutableAttributedString alloc] initWithString: psvRememberedYear
                         attributes : @{
@@ -343,7 +343,7 @@ nbn(4);
                     self.outletYearSelected.attributedText = myAttrYear;
                 }
                 if ([gbl_lastSelectionType isEqualToString:@"group" ]) {
-nbn(5);
+
                     NSMutableAttributedString *myAttrYear;
                     myAttrYear = [[NSMutableAttributedString alloc] initWithString: psvRememberedYear
                         attributes : @{
@@ -362,7 +362,7 @@ nbn(5);
             });
         }
         
-nbn(6);
+
         // INIT  PICKER
         // in picker set the roller to gbl_lastSelectedYear
         // find out the rownumber of gbl_lastSelectedYear in yearToPickFrom
@@ -370,13 +370,13 @@ nbn(6);
   NSLog(@"gbl_lastSelectedYear=[%@]",gbl_lastSelectedYear);
         NSInteger myIndex = [yearsToPickFrom indexOfObject: gbl_lastSelectedYear];
         if (myIndex == NSNotFound) {
-nbn(7);
+
             myIndex = yearsToPickFrom.count - 2; // second last elt should be current year
         }
-nbn(8);
+
         // This is how you manually SET(!!) a selection!
         [self.outletYearPicker selectRow:myIndex inComponent:0 animated:YES];
-nbn(9);
+
 
     } while( false);  // populate array yearsToPickFrom for uiPickerView
 
@@ -388,9 +388,8 @@ nbn(9);
     NSLog(@"_selYear gbl_fromHomeCurrentEntity=%@",gbl_fromHomeCurrentEntity);                  // like "group" or "person"
 
     
-nbn(10);
 
-} // viewWillAppear
+} // viewWillAppear in sel yr
 
 
 
@@ -672,12 +671,15 @@ nbn(103);
   NSLog(@"row       2          =%lu",(unsigned long)row);
 
 //    if (gbl_lastSelectedYear >  yearsToPickFrom.count - 1 ) gbl_lastSelectedYear = yearsToPickFrom.count - 1;
-  NSLog(@"gbl_lastSelectedYear 1 =[%@]",gbl_lastSelectedYear );
+  NSLog(@"gbl_lastSelectedYear 21 =[%@]",gbl_lastSelectedYear );
+
+  NSLog(@" [ yearsToPickFrom[ yearsToPickFrom.count - 1 ] intValue] =[%ld]", (long)[ yearsToPickFrom[ yearsToPickFrom.count - 1 ] intValue] );
     if ([gbl_lastSelectedYear intValue] > [ yearsToPickFrom[ yearsToPickFrom.count - 1 ] intValue])
     {
+nbn(23);
        gbl_lastSelectedYear = yearsToPickFrom[ yearsToPickFrom.count - 2 ]; // second last elt should be current year
     }
-  NSLog(@"gbl_lastSelectedYear 2 =[%@]",gbl_lastSelectedYear );
+  NSLog(@"gbl_lastSelectedYear 22 =[%@]",gbl_lastSelectedYear );
 
 
     [[pickerView.subviews objectAtIndex:1] setBackgroundColor: gbl_colorDIfor_home];  // selection indicator lines
@@ -699,12 +701,12 @@ NSLog(@"in didSelectRow in Year Picker!");
     
     //   NSLog(@"[_outletToYearPicker selectedRowInComponent:0]=%ld",(long)[_outletToYearPicker selectedRowInComponent:0]);
     
-  NSLog(@"gbl_lastSelectedYear 1 =[%ld]",(long)gbl_lastSelectedYear );
+  NSLog(@"gbl_lastSelectedYear 11 =[%@]",gbl_lastSelectedYear );
     gbl_lastSelectedYear = [self pickerView: _outletYearPicker
                                 titleForRow: [_outletYearPicker selectedRowInComponent: 0]
                                forComponent: 0
     ];
-  NSLog(@"gbl_lastSelectedYear 2 =[%ld]",(long)gbl_lastSelectedYear );
+  NSLog(@"gbl_lastSelectedYear 12 =[%@]",gbl_lastSelectedYear );
     
     // self.outletPickedYear.text = gbl_lastSelectedYear;
 
@@ -742,6 +744,8 @@ NSLog(@"in didSelectRow in Year Picker!");
 
     });
 
+NSLog(@"END of didSelectRow in Year Picker!");
+tn();
 
 //    // now, in gbl_arrayPer , update array idx gbl_fromHomeCurrentSelectionArrayIdx with the  new Remembered Year
 //    //

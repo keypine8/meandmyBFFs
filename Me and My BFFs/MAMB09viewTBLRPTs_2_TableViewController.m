@@ -20,7 +20,10 @@
 
     // is this now visible throughout  MAMB09viewTBLRPTs_2_TableViewController  
     //
-    char group_report_input_birthinfo_CSVs_B[250 * 64];  // [250 * fixed length of 64]
+//    char group_report_input_birthinfo_CSVs_B[250 * 64];  // [250 * fixed length of 64]
+    char group_report_input_birthinfo_CSVs_B[333 * 128];  // [333 * fixed length of 128]
+
+
     int  group_report_input_birthinfo_idx_b;
     char group_report_output_PSVs_B[333 * 128];           // [333 * fixed length of 128]
     int  group_report_output_idx_B;

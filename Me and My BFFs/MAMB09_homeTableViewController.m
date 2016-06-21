@@ -22,6 +22,19 @@
 #import "MAMB09AppDelegate.h"   // to get globals
 #import "mamblib.h"
 
+
+
+#import <AudioToolbox/AudioToolbox.h>
+//AudioServicesPlaySystemSound(1103);  // C functions
+//AudioServicesPlaySystemSound(1106);
+//AudioServicesPlaySystemSound(1151);
+//AudioServicesPlaySystemSound(1000);
+//AudioServicesPlaySystemSound(1052);
+//AudioServicesPlaySystemSound(1054);
+//AudioServicesPlaySystemSound(1111);
+//AudioServicesPlaySystemSound(1257);
+
+
 //#define DO_MAMB_DEBUG yes
 //#ifndef DO_MAMB_DEBUG
 //#define NSLog //
@@ -434,6 +447,45 @@ tn();
   NSLog(@"in viewDidLoad   555  in HOME  HOME  ");
 //  NSLog(@"gbl_arrayMem HOME viewdidload =[%@]",gbl_arrayMem );
     
+nbn(376);
+    MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
+    [myappDelegate deleteAll_MAMB_files_fromInbox ]; // del from Inbox dir all "*.mamb"        // clear out for test
+
+
+
+//AudioServicesPlaySystemSound(1057);  // tink.caf
+//sleep(2);
+//AudioServicesPlaySystemSound(1057);  // tink.caf
+//sleep(2);
+//AudioServicesPlaySystemSound(1057);  // tink.caf
+//sleep(2);
+//AudioServicesPlaySystemSound(1057);  // tink.caf
+//sleep(2);
+//
+////AudioServicesPlaySystemSound(1029);
+////sleep(2);
+////AudioServicesPlaySystemSound(1006); 
+////sleep(2);
+////AudioServicesPlaySystemSound(1007); 
+////sleep(2);
+////AudioServicesPlaySystemSound(1103);  // C functions
+////sleep(2);
+////AudioServicesPlaySystemSound(1106);
+////sleep(2);
+////AudioServicesPlaySystemSound(1151);
+////sleep(2);
+////AudioServicesPlaySystemSound(1000);
+////sleep(2);
+////AudioServicesPlaySystemSound(1052);
+////sleep(2);
+////AudioServicesPlaySystemSound(1054);
+////sleep(2);
+////AudioServicesPlaySystemSound(1111);
+////sleep(2);
+////AudioServicesPlaySystemSound(1257);
+////
+//
+
 
     gbl_currentMenuPlusReportCode = @"HOME";  // also set in viewWillAppear for coming back to HOME from other places (INFO ptr)
   NSLog(@"gbl_currentMenuPlusReportCode =%@",gbl_currentMenuPlusReportCode );
@@ -1049,7 +1101,7 @@ nbn(15);
 
 
 
-
+//
 //
 //    //   for test   TO SIMULATE first downloading the app-  when there are no data files
 //    //   FOR test   remove all regular named files   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -1071,6 +1123,7 @@ nbn(15);
 //    // end of   FOR test   remove all regular named files   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 //
 //
+//
 
 
 
@@ -1082,10 +1135,7 @@ nbn(15);
 
 
 
-
-
-
-    MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
+//    MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
 
 
     haveGrp    = [gbl_sharedFM fileExistsAtPath: gbl_pathToGroup];
@@ -3241,7 +3291,8 @@ tn();
         // put up dialogue   cannot edit group  #allpeople
         //
         UIAlertController* alert = [UIAlertController alertControllerWithTitle: @"Cannot Edit #allpeople"
-                                                                       message: @"The app automatically maintains it."
+//                                                                       message: @"The app automatically maintains it."
+                                                                       message: @"The app automatically maintains that Group."
                                                                 preferredStyle: UIAlertControllerStyleAlert  ];
          
         UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
@@ -3427,7 +3478,14 @@ tn();
 
     gbl_haveAddedNavBarRightItems = 0;  // init
 
+
+nbn(376);
+    MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
+    [myappDelegate deleteAll_MAMB_files_fromInbox ]; // del from Inbox dir all "*.mamb"        // clear out for test
+
+
 //  NSLog(@"gbl_arrayMem viewWillAppear   =[%@]",gbl_arrayMem );
+
 
 //
 //    // put on a bottom FOOTER to account for BOTTOM TOOLBAR if this is yellow edit mode

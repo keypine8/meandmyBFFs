@@ -254,7 +254,8 @@
 //            compatibleWithTraitCollection: nil
 //    ];
 
-    UIImage *tmpImage1 = [UIImage imageNamed: @"bg_brownDone10.png"];
+//    UIImage *tmpImage1 = [UIImage imageNamed: @"bg_brownDone10.png"];
+    UIImage *tmpImage1 = [UIImage imageNamed: @"bg_brownHome10bx.png"];
     tmpImage1          = [tmpImage1 imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal];
     gbl_brownDone      =  tmpImage1;
 
@@ -913,14 +914,6 @@
         gbl_nameOfGrpHavingAllPeopleIhaveAdded
     ]; // 14 flds for misc
 
-    // init value for adding new  remember records
-    // like @"~My Family||||",
-    // like @"~Anya||||||",
-//    NSString *lcl_emptyRec_arrayPerRem = @"||||||";
-//    NSString *lcl_emptyRec_arrayGrpRem = @"||||";
-
-
-
 
 //
     //           CURRENT DATE
@@ -973,6 +966,11 @@
 
 //    gbl_arrayTEST = // field 11= locked or not 
 //    @[
+//      @"donald trump|6|14|1946|10|54|0|Jamaica|New York|United States||",
+//      @"ted cruz|12|22|1970|12|1|1|Calgary|Alberta|Canada||",
+//      @"kasich|5|13|1952|12|1|1|McKees Rocks|Pennsylvania|United States||",
+//      @"bernie sanders|9|8|1941|12|1|1|Brooklyn|New York|United States||",
+//      @"hillary clinton|10|26|1947|12|1|1|Chicago|Illinois|United States||",
 //      @"ada|8|29|1946|1|30|0|Toronto|Ontario|Canada||",
 //      @"alex|4|8|1973|12|1|1|Toronto|Ontario|Canada||",
 //      @"alexei|6|22|1964|4|10|0|Toronto|Ontario|Canada||",
@@ -1149,28 +1147,28 @@
 //      @"Sis|2|31|1988|12|30|1|Los Angeles|California|United States||",  // test bad dy of mth  
       @"Sis|2|29|1988|12|30|1|Los Angeles|California|United States||",
       @"Sis3|2|28|1988|3|30|1|Los Angeles|California|United States||",
-      @"~Abigail 012345|8|21|1994|1|20|0|Los Angeles|California|United States||",
-      @"~Aiden 89012345|8|4|1991|10|30|1|Los Angeles|California|United States||",
-      @"~Anya|10|19|1990|8|20|0|Los Angeles|California|United States||",
-      @"~Ava|2|3|1992|8|10|0|Los Angeles|California|United States||",
-      @"~Brother|11|6|1986|8|1|1|Los Angeles|California|United States||",
-      @"~Elijah|10|10|1992|12|1|1|Los Angeles|California|United States||",
-//      @"~Elijah|10|10|1992|0|1|1|Los Angeles|California|United States||",   // test bad hr = 0
-      @"~Emma|5|17|1993|12|1|1|Los Angeles|California|United States||",
-      @"~Father|7|11|1961|11|8|1|Los Angeles|California|United States||",
-      @"~Grandma|8|17|1939|8|5|0|Los Angeles|California|United States||",
-      @"~Ingrid|3|13|1993|4|10|1|Los Angeles|California|United States||",
-      @"~Jackson|2|3|1993|12|1|1|Los Angeles|California|United States||",
-      @"~Jen|6|22|1992|4|10|0|Los Angeles|California|United States||",
-      @"~Liam|4|8|1993|12|1|1|Los Angeles|California|United States||",
-      @"~Liz|3|13|1991|4|10|1|Los Angeles|California|United States||",
-      @"~Lucas|4|20|1992|6|30|1|Los Angeles|California|United States||",
-      @"~Mother|3|12|1965|10|45|0|Los Angeles|California|United States||",
-      @"~Noah|12|19|1994|11|4|0|Los Angeles|California|United States||",
-      @"~Olivia|4|13|1994|12|53|1|Los Angeles|California|United States||",
-      @"~Sister1|2|29|1988|12|30|1|Los Angeles|California|United States||",
-      @"~Sister2|2|13|1990|3|35|0|Los Angeles|California|United States||",
-      @"~Sophia|9|20|1991|4|0|0|Los Angeles|California|United States||",
+      @"~Abigail 012345|8|21|1994|1|20|0|Los Angeles|California|United States|hs|",
+      @"~Aiden 89012345|8|4|1991|10|30|1|Los Angeles|California|United States|hs|",
+      @"~Anya|10|19|1990|8|20|0|Los Angeles|California|United States|hs|",
+      @"~Ava|2|3|1992|8|10|0|Los Angeles|California|United States|hs|",
+      @"~Brother|11|6|1986|8|1|1|Los Angeles|California|United States|hs|",
+      @"~Elijah|10|10|1992|12|1|1|Los Angeles|California|United States|hs|",
+//      @"~Elijah|10|10|1992|0|1|1|Los Angeles|California|United States|hs|",   // test bad hr = 0
+      @"~Emma|5|17|1993|12|1|1|Los Angeles|California|United States|hs|",
+      @"~Father|7|11|1961|11|8|1|Los Angeles|California|United States|hs|",
+      @"~Grandma|8|17|1939|8|5|0|Los Angeles|California|United States|hs|",
+      @"~Ingrid|3|13|1993|4|10|1|Los Angeles|California|United States|hs|",
+      @"~Jackson|2|3|1993|12|1|1|Los Angeles|California|United States|hs|",
+      @"~Jen|6|22|1992|4|10|0|Los Angeles|California|United States|hs|",
+      @"~Liam|4|8|1993|12|1|1|Los Angeles|California|United States|hs|",
+      @"~Liz|3|13|1991|4|10|1|Los Angeles|California|United States|hs|",
+      @"~Lucas|4|20|1992|6|30|1|Los Angeles|California|United States|hs|",
+      @"~Mother|3|12|1965|10|45|0|Los Angeles|California|United States|hs|",
+      @"~Noah|12|19|1994|11|4|0|Los Angeles|California|United States|hs|",
+      @"~Olivia|4|13|1994|12|53|1|Los Angeles|California|United States|hs|",
+      @"~Sister1|2|29|1988|12|30|1|Los Angeles|California|United States|hs|",
+      @"~Sister2|2|13|1990|3|35|0|Los Angeles|California|United States|hs|",
+      @"~Sophia|9|20|1991|4|0|0|Los Angeles|California|United States|hs|",
     ];
     gbl_arrayExaMem = // field 11= locked or not    DO NOT HAVE TO BE PRE-SORTED  (sorted on reading back into arrays)
     @[
@@ -2670,7 +2668,7 @@ tn();
         fcity    = flds[7];
         fprov    = flds[8];
         fcoun    = flds[9];
-        fhighsec = flds[10];  // "" or "hs"
+        fhighsec = flds[10];  // "" or "hs"   (as of 20160616, ALL are hs)
 //  NSLog(@"fyr=[%@]",fyr);
 
         // check for invalid  name fld
@@ -4267,7 +4265,7 @@ trn(" xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 NSDictionary *mydict         = [myNSURLResponse_as_NSHTTPURLResponse  allHeaderFields] ; 
 
                 // get date from allHeaderFields dictionary
-                NSString *mydatestr          = [mydict objectForKey: @"Date"];  
+                NSString *mydatestr          = [mydict objectForKey: @"Date"];    //  Date = "Tue, 23 Feb 2016 16:32:17 GMT";
 
  NSLog(@"mydict APPLE =[%@]",mydict );
  NSLog(@"mydatestr    =[%@]",mydatestr);
@@ -4466,7 +4464,7 @@ tn();
 
 
 //
-//[queue addOperationWithBlock:^{
+//[queue addOperationWithBlock:^x
 //
 //    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
 //
@@ -4512,7 +4510,7 @@ trn(" XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //        //    int64_t myDelayInSec   = 0.38 * (double)NSEC_PER_SEC;
 //        //    dispatch_time_t mytime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)myDelayInSec);
 //        //
-//        //    dispatch_after(mytime, dispatch_get_main_queue(), ^{       // do after delay of mytime    dispatch 
+//        //    dispatch_after(mytime, dispatch_get_main_queue(), ^ leftsquiggly       // do after delay of mytime    dispatch 
 //        //
 ////        int64_t myTimeoutInSec   = 3.0 * (double)NSEC_PER_SEC;
 //        int64_t myTimeoutInSec   = 1.0 * (double)NSEC_PER_SEC;
@@ -4705,6 +4703,7 @@ trn(" XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 
 
+// openURL  follows
 
 //  2016-05-18 10:20:01.207 Me and My BFFs[4492:2371941] url                =[file:///private/var/mobile/Containers/Data/Application/5AD0EC42-DA9A-470C-8E58-C48904ED03ED/Documents/Inbox/people.mamb]
 //  2016-05-18 10:20:01.207 Me and My BFFs[4492:2371941] sourceApplication  =[com.apple.mobilemail]
@@ -4719,6 +4718,10 @@ trn(" XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //      "people.mamb"
 //  )]
 //
+
+  // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  // ++++++   whole share Entity  process   ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
   // -------------------------------------------------------------------------------------------------------------------
   // in MAMB09_selShareEntityTableViewController.m     example for  share groups 
@@ -4772,7 +4775,6 @@ trn(" XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
   //       annotation         =[{
   //  }]
   //
-  // 
   // here, selected groups are on email opener's device  in   DocumentsDirectory / Inbox / groups.mamb
   // 
   // 
@@ -4809,14 +4811,17 @@ trn(" XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 // 
 -(BOOL)application: (UIApplication *)application openURL: (NSURL *)url
                                                  options: (NSDictionary<NSString *, id> *)options
-
 {
 //tn();
+  NSLog(@"OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+  NSLog(@"-");
+//trn("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
   NSLog(@"in openURL: options: !!!!!!!!!");
   NSLog(@"url                =[%@]",url);
   NSLog(@"options            =[%@]",options);
-//  NSLog(@"sourceApplication  =[%@]",sourceApplication);
-//  NSLog(@"annotation         =[%@]",annotation);
+
+   NSString *url_arg_filename = [url lastPathComponent];
+  NSLog(@"url_arg_filename =[%@]",url_arg_filename );
 
     NSFileManager *filemgr            = [NSFileManager defaultManager];
     NSArray       *paths              = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -4829,39 +4834,17 @@ trn(" XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
   NSLog(@"inboxPath          =[%@]",inboxPath          );
   NSLog(@"inboxDirFiles      =[%@]",inboxDirFiles );
 
+
+    MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // for global methods in appDelegate.m
+
+
     // 
     // here, selected groups (e.g.) are on email opener's device  in   DocumentsDirectory / Inbox / groups.mamb
     // 
 
-// for test // this works! to put user interface in appDelegate.m      self.window.rootViewController 
-//    NSString *mymsg = @" this is msg\n osdifjoij";
-//    UIAlertController* alert = [UIAlertController alertControllerWithTitle: @"Corrupt Data has been Found"
-//                                                                   message: mymsg
-//                                                            preferredStyle: UIAlertControllerStyleAlert  ];
-//     
-//    UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
-//                                                        style: UIAlertActionStyleDefault
-//                                                      handler: ^(UIAlertAction * action) {
-//        NSLog(@"Ok button pressed    for corrupt data");
-//    } ];
-//     
-//    [alert addAction:  okButton];
-//
-//
-////    [self presentViewController: alert  animated: YES  completion: nil   ];   NO SUCH
-////MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // for global methods in appDelegate.m
-////   [myappDelegate presentViewController: alert  animated: YES  completion: nil   ];   NO SUCH
-//
-////     window.rootViewController.presentViewController...
-////     [ self.window.rootViewController.presentViewController: alert  animated: YES  completion: nil   ];
-//
-//     [ self.window.rootViewController presentViewController: alert  animated: YES  completion: nil   ];  // THIS WORKS! to put user interface in appDelegate.m
-//
-
-
   NSLog(@"inboxDirFiles.count =[%ld]",(long)inboxDirFiles.count );
 
-    // for each "*.mamb" file in Inbox directory
+    // for  arg url  in Inbox directory
     //    1.  if name is not "people.mamb" or "groups.mamb" put dialogue it can not be imported
     //    2.  do corruption test 
     //    3.  do import  line by line into special gbl import arrays
@@ -4872,18 +4855,15 @@ trn(" XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
     //    4.  segue to new screen MAMB09_confirmImportTableViewController.m
 
 
-    // for each "*.mamb" import file in Inbox directory
     //    1. if name is not "people.mamb" or "groups.mamb" put dialogue it can not be importeded
     //
-    for (NSString *inboxFileName in inboxDirFiles) {
-  NSLog(@"inboxFileName=%@",inboxFileName);
-        if (    ! [inboxFileName isEqualToString:@"groups.mamb"]
-            &&  ! [inboxFileName isEqualToString:@"people.mamb"]  )
+        if (    ! [url_arg_filename isEqualToString:@"groups.mamb"]
+            &&  ! [url_arg_filename isEqualToString:@"people.mamb"]  )
         {
             NSString *mymsg;
             mymsg = [ NSString stringWithFormat:
 @"In order to be imported, a file has to have one of these two names: \"people.mamb\"  OR  \"groups.mamb\"\n\nThis file has the name \"%@\" and will not be imported.",
-                 inboxFileName
+                 url_arg_filename 
              ];
 
             UIAlertController* myAlert = [
@@ -4899,200 +4879,85 @@ trn(" XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
             ];
             [myAlert addAction:  okButton];
 
+
+            // remove bad file from Inbox         
+            NSString *fileToRemove;
+            fileToRemove = [NSString stringWithFormat:@"%@/%@", inboxDirFiles, url_arg_filename ];
+  NSLog(@"fileToRemove =[%@]",url_arg_filename );
+            [filemgr   removeItemAtPath: fileToRemove   error: NULL];
+  NSLog(@"removed a file from Inbox!  (not named people.mamb OR groups.mamb)");
+
+
             [ self.window.rootViewController presentViewController: myAlert   // THIS WORKS! to put user interface in appDelegate.m
                                                           animated: YES
                                                         completion: nil  
             ];  // THIS WORKS! to put user interface in appDelegate.m
 
-
-            // remove bad file from Inbox         
-            NSString *fileToRemove;
-            fileToRemove = [NSString stringWithFormat:@"%@/%@", inboxDirFiles, inboxFileName];
-  NSLog(@"fileToRemove =[%@]",fileToRemove );
-            [filemgr   removeItemAtPath: fileToRemove   error: NULL];
-  NSLog(@"removed a file from Inbox!  (not named people.mamb OR groups.mamb)");
-
-            continue;  // goto next Inbox file 
+            return NO;
         }
+
 
         // here we have an Inbox file called  "people.mamb" or "groups.mamb"
 
 
-        //    2.  do corruption test on this inbox file ".mamb"
+        //    2.  do corruption test on this inbox ".mamb" file 
         //
-  NSLog(@"  2.  doing corruption test on Inbox file [%@]", inboxFileName );
+  NSLog(@"  2.  doing corruption test on Inbox \".mamb\" file [%@]", url_arg_filename);
+
+        // TODO put this in last
 
 
-        // here, user has finished handling collisions for THIS particular ".mamb" file email attachment
+  NSLog(@"doing segue   segueOpenUrlToConfirmImport !");
+  NSLog(@"  for Inbox \".mamb\" file [%@]", url_arg_filename);
+
+        // Put up confirmImport  screen listing all import data in this ".mamb" file email attachment
+        //
+        //     segue  to  MAMB09_confirmImportTableViewController.m
+        //
+        //        [self performSegueWithIdentifier:@"segueOpenUrlToConfirmImport" sender:self];    DOES NOT WORK here in appDel.m
+
+
+            // in here  (confirmImport .m )   do collision checking and import file or cancel out
+            //
+        UINavigationController *navigationController = (UINavigationController*) self.window.rootViewController;
+        [[[navigationController viewControllers] objectAtIndex:0] performSegueWithIdentifier:@"segueOpenUrlToConfirmImport" sender:self];
+        //
+        // in confirmImport .m screen, user has handles collisions for THIS particular ".mamb" file email attachment
+        // and does the import or cancels out
+        //
+
+        // objectAtIndex:0] above  will only work if the index in viewControllers array matches the one of your view controller
+        // and if it exists of course. In this case is the first one (in the array and storyboard).
+        //
+        // The segue ("goToMeeting") must not be attached to an action.
+        // The way you do this is by control-dragging from the file owner icon at the bottom of the storyboard scene
+        // to the destination scene.
+        //   - A popup will appear that will ask for an option in “Manual Segue”;
+        //   - pick “Push” as the type.
+        //   - Tap on the little square and make sure you’re in the Attributes Inspector.
+        //   - Give it an identifier which you will use to refer to it in code.
+
+  NSLog(@"finished segue   segueOpenUrlToConfirmImport !");
+  NSLog(@"  for Inbox \".mamb\" file [%@]", url_arg_filename);
 
 
 
-
-//  NSLog(@"doing segue   segueOpenUrlToConfirmImport !");
-//        // Put up confirmImport  screen listing all import data in this ".mamb" file email attachment
-//        //
-//        //     segue  to  MAMB09_confirmImportTableViewController.m
-//        //
-//        //        [self performSegueWithIdentifier:@"segueOpenUrlToConfirmImport" sender:self];    DOES NOT WORK here in appDel.m
-//        UINavigationController *navigationController = (UINavigationController*) self.window.rootViewController;
-//        [[[navigationController viewControllers] objectAtIndex:0] performSegueWithIdentifier:@"segueOpenUrlToConfirmImport" sender:self];
-//
-//        // This will only work if the index in viewControllers array matches the one of your view controller
-//        // and if it exists of course. In this case is the first one (in the array and storyboard).
-//        //
-//        // The segue ("goToMeeting") must not be attached to an action.
-//        // The way you do this is by control-dragging from the file owner icon at the bottom of the storyboard scene
-//        // to the destination scene.
-//        //   - A popup will appear that will ask for an option in “Manual Segue”;
-//        //   - pick “Push” as the type.
-//        //   - Tap on the little square and make sure you’re in the Attributes Inspector.
-//        //   - Give it an identifier which you will use to refer to it in code.
-//
-//  NSLog(@"finished segue   segueOpenUrlToConfirmImport !");
-//
-
-
-    } // for each file in Inbox dir
-
-
+  NSLog(@"in app del after processing url_arg_filename !");
 
     // here control goes back to here:  Me and My BFFs[4676:2570304] in applicationDidBecomeActive()  in appdelegate
     // Note:  this is happening on a second iOS device where the user long tapped on export email ".mamb" file attachment
 
 
 
-
-
-
-//<.>
-//// UIAlertController
-//// - (void)addTextFieldWithConfigurationHandler:(void (^)(UITextField*textField))configurationHandler
-//// You can add a text field only if the preferredStyle property is set to UIAlertControllerStyleAlert. 
-//
-//
-////  http://useyourloaf.com/blog/uialertcontroller-changes-in-ios-8/
-//
-//UIAlertController *alertController = [UIAlertController
-//                              alertControllerWithTitle:alertTitle
-//                              message:alertMessage
-//                              preferredStyle:UIAlertControllerStyleAlert];
-//
-//UIAlertAction *cancelAction = [UIAlertAction 
-//            actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel action")
-//                      style:UIAlertActionStyleCancel
-//                    handler:^(UIAlertAction *action)
-//                    {
-//                      NSLog(@"Cancel action");
-//                    }];
-//
-//UIAlertAction *okAction = [UIAlertAction 
-//            actionWithTitle:NSLocalizedString(@"OK", @"OK action")
-//                      style:UIAlertActionStyleDefault
-//                    handler:^(UIAlertAction *action)
-//                    {
-//                      NSLog(@"OK action");
-//                    }];
-//
-//[alertController addAction:cancelAction];
-//[alertController addAction:okAction];
-//
-//[self presentViewController:alertController animated:YES completion:nil];
-//
-//<.>
-//UIAlertController *alertController = [UIAlertController
-//                    alertControllerWithTitle:alertTitle
-//                                     message:alertMessage
-//                              preferredStyle:UIAlertControllerStyleAlert];
-//
-//[alertController addTextFieldWithConfigurationHandler:^(UITextField *textField)
-// {
-//   textField.placeholder = NSLocalizedString(@"LoginPlaceholder", @"Login");
-// }];
-//
-//[alertController addTextFieldWithConfigurationHandler:^(UITextField *textField)
-// {
-//   textField.placeholder = NSLocalizedString(@"PasswordPlaceholder", @"Password");
-//   textField.secureTextEntry = YES;
-// }];
-//
-//// The values of the text field can be retrieved in the OK action handler:
-//
-//UIAlertAction *okAction = [UIAlertAction
-//  actionWithTitle:NSLocalizedString(@"OK", @"OK action")
-//  style:UIAlertActionStyleDefault
-//  handler:^(UIAlertAction *action)
-//  {
-//    UITextField *login = alertController.textFields.firstObject;
-//    UITextField *password = alertController.textFields.lastObject;
-//    ...
-//  }];
-//
-//
-//[alertController addTextFieldWithConfigurationHandler:^(UITextField *textField)
-// {
-//     textField.placeholder = NSLocalizedString(@"LoginPlaceholder", @"Login");
-//     [textField addTarget:self
-//                   action:@selector(alertTextFieldDidChange:)
-//         forControlEvents:UIControlEventEditingChanged];
-// }];
-//
-//
-//// Dismissing Alert Controllers
-////
-//// Typically the alert controller is dismissed automatically when the user selects an action.
-//// It can also be dismissed programmatically, if required, like any other view controller.
-//// One common reason can be to remove the alert or action sheet when the app moves to the background.
-//// Assuming we are listening for the UIApplicationDidEnterBackgroundNotification notification
-//// we can dismiss any presented view controller in the observer
-//// (see the example code for the setup of the observer in viewDidLoad):
-////
-//- (void)didEnterBackground:(NSNotification *)notification
-//{
-//  [self.presentedViewController dismissViewControllerAnimated:NO completion:nil];
-//}
-//
-//<.>
-//
-
-
-    //    - when import is ready,
+    // YES!  must delete "*.mamb" because they are created EVERY TIME   user   LONG TAPS on ".mamb" attachment
     //
-    //         new screen (tableview)  blue choose export color
-
-    //         - title      Names in this Import
-    //   
-    //           for groups   (3 lines below  are repeated as necessary)
-    //         - GROUP swim team
-    //           fred
-    //           ethyl
-    //           ...
-    //           blank line
-    //         - GROUP family
-    //           Mary
-    //           eva
-    //         
-    //           for people   
-    //         - John Smith
-    //           Mary
-    //    
-    //         - bottom action sheet 
-    //            --------------
-    //            Do this Import
-    //            --------------
-    //            Cancel Import
-    //            --------------
-
-
-
-    // YES!  must delete "*.mamb" because they are created every time   USER   LONG TAPS on ".mamb" attachment
-    //
-    // [myappDelegate deleteAll_MAMB_files_fromInbox ]; // del from Inbox dir all "*.mamb"
-    // is called when   MAMB09_selShareEntityTableViewController.m  STARTS
-    // so NO NEED to del "*.mamb" here when done
-    //
+    [myappDelegate deleteAll_MAMB_files_fromInbox ]; // del from Inbox dir all "*.mamb"
 
 
   NSLog(@"at END of openURL: options: !!!!!!!!!");
+//trn("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+  NSLog(@"OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+  NSLog(@"-");
 //tn();
 
     // Note:  this is happening on a second iOS device where the user long tapped on export email ".mamb" file attachment
@@ -5495,4 +5360,64 @@ trn(" XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //    mydateString = [[myhttpUrlResponse allHeaderFields] objectForKey: @"Date"];
 //  NSLog(@"mydict =[%@]",mydict );
 //  NSLog(@"mydateString GOOGLE =[%@]",mydateString );
+
+
+
+// doing one at a time (url arg)
+
+//    // for each "*.mamb" file in Inbox directory
+//    //    1.  if name is not "people.mamb" or "groups.mamb" put dialogue it can not be imported
+//    //    2.  do corruption test 
+//    //    3.  do import  line by line into special gbl import arrays
+//    //       3b.  collision dialogue when necessary
+//    //
+//    //    // here we have valid import arrays or user has Cancelled out
+//    //
+//    //    4.  segue to new screen MAMB09_confirmImportTableViewController.m
+//
+//
+//    // for each "*.mamb" import file in Inbox directory
+//    //    1. if name is not "people.mamb" or "groups.mamb" put dialogue it can not be importeded
+//    //
+//    for (NSString *inboxFileName in inboxDirFiles) {
+//  NSLog(@"inboxFileName=%@",inboxFileName);
+//        if (    ! [inboxFileName isEqualToString:@"groups.mamb"]
+//            &&  ! [inboxFileName isEqualToString:@"people.mamb"]  )
+//        {
+//            NSString *mymsg;
+//            mymsg = [ NSString stringWithFormat:
+//@"In order to be imported, a file has to have one of these two names: \"people.mamb\"  OR  \"groups.mamb\"\n\nThis file has the name \"%@\" and will not be imported.",
+//                 inboxFileName
+//             ];
+//
+//            UIAlertController* myAlert = [
+//                UIAlertController alertControllerWithTitle: @"Bad Import File Name"
+//                                                   message: mymsg
+//                                            preferredStyle: UIAlertControllerStyleAlert 
+//            ];
+//            UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+//                                                                style: UIAlertActionStyleDefault
+//                                                              handler: ^(UIAlertAction * action) {
+//                    NSLog(@"Ok button pressed");
+//                }
+//            ];
+//            [myAlert addAction:  okButton];
+//
+//
+//            // remove bad file from Inbox         
+//            NSString *fileToRemove;
+//            fileToRemove = [NSString stringWithFormat:@"%@/%@", inboxDirFiles, inboxFileName];
+//  NSLog(@"fileToRemove =[%@]",fileToRemove );
+//            [filemgr   removeItemAtPath: fileToRemove   error: NULL];
+//  NSLog(@"removed a file from Inbox!  (not named people.mamb OR groups.mamb)");
+//
+//
+//            [ self.window.rootViewController presentViewController: myAlert   // THIS WORKS! to put user interface in appDelegate.m
+//                                                          animated: YES
+//                                                        completion: nil  
+//            ];  // THIS WORKS! to put user interface in appDelegate.m
+//
+//            continue;  // goto next Inbox file 
+//        }
+//
 

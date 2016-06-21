@@ -1102,7 +1102,7 @@ nbn(903);
 
 - (void)viewDidAppear:(BOOL)animated
 {
-NSLog(@"in viewDidAppear()");
+NSLog(@"in viewDidAppear() in view HTML");
 
     MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
     [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.0 ];    // after arg seconds

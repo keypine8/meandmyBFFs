@@ -2953,7 +2953,8 @@ nbn(100);
 
             NSString *allTextBirthCityOrTown = [NSString stringWithFormat:
 // @"Characters you can use in the place name:\n\n   abc defghijklmnopqrstuvwxyz-\n   ABC DEFGHIJKLMNOPQRSTUVWXYZ1234567890\n\nType letters in the city name until the city you want appears in the city field.\n\nAs you type each letter, what you have typed so far appears in the title bar of the keyboard.\n\nAs a SHORTCUT, when there are fewer than 25 cities starting with the letters you have typed so far, a yellow button appears, %@ .  Tap that button to get a wheel you can spin to the city you want.\n\nIt's possible the city or town cannot be found.  In that case, type in a city nearby- especially a bigger city.",
- @"Characters you can use in the place name:\n\n   abc defghijklmnopqrstuvwxyz-\n   ABC DEFGHIJKLMNOPQRSTUVWXYZ1234567890\n\nType letters in the city name until the city you want appears in the city field.\n\nAs you type each letter, the letters you have typed so far appear in the title bar of the keyboard.\n\nAs a SHORTCUT, when you type a letter and there are fewer than 25 cities starting with the letters you have typed so far, a yellow button appears, %@ .  Tap that button to get a wheel you can spin to the city you want.\n\nIt's possible the city or town cannot be found.  In that case, type in a city nearby- especially a bigger city.",
+// @"Characters you can use in the place name:\n\n   abc defghijklmnopqrstuvwxyz-\n   ABC DEFGHIJKLMNOPQRSTUVWXYZ1234567890\n\nType letters in the city name until the city you want appears in the city field.\n\nAs you type each letter, the letters you have typed so far appear in the title bar of the keyboard.\n\nAs a SHORTCUT, when you type a letter and there are fewer than 25 cities starting with the letters you have typed so far, a yellow button appears, %@ .  Tap that button to get a wheel you can spin to the city you want.\n\nIt's possible the city or town cannot be found.  In that case, type in a city nearby- especially a bigger city.",
+ @"Characters you can use in the place name:\n\n   abc defghijklmnopqrstuvwxyz-\n   ABC DEFGHIJKLMNOPQRSTUVWXYZ1234567890\n\nType letters in the city name until the city you want appears in the city field.\n\nAs you type each letter, the letters you have typed so far appear right above the keyboard.\n\nAs a SHORTCUT, when you type a letter and there are fewer than 25 cities starting with the letters you have typed so far, a yellow button appears, %@ .  Tap that button to get a wheel you can spin to the city you want.\n\nIt's possible the city or town cannot be found.  In that case, type in a city nearby- especially a bigger city.",
                 textWithYellowHighlight 
             ];
 
@@ -3091,6 +3092,8 @@ nbn(100);
             NSAttributedString *myAttributedStr = [[NSAttributedString alloc]
                 initWithString:
 //@"\u2022 You may not know the time of birth.  Don't worry about it.\n\u2022 If you have no idea of what the time was, just accept the default time of one minute past noon.\n\u2022 If you know the approximate time, enter your best guess.\n\u2022 If you know there was Daylight Saving Time in effect, then subtract an hour from the time."
+//@"\u2022 You may not know the exact time of birth.  Don't worry about it.\n\u2022 If you have no idea of what the time was, just accept the default time of one minute past noon.\n\u2022 If you know the approximate time, enter your best guess.\n\u2022 If you know Daylight Saving Time was in effect, then subtract an hour from the time."
+// do not use word "exact"  for time of birth
 @"\u2022 You may not know the time of birth.  Don't worry about it.\n\u2022 If you have no idea of what the time was, just accept the default time of one minute past noon.\n\u2022 If you know the approximate time, enter your best guess.\n\u2022 If you know Daylight Saving Time was in effect, then subtract an hour from the time."
                     attributes: @{ NSParagraphStyleAttributeName: paragraphStyle }
             ];
@@ -3633,7 +3636,8 @@ nbn(100);
 //                cell.textLabel.text          = @"Brown is for Reports";
 //                cell.textLabel.text          = @"Brown Home is for Reports";
 //                cell.textLabel.text          = @"Brown Home is for Astrology Reports";
-                cell.textLabel.text          = @"Brown Screen is for Reports";
+//                cell.textLabel.text          = @"Brown Screen is for Reports";
+                cell.textLabel.text          = @"Brown Home Screen is for Reports";
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;

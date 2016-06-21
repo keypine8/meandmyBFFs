@@ -22,14 +22,19 @@
     //
     // is this now visible throughout  MAMB09viewTBLRPTs_1_TableViewController  ?   YES
     //
-    char lcl_group_report_input_birthinfo_CSVs[250 * 64];  // [250 * fixed length of 64]
+//    char lcl_group_report_input_birthinfo_CSVs[250 * 64];  // [250 * fixed length of 64]
+    char lcl_group_report_input_birthinfo_CSVs[333 * 128];  // [333 * fixed length of 128]
+
     int  lcl_group_report_input_birthinfo_idx;
 
 //    char lcl_group_report_output_PSVs[333 * 64];  64 TOO SMALL     // [333 * fixed length of 64]   
     char lcl_group_report_output_PSVs[333 * 128];           // [333 * fixed length of 128] gbl_maxLenRptLinePSV = 128 (set in appdel.m)
 
     int  lcl_group_report_output_idx;
+
     NSString *lcl_myNewCellText;
+
+
 
 @implementation MAMB09viewTBLRPTs_1_TableViewController
 
@@ -6840,9 +6845,9 @@ tn();trn("in REPORT  all BEST MATCH ... reports !");
 
 
 
-//  NSLog(@"gbl_kingpinIsInGroup =%ld",(long)gbl_kingpinIsInGroup );
-//NSLog(@"gbl_grp_CSVs =%@",gbl_grp_CSVs ); // for test see all grp CSVs
-//kin((int)gbl_grp_CSVs.count);
+  NSLog(@"gbl_kingpinIsInGroup =%ld",(long)gbl_kingpinIsInGroup );
+NSLog(@"gbl_grp_CSVs =%@",gbl_grp_CSVs ); // for test see all grp CSVs
+kin((int)gbl_grp_CSVs.count);
 
 
             // here we can store the number of pairs ranked  in  gbl_numPairsRanked (for column header size calc)
@@ -6852,7 +6857,7 @@ tn();trn("in REPORT  all BEST MATCH ... reports !");
             } else {
                 gbl_numPairsRanked = gbl_grp_CSVs.count;   // (getNSArrayOfCSVsForGroup subtracts one if kingpin is in group)
             }
-//  NSLog(@"gbl_numPairsRanked =%ld",(long)gbl_numPairsRanked );
+  NSLog(@"gbl_numPairsRanked =%ld",(long)gbl_numPairsRanked );
 
 
         //
@@ -6871,9 +6876,9 @@ tn();trn("in REPORT  all BEST MATCH ... reports !");
         int num_input_csvs;
         num_input_csvs = (int)gbl_grp_CSVs.count;
         lcl_group_report_input_birthinfo_idx =  -1;  // zero-based  init
-
+tn();
         for(int i = 0; i < num_input_csvs; i++) {  
-
+ki(i);
           NSString *s      = gbl_grp_CSVs[i];     //get a NSString
           const char *cstr = s.UTF8String;        //get cstring
 
@@ -6890,6 +6895,7 @@ tn();trn("in REPORT  all BEST MATCH ... reports !");
           // put ptr to that spot into c array of strings
           my_mamb_csv_arr[lcl_group_report_input_birthinfo_idx] = my_ptr_in_buff;
         }
+tn();
 nbn(1000);
 
 //for (int kkk=0; kkk <= num_input_csvs -1; kkk++) {
