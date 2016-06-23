@@ -2482,38 +2482,40 @@ tn();
 
 
 
-
-//-(IBAction) pressedShareEntities    // People or Groups 
--(IBAction) pressedShareEntities: (id)sender   // People or Groups 
-{
-  NSLog(@"in   pressedShareEntities! (Share People  or  Share Groups) in HOME");
-
-    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
-    [myappDelegate mamb_beginIgnoringInteractionEvents ];
-
-  NSLog(@"sub_view removal #11, then goto selPerson");
-    dispatch_async(dispatch_get_main_queue(), ^{                                 // <===  
-
-        //  REMOVE OLD  gbl_toolbarHomeMaintenance 
-        //
-        for( UIView *sub_view in [ self.navigationController.view subviews ] ) { // remove subview (gbl_toolbarHomeMaintenance  - tag=34 ) , if existing
-  NSLog(@"sub_view =[%@]",sub_view );
-  NSLog(@"sub_view.tag =[%ld]",(long)sub_view.tag );
-            if(sub_view.tag == 34) {
-  NSLog(@" REMOVED OLD  gbl_toolbarHomeMaintenance  ");
-                [sub_view removeFromSuperview ];
-            }
-        }
-
-        // new segue "segueHomeToSelShareEntity"   to pick people  or  groups  to share
-        //
-        // here call screen to pick entities to share
-
-        [self performSegueWithIdentifier:@"segueHomeToSelShareEntity" sender:self]; 
-    });
-
-} // end of pressedShareEntities
-
+// 2016jun
+//
+////-(IBAction) pressedShareEntities    // People or Groups 
+//-(IBAction) pressedShareEntities: (id)sender   // People or Groups 
+//{
+//  NSLog(@"in   pressedShareEntities! (Share People  or  Share Groups) in HOME");
+//
+//    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
+//    [myappDelegate mamb_beginIgnoringInteractionEvents ];
+//
+//  NSLog(@"sub_view removal #11, then goto selPerson");
+//    dispatch_async(dispatch_get_main_queue(), ^{                                 // <===  
+//
+//        //  REMOVE OLD  gbl_toolbarHomeMaintenance 
+//        //
+//        for( UIView *sub_view in [ self.navigationController.view subviews ] ) { // remove subview (gbl_toolbarHomeMaintenance  - tag=34 ) , if existing
+//  NSLog(@"sub_view =[%@]",sub_view );
+//  NSLog(@"sub_view.tag =[%ld]",(long)sub_view.tag );
+//            if(sub_view.tag == 34) {
+//  NSLog(@" REMOVED OLD  gbl_toolbarHomeMaintenance  ");
+//                [sub_view removeFromSuperview ];
+//            }
+//        }
+//
+//        // new segue "segueHomeToSelShareEntity"   to pick people  or  groups  to share
+//        //
+//        // here call screen to pick entities to share
+//
+//        [self performSegueWithIdentifier:@"segueHomeToSelShareEntity" sender:self]; 
+//    });
+//
+//} // end of pressedShareEntities
+//
+//
 
 -(IBAction) pressedSeeMembersButton: (id)sender   
 {
@@ -4673,15 +4675,17 @@ nbn(335);
   NSLog(@"EDIT BUTTON 2   set title  done tab");
 
 
-            // remove left app icon and replace  with share icon
-            //
-            UIBarButtonItem *shareButton  = [[UIBarButtonItem alloc]
-                                            initWithBarButtonSystemItem: UIBarButtonSystemItemAction
-                                                                 target: self
-                                                                 action: @selector(pressedShareEntities:)];
-            self.navigationItem.leftBarButtonItem  = nil;
-            self.navigationItem.leftBarButtonItem  = shareButton;
-            self.navigationItem.leftBarButtonItems = [self.navigationItem.leftBarButtonItems  arrayByAddingObject: navAddButton];
+//<.>
+//            // remove left app icon and replace  with share icon
+//            //
+//            UIBarButtonItem *shareButton  = [[UIBarButtonItem alloc]
+//                                            initWithBarButtonSystemItem: UIBarButtonSystemItemAction   // share icon
+//                                                                 target: self
+//                                                                 action: @selector(pressedShareEntities:)];
+//            self.navigationItem.leftBarButtonItem  = nil;
+//            self.navigationItem.leftBarButtonItem  = shareButton;
+//            self.navigationItem.leftBarButtonItems = [self.navigationItem.leftBarButtonItems  arrayByAddingObject: navAddButton];
+//
 
 
 //        UIImage *iconImage = [UIImage imageNamed: @"rounded_MAMB09_029.png"];

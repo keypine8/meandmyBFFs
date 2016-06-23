@@ -5210,8 +5210,8 @@ NSLog(@"in textFieldShouldReturn:");
 //    UIFont *myFontSmaller2 = [UIFont fontWithName: @"Menlo" size: 15.0];
 //    UIFont *myFontSmaller2 = [UIFont fontWithName: @"Menlo" size: 14.0];
     UIFont *myFontSmaller2 = [UIFont fontWithName: @"Menlo" size: 16.0];
-    UIFont *myFontSmaller3 = [UIFont fontWithName: @"Menlo" size: 13.0];
-    UIFont *myFontSmaller4 = [UIFont fontWithName:@"Menlo" size: 12.0];
+//    UIFont *myFontSmaller3 = [UIFont fontWithName: @"Menlo" size: 13.0];
+//    UIFont *myFontSmaller4 = [UIFont fontWithName:@"Menlo" size: 12.0];
 //    UIFont *myFontSmaller5 = [UIFont fontWithName: @"Menlo" size: 10.0];
 //    UIFont *myFontSmaller5 = [UIFont systemFontOfSize:10.0f];
 //    UIFont *myFontSmaller5 = [UIFont boldSystemFontOfSize:12.0f];
@@ -5484,9 +5484,17 @@ tn();
 //                 [[NSAttributedString alloc] initWithString: @" Saved with No Look, No Change\n Saved with No Look, No Change\n Saved with No Look, No Change"
 //                 [[NSAttributedString alloc] initWithString: @" Hide Birth Information Save\n Hide Birth Information Save\n Hide Birth Information Save"
 //                 [[NSAttributedString alloc] initWithString: @" Saved with Hide Birth Information\n Saved with Hide Birth Information\n Saved with Hide Birth Information"
+
+//<.>
+//3727:                         NSFontAttributeName: [UIFont fontWithName: @"HelveticaNeue-Medium" size: 16.0f]
+//             gbl_mybirthinformation.font             = myFontSmaller2;   // for no look, ...
+//    UIFont *myFontSmaller2 = [UIFont fontWithName: @"Menlo" size: 16.0];
+//<.>
+//
                  [[NSAttributedString alloc] initWithString: @" Personal Privacy\n Personal Privacy\n Personal Privacy"
                      attributes: @{
-                         NSForegroundColorAttributeName:  [UIColor lightGrayColor]
+                         NSForegroundColorAttributeName:  [UIColor lightGrayColor] ,
+                                    NSFontAttributeName: myFontSmaller2
                      }
                  ];
   NSLog(@"citych #14  %-24s =[%@] $$$  cellforr $$$$$$$$$$$$$$$$$$$$", "gbl_mycityprovcounLabelmyTextCity " , gbl_mycityprovcounLabel.attributedText );
@@ -5507,7 +5515,8 @@ tn();
             gbl_mycityprovcounLabel.numberOfLines    = 0;
             gbl_mycityprovcounLabel.tag              = 2;
 //            gbl_mycityprovcounLabel.font             = myFontSmaller2;
-            gbl_mycityprovcounLabel.font             = myFontSmaller3;
+//            gbl_mycityprovcounLabel.font             = myFontSmaller3;
+            gbl_mycityprovcounLabel.font             = myFontSmaller2;
 
 //            gbl_mybirthinformation.font                    = myFontSmaller14;
 //                    gbl_mycityprovcounLabel.font             = [UIFont fontWithName: @"Menlo" size: 10.0];
@@ -5760,7 +5769,8 @@ tn();
 //                gbl_mybirthinformation.font                    = myFontSmaller14;
 //            gbl_mycityprovcounLabel.font             = myFontSmaller2;
 //             gbl_mybirthinformation.font             = myFontSmaller3;   // for no look, ...
-             gbl_mybirthinformation.font             = myFontSmaller4;   // for no look, ...
+//             gbl_mybirthinformation.font             = myFontSmaller4;   // for no look, ...
+             gbl_mybirthinformation.font             = myFontSmaller2;   // for no look, ...
 
              gbl_mybirthinformation.borderStyle              = UITextBorderStyleRoundedRect;
 //            gbl_mybirthinformation.borderStyle              = UITextBorderStyleLine;

@@ -2825,20 +2825,34 @@ nbn(100);
             // NSLog(@"currentScreenWidthHeight.width  =%f",currentScreenWidthHeight.width );
             // NSLog(@"currentScreenWidthHeight.height =%f",currentScreenWidthHeight.height );
             //
-            CGSize myTextSize = [@"WWW"  sizeWithAttributes: @{ NSFontAttributeName: myFontForText } ];  // menlo
+//            CGSize myTextSize = [@"WWW"  sizeWithAttributes: @{ NSFontAttributeName: myFontForText } ];  // menlo
+            CGSize myTextSize = [@""  sizeWithAttributes: @{ NSFontAttributeName: myFontForText } ];  // menlo
+
             float  mySizeIndent =  myTextSize.width;
   NSLog(@"mySizeIndent =[%f]",mySizeIndent );
 
             NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
             paragraphStyle.headIndent               = mySizeIndent;
 
+
+//            NSAttributedString *myAttributedStr = [[NSAttributedString alloc]
+//                initWithString:
+////@"When you tap \"Done\" you get a choice of two Kinds of Save.\n\n1. \"Regular Save\"\n   This lets you or anyone go back in this app and look at and change the Birth City and Birth Date.\n\n2. \"Hide Birth Information Save\"\n   This is for when you want personal privacy for the new person at all times.  When you use this save choice, it means NOBODY, neither you nor the device owner nor anybody else can ever again change or even look at the Birth City or Birth Date.\n\n   That means, if you want to look at the birth information in the future, you need to write it down somewhere safe outside this app.\n\n\n   FURTHERMORE, whenever birth information goes outside this app, the Hide Birth Information mode is used:\n \u2022 when you share people or groups\n \u2022 when you do a full backup\n \u2022 when the app saves data for its own use"
+////@"   When you tap \"Done\" you get a choice of two Kinds of Save.\n\n1. \"Regular Save\"\n   This lets you or anyone go back in this app and look at and change the Birth City and Birth Date.\n\n2. \"Hide Birth Information Save\"\n   This is for when you want personal privacy for the new person at all times.  When you use this save choice, it means NOBODY, neither you nor the device owner nor anybody else can ever again change or even look at the Birth City or Birth Date.\n\n   That means, if you want to look at the birth information in the future, you need to write it down somewhere safe outside this app.\n\n\n   FURTHERMORE, whenever birth information goes outside this app, the Hide Birth Information mode is used:\n   \u2022 when you share people or groups\n   \u2022 when you do a full backup\n   \u2022 when the app saves data for its own use"
+//@"   When you tap \"Done\" you get a choice of two Kinds of Save.\n\n1. \"Regular Save\"\n   This kind of save lets you or anyone go back in this app and look at and change the Birth City and Birth Date.\n\n2. \"Hide Birth Information Save\"\n   This kind of save is for when you want personal privacy for the new person at all times.\n\n   NOBODY, neither you nor the device owner nor anybody else can ever again change or even look at the Birth City or Birth Date.\n\n   That means, if you want to look at the birth information in the future, you need to write it down somewhere safe outside this app.\n\n   FURTHERMORE, whenever birth information goes outside this app, the Hide Birth Information mode is always used:\n   \u2022 when you share people or groups\n   \u2022 when you do a full backup\n   \u2022 when the app saves data for its own use"
+//                    attributes: @{ NSParagraphStyleAttributeName: paragraphStyle }
+//            ];
+//
+
             NSAttributedString *myAttributedStr = [[NSAttributedString alloc]
                 initWithString:
-//@"When you tap \"Done\" you get a choice of two Kinds of Save.\n\n1. \"Regular Save\"\n   This lets you or anyone go back in this app and look at and change the Birth City and Birth Date.\n\n2. \"Hide Birth Information Save\"\n   This is for when you want personal privacy for the new person at all times.  When you use this save choice, it means NOBODY, neither you nor the device owner nor anybody else can ever again change or even look at the Birth City or Birth Date.\n\n   That means, if you want to look at the birth information in the future, you need to write it down somewhere safe outside this app.\n\n\n   FURTHERMORE, whenever birth information goes outside this app, the Hide Birth Information mode is used:\n \u2022 when you share people or groups\n \u2022 when you do a full backup\n \u2022 when the app saves data for its own use"
-//@"   When you tap \"Done\" you get a choice of two Kinds of Save.\n\n1. \"Regular Save\"\n   This lets you or anyone go back in this app and look at and change the Birth City and Birth Date.\n\n2. \"Hide Birth Information Save\"\n   This is for when you want personal privacy for the new person at all times.  When you use this save choice, it means NOBODY, neither you nor the device owner nor anybody else can ever again change or even look at the Birth City or Birth Date.\n\n   That means, if you want to look at the birth information in the future, you need to write it down somewhere safe outside this app.\n\n\n   FURTHERMORE, whenever birth information goes outside this app, the Hide Birth Information mode is used:\n   \u2022 when you share people or groups\n   \u2022 when you do a full backup\n   \u2022 when the app saves data for its own use"
-@"   When you tap \"Done\" you get a choice of two Kinds of Save.\n\n1. \"Regular Save\"\n   This kind of save lets you or anyone go back in this app and look at and change the Birth City and Birth Date.\n\n2. \"Hide Birth Information Save\"\n   This kind of save is for when you want personal privacy for the new person at all times.\n\n   NOBODY, neither you nor the device owner nor anybody else can ever again change or even look at the Birth City or Birth Date.\n\n   That means, if you want to look at the birth information in the future, you need to write it down somewhere safe outside this app.\n\n   FURTHERMORE, whenever birth information goes outside this app, the Hide Birth Information mode is always used:\n   \u2022 when you share people or groups\n   \u2022 when you do a full backup\n   \u2022 when the app saves data for its own use"
+//@"   When you tap \"Done\" you immediately get personal privacy for the new person\'s birth information at all times.\n\n   NOBODY, neither you nor the device owner nor anybody else can ever again change or even look at the Birth City or Birth Date.\n\n   That means, if you want to look at the birth information in the future, you need to save it somewhere safe outside this app.\n\n   FURTHERMORE, whenever birth information goes outside this running app, the birth information cannot be looked at:\n   \u2022 when you do a full backup\n   \u2022 when the app saves data for its own use"
+//@"   When you tap \"Done\" you immediately get personal privacy for the new person\'s birth information at all times.\n\n   NOBODY, neither you nor the device owner nor anybody else can ever again change or even look at the Birth City or Birth Date.\n\n   That means, if you want to look at the birth information in the future, you need to save it somewhere safe outside this app."
+@"When you tap \"Done\" you immediately get personal privacy for the new person\'s birth information at all times.\n\nNOBODY, neither you nor the device owner nor anybody else can ever again change or even look at the Birth City or Birth Date.\n\nThat means, if you want to look at the birth information in the future, you need to save it somewhere safe outside this app.\n\nWhen you add birth information for a new person, you need their permission to do so."
                     attributes: @{ NSParagraphStyleAttributeName: paragraphStyle }
             ];
+
+
 
 
 
@@ -3837,7 +3851,8 @@ nbn(100);
 //                cell.textLabel.text          = @"You can tell example people and example groups by their names starting with a squiggle, \"~\".\n\nThe example data lets you explore all the different reports and see how the app works before you add any new people or groups yourself.\n\nExample people and groups cannot be changed.\n\nTo add a new person or group, go back to the brown home screen.  You can tell the home screen by the app icon on the top left.  Tap \"+\" to add a new person or group.";
 //                cell.textLabel.text          = @"You can tell example people and example groups by their names starting with a squiggle, \"~\".\n\nThe example data lets you explore all the different reports and see how the app works before you add any new people or groups yourself.\n\nExample people and groups cannot be changed.\n\nTo add a new person or group, go back to the brown home screen. The app icon is on the top left.  Tap \"+\" to add a new person or group.";
 //                cell.textLabel.text          = @"Example people and example groups have names starting with a squiggle, \"~\".\n\nThe example data lets you explore all the different reports and see how the app works before you add any new people or groups yourself.\n\nExample people and groups cannot be changed.\n\nTo add a new person or group, go back to the brown home screen. The app icon is on the top left.  Tap \"+\" to add a new person or group.";
-                cell.textLabel.text          = @"Example people and example groups have names starting with a squiggle, \"~\".\n\nThe example data lets you explore all the different reports and see how the app works before you add any new people or groups yourself.\n\nExample people and groups cannot be changed.\n\nTo add a new person or group, tap yellow \"Edit\" button  >  tap \"+\".";
+//                cell.textLabel.text          = @"Example people and example groups have names starting with a squiggle, \"~\".\n\nThe example data lets you explore all the different reports and see how the app works before you add any new people or groups yourself.\n\nExample people and groups cannot be changed.\n\nTo add a new person or group, tap yellow \"Edit\" button  >  tap \"+\".";
+                cell.textLabel.text          = @"Example people and example groups have names starting with a squiggle, \"~\".\n\nThe example data lets you explore all the different reports and see how the app works before you add any new people or groups yourself.\n\nExample people and groups cannot be changed.\n\nTo add a new person, tap \"People\" > tap \"+\".\nTo add a new group , tap \"Groups\" > tap \"+\".";
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -4345,7 +4360,10 @@ nbn(100);
 
         if (indexPath.row ==   3) return    16.0;  // spacer
         if (indexPath.row ==   4) return    36.0;  // title for personal privacy
-        if (indexPath.row ==   5) return   400.0;  // text  for personal privacy
+//        if (indexPath.row ==   5) return   400.0;  // text  for personal privacy
+//        if (indexPath.row ==   5) return   180.0;  // text  for personal privacy
+//        if (indexPath.row ==   5) return   200.0;  // text  for personal privacy
+        if (indexPath.row ==   5) return   215.0;  // text  for personal privacy
 
         if (indexPath.row ==   6) return    16.0;  // spacer
         if (indexPath.row ==   7) return    30.0;  // title for person name
@@ -4415,7 +4433,8 @@ nbn(100);
 //        if (indexPath.row ==   8) return   200;  // text  for Example Data
 //        if (indexPath.row ==   8) return   180;  // text  for Example Data
 //        if (indexPath.row ==   8) return   160;  // text  for Example Data
-        if (indexPath.row ==   8) return   170;  // text  for Example Data
+//        if (indexPath.row ==   8) return   170;  // text  for Example Data
+        if (indexPath.row ==   8) return   180;  // text  for Example Data
 
 //        if (indexPath.row ==   9) return    50.0;  // check box for "Show Example Data"
         if (indexPath.row ==   9) return    70.0;  // check box for "Show Example Data"
