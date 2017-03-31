@@ -2,8 +2,28 @@
 //  MAMB09_selDateViewController2.m
 //  Me&myBFFs
 //
-//  Created by Richard Koskela on 2015-02-08.
-//  Copyright (c) 2015 Richard Koskela. All rights reserved.
+// MIT License
+//
+// Copyright (c) 2017 softwaredev
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+//
 //
 
 // WEIRD  had to ADD CONSTRAINTS to prevent label and pickerview from centering after
@@ -323,7 +343,18 @@ NSLog(@"in viewDidAppear()  in  selDate! ");
         
         // not birthday (privacy)
         //for (NSInteger pickyr = gbl_intBirthYear; pickyr <=  gbl_currentYearInt + 1; pickyr++)   // only allow to go to next calendar year
-        for (NSInteger pickyr = gbl_earliestYear; pickyr <=  gbl_currentYearInt + 1; pickyr++) {  // only allow to go to next calendar year
+
+
+        // for (NSInteger pickyr = gbl_earliestYear; pickyr <=  gbl_currentYearInt + 1; pickyr++) x  // only allow to go to next calendar year
+
+        for (NSInteger pickyr = gbl_earliestYear;
+//             pickyr <=  gbl_currentYearInt + 1;
+             pickyr <=  gbl_currentYearInt + gbl_num_yrs_past_current_yr;
+             pickyr++
+        ) {  // only allow to go to next calendar year
+
+
+
             [yearsToPickFrom2 addObject: [@(pickyr) stringValue] ];
         }
         //NSLog(@"yearsToPickFrom2.count=%lu",(unsigned long)yearsToPickFrom2.count);
@@ -343,7 +374,7 @@ NSLog(@"in viewDidAppear()  in  selDate! ");
         //
         NSString *psvRememberedDate;   // "yyyymmdd"
 
-        MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
+        MAMB09AppDelegate *myappDelegate= (MAMB09AppDelegate *) [[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
 
 
         if (   [gbl_currentMenuPlusReportCode isEqualToString: @"hompwc"]  ) {

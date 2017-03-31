@@ -19,7 +19,6 @@
 		5035460B1A434EEB00FE7853 /* icon_MAMB09_288.png in Resources */ = {isa = PBXBuildFile; fileRef = 503546011A434EEB00FE7853 /* icon_MAMB09_288.png */; };
 		5035460C1A434EEB00FE7853 /* rounded_MAMB09_087.png in Resources */ = {isa = PBXBuildFile; fileRef = 503546021A434EEB00FE7853 /* rounded_MAMB09_087.png */; };
 		5035460D1A434EEB00FE7853 /* rounded_MAMB09_058.png in Resources */ = {isa = PBXBuildFile; fileRef = 503546031A434EEB00FE7853 /* rounded_MAMB09_058.png */; };
-		5047342C1CC6D4F10067CEE3 /* MAMB09_selShareEntityTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5047342B1CC6D4F10067CEE3 /* MAMB09_selShareEntityTableViewController.m */; };
 		5049021E1C3ACDA50031DFC4 /* MAMB09_listMembersTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5049021D1C3ACDA50031DFC4 /* MAMB09_listMembersTableViewController.m */; };
 		504902211C3AFBB20031DFC4 /* MAMB09_selNewMembersTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 504902201C3AFBB20031DFC4 /* MAMB09_selNewMembersTableViewController.m */; };
 		504B29851A4350AB009A6A25 /* rounded_MAMB09_029.png in Resources */ = {isa = PBXBuildFile; fileRef = 504B296D1A4350AB009A6A25 /* rounded_MAMB09_029.png */; };
@@ -44,13 +43,13 @@
 		504B299A1A4350AB009A6A25 /* icon_MAMB09_0029.png in Resources */ = {isa = PBXBuildFile; fileRef = 504B29821A4350AB009A6A25 /* icon_MAMB09_0029.png */; };
 		504B299B1A4350AB009A6A25 /* icon_MAMB09_0144.png in Resources */ = {isa = PBXBuildFile; fileRef = 504B29831A4350AB009A6A25 /* icon_MAMB09_0144.png */; };
 		504B299C1A4350AB009A6A25 /* icon_MAMB09_0072.png in Resources */ = {isa = PBXBuildFile; fileRef = 504B29841A4350AB009A6A25 /* icon_MAMB09_0072.png */; };
-		504C38DD1CF49777009B6640 /* MAMB09_confirmImportTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 504C38DC1CF49777009B6640 /* MAMB09_confirmImportTableViewController.m */; };
 		505386581CBAD4BE0092743F /* MAMB09_UITextField_noCopyPaste.m in Sources */ = {isa = PBXBuildFile; fileRef = 505386571CBAD4BE0092743F /* MAMB09_UITextField_noCopyPaste.m */; };
 		5055382E1A9F79C5003DC816 /* MAMB09viewTBLRPTs_1_TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5055382D1A9F79C5003DC816 /* MAMB09viewTBLRPTs_1_TableViewController.m */; };
 		505538341A9FAA6D003DC816 /* MAMB09viewTBLRPTs_2_TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 505538331A9FAA6D003DC816 /* MAMB09viewTBLRPTs_2_TableViewController.m */; };
 		50661E641B41F5AA005BDFCC /* MAMB09_addChangeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50661E631B41F5AA005BDFCC /* MAMB09_addChangeTableViewController.m */; };
 		507133421C3EC44F00AE8207 /* MAMB09_deleteMembersTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 507133411C3EC44F00AE8207 /* MAMB09_deleteMembersTableViewController.m */; };
 		50796A7C1ADC286000360BA4 /* MAMB09_selectReports_B_TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50796A7B1ADC286000360BA4 /* MAMB09_selectReports_B_TableViewController.m */; };
+		5081352A1E8EBE4A00B838A0 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 508135291E8EBE4A00B838A0 /* LICENSE.txt */; };
 		50AC38F419D082EB00FF3997 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50AC38F319D082EB00FF3997 /* Foundation.framework */; };
 		50AC38F619D082EB00FF3997 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50AC38F519D082EB00FF3997 /* CoreGraphics.framework */; };
 		50AC38F819D082EB00FF3997 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50AC38F719D082EB00FF3997 /* UIKit.framework */; };
@@ -110,8 +109,6 @@
 		503546011A434EEB00FE7853 /* icon_MAMB09_288.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_MAMB09_288.png; sourceTree = "<group>"; };
 		503546021A434EEB00FE7853 /* rounded_MAMB09_087.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rounded_MAMB09_087.png; sourceTree = "<group>"; };
 		503546031A434EEB00FE7853 /* rounded_MAMB09_058.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rounded_MAMB09_058.png; sourceTree = "<group>"; };
-		5047342A1CC6D4F10067CEE3 /* MAMB09_selShareEntityTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAMB09_selShareEntityTableViewController.h; sourceTree = "<group>"; };
-		5047342B1CC6D4F10067CEE3 /* MAMB09_selShareEntityTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAMB09_selShareEntityTableViewController.m; sourceTree = "<group>"; };
 		5049021C1C3ACDA50031DFC4 /* MAMB09_listMembersTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAMB09_listMembersTableViewController.h; sourceTree = "<group>"; };
 		5049021D1C3ACDA50031DFC4 /* MAMB09_listMembersTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAMB09_listMembersTableViewController.m; sourceTree = "<group>"; };
 		5049021F1C3AFBB20031DFC4 /* MAMB09_selNewMembersTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAMB09_selNewMembersTableViewController.h; sourceTree = "<group>"; };
@@ -138,8 +135,6 @@
 		504B29821A4350AB009A6A25 /* icon_MAMB09_0029.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_MAMB09_0029.png; path = ../../_old/icon/planet_54jb2a/icon_MAMB09/icon_MAMB09_0029.png; sourceTree = "<group>"; };
 		504B29831A4350AB009A6A25 /* icon_MAMB09_0144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_MAMB09_0144.png; path = ../../_old/icon/planet_54jb2a/icon_MAMB09/icon_MAMB09_0144.png; sourceTree = "<group>"; };
 		504B29841A4350AB009A6A25 /* icon_MAMB09_0072.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_MAMB09_0072.png; path = ../../_old/icon/planet_54jb2a/icon_MAMB09/icon_MAMB09_0072.png; sourceTree = "<group>"; };
-		504C38DB1CF49777009B6640 /* MAMB09_confirmImportTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAMB09_confirmImportTableViewController.h; sourceTree = "<group>"; };
-		504C38DC1CF49777009B6640 /* MAMB09_confirmImportTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAMB09_confirmImportTableViewController.m; sourceTree = "<group>"; };
 		505386561CBAD4BE0092743F /* MAMB09_UITextField_noCopyPaste.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAMB09_UITextField_noCopyPaste.h; sourceTree = "<group>"; };
 		505386571CBAD4BE0092743F /* MAMB09_UITextField_noCopyPaste.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAMB09_UITextField_noCopyPaste.m; sourceTree = "<group>"; };
 		5055382C1A9F79C5003DC816 /* MAMB09viewTBLRPTs_1_TableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAMB09viewTBLRPTs_1_TableViewController.h; sourceTree = "<group>"; };
@@ -152,6 +147,7 @@
 		507133411C3EC44F00AE8207 /* MAMB09_deleteMembersTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAMB09_deleteMembersTableViewController.m; sourceTree = "<group>"; };
 		50796A7A1ADC286000360BA4 /* MAMB09_selectReports_B_TableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAMB09_selectReports_B_TableViewController.h; sourceTree = "<group>"; };
 		50796A7B1ADC286000360BA4 /* MAMB09_selectReports_B_TableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAMB09_selectReports_B_TableViewController.m; sourceTree = "<group>"; };
+		508135291E8EBE4A00B838A0 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		50AC38F019D082EB00FF3997 /* Me and My BFFs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Me and My BFFs.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		50AC38F319D082EB00FF3997 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		50AC38F519D082EB00FF3997 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -273,10 +269,6 @@
 				5004DD391ACC426A0094BA14 /* MAMB09_info_TableViewController.m */,
 				50AC392819D0864A00FF3997 /* MAMB09_homeTableViewController.h */,
 				50AC392919D0864A00FF3997 /* MAMB09_homeTableViewController.m */,
-				5047342A1CC6D4F10067CEE3 /* MAMB09_selShareEntityTableViewController.h */,
-				5047342B1CC6D4F10067CEE3 /* MAMB09_selShareEntityTableViewController.m */,
-				504C38DB1CF49777009B6640 /* MAMB09_confirmImportTableViewController.h */,
-				504C38DC1CF49777009B6640 /* MAMB09_confirmImportTableViewController.m */,
 				5049021C1C3ACDA50031DFC4 /* MAMB09_listMembersTableViewController.h */,
 				5049021D1C3ACDA50031DFC4 /* MAMB09_listMembersTableViewController.m */,
 				5049021F1C3AFBB20031DFC4 /* MAMB09_selNewMembersTableViewController.h */,
@@ -332,6 +324,7 @@
 		50AC38FA19D082EB00FF3997 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				508135291E8EBE4A00B838A0 /* LICENSE.txt */,
 				50AC38FB19D082EB00FF3997 /* Me and My BFFs-Info.plist */,
 				503546031A434EEB00FE7853 /* rounded_MAMB09_058.png */,
 				50AC38FC19D082EB00FF3997 /* InfoPlist.strings */,
@@ -435,7 +428,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = MAMB09;
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = "Richard Koskela";
 				TargetAttributes = {
 					50AC38EF19D082EB00FF3997 = {
@@ -474,6 +467,7 @@
 				504B29951A4350AB009A6A25 /* icon_MAMB09_0058.png in Resources */,
 				504B298E1A4350AB009A6A25 /* icon_MAMB09_0150.png in Resources */,
 				504B29971A4350AB009A6A25 /* icon_MAMB09_0050.png in Resources */,
+				5081352A1E8EBE4A00B838A0 /* LICENSE.txt in Resources */,
 				504B29901A4350AB009A6A25 /* icon_MAMB09_0114.png in Resources */,
 				5035460C1A434EEB00FE7853 /* rounded_MAMB09_087.png in Resources */,
 				504B299A1A4350AB009A6A25 /* icon_MAMB09_0029.png in Resources */,
@@ -529,9 +523,7 @@
 				50CC4EB31A1D1592001DD245 /* MAMB09_viewHTMLViewController.m in Sources */,
 				50796A7C1ADC286000360BA4 /* MAMB09_selectReports_B_TableViewController.m in Sources */,
 				50661E641B41F5AA005BDFCC /* MAMB09_addChangeTableViewController.m in Sources */,
-				504C38DD1CF49777009B6640 /* MAMB09_confirmImportTableViewController.m in Sources */,
 				50AC390419D082EB00FF3997 /* MAMB09AppDelegate.m in Sources */,
-				5047342C1CC6D4F10067CEE3 /* MAMB09_selShareEntityTableViewController.m in Sources */,
 				5004DD3A1ACC426A0094BA14 /* MAMB09_info_TableViewController.m in Sources */,
 				5055382E1A9F79C5003DC816 /* MAMB09viewTBLRPTs_1_TableViewController.m in Sources */,
 				5019A6471A87FDBB002408DA /* MAMB09_selDateViewController2.m in Sources */,
@@ -616,14 +608,19 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -655,13 +652,18 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -684,7 +686,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Me and My BFFs/Me and My BFFs-Prefix.pch";
 				INFOPLIST_FILE = "Me and My BFFs/Me and My BFFs-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -702,7 +704,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Me and My BFFs/Me and My BFFs-Prefix.pch";
 				INFOPLIST_FILE = "Me and My BFFs/Me and My BFFs-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";

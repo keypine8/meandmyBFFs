@@ -1,8 +1,28 @@
 //  MAMB09AppDelegate.h
 //  Me and My BFFs
 //
-//  Created by Richard Koskela on 2014-09-22.
-//  Copyright (c) 2014 Richard Koskela. All rights reserved.
+// MIT License
+//
+// Copyright (c) 2017 softwaredev
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+//
 //
 
 #import <UIKit/UIKit.h>
@@ -168,6 +188,7 @@ NSInteger gbl_justAddedGroupRecord;
 //NSInteger gbl_justHitRedCircleMinusButtonArea;
 //NSInteger gbl_justEnteredRedDeleteButtonMode;
 NSInteger gbl_justPressedChangeGroupName;
+NSInteger gbl_justPressedAddButtonForNewPerson;
 
 // A is for tblrpts_1,  B is for tblrpts_2
 //
@@ -470,9 +491,9 @@ NSIndexPath *gbl_TBLRPTS1_saveSelectedIndexPath;  // for deselecting with animat
 
 //
 NSInteger gbl_MAX_groups;               //  50 max in app
-NSInteger gbl_MAX_persons;              // 250 max in app and max in group
-NSInteger gbl_MAX_personsInGroup;       // max 250 members in a Group
-//NSInteger gbl_maxGrpBirthinfoCSVs;   // max 250 members in a Group
+NSInteger gbl_MAX_persons;              // 200 max in app and max in group (see  appdel.m for actual setting value)
+NSInteger gbl_MAX_personsInGroup;       // max 200 members in a Group
+//NSInteger gbl_maxGrpBirthinfoCSVs;   // max 200 members in a Group
 
 NSInteger gbl_MAX_lengthOfName;          //  15 (applies to Person and Group both)
 NSInteger gbl_MAX_lengthOfCity;
@@ -898,6 +919,7 @@ UIColor *gbl_color_cAplDarkerBlue;
 //
 
 // data arrays
+NSMutableArray *testermutarray;
 NSMutableArray *gbl_arrayGrp;
 NSMutableArray *gbl_arrayPer;
 NSMutableArray *gbl_arrayMem; // members of  groups
@@ -1047,6 +1069,8 @@ NSString *gbl_lastSelectedDay;          // yyyymmdd
 NSString *gbl_lastSelectedDaySaved;     // yyyymmdd  SAVE START DAY (for "Start button")
 NSString *gbl_lastSelectedDayLimit;     // yyyymmdd  Maximum future lookahead is to the end of the
                                         //           calendar year after the current calendar year.
+NSInteger gbl_num_yrs_past_current_yr;  // =1 , except for testing
+
 NSString *gbl_lastSelectedReportGroup;  // 3-letter code  gbm,gma,gme,gmr,gmp,gmd,gby,gbd 
 NSString *gbl_lastSelectedReportPerson; // 3-letter code  pbm,pcy,ppe,pco,pbg,pwc 
 

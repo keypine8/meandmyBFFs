@@ -1,5 +1,28 @@
 /* mambutil.c */
 
+// MIT License
+//
+// Copyright (c) 2017 softwaredev
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+//
+
 #include "incocoa.h"
 #include "rkdebug_externs.h"
 
@@ -72,7 +95,10 @@ int  bin_find_first_in_array(    /* ABANDONED seq is fast enough */
   char *find_begins_with,
   int num_elements
 );
-int bin_find_first_city1 (char *begins_with); /* in gbl_placetab[] */
+
+
+
+int bin_find_first_city1 (char *begins_with); /* bin_find_first_city1  returns index of first city in gbl_placetab[] */
 int bin_find_first_city(
   char  *begins_with,
   int    numCitiesToGetPicklist,
@@ -80,6 +106,17 @@ int bin_find_first_city(
   char  *city_prov_coun_PSVs // ptr to beginning of fixed length PSVs
 
 ); /* in gbl_placetab[] */
+        /* bin_find_first_city  Uses binary  search  in gbl_placetab[] structs
+        *  to find first city that "begins_with" arg.
+        *  RETURN VALUE is
+        *     1. index that is lowest_hit_so_far IF there are too many cities for picklist (numCitiesToGetPicklist)
+        *     2. -1  IF no city  starts with arg "city_begins_with"
+        *     3. -2  IF there are few enough cities to make a picklist
+        *  also returns num cities found
+        *  also returns array of chars holding city,prov,coun PSVs
+        */
+
+
 
 void bracket_string_of(
   char *any_of_these,
@@ -1935,18 +1972,35 @@ int bin_find_first_city1 (char *city_begins_with) /* in gbl_placetab[] */
       low_city_in_array[ii] = tolower(low_city_in_array[ii]);
     }
 
-    iresult = strncmp(low_city_begins_with, low_city_in_array, len); /* ignores case */
+//    iresult = strncmp(low_city_begins_with, low_city_in_array, len); /* ignores case */
 
+    char city_to_compare_against[64];
+    int  how_many_minus_signs;
+    how_many_minus_signs = 0;
+    strcpy(city_to_compare_against, low_city_in_array);
+    how_many_minus_signs = scharcnt(city_to_compare_against, '-');  // count how many minus signs - 
+//ks(city_to_compare_against);
+//kin(how_many_minus_signs);
+    scharout(city_to_compare_against, '-');  /* remove - because it's ignored in unix sort    */
+//ksn(city_to_compare_against);
+//    iresult = strncmp(low_city_begins_with, city_to_compare_against, len - how_many_minus_signs ); /* ignores case */
+    iresult = strncmp(low_city_begins_with, city_to_compare_against, len                        ); /* ignores case */
+
+//ki(iresult);
+//tr("qq1 loop");
     if (iresult < 0) {
+//trn("qq1 got high");
       high = mid - 1;
     } else if (iresult > 0) {
+//trn("qq1 got low");
       low = mid + 1;
     } else {
       /* Here we have found a good hit at index  "mid". */
-
+//trn("qq1 got hit");
      lowest_hit_so_far = mid;
      high = mid - 1;
     }
+//trn("");
   }
 
   return (lowest_hit_so_far);  /* could be -1 (not found) */
@@ -1976,12 +2030,13 @@ int bin_find_first_city(      /* in gbl_placetab[] */
   char low_city_in_array[64];
   int low, high, mid, lowest_hit_so_far, lowest_exact_hit_so_far;
 
-/* tn();trn("in  bin_find_first_city_begins_with"); */
-/* kin(my_num_elements); ksn(city_begins_with); */
+tn();trn("in  bin_find_first_city_begins_with    qq qq qq "); 
+//ksn(city_begins_with);
+//kin(numCitiesToGetPicklist);
 
   /*my_num_elements = NKEYS_PLACE;*/    /* in full placetab array */
   my_num_elements = gbl_nkeys_place;     /* in full placetab array */
-kin(my_num_elements);
+//kin(my_num_elements);
 
   low = 0;
   high = my_num_elements - 1;
@@ -2002,22 +2057,47 @@ kin(my_num_elements);
     for(ii = 0; low_city_in_array[ii]; ii++){ /* make gbl_placetab[mid].my_city lower case */
       low_city_in_array[ii] = tolower(low_city_in_array[ii]);
     }
+//ksn(low_city_begins_with);
+//ksn(low_city_in_array);
 
-    iresult = strncmp(low_city_begins_with, low_city_in_array, len); /* ignores case */
 
+
+//    iresult = strncmp(low_city_begins_with, low_city_in_array, len); /* ignores case */
+
+    char city_to_compare_against[64];
+    int  how_many_minus_signs;
+    how_many_minus_signs = 0;
+    strcpy(city_to_compare_against, low_city_in_array);
+    how_many_minus_signs = scharcnt(city_to_compare_against, '-');  // count how many minus signs - 
+//ks(city_to_compare_against);
+//kin(how_many_minus_signs);
+    scharout(city_to_compare_against, '-');   /* remove - because it's ignored in unix sort    */
+//ksn(city_to_compare_against);
+//    iresult = strncmp(low_city_begins_with, city_to_compare_against, len - how_many_minus_signs ); /* ignores case */
+    iresult = strncmp(low_city_begins_with, city_to_compare_against, len                        ); /* ignores case */
+
+
+
+
+//ki(iresult);
+//tr("qq loop");
     if (iresult < 0) {
+//trn("got high");
       high = mid - 1;
     } else if (iresult > 0) {
+//trn("got low");
       low = mid + 1;
     } else {
       /* Here we have found a good hit at index  "mid". */
-
+//trn("got hit");
      lowest_hit_so_far = mid;
      high = mid - 1;
     }
+//trn("");
   }
 
 
+//kin(lowest_hit_so_far);
   if (lowest_hit_so_far == -1 ) return (lowest_hit_so_far);    // -1 = no city  starts with arg "city_begins_with"
 
 
@@ -2052,7 +2132,8 @@ kin(my_num_elements);
   int save_idx;
   save_idx = -1;  // zero-based
   int dbctr; dbctr = 0; 
-  while (starting_index_into_cities + num_places_found <= my_num_elements) {
+  while (starting_index_into_cities + num_places_found <= my_num_elements)
+  {
 
     strcpy(city_buf, gbl_placetab[starting_index_into_cities + num_places_found].my_city); // <<<<===--- ------
     idx_of_prov =    gbl_placetab[starting_index_into_cities + num_places_found].idx_prov;
@@ -2082,14 +2163,16 @@ kin(my_num_elements);
     iresult = strncmp(begins_with_buf, city_buf_tolower, len); /* ignores case */      // <<==-----  BEGINS WITH
     if (iresult == 0) {
       num_places_found = num_places_found + 1;
-
+//b(230);
       if (num_places_found > numCitiesToGetPicklist) {
+//b(231);
 
         // here we have > 25 cities matching Typed so Far
         // CHECK if there are  any  cities whose ENTIRE NAME matches Typed so Far
         //     if yes, return -2 to give permission to display button "Picklist >"
         //
         if (num_found_match_entire_city > 0) {
+//        if (num_found_match_entire_city > 1) {
 
           *arg_numCitiesFound = num_found_match_entire_city;   // <<==-----  matches WHOLE CITY NAME
           return (-2);    // -2  IF there are  entire city matches  to make a picklist
@@ -2112,7 +2195,7 @@ kin(my_num_elements);
 
 
       sprintf(my128PSV, "%s|%s|%s", city_buf, prov_buf, coun_buf);
-
+//ksn(my128PSV);
       strcpy(city_prov_coun_PSVs + (num_places_found - 1)  * 128, my128PSV);  // fixed rec =  128  chars
 
     } else {
@@ -2618,7 +2701,12 @@ int snone(char *s,char *set)
 
 
 
-
+// this fn ONLY returns these
+//                strcpy(psvTimezoneDiff, "0");  /* should not happen */
+//                strcpy(psvLongitude,  "0.0");
+// as THIS ARG
+//     sprintf(retDiffLong, "%s|%s", psvTimezoneDiff, psvLongitude);
+//
 // This is called for birth data city/prov/coun already accepted by app
 // Uses idx into gbl_placetab to return a PSV of "hoursDiff|Longitude"
 // or "-1" if not found  in arg retDiffLong

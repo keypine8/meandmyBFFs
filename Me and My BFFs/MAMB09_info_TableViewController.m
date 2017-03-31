@@ -2,8 +2,28 @@
 //  MAMB09_info_TableViewController.m
 //  Me&myBFFs
 //
-//  Created by Richard Koskela on 2015-04-01.
-//  Copyright (c) 2015 Richard Koskela. All rights reserved.
+// MIT License
+//
+// Copyright (c) 2017 softwaredev
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+//
 //
 
 #import "MAMB09_info_TableViewController.h"
@@ -616,7 +636,10 @@ nbn(88);
 //    UIImage *myImageCategories3      = [UIImage  imageNamed: @"categories3_6.png" inBundle: nil compatibleWithTraitCollection: nil ];
 //    UIImage *myImageCategories3      = [UIImage  imageNamed: @"categories3_info10.png" inBundle: nil compatibleWithTraitCollection: nil ];
 //    UIImage *myImageCategories3      = [UIImage  imageNamed: @"categories3_info11.png" inBundle: nil compatibleWithTraitCollection: nil ];
-    UIImage *myImageCategories3      = [UIImage  imageNamed: @"categories3_info10.png" inBundle: nil compatibleWithTraitCollection: nil ];
+
+//    UIImage *myImageCategories3      = [UIImage  imageNamed: @"categories3_info10.png" inBundle: nil compatibleWithTraitCollection: nil ];
+    UIImage *myImageCategories3      = [UIImage  imageNamed: @"categories3_info14.png" inBundle: nil compatibleWithTraitCollection: nil ];
+
 //    UIImage *myImageTwoThings        = [UIImage  imageNamed: @"twoThings_info5.png"   inBundle: nil compatibleWithTraitCollection: nil ];
 //    UIImage *myImageTwoThings        = [UIImage  imageNamed: @"twoThings_info8.png"   inBundle: nil compatibleWithTraitCollection: nil ];
 //    UIImage *myImageTwoThings        = [UIImage  imageNamed: @"twoThings_info9.png"   inBundle: nil compatibleWithTraitCollection: nil ];
@@ -745,10 +768,20 @@ nbn(88);
 
         if (indexPath.row == 1) {
             NSString *myIntroString;
-            myIntroString = [NSString stringWithFormat: 
-                @"The two 6-month Graphs show the overall stress level for %@ on every second day in %ld.", 
-//                gbl_lastSelectedPerson, (long)gbl_currentYearInt];
-                gbl_viewHTML_NAME_personJust1, (long)gbl_currentYearInt];
+
+//            myIntroString = [NSString stringWithFormat: 
+//                @"The two 6-month Graphs show the overall stress level for %@ on every second day in %ld.", 
+//                    gbl_viewHTML_NAME_personJust1,
+//                    (long)gbl_currentYearInt
+//            ]; //   not          (long)gbl_currentYearInt];
+//
+//            myIntroString = [NSString stringWithFormat: 
+//                @"The two 6-month Graphs show the overall stress level for %@ on every second day in the year selected.", 
+//                    gbl_viewHTML_NAME_personJust1
+//            ]; 
+//
+            myIntroString =
+              @"The two 6-month Graphs show the overall stress level for the selected person on every second day in the selected year."; 
 
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== intro text for FUT
                 cell.textLabel.textColor     = [UIColor blackColor];
@@ -1775,7 +1808,8 @@ nbn(100);
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
 
-                cell.textLabel.text          = @"The \"Closeness\" category is useful because it shows the natural ease of liking the other person in a comfortable way.\n\nThe 2 \"Point of view\" categories occasionally show that one of the two people sees the relationship as being very favorable but the other person sees it as very challenging.";
+//                cell.textLabel.text          = @"The \"Closeness\" category is useful because it shows the natural ease of liking the other person in a comfortable way.\n\nThe 2 \"Point of view\" categories occasionally show that one of the two people sees the relationship as being very favorable but the other person sees it as very challenging.";
+cell.textLabel.text          = @"The \"Closeness\" category is useful because it shows the natural ease of liking the other person in a comfortable way.\n\nThe 2 \"Point of view\" categories occasionally show that one of the two people sees the relationship as being very favorable but the other person sees it as very challenging.\n\nA good sign of compatibility potential in a category is when favorable green plus signs (++) cover a full line or more.\n\nA good sign of compatibility potential in a category is when it has double the length of the favorable green ++ compared to the challenging red --.";
 
                 cell.imageView.image         = nil;
                 cell.backgroundView          = nil ;
@@ -2777,7 +2811,8 @@ nbn(100);
                 cell.textLabel.font          = myFontForText;
                 cell.backgroundColor         = gbl_color_cBgr;
                 cell.textLabel.numberOfLines = 0;
-                cell.textLabel.text          = @"There are 3 fields: name, birth city and birth date.  Tap in each field to enter information for it.  When you are done entering all the information, tap \"Done\".";
+//                cell.textLabel.text          = @"There are 3 fields: name, birth city and birth date.  Tap in each field to enter information for it.  When you are done entering all the information, tap \"Done\".";
+                cell.textLabel.text          = @"There are 3 fields: name, birth city and birth date.  Tap in each field to enter information for it.  When you are done entering all the information, tap \"Save\".";
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -2848,7 +2883,8 @@ nbn(100);
                 initWithString:
 //@"   When you tap \"Done\" you immediately get personal privacy for the new person\'s birth information at all times.\n\n   NOBODY, neither you nor the device owner nor anybody else can ever again change or even look at the Birth City or Birth Date.\n\n   That means, if you want to look at the birth information in the future, you need to save it somewhere safe outside this app.\n\n   FURTHERMORE, whenever birth information goes outside this running app, the birth information cannot be looked at:\n   \u2022 when you do a full backup\n   \u2022 when the app saves data for its own use"
 //@"   When you tap \"Done\" you immediately get personal privacy for the new person\'s birth information at all times.\n\n   NOBODY, neither you nor the device owner nor anybody else can ever again change or even look at the Birth City or Birth Date.\n\n   That means, if you want to look at the birth information in the future, you need to save it somewhere safe outside this app."
-@"When you tap \"Done\" you immediately get personal privacy for the new person\'s birth information at all times.\n\nNOBODY, neither you nor the device owner nor anybody else can ever again change or even look at the Birth City or Birth Date.\n\nThat means, if you want to look at the birth information in the future, you need to save it somewhere safe outside this app.\n\nWhen you add birth information for a new person, you need their permission to do so."
+//@"When you tap \"Done\" you immediately get personal privacy for the new person\'s birth information at all times.\n\nNOBODY, neither you nor the device owner nor anybody else can ever again change or even look at the Birth City or Birth Date.\n\nThat means, if you want to look at the birth information in the future, you need to save it somewhere safe outside this app.\n\nWhen you add birth information for a new person, you need their permission to do so."
+@"When you tap \"Save\" you immediately get personal privacy for the new person\'s birth information.\n\nNOBODY, neither you nor the device owner nor anybody else can ever again change or even look at the Birth City or Birth Date.\n\nThat means, if you want to look at the birth information in the future, you need to save it somewhere safe outside this app.\n\nWhen you add birth information for a new person, you need their permission to do so."
                     attributes: @{ NSParagraphStyleAttributeName: paragraphStyle }
             ];
 
@@ -3172,7 +3208,7 @@ nbn(100);
 
             NSAttributedString *myAttributedStr = [[NSAttributedString alloc]
                 initWithString:
-@"\u2022 Tap the round red \"-\" button on the left.\n\u2022 A red \"Delete\" button slides over from the right edge of the screen.\n\u2022 You can Cancel out here if you want.\n\u2022 Tap the red \"Delete\" button to CONFIRM you want to delete this person.\n\u2022 You can see the person disappearing from the people list."
+@"\u2022 Tap the round red \"-\" button on the left.\n\u2022 A red \"Delete\" button slides over from the right edge of the screen.\n\u2022 You can Cancel out here if you want.\n\u2022 Tap the red \"Delete\" button to CONFIRM you want to delete this person.\n\u2022 You can see the person disappearing from the people list.\n\u2022 There is no undelete."
 // There is no undo."
                     attributes: @{ NSParagraphStyleAttributeName: paragraphStyle }
             ];
@@ -3421,7 +3457,7 @@ nbn(100);
 
             NSAttributedString *myAttributedStr = [[NSAttributedString alloc]
                 initWithString:
-@"\u2022 Tap the group you want to delete members from.\n\u2022 Tap the red \"-\".\n\u2022 Tap all the people you want to delete.\n\u2022 Tap \"Done\".\n\u2022 You can see the selected people disappearing from the group."
+@"\u2022 Tap the group you want to delete members from.\n\u2022 Tap the red \"-\".\n\u2022 Tap all the people you want to delete.\n\u2022 Tap \"Done\".\n\u2022 You can see the selected people disappearing from the group.\n\u2022 There is no undelete."
                     attributes: @{ NSParagraphStyleAttributeName: paragraphStyle }
             ];
 
@@ -3533,7 +3569,7 @@ nbn(100);
 
             NSAttributedString *myAttributedStr = [[NSAttributedString alloc]
                 initWithString:
-@"\u2022 Tap red \"-\" button on the left.\n\u2022 A red \"Delete\" button slides over from the right edge of the screen.\n\u2022 You can Cancel out here if you want.\n\u2022 Tap the red \"Delete\" button to CONFIRM you want to delete this group.\n\u2022 You can see the group disappearing from the group list."
+@"\u2022 Tap red \"-\" button on the left.\n\u2022 A red \"Delete\" button slides over from the right edge of the screen.\n\u2022 You can Cancel out here if you want.\n\u2022 Tap the red \"Delete\" button to CONFIRM you want to delete this group.\n\u2022 You can see the group disappearing from the group list.\n\u2022 There is no undelete."
 // There is no undo."
                     attributes: @{ NSParagraphStyleAttributeName: paragraphStyle }
             ];
@@ -4363,7 +4399,8 @@ nbn(100);
 //        if (indexPath.row ==   5) return   400.0;  // text  for personal privacy
 //        if (indexPath.row ==   5) return   180.0;  // text  for personal privacy
 //        if (indexPath.row ==   5) return   200.0;  // text  for personal privacy
-        if (indexPath.row ==   5) return   215.0;  // text  for personal privacy
+//        if (indexPath.row ==   5) return   215.0;  // text  for personal privacy
+        if (indexPath.row ==   5) return   205.0;  // text  for personal privacy
 
         if (indexPath.row ==   6) return    16.0;  // spacer
         if (indexPath.row ==   7) return    30.0;  // title for person name
@@ -4512,7 +4549,7 @@ nbn(100);
 
     if (   [gbl_helpScreenDescription isEqualToString: @"calendar year"]  ) {
         if (indexPath.row ==   0) return     8.0;  // spacer
-        if (indexPath.row ==   1) return    60.0;  // intro string
+        if (indexPath.row ==   1) return    70.0;  // intro string
         if (indexPath.row ==   2) return     8.0;  // spacer
 
         if (indexPath.row ==   3) return    30.0;  // title for quick start guide
@@ -4558,14 +4595,19 @@ nbn(100);
 
         if (indexPath.row == 12) return    30.0;  // title for 3 categories    3 fun categories
         if (indexPath.row == 13) return    16.0;  // spacer
-        if (indexPath.row == 14) return    45.0;  // text #1 for 3 categories
-        if (indexPath.row == 15) return     8.0;  // spacer
 
+        if (indexPath.row == 14) return    45.0;  // text #1 for 3 categories
+
+        if (indexPath.row == 15) return     8.0;  // spacer
 //        if (indexPath.row == 16) return   320.0;  // image 3 categories
         if (indexPath.row == 16) return   200.0;  // image 3 categories
 
         if (indexPath.row == 17) return     1.0;  // spacer
-        if (indexPath.row == 18) return   130.0;  // text #2 for 3 categories
+//        if (indexPath.row == 18) return   130.0;  // text #2 for 3 categories
+//        if (indexPath.row == 18) return   220.0;  // text #2 for 3 categories
+//        if (indexPath.row == 18) return   250.0;  // text #2 for 3 categories
+        if (indexPath.row == 18) return   260.0;  // text #2 for 3 categories
+
 
         if (indexPath.row == 19) return     16.0;  // spacer
         if (indexPath.row == 20) return    30.0;  // title for relationships are really complex

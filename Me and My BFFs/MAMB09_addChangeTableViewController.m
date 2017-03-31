@@ -2,8 +2,28 @@
 //  MAMB09_addChangeTableViewController.m
 //  Me&myBFFs
 //
-//  Created by Richard Koskela on 2015-06-29.
-//  Copyright (c) 2015 Richard Koskela. All rights reserved.
+// MIT License
+//
+// Copyright (c) 2017 softwaredev
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+//
 //
 
 //#include <CoreServices/CoreServices.h>   // these 4 are for  start = mach_absolute_time();
@@ -552,6 +572,44 @@ tn();
 tn();
   NSLog(@"viewDidLoad in add/change");
     [super viewDidLoad];
+
+
+  nbn(705);
+
+    if (   [gbl_fromHomeCurrentSelectionType isEqualToString: @"person" ] )
+    {
+
+        // BEFORE adding person,  alert for  PERSONAL PRIVACY
+        //
+  nbn(706);
+        NSString *saveMsg;
+
+        saveMsg = [NSString stringWithFormat: @"\nAfter you save the birth data for a new person, NOBODY, neither you nor this device owner nor anybody else can ever again change or even look at the Birth City or Birth Date.\n\n So, if you ever want to look at the birth information of this new person in the future, you need to write it down somewhere safe outside this app." 
+        ];
+
+        UIAlertController* myalert = [UIAlertController alertControllerWithTitle: @"Personal Privacy"
+                                                                       message: saveMsg 
+                                                                preferredStyle: UIAlertControllerStyleAlert  ];
+         
+        UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                            style: UIAlertActionStyleDefault
+                                                          handler: ^(UIAlertAction * action) {
+            NSLog(@"Ok button pressed");
+        } ];
+         
+        [myalert addAction:  okButton];
+
+        [self.navigationController presentViewController: myalert  animated: YES  completion: nil ];
+
+  nbn(707);
+//                return;
+
+//                  [self.navigationController popViewControllerAnimated: YES]; // actually do the "Back" action
+        // BEFORE adding person,  alert for  PERSONAL PRIVACY
+    }
+
+
+
 
 //    gbl_haveEnteredGestureRecognizerShouldBegin = 0;
 
@@ -1449,7 +1507,17 @@ NSLog(@"currentScreenWidthHeight.height =%f",currentScreenWidthHeight.height );
         
         // not birthday (privacy)
         //for (NSInteger pickyr = gbl_intBirthYear; pickyr <=  gbl_currentYearInt + 1; pickyr++)   // only allow to go to next calendar year
-        for (NSInteger pickyr = gbl_earliestYear; pickyr <=  gbl_currentYearInt + 1; pickyr++) {  // only allow to go to next calendar year
+
+
+        // for (NSInteger pickyr = gbl_earliestYear; pickyr <=  gbl_currentYearInt + 1; pickyr++) x  // only allow to go to next calendar year
+
+
+        for (NSInteger pickyr = gbl_earliestYear;
+//             pickyr <=  gbl_currentYearInt + 1;
+             pickyr <=  gbl_currentYearInt + gbl_num_yrs_past_current_yr;
+             pickyr++
+        ) {  // only allow to go to next calendar year
+
             [self.array_BirthYearsToPick addObject: [@(pickyr) stringValue] ];
         }
   NSLog(@"self.array_BirthYearsToPick.count=%lu",(unsigned long)self.array_BirthYearsToPick.count);
@@ -1574,6 +1642,7 @@ NSLog(@"currentScreenWidthHeight.height =%f",currentScreenWidthHeight.height );
 
 
   NSLog(@"gbl_justEnteredAddChangeView=[%ld]",(long)gbl_justEnteredAddChangeView);
+
     if (gbl_justEnteredAddChangeView == 1 )  // 1=y,0=n
     {
         gbl_justEnteredAddChangeView  = 0;
@@ -1593,6 +1662,7 @@ NSLog(@"currentScreenWidthHeight.height =%f",currentScreenWidthHeight.height );
 //        }
 
         // this got rid of input accssory showing on  edit > chg city > done > + > keyboard is showing
+
         [gbl_myname             resignFirstResponder];
         [gbl_mycitySearchString resignFirstResponder];  // control goes to textFieldShouldEndEditing > textFieldDidEndEditing > back here
         [gbl_mybirthinformation resignFirstResponder]; 
@@ -2023,6 +2093,17 @@ trn("-------------------------------------------"); tn();
                     gbl_kindOfSave = @"regular save";        // this var is used throughout
                 }
 
+
+
+        // NO MORE choose kind of save  (personal privacy)
+        //
+        fldKindOfSave  = @"hs";
+        gbl_kindOfSave = @"no look no change save";  // set default  // this var is used throughout
+
+
+
+
+
   NSLog(@"fldName   = [%@]",fldName);
   NSLog(@"fldMth    = [%@]",fldMth);
   NSLog(@"fldDay    = [%@]",fldDay);
@@ -2230,6 +2311,9 @@ trn("-------------------------------------------"); tn();
         gbl_enteredCoun        = gbl_initPromptCoun;  // @"Country";
 
         gbl_kindOfSave = @"regular save";   // set default    // this var is used throughout
+
+//        gbl_kindOfSave = @"no look no change save";  // set default  // this var is used throughout
+
     }
 
     gbl_previousCharTypedWasSpace = 0;                 // for no multiple consecutive spaces
@@ -2595,12 +2679,25 @@ trn("-------------------------------------------"); tn();
 } // end of onDateInputViewClearButton
 
 
-- (IBAction) oncityInputViewClearButton1: (id)sender {
+
+
+- (IBAction) oncityInputViewClearButton1: (id)sender {   // hit button "Clear City"  
   NSLog(@"in oncityInputViewClearButton1!");
 
     gbl_myCitySoFar                   = @"";
   NSLog(@"SET gbl_myCitySoFar #03=[%@]",gbl_myCitySoFar );
   NSLog(@"citych #34  %-24s =[%@] $$$  oncityInputViewClearButton1  $$$$$$$$$$$$$$$$$$$$", "gbl_myCitySoFar" , gbl_myCitySoFar );
+
+
+  NSLog(@"--- clrcit ---  111  ---------------------------------------------");
+  NSLog(@"gbl_mycitySearchString.text      =[%@]", gbl_mycitySearchString.text);
+  NSLog(@"gbl_myCitySoFar                  =[%@]", gbl_myCitySoFar);
+  NSLog(@"gbl_enteredCity                  =[%@]", gbl_enteredCity);
+  NSLog(@"gbl_lastSelectedCityPickerRownum =[%ld]",(long)gbl_lastSelectedCityPickerRownum );
+  NSLog(@"gbl_lastSelectedCityPickerRownum =[%ld]",(long)gbl_lastSelectedCityPickerRownum );
+  NSLog(@"--- clrcit -------------------------------------------------------");
+
+
 
     gbl_fewEnoughCitiesToMakePicklist = 0;
 
@@ -2619,6 +2716,8 @@ trn("-------------------------------------------"); tn();
   NSLog(@"SET gbl_myCitySoFar #56 with setCitySearchStringTitleTo" );
     [self setCitySearchStringTitleTo: @"Type City Name" ];
 
+    gbl_lastSelectedCityPickerRownum = -1;   // FLAG to show city prompts instead of city
+
     gbl_enteredCity        = gbl_initPromptCity;  // @"City or Town";  for display in gbl_mycityprovcounLabel= found city,prov,counl
   NSLog(@"citych #33  %-24s =[%@] $$$  oncityInputViewClearButton1  $$$$$$$$$$$$$$$$$$$$", "gbl_enteredCity" , gbl_enteredCity);
     gbl_enteredProv        = gbl_initPromptProv;  // @"State or Province";
@@ -2628,6 +2727,15 @@ trn("-------------------------------------------"); tn();
     // update city label field  (update field in cellForRowAtIndexpath)
     //
     [ self updateCityProvCoun ]; // update city/prov/couon field  in cellForRowAtIndexpath
+
+
+  NSLog(@"--- clrcit ---  999  ---------------------------------------------");
+  NSLog(@"gbl_mycitySearchString.text      =[%@]", gbl_mycitySearchString.text);
+  NSLog(@"gbl_myCitySoFar                  =[%@]", gbl_myCitySoFar);
+  NSLog(@"gbl_enteredCity                  =[%@]", gbl_enteredCity);
+  NSLog(@"gbl_lastSelectedCityPickerRownum =[%ld]",(long)gbl_lastSelectedCityPickerRownum );
+  NSLog(@"--- clrcit -------------------------------------------------------");
+
 
     [self showHide_ButtonToSeePicklist ];
 
@@ -3630,6 +3738,7 @@ NSLog(@"          POP  VIEW   #6");
                     } // search thru gbl_arrayPer for name already there 
 
                 }  // add mode - check for duplicate name
+  nbn(704);
 
 
 //      NSLog(@" // Actually do save of New Person   here");
@@ -3638,168 +3747,182 @@ NSLog(@"          POP  VIEW   #6");
 
                 // Actually do save of New Person   here");
 
+  NSLog(@" gbl_kindOfSave =[%@]", gbl_kindOfSave );
 
                 // if person was saved with high security   (now, 20160616,   ALL people)
                 // do not offer a  choice of kind of save (see below)
                 // 
-                if (   [gbl_kindOfSave isEqualToString:  @"no look no change save" ] )
-                {
+//                if (   [gbl_kindOfSave isEqualToString:  @"no look no change save" ] )
+//                {
                     [self doActualPersonSave ];
 
-//  NSLog(@"gbl_arrayMem after  doActualPersonSave =[%@]",gbl_arrayMem );
-                    return;
-                }
+  NSLog(@"after  doActualPersonSave ( at END of   person saveDone logic  at end of  pressedSaveDone ) ! ");
+
+
+  nbn(705);
 
                 // since all hs saves, this does not run ever
 
-                // choose kind of save
-                // offer to save person with no look no change
-                //
-                NSString *saveTitle;
-                NSString *saveMsg;
-//                saveTitle = @"Choose Kind of Save\n";
-                saveTitle = @"Personal Privacy\n";
-
-                NSString *nameInPossessiveForm;
-                if (   [gbl_myname.text  hasSuffix: @"s" ]
-                    || [gbl_myname.text  hasSuffix: @"S" ]
-                    || [gbl_myname.text  hasSuffix: @"z" ]
-                    || [gbl_myname.text  hasSuffix: @"Z" ]  )
-                {
-                     nameInPossessiveForm = [NSString stringWithFormat: @"%@\'",  gbl_myname.text ];
-                } else {
-                     nameInPossessiveForm = [NSString stringWithFormat: @"%@\'s", gbl_myname.text ];
-                }
-//                saveMsg = [NSString stringWithFormat: @"\n   The No Look, No Change Save prevents EVERYONE, including yourself and this device owner, from ever seeing or changing %@\'s birth date or city.\n\n", gbl_myname.text ];
-//                saveMsg = [NSString stringWithFormat: @"\n   Hide Birth Information Save prevents EVERYONE, including yourself and this device owner, from ever seeing or changing %@\'s birth date or city.\n\n", gbl_myname.text ];
-                saveMsg = [NSString stringWithFormat: @"\n   After you save the birth data for %@,   NOBODY, neither you nor this device owner nor anybody else can ever again change or even look at the Birth City or Birth Date.\n\n   So, if you ever want to look at this birth information in the future, you need to write it down somewhere safe outside this app.",  gbl_myname.text ];
-
-
-                NSMutableParagraphStyle *myParagraphStyle = [[NSMutableParagraphStyle alloc] init];
-                myParagraphStyle.alignment                = NSTextAlignmentLeft;
-                myParagraphStyle.headIndent               = 12;
-//                myParagraphStyle.firstLineHeadIndent      = 12;
-
-
-                NSDictionary *myNeededAttribsMessage = @{
-                    //   e.g.
-                    ////                                      NSForegroundColorAttributeName: self.label.textColor,
-                    ////                                      NSBackgroundColorAttributeName: cell.textLabel.attributedText
-                    ////                                      NSBackgroundColorAttributeName: cell.textLabel.textColor
-                    //                                      NSFontAttributeName: cell.textLabel.font,
-                    //                                      NSBackgroundColorAttributeName: cell.textLabel.backgroundColor
-                    //
-                    //
-                    //            NSMutableAttributedString *myAttributedTextLabelExplain = 
-                    //                [[NSMutableAttributedString alloc] initWithString: allLabelExplaintext
-                    //                                                       attributes: myNeededAttribs     ];
-                    //
-    //                NSBackgroundColorAttributeName: retvalUILabel.attributedText.backgroundColor
-    //                NSBackgroundColorAttributeName: retvalUILabel.backgroundColor
-
-                      NSParagraphStyleAttributeName : myParagraphStyle,
-                      NSForegroundColorAttributeName: [UIColor blackColor],
-                      NSBackgroundColorAttributeName: gbl_colorEditingBG,
-                                 NSFontAttributeName: [UIFont systemFontOfSize: 16]
-
-                };
-                NSDictionary *myNeededAttribsTitle = @{
-//                                 NSFontAttributeName: [UIFont boldSystemFontOfSize: 16]
-//                      NSForegroundColorAttributeName: [UIColor blueColor],
-//                      NSForegroundColorAttributeName: gbl_color_cAplBlue,
-//                      NSForegroundColorAttributeName: [UIColor darkGrayColor],
-                      NSForegroundColorAttributeName: [UIColor blackColor],
-                                 NSFontAttributeName: [UIFont boldSystemFontOfSize: 18]
-
-                };
-
-  
-                NSMutableAttributedString *myAttributedMessage = [
-                    [ NSMutableAttributedString alloc ] initWithString: saveMsg
-                                                            attributes: myNeededAttribsMessage
-                ];
-                NSMutableAttributedString *myAttributedTitle = [
-                    [ NSMutableAttributedString alloc ] initWithString: saveTitle
-                                                            attributes: myNeededAttribsTitle
-                ];
 
 
 
-                UIAlertController *myActionSheet = [UIAlertController alertControllerWithTitle: saveTitle
-                                                                                       message: saveMsg
-                                                                                preferredStyle: UIAlertControllerStyleActionSheet];
-                [myActionSheet setValue: myAttributedTitle 
-                                 forKey: @"attributedTitle"
-                ];
-                [myActionSheet setValue: myAttributedMessage 
-                                 forKey: @"attributedMessage"
-                ];
-
-                [myActionSheet addAction: 
-                    [UIAlertAction actionWithTitle: @"Cancel"
-                                             style: UIAlertActionStyleCancel
-                                           handler: ^(UIAlertAction *action) {
-                                               [self dismissViewControllerAnimated: YES completion: ^{   }  ];
-                                           }
-                    ]
-                ];
-                [myActionSheet addAction:
-//                    [UIAlertAction actionWithTitle: @"Regular Save"
-                    [UIAlertAction actionWithTitle: @"Save"
-                                             style: UIAlertActionStyleDefault
-                                           handler: ^(UIAlertAction *action) {
-  NSLog(@"pressed   regular save  (now hs) ");
-//                                               gbl_kindOfSave = @"regular save";   // or  "no look no change save"
-                                               gbl_kindOfSave = @"no look no change save";   // or  "regular save"
-  NSLog(@"gbl_kindOfSave 11 =[%@]",gbl_kindOfSave);
-//                                               [view dismissViewControllerAnimated: YES  completion: nil];
-//                [self.navigationController popViewControllerAnimated: YES]; // "Back" out of save dialogue
-//                [myActionSheet popViewControllerAnimated: YES]; // "Back" out of save dialogue
-                                               [self doActualPersonSave ];
-                                               [myActionSheet dismissViewControllerAnimated: YES  completion: nil];
-                                           }
-                    ]
-                ];
+// START OF old , unused CHOOSE KIND OF SAVE   CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 //
-//                [myActionSheet addAction:
-////                    [UIAlertAction actionWithTitle: @"High Security Save"
-////                    [UIAlertAction actionWithTitle: @"No Look, No Change Save"
-//                    [UIAlertAction actionWithTitle: @"Hide Birth Information Save"
-//            //                                 style: UIAlertActionStyleDestructive
-//                                             style: UIAlertActionStyleDefault
+//                // choose kind of save
+//                // offer to save person with no look no change
+//                //
+//                NSString *saveTitle;
+//                NSString *saveMsg;
+////                saveTitle = @"Choose Kind of Save\n";
+//                saveTitle = @"Personal Privacy\n";
+//
+//                NSString *nameInPossessiveForm;
+//                if (   [gbl_myname.text  hasSuffix: @"s" ]
+//                    || [gbl_myname.text  hasSuffix: @"S" ]
+//                    || [gbl_myname.text  hasSuffix: @"z" ]
+//                    || [gbl_myname.text  hasSuffix: @"Z" ]  )
+//                {
+//                     nameInPossessiveForm = [NSString stringWithFormat: @"%@\'",  gbl_myname.text ];
+//                } else {
+//                     nameInPossessiveForm = [NSString stringWithFormat: @"%@\'s", gbl_myname.text ];
+//                }
+////                saveMsg = [NSString stringWithFormat: @"\n   The No Look, No Change Save prevents EVERYONE, including yourself and this device owner, from ever seeing or changing %@\'s birth date or city.\n\n", gbl_myname.text ];
+////                saveMsg = [NSString stringWithFormat: @"\n   Hide Birth Information Save prevents EVERYONE, including yourself and this device owner, from ever seeing or changing %@\'s birth date or city.\n\n", gbl_myname.text ];
+//                saveMsg = [NSString stringWithFormat: @"\n   After you save the birth data for %@,   NOBODY, neither you nor this device owner nor anybody else can ever again change or even look at the Birth City or Birth Date.\n\n   So, if you ever want to look at the birth information of this person in the future, you need to write it down somewhere safe outside this app.",  gbl_myname.text ];
+//
+//
+//                NSMutableParagraphStyle *myParagraphStyle = [[NSMutableParagraphStyle alloc] init];
+//                myParagraphStyle.alignment                = NSTextAlignmentLeft;
+//                myParagraphStyle.headIndent               = 12;
+////                myParagraphStyle.firstLineHeadIndent      = 12;
+//
+//
+//                NSDictionary *myNeededAttribsMessage = @{
+//                    //   e.g.
+//                    ////                                      NSForegroundColorAttributeName: self.label.textColor,
+//                    ////                                      NSBackgroundColorAttributeName: cell.textLabel.attributedText
+//                    ////                                      NSBackgroundColorAttributeName: cell.textLabel.textColor
+//                    //                                      NSFontAttributeName: cell.textLabel.font,
+//                    //                                      NSBackgroundColorAttributeName: cell.textLabel.backgroundColor
+//                    //
+//                    //
+//                    //            NSMutableAttributedString *myAttributedTextLabelExplain = 
+//                    //                [[NSMutableAttributedString alloc] initWithString: allLabelExplaintext
+//                    //                                                       attributes: myNeededAttribs     ];
+//                    //
+//    //                NSBackgroundColorAttributeName: retvalUILabel.attributedText.backgroundColor
+//    //                NSBackgroundColorAttributeName: retvalUILabel.backgroundColor
+//
+//                      NSParagraphStyleAttributeName : myParagraphStyle,
+//                      NSForegroundColorAttributeName: [UIColor blackColor],
+//                      NSBackgroundColorAttributeName: gbl_colorEditingBG,
+//                                 NSFontAttributeName: [UIFont systemFontOfSize: 16]
+//
+//                };
+//                NSDictionary *myNeededAttribsTitle = @{
+////                                 NSFontAttributeName: [UIFont boldSystemFontOfSize: 16]
+////                      NSForegroundColorAttributeName: [UIColor blueColor],
+////                      NSForegroundColorAttributeName: gbl_color_cAplBlue,
+////                      NSForegroundColorAttributeName: [UIColor darkGrayColor],
+//                      NSForegroundColorAttributeName: [UIColor blackColor],
+//                                 NSFontAttributeName: [UIFont boldSystemFontOfSize: 18]
+//
+//                };
+//
+//  
+//                NSMutableAttributedString *myAttributedMessage = [
+//                    [ NSMutableAttributedString alloc ] initWithString: saveMsg
+//                                                            attributes: myNeededAttribsMessage
+//                ];
+//                NSMutableAttributedString *myAttributedTitle = [
+//                    [ NSMutableAttributedString alloc ] initWithString: saveTitle
+//                                                            attributes: myNeededAttribsTitle
+//                ];
+//
+//
+//
+//                UIAlertController *myActionSheet = [UIAlertController alertControllerWithTitle: saveTitle
+//                                                                                       message: saveMsg
+//                                                                                preferredStyle: UIAlertControllerStyleActionSheet];
+//                [myActionSheet setValue: myAttributedTitle 
+//                                 forKey: @"attributedTitle"
+//                ];
+//                [myActionSheet setValue: myAttributedMessage 
+//                                 forKey: @"attributedMessage"
+//                ];
+//
+//                [myActionSheet addAction: 
+//                    [UIAlertAction actionWithTitle: @"Cancel"
+//                                             style: UIAlertActionStyleCancel
 //                                           handler: ^(UIAlertAction *action) {
-//
-//  NSLog(@"pressed   no look no change save");
-//                                               gbl_kindOfSave = @"no look no change save";   // or  "regular save"
-//  NSLog(@"gbl_kindOfSave 12 =[%@]",gbl_kindOfSave);
-////                                               [self doMeInsideBlock ];
-//                                               [self doActualPersonSave ];
-//                                               [myActionSheet dismissViewControllerAnimated: YES  completion: nil];
-////                                               [self dismissViewControllerAnimated: YES completion: ^{   } ];
+//                                               [self dismissViewControllerAnimated: YES completion: ^{   }  ];
 //                                           }
 //                    ]
 //                ];
+//                [myActionSheet addAction:
+////                    [UIAlertAction actionWithTitle: @"Regular Save"
+//                    [UIAlertAction actionWithTitle: @"Save"
+//                                             style: UIAlertActionStyleDefault
+//                                           handler: ^(UIAlertAction *action) {
+//  NSLog(@"pressed   regular save  (now hs) ");
+////                                               gbl_kindOfSave = @"regular save";   // or  "no look no change save"
+//                                               gbl_kindOfSave = @"no look no change save";   // or  "regular save"
+//  NSLog(@"gbl_kindOfSave 11 =[%@]",gbl_kindOfSave);
+////                                               [view dismissViewControllerAnimated: YES  completion: nil];
+////                [self.navigationController popViewControllerAnimated: YES]; // "Back" out of save dialogue
+////                [myActionSheet popViewControllerAnimated: YES]; // "Back" out of save dialogue
+//                                               [self doActualPersonSave ];
+//                                               [myActionSheet dismissViewControllerAnimated: YES  completion: nil];
+//                                           }
+//                    ]
+//                ];
+////
+////                [myActionSheet addAction:
+//////                    [UIAlertAction actionWithTitle: @"High Security Save"
+//////                    [UIAlertAction actionWithTitle: @"No Look, No Change Save"
+////                    [UIAlertAction actionWithTitle: @"Hide Birth Information Save"
+////            //                                 style: UIAlertActionStyleDestructive
+////                                             style: UIAlertActionStyleDefault
+////                                           handler: ^(UIAlertAction *action) {
+////
+////  NSLog(@"pressed   no look no change save");
+////                                               gbl_kindOfSave = @"no look no change save";   // or  "regular save"
+////  NSLog(@"gbl_kindOfSave 12 =[%@]",gbl_kindOfSave);
+//////                                               [self doMeInsideBlock ];
+////                                               [self doActualPersonSave ];
+////                                               [myActionSheet dismissViewControllerAnimated: YES  completion: nil];
+//////                                               [self dismissViewControllerAnimated: YES completion: ^{   } ];
+////                                           }
+////                    ]
+////                ];
+////
+//
+//            //    myActionSheet.view.transparent = NO;
+//            //    myActionSheet.view.backgroundColor = [UIColor whiteColor];
+//            //    myActionSheet.view.backgroundColor = [UIColor greenColor];
+//            //    myActionSheet.view.backgroundColor = gbl_colorHomeBG;
+//            //    myActionSheet.view.tintColor =  [UIColor blackColor];  // colors choices
+//            //                myActionSheet.view.backgroundColor = gbl_colorEditingBG;
+//
+//
+//                // Present action sheet.
+//                //
+//                [self presentViewController: myActionSheet animated: YES completion: nil];
+//
+//  NSLog(@"gbl_kindOfSave 1 =[%@]",gbl_kindOfSave);
+//                return;
 //
 
-            //    myActionSheet.view.transparent = NO;
-            //    myActionSheet.view.backgroundColor = [UIColor whiteColor];
-            //    myActionSheet.view.backgroundColor = [UIColor greenColor];
-            //    myActionSheet.view.backgroundColor = gbl_colorHomeBG;
-            //    myActionSheet.view.tintColor =  [UIColor blackColor];  // colors choices
-            //                myActionSheet.view.backgroundColor = gbl_colorEditingBG;
+
+//   END OF old , unused CHOOSE KIND OF SAVE   CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 
 
-                // Present action sheet.
-                //
-                [self presentViewController: myActionSheet animated: YES completion: nil];
 
-  NSLog(@"gbl_kindOfSave 1 =[%@]",gbl_kindOfSave);
-                return;
 
         } // here editing changes have happened
 
-
     } // end of person  saveDone logic   ================================================================================
+
 
 //  NSLog(@"--- 000 -------------------------------------------------------");
 //  NSLog(@"            gbl_myname.isFirstResponder=%d",gbl_myname.isFirstResponder);
@@ -3956,10 +4079,12 @@ NSLog(@"          POP  VIEW   #6");
 
                 } // ONLY IF    [gbl_homeEditingState isEqualToString:  @"view or change" ] , DELETE  the existing record first
 
+
+
+
                 // add the new Person database record in a string to the person array
                 //
                 [gbl_arrayPer addObject: myNewPersonRecord]; // add the new Person database record in a string to the person array
-
 
 
                 [myappDelegate mambWriteNSArrayWithDescription:              (NSString *) @"person"]; // write new array data to file
@@ -4031,13 +4156,18 @@ NSLog(@"          POP  VIEW   #6");
                     gbl_lastInputFieldTapped         = @"";  // 3 values are: "name", "city", "date"
 
 //                    [self.navigationController popToRootViewControllerAnimated: YES]; // pop to root view controller (actually do the "Back" action)
+
+
                     [self.navigationController popViewControllerAnimated: YES]; // actually do the "Back" action
+
+
 
                 });
                 // is system "done" button function here
     //            gbl_lastSelectedPersonBeforeChange = gbl_DisplayName;   // like "~Dave"   used in YELLOW gbl_homeUseMODE "edit mode"
 
 
+  NSLog(@" end of doActualPersonSave");
 } //  doActualPersonSave
 
 
@@ -5485,11 +5615,10 @@ tn();
 //                 [[NSAttributedString alloc] initWithString: @" Hide Birth Information Save\n Hide Birth Information Save\n Hide Birth Information Save"
 //                 [[NSAttributedString alloc] initWithString: @" Saved with Hide Birth Information\n Saved with Hide Birth Information\n Saved with Hide Birth Information"
 
-//<.>
+//
 //3727:                         NSFontAttributeName: [UIFont fontWithName: @"HelveticaNeue-Medium" size: 16.0f]
 //             gbl_mybirthinformation.font             = myFontSmaller2;   // for no look, ...
 //    UIFont *myFontSmaller2 = [UIFont fontWithName: @"Menlo" size: 16.0];
-//<.>
 //
                  [[NSAttributedString alloc] initWithString: @" Personal Privacy\n Personal Privacy\n Personal Privacy"
                      attributes: @{
@@ -6575,6 +6704,7 @@ kin(num_PSVs_found);
         return;
 
     } else if (idx_into_placetab == -2) {  // -2  IF there are few enough cities to make a picklist
+//    } else if (idx_into_placetab == -2  && num_PSVs_found > 1) {  // -2  IF there are few enough cities to make a picklist
 
 //
 //        // if num_PSVs_found is exactly one, do NOT offer a picklist for it
@@ -6633,12 +6763,19 @@ kin(num_PSVs_found);
 
     int idx_of_first_city_found;
     if (idx_into_placetab == -2 ) {
+
+
+        // USE bin_find_first_city1    here   (NOTE the 1)
+        //
+        //
   NSLog(@"  when idx_into_placetab = -2, get idx of 1st city found  )");
         // **********  ==========   GET CITY,prov,coun
         idx_of_first_city_found = bin_find_first_city1 ( arg_cityBeginsWith );  // note "1" at end
     } else {
         idx_of_first_city_found = idx_into_placetab;
     }
+
+
 
   NSLog(@" show latest city,prov,coun  beginning with city chars typed so far");
     char myCityName [64];
@@ -6798,8 +6935,6 @@ trn("-------------------------------------------"); tn();
 //tn();
 //
 
-
-//<.>  TODO
 
 //    segEntityOutlet.backgroundColor = [UIColor whiteColor];
 
@@ -7175,6 +7310,10 @@ tn();
 //                [self putUpCityPicklist ];           // TODO putUpCityPicklist only called twice
 //                [ self getCurrentCityProvCounForRownum: gbl_lastSelectedCityPickerRownum ]; // populates gbl_enteredCity, Prov, Coun
                 [ self updateCityProvCoun ]; // update city/prov/coun field  in cellForRowAtIndexpath
+
+
+ NSLog(@"ppppp gbl_lastSelectedCityPickerRownum  =%ld",(long)gbl_lastSelectedCityPickerRownum );
+
                 [self.pickerViewCity reloadAllComponents]; // just in case things have changed, do not show old data
                 [self.pickerViewCity selectRow: gbl_lastSelectedCityPickerRownum   inComponent: 0 animated: YES];
 
@@ -7218,7 +7357,11 @@ tn();
 //            gbl_enteredCoun = gbl_initPromptCoun;
 
     NSIndexPath *indexPathLabelCityProvCoun = [NSIndexPath indexPathForRow: 3 inSection: 0];
+  NSLog(@"indexPathLabelCityProvCoun =[%@]",indexPathLabelCityProvCoun );
     NSArray *indexPathsToUpdate = [NSArray arrayWithObjects: indexPathLabelCityProvCoun, nil];
+
+  NSLog(@"indexPathsToUpdate =[%@]",indexPathsToUpdate );
+
     dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
 
         [self.tableView beginUpdates];
@@ -7325,8 +7468,8 @@ tn();
     //    if (component == 4) return self.array_Min_0_59.count;
     //    if (component == 5) return self.array_am_pm.count;
         
-        return 0;
   NSLog(@"self.array_BirthYearsToPick.count;=%lu",(unsigned long)self.array_BirthYearsToPick.count);
+        return 0;
     }
 
 
@@ -7593,6 +7736,7 @@ tn();
   NSLog(@"======================================");
   NSLog(@"in getCurrentCityProvCounForRownum");
   NSLog(@"arg_rownum=[%ld]",(long)arg_rownum);
+  NSLog(@"gbl_lastSelectedCityPickerRownumx=[%ld]",(long)gbl_lastSelectedCityPickerRownum );
 
     char my_buff[256];
     NSMutableString *myContentsPSV;
@@ -7601,7 +7745,10 @@ tn();
 
     // gbl_lastSelectedCityPickerRownum = -1;  // ONLY is SET in 2 places   -1 =flag for getCurrentCityProvCounForRownum to show initpromts
     //
-    if (arg_rownum == -1)  //  -1 =flag for getCurrentCityProvCounForRownum to show initpromts
+
+    if (   arg_rownum == -1
+        || gbl_lastSelectedCityPickerRownum == -1   // "clear city button"
+    )  //  -1 =flag for getCurrentCityProvCounForRownum to show initpromts
     {
         gbl_lastSelectedCityPickerRownum = 0;
         gbl_enteredCity        = gbl_initPromptCity;  // @"City or Town";  for display in gbl_mycityprovcounLabel= found city,prov,counl
@@ -7609,7 +7756,7 @@ tn();
         gbl_enteredProv        = gbl_initPromptProv;  // @"State or Province";
         gbl_enteredCoun        = gbl_initPromptCoun;  // @"Country";
 
-  NSLog(@"gbl_lastSelectedCityPickerRownumx=[%ld]",(long)gbl_lastSelectedCityPickerRownum );
+  NSLog(@"gbl_lastSelectedCityPickerRownum=[%ld]",(long)gbl_lastSelectedCityPickerRownum );
   NSLog(@"gbl_enteredCity =[%@]",gbl_enteredCity );
   NSLog(@"gbl_enteredProv =[%@]",gbl_enteredProv );
   NSLog(@"gbl_enteredCoun =[%@]",gbl_enteredCoun );
@@ -7628,9 +7775,19 @@ tn();
 //  NSLog(@"tmpArray3.count =[%ld]",(long)tmpArray3.count );
 
     if (   tmpArray3 == nil
-        || tmpArray3.count < 3) 
+        || tmpArray3.count < 3 
+        || gbl_justPressedAddButtonForNewPerson == 1   // "+" button in home in per mode
+       )
     {
 //  NSLog(@"1 got gbl_enteredCity from gbl_userSpecifiedCity");
+
+
+  NSLog(@"gbl_justPressedAddButtonForNewPerson  a  =[%ld]",(long)gbl_justPressedAddButtonForNewPerson );
+        if ( gbl_justPressedAddButtonForNewPerson == 1) {
+            gbl_justPressedAddButtonForNewPerson = 0; 
+        }
+  NSLog(@"gbl_justPressedAddButtonForNewPerson  b  =[%ld]",(long)gbl_justPressedAddButtonForNewPerson );
+
 
         // screen said "null" 1st time
 //        gbl_enteredCity = gbl_userSpecifiedCity;
@@ -7649,6 +7806,7 @@ tn();
         gbl_enteredCity = tmpArray3[0];
 //  NSLog(@"citych #01  %-24.24@ =[%@] $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$", @"", );
   NSLog(@"citych #01  %-24s =[%@] $$$ getCurrentCityProvCounForRownum  $$$$$$$$$$$$$$$$$$$$", "gbl_enteredCity" , gbl_enteredCity );
+
         gbl_enteredProv = tmpArray3[1];
         gbl_enteredCoun = tmpArray3[2];
     }
@@ -8122,86 +8280,89 @@ tn();
 
 return;  // for less test output
 
-  NSLog(@"%@", @" ");
-  NSLog(@"qq gbl_DisplayCity                                =[%@]",gbl_DisplayCity);
-  NSLog(@"qq gbl_DisplayCoun                                =[%@]",gbl_DisplayCoun);
-  NSLog(@"qq gbl_DisplayDate                                =[%@]",gbl_DisplayDate);
-  NSLog(@"qq gbl_DisplayName                                =[%@]",gbl_DisplayName);
-  NSLog(@"qq gbl_DisplayProv                                =[%@]",gbl_DisplayProv);
-  NSLog(@"qq gbl_citySetEditingValue                        =[%ld]",(long)gbl_citySetEditingValue);
-  NSLog(@"qq gbl_citySetLabelValue                          =[%ld]",(long)gbl_citySetLabelValue);
-  NSLog(@"qq gbl_citySetPickerValue                         =[%ld]",(long)gbl_citySetPickerValue);
-  NSLog(@"qq gbl_currentDayInt                              =[%ld]",(long)gbl_currentDayInt);
-  NSLog(@"qq gbl_currentMenuPlusReportCode                  =[%@]",gbl_currentMenuPlusReportCode);
-  NSLog(@"qq gbl_currentMonthInt                            =[%ld]",(long)gbl_currentMonthInt);
-  NSLog(@"qq gbl_currentYearInt                             =[%ld]",(long)gbl_currentYearInt);
-  NSLog(@"qq gbl_editingChangeCITYHasOccurred               =[%ld]",(long)gbl_editingChangeCITYHasOccurred);
-  NSLog(@"qq gbl_editingChangeDATEHasOccurred               =[%ld]",(long)gbl_editingChangeDATEHasOccurred);
-  NSLog(@"qq gbl_editingChangeNAMEHasOccurred               =[%ld]",(long)gbl_editingChangeNAMEHasOccurred);
-  NSLog(@"qq gbl_enteredCity                                =[%@]",gbl_enteredCity);
-  NSLog(@"qq gbl_enteredCoun                                =[%@]",gbl_enteredCoun);
-  NSLog(@"qq gbl_enteredProv                                =[%@]",gbl_enteredProv);
-  NSLog(@"qq gbl_fewEnoughCitiesToMakePicklist              =[%ld]",(long)gbl_fewEnoughCitiesToMakePicklist);
-  NSLog(@"qq gbl_fieldTap_goingto                           =[%@]",gbl_fieldTap_goingto);
-  NSLog(@"qq gbl_fieldTap_leaving                           =[%@]",gbl_fieldTap_leaving);
-  NSLog(@"qq gbl_firstResponder_current                     =[%@]",gbl_firstResponder_current);
-  NSLog(@"qq gbl_firstResponder_previous                    =[%@]",gbl_firstResponder_previous);
-  NSLog(@"qq gbl_fromHomeCurrentEntity                      =[%@]",gbl_fromHomeCurrentEntity);
-  NSLog(@"qq gbl_fromHomeCurrentEntityName                  =[%@]",gbl_fromHomeCurrentEntityName);
-  NSLog(@"qq gbl_fromHomeCurrentSelectionPSV                =[%@]",gbl_fromHomeCurrentSelectionPSV);
-  NSLog(@"qq gbl_fromHomeCurrentSelectionType               =[%@]",gbl_fromHomeCurrentSelectionType);
-  NSLog(@"qq gbl_homeEditingState                           =[%@]",gbl_homeEditingState);
-  NSLog(@"qq gbl_homeUseMODE                                =[%@]",gbl_homeUseMODE);
-  NSLog(@"qq gbl_initPromptCity                             =[%@]",gbl_initPromptCity);
-  NSLog(@"qq gbl_initPromptCoun                             =[%@]",gbl_initPromptCoun);
-  NSLog(@"qq gbl_initPromptDate                             =[%@]",gbl_initPromptDate);
-  NSLog(@"qq gbl_initPromptName                             =[%@]",gbl_initPromptName);
-  NSLog(@"qq gbl_initPromptProv                             =[%@]",gbl_initPromptProv);
-  NSLog(@"qq gbl_intBirthDayOfMonth                         =[%ld]",(long)gbl_intBirthDayOfMonth);
-  NSLog(@"qq gbl_intBirthMonth                              =[%ld]",(long)gbl_intBirthMonth);
-  NSLog(@"qq gbl_intBirthYear                               =[%ld]",(long)gbl_intBirthYear);
-  NSLog(@"qq gbl_justAddedGroupRecord                       =[%ld]",(long)gbl_justAddedGroupRecord);
-  NSLog(@"qq gbl_justAddedPersonRecord                      =[%ld]",(long)gbl_justAddedPersonRecord);
-  NSLog(@"qq gbl_justEnteredAddChangeView                   =[%ld]",(long)gbl_justEnteredAddChangeView);
-  NSLog(@"qq gbl_justLookedAtInfoScreen                     =[%ld]",(long)gbl_justLookedAtInfoScreen);
-  NSLog(@"qq gbl_justPressedChangeGroupName                 =[%ld]",(long)gbl_justPressedChangeGroupName);
-  NSLog(@"qq gbl_kindOfSave                                 =[%@]",gbl_kindOfSave);
-  NSLog(@"qq gbl_lastInputFieldTapped                       =[%@]",gbl_lastInputFieldTapped);
-  NSLog(@"gbl_lastSelectedCityPickerRownum                  =[%ld]",(long)gbl_lastSelectedCityPickerRownum);
-  NSLog(@"qq gbl_lastSelectedDay                            =[%@]",gbl_lastSelectedDay);
-  NSLog(@"qq gbl_lastSelectedGroup                          =[%@]",gbl_lastSelectedGroup);
-  NSLog(@"qq gbl_lastSelectedGroupBeforeChange              =[%@]",gbl_lastSelectedGroupBeforeChange);
-  NSLog(@"qq gbl_lastSelectedPerson                         =[%@]",gbl_lastSelectedPerson);
-  NSLog(@"qq gbl_lastSelectedPersonBeforeChange             =[%@]",gbl_lastSelectedPersonBeforeChange);
-  NSLog(@"qq gbl_myCitySoFar                                =[%@]",gbl_myCitySoFar);
-  NSLog(@"qq gbl_mybirthinformation.text                    =[%@]",gbl_mybirthinformation.text);
-  NSLog(@"qq gbl_mybirthinformation.userInteractionEnabled  =[%d]",gbl_mybirthinformation.userInteractionEnabled);
-  NSLog(@"qq gbl_mycityInputView                            =[%@]",gbl_mycityInputView);
-  NSLog(@"qq gbl_mycitySearchString.text                    =[%@]",gbl_mycitySearchString.text);
-//  NSLog(@"qq gbl_mycityprovcounLabel.attributedText         =[%@]",gbl_mycityprovcounLabel.attributedText);
-  NSLog(@"qq gbl_mycityprovcounLabel.text                   =[%@]",gbl_mycityprovcounLabel.text);
-  NSLog(@"qq gbl_myname.text                                =[%@]",gbl_myname.text);
-  NSLog(@"qq gbl_myname.userInteractionEnabled              =[%d]",gbl_myname.userInteractionEnabled);
-  NSLog(@"qq gbl_pickerToUse                                =[%@]",gbl_pickerToUse);
-  NSLog(@"qq gbl_rollerBirthInfo                            =[%@]",gbl_rollerBirthInfo);
-  NSLog(@"qq gbl_rollerBirth_amPm                           =[%@]",gbl_rollerBirth_amPm);
-  NSLog(@"qq gbl_rollerBirth_dd                             =[%@]",gbl_rollerBirth_dd);
-  NSLog(@"qq gbl_rollerBirth_hour                           =[%@]",gbl_rollerBirth_hour);
-  NSLog(@"qq gbl_rollerBirth_min                            =[%@]",gbl_rollerBirth_min);
-  NSLog(@"qq gbl_rollerBirth_mth                            =[%@]",gbl_rollerBirth_mth);
-  NSLog(@"qq gbl_rollerBirth_yyyy                           =[%@]",gbl_rollerBirth_yyyy);
-  NSLog(@"qq gbl_selectedBirthInfo                          =[%@]",gbl_selectedBirthInfo);
-  NSLog(@"qq gbl_title_birthDate.title                      =[%@]",gbl_title_birthDate.title);
-  NSLog(@"qq gbl_title_cityKeyboard.title                   =[%@]",gbl_title_cityKeyboard.title);
-  NSLog(@"qq gbl_title_cityPicklist.title                   =[%@]",gbl_title_cityPicklist.title);
-  NSLog(@"qq gbl_userSpecifiedCity                          =[%@]",gbl_userSpecifiedCity);
-  NSLog(@"qq gbl_userSpecifiedCoun                          =[%@]",gbl_userSpecifiedCoun);
-  NSLog(@"qq gbl_userSpecifiedPersonName                    =[%@]",gbl_userSpecifiedPersonName);
-  NSLog(@"qq gbl_userSpecifiedProv                          =[%@]",gbl_userSpecifiedProv);
-  NSLog(@" ");
-  NSLog(@"%@", myDispLabel);
-  NSLog(@"##### end of gbls #####################################!");
-tn(); 
+//  NSLog(@"%@", @" ");
+//  NSLog(@"qq gbl_DisplayCity                                =[%@]",gbl_DisplayCity);
+//  NSLog(@"qq gbl_DisplayCoun                                =[%@]",gbl_DisplayCoun);
+//  NSLog(@"qq gbl_DisplayDate                                =[%@]",gbl_DisplayDate);
+//  NSLog(@"qq gbl_DisplayName                                =[%@]",gbl_DisplayName);
+//
+//  NSLog(@"qq gbl_DisplayProv                                =[%@]",gbl_DisplayProv);
+//  NSLog(@"qq gbl_citySetEditingValue                        =[%ld]",(long)gbl_citySetEditingValue);
+//  NSLog(@"qq gbl_citySetLabelValue                          =[%ld]",(long)gbl_citySetLabelValue);
+//  NSLog(@"qq gbl_citySetPickerValue                         =[%ld]",(long)gbl_citySetPickerValue);
+//  NSLog(@"qq gbl_currentDayInt                              =[%ld]",(long)gbl_currentDayInt);
+//  NSLog(@"qq gbl_currentMenuPlusReportCode                  =[%@]",gbl_currentMenuPlusReportCode);
+//  NSLog(@"qq gbl_currentMonthInt                            =[%ld]",(long)gbl_currentMonthInt);
+//  NSLog(@"qq gbl_currentYearInt                             =[%ld]",(long)gbl_currentYearInt);
+//  NSLog(@"qq gbl_editingChangeCITYHasOccurred               =[%ld]",(long)gbl_editingChangeCITYHasOccurred);
+//  NSLog(@"qq gbl_editingChangeDATEHasOccurred               =[%ld]",(long)gbl_editingChangeDATEHasOccurred);
+//  NSLog(@"qq gbl_editingChangeNAMEHasOccurred               =[%ld]",(long)gbl_editingChangeNAMEHasOccurred);
+//  NSLog(@"qq gbl_enteredCity                                =[%@]",gbl_enteredCity);
+//  NSLog(@"qq gbl_enteredCoun                                =[%@]",gbl_enteredCoun);
+//  NSLog(@"qq gbl_enteredProv                                =[%@]",gbl_enteredProv);
+//  NSLog(@"qq gbl_fewEnoughCitiesToMakePicklist              =[%ld]",(long)gbl_fewEnoughCitiesToMakePicklist);
+//  NSLog(@"qq gbl_fieldTap_goingto                           =[%@]",gbl_fieldTap_goingto);
+//  NSLog(@"qq gbl_fieldTap_leaving                           =[%@]",gbl_fieldTap_leaving);
+//  NSLog(@"qq gbl_firstResponder_current                     =[%@]",gbl_firstResponder_current);
+//  NSLog(@"qq gbl_firstResponder_previous                    =[%@]",gbl_firstResponder_previous);
+//  NSLog(@"qq gbl_fromHomeCurrentEntity                      =[%@]",gbl_fromHomeCurrentEntity);
+//  NSLog(@"qq gbl_fromHomeCurrentEntityName                  =[%@]",gbl_fromHomeCurrentEntityName);
+//  NSLog(@"qq gbl_fromHomeCurrentSelectionPSV                =[%@]",gbl_fromHomeCurrentSelectionPSV);
+//  NSLog(@"qq gbl_fromHomeCurrentSelectionType               =[%@]",gbl_fromHomeCurrentSelectionType);
+//  NSLog(@"qq gbl_homeEditingState                           =[%@]",gbl_homeEditingState);
+//  NSLog(@"qq gbl_homeUseMODE                                =[%@]",gbl_homeUseMODE);
+//  NSLog(@"qq gbl_initPromptCity                             =[%@]",gbl_initPromptCity);
+//  NSLog(@"qq gbl_initPromptCoun                             =[%@]",gbl_initPromptCoun);
+//  NSLog(@"qq gbl_initPromptDate                             =[%@]",gbl_initPromptDate);
+//  NSLog(@"qq gbl_initPromptName                             =[%@]",gbl_initPromptName);
+//  NSLog(@"qq gbl_initPromptProv                             =[%@]",gbl_initPromptProv);
+//  NSLog(@"qq gbl_intBirthDayOfMonth                         =[%ld]",(long)gbl_intBirthDayOfMonth);
+//  NSLog(@"qq gbl_intBirthMonth                              =[%ld]",(long)gbl_intBirthMonth);
+//  NSLog(@"qq gbl_intBirthYear                               =[%ld]",(long)gbl_intBirthYear);
+//  NSLog(@"qq gbl_justAddedGroupRecord                       =[%ld]",(long)gbl_justAddedGroupRecord);
+//  NSLog(@"qq gbl_justAddedPersonRecord                      =[%ld]",(long)gbl_justAddedPersonRecord);
+//  NSLog(@"qq gbl_justEnteredAddChangeView                   =[%ld]",(long)gbl_justEnteredAddChangeView);
+//  NSLog(@"qq gbl_justLookedAtInfoScreen                     =[%ld]",(long)gbl_justLookedAtInfoScreen);
+//  NSLog(@"qq gbl_justPressedChangeGroupName                 =[%ld]",(long)gbl_justPressedChangeGroupName);
+//  NSLog(@"qq gbl_kindOfSave                                 =[%@]",gbl_kindOfSave);
+//  NSLog(@"qq gbl_lastInputFieldTapped                       =[%@]",gbl_lastInputFieldTapped);
+//  NSLog(@"gbl_lastSelectedCityPickerRownum                  =[%ld]",(long)gbl_lastSelectedCityPickerRownum);
+//  NSLog(@"qq gbl_lastSelectedDay                            =[%@]",gbl_lastSelectedDay);
+//  NSLog(@"qq gbl_lastSelectedGroup                          =[%@]",gbl_lastSelectedGroup);
+//  NSLog(@"qq gbl_lastSelectedGroupBeforeChange              =[%@]",gbl_lastSelectedGroupBeforeChange);
+//  NSLog(@"qq gbl_lastSelectedPerson                         =[%@]",gbl_lastSelectedPerson);
+//  NSLog(@"qq gbl_lastSelectedPersonBeforeChange             =[%@]",gbl_lastSelectedPersonBeforeChange);
+//  NSLog(@"qq gbl_myCitySoFar                                =[%@]",gbl_myCitySoFar);
+//  NSLog(@"qq gbl_mybirthinformation.text                    =[%@]",gbl_mybirthinformation.text);
+//  NSLog(@"qq gbl_mybirthinformation.userInteractionEnabled  =[%d]",gbl_mybirthinformation.userInteractionEnabled);
+//  NSLog(@"qq gbl_mycityInputView                            =[%@]",gbl_mycityInputView);
+//  NSLog(@"qq gbl_mycitySearchString.text                    =[%@]",gbl_mycitySearchString.text);
+//  //  NSLog(@"qq gbl_mycityprovcounLabel.attributedText         =[%@]",gbl_mycityprovcounLabel.attributedText);
+//  NSLog(@"qq gbl_mycityprovcounLabel.text                   =[%@]",gbl_mycityprovcounLabel.text);
+//  NSLog(@"qq gbl_myname.text                                =[%@]",gbl_myname.text);
+//  NSLog(@"qq gbl_myname.userInteractionEnabled              =[%d]",gbl_myname.userInteractionEnabled);
+//  NSLog(@"qq gbl_pickerToUse                                =[%@]",gbl_pickerToUse);
+//  NSLog(@"qq gbl_rollerBirthInfo                            =[%@]",gbl_rollerBirthInfo);
+//  NSLog(@"qq gbl_rollerBirth_amPm                           =[%@]",gbl_rollerBirth_amPm);
+//  NSLog(@"qq gbl_rollerBirth_dd                             =[%@]",gbl_rollerBirth_dd);
+//  NSLog(@"qq gbl_rollerBirth_hour                           =[%@]",gbl_rollerBirth_hour);
+//  NSLog(@"qq gbl_rollerBirth_min                            =[%@]",gbl_rollerBirth_min);
+//  NSLog(@"qq gbl_rollerBirth_mth                            =[%@]",gbl_rollerBirth_mth);
+//  NSLog(@"qq gbl_rollerBirth_yyyy                           =[%@]",gbl_rollerBirth_yyyy);
+//  NSLog(@"qq gbl_selectedBirthInfo                          =[%@]",gbl_selectedBirthInfo);
+//  NSLog(@"qq gbl_title_birthDate.title                      =[%@]",gbl_title_birthDate.title);
+//  NSLog(@"qq gbl_title_cityKeyboard.title                   =[%@]",gbl_title_cityKeyboard.title);
+//  NSLog(@"qq gbl_title_cityPicklist.title                   =[%@]",gbl_title_cityPicklist.title);
+//  NSLog(@"qq gbl_userSpecifiedCity                          =[%@]",gbl_userSpecifiedCity);
+//  NSLog(@"qq gbl_userSpecifiedCoun                          =[%@]",gbl_userSpecifiedCoun);
+//  NSLog(@"qq gbl_userSpecifiedPersonName                    =[%@]",gbl_userSpecifiedPersonName);
+//  NSLog(@"qq gbl_userSpecifiedProv                          =[%@]",gbl_userSpecifiedProv);
+//
+//  NSLog(@" ");
+//  NSLog(@"%@", myDispLabel);
+//  NSLog(@"##### end of gbls #####################################!");
+//tn(); 
+
 } // end of disp_gblsWithLabel
 
 

@@ -2,8 +2,28 @@
 //  MAMB09_selYearViewController.m
 //  Me&myBFFs
 //
-//  Created by Richard Koskela on 2014-11-27.
-//  Copyright (c) 2014 Richard Koskela. All rights reserved.
+// MIT License
+//
+// Copyright (c) 2017 softwaredev
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+//
 //
 
 #import "MAMB09_selYearViewController.h"
@@ -227,7 +247,20 @@ tn();
         yearsToPickFrom   = [[NSMutableArray alloc] init];
         
         //for (NSInteger pickyr = yearOfBirthInt; pickyr <=  gbl_currentYearInt + 1; pickyr++)   // only allow to go to next calendar year
-        for (NSInteger pickyr = gbl_earliestYear; pickyr <=  gbl_currentYearInt + 1; pickyr++) {  // only allow to go to next calendar year
+
+
+        // for (NSInteger pickyr = gbl_earliestYear; pickyr <=  gbl_currentYearInt + 1; pickyr++) {  // only allow to go to next calendar year
+
+
+        for (NSInteger pickyr = gbl_earliestYear;
+//             pickyr <=  gbl_currentYearInt + 1;
+             pickyr <=  gbl_currentYearInt + gbl_num_yrs_past_current_yr;
+             pickyr++
+        ) {  // only allow to go to next calendar year
+
+//  NSLog(@" qq pickyr=[%ld]",pickyr);
+
+
             [yearsToPickFrom addObject: [@(pickyr) stringValue] ];
         }
         //NSLog(@"yearsToPickFrom.count=%lu",(unsigned long)yearsToPickFrom.count);
@@ -251,7 +284,7 @@ tn();
 //        NSString *psvRememberedYear = myRemArray[2];  // year is field # 3 one-based
 //
         NSString *psvRememberedYear;
-        MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
+        MAMB09AppDelegate *myappDelegate= (MAMB09AppDelegate *) [[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
 
 //      psvRememberedYear = [myappDelegate grabLastSelectionValueForEntity: (NSString *) @"person"
         psvRememberedYear = [myappDelegate grabLastSelectionValueForEntity: (NSString *) gbl_fromHomeCurrentSelectionType
@@ -441,7 +474,7 @@ tn();
         [myappDelegate mamb_beginIgnoringInteractionEvents ];
 
         // gbl_lastSelectedYear is 1. remembered year (above) 2. default current year (above) or 3. didSelect year (spinner)
-        MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
+        MAMB09AppDelegate *myappDelegate= (MAMB09AppDelegate *) [[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
         [myappDelegate saveLastSelectionForEntity: (NSString *) @"person"
                                        havingName: (NSString *) gbl_lastSelectedPerson
                          updatingRememberCategory: (NSString *) @"year"
@@ -462,7 +495,7 @@ tn();
         [myappDelegate mamb_beginIgnoringInteractionEvents ];
 
         // gbl_lastSelectedYear is 1. remembered year (above) 2. default current year (above) or 3. didSelect year (spinner)
-        MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
+        MAMB09AppDelegate *myappDelegate= (MAMB09AppDelegate *) [[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
         [myappDelegate saveLastSelectionForEntity: (NSString *) @"group"
                                        havingName: (NSString *) gbl_lastSelectedGroup
                          updatingRememberCategory: (NSString *) @"year"

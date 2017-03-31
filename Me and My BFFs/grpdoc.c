@@ -1,4 +1,28 @@
 /*   grpdoc.c      */
+
+// MIT License
+//
+// Copyright (c) 2017 softwaredev
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+//
+
 /*   kinds of group report 
 *          1. "member in group"    
 *          2. "all group members"   
@@ -2662,13 +2686,13 @@ tn();trn("doing ... make_html_file_whole_group() in mamb_report_whole_group()");
     out_group_report_PSVs,    /* array of output report data to pass to cocoa */
     out_group_report_idx      /* ptr to int having last index written */
   );
-tn();b(300);ksn(string_for_table_only);
+//tn();b(300);ksn(string_for_table_only);
 trn("at end of  ... make_html_file_whole_group() in mamb_report_whole_group()");
 
-ksn(group_name);
-kin(num_persons_in_grp);
-ksn(instructions);
-kin(out_rank_line_idx);
+//ksn(group_name);
+//kin(num_persons_in_grp);
+//ksn(instructions);
+//kin(out_rank_line_idx);
 
 
 
@@ -2680,7 +2704,6 @@ kin(out_rank_line_idx);
     return(1);
   }
 
-nbn(800);
 
   // here, build raw display data for tableview in cocoa ------------------------------------------------
   //
@@ -2700,8 +2723,6 @@ nbn(800);
   if (out_rank_line_idx > gbl_g_top_bot_threshold) { is_topbot = 1; } // gbl_g_show_top_this_many and gbl_g_show_bot_this_many
   else                                             { is_topbot = 0; } // NO
 
-kin(is_topbot);
-nbn(801);
 
 
   // populate   out_group_report_PSVs 
@@ -2741,7 +2762,6 @@ nbn(801);
     if(lenB > longest_B) longest_B = lenB;
   }
   
-nbn(802);
 
   /*          Pair of                     */
   /*        Group Members  Score          */
@@ -2823,7 +2843,7 @@ trn("/* =========  PUT HEADER LINES  ==============");
 
 
     sprintf(gbl_my3_group_report_line, "%s|%s||", "cHed", pair_line);
-tr("short names");ksn(gbl_my3_group_report_line);
+//tr("short names");ksn(gbl_my3_group_report_line);
     strcpy(out_group_report_PSVs + *out_group_report_idx * gbl_g_max_len_group_data_PSV , gbl_my3_group_report_line); // every 128
 
   } else {                 /* ORDINARY LENGTH NAMES ------------------------------*/
@@ -2852,7 +2872,7 @@ tr("short names");ksn(gbl_my3_group_report_line);
     *out_group_report_idx = *out_group_report_idx + 1;      /* put in cocoa table here */
     sprintf(gbl_my3_group_report_line, "%s|%s||", "cHed", pair_line);
 
-tr("ordinary length names");ksn(gbl_my3_group_report_line);
+//tr("ordinary length names");ksn(gbl_my3_group_report_line);
     strcpy(out_group_report_PSVs + *out_group_report_idx * gbl_g_max_len_group_data_PSV , gbl_my3_group_report_line); // every 128
 
   } // put out column headers
@@ -2901,7 +2921,8 @@ trn("END of  /* end of =========  PUT HEADER LINES  ============== */");tn();
 
 
       sprintf(gbl_my3_group_report_line, "%s|%s||", cocoa_rowcolor, pair_line);
-tr("benchmark line print");ksn(gbl_my3_group_report_line);
+
+//tr("benchmark line print");ksn(gbl_my3_group_report_line);
 
 
 // ksn(gbl_my3_group_report_line);
@@ -2972,7 +2993,7 @@ tr("benchmark line print");ksn(gbl_my3_group_report_line);
         sprintf(sfmt_pair_line, "cHed| %%%ds   %%s %%3d%%%ds", size_NPIG, num_end_spaces); 
         sprintf(gbl_my3_group_report_line, sfmt_pair_line, " ", "Top", gbl_g_show_top_this_many, " ");
 
-tr("top line print");ksn(gbl_my3_group_report_line);
+//tr("top line print");ksn(gbl_my3_group_report_line);
 
         *out_group_report_idx = *out_group_report_idx + 1;
         strcpy(out_group_report_PSVs + (*out_group_report_idx * gbl_g_max_len_group_data_PSV) , gbl_my3_group_report_line); // every 128
@@ -2984,7 +3005,7 @@ tr("top line print");ksn(gbl_my3_group_report_line);
         sprintf(sfmt_pair_line, "cHed| %%%ds   %%s %%3d%%%ds", size_NPIG, num_end_spaces); 
         sprintf(gbl_my3_group_report_line, sfmt_pair_line, " ", "Bottom", gbl_g_show_bot_this_many, " ");
 
-tr("bottom line print");ksn(gbl_my3_group_report_line);
+//tr("bottom line print");ksn(gbl_my3_group_report_line);
 
         *out_group_report_idx = *out_group_report_idx + 1;
         strcpy(out_group_report_PSVs + (*out_group_report_idx * gbl_g_max_len_group_data_PSV) , gbl_my3_group_report_line); // every 128
@@ -3010,7 +3031,7 @@ tr("bottom line print");ksn(gbl_my3_group_report_line);
         person_A_for_UITableView,
         person_B_for_UITableView
     );
-tr("data line print");ksn(gbl_my3_group_report_line);
+//tr("data line print");ksn(gbl_my3_group_report_line);
 
 
 
@@ -3019,7 +3040,7 @@ tr("data line print");ksn(gbl_my3_group_report_line);
     len_my_group_report_line = (int)strlen(gbl_my3_group_report_line);
     strcpy(out_group_report_PSVs + *out_group_report_idx * gbl_g_max_len_group_data_PSV , gbl_my3_group_report_line); // every 128
 
-kin(*out_group_report_idx);
+//kin(*out_group_report_idx);
 
   }  /* ===== PUT DATA + BENCHMARK LINES  into array out_group_report_PSVs ===== */
 
@@ -3702,17 +3723,44 @@ tn();trn("in mamb_report_just_2_people()");
 //
 
 
+    // 20170212 fixer put underscore in name with space
+    //
+    char person_name_A_with_underscore[32]; // in each name, replace all ' ' with '_'
+    strcpy(person_name_A_with_underscore, person_name_A);
+    scharswitch(person_name_A_with_underscore, ' ', '_');
+//ksn(person_name_A);
+//ksn(person_name_A_with_underscore);
+//ksn("put underscore  ___________________________________");
+
+
 /*   gdocn = sprintf(gdocp,"%s\n", &gA_EVENT_NAME[0]);  */
 //  gdocn = sprintf(gdocp,"%s\n", person_name_A); 
 //  gdocn = sprintf(gdocp,"%s\n", &gA_EVENT_NAME[0]);
-  gdocn = sprintf(gdocp,"%s\n", person_name_A); 
+//  gdocn = sprintf(gdocp,"%s\n", person_name_A); 
+  gdocn = sprintf(gdocp,"%s\n", person_name_A_with_underscore); 
+//ksn(gdocp);
+
   g_docin_put(gdocp, gdocn);    // NOTE:  this becomes arr(0) in grphtm.c
+
+
+
+    // 20170212 fixer put underscore in name with space
+    //
+    char person_name_B_with_underscore[32]; // in each name, replace all ' ' with '_'
+    strcpy(person_name_B_with_underscore, person_name_B);
+    scharswitch(person_name_B_with_underscore, ' ', '_');
+
+
 
 /*   gdocn = sprintf(gdocp,"%s\n", &gB_EVENT_NAME[0]); */
 //  gdocn = sprintf(gdocp,"%s\n", person_name_B); 
 //  gdocn = sprintf(gdocp,"%s\n", &gB_EVENT_NAME[0]); 
-  gdocn = sprintf(gdocp,"%s\n", person_name_B); 
+//  gdocn = sprintf(gdocp,"%s\n", person_name_B); 
+  gdocn = sprintf(gdocp,"%s\n", person_name_B_with_underscore); 
+
   g_docin_put(gdocp, gdocn);    // NOTE:  this becomes arr(0) in grphtm.c
+
+
 
 
   gdocn = sprintf(gdocp,"%s", "[end_topinfo1]\n");
@@ -3742,7 +3790,9 @@ tn();trn("in mamb_report_just_2_people()");
 
 // ------------------------------------------------------------------------------------
 //  gdocn = sprintf(gdocp,"[beg_aview]\n");  /* idx = 2 */
-  gdocn = sprintf(gdocp,"[beg_aview]|%s\n", person_name_A);  /* idx = 2 */
+
+//  gdocn = sprintf(gdocp,"[beg_aview]|%s\n", person_name_A);  /* idx = 2 */
+  gdocn = sprintf(gdocp,"[beg_aview]|%s\n", person_name_A_with_underscore);  /* idx = 2 */
   g_docin_put(gdocp, gdocn);
 
 
@@ -3768,7 +3818,9 @@ tn();trn("in mamb_report_just_2_people()");
 
 
 //  gdocn = sprintf(gdocp,"[beg_bview]\n");  /* idx = 3 */
-  gdocn = sprintf(gdocp,"[beg_bview]|%s\n", person_name_B);  /* idx = 2 */
+
+//  gdocn = sprintf(gdocp,"[beg_bview]|%s\n", person_name_B);  /* idx = 2 */
+  gdocn = sprintf(gdocp,"[beg_bview]|%s\n", person_name_B_with_underscore);  /* idx = 2 */
   g_docin_put(gdocp, gdocn);
 
 //tn();tr("beg_bview");

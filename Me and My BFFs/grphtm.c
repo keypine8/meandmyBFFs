@@ -1,3 +1,27 @@
+/* grphtm.c */
+
+// MIT License
+//
+// Copyright (c) 2017 softwaredev
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+//
 
 /* For just_2 rpt, read from input docin_lines string array
 * format and write an html output file
@@ -504,7 +528,8 @@ tn();trn("in  make_html_file_just_2_people() ");
   if (strstr(in_html_filename, "webview") != NULL)
   {  // webview version
 
-gbl_db_code = 1;
+//gbl_db_code = 1;   // = 1  for TEST, prints  lin
+gbl_db_code = 0;     // = 0  no debug print
 
     sprintf(writebuf, "fill|filler line #1 at top");
     g_fn_prtlin(writebuf);
@@ -910,12 +935,17 @@ tn();tr("closeness doclin=");ksn(doclin);
 //    sprintf(writebuf, "howbigftr|   Good indicator is a full line of +++ ");
 //  sprintf(writebuf, "howbigftr|   Good signs are a full line of +++ ");
 //    sprintf(writebuf, "howbigftr|     Good signs are a full line of +++ ");
-    sprintf(writebuf, "howbigftr|     Good signs are a full line of ++ ");
-    g_fn_prtlin(writebuf);
-//  sprintf(writebuf, "howbigftr|   and double the +++ compared to  --- ");
-//    sprintf(writebuf, "howbigftr|     and double the +++ compared to --- ");
-    sprintf(writebuf, "howbigftr|     and double the ++ compared to -- ");
-    g_fn_prtlin(writebuf);
+
+
+//    sprintf(writebuf, "howbigftr|     Good signs are a full line of ++ ");
+//    g_fn_prtlin(writebuf);
+////  sprintf(writebuf, "howbigftr|   and double the +++ compared to  --- ");
+////    sprintf(writebuf, "howbigftr|     and double the +++ compared to --- ");
+//    sprintf(writebuf, "howbigftr|     and double the ++ compared to -- ");
+//    g_fn_prtlin(writebuf);
+//
+
+
     sprintf(writebuf, "fill|after howbigftr");
     g_fn_prtlin(writebuf);
     sprintf(writebuf, "fill|filler after how big");
@@ -3613,7 +3643,30 @@ void g_fn_prtlin(char *lin) {
 //tn();tr("in g_fn_prtlin");ksn(lin); 
 
 //  if (strstr(gbl_g_in_html_filename, "webview") != NULL) {tn();tr("in g_fn_prtlin");ksn(lin); }
-  if (gbl_db_code == 1) {tn();tr("gbl_db_code=1");ksn(lin); }
+
+//if (gbl_db_code == 1) { tn();tr("gbl_db_code=1a");ksn(lin); }
+
+  // if lin is like this,  _(gbl_db_code=1)___lin=[tabl|pair@16@tulsi gabbard@austin m]__
+  // put underscores in lin   tulsi_gabbard   austin m
+  //
+//3132 _(gbl_db_code=1b)___lin=[tabl|pair@16@space_above@x]__
+//3137 _(gbl_db_code=1b)___lin=[tabl|pair@16@tulsi_gabbard@austin_m]__
+//3142 _(gbl_db_code=1b)___lin=[tabl|pair@16@space_below@x]__
+//
+  if (   strstr(lin, "tabl|pair")   != NULL // has to be there
+      && strstr(lin, "space above") == NULL // cannot be there
+      && strstr(lin, "space below") == NULL // cannot be there
+  ) {
+ksn("put underscore 22222 bbb  ___________________________________");
+
+    // 20170212 fixer put underscore in name with space
+    //
+    scharswitch(lin, ' ', '_');
+
+    if (gbl_db_code == 1) { tn();tr("gbl_db_code=1b");ksn(lin); }
+  }
+
+
 
 
   // EXCEPTION: for new tblrpts pco, actually output the lines

@@ -1,8 +1,28 @@
 //  MAMB09AppDelegate.m
 //  Me and My BFFs
 //
-//  Created by Richard Koskela on 2014-09-22.
-//  Copyright (c) 2014 Richard Koskela. All rights reserved.
+// MIT License
+//
+// Copyright (c) 2017 softwaredev
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+//
 //
 
 #import "MAMB09AppDelegate.h"
@@ -844,6 +864,16 @@
 
     // SET GBL DATA  HERE        ------------ all magic numbers----------------------------
 
+    // this is = 1 , except for testing
+    // e.g.  gbl_num_yrs_past_current_yr = 5;  // for test
+    //
+    gbl_num_yrs_past_current_yr = 1;    // for (NSInteger pickyr = gbl_earliestYear; pickyr <=  gbl_currentYearInt + gbl_num_yrs_past_current_yr; pickyr++) x  // only allow to go to next calendar year
+
+
+    gbl_num_yrs_past_current_yr = 12;  // for test
+
+
+
     gbl_ThresholdshortTblLineLen = 17;  // nameA  + nameB more than this , then move benchmark label
     
     gbl_MAX_groups          =  50;   // max in app 
@@ -856,6 +886,14 @@
 //    gbl_MAX_persons         = 250;   // max in app 
 //    gbl_MAX_personsInGroup  = 250;   // max in a Group
     gbl_MAX_persons         = 200;   // max in app 
+
+
+//<.>
+//    gbl_MAX_groups          =  3;   // for test
+//    gbl_MAX_persons         = 23;   // for test
+//<.>
+
+
     gbl_MAX_personsInGroup  = 200;   // max in a Group
 
     gbl_MAX_lengthOfName    =  15;   // 15 (applies to Person and Group both)
@@ -910,7 +948,7 @@
     // set up initial value for    the  GOLD CURRENT DATE  for the whole app   (stored in #allpeople grp record fld 5,6,7 1-based)
     //
 //    NSString *lcl_recOfAllPeopleIhaveAdded = [ NSString stringWithFormat: @"%@||||2016|06|15||||||||", // 14 flds for misc
-    NSString *lcl_recOfAllPeopleIhaveAdded = [ NSString stringWithFormat: @"%@||yes||2033|03|25||||||||", // FOR TEST
+    NSString *lcl_recOfAllPeopleIhaveAdded = [ NSString stringWithFormat: @"%@||yes||2018|03|25||||||||", // FOR TEST
         gbl_nameOfGrpHavingAllPeopleIhaveAdded
     ]; // 14 flds for misc
 
@@ -1029,7 +1067,7 @@
 //      @"pat tennis|9|21|1958|3|30|1|Toronto|Ontario|Canada||",
 //      @"paul|10|3|1933|3|0|0|Toronto|Ontario|Canada||",
 //      @"renee|12|26|1953|3|15|1|Toronto|Ontario|Canada||",
-//      @"richard|9|3|1947|9|33|1|Toronto|Ontario|Canada||",
+//      @"ralph|9|3|1947|9|33|1|Toronto|Ontario|Canada||",
 //      @"rik|11|2|1958|9|30|0|Toronto|Ontario|Canada||",
 //      @"rohit|1|16|1971|0|55|1|Toronto|Ontario|Canada||",
 //      @"ruth|3|24|1923|1|30|1|Toronto|Ontario|Canada||",
@@ -1058,8 +1096,21 @@
       @"~Swim Team||",
     ];
 
+
+
     gbl_arrayExaPer = // field 11= locked or not  DO NOT HAVE TO BE PRE-SORTED  (sorted on reading back into arrays)
     @[
+      @"melania trump|4|26|1970|12|01|1|Zagreb|Grad Zagreb|Croati||",
+      @"baron trump|3|20|2006|5|30|0|New York City|New York|United States||",
+      @"joe biagini|5|29|1990|12|01|1|Redwood City|California|United States||",
+      @"stephen colbert|5|13|1954|12|01|1|Washington|District of Columbia|United States||",
+      @"phil spenser|12|11|1969|12|01|1|Littleborough|Borough of Manchester|England||",
+      @"omar mateen|11|16|1986|12|01|1|New York City|New York|United States||",
+      @"judi dench|12|09|1934|12|01|1|Birmingham|Michigan|United States||",
+      @"g palmer|6|04|1927|12|01|1|London|Greater London|England||",
+      @"austin m|9|17|1997|12|01|1|Scottsdale|Arizona|United States||",
+      @"anderson cooper|6|03|1967|12|01|1|New York City|New York|United States||",
+      @"tulsi gabbard|4|12|1981|12|01|1|Pago Pago|Eastern District|American Samoa||",
       @"donald trump|6|14|1946|10|54|0|Jamaica|New York|United States||",
       @"ted cruz|12|22|1970|12|1|1|Calgary|Alberta|Canada||",
       @"kasich|5|13|1952|12|1|1|McKees Rocks|Pennsylvania|United States||",
@@ -1123,7 +1174,7 @@
       @"pat tennis|9|21|1958|3|30|1|Toronto|Ontario|Canada||",
       @"paul|10|3|1933|3|0|0|Toronto|Ontario|Canada||",
       @"renee|12|26|1953|3|15|1|Toronto|Ontario|Canada||",
-      @"richard|9|3|1947|9|33|1|Toronto|Ontario|Canada||",
+      @"ralph|9|3|1947|9|33|1|Toronto|Ontario|Canada||",
       @"rik|11|2|1958|9|30|0|Toronto|Ontario|Canada||",
       @"rohit|1|16|1971|12|55|1|Toronto|Ontario|Canada||",
       @"ruth|3|24|1923|1|30|1|Toronto|Ontario|Canada||",
@@ -1131,7 +1182,6 @@
       @"sarwan|5|15|1965|12|1|1|Toronto|Ontario|Canada||",
       @"scott|2|28|1957|3|0|1|Toronto|Ontario|Canada||",
       @"steve skipper|4|22|1960|1|30|0|Toronto|Ontario|Canada||",
-      @"ulli|4|27|1952|5|30|0|Toronto|Ontario|Canada||",
       @"vesna|6|27|1968|10|15|1|Toronto|Ontario|Canada||",
       @"victor|10|22|1984|11|23|0|Toronto|Ontario|Canada||",
       @"winnie|2|26|1962|12|30|0|Toronto|Ontario|Canada||",
@@ -1147,29 +1197,65 @@
 //      @"Sis|2|31|1988|12|30|1|Los Angeles|California|United States||",  // test bad dy of mth  
       @"Sis|2|29|1988|12|30|1|Los Angeles|California|United States||",
       @"Sis3|2|28|1988|3|30|1|Los Angeles|California|United States||",
-      @"~Abigail 012345|8|21|1994|1|20|0|Los Angeles|California|United States|hs|",
-      @"~Aiden 89012345|8|4|1991|10|30|1|Los Angeles|California|United States|hs|",
-      @"~Anya|10|19|1990|8|20|0|Los Angeles|California|United States|hs|",
-      @"~Ava|2|3|1992|8|10|0|Los Angeles|California|United States|hs|",
-      @"~Brother|11|6|1986|8|1|1|Los Angeles|California|United States|hs|",
-      @"~Elijah|10|10|1992|12|1|1|Los Angeles|California|United States|hs|",
-//      @"~Elijah|10|10|1992|0|1|1|Los Angeles|California|United States|hs|",   // test bad hr = 0
-      @"~Emma|5|17|1993|12|1|1|Los Angeles|California|United States|hs|",
-      @"~Father|7|11|1961|11|8|1|Los Angeles|California|United States|hs|",
-      @"~Grandma|8|17|1939|8|5|0|Los Angeles|California|United States|hs|",
-      @"~Ingrid|3|13|1993|4|10|1|Los Angeles|California|United States|hs|",
-      @"~Jackson|2|3|1993|12|1|1|Los Angeles|California|United States|hs|",
-      @"~Jen|6|22|1992|4|10|0|Los Angeles|California|United States|hs|",
-      @"~Liam|4|8|1993|12|1|1|Los Angeles|California|United States|hs|",
-      @"~Liz|3|13|1991|4|10|1|Los Angeles|California|United States|hs|",
-      @"~Lucas|4|20|1992|6|30|1|Los Angeles|California|United States|hs|",
-      @"~Mother|3|12|1965|10|45|0|Los Angeles|California|United States|hs|",
-      @"~Noah|12|19|1994|11|4|0|Los Angeles|California|United States|hs|",
-      @"~Olivia|4|13|1994|12|53|1|Los Angeles|California|United States|hs|",
-      @"~Sister1|2|29|1988|12|30|1|Los Angeles|California|United States|hs|",
-      @"~Sister2|2|13|1990|3|35|0|Los Angeles|California|United States|hs|",
-      @"~Sophia|9|20|1991|4|0|0|Los Angeles|California|United States|hs|",
+
+
+
+// save
+////      @"~Abigail 012345|8|21|1994|1|20|0|Los Angeles|California|United States|hs|",
+//      @"~Abigail 012345|8|21|1994|1|20|0|Los Angeles|California|United States||",
+//      @"~Aiden 89012345|8|4|1991|10|30|1|Los Angeles|California|United States||",
+//      @"~Anya|10|19|1990|8|20|0|Los Angeles|California|United States||",
+//      @"~Ava|2|3|1992|8|10|0|Los Angeles|California|United States||",
+//      @"~Brother|11|6|1986|8|1|1|Los Angeles|California|United States||",
+//      @"~Elijah|10|10|1992|12|1|1|Los Angeles|California|United States||",
+////      @"~Elijah|10|10|1992|0|1|1|Los Angeles|California|United States||",   // test bad hr = 0
+//      @"~Emma|5|17|1993|12|1|1|Los Angeles|California|United States||",
+//      @"~Father|7|11|1961|11|8|1|Los Angeles|California|United States||",
+//      @"~Grandma|8|17|1939|8|5|0|Los Angeles|California|United States||",
+//      @"~Ingrid|3|13|1993|4|10|1|Los Angeles|California|United States||",
+//      @"~Jackson|2|3|1993|12|1|1|Los Angeles|California|United States||",
+//      @"~Jen|6|22|1992|4|10|0|Los Angeles|California|United States||",
+//      @"~Liam|4|8|1993|12|1|1|Los Angeles|California|United States||",
+//      @"~Liz|3|13|1991|4|10|1|Los Angeles|California|United States||",
+//      @"~Lucas|4|20|1992|6|30|1|Los Angeles|California|United States||",
+//      @"~Mother|3|12|1965|10|45|0|Los Angeles|California|United States||",
+//      @"~Noah|12|19|1994|11|4|0|Los Angeles|California|United States||",
+//      @"~Olivia|4|13|1994|12|53|1|Los Angeles|California|United States||",
+//      @"~Sister1|2|29|1988|12|30|1|Los Angeles|California|United States||",
+//      @"~Sister2|2|13|1990|3|35|0|Los Angeles|California|United States||",
+//      @"~Sophia|9|20|1991|4|0|0|Los Angeles|California|United States||",
+//
+
+
+//  new cities 
+      @"~Abigail 012345|8|21|1994|1|20|0|Los Angeles|California|United States||",
+      @"~Aiden 89012345|8|4|1991|10|30|1|New York City|New York|United States||",
+      @"~Anya|10|19|1990|8|20|0|Austin|Texas|United States||",
+      @"~Ava|2|3|1992|8|10|0|Hamburg|Pennsylvania|United States||",
+      @"~Brother|11|6|1986|8|1|1|Salt Lake City|Utah|United States||",
+      @"~Elijah|10|10|1992|12|1|1|Miami|Florida|United States||",
+      @"~Emma|5|17|1993|12|1|1|Columbus|Ohio|United States||",
+      @"~Father|7|11|1961|11|8|1|Atlanta|Georgia|United States||",
+      @"~Grandma|8|17|1939|8|5|0|Carson City|Nevada|United States||",
+      @"~Ingrid|3|13|1993|4|10|1|Lansing|Michigan|United States||",
+      @"~Jackson|2|3|1993|12|1|1|Trenton|New Jersey|United States||",
+      @"~Jen|6|22|1992|4|10|0|Chicago|Illinois|United States||",
+      @"~Liam|4|8|1993|12|1|1|Bismark|North Dakota|United States||",
+      @"~Liz|3|13|1991|4|10|1|Montpelier|Vermont|United States||",
+      @"~Lucas|4|20|1992|6|30|1|Santa Fe|New Mexico|United States||",
+      @"~Mother|3|12|1965|10|45|0|Washington|District of Columbia|United States||",
+      @"~Noah|12|19|1994|11|4|0|Sacramento|California|United States||",
+      @"~Olivia|4|13|1994|12|53|1|Hong Kong|Hong Kong|United States||",
+      @"~Sister1|2|29|1988|12|30|1|Vancouver|British Columbia|United States||",
+      @"~Sister2|2|13|1990|3|35|0|Columbia|South Carolina|United States||",
+      @"~Sophia|9|20|1991|4|0|0|Los Angeles|California|United States||",
+
+
     ];
+
+
+
+
     gbl_arrayExaMem = // field 11= locked or not    DO NOT HAVE TO BE PRE-SORTED  (sorted on reading back into arrays)
     @[
       @"us politics 16|donald trump|",
@@ -1235,7 +1321,7 @@
       @"folks|pat tennis|",
       @"folks|paul|",
       @"folks|renee|",
-      @"folks|richard|",
+      @"folks|ralph|",
       @"folks|rik|",
       @"folks|rohit|",
       @"folks|ruth|",
@@ -1276,6 +1362,8 @@
       @"~Swim Team|~Olivia|",
       @"~Swim Team|~Sophia|",
     ];
+
+
 
     // REMEMBER DATA for each Group 
     //     field 1  name-of-group
@@ -2051,10 +2139,10 @@
     NSString  *myupdatedStr;
 
 
-tn(); NSLog(@"       ssssssssssssssssssssssssssss saveLastSelectionForEntity   argPersonOrGroup    =%@",argPersonOrGroup);
-      NSLog(@"       ssssssssssssssssssssssssssss saveLastSelectionForEntity   argEntityName       =%@",argEntityName);
-      NSLog(@"       ssssssssssssssssssssssssssss saveLastSelectionForEntity   argRememberCategory =%@",argRememberCategory);
-      NSLog(@"       ssssssssssssssssssssssssssss saveLastSelectionForEntity   argChangeToThis     =%@",argChangeToThis);
+//tn(); NSLog(@"       ssssssssssssssssssssssssssss saveLastSelectionForEntity   argPersonOrGroup    =%@",argPersonOrGroup);
+//      NSLog(@"       ssssssssssssssssssssssssssss saveLastSelectionForEntity   argEntityName       =%@",argEntityName);
+//      NSLog(@"       ssssssssssssssssssssssssssss saveLastSelectionForEntity   argRememberCategory =%@",argRememberCategory);
+//      NSLog(@"       ssssssssssssssssssssssssssss saveLastSelectionForEntity   argChangeToThis     =%@",argChangeToThis);
 
     MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for global methods in appDelegate.m
 
@@ -2233,9 +2321,9 @@ tn(); NSLog(@"       ssssssssssssssssssssssssssss saveLastSelectionForEntity   a
 //    NSLog(@"gbl_fromHomeCurrentSelectionPSV =%@",gbl_fromHomeCurrentSelectionPSV );
 //
 
-  NSLog(@"arrayIdx                                                                      =[%ld]",(long)arrayIdx );
-  NSLog(@"end of ssssssssssssssssssssssssssss saveLastSelectionForEntity   myStrToUpdate=%@", myStrToUpdate);
-  NSLog(@"end of ssssssssssssssssssssssssssss saveLastSelectionForEntity    myupdatedStr=%@", myupdatedStr);
+//  NSLog(@"arrayIdx                                                                      =[%ld]",(long)arrayIdx );
+//  NSLog(@"end of ssssssssssssssssssssssssssss saveLastSelectionForEntity   myStrToUpdate=%@", myStrToUpdate);
+//  NSLog(@"end of ssssssssssssssssssssssssssss saveLastSelectionForEntity    myupdatedStr=%@", myupdatedStr);
 
 } // saveLastSelectionForEntity 
 
@@ -2438,6 +2526,23 @@ ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem); kin(have
 tr("end of mambWriteNSArrayWithDescription         ");
 tn();
 
+    if ([argEntityDescription isEqualToString:@"person"])        { 
+        NSString  *myCurrentSelectionPSV;
+        myCurrentSelectionPSV = nil;
+
+
+        // for test, save PSV of new person (person on the screen)
+        //
+        //        myCurrentSelectionPSV = [myappDelegate getPSVforPersonName: (NSString *) gbl_lastSelectedPerson]; 
+        myCurrentSelectionPSV = [myappDelegate getPSVforPersonName: (NSString *) gbl_myname.text ]; 
+  NSLog(@"gbl_myname.text=[%@]", gbl_myname.text );
+
+        if (myCurrentSelectionPSV != nil) {
+  NSLog(@"end of mambWriteNSArrayWithDescription current PersonPSV=[%@]  -save per--", myCurrentSelectionPSV );
+        }
+        // for test, save PSV of new person
+
+    }
 
 } // end of mambWriteNSArrayWithDescription
 
@@ -2638,7 +2743,15 @@ tn();
         }
     }
     if (numRecords <   2 )                                     return   6;  // 2 is MAGIC for the 2 example groups
-    if (numRecords >  gbl_MAX_groups)                          return   7;  // max groups is 50
+
+
+    // It shoould not be possible to start with num groups > max groups
+    // because max groups is checked on every attempt to add a new group
+    // AND  there is no import of groups
+    // Because data is encrypted and such, you cannot jailbreak and add data directly to the data file.
+    //
+    // if (numRecords >  gbl_MAX_groups)                          return   7;  // max groups is 50
+
   NSLog(@"END   CHECK  group NAME");
 
 
@@ -3374,7 +3487,7 @@ tn();  NSLog(@"at end of   mambReadLastEntityFile  myLastEntityDecoded=\n%@",myL
 //    NSLog(@"argPersonToCompareEveryoneElseWith =%@",argPersonToCompareEveryoneElseWith );
 //  NSLog(@"argArrayDescription =%@",argArrayDescription );
 
-    MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // access global methods in appDelegate.m
+    MAMB09AppDelegate *myappDelegate= (MAMB09AppDelegate *) [[UIApplication sharedApplication] delegate]; // access global methods in appDelegate.m
     NSInteger  we_have_hit_target_group;
     we_have_hit_target_group = 0;
 
@@ -3700,6 +3813,7 @@ tn();  NSLog(@"at end of   mambReadLastEntityFile  myLastEntityDecoded=\n%@",myL
 
   NSLog(@"in mambSortArrayOfPSVsOnFieldOne");
 //  NSLog(@"BEG  gbl_arrayPer  =%@",gbl_arrayPer  );
+  NSLog(@"BEG mambSortOnFieldOneForPSVarrayWithDescription=%@", argArrayDesc);
 
     // make big string from starting array  (PSV field sep = "|")
     //
@@ -3719,6 +3833,9 @@ tn();  NSLog(@"at end of   mambReadLastEntityFile  myLastEntityDecoded=\n%@",myL
 
     // now we have one string with lines sep by "}"  and fields sep by "\t" (tab)
 
+
+
+//<.>
     // make temp array of lines with  new  delimiter
     //
     NSMutableArray *mutArrayNewTmp = (NSMutableArray *)
@@ -3737,6 +3854,35 @@ tn();  NSLog(@"at end of   mambReadLastEntityFile  myLastEntityDecoded=\n%@",myL
     //
     NSString *joinedStringSorted   = [mutArrayNewTmp componentsJoinedByString:@"}"];
     //  NSLog(@"joinedStringSorted   =%@",joinedStringSorted   );
+//<.>
+
+
+//
+////<.>
+//    // make temp array of lines with  new  delimiter
+//    //
+//    NSArray *mutArrayNewTmp = (NSArray *)
+//       [stringWithNewDelim componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"}"]];
+//  NSLog(@"mutArrayNewTmp =%@",mutArrayNewTmp );
+//
+//    // now we have tmp array with each element  a TSV (string with fields sep by "\t" TAB)
+//
+//    // sort temp array  mutArrayNewTmp  here (has new delimiters)
+//    //
+//    if (mutArrayNewTmp)  { [mutArrayNewTmp sortedArrayUsingSelector: @selector(caseInsensitiveCompare:)]; }
+//
+//    // now we have SORTED tmp array with each element  a TSV (string with fields sep by "\t" TAB)
+//
+//    // make big string from  sorted temp  array
+//    //
+//    NSString *joinedStringSorted   = [mutArrayNewTmp componentsJoinedByString:@"}"];
+//    //  NSLog(@"joinedStringSorted   =%@",joinedStringSorted   );
+////<.>
+//
+//
+
+
+
 
     // now we have one string with SORTED lines sep by "}"  and fields sep by "\t" (tab)
 
@@ -4835,7 +4981,7 @@ trn(" XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
   NSLog(@"inboxDirFiles      =[%@]",inboxDirFiles );
 
 
-    MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // for global methods in appDelegate.m
+    MAMB09AppDelegate *myappDelegate= (MAMB09AppDelegate *) [[UIApplication sharedApplication] delegate]; // for global methods in appDelegate.m
 
 
     // 

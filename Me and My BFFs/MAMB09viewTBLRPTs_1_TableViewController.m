@@ -2,8 +2,28 @@
 //  MAMB09viewTBLRPTs_1_TableViewController.m
 //  Me&myBFFs
 //
-//  Created by Richard Koskela on 2015-02-26.
-//  Copyright (c) 2015 Richard Koskela. All rights reserved.
+// MIT License
+//
+// Copyright (c) 2017 softwaredev
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+//
 //
 
 #import "MAMB09viewTBLRPTs_1_TableViewController.h"
@@ -323,7 +343,7 @@ tn();
 
 //<.>
 
-    MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global methods in appDelegate.m
+    MAMB09AppDelegate *myappDelegate= (MAMB09AppDelegate *) [[UIApplication sharedApplication] delegate]; // to access global methods in appDelegate.m
     int retval;
 
 //    char csv_person_string[128];
@@ -3226,15 +3246,15 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
 
 //ksn(my_tmp_str);
             myCellContentsPSV     = [NSString stringWithUTF8String: my_tmp_str];  // convert c string to NSString
-NSLog(@"myCellContentsPSV =[%@]", myCellContentsPSV );
+//NSLog(@"myCellContentsPSV =[%@]", myCellContentsPSV );
             mySeparators          = [NSCharacterSet characterSetWithCharactersInString:@"|"];
             tmpArray              = [myCellContentsPSV componentsSeparatedByCharactersInSet: mySeparators];
 //        gbl_cellBGcolorName   = tmpArray[0];
             myOriginalCellText    = tmpArray[1];
             myOriginalCellTextLen = myOriginalCellText.length;
 
-NSLog(@"myOriginalCellText    =%@",myOriginalCellText    );
-NSLog(@"myOriginalCellTextLen =%ld",(long)myOriginalCellTextLen );
+//NSLog(@"myOriginalCellText    =%@",myOriginalCellText    );
+//NSLog(@"myOriginalCellTextLen =%ld",(long)myOriginalCellTextLen );
 
 
             // get the number of chars taken up by rank numbers on left (  gbl_numPairsRanked )
@@ -5496,7 +5516,7 @@ nbn(6);
     ) {
         return ;   // these are leaf reports, no row selection
     }
-    MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global methods in appDelegate.m
+    MAMB09AppDelegate *myappDelegate= (MAMB09AppDelegate *) [[UIApplication sharedApplication] delegate]; // to access global methods in appDelegate.m
 
     gbl_TBLRPTS1_saveSelectedIndexPath = indexPath;  // for deselecting with animation when return to TBLRPTS1
 NSLog(@"gbl_TBLRPTS1_saveSelectedIndexPath.row=%ld",(long)gbl_TBLRPTS1_saveSelectedIndexPath.row);
@@ -5669,7 +5689,12 @@ NSLog(@"gbl_TBLRPTS1_saveSelectedIndexPath.row=%ld",(long)gbl_TBLRPTS1_saveSelec
         [myappDelegate mamb_beginIgnoringInteractionEvents ];
 
         dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
-            [self performSegueWithIdentifier:@"segueTBLRPT1_toViewHTML" sender:self];
+
+
+//            [self performSegueWithIdentifier:@"segueTBLRPT1_toViewHTML" sender:self];
+            [self performSegueWithIdentifier:@"segueTBLRPT1_toTBLRPT2" sender:self];
+
+
         });                                   
     }
 
@@ -6649,7 +6674,7 @@ NSLog(@"gbl_TBLRPTS1_saveSelectedIndexPath.row=%ld",(long)gbl_TBLRPTS1_saveSelec
 //  (example when a Modal View Controller is dismissed and the view becomes visible again)
 //
 
-    MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global methods in appDelegate.m
+    MAMB09AppDelegate *myappDelegate= (MAMB09AppDelegate *) [[UIApplication sharedApplication] delegate]; // to access global methods in appDelegate.m
     int retval;
 
 //    char csv_person_string[128];
@@ -8228,7 +8253,8 @@ NSLog(@"Ok button pressed");
 
   } 
 
-  if ([segue.identifier isEqualToString: @"segueTBLRPT1_toViewHTML"]) {
+//  if ([segue.identifier isEqualToString: @"segueTBLRPT1_toViewHTML"]) {
+  if ([segue.identifier isEqualToString: @"segueTBLRPT1_toTBLRPT2"]) {
 
         //
         // set the next gbl_currentMenuPlusReportCode  for info in the next report

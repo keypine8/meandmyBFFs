@@ -1,4 +1,28 @@
-/* this is perhtm.h */
+/* perhtm.h */
+
+// MIT License
+//
+// Copyright (c) 2017 softwaredev
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+//
+
 char my_aspect_text[4048];
 
 struct aspect {
@@ -35,7 +59,7 @@ struct aspect {
   {"p01b07", "You will be subject to frequent delays and frustrations, but you can succeed through very hard work.  There can be some difficulty in dealing with laws and rules of all kinds."},
   {"p01b08", "Your efforts to be individualistic at all costs can lead to erratic behavior or perverse wrong-headedness.  You are very changeable."},
   {"p01b09", "An impractical fogginess can lead you to deceive or be deceived.  You could tend to escape hardships in an unhealthy way."},
-  {"p01b10", "Your domineering and aggressive nature can cause difficulties."},
+  {"p01b10", "Your domineering nature can cause difficulties."},
   {"p01c02", "With the sun and moon very close together in your horoscope, challenging or favorable times will be greatly magnified in your life."},
   {"p01c03", "The way your mind works to attack problems is in accord with the personality traits of your sun sign."},
   {"p01c04", "You are cheerful and affectionate and could have talent in music or art.  You are good with children."},
@@ -144,7 +168,7 @@ struct aspect {
   {"p03g08", "You are extremely independent and you can have clever, highly original ideas.  You could do well in science- especially electronics in any form.  You like to study things at the leading edge like computers, science fiction, astrology or psychic phenomena."},
   {"p03g09", "You have a vivid imagination and you could be interested in mysticism, psychic phenomena, poetry, musical composition or magic."},
   {"p03g10", "You are very resourceful and are good at digging out information from unlikely places."},
-  {"p04101", "If you're artistic you're good at the clean lines of interior decoration, graphic art or fashion design.  In love you are aggressive in your affections and maybe even self-centred.  You could rush into relationships, forgetting that love takes time to flower.  You can have a positive, cheerful attitude in love."},
+  {"p04101", "If you're artistic you're good at the clean lines of interior decoration, graphic art or fashion design.  In love you are emphatic in your affections and maybe even self-centred.  You could rush into relationships, forgetting that love takes time to flower.  You can have a positive, cheerful attitude in love."},
   {"p04102", "You have a strong and constant love nature and stability in love is important to you.  The sense of touch can be important in your creative efforts, as in painting, sculpture, weaving or gardening.  Your love of luxury could lead to overindulgence in the wine, women and song and the lazy life of the self-indulgent.  In love you are at the top in loyalty and the real depth of your feelings."},
   {"p04103", "You are very attractive because of your light-hearted charm.  You are an excellent talker and good at jokes.  You like variety in love and can be involved with more than one relationship at a time.  You need to strive for greater maturity and decide what you want in the love area."},
   {"p04104", "You are very sensitive in relationships and are prone to fall very deeply in love.  The best expression of your very warm love is in the home environment.  When things go wrong you can have uncontrolled emotionalism."},
@@ -198,7 +222,7 @@ struct aspect {
   {"p05110", "Your energy is very effectively used in your role in life.  You have excellent control of your energies which will help you achieve success.  Your one-pointed drive to achievement should not lead to ruthlessness or to the sacrificing of your emotional life."},
   {"p05111", "You can work well in team work or in a scientific setting or in political reform.  Your energy can be expressed in a haphazard way or in unusual courses of action."},
   {"p05112", "Decisive action can be hindered by your inappropriate emotional concerns.  You could be a good dancer or skater.  The feet are a sensitive area."},
-  {"p05201", "You are aggressive and strong and love to express yourself physically as in sports."},
+  {"p05201", "You are assertive and strong and love to express yourself physically as in sports."},
   {"p05202", "You may spend money too impulsively and have a tremendous drive to earn money."},
   {"p05203", "You are impatient and quick thinking but you drive too fast."},
   {"p05204", "Avoid creating strife in the home."},

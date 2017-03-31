@@ -21,7 +21,8 @@
 // #define NSLog(...)
 // #endif
 
-// commenting out the line below ( #define NSLog(...) )   turns off logging throughout the App
+// UNCOMMENTING  the line below ( #define NSLog(...) )   TURNS OFF LOGGING  throughout the App
 // #define NSLog(...)
+
 
 

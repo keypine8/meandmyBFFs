@@ -1,5 +1,28 @@
 /* futdoc.c */
 
+// MIT License
+//
+// Copyright (c) 2017 softwaredev
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+//
+
 /* #import "tgmath.h"    in xcode required */
 
 /* #include "rkdebug.h"  */
@@ -2070,13 +2093,13 @@ void do_grhs(void)
   ;
 /* trn("in do_grhs()  "); */
 
-  /* --------------- "/Users/rk/_PC/usr/apple/_c/_wrk/futdefs.h" -------------- */
+  /* --------------- "/Users/xxx/_PC/usr/apple/_c/_wrk/futdefs.h" -------------- */
   /* 128:#define SUBSCRIPT_FOR_VLO_STRESS_LEVEL 6    * Stress_val[6] = vlo- "great"*/
   /* 129:#define SUBSCRIPT_FOR_LO_STRESS_LEVEL 5     * Stress_val[5] = lo- "good" */
   /* 130:#define SUBSCRIPT_FOR_HIGH_STRESS_LEVEL 3   * Stress_val[3] = hi-"stress" */
   /* 131:#define SUBSCRIPT_FOR_VHIGH_STRESS_LEVEL 2  * Stress_val[2] = hi-"OMG" */
 
-  /* --------------- "/Users/rk/_PC/usr/apple/_c/_wrk/futdoc.h" -------------- */
+  /* --------------- "/Users/xxx/_PC/usr/apple/_c/_wrk/futdoc.h" -------------- */
   /* 223:int Stress_val[NUM_STRESS_LEVELS] = {304,250,196,142,88,34,-20,-74}; */
   /*                                                   32  23,    5,  */
   for (igrh=0; igrh <= NUM_EPH_GRAPHS-1 -1; igrh++)    /* -1, total grh later */
@@ -3574,7 +3597,13 @@ void do_day_stress_score_B(void) {
   starting_natal_plt = 1;  /* set default */
 
 
-  for (iday_num=1; iday_num <= Num_eph_grh_pts; ++iday_num)      {   /* day_num */
+
+  //  get rid of this "error" :  Loop will run at most once (loop increment never executed) 
+  //    by commenting out line below
+  //  for (iday_num=1; iday_num <= Num_eph_grh_pts; ++iday_num)      {   /* day_num */
+    iday_num = 1;
+
+
 
     for (itrn_plt=0; itrn_plt <= NUM_PLANETS_TRN_BESTDAY-1; ++itrn_plt) {  /* 0->7 */
 
@@ -3637,9 +3666,12 @@ void do_day_stress_score_B(void) {
 /*     mk_new_date(&ddmn,&dddy,&ddyr,ddstep); */
 
       return;    /* to call of do_day_stress_score_B(void) */
+
 /*     } */
 
-  } /* daynum */
+  //  get rid of this "error" :  Loop will run at most once (loop increment never executed)
+  //    by commenting out line below
+  //  } /* daynum */
 
 
 } /* end of do_day_stress_score_B(void) */

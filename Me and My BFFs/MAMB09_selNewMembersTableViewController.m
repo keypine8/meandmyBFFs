@@ -2,8 +2,28 @@
 //  MAMB09_selNewMembersTableViewController.m
 //  Me&myBFFs
 //
-//  Created by Richard Koskela on 2016-01-04.
-//  Copyright © 2016 Richard Koskela. All rights reserved.
+// MIT License
+//
+// Copyright (c) 2017 softwaredev
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+//
 //
 
 #import "MAMB09_selNewMembersTableViewController.h"
@@ -420,8 +440,29 @@ nbn(3);
 tn();
 nbn(4);
 
+
+    // NOTE:  check below for gbl_MAX_personsInGroup is not necessary because
+    // MAMB09_selNewMembersTableViewController.m only shows candidate new group members who are not in the group already
+    // AND  gbl_MAX_persons  =  gbl_MAX_personsInGroup  =  200 
+    // so  memberships can never grow to > 200
+    //
+    //
+    // BEFORE adding all the people in gbl_selectedMembers_toAdd to the group gbl_lastSelectedGroup,
+    // CHECK  for gbl_MAX_personsInGroup
+    //
+    //
+    //    // get_gbl_numMembersInCurrentGroup  populates gbl_numMembersInCurrentGroup, gbl_namesInCurrentGroup  using  gbl_lastSelectedGroup
+    //    //
+    //    [myappDelegate get_gbl_numMembersInCurrentGroup ];   // populates gbl_numMembersInCurrentGroup  using  gbl_lastSelectedGroup
+    //
+    //    if ( gbl_numMembersInCurrentGroup + gbl_selectedMembers_toAdd.count  >=  gbl_MAX_personsInGroup )
+    //    // end of CHECK  for gbl_MAX_personsInGroup
+    //
+
+
+
     NSString *member_record;
-    for (NSString *add_me in gbl_selectedMembers_toAdd)   // add each new member
+    for (NSString *add_me in gbl_selectedMembers_toAdd)   // add each new member to group
     {
         member_record = [NSString stringWithFormat:  @"%@|%@|", gbl_lastSelectedGroup, add_me ];
 

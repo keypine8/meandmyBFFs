@@ -2,9 +2,30 @@
 //  MAMB09_homeTableViewController.m
 //  Me and My BFFs
 //
-//  Created by Richard Koskela on 2014-09-22.
-//  Copyright (c) 2014 Richard Koskela. All rights reserved.
+// MIT License
 //
+// Copyright (c) 2017 softwaredev
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+//
+//
+
 //dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
 //    code here
 //})pressedChangeGroupName;
@@ -155,12 +176,13 @@
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
 {
 return YES;
-    UITableView *tmpTableView = (UITableView *)gestureRecognizer.view;
-    CGPoint p = [gestureRecognizer locationInView: gestureRecognizer.view ];
-    if ([tmpTableView indexPathForRowAtPoint:p]) {
-        return YES;
-    }
-    return NO;
+
+//    UITableView *tmpTableView = (UITableView *)gestureRecognizer.view;
+//    CGPoint p = [gestureRecognizer locationInView: gestureRecognizer.view ];
+//    if ([tmpTableView indexPathForRowAtPoint:p]) {
+//        return YES;
+//    }
+//    return NO;
 }
 
 
@@ -448,7 +470,7 @@ tn();
 //  NSLog(@"gbl_arrayMem HOME viewdidload =[%@]",gbl_arrayMem );
     
 nbn(376);
-    MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
+    MAMB09AppDelegate *myappDelegate= (MAMB09AppDelegate *) [[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
     [myappDelegate deleteAll_MAMB_files_fromInbox ]; // del from Inbox dir all "*.mamb"        // clear out for test
 
 
@@ -1101,7 +1123,10 @@ nbn(15);
 
 
 
-//
+
+
+
+
 //
 //    //   for test   TO SIMULATE first downloading the app-  when there are no data files
 //    //   FOR test   remove all regular named files   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -1123,7 +1148,6 @@ nbn(15);
 //    // end of   FOR test   remove all regular named files   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 //
 //
-//
 
 
 
@@ -1131,6 +1155,20 @@ nbn(15);
 
 
 
+
+
+
+
+
+
+//    MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
+
+
+    haveGrp    = [gbl_sharedFM fileExistsAtPath: gbl_pathToGroup];
+    havePer    = [gbl_sharedFM fileExistsAtPath: gbl_pathToPerson];
+    haveMem    = [gbl_sharedFM fileExistsAtPath: gbl_pathToMember];
+    haveGrpRem = [gbl_sharedFM fileExistsAtPath: gbl_pathToGrpRem];
+    havePerRem = [gbl_sharedFM fileExistsAtPath: gbl_pathToPerRem];
 
 
 
@@ -1244,13 +1282,33 @@ ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
 
 
 //    // test
-//tn();trn(" HOME   AFTER read data files  with regular names into arrays // and sort the arrays in place by name");
+//tn();trn(" HOME   AFTER read data files (1)   with regular names into arrays // and sort the arrays in place by name");
 //    NSLog(@"home2viewDidLoad  gbl_arrayGrp=%@",gbl_arrayGrp);
 //    NSLog(@"home2viewDidLoad  gbl_arrayPer=%@",gbl_arrayPer);
 //    NSLog(@"home2viewDidLoad  gbl_arrayMem=%@",gbl_arrayMem);
 //    NSLog(@"home2viewDidLoad  gbl_arrayGrpRem=%@",gbl_arrayGrpRem);
 //    NSLog(@"home2viewDidLoad  gbl_arrayPerRem=%@",gbl_arrayPerRem);
 //
+
+//  for test,   show all person records
+tn();trn(" HOME   AFTER read data files (2)  with regular names into arrays // and sort the arrays in place by name");
+        for (id perRec in gbl_arrayPer) {
+//           NSLog(@"%@", perRec);
+           NSLog(@"      @\"%@\",", perRec); // 20170215  put same format as in appdel.m
+
+//        const char *my_perRec_cc;  // psv=pipe-separated values
+//        my_perRec_cc = [gbl_fromHomeCurrentSelectionPSV cStringUsingEncoding:NSUTF8StringEncoding]; // convert NSString to c string
+//        char my_perRec_c[1024];
+//        strcpy(my_perRec_c, my_perRec_c);
+//ksn(my_perRec_c);
+//<.>
+//        const char *my_psvc;  // psv=pipe-separated values
+//        my_psvc = [gbl_fromHomeCurrentSelectionPSV cStringUsingEncoding:NSUTF8StringEncoding]; // convert NSString to c string
+//        char my_psv[1024];
+//        strcpy(my_psv, my_psvc);
+//<.>
+        }
+
 
 // exit(1);  // for test do just once
 // //break;  // for test, continue
@@ -1283,6 +1341,11 @@ ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
             // now delete from each gbl_arrayXxx  the non-example data
             // by  going backwards from the highest index to delete to the lowest
             //
+//ksn("yyyyyy");
+//NSLog(@"mem=[%@]", NSStringFromClass([gbl_arrayMem class]));   // showed nsarrayM   // this happened on an original ipad retinas
+//NSLog(@"per=[%@]", NSStringFromClass([gbl_arrayPer class]));   // showed nsarrayM
+//NSLog(@"grp=[%@]", NSStringFromClass([gbl_arrayGrp class]));   // showed nsarrayI  <--immutable
+            
             for (NSInteger i = gbl_arrayMem.count - 1;  i >= 0;  i--) {
                 if ([gbl_arrayMem[i] hasPrefix: @"~"]) continue; 
                 [gbl_arrayMem removeObjectAtIndex: i ];
@@ -1291,6 +1354,9 @@ ki(haveGrp); ki(havePer); ki(haveMem); ki(haveGrpRem); kin(havePerRem);
                 if ([gbl_arrayPer[i] hasPrefix: @"~"]) continue; 
                 [gbl_arrayPer removeObjectAtIndex: i ];
             }
+//NSLog(NSStringFromClass([gbl_arrayMem class]));
+//NSLog(NSStringFromClass([gbl_arrayPer class]));
+//NSLog(NSStringFromClass([gbl_arrayGrp class]));
             for (NSInteger i = gbl_arrayGrp.count - 1;  i >= 0;  i--) {
                 if ([gbl_arrayGrp[i] hasPrefix: @"~"]) continue; 
                 [gbl_arrayGrp removeObjectAtIndex: i ];
@@ -2263,7 +2329,7 @@ tn();
 
         // all DB STUFF for the delete follows here
 
-        MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
+        MAMB09AppDelegate *myappDelegate= (MAMB09AppDelegate *) [[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
 
         // 1. of 3   DELETE THE   gbl_arrayGrp   ARRAY ELEMENT for this cell
         // here the array index to delete matches the incoming  indexPath.row
@@ -2641,12 +2707,93 @@ tn();
 
 -(IBAction)navAddButtonAction:(id)sender
 {
-  NSLog(@"in   navAddButtonAction!  in HOME");
+  NSLog(@"in   navAddButtonAction!  in HOME       PRESSED ADD BUTTON (+)");
 
-//        self.tableView.userInteractionEnabled = NO;   // YES in addButtonAction
+
+
+
+nbn(830);
+  NSLog(@"gbl_fromHomeCurrentEntity=[%@]",gbl_fromHomeCurrentEntity);
+  NSLog(@"gbl_MAX_persons         =[%ld]",(long)gbl_MAX_persons);
+  NSLog(@"gbl_arrayPer.count      =[%ld]",(long)gbl_arrayPer.count );
+  NSLog(@"gbl_MAX_groups          =[%ld]",(long)gbl_MAX_groups );
+  NSLog(@"gbl_arrayGrp.count      =[%ld]",(long)gbl_arrayGrp.count );
+
+
+    // BEFORE adding person, check for      NSInteger gbl_MAX_persons;              // 200 max in app and max in group
+    //
+    if (   gbl_arrayPer.count >= gbl_MAX_persons
+        && [gbl_fromHomeCurrentEntity isEqualToString: @"person"]  )
+    {
+
+        // put up dialogue   hit max persons
+        //
+        NSString *tooManyPeopleMessage;
+
+        tooManyPeopleMessage =  [ NSString stringWithFormat:
+            @"\nThe app allows a maximum of %ld BFFs.",
+//            @"\nThe app allows a maximum of %ld BFFs.\n\nYou can delete a person to make room for a new person.",
+//            @"\nThe app allows a maximum of %ld BFFs.\n\nYou have to delete a person to make room for a new person.  There is no undo.",
+            (long)gbl_MAX_persons
+        ];
+
+        UIAlertController* myalert = [UIAlertController alertControllerWithTitle: @"Too Many People"
+                                                                       message: tooManyPeopleMessage 
+                                                                preferredStyle: UIAlertControllerStyleAlert  ];
+         
+        UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                            style: UIAlertActionStyleDefault
+                                                          handler: ^(UIAlertAction * action) {
+            NSLog(@"Ok button pressed");
+        } ];
+         
+        [myalert addAction:  okButton];
+
+        [self.navigationController presentViewController: myalert  animated: YES  completion: nil ];
+
+        return;
+    } // BEFORE adding person, check for      NSInteger gbl_MAX_persons;              // 200 max in app and max in group
+
+
+
+    // BEFORE adding group, check for      NSInteger gbl_MAX_groups;    
+    //
+    if (   gbl_arrayGrp.count >= gbl_MAX_groups                 // max in appdel.m
+        && [gbl_fromHomeCurrentEntity isEqualToString: @"group"]  )
+    {
+
+        // put up dialogue   hit max groups
+        //
+        NSString *tooManyGroupsMessage;
+
+        tooManyGroupsMessage =  [ NSString stringWithFormat:
+            @"\nThe app allows a maximum of %ld groups.",
+//            @"\nThe app allows a maximum of %ld groups.\n\nYou can delete a group to make room for a new group.",
+            (long)gbl_MAX_groups
+        ];
+
+        UIAlertController* myalert = [UIAlertController alertControllerWithTitle: @"Too Many Groups"
+                                                                       message: tooManyGroupsMessage 
+                                                                preferredStyle: UIAlertControllerStyleAlert  ];
+         
+        UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                            style: UIAlertActionStyleDefault
+                                                          handler: ^(UIAlertAction * action) {
+            NSLog(@"Ok button pressed");
+        } ];
+         
+        [myalert addAction:  okButton];
+
+        [self.navigationController presentViewController: myalert  animated: YES  completion: nil ];
+
+        return;
+    } // BEFORE adding group, check for      NSInteger gbl_MAX_groups;
+
+
+
+
 
         self.tableView.userInteractionEnabled = YES;   // YES in addButtonAction
-
   NSLog(@"self.tableView.userInteractionEnabled in HOME navAddButtonAction=[%d]",self.tableView.userInteractionEnabled );
 
 
@@ -2673,6 +2820,17 @@ tn();
                 [sub_view removeFromSuperview ];
             }
         }
+
+
+        gbl_justPressedAddButtonForNewPerson = 0;
+  NSLog(@"home gbl_justPressedAddButtonForNewPerson SET to 0=[%ld]",(long)gbl_justPressedAddButtonForNewPerson );
+
+        if ([gbl_fromHomeCurrentEntity isEqualToString:@"person"])          
+        {
+  NSLog(@"home gbl_justPressedAddButtonForNewPerson SET to 1=[%ld]",(long)gbl_justPressedAddButtonForNewPerson );
+            gbl_justPressedAddButtonForNewPerson = 1;
+        }
+
 
         [self performSegueWithIdentifier:@"segueHomeToAddChange" sender:self]; //  
     });
@@ -3482,7 +3640,7 @@ tn();
 
 
 nbn(376);
-    MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
+    MAMB09AppDelegate *myappDelegate= (MAMB09AppDelegate *) [[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
     [myappDelegate deleteAll_MAMB_files_fromInbox ]; // del from Inbox dir all "*.mamb"        // clear out for test
 
 
@@ -3867,7 +4025,7 @@ nbn(156);
 tn();
   NSLog(@"in  doStuffOnSignificantTimeChange  !!");
 
-    MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global methods in appDelegate.m
+    MAMB09AppDelegate *myappDelegate= (MAMB09AppDelegate *) [[UIApplication sharedApplication] delegate]; // to access global methods in appDelegate.m
 
     [myappDelegate gcy ];  // get real current year  and m and d
 
@@ -4675,7 +4833,8 @@ nbn(335);
   NSLog(@"EDIT BUTTON 2   set title  done tab");
 
 
-//<.>
+//2016 jun remove share icon for share people/groups
+//
 //            // remove left app icon and replace  with share icon
 //            //
 //            UIBarButtonItem *shareButton  = [[UIBarButtonItem alloc]

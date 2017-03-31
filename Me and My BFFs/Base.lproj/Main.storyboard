@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="i8R-GB-Xla">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1217" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="i8R-GB-Xla">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--home Table View Controller-->
@@ -10,14 +13,14 @@
             <objects>
                 <tableViewController id="ayc-8Y-7x0" customClass="MAMB09_homeTableViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" restorationIdentifier="MyCell1" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="32" sectionHeaderHeight="22" sectionFooterHeight="22" id="3XP-nJ-qJg">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="524"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MyCell1" id="Loe-rs-xmp">
-                                <rect key="frame" x="0.0" y="86" width="320" height="32"/>
+                                <rect key="frame" x="0.0" y="22" width="375" height="32"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" contentMode="center" tableViewCell="Loe-rs-xmp" id="ffZ-Ex-r9U">
-                                    <rect key="frame" x="0.0" y="0.0" width="287" height="31"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="342" height="32"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -30,17 +33,17 @@
                     <extendedEdge key="edgesForExtendedLayout" top="YES"/>
                     <navigationItem key="navigationItem" id="DQv-UV-LF6">
                         <nil key="title"/>
-                        <barButtonItem key="leftBarButtonItem" image="B14EFA11-F5AD-4DD7-BEF2-85A059956AD6" id="d9Q-aF-H9x">
+                        <barButtonItem key="leftBarButtonItem" image="7306A543-4F9E-447A-862D-DF0C82A77B68" id="d9Q-aF-H9x">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" id="CBz-6B-dZ2">
                                 <rect key="frame" x="16" y="7" width="30" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="myicon" image="CFEB7562-C7D5-454A-BC2A-08BBBA1FD683">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                <state key="normal" title="myicon" image="4274B641-0F49-4D62-BE65-691739E724C6">
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                             </button>
                         </barButtonItem>
                         <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="qPG-Aj-tmX">
-                            <rect key="frame" x="96" y="7" width="128" height="30"/>
+                            <rect key="frame" x="123.5" y="7" width="128" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <segments>
                                 <segment title="Groups"/>
@@ -52,10 +55,10 @@
                         </segmentedControl>
                         <barButtonItem key="rightBarButtonItem" id="aZC-E9-FK6">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoDark" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" id="ttU-ch-qJI">
-                                <rect key="frame" x="282" y="11" width="22" height="22"/>
+                                <rect key="frame" x="337" y="11" width="22" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="pressedInfoButtonAction:" destination="ayc-8Y-7x0" eventType="touchUpInside" id="pCc-op-LQ3"/>
@@ -75,8 +78,6 @@
                         <segue destination="c6B-B7-05J" kind="push" identifier="segueHomeToReportList" id="FMb-AS-tJX"/>
                         <segue destination="lj1-OQ-gPo" kind="push" identifier="segueHomeToListMembers" id="HYE-Hx-QR6"/>
                         <segue destination="QgP-dY-i4R" kind="push" identifier="segueHomeToSelPerson" id="nxl-xA-9Hd"/>
-                        <segue destination="QiK-eJ-AqB" kind="push" identifier="segueHomeToSelShareEntity" id="AKd-Cn-LGm"/>
-                        <segue destination="dKf-cz-66H" kind="push" identifier="segueOpenUrlToConfirmImport" id="XKh-fg-9dl"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BbN-gl-Rsk" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -88,16 +89,16 @@
             <objects>
                 <tableViewController useStoryboardIdentifierAsRestorationIdentifier="YES" id="c6B-B7-05J" customClass="MAMB09_selectReportsTableViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="32" sectionHeaderHeight="22" sectionFooterHeight="22" id="HhR-Y2-1XS">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <color key="sectionIndexBackgroundColor" red="0.96862745100000003" green="0.92156862750000001" blue="0.81960784310000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="sectionIndexBackgroundColor" red="0.95935648679733276" green="0.90488797426223755" blue="0.77931118011474609" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SelReportsCellIDentifier" id="plf-5S-aI3">
-                                <rect key="frame" x="0.0" y="86" width="320" height="32"/>
+                                <rect key="frame" x="0.0" y="22" width="375" height="32"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" contentMode="center" tableViewCell="plf-5S-aI3" id="xbL-dN-bpH">
-                                    <rect key="frame" x="0.0" y="0.0" width="287" height="31"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="342" height="32"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -131,15 +132,15 @@
             <objects>
                 <tableViewController id="lj1-OQ-gPo" customClass="MAMB09_listMembersTableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="N24-mu-2Il">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ListPersonCellIdentifier" id="Axl-fK-PCj">
-                                <rect key="frame" x="0.0" y="92" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" contentMode="center" tableViewCell="Axl-fK-PCj" id="ygg-7s-oaC">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -152,10 +153,10 @@
                     <navigationItem key="navigationItem" id="Rub-Qg-LL7">
                         <barButtonItem key="rightBarButtonItem" id="kO4-WT-Cuk">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoDark" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" id="MO4-x0-tfP">
-                                <rect key="frame" x="282" y="11" width="22" height="22"/>
+                                <rect key="frame" x="337" y="11" width="22" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal">
-                                    <color key="titleShadowColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
                                     <segue destination="57M-pn-ueS" kind="push" identifier="segueListMembersToInfo" id="ufh-It-1Py"/>
@@ -170,22 +171,22 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dMG-AC-ldm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-13947" y="-10499"/>
+            <point key="canvasLocation" x="-14105" y="-10597"/>
         </scene>
         <!--sel New Members Table View Controller-->
         <scene sceneID="isd-i3-XVq">
             <objects>
                 <tableViewController id="UtY-yH-bzG" customClass="MAMB09_selNewMembersTableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="F8R-NZ-JhW">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SelNewPersonCellIdentifier" id="QoT-rH-R3M">
-                                <rect key="frame" x="0.0" y="92" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" contentMode="center" tableViewCell="QoT-rH-R3M" id="HW5-3u-Uaf">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -206,15 +207,15 @@
             <objects>
                 <tableViewController id="df3-AS-qCo" customClass="MAMB09_addChangeTableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="roA-eY-ilB">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AddChangeCellIDentifier" id="ANI-2a-yyC">
-                                <rect key="frame" x="0.0" y="92" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" contentMode="center" tableViewCell="ANI-2a-yyC" id="G4g-Rc-qm8">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -227,10 +228,10 @@
                     <navigationItem key="navigationItem" id="V6a-H8-3YP">
                         <barButtonItem key="rightBarButtonItem" id="ACf-yn-LBb">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoDark" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" id="NSm-ef-MBf">
-                                <rect key="frame" x="282" y="11" width="22" height="22"/>
+                                <rect key="frame" x="337" y="11" width="22" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
                                     <segue destination="57M-pn-ueS" kind="push" identifier="segueAddChangeToInfo" id="Ucz-jZ-n9K"/>
@@ -242,22 +243,22 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="J1h-M8-Ksg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-14419" y="-9432"/>
+            <point key="canvasLocation" x="-14427" y="-9172"/>
         </scene>
         <!--delete Members Table View Controller-->
         <scene sceneID="wYB-XR-p49">
             <objects>
                 <tableViewController id="oKz-sl-owD" customClass="MAMB09_deleteMembersTableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="OaZ-o4-m2h">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SelPersonToDeleteCellIdentifier" id="Li2-lC-u9I">
-                                <rect key="frame" x="0.0" y="92" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" contentMode="center" tableViewCell="Li2-lC-u9I" id="uUT-0h-toJ">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -271,7 +272,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qn9-v8-sLU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-13947" y="-9781"/>
+            <point key="canvasLocation" x="-13946" y="-9673"/>
         </scene>
         <!--view HTML file View Controller-->
         <scene sceneID="lzI-SK-WcE">
@@ -282,16 +283,17 @@
                         <viewControllerLayoutGuide type="bottom" id="S57-eI-Nlu"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="i4S-L4-eKP">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <webView contentMode="scaleToFill" fixedFrame="YES" scalesPageToFit="YES" allowsInlineMediaPlayback="NO" mediaPlaybackRequiresUserAction="NO" mediaPlaybackAllowsAirPlay="NO" keyboardDisplayRequiresUserAction="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V68-Cu-vhc">
                                 <rect key="frame" x="6" y="13" width="320" height="568"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <dataDetectorType key="dataDetectorTypes"/>
                             </webView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <navigationItem key="navigationItem" id="ow0-4f-nTr">
                         <barButtonItem key="rightBarButtonItem" id="6Jt-ez-AV4">
@@ -314,64 +316,6 @@
             </objects>
             <point key="canvasLocation" x="-10316" y="-13568"/>
         </scene>
-        <!--sel Share Entity Table View Controller-->
-        <scene sceneID="ivh-kX-RTn">
-            <objects>
-                <tableViewController id="QiK-eJ-AqB" customClass="MAMB09_selShareEntityTableViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="nDh-Mv-udu">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SelShareEntityCellIdentifier" id="2ol-OZ-AHn">
-                                <rect key="frame" x="0.0" y="92" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2ol-OZ-AHn" id="ZjR-7s-6kq">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="QiK-eJ-AqB" id="5mt-kp-DsX"/>
-                            <outlet property="delegate" destination="QiK-eJ-AqB" id="nTN-gm-RSj"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" id="QE6-XW-9CK"/>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="C1j-yc-cai" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-14469" y="-12781"/>
-        </scene>
-        <!--Table View Controller-->
-        <scene sceneID="Vww-Rt-saL">
-            <objects>
-                <tableViewController id="dKf-cz-66H" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="bNa-cI-aqG">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="confirmImportCellIdentifier" id="dPe-3R-oP1">
-                                <rect key="frame" x="0.0" y="92" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dPe-3R-oP1" id="YZU-fi-uTc">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="dKf-cz-66H" id="hOO-Vi-JxS"/>
-                            <outlet property="delegate" destination="dKf-cz-66H" id="c9S-c8-dZ2"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" id="LNJ-bF-GFA"/>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Vyf-95-aXO" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-14002" y="-12781"/>
-        </scene>
         <!--Navigation Controller-->
         <scene sceneID="K1K-qc-EtB">
             <objects>
@@ -383,7 +327,7 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="VvT-Bz-zTu">
-                        <rect key="frame" x="0.0" y="524" width="320" height="44"/>
+                        <rect key="frame" x="0.0" y="623" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </toolbar>
                     <connections>
@@ -392,7 +336,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="93J-88-KE9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-14817" y="-11682"/>
+            <point key="canvasLocation" x="-14428" y="-12658"/>
         </scene>
         <!--sel Year View Controller-->
         <scene sceneID="6mS-NX-yA1">
@@ -403,11 +347,12 @@
                         <viewControllerLayoutGuide type="bottom" id="Xd8-vH-jOP"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="4F6-lK-C1a">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <pickerView contentMode="top" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JIh-Y7-k8C">
                                 <rect key="frame" x="0.0" y="178" width="320" height="216"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <accessibility key="accessibilityConfiguration">
                                     <accessibilityTraits key="traits" playsSound="YES" updatesFrequently="YES"/>
                                 </accessibility>
@@ -418,13 +363,14 @@
                             </pickerView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0yE-gv-atJ">
                                 <rect key="frame" x="149" y="112" width="100" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <accessibility key="accessibilityConfiguration">
                                     <accessibilityTraits key="traits" none="YES"/>
                                 </accessibility>
                                 <attributedString key="attributedText">
                                     <fragment content=" ">
                                         <attributes>
-                                            <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <font key="NSFont" size="28" name="HelveticaNeue"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                         </attributes>
@@ -453,15 +399,15 @@
             <objects>
                 <tableViewController id="57M-pn-ueS" customClass="MAMB09_info_TableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="ec3-q4-SAg">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="view_info_CellIdentifier" id="cMu-4y-Ouv">
-                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="22" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" contentMode="center" tableViewCell="cMu-4y-Ouv" id="KTS-Bn-UgB">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -482,15 +428,15 @@
             <objects>
                 <tableViewController id="zcb-9t-6L7" customClass="MAMB09viewTBLRPTs_2_TableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="XVZ-Ik-4Pi">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="viewTBLRPTs_2_CellIdentifier" id="L67-9o-IcP">
-                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="22" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" contentMode="center" tableViewCell="L67-9o-IcP" id="bQJ-Ik-Pux">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -503,10 +449,10 @@
                     <navigationItem key="navigationItem" id="ZXQ-d1-g3C">
                         <barButtonItem key="rightBarButtonItem" id="kgd-ZQ-ttt">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoDark" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" id="Hmg-bz-NZk">
-                                <rect key="frame" x="282" y="11" width="22" height="22"/>
+                                <rect key="frame" x="337" y="11" width="22" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
                                     <segue destination="57M-pn-ueS" kind="push" identifier="segueTBLRP_2_toINFO" id="XlJ-P0-BVy"/>
@@ -524,22 +470,22 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yu6-wM-8Mt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-10704" y="-10740"/>
+            <point key="canvasLocation" x="-10570" y="-10500"/>
         </scene>
         <!--9viewTBLRP Ts1 Table View Controller-->
         <scene sceneID="yKm-ZE-xbO">
             <objects>
                 <tableViewController id="nge-7x-jff" customClass="MAMB09viewTBLRPTs_1_TableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="qBk-Qy-SFv">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="viewTBLRPTs_1_CellIdentifier" id="BCB-4h-22g">
-                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="22" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" contentMode="center" tableViewCell="BCB-4h-22g" id="Za0-Bh-6ej">
-                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="342" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -553,10 +499,10 @@
                         <nil key="title"/>
                         <barButtonItem key="rightBarButtonItem" id="Z8y-vs-hjD">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoDark" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" id="UPW-3u-QBY">
-                                <rect key="frame" x="282" y="11" width="22" height="22"/>
+                                <rect key="frame" x="337" y="11" width="22" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="infoButtonAction:" destination="nge-7x-jff" eventType="touchUpInside" id="tvB-Kb-fr9"/>
@@ -569,26 +515,27 @@
                         <outlet property="outletForViewTBLRPT1TableViewController" destination="qBk-Qy-SFv" id="NJu-ne-Khd"/>
                         <segue destination="6g1-oa-2u0" kind="push" identifier="segueTBLRPT1toSELRPT_B" id="Fmt-8G-0ia"/>
                         <segue destination="9OC-3u-Jhm" kind="push" identifier="segueTBLRPT1_toViewHTML" id="pER-Pc-lnw"/>
+                        <segue destination="zcb-9t-6L7" kind="push" identifier="segueTBLRPT1_toTBLRPT2" id="3I5-aF-r3n"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bfn-i9-F93" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-11697" y="-10740"/>
+            <point key="canvasLocation" x="-11698" y="-10805"/>
         </scene>
         <!--select ReportsB Table View Controller-->
         <scene sceneID="pLB-2B-Ijf">
             <objects>
                 <tableViewController id="6g1-oa-2u0" customClass="MAMB09_selectReports_B_TableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="wya-an-Haj">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="SelReports_B_CellIDentifier" id="MDZ-zr-ygU">
-                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="22" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" contentMode="center" tableViewCell="MDZ-zr-ygU" id="wjv-vY-BCO">
-                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="342" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -606,7 +553,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1Hk-s2-ydZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-11200" y="-10740"/>
+            <point key="canvasLocation" x="-11005" y="-11111"/>
         </scene>
         <!--sel Date View Controller2-->
         <scene sceneID="wXc-CE-aeI">
@@ -617,20 +564,22 @@
                         <viewControllerLayoutGuide type="bottom" id="KQm-0p-vIv"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="e40-pc-2MG">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <pickerView contentMode="TopLeft" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dy8-9A-phT">
                                 <rect key="frame" x="16" y="177" width="288" height="180"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </pickerView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U2q-xg-HuS">
                                 <rect key="frame" x="279" y="102" width="0.0" height="41"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="25"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <navigationItem key="navigationItem" id="4w0-a9-bQe"/>
                     <connections>
@@ -649,15 +598,15 @@
             <objects>
                 <tableViewController id="QgP-dY-i4R" customClass="MAMB09_selPersonViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="32" sectionHeaderHeight="22" sectionFooterHeight="22" id="kXh-JU-EjB">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="SelPersonCellIdentifier" id="la9-Lb-Lyi">
-                                <rect key="frame" x="0.0" y="86" width="320" height="32"/>
+                                <rect key="frame" x="0.0" y="22" width="375" height="32"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" contentMode="center" tableViewCell="la9-Lb-Lyi" id="m6o-Du-6yU">
-                                    <rect key="frame" x="0.0" y="0.0" width="287" height="31"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="342" height="32"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -679,7 +628,113 @@
         </scene>
     </scenes>
     <resources>
-        <image name="B14EFA11-F5AD-4DD7-BEF2-85A059956AD6" width="144" height="144">
+        <image name="4274B641-0F49-4D62-BE65-691739E724C6" width="29" height="29">
+            <mutableData key="keyedArchiveRepresentation">
+YnBsaXN0MDDUAQIDBAUGOjtYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBEW
+GxwgISgrLjQ3VSRudWxs1AkKCwwNDg8QViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBzV05TQ29sb3KA
+DBIAwAAAgAKACtISCRMVWk5TLm9iamVjdHOhFIADgAnSEgkXGqIYGYAEgAWACBAA0h0JHh9fEBROU1RJ
+RkZSZXByZXNlbnRhdGlvboAGgAdPERWSTU0AKgAADSz9/f3+/f39/v////7p6en+oqKi/k1NTf4AAAD+
+CgoK/gMDA/4AAAD+AQEB/gAAAP4AAAD+AAEB/gEBAf4BAQH+AAEB/gAAAf4BAQH+AQEB/gAAAP4KCgz+
+AAAA/jw8PP6Tk5L+39/f/v////7+/v7+/Pv7/v39/f7/////ysrK/jo6Ov4AAAD+AAAA/gsMDP8AAAD/
+AAAA/gEBAf8AAAD+AAAA/wAAAP4BAQH+AQEB/gEBAf4BAQH+AgIB/wAAAf4AAAD/BwcB/hISAP4fHwz+
+AAAA/gAAAP4dHRT/tra0/v/////9/f3+/////s7Ozv4AAAD+AAAA/iAgIP4SEhL+AAAA/gICAv4BAQH+
+AQEB/gABAf4CAQH+AgEB/gABAf4AAAH+AAEB/gABAf4AAAH+CAgB/hUVAf4TEwH+AAAC/gAAAP4AAA7+
+AAAg/gAAAP4AAAD+tra1/v////7v7+/+SkpK/gAAAP4kJCT+AAAA/gAAAP4CAgL+AAAA/gAAAP4BAQH+
+AgEB/gAAAP4AAQD+BwEB/gwCAf4LAAH+BQAB/hUXAf4UFQH+AAAA/gAAAP45OQP+jIwI/ry8Cf7Q0AD+
+ubkh/jIyAP4AAAj+4ODe/rW1tf4AAAD+HBwc/gAAAP4DAwP+AgIC/gAAAP4AAQH+AgEB/gAAAf4AAQH+
+EQEB/hkBAf4PAAD+AAAA/gABAP4RCQD+AAAA/gAAAP5GRgT+q6sJ/urqDP7//w7+//8O/v//D/7//wb+
+u7si/gAAAP6QkI/+enp6/gAAAP4aGhr+AAAA/gMDA/4AAAD+AAEB/gMBAf4AAQH+CAEB/hgBAf4AAAD+
+AAAA/gABAf4ABAL+AAkC/gAAAf40RgP+o6YJ/u7tDf7//w7+//8O/v/+Df7+/g3++/sN/v//Dv7OzhD+
+AAAA/i8vMv5KSkr+AAAA/xEREf4AAAD+AQEB/gABAf4DAQH/AAEB/w0BAf4NAAD/AAAA/h8DA/9wBgX+
+lgUG/qINBv6dAAb+hgAF/sShCv///w7+//8O////Dv7//w7+//8O/v79Df7+/g3+//8O/6SkBv4AAAr/
+EBAA/jY2Nv4AAAD/DAwM/gAAAP4BAQH+AgEB/gAAAP8NAQH/AAAA/gACAf9zCAb+yAkI/+EHB/7iBgf+
+3AcH/tUFB/7NDgb+xCAG/9VuCf7Gogr/dX0H/pOUCP709A3+//8N/v//Dv7w7w3/SkoF/gAAAP8bGwv+
+OTk5/gAAAP4NDQ3+AAAA/gEBAf4AAQH+CgEB/gkAAP4AAAH+kwgH/u8JCP71Bgj+7AYH/uUGB/7eBgf+
+1QcH/s0FBv7AAAX+vAAE/sMABv5rAAX+AAAB/uPjDP7//w7+//8O/qKiCf4AAAD+GBgC/gAAAP44ODj+
+AAAA/w0NDf8AAAD+AgEB/gABAf4VAAH/AAAA/4EHBv73AAn//QAI/vcACP/3AAj+8AYI/ucGB/7eBgf+
+1AYG/soUBv+/Fwb+ySAG/8wAB/6qcQn+8vgN////Dv7R0Qv+AAAB/wAAAP4REQH/AAAB/zc3N/4AAAD+
+DQ0N/gAAAP4AAQH+EwEB/gAAAP42BwT+3wAI/v8RCf76TAn+/U8K/vwcCf74AAj+7QkI/uIHB/7YBwf+
+zgAG/sMQBv6/CQX+ywAG/vLFDP7//w7+7OoM/ktLBP4AAAD+GBgB/gAAAf4DAwH+ODg4/gAAAP8NDQ3+
+AAAA/gABAf4aAgH+AAAA/44KBv/5AAj++iAJ//xwCv77bwr//CwJ/voACP7vCgj+5QcH/toFB/7PAwb/
+xR4G/roABP/ZiAn+//8O/vT5Df5tbAb+AAAA/hoaAv8AAAD+AQEB/wAAAf44ODj+AAAA/g0NDf4AAAD+
+CgMB/gUAAP4ADwL+uRAH/vgACP76Ewn+/EAJ/vxDCf78HAn++AAI/u4JCP7kBgf+2QAH/tEhBv7AAAX+
+yVYH/vr3Df7//w7+u4EJ/gAAAP4JGAD+DwYB/gAAAP4CAgH+AQEB/jc3N/4AAAD+DQ0N/gAAAP4OAAH+
+ABEA/gwAAv7DAAf+8gwI/vQACP77AAn++wAJ/voACf7zBwj+6gQI/uEFB/7ZIQf+ygAG/sg6Bv726g3+
+//8O/uyKCf69AAf+IBYD/gAKAP4RAAH+AAMB/gIAAf4BAQH+Nzc3/gAAAP4NDQ3+AAAA/hsUAv4AAAD+
+MCMD/sszCP7oAAf+6wgI/vIICP7zBwj+8AcI/usACP7kDgf+3R8H/tAABv7OOwf+9ucM/v//Dv7chwn+
+3AAG/sYUCP4jDgP+AAAA/hMDAf4AAAH+AgEB/gEBAf44ODj+AAAA/goJDf4TFAD+AAAA/gAAAP7CxAv+
+5IQK/tYABv7iFgf+5gkH/ucCB/7mAwf+4xgH/t0TB/7RAAb+1VkI/vrvDf7+/w3+1ngI/skABf7kFgf+
+uxAH/gAAAv4AAwD+EAAB/gABAP4BAAD+AQEB/jg4OP4AAAD+EhIN/gsLAP4AAAD+rKoJ/v//Dv7qsAv+
+zQAG/tcPB/7bBwf+3RQH/t0cB/7XAAb+0AAG/t6DCf7//Q3++vQN/s9lB/7FAAX+1BgG/ucOB/6bAAb+
+AAMA/hMAAP4FAQH+AAAA/gEBAf4BAQH+ODg3/gAAAP4cHA3+AAAA/oiIB/7//w7+//8O/sayC/69AAb+
+0R0G/tEhB/7RAAb+zQAG/tAkBv7qtwv+//8O/vHeDP7HRgb+xAAF/tAcB/7dCwf+3gII/lcGBf4AAAD+
+GAEB/gABAf4CAQH+AQEB/gEBAf43Nzf+AAAA/wAADP5MTAL+7u4N/v//Dv739g3/VmAF/3YABf7GAAX/
+vgAE/sUABv/ahgn++OoM/v//Dv7kuwv+wQUF/sMABf/PHQf+1QcG/+sECP6hCAf+AAEA/hAAAP4GAQH+
+AAEB/wEBAf4BAQH/AQEB/jo6OP4AAAD+AAAM/sPDCf7//w7+//8N/vn4Df5rbwX+HQAD/rNYCP7clgn+
+79sM/v//Dv77+Q3+1ogI/r4ABf7HAAb+0BwG/tkABv7rBgj+uQgI/hUDA/4AAAD+EQEB/gABAf4CAQH+
+AAAA/gEBAf4AAAD+QEA4/gAAAP5lZQ7++fkN/v//Dv79/Q3+//8N/vHxDf7f4Qz+8/MN/v//Dv7//w7+
+9cwL/tZJB/7MAAX+1Q0G/tsXB/7iAAf+4QgI/qcHB/4dBAP+AAAA/hQBAf4AAQH+AwEB/gABAf4BAQH+
+AAAA/gEBAf49PTb+AAAA/6enD/7//w3+/f0N/v38Df77+w3///8O////Dv7//w7/5egM/peJCP+ZAAb+
+vQAG/swaB/7OEAf+xgAH/qoIB/9mBQX+AAIB/wAAAP4TAQH+AAEB/gIBAf4AAQH+AAAA/wICAv4AAAD/
+CgoK/lZWUv4AAAD+sLAV/v//Df7//w7+//8O/v//Dv7//w7+6ekM/qalCf41MgP+AAAA/gAAAf4qGAP+
+QwUE/kMABP4mBQP+AAIB/gAAAP4IAAD+EQEB/gABAf4CAQH+AQEB/gAAAP4CAgL+AAAA/gsLC/4AAAD+
+h4eE/gAAAP5bWx3+3NwH/vn5Dv7v7w3+09ML/pmZCP5AQAP+AAAA/gAAAP4dHAL+Dg0A/gAAAP4AAAD+
+AAAA/gAAAP4PAAD+FwEB/gkBAf4AAQH+AgAA/gEBAf4AAAD+AgIC/gAAAP4QEBD+AAAA/kJCQv6+vr7+
+AAAA/wAAGP4oKAT+W1sB/klJBv4AAAH/AAAA/wAAAP4WFgL/FxcC/gAAAf8GAAH+EgMB/hYBAf4WAQH+
+EgEB/gYBAf8AAQH+AAEB/wIBAf4BAQH+AQEB/gMDA/4DAwP+AAAA/yAgIP4AAAD/nJyc/vb29v5iYmL+
+AAAA/hgYJv4AAAD+AAAA/gAAAP4VFQD+FxcA/gQEAP4AAAD+AgIA/gAAAP4AAAD+AAAA/gAAAP4AAAD+
+AAAA/gAAAP4AAAD+AAAA/gAAAP4AAAD+AAAA/gAAAP4jIyP+AAAA/i8uLv7n5+f+/////t7e3v4zMzP+
+AAAA/iMjGf4kJBz+GBgQ/gwMCf4GBgr+CQkK/goKCv4KCgr+CgoK/goKCv4KCgr+CgoK/goKCv4KCgr+
+CgoK/goKCv4KCgr+CQkJ/g4ODv4ZGRn+Hh4e/gAAAP4AAAD+xsbG/v////78/Pz+/////93d3f5hYWH+
+AAAA/gAAAP4AAAD/AAAA/wAAAP4AAAD/AAAA/gAAAP8AAAD+AAAA/gAAAP4AAAD+AAAA/gAAAP8AAAD+
+AAAA/wAAAP4AAAD+AAAA/gAAAP4AAAD+QEBA/8rKyv7//////Pz8/v39/f78/Pz+/////vb29v69vLz+
+gICA/khISP4pKSn+LCws/isrK/4rKyv+LCws/isrK/4rKyv+Kysr/isrK/4sLCz+Kysr/isrK/4rKyv+
+LCws/ikpKf4+Pj7+c3Nz/rCwsP7t7e3+/////v39/f78/Pz+AA4BAAADAAAAAQAdAAABAQADAAAAAQAd
+AAABAgADAAAABAAADdoBAwADAAAAAQABAAABBgADAAAAAQACAAABEQAEAAAAAQAAAAgBEgADAAAAAQAB
+AAABFQADAAAAAQAEAAABFgADAAAAAQAdAAABFwAEAAAAAQAADSQBHAADAAAAAQABAAABUgADAAAAAQAC
+AAABUwADAAAABAAADeKHcwAHAAAHqAAADeoAAAAAAAgACAAIAAgAAQABAAEAAQAAB6hhcHBsAiAAAG1u
+dHJSR0IgWFlaIAfZAAIAGQALABoAC2Fjc3BBUFBMAAAAAGFwcGwAAAAAAAAAAAAAAAAAAAAAAAD21gAB
+AAAAANMtYXBwbAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC2Rl
+c2MAAAEIAAAAb2RzY20AAAF4AAAFbGNwcnQAAAbkAAAAOHd0cHQAAAccAAAAFHJYWVoAAAcwAAAAFGdY
+WVoAAAdEAAAAFGJYWVoAAAdYAAAAFHJUUkMAAAdsAAAADmNoYWQAAAd8AAAALGJUUkMAAAdsAAAADmdU
+UkMAAAdsAAAADmRlc2MAAAAAAAAAFEdlbmVyaWMgUkdCIFByb2ZpbGUAAAAAAAAAAAAAABRHZW5lcmlj
+IFJHQiBQcm9maWxlAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AABtbHVjAAAAAAAAAB4AAAAMc2tTSwAAACgAAAF4aHJIUgAAACgAAAGgY2FFUwAAACQAAAHIcHRCUgAA
+ACYAAAHsdWtVQQAAACoAAAISZnJGVQAAACgAAAI8emhUVwAAABYAAAJkaXRJVAAAACgAAAJ6bmJOTwAA
+ACYAAAKia29LUgAAABYAAALIY3NDWgAAACIAAALeaGVJTAAAAB4AAAMAZGVERQAAACwAAAMeaHVIVQAA
+ACgAAANKc3ZTRQAAACYAAAKiemhDTgAAABYAAANyamFKUAAAABoAAAOIcm9STwAAACQAAAOiZWxHUgAA
+ACIAAAPGcHRQTwAAACYAAAPobmxOTAAAACgAAAQOZXNFUwAAACYAAAPodGhUSAAAACQAAAQ2dHJUUgAA
+ACIAAARaZmlGSQAAACgAAAR8cGxQTAAAACwAAASkcnVSVQAAACIAAATQYXJFRwAAACYAAATyZW5VUwAA
+ACYAAAUYZGFESwAAAC4AAAU+AFYBYQBlAG8AYgBlAGMAbgD9ACAAUgBHAEIAIABwAHIAbwBmAGkAbABH
+AGUAbgBlAHIAaQENAGsAaQAgAFIARwBCACAAcAByAG8AZgBpAGwAUABlAHIAZgBpAGwAIABSAEcAQgAg
+AGcAZQBuAOgAcgBpAGMAUABlAHIAZgBpAGwAIABSAEcAQgAgAEcAZQBuAOkAcgBpAGMAbwQXBDAEMwQw
+BDsETAQ9BDgEOQAgBD8EQAQ+BEQEMAQ5BDsAIABSAEcAQgBQAHIAbwBmAGkAbAAgAGcA6QBuAOkAcgBp
+AHEAdQBlACAAUgBWAEKQGnUoACAAUgBHAEIAIIJyX2ljz4/wAFAAcgBvAGYAaQBsAG8AIABSAEcAQgAg
+AGcAZQBuAGUAcgBpAGMAbwBHAGUAbgBlAHIAaQBzAGsAIABSAEcAQgAtAHAAcgBvAGYAaQBsx3y8GAAg
+AFIARwBCACDVBLhc0wzHfABPAGIAZQBjAG4A/QAgAFIARwBCACAAcAByAG8AZgBpAGwF5AXoBdUF5AXZ
+BdwAIABSAEcAQgAgBdsF3AXcBdkAQQBsAGwAZwBlAG0AZQBpAG4AZQBzACAAUgBHAEIALQBQAHIAbwBm
+AGkAbADBAGwAdABhAGwA4QBuAG8AcwAgAFIARwBCACAAcAByAG8AZgBpAGxmbpAaACAAUgBHAEIAIGPP
+j/Blh072TgCCLAAgAFIARwBCACAw1zDtMNUwoTCkMOsAUAByAG8AZgBpAGwAIABSAEcAQgAgAGcAZQBu
+AGUAcgBpAGMDkwO1A70DuQO6A8wAIAPAA8EDvwPGA68DuwAgAFIARwBCAFAAZQByAGYAaQBsACAAUgBH
+AEIAIABnAGUAbgDpAHIAaQBjAG8AQQBsAGcAZQBtAGUAZQBuACAAUgBHAEIALQBwAHIAbwBmAGkAZQBs
+DkIOGw4jDkQOHw4lDkwAIABSAEcAQgAgDhcOMQ5IDicORA4bAEcAZQBuAGUAbAAgAFIARwBCACAAUABy
+AG8AZgBpAGwAaQBZAGwAZQBpAG4AZQBuACAAUgBHAEIALQBwAHIAbwBmAGkAaQBsAGkAVQBuAGkAdwBl
+AHIAcwBhAGwAbgB5ACAAcAByAG8AZgBpAGwAIABSAEcAQgQeBDEESQQ4BDkAIAQ/BEAEPgREBDgEOwRM
+ACAAUgBHAEIGRQZEBkEAIAYqBjkGMQZKBkEAIABSAEcAQgAgBicGRAY5BicGRQBHAGUAbgBlAHIAaQBj
+ACAAUgBHAEIAIABQAHIAbwBmAGkAbABlAEcAZQBuAGUAcgBlAGwAIABSAEcAQgAtAGIAZQBzAGsAcgBp
+AHYAZQBsAHMAZXRleHQAAAAAQ29weXJpZ2h0IDIwMDcgQXBwbGUgSW5jLiwgYWxsIHJpZ2h0cyByZXNl
+cnZlZC4AWFlaIAAAAAAAAPNSAAEAAAABFs9YWVogAAAAAAAAdE0AAD3uAAAD0FhZWiAAAAAAAABadQAA
+rHMAABc0WFlaIAAAAAAAACgaAAAVnwAAuDZjdXJ2AAAAAAAAAAEBzQAAc2YzMgAAAAAAAQxCAAAF3v//
+8yYAAAeSAAD9kf//+6L///2jAAAD3AAAwGzSIiMkJVokY2xhc3NuYW1lWCRjbGFzc2VzXxAQTlNCaXRt
+YXBJbWFnZVJlcKMkJidaTlNJbWFnZVJlcFhOU09iamVjdNIiIykqV05TQXJyYXmiKSfSIiMsLV5OU011
+dGFibGVBcnJheaMsKSfTLzAJMTIzV05TV2hpdGVcTlNDb2xvclNwYWNlRDAgMAAQA4AL0iIjNTZXTlND
+b2xvcqI1J9IiIzg5V05TSW1hZ2WiOCdfEA9OU0tleWVkQXJjaGl2ZXLRPD1Ucm9vdIABAAgAEQAaACMA
+LQAyADcARQBLAFQAWwBoAG8AdwB5AH4AgACCAIcAkgCUAJYAmACdAKAAogCkAKYAqACtAMQAxgDIFl4W
+YxZuFncWihaOFpkWohanFq8Wsha3FsYWyhbRFtkW5hbrFu0W7xb0FvwW/xcEFwwXDxchFyQXKQAAAAAA
+AAIBAAAAAAAAAD4AAAAAAAAAAAAAAAAAABcrA
+</mutableData>
+        </image>
+        <image name="7306A543-4F9E-447A-862D-DF0C82A77B68" width="144" height="144">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGOjtYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBEW
 GxwgISgrLjQ3VSRudWxs1AkKCwwNDg8QViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBzV05TQ29sb3KA
@@ -2113,117 +2168,17 @@ hQABTY0AAU2QAAFNlQABTaQAAU2oAAFNrwABTbcAAU3EAAFNyQABTcsAAU3NAAFN0gABTdoAAU3dAAFN
 4gABTeoAAU3tAAFN/wABTgIAAU4HAAAAAAAABAEAAAAAAAAAPgAAAAAAAAAAAAAAAAABTgk
 </mutableData>
         </image>
-        <image name="CFEB7562-C7D5-454A-BC2A-08BBBA1FD683" width="29" height="29">
-            <mutableData key="keyedArchiveRepresentation">
-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
-ACYAAAUYZGFESwAAAC4AAAU+AFYBYQBlAG8AYgBlAGMAbgD9ACAAUgBHAEIAIABwAHIAbwBmAGkAbABH
-AGUAbgBlAHIAaQENAGsAaQAgAFIARwBCACAAcAByAG8AZgBpAGwAUABlAHIAZgBpAGwAIABSAEcAQgAg
-AGcAZQBuAOgAcgBpAGMAUABlAHIAZgBpAGwAIABSAEcAQgAgAEcAZQBuAOkAcgBpAGMAbwQXBDAEMwQw
-BDsETAQ9BDgEOQAgBD8EQAQ+BEQEMAQ5BDsAIABSAEcAQgBQAHIAbwBmAGkAbAAgAGcA6QBuAOkAcgBp
-AHEAdQBlACAAUgBWAEKQGnUoACAAUgBHAEIAIIJyX2ljz4/wAFAAcgBvAGYAaQBsAG8AIABSAEcAQgAg
-AGcAZQBuAGUAcgBpAGMAbwBHAGUAbgBlAHIAaQBzAGsAIABSAEcAQgAtAHAAcgBvAGYAaQBsx3y8GAAg
-AFIARwBCACDVBLhc0wzHfABPAGIAZQBjAG4A/QAgAFIARwBCACAAcAByAG8AZgBpAGwF5AXoBdUF5AXZ
-BdwAIABSAEcAQgAgBdsF3AXcBdkAQQBsAGwAZwBlAG0AZQBpAG4AZQBzACAAUgBHAEIALQBQAHIAbwBm
-AGkAbADBAGwAdABhAGwA4QBuAG8AcwAgAFIARwBCACAAcAByAG8AZgBpAGxmbpAaACAAUgBHAEIAIGPP
-j/Blh072TgCCLAAgAFIARwBCACAw1zDtMNUwoTCkMOsAUAByAG8AZgBpAGwAIABSAEcAQgAgAGcAZQBu
-AGUAcgBpAGMDkwO1A70DuQO6A8wAIAPAA8EDvwPGA68DuwAgAFIARwBCAFAAZQByAGYAaQBsACAAUgBH
-AEIAIABnAGUAbgDpAHIAaQBjAG8AQQBsAGcAZQBtAGUAZQBuACAAUgBHAEIALQBwAHIAbwBmAGkAZQBs
-DkIOGw4jDkQOHw4lDkwAIABSAEcAQgAgDhcOMQ5IDicORA4bAEcAZQBuAGUAbAAgAFIARwBCACAAUABy
-AG8AZgBpAGwAaQBZAGwAZQBpAG4AZQBuACAAUgBHAEIALQBwAHIAbwBmAGkAaQBsAGkAVQBuAGkAdwBl
-AHIAcwBhAGwAbgB5ACAAcAByAG8AZgBpAGwAIABSAEcAQgQeBDEESQQ4BDkAIAQ/BEAEPgREBDgEOwRM
-ACAAUgBHAEIGRQZEBkEAIAYqBjkGMQZKBkEAIABSAEcAQgAgBicGRAY5BicGRQBHAGUAbgBlAHIAaQBj
-ACAAUgBHAEIAIABQAHIAbwBmAGkAbABlAEcAZQBuAGUAcgBlAGwAIABSAEcAQgAtAGIAZQBzAGsAcgBp
-AHYAZQBsAHMAZXRleHQAAAAAQ29weXJpZ2h0IDIwMDcgQXBwbGUgSW5jLiwgYWxsIHJpZ2h0cyByZXNl
-cnZlZC4AWFlaIAAAAAAAAPNSAAEAAAABFs9YWVogAAAAAAAAdE0AAD3uAAAD0FhZWiAAAAAAAABadQAA
-rHMAABc0WFlaIAAAAAAAACgaAAAVnwAAuDZjdXJ2AAAAAAAAAAEBzQAAc2YzMgAAAAAAAQxCAAAF3v//
-8yYAAAeSAAD9kf//+6L///2jAAAD3AAAwGzSIiMkJVokY2xhc3NuYW1lWCRjbGFzc2VzXxAQTlNCaXRt
-YXBJbWFnZVJlcKMkJidaTlNJbWFnZVJlcFhOU09iamVjdNIiIykqV05TQXJyYXmiKSfSIiMsLV5OU011
-dGFibGVBcnJheaMsKSfTLzAJMTIzV05TV2hpdGVcTlNDb2xvclNwYWNlRDAgMAAQA4AL0iIjNTZXTlND
-b2xvcqI1J9IiIzg5V05TSW1hZ2WiOCdfEA9OU0tleWVkQXJjaGl2ZXLRPD1Ucm9vdIABAAgAEQAaACMA
-LQAyADcARQBLAFQAWwBoAG8AdwB5AH4AgACCAIcAkgCUAJYAmACdAKAAogCkAKYAqACtAMQAxgDIFl4W
-YxZuFncWihaOFpkWohanFq8Wsha3FsYWyhbRFtkW5hbrFu0W7xb0FvwW/xcEFwwXDxchFyQXKQAAAAAA
-AAIBAAAAAAAAAD4AAAAAAAAAAAAAAAAAABcrA
-</mutableData>
-        </image>
     </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4_7.fullscreen"/>
+    </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="nxl-xA-9Hd"/>
-        <segue reference="0US-NI-9lF"/>
         <segue reference="2Rt-iZ-59y"/>
+        <segue reference="3I5-aF-r3n"/>
         <segue reference="pER-Pc-lnw"/>
+        <segue reference="Ucz-jZ-n9K"/>
     </inferredMetricsTieBreakers>
 </document>
