@@ -36,6 +36,17 @@
 @end
 
 
+
+
+// use these globals to put up the right help file / info screen
+//
+//                [gbl_currentMenuPlusReportCode isEqualToString: @"HOME"        ]  
+//             && [gbl_homeUseMODE               isEqualToString: @"report mode" ]
+//             && [gbl_homeEditingState          isEqualToString: @"add"         ]  // home screen in brown report mode and "+" hit
+
+
+
+
 NSString *myMostTitle; // for Most ... reports
 NSString *myMostWhat;  // like "Passionate"
 NSString *myBestTitle; // for Best ... reports

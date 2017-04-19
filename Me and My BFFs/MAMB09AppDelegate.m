@@ -84,7 +84,8 @@
 #define KEY_LAST_ENTITY_STR  @"myLastEntityStr"
 
 //#define DEFAULT_LAST_ENTITY  @"person|~Sophia|group|~Swim Team"    // for test  (testing has "~Anya 56789..." , not "~Anya"
-#define DEFAULT_LAST_ENTITY  @"person|~Abigail 012345|group|~Swim Team|"    // for test  (testing has "~Anya 56789..." , not "~Anya"
+//#define DEFAULT_LAST_ENTITY  @"person|~Abigail 012345|group|~Swim Team|"    // for test  (testing has "~Anya 56789..." , not "~Anya"
+#define DEFAULT_LAST_ENTITY  @"person|~Abigail|group|~Swim Team|"    // for test  (testing has "~Anya 56789..." , not "~Anya"
 
 
 //- (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window  // iOS 6
@@ -130,8 +131,6 @@
 
 //    gbl_cy_apl              = @"9999";  // inited now in appdel didFinishLaunchingWithOptions
 //    gbl_cy_goo              = @"9999";
-//    gbl_cy_session_startup  = @"9999";  // format "20nn"  cy gotten from apl this session
-//    gbl_cy_currentAllPeople = @"9999";  // format "20nn"  cy gotten from grp allpeople
 //    gbl_cy_apl              = nil;    // inited now in appdel didFinishLaunchingWithOptions
 //    gbl_cy_goo              = nil;  
     gbl_cy_currentAllPeople = nil;    // format "20nn"  cy gotten from grp allpeople
@@ -488,7 +487,10 @@
 
 
      gbl_reallyLightGray = [UIColor colorWithRed:240.0/255.0 green:240.0/255.0 blue:240.0/255.0 alpha:1.0]; 
-     //  DI  Disclosure Indicator  colors
+
+
+
+     //  DI =  Disclosure Indicator  colors
      //
 //     gbl_colorDIfor_home = [UIColor colorWithRed:064.0/255.0 green:064.0/255.0 blue:064.0/255.0 alpha:1.0]; // gray
 //     gbl_colorDIfor_home = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0]; // gray
@@ -870,7 +872,7 @@
     gbl_num_yrs_past_current_yr = 1;    // for (NSInteger pickyr = gbl_earliestYear; pickyr <=  gbl_currentYearInt + gbl_num_yrs_past_current_yr; pickyr++) x  // only allow to go to next calendar year
 
 
-    gbl_num_yrs_past_current_yr = 12;  // for test
+//    gbl_num_yrs_past_current_yr = 12;  // for test
 
 
 
@@ -878,6 +880,19 @@
     
     gbl_MAX_groups          =  50;   // max in app 
 
+
+
+
+
+
+// ---------------------------------------------------------------------------
+//            Dunbar's Number  ~  150
+// ---------------------------------------------------------------------------
+// “Dunbar’s number is a theoretical cognitive limit to the number of people
+// with whom one can maintain stable social relationships.
+// These are relationships in which an individual knows who each person is,
+// and how each person relates to every other person." 
+// ---------------------------------------------------------------------------
     // for C max  see  
     //   grpdoc.c    MAX_PERSONS_IN_GROUP
     //   gtphtm.c    MAX_PERSONS_IN_GROUP
@@ -886,6 +901,9 @@
 //    gbl_MAX_persons         = 250;   // max in app 
 //    gbl_MAX_personsInGroup  = 250;   // max in a Group
     gbl_MAX_persons         = 200;   // max in app 
+
+
+
 
 
 //<.>
@@ -1228,8 +1246,10 @@
 
 
 //  new cities 
-      @"~Abigail 012345|8|21|1994|1|20|0|Los Angeles|California|United States||",
-      @"~Aiden 89012345|8|4|1991|10|30|1|New York City|New York|United States||",
+//      @"~Abigail 012345|8|21|1994|1|20|0|Los Angeles|California|United States||",
+//      @"~Aiden 89012345|8|4|1991|10|30|1|New York City|New York|United States||",
+      @"~Abigail|8|21|1994|1|20|0|Los Angeles|California|United States||",
+      @"~Aiden|8|4|1991|10|30|1|New York City|New York|United States||",
       @"~Anya|10|19|1990|8|20|0|Austin|Texas|United States||",
       @"~Ava|2|3|1992|8|10|0|Hamburg|Pennsylvania|United States||",
       @"~Brother|11|6|1986|8|1|1|Salt Lake City|Utah|United States||",
@@ -1246,8 +1266,9 @@
       @"~Mother|3|12|1965|10|45|0|Washington|District of Columbia|United States||",
       @"~Noah|12|19|1994|11|4|0|Sacramento|California|United States||",
       @"~Olivia|4|13|1994|12|53|1|Hong Kong|Hong Kong|United States||",
-      @"~Sister1|2|29|1988|12|30|1|Vancouver|British Columbia|United States||",
-      @"~Sister2|2|13|1990|3|35|0|Columbia|South Carolina|United States||",
+//      @"~Sister1|2|29|1988|12|30|1|Vancouver|British Columbia|United States||",
+//      @"~Sister2|2|13|1990|3|35|0|Columbia|South Carolina|United States||",
+      @"~Sister|2|29|1988|12|30|1|Vancouver|British Columbia|United States||",
       @"~Sophia|9|20|1991|4|0|0|Los Angeles|California|United States||",
 
 
@@ -1344,10 +1365,14 @@
       @"~My Family|~Father|",
       @"~My Family|~Grandma|",
       @"~My Family|~Mother|",
-      @"~My Family|~Sister1|",
-      @"~My Family|~Sister2|",
-      @"~Swim Team|~Abigail 012345|",
-      @"~Swim Team|~Aiden 89012345|",
+//      @"~My Family|~Sister1|",
+//      @"~My Family|~Sister2|",
+      @"~My Family|~Sister|",
+//      @"~My Family|~Sister2|",
+//      @"~Swim Team|~Abigail 012345|",
+//      @"~Swim Team|~Aiden 89012345|",
+      @"~Swim Team|~Abigail|",
+      @"~Swim Team|~Aiden|",
       @"~Swim Team|~Anya|",
       @"~Swim Team|~Ava|",
       @"~Swim Team|~Elijah|",
@@ -1413,8 +1438,11 @@
 //      @"Mo||||||",
 //      @"Sister1 Lastnam||||||",
 //      @"Sis||||||",
-      @"~Abigail 012345||||||",
-      @"~Aiden 89012345||||||",
+
+//      @"~Abigail 012345||||||",
+//      @"~Aiden 89012345||||||",
+      @"~Abigail||||||",
+      @"~Aiden||||||",
       @"~Anya||||||",
       @"~Ava||||||",
       @"~Brother||||||",
@@ -1431,8 +1459,9 @@
       @"~Mother||||||",
       @"~Noah||||||",
       @"~Olivia||||||",
-      @"~Sister1||||||",
-      @"~Sister2||||||",
+//      @"~Sister1||||||",
+//      @"~Sister2||||||",
+      @"~Sister||||||",
       @"~Sophia||||||",
     ];
 
@@ -2745,7 +2774,7 @@ tn();
     if (numRecords <   2 )                                     return   6;  // 2 is MAGIC for the 2 example groups
 
 
-    // It shoould not be possible to start with num groups > max groups
+    // It should not be possible to start with num groups > max groups
     // because max groups is checked on every attempt to add a new group
     // AND  there is no import of groups
     // Because data is encrypted and such, you cannot jailbreak and add data directly to the data file.
@@ -3009,7 +3038,7 @@ tn();
 //  NSLog(@"idxToDel      =[%ld]",idxToDel);
 //  NSLog(@"(long)idxToDel=[%ld]",(long)idxToDel);
 
-            [gbl_arrayMem removeObjectAtIndex: idxToDel ];   // TODO      uncomment
+            [gbl_arrayMem removeObjectAtIndex: idxToDel ];   
 
 //      NSLog(@"deleted index=[%ld]", (long)idxToDel);
         }
@@ -4795,7 +4824,7 @@ trn(" XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 
 
-- (void) doBackupAll //  find the actual current year   from  date found in apl's response header:
+- (void) doBackupAll
 {
   NSLog(@"in doBackupAll");
 
@@ -5170,400 +5199,4 @@ trn(" XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //             NSLog(@"decoded string1=%@", str1);
 // 
 
-//  OLD OLD tries at Group WRITE
-// data is empty with this
-//     dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
-//         __block BOOL ret01 = [myGroupWriteable writeToURL:gbl_URLToGroup atomically:YES];
-//         if (!ret01)  NSLog(@"Error write to mambd2 \n  %@", [err01 localizedFailureReason]);
-//     });
-//
-// data is empty with this
-//    // This will ensure that your save operation has a fighting chance to successfully complete,
-//    // even if the app is interrupted.
-//    //
-//    // get background task identifier before you dispatch the save operation to the background
-//    UIApplication *application = [UIApplication sharedApplication];
-//    UIBackgroundTaskIdentifier __block task = [application beginBackgroundTaskWithExpirationHandler:^{
-//        if (task != UIBackgroundTaskInvalid) {
-//            [application endBackgroundTask:task];
-//            task = UIBackgroundTaskInvalid;
-//        }
-//    }];
-//    // now dispatch the save operation
-//    dispatch_async(dispatch_get_main_queue(),  ^{
-//        // do the save operation here
-//         BOOL ret01 = [myGroupWriteable writeToURL: gbl_URLToGroup atomically:YES];
-//         if (!ret01)  NSLog(@"Error write to mambd2 \n  %@", [err01 localizedFailureReason]);
-//
-//        // now tell the OS that you're done
-//        if (task != UIBackgroundTaskInvalid) {
-//            [application endBackgroundTask:task];
-//            task = UIBackgroundTaskInvalid;
-//        }
-//     });
-//
-
-// OLD OLD  WRITE PERSOn   (empty data)
-//     dispatch_async(dispatch_get_main_queue(), ^{                                
-//         __block BOOL ret01 = [myPersonWriteable writeToURL:URLToPerson atomically:YES];
-//         if (!ret01)  NSLog(@"Error write to mambd3 \n  %@", [err01 localizedFailureReason]);
-//     });
-//
-//
-//    // This will ensure that your save operation has a fighting chance to successfully complete,
-//    // even if the app is interrupted.
-//    //
-//    // get background task identifier before you dispatch the save operation to the background
-//    UIApplication *application = [UIApplication sharedApplication];
-//    UIBackgroundTaskIdentifier __block task = [application beginBackgroundTaskWithExpirationHandler:^{
-//        if (task != UIBackgroundTaskInvalid) {
-//            [application endBackgroundTask:task];
-//            task = UIBackgroundTaskInvalid;
-//        }
-//    }];
-//    // now dispatch the save operation
-//    dispatch_async(dispatch_get_main_queue(),  ^{
-//
-//        // do the save operation here
-//         BOOL ret01 = [myPersonWriteable writeToURL: gbl_URLToPerson atomically:YES];
-//         if (!ret01)  NSLog(@"Error write to mambd3 \n  %@", [err01 localizedFailureReason]);
-//
-//        // now tell the OS that you're done
-//        if (task != UIBackgroundTaskInvalid) {
-//            [application endBackgroundTask:task];
-//            task = UIBackgroundTaskInvalid;
-//        }
-//     });
-//
-
-
-//       dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
-//          [myLastEntityDataFil writeToURL:URLToLastEntity
-//                               atomically:YES ];
-//       });
-//
-
-//
-//    // lastGood are backups if reg files are somehow bad
-//    gbl_pathToGroupLastGood  = [gbl_appDocDirStr stringByAppendingPathComponent: @"mambGroupLastGood.txt"];
-//    gbl_pathToPersonLastGood = [gbl_appDocDirStr stringByAppendingPathComponent: @"mambPersonLastGood.txt"];
-//    gbl_pathToMemberLastGood = [gbl_appDocDirStr stringByAppendingPathComponent: @"mambMemberLastGood.txt"];
-//    gbl_URLToGroupLastGood   = [NSURL fileURLWithPath: gbl_pathToGroupLastGood isDirectory:NO];
-//    gbl_URLToPersonLastGood  = [NSURL fileURLWithPath: gbl_pathToPersonLastGood isDirectory:NO];
-//    gbl_URLToMemberLastGood  = [NSURL fileURLWithPath: gbl_pathToMemberLastGood isDirectory:NO];
-//
-
-// used to be at top
-//    NSInteger cnt1;  // do a *.count on these arrays to avoid unused variable warning
-//    // This is the initial example data in DB when app first starts.
-//    // This is NOT the ongoing data, which is in  data files.
-//    //
-//    //NSArray *arrayMAMBexampleGroup =   // field 1=name-of-group  field 2=locked-or-not
-//    NSArray *gbl_arrayExaGrp =   // field 1=name-of-group  field 2=locked-or-not
-//    @[
-//      @"~Swim Team||",
-//      @"~My Family||",
-//    ];
-//    cnt1 = gbl_arrayExaGrp.count;
-//    NSLog(@"cnt1=%ld",(long)cnt1);
-//
-//
-
-//    cnt1 = gbl_arrayExaPerRem.count;
-//
-
-    //    for (id s in arrayMAMBexampleGroup)       {NSLog(@"eltG: %@",s);}
-    //    for (id s in arrayMAMBexampleperson)      {NSLog(@"eltP: %@",s);}
-    //    for (id s in arrayMAMBexampleMember)      {NSLog(@"eltGM: %@",s);}
-    //
-    
-
-// old from read file   mambReadArrayFileWithDescription
-//    if ([entDesc isEqualToString:@"group"])        { myURLtoReadFrom = gbl_URLToGroup;    my_gbl_array = gbl_arrayGrp;    }
-//    if ([entDesc isEqualToString:@"person"])       { myURLtoReadFrom = gbl_URLToPerson;   my_gbl_array = gbl_arrayPer;    }
-//    if ([entDesc isEqualToString:@"member"])       { myURLtoReadFrom = gbl_URLToMember;   my_gbl_array = gbl_arrayMem;    }
-//    if ([entDesc isEqualToString:@"grpexample"])   { myURLtoReadFrom = gbl_URLToGroup;    my_gbl_array = gbl_arrayGrpExa; }
-//    if ([entDesc isEqualToString:@"perexample"])   { myURLtoReadFrom = gbl_URLToPerson;   my_gbl_array = gbl_arrayPerExa; }
-//    if ([entDesc isEqualToString:@"memexample"])   { myURLtoReadFrom = gbl_URLToMember;   my_gbl_array = gbl_arrayMemExa; }
-//    if ([entDesc isEqualToString:@"grpremember"])  { myURLtoReadFrom = gbl_URLToGrpRem;   my_gbl_array = gbl_arrayGrpRem; }
-//    if ([entDesc isEqualToString:@"perremember"])  { myURLtoReadFrom = gbl_URLToPerRem;   my_gbl_array = gbl_arrayPerRem; }
-//
-//NSMutableArray *myMutArr = (NSMutableArray *) myNSData;
-//    NSLog(@"myMutArr =%@",myMutArr );
-//
-//NSArray *myArr = (NSArray *) myNSData;
-//    NSLog(@"myArr =%@",myArr );
-//
-
-    //myUnarchived = [NSKeyedUnarchiver unarchiveObjectWithData: myNSData]; 
-    //myUnarchived = [NSKeyedUnarchiver unarchiveObjectWithData: myMutArr]; 
-//    myUnarchived = [NSKeyedUnarchiver unarchiveObjectWithData: myArr]; 
-    //myUnarchived = [NSKeyedUnarchiver unarchiveObjectWithData: (NSMutableData *) myNSData]; 
-//    myUnarchived = [NSKeyedUnarchiver unarchiveObjectWithData: (NSMutableArray *) myNSData]; 
-//
-//    if ([entDesc isEqualToString:@"examplegroup"])  { gbl_arrayExaGrp    = [[NSMutableArray alloc]initWithArray: (NSMutableArray*) myUnarchived]; }
-//    if ([entDesc isEqualToString:@"exampleperson"]) { gbl_arrayExaPer    = [[NSMutableArray alloc]initWithArray: (NSMutableArray*) myUnarchived]; }
-//    if ([entDesc isEqualToString:@"examplemember"]) { gbl_arrayExaMem    = [[NSMutableArray alloc]initWithArray: (NSMutableArray*) myUnarchived]; }
-//    if ([entDesc isEqualToString:@"examplegrprem"]) { gbl_arrayExaGrpRem = [[NSMutableArray alloc]initWithArray: (NSMutableArray*) myUnarchived]; }
-//    if ([entDesc isEqualToString:@"exampleperrem"]) { gbl_arrayExaPerRem = [[NSMutableArray alloc]initWithArray: (NSMutableArray*) myUnarchived]; }
-//
-
-
-// from    - (void)applicationDidBecomeActive:(UIApplication *)application
-// used  applicationDidBecomeActive  notification instead
-//     // http://stackoverflow.com/questions/15864364/viewdidappear-is-not-called-when-opening-app-from-background
-//     //
-//     // I think registering for the UIApplicationWillEnterForegroundNotification is risky
-//     // as you may end up with more than one controller reacting to that notification.
-//     // Nothing garanties that these controllers are still visible when the notification is received.
-//     // 
-//     // Here is what I do: I force call viewDidAppear on the active controller directly from the App's delegate didBecomeActive method:
-//     // 
-//     // Add the code below to - (void)applicationDidBecomeActive:(UIApplication *)application
-//     // 
-//     UIViewController *activeController = window.rootViewController;
-//     if ([activeController isKindOfClass:[UINavigationController class]]) {
-//         activeController = [(UINavigationController*)window.rootViewController topViewController];
-//     }
-//     //[activeController viewDidAppear:NO];
-//     [activeController viewDidAppear:NO];
-//
-
-// never used
-//#pragma mark -
-//#pragma mark NSCoding Methods
-//
-//// - (void)encodeWithCoder:(NSCoder *)aCoder  // ENCODE
-//// {
-//// NSLog(@"in encodeWithCoder() ENCODE");
-//// tn();trn("in encodeWithCoder() ENCODE");
-////     NSLog(@"KEY_LAST_ENTITY_STR=%@",KEY_LAST_ENTITY_STR);
-////     [aCoder encodeObject: self.myLastEntityStr
-////                   forKey: KEY_LAST_ENTITY_STR  ];
-//// }
-//// 
-//// - (id)initWithCoder:(NSCoder *)aDecoder    // DECODE         // NS_DESIGNATED_INITIALIZER
-//// {
-//// NSLog(@"in initWithCoder() DECODE");
-//// tn();trn("in initWithCoder() DECODE");
-////     self = [super init];
-//// nb(1);
-////     if (self) {
-//// nb(2);
-////         self.myLastEntityStr = [aDecoder decodeObjectForKey: KEY_LAST_ENTITY_STR];
-////     } 
-//// nb(3);
-////     return self;
-//// }
-//
-//#pragma mark -
-//
-
-
-//
-//        NSString *prefixStr = [NSString stringWithFormat: @"%@|", nameOfMember];
-//            for (NSString *element in gbl_arrayPer) {
-//                if ([element hasPrefix: prefixStr]) {
-//                    PSVthatWasFound = element;
-//                    break;
-//                }
-//            }
-////NSLog(@"PSVthatWasFound=%@",PSVthatWasFound);
-//            if ( ! PSVthatWasFound) continue;
-//
-//
-//            // build this members's C CSV from his gbl_arrayPer PSV 
-//            //
-//            char csv_person_string[128];
-//            char psvName[32], psvMth[4], psvDay[4], psvYear[8]; 
-//            char psvHour[4], psvMin[4], psvAmPm[4], psvCity[64], psvProv[64], psvCountry[64];
-//            char psvLongitude[16], psvHoursDiff[8], returnPSV[64];
-//            const char *my_psvc; // psv=pipe-separated values
-//            char my_psv[128];
-//    
-//            // NSString object to C
-//            my_psvc = [PSVthatWasFound cStringUsingEncoding:NSUTF8StringEncoding];  // psv=pipe-separated values 
-//            strcpy(my_psv, my_psvc);
-////  ksn(my_psv);
-//            
-//            strcpy(psvName, csv_get_field(my_psv, "|", 1));
-//            strcpy(psvMth,  csv_get_field(my_psv, "|", 2));
-//            strcpy(psvDay,  csv_get_field(my_psv, "|", 3));
-//            strcpy(psvYear, csv_get_field(my_psv, "|", 4));
-//            strcpy(psvHour, csv_get_field(my_psv, "|", 5));
-//            strcpy(psvMin,  csv_get_field(my_psv, "|", 6));
-//            strcpy(psvAmPm, csv_get_field(my_psv, "|", 7));
-//            strcpy(psvCity, csv_get_field(my_psv, "|", 8));
-//            strcpy(psvProv, csv_get_field(my_psv, "|", 9));
-//            strcpy(psvCountry, csv_get_field(my_psv, "|", 10));
-//
-////ksn(psvMth);ks(psvDay);ks(psvYear);ks(psvHour);ks(psvMin);ks(psvAmPm);tn();
-////ksn(psvCity);ks(psvProv);ks(psvCountry);tn();
-////
-//            
-//            // get longitude and timezone hoursDiff from Greenwich
-//            // by looking up psvCity, psvProv, psvCountry
-//            //
-//            seq_find_exact_citPrvCountry(returnPSV, psvCity, psvProv, psvCountry);
-//            
-//            strcpy(psvHoursDiff,  csv_get_field(returnPSV, "|", 1));
-//            strcpy(psvLongitude,  csv_get_field(returnPSV, "|", 2));
-//            
-//            // set gbl for email
-////            ksn(psvName);
-////            gbl_person_name =  [NSString stringWithUTF8String:psvName ];
-//
-//            // build C  CSV for this person in group
-//            //
-//            sprintf(csv_person_string, "%s,%s,%s,%s,%s,%s,%s,%s,%s",
-//                    psvName,psvMth,psvDay,psvYear,psvHour,psvMin,psvAmPm,psvHoursDiff,psvLongitude);
-////ksn(csv_person_string);tn();
-////kin((int)(strlen(csv_person_string) + 1));
-////
-//        
-//
-//
-//            // convert this members's C CSV to NSString object 
-//            // and add to argArrayToWriteInto  NSArray
-//            //
-//            NSString *myCSVobj = [NSString stringWithUTF8String: csv_person_string];  // convert c string to NSString
-//
-//
-
-//        if ( [allowedCharactersInName rangeOfString: arg_typedCharAsNSString].location == NSNotFound)
-//        {
-//            NSLog(@"allowedCharacters does not contain typed char");
-//        }
-
-
-// this does not work  app hangs in home (no data in cells)  cpu and mem go nuts  BUT it did work as lcl_ global
-//  NSLog(@"10!");
-//     
-//
-//
-//    // UILabel for the disclosure indicator, ">",  for tappable cells
-//    //
-////    NSString *myDisclosureIndicatorBGcolorName; 
-//    NSString *myDisclosureIndicatorText; 
-//    UIColor  *colorOfGroupReportArrow; 
-//    UIFont   *myDisclosureIndicatorFont; 
-//
-//    myDisclosureIndicatorText = @">"; 
-////            colorOfGroupReportArrow   = [UIColor blackColor];                 // blue background
-////            colorOfGroupReportArrow   = [UIColor darkGrayColor];                 // blue background
-////            colorOfGroupReportArrow   = [UIColor grayColor];                 // blue background
-//    colorOfGroupReportArrow   = [UIColor lightGrayColor];                 // blue background
-////            myDisclosureIndicatorFont = [UIFont     systemFontOfSize: 16.0f]; // make not bold
-////            myDisclosureIndicatorFont = [UIFont     systemFontOfSize: 24.0f]; // make not bold
-////            myDisclosureIndicatorFont = [UIFont     systemFontOfSize: 20.0f]; // make not bold
-////            myDisclosureIndicatorFont = [UIFont     boldSystemFontOfSize: 24.0f]; // make not bold
-////            myDisclosureIndicatorFont = [UIFont     boldSystemFontOfSize: 20.0f]; // make not bold
-////            myDisclosureIndicatorFont = [UIFont fontWithName: @"Menlo-bold" size:  24.0]; // no good
-////            myDisclosureIndicatorFont = [UIFont fontWithName: @"ArialRoundedMTBold" size:  24.0];
-////            myDisclosureIndicatorFont = [UIFont fontWithName: @"HelveticaNeue-ThinItalic" size:  24.0];
-////            myDisclosureIndicatorFont = [UIFont fontWithName: @"IowanOldStyle-Bold" size:  24.0];
-//    myDisclosureIndicatorFont = [UIFont fontWithName: @"MarkerFelt-Thin" size:  24.0]; // good
-////            myDisclosureIndicatorFont = [UIFont fontWithName: @"MarkerFelt-Wide" size:  24.0]; // bad
-////            myDisclosureIndicatorFont = [UIFont fontWithName: @"SanFranciscoDisplay-Thin" size:  24.0]; 
-////            myDisclosureIndicatorFont = [UIFont fontWithName: @"SanFranciscoRounded-Bold" size:  16.0]; 
-////            myDisclosureIndicatorFont = [UIFont fontWithName: @"TimesNewRomanPS-BoldMT" size:  24.0]; // good
-////              myDisclosureIndicatorFont = [UIFont fontWithName: @"Superclarendon-Bold" size:  24.0]; // good
-////              myDisclosureIndicatorFont = [UIFont fontWithName: @"SnellRoundhand-Bold" size:  24.0]; // good
-////              myDisclosureIndicatorFont = [UIFont fontWithName: @"AvenirNextCondensed-Heavy" size:  24.0]; // good
-//
-//  NSLog(@"11!");
-//
-//
-//
-//    NSAttributedString *myNewCellAttributedText3 = [
-//        [NSAttributedString alloc] initWithString: myDisclosureIndicatorText  // i.e.   @">"
-//                                       attributes: @{            NSFontAttributeName : myDisclosureIndicatorFont,
-//                                                       NSForegroundColorAttributeName: colorOfGroupReportArrow                }
-//    ];
-//  NSLog(@"12!");
-//
-//    gbl_disclosureIndicatorLabel                 = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 12.0f, 32.0f)];
-//  NSLog(@"13!");
-//    gbl_disclosureIndicatorLabel.attributedText  = myNewCellAttributedText3;
-//  NSLog(@"14!");
-//    gbl_disclosureIndicatorLabel.backgroundColor = gbl_colorReportsBG; 
-//  NSLog(@"15!");
-//    //
-//    // end of  UILabel for the disclosure indicator, ">",  for tappable cells
-//
-//
-//
-//
-
-
-//    NSHTTPURLResponse *myhttpUrlResponse = nil;
-//    NSString *mydateString;
-//      NSLog(@"start get real date   GOOGLE   300ms ,300, 300");
-//    NSMutableURLRequest *mygoorequest = [[NSMutableURLRequest alloc] initWithURL: [NSURL URLWithString: @"https://google.com"]];
-//    [mygoorequest setHTTPMethod: @"GET"];
-//    [NSURLConnection sendSynchronousRequest: mygoorequest returningResponse: &myhttpUrlResponse error: nil];
-//    NSDictionary *mydict = [myhttpUrlResponse allHeaderFields] ; 
-//    mydateString = [[myhttpUrlResponse allHeaderFields] objectForKey: @"Date"];
-//  NSLog(@"mydict =[%@]",mydict );
-//  NSLog(@"mydateString GOOGLE =[%@]",mydateString );
-
-
-
-// doing one at a time (url arg)
-
-//    // for each "*.mamb" file in Inbox directory
-//    //    1.  if name is not "people.mamb" or "groups.mamb" put dialogue it can not be imported
-//    //    2.  do corruption test 
-//    //    3.  do import  line by line into special gbl import arrays
-//    //       3b.  collision dialogue when necessary
-//    //
-//    //    // here we have valid import arrays or user has Cancelled out
-//    //
-//    //    4.  segue to new screen MAMB09_confirmImportTableViewController.m
-//
-//
-//    // for each "*.mamb" import file in Inbox directory
-//    //    1. if name is not "people.mamb" or "groups.mamb" put dialogue it can not be importeded
-//    //
-//    for (NSString *inboxFileName in inboxDirFiles) {
-//  NSLog(@"inboxFileName=%@",inboxFileName);
-//        if (    ! [inboxFileName isEqualToString:@"groups.mamb"]
-//            &&  ! [inboxFileName isEqualToString:@"people.mamb"]  )
-//        {
-//            NSString *mymsg;
-//            mymsg = [ NSString stringWithFormat:
-//@"In order to be imported, a file has to have one of these two names: \"people.mamb\"  OR  \"groups.mamb\"\n\nThis file has the name \"%@\" and will not be imported.",
-//                 inboxFileName
-//             ];
-//
-//            UIAlertController* myAlert = [
-//                UIAlertController alertControllerWithTitle: @"Bad Import File Name"
-//                                                   message: mymsg
-//                                            preferredStyle: UIAlertControllerStyleAlert 
-//            ];
-//            UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
-//                                                                style: UIAlertActionStyleDefault
-//                                                              handler: ^(UIAlertAction * action) {
-//                    NSLog(@"Ok button pressed");
-//                }
-//            ];
-//            [myAlert addAction:  okButton];
-//
-//
-//            // remove bad file from Inbox         
-//            NSString *fileToRemove;
-//            fileToRemove = [NSString stringWithFormat:@"%@/%@", inboxDirFiles, inboxFileName];
-//  NSLog(@"fileToRemove =[%@]",fileToRemove );
-//            [filemgr   removeItemAtPath: fileToRemove   error: NULL];
-//  NSLog(@"removed a file from Inbox!  (not named people.mamb OR groups.mamb)");
-//
-//
-//            [ self.window.rootViewController presentViewController: myAlert   // THIS WORKS! to put user interface in appDelegate.m
-//                                                          animated: YES
-//                                                        completion: nil  
-//            ];  // THIS WORKS! to put user interface in appDelegate.m
-//
-//            continue;  // goto next Inbox file 
-//        }
-//
 

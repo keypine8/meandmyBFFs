@@ -46,10 +46,6 @@ UIBarButtonItem *gbl_goToReportButton;  // for sel year and sel date
 UIBarButtonItem *gbl_icon_UIBarButtonItem ;       // HOME NavBar button
 
 
-//NSString *gbl_cy_session_startup;   // format "20nn"  cy gotten from apl this session
-//NSString *gbl_cm_session_startup;
-//NSString *gbl_cd_session_startup;
-
 
 
 //  CURRENT DATE VARS
