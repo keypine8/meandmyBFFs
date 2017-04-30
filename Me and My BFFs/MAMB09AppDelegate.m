@@ -185,6 +185,7 @@
     [[UINavigationBar appearance] setBackgroundImage: [[UIImage alloc] init]
                                       forBarPosition: UIBarPositionAny
                                           barMetrics: UIBarMetricsDefault];
+
     [[UINavigationBar appearance] setShadowImage: [[UIImage alloc] init]];
 
 //    [[UINavigationBar appearance] setTintColor: [UIColor redColor]];
@@ -241,7 +242,6 @@
                                inBundle: nil
           compatibleWithTraitCollection: nil
     ];
-
     // regular report mode bg color for home navbar button
     gbl_BlueBG   = [UIImage  imageNamed: @"bg_blue_1x1a.png" // [self.editButtonItem setBackgroundImage: gbl_BlueBG
                                inBundle: nil
@@ -273,7 +273,7 @@
 //            compatibleWithTraitCollection: nil
 //    ];
 
-//    UIImage *tmpImage1 = [UIImage imageNamed: @"bg_brownDone10.png"];
+//    UIImage *TMPpImage1 = [UIImage imageNamed: @"bg_brownDone10.png"];
     UIImage *tmpImage1 = [UIImage imageNamed: @"bg_brownHome10bx.png"];
     tmpImage1          = [tmpImage1 imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal];
     gbl_brownDone      =  tmpImage1;

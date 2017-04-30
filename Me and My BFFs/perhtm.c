@@ -502,7 +502,8 @@ int make_per_htm_file_webview(
 
 
 
-///<.>
+//  note: per was changed from html on iphone to tableview
+//
 /* output the css, headings etc.
 */
 //void p_fn_webview_output_top_of_html_file(void)  // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -2952,40 +2953,4 @@ void add_all_benchmark_lines(void)
 
 /* end of perhtm.c */
 
-
-//  p_fn_prtlin("   <span style=\"font-size: 0.9em; font-weight: normal;\">");
-//<span style=\"font-size: 0.9em; font-weight: normal;\">
-//  p_fn_prtlin("    <tr><th colspan=\"3\"><span style=\"font-size: 0.9em; font-weight: normal;\"> </th></tr>");
-//  p_fn_prtlin("    <tr><th colspan=\"3\"><span style=\"font-size: 0.9em; font-weight: normal;\">The score from 1 to 99 measures</th></tr>");
-//  p_fn_prtlin("    <tr><th colspan=\"3\"><span style=\"font-size: 0.9em; font-weight: normal;\">\"how much\" of that trait</th> </tr>");
-//  p_fn_prtlin("    <tr><th colspan=\"3\"><span style=\"font-size: 0.9em; font-weight: normal;\">~Jen has</tr>");
-//  p_fn_prtlin("    <tr><th colspan=\"3\"><span style=\"font-size: 0.9em; font-weight: normal;\"> </th></tr>");
-//  p_fn_prtlin("    <tr><th colspan=\"3\"><span style=\"font-size: 0.9em; font-weight: normal;\">The score does NOT measure \"good\" or \"bad\"</th></tr>");
-//  p_fn_prtlin("    <tr><th colspan=\"3\"><span style=\"font-size: 0.9em; font-weight: normal;\"> </th></tr>");
-//
-
-//  p_fn_prtlin("    <tr><th colspan=\"3\"><span style=\"font-size: 0.9em; font-weight: normal;\"><br>The score from 1 to 99 measures \"how much\" of that trait ~Jen has.<br>The score does NOT measure \"good\" or \"bad\"<br>.</tr>");
-//  p_fn_prtlin("    <tr><th colspan=\"3\"><span style=\"font-size: 0.9em; font-weight: normal;\"><br>The score from 1 to 99 measures \"how much\" of that trait ~Jen has.<br><br>The score does NOT measure<br>\"good\" or \"bad\".<br><br></span></th></tr>");
-
-// text-align: left works below, but do  not  like it
-//  p_fn_prtlin("    <tr><th colspan=\"3\" style=\" text-align: left; \"><span style=\"font-size: 0.9em; font-weight: normal; \"><br>The score from 1 to 99 measures \"how much\" of that trait ~Jen has.<br><br>The score does NOT measure<br>\"good\" or \"bad\".<br><br></span></th></tr>");
-//  p_fn_prtlin("    <tr><th colspan=\"3\" \"><span style=\"font-size: 0.9em; font-weight: normal; \"><br>The score from 1 to 99 measures \"how much\" of that trait ~Jen has.<br><br>The score does NOT measure<br>\"good\" or \"bad\".<br><br></span></th></tr>");
-
-
-//  p_fn_prtlin("<div> <span style=\"font-size: 1.0em\"><br>produced by iPhone app Me and my BFFs</span><br><br><span style=\"font-size: 0.9em; font-weight: bold; color:#FF0000;\">This report is for entertainment purposes only.</span></div><div><br></div>");
-//<.>
-//tfoot {
-//  background-color: #666666;
-//  color: #dddddd;
-//  font-size: 80%;
-//}
-//  p_fn_prtlin("   <tfoot> <span style=\"font-size: 0.9em; font-weight: normal;\">");
-//
-//  p_fn_prtlin( "    table.trait tfoot { ");
-//  p_fn_prtlin( "      background-color: #ff0000 ;");
-//  p_fn_prtlin( "      font-size: 0.9em;");
-//  p_fn_prtlin( "      font-weight: normal;");
-//  p_fn_prtlin( "    } ");
-//<.>
-//
 

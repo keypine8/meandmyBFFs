@@ -26,6 +26,7 @@
 //
 //
 
+
 // WEIRD  had to ADD CONSTRAINTS to prevent label and pickerview from centering after
 //          doing a best match in group    // NOTE: SAME THING in MAMB09_selYearViewController2.m
 // from this : https://developer.apple.com/library/ios/recipes/xcode_help-IB_auto_layout/chapters/add_constraints-control_drag.html
@@ -207,7 +208,7 @@
 
 
 
-    // MOVED to viewWillAppear populate date-related stuff
+    // MOVED to viewWillAppear     populate date-related stuff
 
 
 

@@ -51,8 +51,6 @@ extern void fclose_fpdb_for_debug(void);
 #define MAX_IN_PLACES_SEARCH_RESULTS1 25    /* num returned on search into array */
 
 /* #define PREFIX_HTML_FILENAME "am_" */   /* Astrology by Measurement */
-/* #define PREFIX_HTML_FILENAME "mamb" */  /* Me & my BFFs  */
-/* #define PREFIX_HTML_FILENAME "mamb_"*/  /* My BFFs and I  */
 /* #define PREFIX_HTML_FILENAME "mamb_"*/  /* Me and my BFFs */ 
 #define PREFIX_HTML_FILENAME "m_"          /* Me and my BFFs */ 
 
@@ -213,7 +211,7 @@ int out_rank_idx;  /* pts to current line in out_rank_lines */
 
 /* LIMITS
 *
-* 1 Group Size LIMIT is 250.       MAX_PERSONS_IN_GROUP 250 
+* 1 Group Size LIMIT is 200.       MAX_PERSONS_IN_GROUP 200 
 *    (based on time to calc and space to store 31,125 structs)
 * 
 * 2. group report html line count LIMIT 
@@ -605,7 +603,7 @@ int main_NOT_USED( int argc, char *argv[] )
 //
 //
 //#ifdef PUT_BACK_COMMENTED_OUT_STUFF /****************************************/
-//* /* ABANDONED seq is fast enough */
+//* /* ABANDONED - sequential is fast enough */
 //* /* test int bin_find_first_begins_with(  */
 //* char *arrstr[] = {
 //* "apr",

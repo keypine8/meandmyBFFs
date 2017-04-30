@@ -28,10 +28,6 @@
 
 /* #include "rk.h" */
 
-/* calc_chart() is a subroutine for calculating
-* planetary positions and retrograde
-*/ 
-
 #include <math.h>
 #include <string.h>
 #include <stdio.h>
@@ -356,7 +352,7 @@ end of pluto harm
 
 /* new functions */
 
-double sgn(double xrk)    /* mimics applesoft function */
+double sgn(double xrk)  
 {
   double tmp_double = 0.0;
   if(xrk >  0.0) tmp_double =  1.0;

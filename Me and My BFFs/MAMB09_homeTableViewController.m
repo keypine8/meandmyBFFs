@@ -919,126 +919,6 @@ nbn(500);
 
 
 
-
-
-            
-
-//            self.editButtonItem.layer.borderWidth = 1.0f;
-//            self.editButtonItem.layer.borderColor = [UIColor lightGrayColor].CGColor;
-////            self.editButtonItem.layer.cornerRadius = 5.0f;
-//            self.editButtonItem.layer.cornerRadius = 8.0f;
-
-//
-//            UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-//            [button setFrame:CGRectMake(0, 0, 50, 40)];
-//            [button setImage:[UIImage imageNamed:@"settings.png"] forState:UIControlStateNormal];
-//            button.layer.borderWidth = 1.0f;
-//            button.layer.borderColor = [UIColor lightGrayColor].CGColor;
-//            button.layer.cornerRadius = 5.0f;
-//
-//            button.layer.shadowColor = [UIColor lightGrayColor].CGColor;
-//            button.layer.shadowRadius = 4.0f;
-//            button.layer.shadowOpacity = .9;
-//            button.layer.shadowOffset = CGSizeZero;
-//            button.layer.masksToBounds = NO;
-//
-//
-//            UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:button];
-//
-//            self.navigationItem.leftBarButtonItem = leftItem;
-//
-
-
-
-
-
-
-//        self.navigationItem.rightBarButtonItems =
-//            [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerForTitle];
-
-
-//
-//          self.navigationItem.rightBarButtonItems =   // "editButtonItem" is magic Apple functionality
-//              [self.navigationItem.rightBarButtonItems arrayByAddingObject: self.editButtonItem]; //editButtonItem=ADD apple-provided EDIT BUTTON
-//
-//
-
-
-//  [[UINavigationBar appearance] setTranslucent: NO];
-//  [[UINavigationBar appearance] setTintColor: [UIColor redColor] ];
-
-//  [[UINavigationBar appearance]  setTranslucent: NO];
-//  [[UINavigationBar appearance] setBarTintColor: [UIColor redColor] ];
-
-
-//        self.navigationItem.rightBarButtonItems =
-//            [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerForTitle];
-
-//        self.editButtonItem.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
-//self.label.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
-
-
-
-//        self.editButtonItem.backgroundColor = [UIColor yellowColor];
-//       [self.editButtonItem setBackgroundColor:  [UIColor yellowColor] ];
-//        self.editButtonItem.tintColor = [UIColor yellowColor];  // is textColor
-
-        //  - (void)setBackgroundImage:(UIImage *)backgroundImage
-        //                    forState:(UIControlState)state
-        //                  barMetrics:(UIBarMetrics)barMetrics
-//        self.editButtonItem.color = [UIColor yellowColor];  // is textColor
-
-//                [self.navigationController.navigationBar setBackgroundImage: [UIImage new]       // 1. of 2
-//                                                             forBarPosition: UIBarPositionAny
-//                                                                 barMetrics: UIBarMetricsDefault];
-//                //
-//                [self.navigationController.navigationBar setShadowImage: [UIImage new]];   
-//                //
-//                self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];  // 2. of 2
-
-        //   UIControlStateNormal               = 0,
-        //   UIControlStateHighlighted          = 1 << 0,
-        //   UIControlStateDisabled             = 1 << 1,
-        //   UIControlStateSelected             = 1 << 2,
-        //   UIControlStateFocused              = 1 << 3,
-        //   UIControlStateApplication          = 0x00FF0000,
-        //   UIControlStateReserved             = 0xFF000000 
-
-//        UIImage *myYellowBG = [UIImage  imageNamed: @"bg_yellow_1x1b.png" 
-//                                          inBundle: nil
-//                     compatibleWithTraitCollection: nil
-//        ];
-
-//        [self.editButtonItem  setBackgroundImage: gbl_YellowBG ] ;  // view startup default color
-//        [ [self.editButtonItem appearance]  setBackgroundImage: gbl_YellowBG ] ;  // view startup default color
-//          self.editButtonItem.backgroundImage = gbl_YellowBG  ;  // view startup default color
-
-
-
-//  NSLog(@"EDIT BUTTON 1   set yellow          ");
-////            [self.editButtonItem setBackgroundImage: gbl_YellowBG          // edit mode bg color for button
-//            [self.editButtonItem setBackgroundImage: gbl_yellowEdit          // edit mode bg color for button
-//                                           forState: UIControlStateNormal  
-//                                         barMetrics: UIBarMetricsDefault
-//            ];
-
-
-
-//            self.navigationItem.leftBarButtonItems = gbl_homeLeftItemsWithAddButton;
-//nbn(200);
-//
-//        }); // end of  dispatch_async(dispatch_get_main_queue()
-//nbn(201);
-//
-//    } // end of   set up the two nav bar arrays, one with + button for add a record, one without
-//nbn(202);
-//
-
-
-
-
-
-
 //        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
 //            self.navigationItem.leftBarButtonItems = [self.navigationItem.leftBarButtonItems arrayByAddingObject: addButton ];
 //        });
@@ -2543,7 +2423,7 @@ tn();
 
 
 
-// 2016jun
+// 2016jun    CODE is in project, but was not used   //  MAMB09_selShareEntityTableViewController.m
 //
 ////-(IBAction) pressedShareEntities    // People or Groups 
 //-(IBAction) pressedShareEntities: (id)sender   // People or Groups 
@@ -2577,6 +2457,8 @@ tn();
 //} // end of pressedShareEntities
 //
 //
+//
+// 2016jun    CODE is in project, but was not used   //  MAMB09_selShareEntityTableViewController.m
 
 -(IBAction) pressedSeeMembersButton: (id)sender   
 {
@@ -2683,7 +2565,7 @@ tn();
 // using setediting  INSTEAD
 // WHEN TAPPED, THIS BUTTON AUTOMATICALLY TOGGLES BETWEEN AN eDIT AND dONE BUTTON AND
 // CALLS YOUR VIEW CONTROLLER’S  setEditing:animated:  METHOD WITH APPROPRIATE VALUES.
-
+//
 //-(IBAction)pressedEditButtonAction:(id)sender
 //{
 //  NSLog(@"in   pressedEditButtonAction!  in HOME");
@@ -4814,6 +4696,8 @@ nbn(335);
   NSLog(@"EDIT BUTTON 2   set title  done tab");
 
 
+// 2016jun    CODE is in project, but was not used   //  MAMB09_selShareEntityTableViewController.m
+//
 //2016 jun remove share icon for share people/groups
 //
 //            // remove left app icon and replace  with share icon
@@ -4838,6 +4722,8 @@ nbn(335);
 
 //            self.navigationItem.leftBarButtonItem  = iconButton; 
 //            self.navigationItem.leftBarButtonItems = [self.navigationItem.leftBarButtonItems  arrayByAddingObject: navAddButton];
+//
+// 2016jun    CODE is in project, but was not used   //  MAMB09_selShareEntityTableViewController.m
 
 
 

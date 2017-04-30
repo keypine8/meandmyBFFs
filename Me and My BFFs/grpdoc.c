@@ -27,9 +27,6 @@
 *          1. "member in group"    
 *          2. "all group members"   
 *          3. "just 2 people"
-   #import Darwin.C.tgmath
-   #import "Darwin.C.tgmath.h"  
-   #import "tgmath.h"   <this worked in xcode
 * */
 
 /* int dbctr;  * debug * */

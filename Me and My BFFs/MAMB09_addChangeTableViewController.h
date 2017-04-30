@@ -57,6 +57,9 @@
 
 @end
 
+
+// all below abandoned, kb or picker always visible
+//
 //<.>  iphone, dismiss keyboard when touching outside of UITextField
 //
 //   http://stackoverflow.com/questions/5306240/iphone-dismiss-keyboard-when-touching-outside-of-uitextfield

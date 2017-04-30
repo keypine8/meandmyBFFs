@@ -5887,45 +5887,6 @@ NSLog(@"Ok button pressed");
 //
 
 
-//                char my_sep[8];
-//ksn(my_sep);
-//                strcpy(my_sep, ",");   // fld sep for myKingpinCSV_NSString   is "," not "|"
-//                char psvName[32], psvMth[4], psvDay[4], psvYear[8], psvHour[4], psvMin[4], psvAmPm[4], psvCity[64], psvProv[64], psvCountry[64];
-//                strcpy(psvName, csv_get_field(my_psv, my_sep, 1));
-//                strcpy(psvMth,  csv_get_field(my_psv, my_sep, 2));
-//                strcpy(psvDay,  csv_get_field(my_psv, my_sep, 3));
-//                strcpy(psvYear, csv_get_field(my_psv, my_sep, 4));
-//                strcpy(psvHour, csv_get_field(my_psv, my_sep, 5));
-//                strcpy(psvMin,  csv_get_field(my_psv, my_sep, 6));
-//                strcpy(psvAmPm, csv_get_field(my_psv, my_sep, 7));
-//                strcpy(psvCity, csv_get_field(my_psv, my_sep, 8));
-//                strcpy(psvProv, csv_get_field(my_psv, my_sep, 9));
-//                strcpy(psvCountry, csv_get_field(my_psv, my_sep, 10));
-//                
-//
-//tn();trn("cocoa input csv  input csv  input csv  input csv  input csv  input csv  ");
-//                // get longitude and timezone hoursDiff from Greenwich
-//                // by looking up psvCity, psvProv, psvCountry
-//                //
-//ksn(psvCity);
-//ksn(psvProv);
-//ksn(psvCountry);
-//                seq_find_exact_citPrvCountry(returnPSV, psvCity, psvProv, psvCountry);
-//ksn(returnPSV);                
-//
-//                strcpy(psvHoursDiff,  csv_get_field(returnPSV, my_sep, 1));
-//                strcpy(psvLongitude,  csv_get_field(returnPSV, my_sep, 2));
-//ksn(psvHoursDiff);
-//ksn(psvLongitude);
-//                // build csv arg for report function call
-//                //
-//                char csv_kingpin[128];
-//                sprintf(csv_kingpin, "%s,%s,%s,%s,%s,%s,%s,%s,%s",
-//                        psvName,psvMth,psvDay,psvYear,psvHour,psvMin,psvAmPm,psvHoursDiff,psvLongitude);
-//ksn(psvName); ksn(psvMth); ksn(psvDay);
-//
-
-
         //<.>  from pe
         ////tn();ksn(myStringBuffForTraitCSV);tn();
         //

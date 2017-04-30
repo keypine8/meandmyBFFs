@@ -763,10 +763,10 @@ ksn(pathToHTML_webview      );
                                                );
 
 
-//<.> beg wait for bug fix
+//<.> beg wait for inner_html  bug fix   ended up not using big graph
 
         //
-        //  SECOND CALL for BIG html 
+        //  SECOND CALL for BIG html   (this has one html  jan->dec in one graph instead of 2 - jan-jun and jul-dec )
         //
 
         retval2 = 0;
@@ -1732,6 +1732,7 @@ NSLog(@"Ok button pressed");
 
 
 
+//  e.g. below
 //
 //    if ([MFMailComposeViewController canSendMail])
 //    {
@@ -2255,36 +2256,6 @@ NSLog(@"Ok button pressed");
 @end
 
 
-    // deselect 
-//    [self.myNextPrevSeqmentedControl setSelectedSegmentIndex:UISegmentedControlNoSegment];
-
-
-// did not work
-//     // Do any additional setup after loading the view, typically from a nib.
-//     self.myWebView = [[[UIWebView alloc] initWithFrame:CGRectMake(10, 20, 300,500)] autorelease];
-//     self.myWebView.backgroundColor = [UIColor whiteColor];
-//     self.myWebView.scalesPageToFit = YES;
-//     self.myWebView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-//     self.myWebView.delegate = self;
-//     [self.view addSubview:self.myWebView];
-//
-//     self.myWebView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-//
-//
-
-//<.>
-//    // set up navigation bar  right button  "I" for INFO
-//    //
-////        UIImage *myImage = [[UIImage imageNamed: @"ReportArrow_14.png"]
-////                         imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal ];
-//        UIBarButtonItem *_goToReportButton = [[UIBarButtonItem alloc]initWithImage: myImage
-//                                                                             style: UIBarButtonItemStylePlain 
-//                                                                            target: self 
-//                                                                            action: @selector(actionDoReport)];
-//        self.navigationItem.rightBarButtonItem = _goToReportButton;
-//
-//<.>
-//
 
 //  jumpy
 //        // http://stackoverflow.com/questions/19204799/how-to-reduce-font-size-of-navigation-bar-title-in-ios-7
@@ -2354,55 +2325,10 @@ NSLog(@"Ok button pressed");
 //}
 //
 
-//
-//// for toolbar with  Backward / Foreward
-////
-//- (IBAction) myHandleTapFrom: (UITapGestureRecognizer *) argTapRecognizer
-//{
-//  NSLog(@"in myHandleTapFrom!");
-//    //Code to handle the gesture
-//
-//        //- (BOOL)gestureRecognizer: (UIGestureRecognizer *)gestureRecognizer   shouldReceiveTouch: (UITouch *)touch {
-//        //    if (gbl_shouldReceiveTouches == 0)  return NO;
-//        //    return YES;
-//        //}
-//        //
-//    // method  is only here because it's req'd
-//    return;    
-//}
-//
-//
-
-//        gbl_shouldReceiveTouches = 0;  // TURN OFF touches  during  half mytime
-//tn();tr("before");ki((int)gbl_shouldReceiveTouches );
-//  NSLog(@"gbl_shouldReceiveTouches=%ld",gbl_shouldReceiveTouches );
-//
-
-
-//        gbl_shouldReceiveTouches = 1;  // TURN ON  touches
-//tn();tr("after ");ki((int)gbl_shouldReceiveTouches );
-//  NSLog(@"gbl_shouldReceiveTouches=%ld",gbl_shouldReceiveTouches );
-//
-
-
-
-//        double myDelayInSeconds = 0.4;   does not work
-//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(myDelayInSeconds * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-
-//        // this works
-//        double myDelayInMilleSeconds = 500;
-//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(myDelayInMilleSeconds * NSEC_PER_MSEC)), dispatch_get_main_queue(), ^{
-//            // code to be executed after a specified delay
-//            [self.outletWebView loadRequest: HTML_URLrequestForWhatColorReport];
-//        });
-        
-        //
-//        double myDelayInSec = 0.5 * (double)NSEC_PER_SEC;
-
   
 //
 //    
-////<.>  this report (grpof2) is now in tblrpts_1
+////<.>  this report (grpof2) is now in tblrpts_1    (changed from html to tableview)
 ////
 ////
 ////    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompco"]) 

@@ -49,6 +49,16 @@
 
 
 
+//
+// what is all this BIG stuff ?
+// it is code to produce a big graph with jan -> dec on the bottom
+// instead of 2 graphs with jan-> jun and jul -> dec
+// ABANDONED in favour of 2 graphs -  too squished on iPhone (but great on iPad, Mac screens)
+//
+
+
+
+
 #define NUM_PTS_WHOLE_YEAR 184
 #define SIZE_BIG_EPH_GRH_LINE 256 // 107  (about 184 + 7 + 1)
 //char Grh_body[(SIZE_GRH_LEFT_MARGIN+SIZE_EPH_GRH_LINE+1)*MAX_GRH_BODY_LINES];

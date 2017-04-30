@@ -667,6 +667,8 @@
 } // willDeselectRowAtIndexPath
 
 
+
+
 // willSelectRowAtIndexPath message is sent to the UITableView Delegate
 // after the user lifts their finger from a touch of a particular row
 // and before didSelectRowAtIndexPath.

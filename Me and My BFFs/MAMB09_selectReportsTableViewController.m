@@ -634,6 +634,8 @@ NSLog(@"in viewDidAppear()");
 
 } // viewWillAppear
 
+
+
 // - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 - (NSIndexPath *)tableView:(UITableView *)tableView willDeselectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -659,6 +661,7 @@ NSLog(@"in viewDidAppear()");
     //animated: YES];
     return previouslyselectedIndexPath;
 } // willDeselectRowAtIndexPath
+
 
 
 // willSelectRowAtIndexPath message is sent to the UITableView Delegate
@@ -1105,9 +1108,8 @@ NSLog(@"in dispatch  for SELECT YEAR  !");
 
 
     // below are report for pairs of people (picked from a group report having pairs)
-    // **********   NO REMEMBERING WHICH REPORT WAS SELECTED  for pairs ********************
-
-
+// NEW   **********   NO REMEMBERING WHICH REPORT WAS SELECTED  for pairs ********************
+//
 //    if ([stringForCurrentlySelectedRow hasSuffix: @"Compatibility Potential"] ) {
 ////        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  <.>
 ////            [self performSegueWithIdentifier:@"segueRptSelToSelPerson" sender:self];
@@ -1125,6 +1127,8 @@ NSLog(@"in dispatch  for SELECT YEAR  !");
 
 
 @end
+
+
 
 //It looks like you'd like the picker to rest at the bottom of the view controller's main view (it's parent, I assume) and be as wide as the view. Try this in viewDidLoad:
 //

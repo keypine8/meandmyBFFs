@@ -3759,12 +3759,11 @@ NSLog(@"          POP  VIEW   #6");
   NSLog(@"after  doActualPersonSave ( at END of   person saveDone logic  at end of  pressedSaveDone ) ! ");
 
 
+
+
   nbn(705);
 
                 // since all hs saves, this does not run ever
-
-
-
 
 // START OF old , unused CHOOSE KIND OF SAVE   CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 //
@@ -5476,6 +5475,10 @@ NSLog(@"in textFieldShouldReturn:");
             });
         }   // do group   name row
 
+
+
+
+
         if ([gbl_fromHomeCurrentSelectionType isEqualToString: @"person" ] )
         {   // do person   name row
   NSLog(@"person name row    gbl_myname.text =[%@]",gbl_myname.text );
@@ -5556,6 +5559,9 @@ tn();
         }   // do person   name row
 
      } //  NAME row (1)
+
+
+
 
 
      if (indexPath.row == 3)  // "LABEL" for  city,proc,coun  of Birth of Person
@@ -6029,6 +6035,8 @@ tn();trn("DATE field was drawn  hey   hey   hey   hey   hey   hey   hey   ");
         [self.tableView endUpdates];
 
      } // (indexPath.row == 5)     BIRTH INFORMATION   // "LABEl" for  time of birth information
+
+
 
 
 
@@ -6949,78 +6957,6 @@ trn("-------------------------------------------"); tn();
 } // viewWillDisappear
 
 
-// qOLD
-//
-//// this checker is called 
-////     after every gbl_checkCityPicklistTriggerEvery  seconds (from timer gbl_timerToCheckCityPicklistTrigger)
-////            use         current time                - gbl_timeOfCurrCityKeystroke to get interval since last keystroke
-////            instead of  gbl_timeOfCurrCityKeystroke - gbl_timeOfPrevCityKeystroke 
-////
-//-(void)checkCityPicklistTriggerEvery: (NSTimer*)argTimer
-//{
-//    NSLog(@"   in checkCityPicklistTriggerEvery    0.5 seconds are up now  ... ");
-////  NSLog(@"gbl_firstResponder_current =%@",gbl_firstResponder_current );
-////  NSLog(@"gbl_mycityInputView =%@",gbl_mycityInputView );
-////  NSLog(@"gbl_fewEnoughCitiesToMakePicklist =%ld",gbl_fewEnoughCitiesToMakePicklist );
-////  NSLog(@"gbl_justCancelledOutOfCityPicker =%ld",gbl_justCancelledOutOfCityPicker );
-////  NSLog(@"gbl_mycityInputView=%@",gbl_mycityInputView);
-////  NSLog(@"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
-////
-//
-//    if (  gbl_firstResponder_current == nil )                      {
-//trn(" NO PICKLIST PUT UP   NO NO NO   (gbl_firstResponder_current  = nil)");
-//        return;
-//    }
-//    if ([ gbl_firstResponder_current isEqualToString: @"name"] )   {
-//trn(" NO PICKLIST PUT UP   NO NO NO   (are in name field)");
-//        return;
-//    }
-//    if ([ gbl_firstResponder_current isEqualToString: @"date"] )   {
-//trn(" NO PICKLIST PUT UP   NO NO NO   (are in date field)");
-//        return;
-//    }
-//    if (  gbl_fewEnoughCitiesToMakePicklist == 0)                  {
-//trn(" NO PICKLIST PUT UP   NO NO NO   (too many cities)");
-//        return;
-//    }
-////    if ([ gbl_mycityInputView isEqualToString: @"keyboard"] )      return;
-////    if (  gbl_justCancelledOutOfCityPicker == 1)                   {
-////nbn(85);trn(" NO PICKLIST PUT UP   NO NO NO");
-////        return;
-////    }
-//    if (  gbl_mycityInputView == nil)                              {
-//trn(" NO PICKLIST PUT UP   NO NO NO   (gbl_mycityInputView  = nil)");
-//        return;
-//    }
-//
-//
-//
-//    CFTimeInterval timeRightNow       = CACurrentMediaTime();  // returns double CFTimeInterval
-//    gbl_secondsSinceCurrCityKeyStroke = timeRightNow - gbl_timeOfCurrCityKeystroke;  // CALC
-//
-////  NSLog(@"=====  SET INTERVAL2 ================== gbl_secondsSinceCurrCityKeyStroke =%g",gbl_secondsSinceCurrCityKeyStroke );
-////  NSLog(@"gbl_typedCharPrev=[%@]  gbl_typedCharCurr=[%@]",gbl_typedCharPrev, gbl_typedCharCurr);
-////  NSLog(@"============================================================");
-////tn();trn("CHECKDIFF CHECKDIFF CHECKDIFF CHECKDIFF CHECKDIFF   gbl_secondsSinceCurrCityKeyStroke ");
-////  NSLog(@"check  check      gbl_secondsSinceCurrCityKeyStroke =%g",gbl_secondsSinceCurrCityKeyStroke );
-////  NSLog(@"gbl_typedCharPrev=[%@]  gbl_typedCharCurr=[%@]",gbl_typedCharPrev, gbl_typedCharCurr);
-//
-//    if (gbl_secondsSinceCurrCityKeyStroke > gbl_secondsPauseInCityKeyStrokesToTriggerPicklist) { // checkdiff - put up city picklist
-//
-//        // if city picker is not up now, then put it up
-//        //
-//        if (! [ gbl_mycityInputView isEqualToString: @"picker" ] ) {
-//;     // = "keyboard" or "picker" (purpose is to reflect which one it is- not assigned)
-//trn("    PICKLIST PUT UP   YES YES YES");
-//            [ self putUpCityPicklist ];
-//        } else {
-//trn(" NO PICKLIST PUT UP   NO NO NO   (city picklist is up already)");
-//        }
-//    }
-//
-//
-//} // checkCityPicklistTriggerEvery
-//
 
 
 
@@ -8369,52 +8305,6 @@ return;  // for less test output
 @end
 
 
-
-
-//        NSIndexPath *indexPathLabelCity = [NSIndexPath indexPathForRow: 2 inSection: 0];
-//        NSIndexPath *indexPathLabelProv = [NSIndexPath indexPathForRow: 3 inSection: 0];
-//        NSIndexPath *indexPathLabelCoun = [NSIndexPath indexPathForRow: 4 inSection: 0];
-//        NSIndexPath *indexPathLabelCity = [NSIndexPath indexPathForRow: 5 inSection: 0];
-//        NSIndexPath *indexPathLabelProv = [NSIndexPath indexPathForRow: 6 inSection: 0];
-//        NSIndexPath *indexPathLabelCoun = [NSIndexPath indexPathForRow: 7 inSection: 0];
-//
-//        NSArray *indexPathsToUpdate = [NSArray arrayWithObjects: indexPathLabelCity, indexPathLabelProv, indexPathLabelCoun , nil];
-//
-
-
-//        NSIndexPath *indexPathLabelCityProvCoun = [NSIndexPath indexPathForRow: 3 inSection: 0];
-//
-//        NSArray *indexPathsToUpdate = [NSArray arrayWithObjects: indexPathLabelCityProvCoun, nil];
-//        [self.tableView beginUpdates];
-//        [self.tableView reloadRowsAtIndexPaths: indexPathsToUpdate
-//                              withRowAnimation: UITableViewRowAnimationNone ];
-//        [self.tableView endUpdates];
-//
-        // update place labels
-
-//        gbl_timeOfPrevCityKeystroke = gbl_timeOfCurrCityKeystroke; // set city keystroke interval times
-////        NSDate *timeNow             = [NSDate date];
-//        CFTimeInterval timeNow      = CACurrentMediaTime();  // returns double CFTimeInterval
-//        gbl_timeOfCurrCityKeystroke = timeNow;                     // set city keystroke interval times
-//
-
-//- (void)updateNameLabel
-//{
-//  NSLog(@"in updateNameLabel");
-//
-//    // update name label field  update field in cellForRowAtIndexpath
-//    //
-//    NSIndexPath *indexPathLabelCityProvCoun = [NSIndexPath indexPathForRow: 1 inSection: 0];
-//
-//    NSArray *indexPathsToUpdate = [NSArray arrayWithObjects: indexPathLabelCityProvCoun, nil];
-//    [self.tableView beginUpdates];
-//    [self.tableView reloadRowsAtIndexPaths: indexPathsToUpdate
-//                          withRowAnimation: UITableViewRowAnimationNone ];
-//    [self.tableView endUpdates];
-//
-//} // end of updateNameLabel
-//
-
 //  DEPRECATED in 9.0
 //
 //- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -8442,33 +8332,6 @@ return;  // for less test output
 //}
 //
 
-//    gbl_enteredCity = tmpArray3[0];
-//    gbl_enteredProv = tmpArray3[1];
-//    gbl_enteredCoun = tmpArray3[2];
-//NSString *gbl_initPromptName;  // for values, see appdel .m
-//NSString *gbl_initPromptCity;
-//NSString *gbl_initPromptProv;
-//NSString *gbl_initPromptCoun;
-//NSString *gbl_initPromptDate;
-
-//
-//  NSLog(@"-- USAGE  gbl_justCancelledOutOfCityPicker --  in  shouldChangeCharactersInRange --  set gbl_intervalBetweenLast2Keystrokes");
-////    if (gbl_justCancelledOutOfCityPicker == 1)   gbl_intervalBetweenLast2Keystrokes = 0.0;
-//    if (gbl_justCancelledOutOfCityPicker == 1) {
-////        gbl_intervalBetweenLast2Keystrokes = 0.0;
-//
-//
-//
-//  gbltmpint = gbl_justCancelledOutOfCityPicker ;
-//        gbl_justCancelledOutOfCityPicker = 0;    // turn it off here
-//  NSLog(@"--onc ----- USAGE gbl_justCancelledOutOfCityPicker ---------------- old=[%ld]  new=[%ld] ---", gbltmpint, gbl_justCancelledOutOfCityPicker );
-//
-//
-//
-//    } else {
-//        ;
-////        gbl_intervalBetweenLast2Keystrokes = gbl_timeOfCurrCityKeystroke - gbl_timeOfPrevCityKeystroke;  // CALC
-//    }
 
 // qOLD
 //  NSLog(@"=====  SET INTERVAL1  ================== gbl_intervalBetweenLast2Keystrokes=%g",gbl_intervalBetweenLast2Keystrokes);
@@ -8478,92 +8341,6 @@ return;  // for less test output
 //  NSLog(@"myTimeNow                          =%g",myTimeNow             );
 //  NSLog(@"============================================================");
 //
-
-
-//    if (gbl_justCancelledOutOfCityPicker == 1) {
-//nbn(601);
-//tn(); NSLog(@"cancel picker  cancel picker  cancel picker  cancel picker  cancel picker  gbl_justCancelledOutOfCityPicker=[%ld]",gbl_justCancelledOutOfCityPicker);
-//        
-//  NSLog(@"set textField.txt = gbl_myCitySoFar  xxxxxxxxx 556  xxxxxxxxx ");
-//
-//        textField.text = gbl_myCitySoFar;  // note that this just had final char chopped
-//
-//  NSLog(@"gbl_myCitySoFar=%@",gbl_myCitySoFar);
-//  NSLog(@"textField.text=[%@]",textField.text);
-//
-//        gbl_justCancelledOutOfCityPicker = 0;
-//  NSLog(@"JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ  gbl_justCancelledOutOfCityPicker =%ld",(long)gbl_justCancelledOutOfCityPicker );
-//
-//    } else {
-//
-//        && [textField.text          isEqualToString: @""  ]     // here first character typed for city is SPACE
-
-//  the 10 fields are:
-//            strcpy(psvName, csv_get_field(my_psv, "|", 1));
-//            strcpy(psvMth,  csv_get_field(my_psv, "|", 2));
-//            strcpy(psvDay,  csv_get_field(my_psv, "|", 3));
-//            strcpy(psvYear, csv_get_field(my_psv, "|", 4));
-//            strcpy(psvHour, csv_get_field(my_psv, "|", 5));
-//            strcpy(psvMin,  csv_get_field(my_psv, "|", 6));
-//            strcpy(psvAmPm, csv_get_field(my_psv, "|", 7));
-//            strcpy(psvCity, csv_get_field(my_psv, "|", 8));
-//            strcpy(psvProv, csv_get_field(my_psv, "|", 9));
-//            strcpy(psvCountry, csv_get_field(my_psv, "|", 10));
-//            ksn(psvMth);ks(psvDay);ks(psvYear);ks(psvHour);ks(psvMin);ks(psvAmPm);tn();
-//            ksn(psvCity);ks(psvProv);ks(psvCountry);tn();
-//            
-//            // get longitude and timezone hoursDiff from Greenwich
-//            // by looking up psvCity, psvProv, psvCountry
-//            //
-//            seq_find_exact_citPrvCountry(returnPSV, psvCity, psvProv, psvCountry);
-//            
-//            strcpy(psvHoursDiff,  csv_get_field(returnPSV, "|", 1));
-//            strcpy(psvLongitude,  csv_get_field(returnPSV, "|", 2));
-//
-
-
-//        UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 33, 44)];  // 3rd arg is horizontal length
-//        spaceView.backgroundColor = [UIColor redColor];
-//        UIBarButtonItem *mySpacerForTitle = [[UIBarButtonItem alloc] initWithCustomView: spaceView];
-//
-
-//
-//    UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 33, 44)];  // 3rd arg is horizontal length
-//    UIBarButtonItem *mySpacerForTitle = [[UIBarButtonItem alloc] initWithCustomView:spaceView];
-//
-//
-//    // TWO-LINE NAV BAR TITLE
-//    //
-//    dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
-//        self.navigationItem.rightBarButtonItem = _goToReportButton;
-//        self.navigationItem.titleView           = mySelDate_Label; // mySelDate_Label.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
-//        self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerForTitle];
-//    });
-//
-//
-//        UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 11, 44)];  // 3rd arg is horizontal length
-//        UIBarButtonItem *mySpacerForTitle = [[UIBarButtonItem alloc] initWithCustomView:spaceView];
-//
-//
-//            dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
-//                self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: shareButton];
-//                self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerForTitle];
-//                [self.navigationController.navigationBar setTranslucent:NO];
-//
-//
-//
-
-
-
-//        navCancelButton.title = @"Cancel";
-//        //        navAddButton.tintColor = [UIColor blackColor];   // colors text
-
-//    [UIBarButtonItem.appearance setBackButtonTitlePositionAdjustment:UIOffsetMake(0, 60) forBarMetrics: UIBarMetricsDefault];     // make all "Back" buttons have just the arrow
-//    [UIBarButtonItem.appearance setBackButtonTitlePositionAdjustment:UIOffsetMake(0, 60) forBarMetrics: UIBarMetricsLandscapePhone];     // make all "Back" buttons have just the arrow
-////        navCancelButton.title = @"Cancel";
-////    [UIBarButtonItem.appearance setTitle: @"Cancel" ];     // 
-//
-
 
 
 // qOLD
@@ -8876,65 +8653,6 @@ return;  // for less test output
 
 
 
-//; trn("kdkdkdkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
-//        if ([gbl_mycityInputView isEqualToString: @"picker"])   {     // = "keyboard" or "picker", default is KB
-//            gbl_mycitySearchString.inputView = [self pickerViewCity] ; 
-//; trn("kdkdkdkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
-//        }
-//        if ([gbl_mycityInputView isEqualToString: @"keyboard"]) {     // = "keyboard" or "picker", default is KB
-//            if (gbl_myCitySoFar != nil  &&  gbl_myCitySoFar.length > 0 ) {
-//                gbl_searchStringTitle.title = gbl_myCitySoFar;
-//            }
-//        }
-//
-
-// qOLD
-        // when entering city fld (didSelect row= 3), check title, set inputview accordingly
-        //
-//  NSLog(@"DANGER checking searchStringTitle !!");   // use  gbl_mycityInputView = "picker" instead ??
-//        if (   [gbl_searchStringTitle.title isEqualToString: @"Pick City" ] )  // DANGER this never is true 20150828
-
-
-
-//  NSLog(@"CALL  putUpCityPicklist    in showCityProvCountryForTypedInCity  !!");
-//        [ self putUpCityPicklist ];
-
-
-        // -2  means this keystroke satisfies criterion to put up a city picklist
-        //     (the number of cities found is <= gbl_numCitiesToTriggerPicklist)
-        //  
-        //    DO NOT suddenly put up city picklist right after keystroke  (too jarring).
-        //    We want to put up a picklist here BUT not to interrupt user typing valid city characters 
-        //  
-        //    Therefore enforce a waiting period of gbl_secondsPauseInCityKeyStrokesToTriggerPicklist 
-        //    between now and the last keystroke
-
-
-        // BUT  only if the user pauses typing for  gbl_secondsPauseInCityKeyStrokesToTriggerPicklist seconds 
-        // while user is typing search string for City
-        //
-        //
-        // BUT do NOT put up picklist here if the last 2 keystrokes were like this:
-        //     prev  keystroke was not eligible to put up picklist
-        //     curr  keystroke  IS     eligible to put up picklist
-        //     The idea is to allow user to continue typing valid keystrokes without
-        //     being interrupted by picklist suddenly without pause.
-
-
-// qOLD
-//
-////    gbl_secondsSinceLastCityKeyStroke = [timeRightNow  timeIntervalSinceDate: gbl_timeOfCurrCityKeystroke ];
-//tn();trn("CHECKDIFF CHECKDIFF CHECKDIFF CHECKDIFF CHECKDIFF   gbl_intervalBetweenLast2Keystrokes ");
-//  NSLog(@"check check    gbl_intervalBetweenLast2Keystrokes=%g",gbl_intervalBetweenLast2Keystrokes);
-//  NSLog(@"gbl_typedCharPrev=[%@]  gbl_typedCharCurr=[%@]",gbl_typedCharPrev, gbl_typedCharCurr);
-//
-//
-//        if ( gbl_intervalBetweenLast2Keystrokes > gbl_secondsPauseInCityKeyStrokesToTriggerPicklist )   // checkdiff - put up city picklist
-//        {
-//            [ self putUpCityPicklist ];
-//        }
-//
-
 
 //Since 1 second = 1000ms, [NSDate timeIntervalSinceDate:foo] * 1000 should be milliseconds. –  esqew Jul 22 '11 at 22:58
 
@@ -9001,87 +8719,6 @@ return;  // for less test output
 //        }
 
 
-//
-//    // make BG color of old     input field = white
-//    // make BG color of current input field = highlighted
-//    //
-//    NSArray *indexPathsToUpdate;
-//    NSIndexPath *indexPath_leaving;
-//    NSIndexPath *indexPath_goingto;
-//
-//    indexPath_leaving  = nil;
-//    indexPath_goingto  = nil;
-//    indexPathsToUpdate = nil;
-//
-//  NSLog(@"gbl_fieldTap_leaving =[%@]",gbl_fieldTap_leaving );
-// 
-//    if      (gbl_fieldTap_leaving == nil) {
-//nbn(360);
-//        ;  // do nothing
-//    } else {
-//nbn(361);
-//        if      ([gbl_fieldTap_leaving isEqualToString: @"name"]) indexPath_leaving = [NSIndexPath indexPathForRow: 1 inSection: 0];
-//        else if ([gbl_fieldTap_leaving isEqualToString: @"city"]) indexPath_leaving = [NSIndexPath indexPathForRow: 3 inSection: 0];
-//        else if ([gbl_fieldTap_leaving isEqualToString: @"date"]) indexPath_leaving = [NSIndexPath indexPathForRow: 5 inSection: 0];
-//  NSLog(@"indexPath_leaving =[%@]",indexPath_leaving );
-//
-//        if (indexPath_leaving != nil) {
-//nbn(362);
-//            indexPathsToUpdate = [NSArray arrayWithObjects: indexPath_leaving, nil];
-//            [self.tableView beginUpdates];
-//            [self.tableView reloadRowsAtIndexPaths: indexPathsToUpdate
-//                                  withRowAnimation: UITableViewRowAnimationNone ];
-//            [self.tableView endUpdates];
-//        }
-//    }
-//
-//    if      (gbl_fieldTap_goingto == nil) {
-//nbn(363);
-//        ;  // do nothing
-//    } else {
-//
-//nbn(364);
-//        if      ([gbl_fieldTap_goingto isEqualToString: @"name"]) indexPath_goingto = [NSIndexPath indexPathForRow: 1 inSection: 0];
-//        else if ([gbl_fieldTap_goingto isEqualToString: @"city"]) indexPath_goingto = [NSIndexPath indexPathForRow: 3 inSection: 0];
-//        else if ([gbl_fieldTap_goingto isEqualToString: @"date"]) indexPath_goingto = [NSIndexPath indexPathForRow: 5 inSection: 0];
-//  NSLog(@"gbl_fieldTap_goingto =[%@]",gbl_fieldTap_goingto );
-//  NSLog(@"indexPath_goingto =[%@]",indexPath_goingto );
-//
-//        if (indexPath_goingto != nil) {
-//nbn(365);
-//            indexPathsToUpdate = [NSArray arrayWithObjects: indexPath_goingto, nil];
-//            [self.tableView beginUpdates];
-//            [self.tableView reloadRowsAtIndexPaths: indexPathsToUpdate
-//                                  withRowAnimation: UITableViewRowAnimationNone ];
-//            [self.tableView endUpdates];
-//        }
-//nbn(366);
-//    }
-//nbn(367);
-//
-
-
-
-
-//    NSArray *indexPathsToUpdate = [NSArray arrayWithObjects: indexPath_leaving, indexPath_goingto, nil];
-
-
-//
-//                dispatch_async(dispatch_get_main_queue(), ^x  
-//                dispatch_sync(dispatch_get_main_queue(), ^{     // use  SYNC  so pgm does not continue until this alert is dismissed
-//nbn(4);
-//                    id rootViewController = [UIApplication sharedApplication].delegate.window.rootViewController;
-//nbn(5);
-//                    if([rootViewController isKindOfClass:[UINavigationController class]])
-//                    {
-//nbn(6);
-//                       rootViewController=[((UINavigationController *)rootViewController).viewControllers objectAtIndex:0];
-//nbn(7);
-//                    }
-//nbn(8);
-////                [rootViewController presentViewController:alertController animated:YES completion:nil];
-//                    [rootViewController presentViewController: myActionSheet animated:YES completion:nil];
-//
 
 
 
@@ -9141,96 +8778,5 @@ return;  // for less test output
 //
 //
 
-//<.>
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//
-//            cell.contentView.backgroundColor             = gbl_colorEditingBG_current;
-//            cell.selectionStyle                          = UITableViewCellSelectionStyleNone;
-//            gbl_whatMemberships.autocorrectionType       = UITextAutocorrectionTypeNo;
-//            gbl_whatMemberships.keyboardType             = UIKeyboardTypeASCIICapable; // disables emoji keyboard
-//            gbl_whatMemberships.backgroundColor          = gbl_colorEditingBGforInputField;
-//
-//textLabel.lineBreakMode = NSLineBreakByWordWrapping;
-//textLabel.numberOfLines = 0;
-//
-//            gbl_whatMemberships.text                     = @"xxyyyyyyyyy cc is a member of the following groups:  #allpeople, oijsdf, wewlwekjrl;, ciejjie, sodkfjok";
-//            gbl_whatMemberships.textColor                = [UIColor darkGrayColor];
-//
-//            gbl_whatMemberships.spellCheckingType        =   UITextSpellCheckingTypeNo;
-//
-//            gbl_whatMemberships.font                     = myFontMiddle;
-////            gbl_whatMemberships.borderStyle              = UITextBorderStyleRoundedRect;
-//            gbl_whatMemberships.borderStyle              = UITextBorderStyleNone;
-//            gbl_whatMemberships.textAlignment            = NSTextAlignmentLeft;
-//            gbl_whatMemberships.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-////            gbl_whatMemberships.tag                      = 1;
-//            gbl_whatMemberships.autocapitalizationType   = UITextAutocapitalizationTypeNone;
-//
-//            [cell addSubview: gbl_whatMemberships ];
-//        });
-//<.>
-//
 
-
-
-//
-//            // only show memberships in edit mode
-//            //
-//            gbl_whatMemberships.delegate  = self;
-//            if (   [gbl_homeEditingState  isEqualToString: @"add" ])   {
-//                gbl_whatMemberships.text  = @"";
-//            } else {
-//                gbl_whatMemberships.text  = @"mxxWWWWWiiiiiWWWlll cc is a member of the following groups:  #allpeople, oijsdf, wewlwekjrl;, ciejjie, sodkfjok, #allpeople2, oijsdf, wewlwekjrl;, ciejjie, sodkfjok, #allpeople3, oijsdf, wewlwekjrl;, ciejjie, sodkfjok, #allpeople4, oijsdf, wewlwekjrl;, ciejjie, sodkfjok, #allpeople5, oijsdf, wewlwekjrl;, ciejjie, sodkfjok, ";
-//            }
-//
-////            gbl_whatMemberships.allowsEditingTextAttributes =  NO;
-////            gbl_whatMemberships.selectable                  =  YES;
-////            gbl_whatMemberships.editable                    =  YES;
-//            gbl_whatMemberships.userInteractionEnabled      = YES;
-//            gbl_whatMemberships.scrollEnabled               = YES;
-//            gbl_whatMemberships.bounces                     = YES;
-//            gbl_whatMemberships.alwaysBounceVertical        = YES;
-//
-//
-////            gbl_whatMemberships.showsVerticalScrollIndicator = YES;
-////            gbl_whatMemberships.delaysContentTouches = NO;  // def is y
-//            gbl_whatMemberships.font             = myFontSmaller5;
-//            gbl_whatMemberships.textColor        = [UIColor darkGrayColor];
-//            gbl_whatMemberships.textAlignment    = NSTextAlignmentLeft;
-//
-////            gbl_whatMemberships.backgroundColor  = gbl_colorEditingBG_current;
-//            gbl_whatMemberships.backgroundColor  = [UIColor cyanColor];
-//
-
-
-//        // if current orientation is landscape, shift field into view
-//        //
-//        //  typedef enum : NSInteger {
-//        //     UIInterfaceOrientationUnknown            = UIDeviceOrientationUnknown,
-//        //     UIInterfaceOrientationPortrait           = UIDeviceOrientationPortrait,
-//        //     UIInterfaceOrientationPortraitUpsideDown = UIDeviceOrientationPortraitUpsideDown,
-//        //     UIInterfaceOrientationLandscapeLeft      = UIDeviceOrientationLandscapeRight,
-//        //     UIInterfaceOrientationLandscapeRight     = UIDeviceOrientationLandscapeLeft 
-//        //  } UIInterfaceOrientation;
-//        //
-//        NSInteger myOrientation = [UIApplication sharedApplication].statusBarOrientation;
-//  NSLog(@"myOrientation =%ld", (long)myOrientation );
-//        if (   myOrientation == UIInterfaceOrientationLandscapeLeft      
-//            || myOrientation == UIInterfaceOrientationLandscapeRight  
-//        ) {
-//            dispatch_async(dispatch_get_main_queue(), ^{        
-//                [self.tableView setContentOffset: CGPointMake(-44,0) animated:YES];
-//            });
-//        }
-//
-    
-//                //    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0, 10, 0, 0);
-//                //    CGRect paddedFrame = UIEdgeInsetsInsetRect(initialFrame, contentInsets);
-//                //    self.label = [[UILabel alloc] initWithFrame:paddedFrame];
-//                //
-////                CGRect initialFrame = CGRectMake(1.0, 1.0, 242.0, myLabelOriginalHeight + 2.0);
-//                CGRect initialFrame = CGRectMake(1.0, 1.0, 240.0, myLabelOriginalHeight);
-//                UIEdgeInsets contentInsets = UIEdgeInsetsMake(2, 2, 2, 2);
-//                CGRect paddedFrame = UIEdgeInsetsInsetRect(initialFrame, contentInsets);
-//
 
