@@ -1,0 +1,17 @@
+# Xcode
+#
+# gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
+# http://stackoverflow.com/questions/49478/git-ignore-file-for-xcode-projects?noredirect=1&lq=1
+
+## Xcode build files
+
+# NB: slash on the end, so we only remove the FOLDER, not any files that were badly named "DerivedData"
+DerivedData/
+
+# NB: slash on the end, so we only remove the FOLDER, not any files that were badly named "build"
+build/
+
+## OS X files
+.DS_Store
+
+# end of .gitignore
