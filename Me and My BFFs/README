@@ -1,0 +1,125 @@
+# end of github_README.txt
+
+
+Project Name:    meandmyBFFS
+
+Project description:
+  iPhone app for the astrology reports listed in README.txt
+
+Installation:
+  This repo is an XCODE project for an iPhone app.
+
+
+Usage:
+  Compile this XCODE project.
+  To bring the app to Android / PC / Mac etc, the background C code 
+  is re-usable but, obviously, the user interface must be redone.
+
+
+-------------------------------------------------------------------
+  TURNING OFF and ON  NSLog LOGGING FOR PRODUCTION
+-------------------------------------------------------------------
+    > in github folder "meandmyBFFs/Me and My BFFs/"
+    > in file "Me and My BFFs-Prefix.pch" 
+    > at the end of the file, there is this:
+
+      // UNCOMMENTING  the line below ( #define NSLog(...) )   TURNS OFF LOGGING  throughout the App
+      // #define NSLog(...)
+      // leaving the line above commented out   TURNS ON LOGGING  throughout the App
+-------------------------------------------------------------------
+
+
+-------------------------------------------------------------------
+  TURNING OFF and ON  rkdebug  log output for C
+-------------------------------------------------------------------
+    > in github folder "meandmyBFFs/Me and My BFFs/"
+    > around line 133,  there is this:
+      // int RKDEBUG=1;  /* set to 1 to turn off output in all these log functions */
+      int RKDEBUG=0;     /* set to 0 to turn on  output in all these log functions */
+-------------------------------------------------------------------
+
+
+-------------------------------------------------------------------
+  Here is  Text in the iPhone App Store for the "App Description"
+-------------------------------------------------------------------
+
+        Description
+          - will I have periods of stress in a given year?
+          - in a group, who am I most compatible with? 
+          - in a group, who are the best matched pair?
+          - Me and my BFFs have fun with astrology
+                   
+        CHECK IT OUT
+          - Calendar Year stress levels
+          - Personality Traits
+          - Compatibility Potential of two people
+          - Best Match for a Person in a Group
+          - in a Group, Best Matched Pair
+          - in a Group, Most Emotional Person
+          - in a Group, Most Down-to-earth
+          - in a Group, Most Passionate
+          - in a Group, Most Assertive
+          - in a Group, Most Restless
+          - What Color is Today for me?
+
+        DO STUFF
+          - Double check dating site matches
+          - Study human factors on sports teams
+          - Be a matchmaker - use reports "Best Match" and "Personality"
+          - Send any report as an email attachment - tap "Share"
+
+        ADVANCED ASTROLOGY MEASURES
+          - stress levels at a given time
+          - compatibility potential 
+          - personality traits
+-------------------------------------------------------------------
+
+
+
+
+  The Five SCREEN SHOTS in the App Store
+    > in github folder "meandmyBFFs/Me and My BFFs/Images.xcassets/"
+
+    > file "ScreenShot_1_of_5.imageset"
+    > file "ScreenShot_2_of_5.imageset"
+    > file "ScreenShot_3_of_5.imageset"
+    > file "ScreenShot_4_of_5.imageset"
+    > file "ScreenShot_5_of_5.imageset"
+
+
+
+Contributing:
+  Please clone this repo and maintain your version.
+
+
+History:
+  This project was a hobby effort done at home on evenings and weekends.
+  It spanned several decades from K&R C code to iPhone app.
+  Initial - 1982 IBM PC  - QUNIX operating system (now QNX)  - C compiler
+
+
+License:
+  MIT License
+
+  Copyright (c) 2017 softwaredev
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+
+
+# end of github_README.txt
