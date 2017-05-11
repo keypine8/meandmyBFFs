@@ -9,18 +9,17 @@
 
 
 ### Table of Contents  
-[5 Screen Shots for the iPhone App Store Product Page](#5 screen shots)
 [Suggested Text for use under App Description](#appdesc)
- ... [Check out Reports](#reportlist)
- ... [Do Stuff](#dostuff)
- ... [Advanced Astrology Measures](#measures)
-[Suggested Keywords](#suggestedkeywords)
-[Suggested App Categories](#suggestedcategories)
-[This Repo is all under the MIT License](#mitlicense)
-[Programming Notes](#usage)
-[Debug Logging Maintenance](#dbloggingmaint)
-[Contributing](#contributing)
-[History](#history)
+<br> ... [Check out Reports](#reportlist)
+<br> ... [Do Stuff](#dostuff)
+<br> ... [Advanced Astrology Measures](#measures)
+<br>[Suggested Keywords](#suggestedkeywords)
+<br>[Suggested App Categories](#suggestedcategories)
+<br>[This Repo is all under the MIT License](#mitlicense)
+<br>[Programming Notes](#usage)
+<br>[Debug Logging Maintenance](#dbloggingmaint)
+<br>[Contributing](#contributing)
+<br>[History](#history)
 
 
 <a name="5 screen shots"/>
