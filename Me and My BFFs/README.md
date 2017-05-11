@@ -47,20 +47,23 @@
 
 
 
-&nbsp;
+&nbsp; 
 
 
 <a name="appdesc"/>
+
+&nbsp; 
+
 ## Suggested Text for use under "App Description" <br> on the iPhone App Store Product Page
 
 * will I have periods of stress in a given year?
 * in a group, who am I most compatible with? 
 * in a group, who are the best matched pair?
 * Me and my BFFs have fun with astrology
-                   
-&nbsp
 
 <a name="reportlist"/>
+                   
+
 ###### CHECK OUT REPORTS 
 
 * Calendar Year stress levels
@@ -75,9 +78,11 @@
 * in a Group, Most Restless
 * What Color is Today for me?
 
-&nbsp
 
 <a name="dostuff"/>
+
+&nbsp; 
+
 ###### DO STUFF
 
 * Double check dating site matches
@@ -85,22 +90,24 @@
 * Be a matchmaker - use reports "Best Match" and "Personality"
 * Send any report as an email attachment - tap "Share"
 
-&nbsp
 
 <a name="measures"/>
+
+&nbsp; 
+
 ###### ADVANCED ASTROLOGY MEASURES
 
 * stress levels at a given time
 * compatibility potential 
 * personality traits
 
-&nbsp
+&nbsp; 
 
 <a name="suggestedkeywords"/>
 ## Suggested Keywords
 astrology,women,woman,female,BFF,compatibility,group,best,match,personality,stress,calendar,year
 
-&nbsp
+&nbsp; 
 
 <a name="suggestedcategories"/>
 ## Suggested App Categories
@@ -108,7 +115,7 @@ astrology,women,woman,female,BFF,compatibility,group,best,match,personality,stre
 2. Lifestyle
 3. Social Networking
 
-&nbsp
+&nbsp; 
 
 <a name="mitlicense"/>
 ## This Repo is all under the MIT License
@@ -136,7 +143,7 @@ astrology,women,woman,female,BFF,compatibility,group,best,match,personality,stre
   SOFTWARE.
 
 
-&nbsp
+&nbsp; 
 
 <a name="usage"/>
 ## Programming Notes
@@ -156,7 +163,7 @@ from jan - dec instead of 2 graphs jan - jun and jul - dec.  Too wide.
 The app icon image (example at top) is licensed under a Creative Commons
 Attribution-Share Alike 4.0 International license.  (cc-by-sa)
 
-&nbsp
+&nbsp; 
 
 <a name="dbloggingmaint"/>
 ## Debug Logging Maintenance
@@ -169,7 +176,7 @@ Attribution-Share Alike 4.0 International license.  (cc-by-sa)
       // #define NSLog(...)
       // leaving the line above commented out   TURNS ON LOGGING  throughout the App
 
-&nbsp
+&nbsp; 
 
 ######  TURNING OFF and ON logging output for rkdebug C logging functions
     > in github folder "meandmyBFFs/Me and My BFFs/"
@@ -178,13 +185,13 @@ Attribution-Share Alike 4.0 International license.  (cc-by-sa)
       // int RKDEBUG=1;  /* set to 1 to turn off output in all these log functions */
       int RKDEBUG=0;     /* set to 0 to turn on  output in all these log functions */
 
-&nbsp
+&nbsp; 
 
 <a name="contributing"/>
 ## Contributing
   Please clone this repo and maintain your version.
 
-&nbsp
+&nbsp; 
 
 <a name="history"/>
 ## History
