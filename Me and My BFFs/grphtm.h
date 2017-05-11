@@ -23,7 +23,7 @@
 // SOFTWARE.
 //
 
-// char g_my_aspect_text[512];
+// char g_my_aspect_text[512];   // kkk
 char g_my_aspect_text[4048];
 
 struct g_aspect {
@@ -139,7 +139,7 @@ struct g_aspect {
   {"c04c07",  "^^(A) perceives that ^^(B) is emotionally restricted for some reason."},
   {"c04c08",  "In love you likely had a sudden attraction and maybe some exciting adventure.  Beware of a short-lived infatuation.   You could have sudden good luck in money."},
   {"c04c09",  "You have a strong emotional understanding.  A partnership in creative projects can do well."},
-  {"c04c10",  "In a romantic relationship you have an intense attraction.  This is also a good indicator for business partnerships also."},
+  {"c04c10",  "In a romantic relationship you have an intense attraction.  This is also a good indicator for business partnerships."},
   {"c04g01",  "You have a good indication for romantic compatibility.  You enjoy each other's company and share many interests, including children or show business.  In a business relationship dealings are favoured in entertainment, sports or luxury items."},
   {"c04g02",  "Your domestic or emotional relationship shows a strong bond between you.  This is a good indicator of luck in love.  You could have many pleasant times together, especially in the arts."},
   {"c04g03",  "Your relationship is generally happy and cheerful. You communicate  well, especially about creative activities."},
@@ -149,7 +149,7 @@ struct g_aspect {
   {"c04g07",  "There is a strong sense of loyalty in the relationship.  This is ideal for a parent-child relationship, especially if ^^(B) were the parent."},
   {"c04g08",  "In love you likely had a sudden attraction and maybe some exciting adventure.  Joint projects in electronic art can be good.  You could have sudden good luck in money."},
   {"c04g09",  "You have a strong emotional understanding.  A partnership in creative projects can do well."},
-  {"c04g10",  "In a romantic relationship you have an intense attraction.  This is also a good indicator for business partnerships also."},
+  {"c04g10",  "In a romantic relationship you have an intense attraction.  This is also a good indicator for business partnerships."},
   {"c05b01",  "Impulsive behavior and temper flare-ups can cause a lot of trouble, especially from ^^(A)."},
   {"c05b02",  "There is an unfortunate situation where ^^(Ap) overly forceful actions will cause trouble and ^^(Bp) emotional weakness is painfully evident in comparison with ^^(A)."},
   {"c05b03",  "You will have plenty of arguments and sharp-tongued attacks.   ^^(B) will look on ^^(A) as too harsh and argumentative, while ^^(A) will look on ^^(B) as all talk and no action."},
@@ -248,12 +248,12 @@ struct g_aspect {
   {"c10c01",  "There could be a clash of wills.  ^^(A) could try to transform ^^(B).  It will take some doing to respect each other's freedom."},
   {"c10c02",  "The great power of ^^(A) can threaten ^^(Bp) sensitivity."},
   {"c10c03",  "There could be a tendency for ^^(A) to dominate the decisions of ^^(B).  In any case there is a strong mental bond."},
-  {"c10c04",  "In a romantic relationship you have an intense attraction.  This is also a good indicator for business partnerships also."},
+  {"c10c04",  "In a romantic relationship you have an intense attraction.  This is also a good indicator for business partnerships."},
   {"c10c05",  "You can work well together in police work, private investigation or science."},
   {"c10g01",  "^^(A) can bring money to the relationship or the ability to turn a business around."},
   {"c10g02",  "The great power of ^^(A) can threaten ^^(Bp) sensitivity, although ^^(A) can help ^^(B) in any self-improvement."},
   {"c10g03",  "You can do very well in combined research or investigation."},
-  {"c10g04",  "In a romantic relationship you have an intense attraction.  This is also a good indicator for business partnerships also."},
+  {"c10g04",  "In a romantic relationship you have an intense attraction.  This is also a good indicator for business partnerships."},
   {"c10g05",  "You can work well together in police work, private investigation or science."}
 };
 
