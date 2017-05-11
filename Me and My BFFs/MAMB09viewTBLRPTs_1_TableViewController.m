@@ -29,7 +29,7 @@
 #import "MAMB09viewTBLRPTs_1_TableViewController.h"
 #import "MAMB09_viewHTMLViewController.h"
 #import "mamblib.h"
-#import "MAMB09AppDelegate.h"   // to get globals
+#import "MAMB09AppDelegate.h"   // to get globals   mmm
 
 
 @interface MAMB09viewTBLRPTs_1_TableViewController ()
@@ -5997,7 +5997,12 @@ NSLog(@"gbl_TBLRPTS1_saveSelectedIndexPath.row=%ld",(long)gbl_TBLRPTS1_saveSelec
             myNavBarTitle = @"Best Match";
 
             dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+
+
+
                 self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: shareButton];
+
+
                 self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerForTitle];
                 [self.navigationController.navigationBar setTranslucent:NO];
 
@@ -6084,10 +6089,25 @@ NSLog(@"gbl_TBLRPTS1_saveSelectedIndexPath.row=%ld",(long)gbl_TBLRPTS1_saveSelec
             myNavBarLabel.adjustsFontSizeToFitWidth = YES;
             [myNavBarLabel sizeToFit];
 
+b(233);
             dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
                 self.navigationItem.titleView = myNavBarLabel; // myNavBarLabel.layer.borderWidth = 2.0f;  // TEST VISIBLE LABEL
-                self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: shareButton];
+
+
+
 //                self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerForTitle];
+//                self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: shareButton];
+                if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgby"]) {
+b(234);
+                  // DO NOT add the share button  (cannot get mail  to work for it - HTML file length = 0)
+                } else {
+                  // add the share button
+                  self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: shareButton];
+                }
+
+
+
+
                 [self.navigationController.navigationBar setTranslucent:NO];
 
                 // How to hide iOS7 UINavigationBar 1px bottom line
@@ -7736,8 +7756,8 @@ kin(lcl_group_report_output_idx);
 -(IBAction)shareButtonAction:(id)sender
 {
 tn();    NSLog(@"in shareButtonAction!  in MAMB09viewTBLRPTs_1_TableViewController ");
-//  NSLog(@"gbl_currentMenuPlusReportCode   =[%@]",gbl_currentMenuPlusReportCode       );
-//  NSLog(@"gbl_pathToFileToBeEmailed       =[%@]",gbl_pathToFileToBeEmailed );
+  NSLog(@"gbl_currentMenuPlusReportCode   =[%@]",gbl_currentMenuPlusReportCode       );
+  NSLog(@"gbl_pathToFileToBeEmailed       =[%@]",gbl_pathToFileToBeEmailed );
     
 
     MFMailComposeViewController *myMailComposeViewController;
@@ -7793,6 +7813,20 @@ NSLog(@"HTMLfileData.length=%lu",(unsigned long)HTMLfileData.length);
 
         myEmailMessage = [NSString stringWithFormat: @"\n\"Best Match for %@  in Group %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.",
            gbl_lastSelectedPerson,
+           gbl_lastSelectedGroup
+        ];
+        NSLog(@"myEmailMessage=%@",myEmailMessage);
+    }
+
+
+tn();trn("before homgby mail ");
+    if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgby" ] // Best year group report
+    ) {
+tn();trn("inside homgby mail ");
+        NSLog(@"gbl_person_name=%@",gbl_person_name);
+        NSLog(@"myEmailMessage=%@",myEmailMessage);
+
+        myEmailMessage = [NSString stringWithFormat: @"\n\"Best Year in Group %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.",
            gbl_lastSelectedGroup
         ];
         NSLog(@"myEmailMessage=%@",myEmailMessage);
