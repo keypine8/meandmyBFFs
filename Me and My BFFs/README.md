@@ -104,12 +104,14 @@
 &nbsp; 
 
 <a name="suggestedkeywords"/>
+
 ## Suggested Keywords
 astrology,women,woman,female,BFF,compatibility,group,best,match,personality,stress,calendar,year
 
 &nbsp; 
 
 <a name="suggestedcategories"/>
+
 ## Suggested App Categories
 1. Entertainment
 2. Lifestyle
@@ -118,6 +120,7 @@ astrology,women,woman,female,BFF,compatibility,group,best,match,personality,stre
 &nbsp; 
 
 <a name="mitlicense"/>
+
 ## This Repo is all under the MIT License
 
   MIT License
@@ -146,6 +149,7 @@ astrology,women,woman,female,BFF,compatibility,group,best,match,personality,stre
 &nbsp; 
 
 <a name="usage"/>
+
 ## Programming Notes
 
 30,000+ lines of C code in this repo produce the HTML reports and data for the
@@ -166,6 +170,7 @@ Attribution-Share Alike 4.0 International license.  (cc-by-sa)
 &nbsp; 
 
 <a name="dbloggingmaint"/>
+
 ## Debug Logging Maintenance
 ######  TURNING OFF and ON logging output for NSLog logging 
     > in github folder "meandmyBFFs/Me and My BFFs/"
@@ -188,12 +193,14 @@ Attribution-Share Alike 4.0 International license.  (cc-by-sa)
 &nbsp; 
 
 <a name="contributing"/>
+
 ## Contributing
   Please clone this repo and maintain your version.
 
 &nbsp; 
 
 <a name="history"/>
+
 ## History
   This project was a hobby effort done at home on evenings and weekends.
   It spanned a many years from C code project to iPhone app.
