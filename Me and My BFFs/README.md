@@ -1,14 +1,3 @@
-[comment]: <> ( >>>>>>> ![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "App Icon for iPhone App Me&myBFFs"))
-
-[comment]: <> ( >>>>>>> ![alt text](https://github.com/keypine8/meandmyBFFs/Me and My BFFs/Images.xcassets/Icon.imageset/icon_MAMB09_0114.png "App Icon for iPhone App Me&myBFFs"))
-
-[comment]: <> ( >>>>>>> ![alt text](https://github.com/keypine8/raw/master/meandmyBFFs/Me and My BFFs/Images.xcassets/Icon.imageset/icon_MAMB09_0114.png "App Icon for iPhone App Me&myBFFs"))
-
-[comment]: <> ( >>>>>>> ![alt text](https://github.com/keypine8/meandmyBFFs/raw/master/Me and My BFFs/Images.xcassets/Icon.imageset/icon_MAMB09_0114.png "App Icon for iPhone App Me&myBFFs"))
-
-[comment]: <> ( >>>>>>> ![alt text](https://github.com/keypine8/meandmyBFFs/Me and My BFFs/raw/master/Images.xcassets/Icon.imageset/icon_MAMB09_0114.png "App Icon for iPhone App Me&myBFFs"))
-
-
 # README.md for github Repo meandmyBFFs 
 
 
