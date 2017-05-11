@@ -1191,21 +1191,24 @@ tn();tr("closeness doclin=");ksn(doclin);
 
     gbl_we_are_in_PRE_block = 1;  /* true */
 
-    g_fn_prtlin("                                                       ");
-    g_fn_prtlin("                       How Much                        ");
-    g_fn_prtlin("                of each influence below                ");
-    g_fn_prtlin("                  is fully expressed?                  ");
-    g_fn_prtlin("                           |                           ");
+//    g_fn_prtlin("                                                       ");
+//    g_fn_prtlin("                       How Much                        ");
+//    g_fn_prtlin("                of each influence below                ");
+//    g_fn_prtlin("                  is fully expressed?                  ");
+//    g_fn_prtlin("                           |                           ");
 
 //  g_fn_prtlin("<div class=\"linehite_0050\">  <span class=\"cRed\">                         </span>|<span class=\"cGre\">                         </span>  ");
 //  g_fn_prtlin("  <span class=\"cRed\">100%                   0%</span>|<span class=\"cGre\">0%                   100%</span>  </div>");
 
-    g_fn_prtlin("<div class=\"linehite_0050\"> |<span class=\"cRed\">                         </span>|<span class=\"cGre\">                         </span>| ");
-    g_fn_prtlin(" |<span class=\"cRed\">100%                   0%</span>|<span class=\"cGre\">0%                   100%</span>| </div>");
+
+
+//    g_fn_prtlin("<div class=\"linehite_0050\"> |<span class=\"cRed\">                         </span>|<span class=\"cGre\">                         </span>| ");
+//    g_fn_prtlin(" |<span class=\"cRed\">100%                   0%</span>|<span class=\"cGre\">0%                   100%</span>| </div>");
 
 
     gbl_we_are_in_PRE_block = 0;  /* false */
-    g_fn_prtlin("<br><br><br></pre>");
+//    g_fn_prtlin("<br><br><br></pre>");
+    g_fn_prtlin("<br></pre>");
 
 
     // here we start pco DETAIL paragraphs   YYYYYYYYYYYYY  browser version  YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY DO PARAGRAPHS HERE 
@@ -1228,9 +1231,10 @@ tn();tr("closeness doclin=");ksn(doclin);
       
       strcpy(gbl_aspect_code, doclin);
       g_fn_browser_aspect_text(gbl_aspect_code); /* output the aspect text */
+
+//    g_fn_prtlin("<div><br></div>");
       
     }  /* read and print aspects until we hit [end_aspects] */
-
 
 
   /*   gbl_we_are_in_PRE_block = 0; */
@@ -1242,7 +1246,7 @@ tn();tr("closeness doclin=");ksn(doclin);
     }
 
     gbl_we_are_in_PRE_block = 0;
-    g_fn_prtlin("</pre>");
+//    g_fn_prtlin("</pre>");
 
 
   } // browser version
@@ -1342,7 +1346,9 @@ tn();tr("closeness doclin=");ksn(doclin);
   else
   {  // start browser version   ----------------------------------------------------------------
 
-    g_fn_prtlin("<div><br><br></div>");
+//    g_fn_prtlin("<div><br><br></div>");
+
+trn("browser good relationship #1");
 
     g_fn_prtlin("<pre>");
     gbl_we_are_in_PRE_block = 1; /* 1 = yes, 0 = no */
@@ -1371,12 +1377,14 @@ tn();tr("closeness doclin=");ksn(doclin);
     g_fn_prtlin("</pre>");
 
 
+trn("browser good relationship #2");
 //    sprintf(writebuf, "<h5><br><br>produced by iPhone app %s</h5>", APP_NAME);
 //    g_fn_prtlin(writebuf);
 //    g_fn_prtlin("<h4><span style=\"background-color:#FFBAC7;\">&nbspThis report is for entertainment purposes only.&nbsp</span></h4>");
 
     g_fn_prtlin("<div> <span style=\"font-size: 1.0em\"><br>produced by iPhone app Me and my BFFs</span><br><br><span style=\"font-size: 0.9em; font-weight: bold; color:#FF0000;\">This report is for entertainment purposes only.</span></div><div><br></div>");
 
+trn("browser good relationship #3");
     g_fn_prtlin("\n</body>\n");
     g_fn_prtlin("</html>");
 
@@ -1436,7 +1444,7 @@ ksn(in_doclin);
 */
 void put_category_label(char *category_text, int inlen) 
 {
-//tn();trn("CATEGORY OUTPUT"); ks(category_text);ki(inlen);
+tn();trn("CATEGORY OUTPUT"); ks(category_text);ki(inlen);
 //  int len_label, num_spaces_at_end;
   int            num_spaces_at_end;
   char sformat[32], category_with_span[256];
@@ -1444,8 +1452,8 @@ void put_category_label(char *category_text, int inlen)
 /*   num_spaces_at_end = 92 - 13 - len_label + 1; */
 /*   len_label = strlen(category_text); */
 /*   num_spaces_at_end = 82 - 2 - len_label; */
-
   num_spaces_at_end = 82 - 2 - inlen;
+kin(num_spaces_at_end );
   sprintf(category_with_span,"<span class=\"cCat\">%s</span>", category_text);
 
   /* sformat is like "%13s%s%37s" where 37 is num_spaces_at_end
@@ -1462,7 +1470,17 @@ void put_category_label(char *category_text, int inlen)
 //  strcpy(side_right, "</td></tr>");
 
 //  strcpy(side_left,  "<tr><td style=\"text-align: left; line-height: 1.8;\"><span style=\"font-size: 1.2em; font-weight: bold;\">");
-  strcpy(side_left,  "<tr><td style=\"text-align: left;                 ;\"><span style=\"font-size: 1.2em; font-weight: bold;\">");
+
+
+
+
+//  strcpy(side_left,  "<tr><td style=\"text-align: left;                 ;\"><span style=\"font-size: 1.2em; font-weight: bold;\">");
+//  strcpy(side_left,  "<tr><td                                              ><span style=\"font-size: 1.2em; font-weight: bold;\">");
+    strcpy(side_left,  "<tr><td style=\"text-align: center;                 ;\"><span style=\"font-size: 1.2em; font-weight: bold;\">");
+
+
+
+
   strcpy(side_right, "</span></td></tr>");
 
 
@@ -1479,15 +1497,21 @@ void put_category_label(char *category_text, int inlen)
     );
 
   } else {
-    sprintf(sformat, "%%s%%2s%%s%%%ds%%s",  num_spaces_at_end);
-    sprintf(writebuf, sformat,
-      side_left,
-      " ",
-      category_with_span,
-      " ",
-      side_right
-    );
+//    sprintf(sformat, "%%s%%2s%%s%%%ds%%s",  num_spaces_at_end);
+//    sprintf(writebuf, sformat,
+//      side_left,
+//      " ",
+//      category_with_span,
+//      " ",
+//      side_right
+//    );
 //tn();trn("LABEL=");ks(writebuf);
+
+// eg below
+//<tr><td style="text-align: center;                 ;"><span style="font-size: 1.2em; font-weight: bold;">  <span class="cCat">CLOSENESS </span>                                                                      </span></td></tr>
+
+    sprintf(writebuf, "<br><tr><td style=\"text-align: center;\"><span style=\"font-size: 1.2em; font-weight: bold;\">  <span class=\"cCat\">%s</span></span></td></tr>",  category_text);
+
   }
 
 
@@ -1530,12 +1554,12 @@ int make_html_file_trait_rank( /* in grphtm.c */
 
   strcpy(gbl_gfnameHTML, in_html_filename);
 
-/* trn("in make_html_file_trait_rank() 1"); */
-  /* ksn(group_name); ki(num_persons_in_grp); ks(trait_name);
-  * ksn(in_html_filename); 
-  * ki(in_trait_lines_last_idx);
-  * ksn(grp_average_trait_scores_csv); 
-  */
+trn("in make_html_file_trait_rank() 1");
+ ksn(group_name); ki(num_persons_in_grp); ks(trait_name);
+ksn(in_html_filename); 
+ki(in_trait_lines_last_idx);
+ksn(grp_average_trait_scores_csv); 
+
 
   strcpy(gbl_format_as, "trait rank");
 /* b(30);ksn(trait_name); */
@@ -1746,10 +1770,12 @@ int make_html_file_trait_rank( /* in grphtm.c */
         continue;
       } else {
 //        g_fn_prtlin( "<tr class=\"cGr2\"><td></td><td></td><td> 90 </td><td>Very High</td></tr>");
-        if (i % 2 == 0)
-          g_fn_prtlin( "<tr class=\"cPerGreen1\"><td></td><td></td><td> 90 </td><td>Very High</td></tr>");
-        else
-          g_fn_prtlin( "<tr class=\"cPerGreen2\"><td></td><td></td><td> 90 </td><td>Very High</td></tr>");
+//        if (i % 2 == 0)
+//          g_fn_prtlin( "<tr class=\"cPerGreen1\"><td></td><td></td><td> 90 </td><td>Very High</td></tr>");
+//        else
+//          g_fn_prtlin( "<tr class=\"cPerGreen2\"><td></td><td></td><td> 90 </td><td>Very High</td></tr>");
+
+        g_fn_prtlin( "<tr class=\"cPerGreen1\"><td></td><td></td><td> 90 </td><td>Very High</td></tr>");
         continue;
       }
     }
@@ -1764,10 +1790,12 @@ int make_html_file_trait_rank( /* in grphtm.c */
         g_fn_prtlin( "<tr class=\"cGre\"><td></td><td></td><td> 75 </td><td>Good</td></tr>");
         continue;
       } else {
-        if (i % 2 == 0)
-          g_fn_prtlin( "<tr class=\"cPerGreen1\"><td></td><td></td><td> 75 </td><td>Good</td></tr>");
-        else
-          g_fn_prtlin( "<tr class=\"cPerGreen2\"><td></td><td></td><td> 75 </td><td>Good</td></tr>");
+//        if (i % 2 == 0)
+//          g_fn_prtlin( "<tr class=\"cPerGreen1\"><td></td><td></td><td> 75 </td><td>Good</td></tr>");
+//        else
+//          g_fn_prtlin( "<tr class=\"cPerGreen2\"><td></td><td></td><td> 75 </td><td>Good</td></tr>");
+
+        g_fn_prtlin( "<tr class=\"cPerGreen2\"><td></td><td></td><td> 90 </td><td>Good</td></tr>");
         continue;
       }
     }
@@ -1781,10 +1809,12 @@ int make_html_file_trait_rank( /* in grphtm.c */
         g_fn_prtlin( "<tr class=\"cNeu\"><td></td><td></td><td> 50 </td><td>Average</td></tr>");
         continue;
       } else {
-        if (i % 2 == 0)
-          g_fn_prtlin( "<tr class=\"cPerGreen1\"><td></td><td></td><td> 50 </td><td>Average</td></tr>");
-        else
-          g_fn_prtlin( "<tr class=\"cPerGreen2\"><td></td><td></td><td> 50 </td><td>Average</td></tr>");
+//        if (i % 2 == 0)
+//          g_fn_prtlin( "<tr class=\"cPerGreen1\"><td></td><td></td><td> 50 </td><td>Average</td></tr>");
+//        else
+//          g_fn_prtlin( "<tr class=\"cPerGreen2\"><td></td><td></td><td> 50 </td><td>Average</td></tr>");
+
+        g_fn_prtlin( "<tr class=\"cPerGreen1\"><td></td><td></td><td> 90 </td><td>Average</td></tr>");
         continue;
       }
     }
@@ -1799,10 +1829,12 @@ int make_html_file_trait_rank( /* in grphtm.c */
         g_fn_prtlin( "<tr class=\"cRed\"><td></td><td></td><td> 25 </td><td>Stress</td></tr>");
         continue;
       } else {
-        if (i % 2 == 0)
-          g_fn_prtlin( "<tr class=\"cPerGreen1\"><td></td><td></td><td> 25 </td><td>Low</td></tr>");
-        else
-          g_fn_prtlin( "<tr class=\"cPerGreen2\"><td></td><td></td><td> 25 </td><td>Low</td></tr>");
+//        if (i % 2 == 0)
+//          g_fn_prtlin( "<tr class=\"cPerGreen1\"><td></td><td></td><td> 25 </td><td>Low</td></tr>");
+//        else
+//          g_fn_prtlin( "<tr class=\"cPerGreen2\"><td></td><td></td><td> 25 </td><td>Low</td></tr>");
+
+        g_fn_prtlin( "<tr class=\"cPerGreen2\"><td></td><td></td><td> 90 </td><td>Low</td></tr>");
         continue;
       }
     }
@@ -1816,10 +1848,12 @@ int make_html_file_trait_rank( /* in grphtm.c */
         g_fn_prtlin( "<tr class=\"cRe2\"><td></td><td></td><td> 10 </td><td>OMG</td></tr>");
         continue;
       } else {
-        if (i % 2 == 0)
-          g_fn_prtlin( "<tr class=\"cPerGreen1\"><td></td><td></td><td> 10 </td><td>Very Low</td></tr>");
-        else
-          g_fn_prtlin( "<tr class=\"cPerGreen2\"><td></td><td></td><td> 10 </td><td>Very Low</td></tr>");
+//        if (i % 2 == 0)
+//          g_fn_prtlin( "<tr class=\"cPerGreen1\"><td></td><td></td><td> 10 </td><td>Very Low</td></tr>");
+//        else
+//          g_fn_prtlin( "<tr class=\"cPerGreen2\"><td></td><td></td><td> 10 </td><td>Very Low</td></tr>");
+
+        g_fn_prtlin( "<tr class=\"cPerGreen1\"><td></td><td></td><td> 90 </td><td>Very Low</td></tr>");
         continue;
       }
     }
@@ -1882,10 +1916,20 @@ int make_html_file_trait_rank( /* in grphtm.c */
           in_trait_lines[i]->score >  10) strcpy(rowcolor, " class=\"cRed\"");
       if (in_trait_lines[i]->score <= 10) strcpy(rowcolor, " class=\"cRe2\"");
     } else {
-      if (i % 2 == 0)  // alternate colors
-        strcpy(rowcolor, " class=\"cPerGreen1\"");
-      else
-        strcpy(rowcolor, " class=\"cPerGreen2\"");
+//      if (i % 2 == 0)  // alternate colors
+//        strcpy(rowcolor, " class=\"cPerGreen1\"");
+//      else
+//        strcpy(rowcolor, " class=\"cPerGreen2\"");
+
+      if (in_trait_lines[i]->score >= 90) strcpy(rowcolor, " class=\"cPerGreen1\"");
+      if (in_trait_lines[i]->score <  90 &&
+          in_trait_lines[i]->score >= 75) strcpy(rowcolor, " class=\"cPerGreen2\"");
+      if (in_trait_lines[i]->score <  75 &&
+          in_trait_lines[i]->score >  25) strcpy(rowcolor, " class=\"cPerGreen1\"");
+      if (in_trait_lines[i]->score <= 25 &&
+          in_trait_lines[i]->score >  10) strcpy(rowcolor, " class=\"cPerGreen2\"");
+      if (in_trait_lines[i]->score <= 10) strcpy(rowcolor, " class=\"cPerGreen1\"");
+
     }
 
 
@@ -3197,9 +3241,10 @@ void put_top_of_html_group_rpt(char *group_name) {
 //    g_fn_prtlin( "    .cPerGreen2 {background-color: #dfffbb;}"); 
 
 //    g_fn_prtlin( "    .cPerGreen1 {background-color: #d3ffa5;}");  // same
-    g_fn_prtlin( "    .cPerGreen1 {background-color: #f0f8ff;}");  // same
+
+    g_fn_prtlin( "    .cPerGreen1 {background-color: #f0f8ff;}");  // alternating light blue and a little darker blue
 //    g_fn_prtlin( "    .cPerGreen2 {background-color: #d3ffa5;}"); // same
-    g_fn_prtlin( "    .cPerGreen2 {background-color: #c0e0ff;}"); // same
+    g_fn_prtlin( "    .cPerGreen2 {background-color: #c0e0ff;}");  // alternating light blue and a little darker blue
 
   } else {
 
@@ -4770,14 +4815,15 @@ return;  // now rpt is tblrpt, not html
 /* ************************************************************
 *
 * ************************************************************/
-void g_fn_browser_aspect_text(char *in_aspect_code) {
+void g_fn_browser_aspect_text(char *in_aspect_code)
+{
   int nn;
   char aspcodeToSearch[32], possessiveA[64], possessiveB[64], lastchar; 
   char oldAspCode[32];
   char numplusminus[32];
 
-//trn("in g_fn_browser_aspect_text()"); 
-
+trn("in g_fn_browser_aspect_text()"); 
+ksn(in_aspect_code);
   // get old gP_ITEM_TBL from PSV
   //
   strcpy(oldAspCode,   csv_get_field(in_aspect_code, "|", 1) );
@@ -4838,17 +4884,29 @@ void g_fn_browser_aspect_text(char *in_aspect_code) {
 
   strcpy(redgre_beg, "<table class=\"center\"><tr><td><p>");
  
+
+
 //    strcpy(redgre_end, "</p></td></tr><br></table>");
-    strcpy(redgre_end, "</p></td></tr>");
+//    strcpy(redgre_end, "</p></td></tr>");
+//    strcpy(redgre_end, "</p></td></tr><br></table>");
+    strcpy(redgre_end, "</p></td></tr></table>");
+
+
 //  sprintf(writebuf, "  %s%s%s\n", redgre_beg, g_my_aspect_text, redgre_end);
+//  sprintf(writebuf, "%s%s%s\n", redgre_beg, g_my_aspect_text, redgre_end);
   sprintf(writebuf, "%s%s%s\n", redgre_beg, g_my_aspect_text, redgre_end);
 
+ksn(writebuf);
   g_fn_prtlin(writebuf);
 
 //    g_fn_prtlin("<div class=\"linehite_0050\">                 <span class=\"cRed\">_                            _</span>       ");
 //    g_fn_prtlin("        and the  <span class=\"cRed\"> challenging influences  ---  </span>      </div>");
 
-   prtRedGreenPlusMinus(atoi(numplusminus), 0); // 0 = no, not webview
+
+// abandon prtRedGreenPlusMinus   2017 05   too complex
+//   prtRedGreenPlusMinus(atoi(numplusminus), 0); // 0 = no, not webview
+
+
 
 }  /* end of g_fn_browser_aspect_text(); */
 
