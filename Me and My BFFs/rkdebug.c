@@ -128,8 +128,8 @@ void tr (char *srk);
 void Xtr(char *srk);
 
 
-// int RKDEBUG=0;  /* =0 turns off output in all these debug functions */
-int RKDEBUG=1;  /* =1 turns on   output in all these debug functions */
+int RKDEBUG=0;  /* =0 turns off output in all rkdebug.c logging functions */
+// int RKDEBUG=1;  /* =1 turns on   output in all rkdebug.c logging functions */
 
 void tspec(void) { } 
 
