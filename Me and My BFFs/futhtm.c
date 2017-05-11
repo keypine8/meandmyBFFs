@@ -1,7 +1,7 @@
 /* futhtm.c */
 
 /* read from in_docin_lines[] up to idx in_docin_last_idx
-* and format and write an html output file
+* and format and write an html output file   lll
 */
 
 // MIT License
@@ -1869,9 +1869,11 @@ nbn(401);
 //  f_fn_prtlin( "    .cSky        { background-color:#3f3ffa; font-weight: bold; ");
 //<.>
 
-    sprintf(writebuf, "  <table class=\"trait\" style=\"margin-left: %s;\"> <tr> <th colspan=\"3\"> Score For %s </tr>",
+//    sprintf(writebuf, "  <table class=\"trait\" style=\"margin-left: %s;\"> <tr> <th colspan=\"3\"> Score For %s </tr>",
+//    sprintf(writebuf, "  <table class=\"trait\" class=\"center\" style=\"margin-left: %s;\"> <tr> <th colspan=\"3\"> Score For %s </tr>",
+    sprintf(writebuf, "  <table class=\"trait\" class=\"center\"> <tr> <th colspan=\"3\"> Score For %s </tr>",
 
-      myleftmargin,
+//      myleftmargin,
       gbl_year_for_fut
     );
     f_fn_prtlin(writebuf);
@@ -1890,6 +1892,7 @@ nbn(401);
     f_fn_prtlin("  <tr > <th><span style=\"font-weight: normal;\"> Person</span></th> <th><span style=\"font-weight: normal;\"> Score</span></th> <th></th></tr>");
 
 
+tn();trn("COLOUR #3"); kin(gbl_YearStressScore );
 
     /* calibrate stress score for table */
   /*   int worknum; 
@@ -1912,35 +1915,35 @@ nbn(401);
       write_calendar_day_score(gbl_name_for_fut, gbl_YearStressScore);
     }
 //    f_fn_prtlin("  <tr class=\"cGr2\"><td></td> <td> 90  </td> <td>Great</td> </tr>");
-    f_fn_prtlin("  <tr class=\"oGr2\"><td></td> <td> 90  </td> <td>Great</td> </tr>");
+    f_fn_prtlin("  <tr class=\"cGr2\"><td></td> <td> 90  </td> <td>Great</td> </tr>");
     if (gbl_YearStressScore >= 75) {
       write_calendar_day_score(gbl_name_for_fut, gbl_YearStressScore);
     }
 //    f_fn_prtlin("  <tr class=\"cGre\"><td></td> <td> 75  </td> <td>Good</td> </tr>");
-    f_fn_prtlin("  <tr class=\"oGre\"><td></td> <td> 75  </td> <td>Good</td> </tr>");
+    f_fn_prtlin("  <tr class=\"cGre\"><td></td> <td> 75  </td> <td>Good</td> </tr>");
 
     if ( gbl_YearStressScore  >= 75) {
 //      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
 //      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
 //      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
-      f_fn_prtlin("  <tr class=\"oNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
-      f_fn_prtlin("  <tr class=\"oNeu\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
-      f_fn_prtlin("  <tr class=\"oNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
+      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
+      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
+      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
     }
     if ( gbl_YearStressScore  < 75  &&  gbl_YearStressScore >= 50 ) {
       write_calendar_day_score(gbl_name_for_fut, gbl_YearStressScore);
 //      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
 //      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
-      f_fn_prtlin("  <tr class=\"oNeu\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
-      f_fn_prtlin("  <tr class=\"oNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
+      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
+      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
     }
       //   if ( gbl_YearStressScore  < 50  &&  gbl_YearStressScore >= 25 ) 
       if ( gbl_YearStressScore  < 50  &&  gbl_YearStressScore >  25 ) {
           
 //      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
 //      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
-      f_fn_prtlin("  <tr class=\"oNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
-      f_fn_prtlin("  <tr class=\"oNeu\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
+      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
+      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
       write_calendar_day_score(gbl_name_for_fut, gbl_YearStressScore);
     }
         //  if ( gbl_YearStressScore <= 25 ) 
@@ -1949,21 +1952,21 @@ nbn(401);
 //      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
 //      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
 //      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
-      f_fn_prtlin("  <tr class=\"oNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
-      f_fn_prtlin("  <tr class=\"oNeu\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
-      f_fn_prtlin("  <tr class=\"oNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
+      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
+      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td> 50  </td> <td>Average</td> </tr>");
+      f_fn_prtlin("  <tr class=\"cNeu\"><td></td> <td>     </td> <td></td> </tr>"); /* empty line */
     }
 
     if (gbl_YearStressScore >  25)
       write_calendar_day_score(gbl_name_for_fut, gbl_YearStressScore);
 //    f_fn_prtlin("  <tr class=\"cRed\"><td></td> <td> 25  </td> <td>Stress</td> </tr>");
-    f_fn_prtlin("  <tr class=\"oRed\"><td></td> <td> 25  </td> <td>Stress</td> </tr>");
+    f_fn_prtlin("  <tr class=\"cRed\"><td></td> <td> 25  </td> <td>Stress</td> </tr>");
     if (gbl_YearStressScore >  10)
       write_calendar_day_score(gbl_name_for_fut, gbl_YearStressScore);
 
 
 //    f_fn_prtlin("  <tr class=\"cRe2\"><td></td> <td> 10  </td> <td>OMG</td> </tr>");
-    f_fn_prtlin("  <tr class=\"oRe2\"><td></td> <td> 10  </td> <td>OMG</td> </tr>");
+    f_fn_prtlin("  <tr class=\"cRe2\"><td></td> <td> 10  </td> <td>OMG</td> </tr>");
     write_calendar_day_score(gbl_name_for_fut, gbl_YearStressScore); /* only writes if still unwritten */
 
     f_fn_prtlin("  </table>");
@@ -3194,7 +3197,8 @@ int make_calendar_day_html_file(   /* called from futdoc.c  */
 
 
 
-//tn();kin(PERCENTILE_RANK_SCORE );ksn(person_name);
+tn();trn("COLOUR #1"); kin(PERCENTILE_RANK_SCORE );ksn(person_name);
+
   if ( PERCENTILE_RANK_SCORE >= 90)
   {
     write_calendar_day_score(person_name, PERCENTILE_RANK_SCORE);                          // score is great cGr2
@@ -3363,14 +3367,23 @@ void write_calendar_day_score(char *pname, int istress_score) {
 
   if (gblCalDayScoreIsWritten == 1)  return;
 
-  if (istress_score >= 90) strcpy(rowcolor, " class=\"oGr2\"");
+//  if (istress_score >= 90) strcpy(rowcolor, " class=\"oGr2\"");
+//  if (istress_score <  90 &&
+//      istress_score >= 75) strcpy(rowcolor, " class=\"oGre\"");
+//  if (istress_score <  75 &&
+//      istress_score >= 25) strcpy(rowcolor, " class=\"oNeu\"");
+//  if (istress_score <= 25 &&
+//      istress_score >  10) strcpy(rowcolor, " class=\"oRed\"");
+//  if (istress_score <= 10) strcpy(rowcolor, " class=\"oRe2\"");
+
+  if (istress_score >= 90) strcpy(rowcolor, " class=\"cGr2\"");
   if (istress_score <  90 &&
-      istress_score >= 75) strcpy(rowcolor, " class=\"oGre\"");
+      istress_score >= 75) strcpy(rowcolor, " class=\"cGre\"");
   if (istress_score <  75 &&
-      istress_score >= 25) strcpy(rowcolor, " class=\"oNeu\"");
+      istress_score >= 25) strcpy(rowcolor, " class=\"cNeu\"");
   if (istress_score <= 25 &&
-      istress_score >  10) strcpy(rowcolor, " class=\"oRed\"");
-  if (istress_score <= 10) strcpy(rowcolor, " class=\"oRe2\"");
+      istress_score >  10) strcpy(rowcolor, " class=\"cRed\"");
+  if (istress_score <= 10) strcpy(rowcolor, " class=\"cRe2\"");
 
 /*   sprintf(writebuf, "  <tr><td> %s</td><td> %d  </td><td></td></tr>", pname, istress_score); */
   sprintf(writebuf, "  <tr %s><td> %s</td><td> %d  </td><td></td></tr>", rowcolor, pname, istress_score);
@@ -4506,6 +4519,9 @@ STRESS-|<span style="background-color:#FFBAC7; font-family: Andale Mono, Courier
 
     if (gbl_YearStressScore == 0) gbl_YearStressScore = 1; 
 //gbl_YearStressScore = 9;  test
+
+tn();trn("COLOUR #2"); kin(gbl_YearStressScore );
+
 
     if (gbl_YearStressScore >= 90) {
       write_calendar_day_score(gbl_name_for_fut, gbl_YearStressScore);
