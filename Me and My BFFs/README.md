@@ -22,14 +22,7 @@
 <br>[History](#history)
 
 
-<a name="5 screen shots"/>
 ## 5 SCREEN SHOTS for the iPhone App Store Product Page
----
-
-<!---
-comment out lines like this
--->
-
 
 ## SCREEN SHOTS - 1 and 2
 <img src="https://raw.githubusercontent.com/keypine8/meandmyBFFs/master/Me%20and%20My%20BFFs/Images.xcassets/ScreenShot_1_of_5.imageset/ScreenShot_1_of_5.png?token=Aa7FasdA9qnf8XtZ2zWV-tRxJ3mw7KhKks5ZFe2kwA%3D%3D" width="400"> _________ <img src="https://raw.githubusercontent.com/keypine8/meandmyBFFs/master/Me%20and%20My%20BFFs/Images.xcassets/ScreenShot_2_of_5.imageset/ScreenShot_2_of_5.png?token=Aa7FahmH9oXspePjhQl7Ovdz3a-tvRfVks5ZFfL4wA%3D%3D" width="400">
