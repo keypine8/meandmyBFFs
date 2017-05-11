@@ -44,19 +44,11 @@
 <img src="https://raw.githubusercontent.com/keypine8/meandmyBFFs/master/Me%20and%20My%20BFFs/Images.xcassets/ScreenShot_5_of_5.imageset/ScreenShot_5_of_5.png?token=Aa7FasWjTvYkC90wnoSWQcKz9OZNlHLKks5ZFfZKwA%3D%3D" width="400">
 
 ###### The avove 5 screen Shot ".png"s  are in the Repo in the Images.xcassets folder with names like ScreenShot_1_of_5.imageset.
----
 
 
 
 &nbsp;
 
-
-
-<!---
-comment out lines like this
-## More Stuff for the Apple App Store Product Page
----
--->
 
 <a name="appdesc"/>
 ## Suggested Text for use under "App Description" <br> on the iPhone App Store Product Page
@@ -96,8 +88,6 @@ comment out lines like this
 * stress levels at a given time
 * compatibility potential 
 * personality traits
-
----
 
 
 <a name="suggestedkeywords"/>
@@ -158,11 +148,6 @@ The app icon image (example at top) is licensed under a Creative Commons
 Attribution-Share Alike 4.0 International license.  (cc-by-sa)
 
 
-<!---
-comment out lines like this
-The app icon is covered by a Wikimedia Creative Commons public domain license - CC0.
--->
-
 <a name="dbloggingmaint"/>
 ## Debug Logging Maintenance
 ######  TURNING OFF and ON logging output for NSLog logging 
@@ -192,8 +177,3 @@ The app icon is covered by a Wikimedia Creative Commons public domain license - 
 ## History
   This project was a hobby effort done at home on evenings and weekends.
   It spanned a many years from C code project to iPhone app.
-
-===
-===
-===
-
