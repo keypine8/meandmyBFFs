@@ -99,10 +99,14 @@
 
 <a name="suggestedkeywords"/>
 
+&nbsp; 
+
 ## Suggested Keywords
 astrology,women,woman,female,BFF,compatibility,group,best,match,personality,stress,calendar,year
 
 <a name="suggestedcategories"/>
+
+&nbsp; 
 
 ## Suggested App Categories
 1. Entertainment
@@ -110,6 +114,8 @@ astrology,women,woman,female,BFF,compatibility,group,best,match,personality,stre
 3. Social Networking
 
 <a name="mitlicense"/>
+
+&nbsp; 
 
 ## This Repo is all under the MIT License
 
@@ -138,6 +144,8 @@ astrology,women,woman,female,BFF,compatibility,group,best,match,personality,stre
 
 <a name="usage"/>
 
+&nbsp; 
+
 ## Programming Notes
 
 30,000+ lines of C code in this repo produce the HTML reports and data for the
@@ -156,6 +164,8 @@ The app icon image (example at top) is licensed under a Creative Commons
 Attribution-Share Alike 4.0 International license.  (cc-by-sa)
 
 <a name="dbloggingmaint"/>
+
+&nbsp;
 
 ## Debug Logging Maintenance
 ######  TURNING OFF and ON logging output for NSLog logging 
@@ -178,11 +188,15 @@ Attribution-Share Alike 4.0 International license.  (cc-by-sa)
 
 <a name="contributing"/>
 
+&nbsp; 
+
 ## Contributing
   Please clone this repo and maintain your version.
 
 
 <a name="history"/>
+
+&nbsp; 
 
 ## History
   This project was a hobby effort done at home on evenings and weekends.
