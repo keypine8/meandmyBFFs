@@ -23,7 +23,7 @@
 // SOFTWARE.
 //
 
-/* For just_2 rpt, read from input docin_lines string array
+/* For just_2 rpt, read from input docin_lines string array  nnn
 * format and write an html output file
 * For group rpts, input is 
 *    struct rank_report_line  *in_rank_lines[],
@@ -1681,7 +1681,20 @@ ksn(grp_average_trait_scores_csv);
 /*   g_fn_prtlin( "  <tr> <th>Rank</th> <th>Score</th> <th colspan=\"2\">Pair of Group Members</th> </tr>"); */
 /*   g_fn_prtlin( "  <tr> <th>Rank in<br>Group</th> <th>Group Member</th> <th>Score</th> <th>Benchmark</th></tr>"); */
 /*   g_fn_prtlin( "  <tr> <th>Rank</th> <th>Group Member</th> <th>Score</th> <th>Benchmark</th></tr>"); */
-  g_fn_prtlin( "  <tr> <th></th> <th>Group Member</th> <th>Score</th> <th></th></tr>");
+
+b(50);
+  if (strcmp(gbl_format_as, "trait rank") == 0) {
+b(51);
+
+/*  eg   g_fn_prtlin( "<tr class=\"cGr2\"><td></td><td></td><td> 373 </td><td>Very High</td></tr>"); */
+    g_fn_prtlin( "  <tr class=\"cPerGreen3\" > <th class=\"cPerGreen3\" ></th> <th class=\"cPerGreen3\" >Group Member</th> <th class=\"cPerGreen3\"> Score</th> <th class=\"cPerGreen3\" ></th></tr>");
+//    g_fn_prtlin( "    .cPerGreen3 {background-color: #b0d0ff;}");  // darker blue for Most title and footer
+
+  } else {
+b(52);
+    g_fn_prtlin( "  <tr> <th></th> <th>Group Member</th> <th>Score</th> <th></th></tr>");
+  }
+b(53);
 
 
 
@@ -2007,7 +2020,8 @@ ksn(grp_average_trait_scores_csv);
 
   } else {
     // trait
-    g_fn_prtlin( "<pre>");
+// eg  g_fn_prtlin( "  <tr class=\"cPerGreen3\" > <th></th> <th>Group Member</th> <th>Score</th> <th></th></tr>");
+    g_fn_prtlin( "<pre class=\"cPerGreen3\"> ");
     gbl_we_are_in_PRE_block = 1;  /* true */
     g_fn_prtlin("");
 //    sprintf( writebuf,"  Check out the report \"Personality\".  ");
@@ -3245,6 +3259,8 @@ void put_top_of_html_group_rpt(char *group_name) {
     g_fn_prtlin( "    .cPerGreen1 {background-color: #f0f8ff;}");  // alternating light blue and a little darker blue
 //    g_fn_prtlin( "    .cPerGreen2 {background-color: #d3ffa5;}"); // same
     g_fn_prtlin( "    .cPerGreen2 {background-color: #c0e0ff;}");  // alternating light blue and a little darker blue
+
+    g_fn_prtlin( "    .cPerGreen3 {background-color: #4c7cff; color: white}");  // darker blue for Most title and footer
 
   } else {
 
