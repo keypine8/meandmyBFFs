@@ -3,11 +3,8 @@
 
 ### A fully tested Xcode project under the MIT License <br> ready for submitting to the iPhone App Store <br><br> the App produces astrology reports 
 
+<img src="https://github.com/keypine8/meandmyBFFs/blob/master/Me%20and%20My%20BFFs/Images.xcassets/Icon.imageset/icon_MAMB09_0114.png?raw=true">
 
->[App Icon for iPhone App Me&myBFFs](master/Me%20and%20My%20BFFs/Images.xcassets/Icon.imageset/icon_MAMB09_0114.png) 
-
-
->![alt text](https://raw.githubusercontent.com/keypine8/meandmyBFFs/master/Me%20and%20My%20BFFs/Images.xcassets/Icon.imageset/icon_MAMB09_0114.png?token=Aa7FarYcsv5XZih_Frkyjxi-7Zqffl4Nks5ZFdcnwA%3D%3D "App Icon for iPhone App Me&myBFFs") 
 
 ### Table of Contents  
 [Suggested Text for use under App Description](#appdesc)
@@ -42,7 +39,13 @@
 
 ## SCREEN SHOT - 5
 
-<img src="https://raw.githubusercontent.com/keypine8/meandmyBFFs/master/Me%20and%20My%20BFFs/Images.xcassets/ScreenShot_5_of_5.imageset/ScreenShot_5_of_5.png?token=Aa7FasWjTvYkC90wnoSWQcKz9OZNlHLKks5ZFfZKwA%3D%3D" width="400">
+<img src="
+
+
+
+https://raw.githubusercontent.com/keypine8/meandmyBFFs/master/Me%20and%20My%20BFFs/Images.xcassets/ScreenShot_5_of_5.imageset/ScreenShot_5_of_5.png?token=Aa7FasWjTvYkC90wnoSWQcKz9OZNlHLKks5ZFfZKwA%3D%3D
+
+" width="400">
 
 ###### The avove 5 screen Shot ".png"s  are in the Repo in the Images.xcassets folder with names like ScreenShot_1_of_5.imageset.
 
