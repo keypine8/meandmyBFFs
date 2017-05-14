@@ -29,7 +29,7 @@
 #import "MAMB09_info_TableViewController.h"
 #import "MAMB09_viewHTMLViewController.h"
 #import "mamblib.h"
-#import "MAMB09AppDelegate.h"   // to get globals
+#import "MAMB09AppDelegate.h"   // to get globals   ppp
 
 @interface MAMB09_info_TableViewController ()
 
@@ -3508,39 +3508,40 @@ cell.textLabel.text          = @"The \"Closeness\" category is useful because it
             return cell;
         }
 
-        if (indexPath.row == 10) {
-            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== title for Share Groups
-                cell.textLabel.textColor     = [UIColor blackColor];
-                cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myTitleFont;
-                cell.backgroundColor         = gbl_color_cHed;
-                cell.textLabel.numberOfLines = 0;
-                cell.textLabel.text          = @"Share groups by email";
-                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
-                cell.backgroundView          = nil ;
-                cell.textLabel.textAlignment = NSTextAlignmentLeft;
-                cell.accessoryView = nil;
-            });
-            return cell;
-        }
+// sharing groups  share groups is commented out
+//        if (indexPath.row == 10) {
+//            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== title for Share Groups
+//                cell.textLabel.textColor     = [UIColor blackColor];
+//                cell.userInteractionEnabled  = NO;
+//                cell.textLabel.font          = myTitleFont;
+//                cell.backgroundColor         = gbl_color_cHed;
+//                cell.textLabel.numberOfLines = 0;
+//                cell.textLabel.text          = @"Share groups by email";
+//                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+//                cell.backgroundView          = nil ;
+//                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+//                cell.accessoryView = nil;
+//            });
+//            return cell;
+//        }
+//
+//        if (indexPath.row == 11) {
+//            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== text for Share groups
+//                cell.textLabel.textColor     = [UIColor blackColor];
+//                cell.userInteractionEnabled  = NO;
+//                cell.textLabel.font          = myFontForText;
+//                cell.backgroundColor         = gbl_color_cBgr;
+//                cell.textLabel.numberOfLines = 0;
+//                cell.textLabel.text          = @"Tap on \"Share_groups_by_email\".\nDo this.\nDo this.\nDo this.\nDo this.\nDo this.\n ";
+//                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+//                cell.backgroundView          = nil ;
+//                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+//                cell.accessoryView = nil;
+//            });
+//            return cell;
+//        }
 
-        if (indexPath.row == 11) {
-            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== text for Share groups
-                cell.textLabel.textColor     = [UIColor blackColor];
-                cell.userInteractionEnabled  = NO;
-                cell.textLabel.font          = myFontForText;
-                cell.backgroundColor         = gbl_color_cBgr;
-                cell.textLabel.numberOfLines = 0;
-                cell.textLabel.text          = @"Tap on \"Share_groups_by_email\".\nDo this.\nDo this.\nDo this.\nDo this.\nDo this.\n ";
-                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
-                cell.backgroundView          = nil ;
-                cell.textLabel.textAlignment = NSTextAlignmentLeft;
-                cell.accessoryView = nil;
-            });
-            return cell;
-        }
-
-        if (indexPath.row == 12) {
+        if (indexPath.row ==  9) {
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
@@ -3557,7 +3558,7 @@ cell.textLabel.text          = @"The \"Closeness\" category is useful because it
         }
 
 
-        if (indexPath.row == 13) {
+        if (indexPath.row == 10) {
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== title for Delete Group
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
@@ -3570,7 +3571,7 @@ cell.textLabel.text          = @"The \"Closeness\" category is useful because it
             return cell;
         }
 
-        if (indexPath.row == 14) {
+        if (indexPath.row == 11) {
 
             CGSize myTextSize = [@"WW"  sizeWithAttributes: @{ NSFontAttributeName: myFontForText } ];  // menlo
             float  mySizeTwoCharsIndent =  myTextSize.width;
@@ -3605,7 +3606,7 @@ cell.textLabel.text          = @"The \"Closeness\" category is useful because it
         }
 
 
-        if (indexPath.row == 15) {
+        if (indexPath.row == 12 ) {
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
@@ -3623,7 +3624,7 @@ cell.textLabel.text          = @"The \"Closeness\" category is useful because it
 
 
 
-        if (indexPath.row ==  16) {                           // <=== disclaimer 
+        if (indexPath.row ==  13) {                           // <=== disclaimer 
             dispatch_async(dispatch_get_main_queue(), ^{  
 //                cell.textLabel.textColor     = [UIColor blackColor];
                 cell.textLabel.textColor     = [UIColor redColor]; 
@@ -3813,7 +3814,13 @@ cell.textLabel.text          = @"The \"Closeness\" category is useful because it
 //            @"\u2022 Add people and groups and make changes to them.\n\u2022 Share people or groups by email.\n\u2022 Backup all your data to an email attachment."
 //            @"\u2022 Add people and groups and make changes to them.\n\u2022 Share people or groups by email."
 //            @"\u2022 Add new people and groups and make changes to them.\n\u2022 Share people or groups by email."
-            @"\u2022 Add new people and new groups and make changes to them.\n\u2022 Share people or groups by email."
+//            @"\u2022 Add new people and new groups and make changes to them.\n\u2022 Share people or groups by email."
+
+
+// commented out the sharing of groups 
+            @"\u2022 Add new people and new groups and make changes to them."
+
+
 
     attributes: @{NSParagraphStyleAttributeName: paragraphStyle}
             ];
@@ -3899,7 +3906,7 @@ cell.textLabel.text          = @"The \"Closeness\" category is useful because it
 //                cell.textLabel.text          = @"You can tell example people and example groups by their names starting with a squiggle, \"~\".\n\nThe example data lets you explore all the different reports and see how the app works before you add any new people or groups yourself.\n\nExample people and groups cannot be changed.\n\nTo add a new person or group, go back to the brown home screen. The app icon is on the top left.  Tap \"+\" to add a new person or group.";
 //                cell.textLabel.text          = @"Example people and example groups have names starting with a squiggle, \"~\".\n\nThe example data lets you explore all the different reports and see how the app works before you add any new people or groups yourself.\n\nExample people and groups cannot be changed.\n\nTo add a new person or group, go back to the brown home screen. The app icon is on the top left.  Tap \"+\" to add a new person or group.";
 //                cell.textLabel.text          = @"Example people and example groups have names starting with a squiggle, \"~\".\n\nThe example data lets you explore all the different reports and see how the app works before you add any new people or groups yourself.\n\nExample people and groups cannot be changed.\n\nTo add a new person or group, tap yellow \"Edit\" button  >  tap \"+\".";
-                cell.textLabel.text          = @"Example people and example groups have names starting with a squiggle, \"~\".\n\nThe example data lets you explore all the different reports and see how the app works before you add any new people or groups yourself.\n\nExample people and groups cannot be changed.\n\nTo add a new person, tap \"People\" > tap \"+\".\nTo add a new group , tap \"Groups\" > tap \"+\".";
+                cell.textLabel.text          = @"Example people and example groups have names starting with a squiggle, \"~\".\n\nThe example data lets you explore all the different reports and see how the app works before you add any new people or new groups yourself.\n\nExample people and groups cannot be changed.\n\nTo add a new person, tap \"People\" > tap \"+\".\nTo add a new group , tap \"Groups\" > tap \"+\".";
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -4070,7 +4077,7 @@ cell.textLabel.text          = @"The \"Closeness\" category is useful because it
             paragraphStyle.headIndent               = mySizeTwoCharsIndent;
 
             NSAttributedString *myAttributedStr = [ [NSAttributedString alloc] initWithString:
-@"The special group #allpeople is a group that holds all the people you have added to Me and My BFFs.\n\nGroup #allpeople lets you quickly get a Best Match or other group report for every person you have added.\n\nPeople that you add or delete in the app are automatically added to or deleted from group #allpeople."
+@"The special group #allpeople is a group that holds all the people you have added to Me and My BFFs.\n\nGroup #allpeople lets you quickly get a Best Match or other group report for every person you have added.\n\nPeople that you add or delete in the app are automatically added to or deleted from the group #allpeople."
                 attributes: @{ NSParagraphStyleAttributeName: paragraphStyle }
             ];
 
@@ -4227,7 +4234,14 @@ cell.textLabel.text          = @"The \"Closeness\" category is useful because it
             NSAttributedString *myAttributedStr = [[NSAttributedString alloc]
                 initWithString:
 //@"\u2022 To have fun, get \"Me and my BFFs\" together and use this app.\n\u2022 To send ANY REPORT as an email attachment, tap the Share icon (box with arrow coming out) when viewing the report\n\u2022 To email a Group to a BFF who has this app:  Home > Edit > Groups > tap the Share icon > tap on the groups you want to share\n\u2022 To import a Group someone has emailed you, open the email on the device where you have this app and tap and hold (long tap) on the email attachment.  A bunch of app icons come up.  Tap on the Me and my BFFs icon and the import begins."
-@"\u2022 To have fun, get \"Me and my BFFs\" together and use this app.\n\u2022 To send ANY REPORT as an email attachment, tap the Share icon (box with arrow coming out) when viewing the report\n\u2022 To email a Group to a BFF who has this app:  Home > Edit > Groups > tap the Share icon > tap on the groups you want to share\n\u2022 To import a Group someone has emailed you, open the email on the device where you have this app and tap and hold (long tap) on the email attachment."
+//@"\u2022 To have fun, get \"Me and my BFFs\" together and use this app.\n\u2022 To send ANY REPORT as an email attachment, tap the Share icon (box with arrow coming out) when viewing the report\n\u2022 To email a Group to a BFF who has this app:  Home > Edit > Groups > tap the Share icon > tap on the groups you want to share\n\u2022 To import a Group someone has emailed you, open the email on the device where you have this app and tap and hold (long tap) on the email attachment."
+
+
+// 20170514  remove mention of sharing groups  import ing groups exportin groups
+@"\u2022 To have fun, get \"Me and my BFFs\" together and use this app.\n\u2022 To send ANY REPORT as an email attachment, tap the Share icon (box with arrow coming out) when viewing the report."
+
+
+
                     attributes: @{ NSParagraphStyleAttributeName: paragraphStyle }
             ];
 
@@ -4279,7 +4293,10 @@ cell.textLabel.text          = @"The \"Closeness\" category is useful because it
 
             NSAttributedString *myAttributedStr = [[NSAttributedString alloc]
                 initWithString:
-@"\u2022 Study human factors on sports teams\n\u2022 Be a matchmaker by using the reports \"Best Match\" and \"Personality\"\n\u2022 Send questions and comments to QQQQQ@QQQQQ.com"
+
+//@"\u2022 Study human factors on sports teams\n\u2022 Be a matchmaker by using the reports \"Best Match\" and \"Personality\"\n\u2022 Send questions and comments to QQQQQ@QQQQQ.com"
+@"\u2022 Study human factors on sports teams\n\u2022 Be a matchmaker by using the reports \"Best Match\" and \"Personality\"\n\u2022 Send questions and comments to meandmybffs@funnestastrology.com"
+
                     attributes: @{ NSParagraphStyleAttributeName: paragraphStyle }
             ];
 
@@ -4453,16 +4470,17 @@ cell.textLabel.text          = @"The \"Closeness\" category is useful because it
         if (indexPath.row ==   7) return    30.0;  // title for del members
         if (indexPath.row ==   8) return   110.0;  // text  for del members
 
-        if (indexPath.row ==   9) return    16.0;  // spacer
-        if (indexPath.row ==  10) return    30.0;  // title for share groups
-        if (indexPath.row ==  11) return   120.0;  // text  for share groups
+//  sharing groups is commented out
+//        if (indexPath.row ==   9) return    16.0;  // spacer
+//        if (indexPath.row ==  10) return    30.0;  // title for share groups
+//        if (indexPath.row ==  11) return   120.0;  // text  for share groups
+
+        if (indexPath.row ==  9) return    16.0;  // spacer
+        if (indexPath.row ==  10) return    30.0;  // title for delete group
+        if (indexPath.row ==  11) return   135.0;  // text  for delete group
 
         if (indexPath.row ==  12) return    16.0;  // spacer
-        if (indexPath.row ==  13) return    30.0;  // title for delete group
-        if (indexPath.row ==  14) return   135.0;  // text  for delete group
-
-        if (indexPath.row ==  15) return    16.0;  // spacer
-        if (indexPath.row ==  16) return    30.0;  // text for disclaimer
+        if (indexPath.row ==  13) return    30.0;  // text for disclaimer
     }
 
 
@@ -4473,7 +4491,12 @@ cell.textLabel.text          = @"The \"Closeness\" category is useful because it
         if (indexPath.row ==   2) return    70.0;  // text  for brown
         if (indexPath.row ==   3) return    16.0;  // spacer
         if (indexPath.row ==   4) return    30.0;  // title for yellow home
-        if (indexPath.row ==   5) return    72.0;  // text  for yellow
+
+// commenting out share groups
+//        if (indexPath.row ==   5) return    72.0;  // text  for yellow
+        if (indexPath.row ==   5) return    50.0;  // text  for yellow
+
+
         if (indexPath.row ==   6) return    32.0;  // spacer
 
         if (indexPath.row ==   7) return    30.0;  // title for Example Data
@@ -4497,7 +4520,8 @@ cell.textLabel.text          = @"The \"Closeness\" category is useful because it
         if (indexPath.row ==   14) return   200.0;  // report  list
 
         if (indexPath.row ==   15) return    30.0;  // title for do stuff
-        if (indexPath.row ==   16) return   200.0;  // text  for do stuff
+//        if (indexPath.row ==   16) return   200.0;  // text  for do stuff
+        if (indexPath.row ==   16) return   120.0;  // text  for do stuff
 
         if (indexPath.row ==   17) return    30.0;  // title for why not ?
         if (indexPath.row ==   18) return    90.0;  // text  for why not ?
