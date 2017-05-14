@@ -4,9 +4,10 @@
 ### A fully tested Xcode project under the MIT License <br> ready for submitting to the iPhone App Store <br><br> the App produces astrology reports 
 
 
+>[App Icon for iPhone App Me&myBFFs](master/Me%20and%20My%20BFFs/Images.xcassets/Icon.imageset/icon_MAMB09_0114.png) 
+
+
 >![alt text](https://raw.githubusercontent.com/keypine8/meandmyBFFs/master/Me%20and%20My%20BFFs/Images.xcassets/Icon.imageset/icon_MAMB09_0114.png?token=Aa7FarYcsv5XZih_Frkyjxi-7Zqffl4Nks5ZFdcnwA%3D%3D "App Icon for iPhone App Me&myBFFs") 
-
-
 
 ### Table of Contents  
 [Suggested Text for use under App Description](#appdesc)
