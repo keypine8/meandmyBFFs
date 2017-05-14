@@ -23,15 +23,16 @@
 ## 5 SCREEN SHOTS for the iPhone App Store Product Page
 
 ## SCREEN SHOTS - 1 and 2
-<img src="https://raw.githubusercontent.com/keypine8/meandmyBFFs/master/Me%20and%20My%20BFFs/Images.xcassets/ScreenShot_1_of_5.imageset/ScreenShot_1_of_5.png?token=Aa7FasdA9qnf8XtZ2zWV-tRxJ3mw7KhKks5ZFe2kwA%3D%3D" width="400"> _________ <img src="https://raw.githubusercontent.com/keypine8/meandmyBFFs/master/Me%20and%20My%20BFFs/Images.xcassets/ScreenShot_2_of_5.imageset/ScreenShot_2_of_5.png?token=Aa7FahmH9oXspePjhQl7Ovdz3a-tvRfVks5ZFfL4wA%3D%3D" width="400">
 
+
+<img src="https://github.com/keypine8/meandmyBFFs/blob/master/Me%20and%20My%20BFFs/Images.xcassets/ScreenShot_1_of_5.imageset/ScreenShot_1_of_5.png?raw=true" width="400"> _________ <img src="https://github.com/keypine8/meandmyBFFs/blob/master/Me%20and%20My%20BFFs/Images.xcassets/ScreenShot_2_of_5.imageset/ScreenShot_2_of_5.png?raw=true" width="400">
 
 &nbsp;
 
 ## SCREEN SHOTS - 3 and 4
 
 
-<img src="https://raw.githubusercontent.com/keypine8/meandmyBFFs/master/Me%20and%20My%20BFFs/Images.xcassets/ScreenShot_3_of_5.imageset/ScreenShot_3_of_5.png?token=Aa7FasEwIxNmI8dpzfkmmST2AayQgqyfks5ZFfTpwA%3D%3D" width="400"> _________ <img src="https://raw.githubusercontent.com/keypine8/meandmyBFFs/master/Me%20and%20My%20BFFs/Images.xcassets/ScreenShot_4_of_5.imageset/ScreenShot_4_of_5.png?token=Aa7FarwRhARQAT8lqVrzJyDbN8722p1Bks5ZFfUvwA%3D%3D" width="400">
+<img src="https://github.com/keypine8/meandmyBFFs/blob/master/Me%20and%20My%20BFFs/Images.xcassets/ScreenShot_3_of_5.imageset/ScreenShot_3_of_5.png?raw=true" width="400"> _________ <img src="https://github.com/keypine8/meandmyBFFs/blob/master/Me%20and%20My%20BFFs/Images.xcassets/ScreenShot_4_of_5.imageset/ScreenShot_4_of_5.png?raw=true" width="400">
 
 
 
@@ -39,13 +40,7 @@
 
 ## SCREEN SHOT - 5
 
-<img src="
-
-
-
-https://raw.githubusercontent.com/keypine8/meandmyBFFs/master/Me%20and%20My%20BFFs/Images.xcassets/ScreenShot_5_of_5.imageset/ScreenShot_5_of_5.png?token=Aa7FasWjTvYkC90wnoSWQcKz9OZNlHLKks5ZFfZKwA%3D%3D
-
-" width="400">
+<img src="https://github.com/keypine8/meandmyBFFs/blob/master/Me%20and%20My%20BFFs/Images.xcassets/ScreenShot_1_of_5.imageset/ScreenShot_1_of_5.png?raw=true" width="400">
 
 ###### The avove 5 screen Shot ".png"s  are in the Repo in the Images.xcassets folder with names like ScreenShot_1_of_5.imageset.
 
