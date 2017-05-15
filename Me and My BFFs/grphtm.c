@@ -23,7 +23,7 @@
 // SOFTWARE.
 //
 
-/* For just_2 rpt, read from input docin_lines string array  nnn
+/* For just_2 rpt, read from input docin_lines string array  nnn  sss
 * format and write an html output file
 * For group rpts, input is 
 *    struct rank_report_line  *in_rank_lines[],
@@ -525,11 +525,18 @@ tn();trn("in  make_html_file_just_2_people() ");
 
 //  OUTPUT THE HTML FOR THE TABLE =====  or not  ================================================================  
 
-  if (strstr(in_html_filename, "webview") != NULL)
+ksn(in_html_filename);
+ksn(string_for_table_only);
+
+  if ( 
+         strstr(in_html_filename, "webview") != NULL     // or this is get string_for_table_only  instruction
+  )
   {  // webview version
 
 //gbl_db_code = 1;   // = 1  for TEST, prints  lin
-gbl_db_code = 0;     // = 0  no debug print
+// gbl_db_code = 0;     // = 0  no debug print
+
+
 
     sprintf(writebuf, "fill|filler line #1 at top");
     g_fn_prtlin(writebuf);
@@ -566,13 +573,13 @@ gbl_db_code = 0;     // = 0  no debug print
     for (i = 0; i <= 5; i++)   /* for all table data lines */
     {  // MAGIC  6 lines
 
-//      if (   out_rank_lines[i] == NULL
-//          || strlen(out_rank_lines[i]->person_B) == 0
-//      ) 
-//        break;
+      if (   out_rank_lines[i] == NULL
+          || strlen(out_rank_lines[i]->person_B) == 0
+      ) {
+        break;
+      }
 //tn();ki(i);ki(out_rank_lines[i]->rank_in_group);kin(out_rank_lines[i]->score);
 //ks(out_rank_lines[i]->person_A);ksn(out_rank_lines[i]->person_B);
-
 
       if (strstr(out_rank_lines[i]->person_B, " - top10") != NULL) {
 //        strcpy(writebuf, "tabl|                    90  Great       ");
@@ -683,14 +690,20 @@ gbl_db_code = 0;     // = 0  no debug print
 //_out_rank_lines[i]->rank_in_group=[0]___out_rank_lines[i]->score=[10]__
 //_out_rank_lines[i]->person_A=[               ]___out_rank_lines[i]->person_B=[qhilite - bot10]__
 //
-  } /* for all table data lines */
-
+    } /* for all table data lines */
 
 
   } else {  // browser version
+ksn(string_for_table_only);
 
-/* ksn(string_for_table_only); */
+
+//      || strcmp(gbl_are_in_just2, "we are in make_html_file_just_2_people") == 0
+
+
+
+
   g_fn_prtlin(string_for_table_only); /* OUTPUT THE HTML FOR THE TABLE ========  */
+
 
 
     g_fn_prtlin("<pre>");
@@ -722,8 +735,18 @@ gbl_db_code = 0;     // = 0  no debug print
 
     strcpy(global_instructions, "ok to write html now"); 
 
-  //  g_fn_prtlin(string_for_table_only); /*  END   OF    OUTPUT THE HTML FOR THE TABLE ===========================  */
+    g_fn_prtlin(string_for_table_only); /*  END   OF    OUTPUT THE HTML FOR THE TABLE ===========================  */
 
+
+ksn(in_html_filename);
+ksn(string_for_table_only);
+ksn(in_html_filename);
+
+  if (strstr(in_html_filename, "webview") == NULL)   // NOT webview version   i.e. browser version
+  {
+//    g_fn_prtlin("<div><br><br></div>");
+    g_fn_prtlin("<div><br><br></div>");
+  }
 
 //gbl_db_code = 0;
 
@@ -2324,7 +2347,8 @@ trn("in make_html_file_whole_group()");
 // nksn(instructions);
 // nksn(in_html_filename);
 // ksn(gbl_gfnameHTML);
-  if (strcmp(instructions, "return only html for table in string") == 0) {
+  if (strcmp(instructions, "return only html for table in string") == 0)
+  {
     strcpy(string_for_table_only,"");  /* init table string */
 
     if (strstr(in_html_filename, "webview") != NULL) {  // webview version
@@ -2479,10 +2503,18 @@ trn("in make_html_file_whole_group()");
     else
     {  // browser version
 
+      //
+      // test below "brw" shows this goes to the html file that is emailed for sharing reports
+      //
+
       strcat(string_for_table_only,
 //        "<table>  <tr><th></th><th>Pair</th><th colspan=\"2\">Compatibility <br>Potential&nbsp</th></tr>");
 //        "<table>  <tr><th></th><th>Pair</th><th colspan=\"2\">How Much<br>Potential for Compatibility</th></tr>");
-        "<table>  <tr><th></th><th colspan=\"3\">How Much<br>Potential for Compatibility</th></tr>");
+//        "<table>  <tr><th></th><th colspan=\"3\">How brw Much<br>Potential for Compatibility</th></tr>");
+
+//        "<table>  <tr><th></th><th colspan=\"3\">Compatibility<br>Potential</th></tr>");
+
+        "<table>  <tr><th></th><th style=\"text-align:right\" colspan=\"3\">Compatibility<br>Potential</th></tr>");
 
     } // browser version
 
