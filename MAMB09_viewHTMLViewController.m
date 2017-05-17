@@ -320,6 +320,7 @@
     } else if (
            [gbl_currentMenuPlusReportCode isEqualToString: @"pbmco"]   // pco chosen for selected pair in grpone 
         || [gbl_currentMenuPlusReportCode isEqualToString: @"gbmco"]   // pco chosen for selected pair in grpall 
+
     ) {
         gbl_viewHTML_PSV_personA  = gbl_PSVtappedPersonA_inPair;
         gbl_viewHTML_NAME_personA = [gbl_viewHTML_PSV_personA componentsSeparatedByString:@"|"][0]; // get field #1 (zero-based)
@@ -358,15 +359,32 @@
         gbl_viewHTML_PSV_personJust1  = gbl_PSVtappedPerson_fromGRP;
         gbl_viewHTML_NAME_personJust1 = [gbl_viewHTML_PSV_personJust1 componentsSeparatedByString:@"|"][0]; // get field #1 (zero-based)
 
+    } else if ( [gbl_currentMenuPlusReportCode isEqualToString: @"homgby"]   // from second person select
+    ) {
+nbn(91);
+  NSLog(@"gbl_viewHTML_PSV_personJust1y=%@",gbl_viewHTML_PSV_personJust1);
+  NSLog(@"gbl_viewHTML_NAME_personJust1y=%@",gbl_viewHTML_NAME_personJust1);
+  NSLog(@"gbl_PSVtappedPerson_fromGRP=%@",gbl_PSVtappedPerson_fromGRP);
+
+        gbl_viewHTML_PSV_personJust1 = gbl_PSVtappedPerson_fromGRP;
+        gbl_viewHTML_NAME_personJust1 = [gbl_PSVtappedPerson_fromGRP componentsSeparatedByString:@"|"][0]; // get field #1 (name) (zero-based)
+
+  NSLog(@"gbl_viewHTML_PSV_personJust1y_2=%@",gbl_viewHTML_PSV_personJust1);
+  NSLog(@"gbl_viewHTML_NAME_personJust1_2_ y=%@",gbl_viewHTML_NAME_personJust1);
+
+        // do nothing because gbl_viewHTML_PSV_personJust1 and gbl_viewHTML_NAME_personJust1 are already set in tblrpts1
+
+
     } else {  // SHOULD NOT HAPPEN
        NSLog(@"view HTML should not happen");
     }
-  NSLog(@"gbl_viewHTML_PSV_personA=%@",gbl_viewHTML_PSV_personA);
-  NSLog(@"gbl_viewHTML_NAME_personA=%@",gbl_viewHTML_NAME_personA);
-  NSLog(@"gbl_viewHTML_PSV_personB=%@",gbl_viewHTML_PSV_personB);
-  NSLog(@"gbl_viewHTML_NAME_personB=%@",gbl_viewHTML_NAME_personB);
-  NSLog(@"gbl_viewHTML_PSV_personJust1=%@",gbl_viewHTML_PSV_personJust1);
-  NSLog(@"gbl_viewHTML_NAME_personJust1=%@",gbl_viewHTML_NAME_personJust1);
+  nbn(92);
+  NSLog(@"gbl_viewHTML_PSV_personAx=%@",gbl_viewHTML_PSV_personA);
+  NSLog(@"gbl_viewHTML_NAME_personAx=%@",gbl_viewHTML_NAME_personA);
+  NSLog(@"gbl_viewHTML_PSV_personBx=%@",gbl_viewHTML_PSV_personB);
+  NSLog(@"gbl_viewHTML_NAME_personBx=%@",gbl_viewHTML_NAME_personB);
+  NSLog(@"gbl_viewHTML_PSV_personJust1x=%@",gbl_viewHTML_PSV_personJust1);
+  NSLog(@"gbl_viewHTML_NAME_personJust1x=%@",gbl_viewHTML_NAME_personJust1);
 
 
 
@@ -638,7 +656,7 @@ tn();
     //if ([gbl_fromSelRptRowString hasPrefix: @"Calendar Year"])    // call Calendar Year HTML report
 //    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompcy"])
     if (   [gbl_currentMenuPlusReportCode hasSuffix:       @"cy"]        // calendar year report  hompcy or gbypcy
-//        || [gbl_currentMenuPlusReportCode isEqualToString: @"homgby"]    // calendar year report
+        || [gbl_currentMenuPlusReportCode isEqualToString: @"homgby"]    // calendar year report
     ) {   
         tn();trn("in calendar year!");
         
@@ -1215,6 +1233,7 @@ NSLog(@"in viewDidAppear()");
         }
 //        if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgby"]    // calendar year report from best year
         if (   [gbl_currentMenuPlusReportCode isEqualToString: @"gbypcy"]    // calendar year report from best year
+            || [gbl_currentMenuPlusReportCode isEqualToString: @"homgby"]    // calendar year report from best year
         ) {
             myNavBar2lineTitle  = [NSString stringWithFormat:  @"Year %@\n for %@", 
                                    gbl_lastSelectedYear, gbl_viewHTML_NAME_personJust1 ];
