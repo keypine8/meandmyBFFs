@@ -29,7 +29,7 @@
 #import "MAMB09viewTBLRPTs_1_TableViewController.h"
 #import "MAMB09_viewHTMLViewController.h"
 #import "mamblib.h"
-#import "MAMB09AppDelegate.h"   // to get globals   mmm
+#import "MAMB09AppDelegate.h"   // to get globals   ttt
 
 
 @interface MAMB09viewTBLRPTs_1_TableViewController ()
@@ -3962,6 +3962,7 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
                 ||
                   (   [myCellContentsPSV containsString: @"cHed| "]   
                    && [myCellContentsPSV containsString: @" Bottom "]  )  
+                ||  [gbl_currentMenuPlusReportCode       hasPrefix: @"homgbd"]  // Best Day
                )
             {
                 myDisclosureIndicatorLabel.text = @" ";   // default
@@ -4001,8 +4002,8 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
 //                cell.userInteractionEnabled              = YES;                  
                 cell.userInteractionEnabled              = myUserInteractionEnabledValue ;
 
-//            cell.accessoryView                       = nil;   // use accessoryType setting   // have right arrow on column labels
-//            cell.accessoryType                       = UITableViewCellAccessoryDisclosureIndicator;
+            cell.accessoryView                       = nil;   // use accessoryType setting   // have right arrow on column labels
+            cell.accessoryType                       = UITableViewCellAccessoryDisclosureIndicator;
 
                 cell.accessoryView                       = myDisclosureIndicatorLabel;
                 cell.accessoryType                       = UITableViewCellAccessoryDisclosureIndicator;
@@ -4584,7 +4585,21 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
                 UIColor  *colorOfGroupReportArrow; 
                 UIFont   *myDisclosureIndicatorFont; 
 
+//<.>
+  NSLog(@"gbl_currentMenuPlusReportCode=[%@]",gbl_currentMenuPlusReportCode);
+nb(80);
+        if ([gbl_currentMenuPlusReportCode       hasPrefix: @"homgbd"]  // Best Day
+        ) {
+nb(81);
+                myDisclosureIndicatorText = @" "; 
+//            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
+        }
+        else {
+//<.>
+nb(82);
                 myDisclosureIndicatorText = @">"; 
+        }
 
 //                if (indexPath.row  <=  lcl_group_report_output_idx )  // is max idx number (0-based)
                 if (indexPath.row  <=  gbl_array_cellBGcolorName.count -1 )  // is max idx number (0-based)
@@ -5455,7 +5470,8 @@ nbn(6);
 // The delegate is sent this method for the previously selected row.
 // You can use UITableViewCellSelectionStyleNone to disable the appearance of the cell highlight on touch-down.
 //
-- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
  NSLog(@"willSelectRowAtIndexPath! in tblrpts 1");
 
 // use gbl
@@ -5467,6 +5483,14 @@ nbn(6);
 //    [self.tableView deselectRowAtIndexPath: previouslyselectedIndexPath
 //                                  animated: NO];
 //
+
+    // for homgbd   best day - no select
+    UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
+    if(cell.selectionStyle == UITableViewCellSelectionStyleNone){
+        return nil;
+    }
+
+
 
     if (  [gbl_currentMenuPlusReportCode isEqualToString: @"homppe"] // home + personality
       ||  [gbl_currentMenuPlusReportCode       hasPrefix: @"hompco"] // home + grpof2[
@@ -5682,8 +5706,12 @@ NSLog(@"gbl_TBLRPTS1_saveSelectedIndexPath.row=%ld",(long)gbl_TBLRPTS1_saveSelec
       ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgmp"]
       ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgmd"]
 
-      ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgby"]      // group Best RPTs  (tap here goes to gbypcy in viewHTML)
-      ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgbd"]      //                  (tap here goes to gbdpwc in viewHTML) 
+
+// fixup  201705  (freezes)
+//      ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgby"]      // group Best RPTs  (tap here goes to gbypcy in viewHTML)
+//      ||  [gbl_currentMenuPlusReportCode isEqualToString: @"homgbd"]      //                  (tap here goes to gbdpwc in viewHTML) 
+
+
     ) {
 
         [myappDelegate mamb_beginIgnoringInteractionEvents ];
@@ -5693,6 +5721,20 @@ NSLog(@"gbl_TBLRPTS1_saveSelectedIndexPath.row=%ld",(long)gbl_TBLRPTS1_saveSelec
 
 //            [self performSegueWithIdentifier:@"segueTBLRPT1_toViewHTML" sender:self];
             [self performSegueWithIdentifier:@"segueTBLRPT1_toTBLRPT2" sender:self];
+
+
+        });                                   
+    }
+
+    if ( [gbl_currentMenuPlusReportCode isEqualToString: @"homgby"]      // group Best RPTs  (tap here goes to gbypcy in viewHTML)
+
+    ) {
+
+        [myappDelegate mamb_beginIgnoringInteractionEvents ];
+
+        dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
+
+            [self performSegueWithIdentifier:@"segueTBLRPT1_toViewHTML" sender:self];
 
 
         });                                   
@@ -5762,6 +5804,10 @@ tn();
 NSLog(@"gbl_TBLRPTS1_saveSelectedIndexPath.row=%ld",(long)gbl_TBLRPTS1_saveSelectedIndexPath.row);
 
 
+    if ( [gbl_currentMenuPlusReportCode isEqualToString: @"homgbd"] ) 
+    {
+        self.tableView.allowsSelection = NO;   // see shouldHighlightRowAtIndexPath just below
+    }
 
 
     // set bg color (spinner)
