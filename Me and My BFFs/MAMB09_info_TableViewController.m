@@ -29,7 +29,7 @@
 #import "MAMB09_info_TableViewController.h"
 #import "MAMB09_viewHTMLViewController.h"
 #import "mamblib.h"
-#import "MAMB09AppDelegate.h"   // to get globals   ppp
+#import "MAMB09AppDelegate.h"   // to get globals   ppp  rrr
 
 @interface MAMB09_info_TableViewController ()
 
@@ -211,6 +211,7 @@ tn(); NSLog(@"in INFO   viewDidLoad!");
 //  NSLog(@"gbl_justLookedAtInfoScreen  aft in ViewDidLoad in  INFO  =[%ld]",(long)gbl_justLookedAtInfoScreen );
 
 
+trn("in INFO   viewDidLoad!");
     
   NSLog(@"gbl_currentMenuPlusReportCode=%@",gbl_currentMenuPlusReportCode);
 
@@ -226,7 +227,6 @@ tn(); NSLog(@"in INFO   viewDidLoad!");
 //  NSLog(@"gbl_TBLRPTS1_NAMEx_personJust1=%@",gbl_TBLRPTS1_NAME_personJust1);  // for single person reports
 tn();
 
-//    trn("in INFO   viewDidLoad!");
     
     //    self.navigationController.toolbar.hidden = YES;
 
@@ -355,11 +355,11 @@ nbn(1);
                 [gbl_currentMenuPlusReportCode isEqualToString: @"HOME"      ]  
              && [gbl_homeUseMODE               isEqualToString: @"edit mode" ]    // home screen in yellow edit mode
            )
-        || (
-                [gbl_currentMenuPlusReportCode isEqualToString: @"HOME"        ]  
-             && [gbl_homeUseMODE               isEqualToString: @"report mode" ]
-             && [gbl_homeEditingState          isEqualToString: @"add"         ]  // home screen in brown report mode and "+" hit
-           )
+//        || (
+//                [gbl_currentMenuPlusReportCode isEqualToString: @"HOME"        ]  
+//             && [gbl_homeUseMODE               isEqualToString: @"report mode" ]
+//             && [gbl_homeEditingState          isEqualToString: @"add"         ]  // home screen in brown report mode and "+" hit
+//           )
       )
     {
         if ([gbl_fromHomeCurrentEntity  isEqualToString: @"group" ])
