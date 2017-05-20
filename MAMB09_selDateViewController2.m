@@ -46,7 +46,7 @@
 
 #import "MAMB09_selDateViewController2.h"
 #import "mamblib.h"
-#import "MAMB09AppDelegate.h"   // to get globals
+#import "MAMB09AppDelegate.h"   // to get globals   bbb
 
 
 @implementation MAMB09_selDateViewController2
@@ -68,7 +68,9 @@
 
     self.outletFor_YMD_picker.delegate   = self;
     self.outletFor_YMD_picker.dataSource = self;
-    
+
+    gbl_dayOfWeek_3 = @" ";  // init 
+ NSLog(@"gbl_dayOfWeek_3 z=[%@]",gbl_dayOfWeek_3 );
 
 //
 //// try to reduce size of pickerview
@@ -668,7 +670,9 @@ NSLog(@"in viewDidAppear()");
 //    if (component == 2)  titleForRowRetval = [yearsToPickFrom2      objectAtIndex: row];
 
 //    if (component == 0) return @"XX";
-    if (component == 0) return @"  ";
+//    if (component == 0) return @"  ";
+    if (component == 0) titleForRowRetval = gbl_dayOfWeek_3;
+
     if (component == 1)  titleForRowRetval = [self.arrayMonths      objectAtIndex: row];
     if (component == 2)  titleForRowRetval = [self.arrayDaysOfMonth objectAtIndex: row];
     if (component == 3)  titleForRowRetval = [yearsToPickFrom2      objectAtIndex: row];
@@ -714,7 +718,11 @@ NSLog(@"in viewDidAppear()");
     if (component == 1)  retvalUILabel.text = [self.arrayMonths       objectAtIndex: row];
     if (component == 2)  retvalUILabel.text = [self.arrayDaysOfMonth  objectAtIndex: row];
     if (component == 3)  retvalUILabel.text = [yearsToPickFrom2       objectAtIndex: row];
-    if (component == 4)  retvalUILabel.text = @"  ";
+
+//    if (component == 4)  retvalUILabel.text = @"  ";
+ NSLog(@"gbl_dayOfWeek_3 a=[%@]",gbl_dayOfWeek_3 );
+    if (component == 4)  retvalUILabel.text = gbl_dayOfWeek_3;
+
 //  NSLog(@"retvalUILabel.text =[%@]",retvalUILabel.text );
 
 //
@@ -790,7 +798,7 @@ NSLog(@"in viewDidAppear()");
         NSInteger indexInMths = [self.arrayMonths indexOfObject: gbl_rollerLast_mth];
         mm_format = [NSString stringWithFormat:@"%02d",  (int) (indexInMths + 1)];    // mm is one-base, arr idx is zero-based
 
-//        if (component == 0) {
+//        if (component == 0) 
         if (component == 1) {
             gbl_rollerLast_mth  = [self pickerView:  self.outletFor_YMD_picker  // like "Jan"
 //                                       titleForRow: [self.outletFor_YMD_picker  selectedRowInComponent: 0 ]
@@ -899,6 +907,13 @@ NSLog(@"in viewDidAppear()");
 
         gbl_lastSelectedDayFormattedForEmail = myFormattedStr;  // save for email format
 
+
+gbl_dayOfWeek_3 = array_3letterDaysOfWeek[my_day_of_week_idx];
+ NSLog(@"gbl_dayOfWeek_3 x =[%@]",gbl_dayOfWeek_3 );
+nb(37);
+//        [self.outletFor_YMD_picker reloadAllComponents];
+        [_outletFor_YMD_picker reloadAllComponents];
+nb(38);
 
         NSString *myFormattedStr2 =  [NSString stringWithFormat:@"%@ %@, %@",  // fmt "Dec 25,  2016"
             gbl_rollerLast_mth,
