@@ -28,10 +28,12 @@
 #import <UIKit/UIKit.h>
 #import "MAMB09_UITextField_noCopyPaste.h"
 
+NSString *gbl_dayOfWeek_3;  // "Mon" etc.  for sel date    aaa
+
 //NSInteger gbl_haveEnteredGestureRecognizerShouldBegin;
 
 //				<key>public.filename-extension</key>
-NSString *public_filename_extension;  // is "mamb"
+NSString *public_filename_extension;  // is "mamb"  (for share groups)
 
 NSInteger gbl_timesthrusetsel;
 NSString *gbl_mamb_fileNameOnEmail;  // "people.mamb"  or  "groups.mamb"  or  backup_yyyymmddhhmmss.mamb
