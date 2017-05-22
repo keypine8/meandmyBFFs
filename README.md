@@ -159,8 +159,6 @@ The repo contains fully functional commented out code which produced
 a Calendar year report showing one graph of stress levels across a full year
 from jan - dec instead of 2 graphs jan - jun and jul - dec.  Too wide.
 
-The app icon image (example at top) is licensed under a Creative Commons
-Attribution-Share Alike 4.0 International license.  (cc-by-sa)
 
 <a name="dbloggingmaint"/>
 
