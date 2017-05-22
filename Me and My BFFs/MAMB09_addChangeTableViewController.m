@@ -26,7 +26,7 @@
 //
 //
 
-//#include <CoreServices/CoreServices.h>   // these 4 are for  start = mach_absolute_time();
+//#include <CoreServices/CoreServices.h>   // these 4 are for  start = mach_absolute_time();  jjj
 //#include <mach/mach.h>
 //#include <mach/mach_time.h>
 //#include <unistd.h>
@@ -576,6 +576,8 @@ tn();
 
   nbn(705);
 
+
+
     if (   [gbl_fromHomeCurrentSelectionType isEqualToString: @"person" ] )
     {
 
@@ -584,7 +586,9 @@ tn();
   nbn(706);
         NSString *saveMsg;
 
-        saveMsg = [NSString stringWithFormat: @"\nAfter you save the birth data for a new person, NOBODY, neither you nor this device owner nor anybody else can ever again change or even look at the Birth City or Birth Date.\n\n So, if you ever want to look at the birth information of this new person in the future, you need to write it down somewhere safe outside this app." 
+//        saveMsg = [NSString stringWithFormat: @"\nAfter you save the birth data for a new person, NOBODY, neither you nor this device owner nor anybody else can ever again change or even look at the Birth City or Birth Date.\n\n So, if you ever want to look at the birth information of this new person in the future, you need to write it down somewhere safe outside this app." 
+//        ];
+        saveMsg = [NSString stringWithFormat: @"\nAfter you save the birth data for a new person, NOBODY, neither you nor this device owner nor anybody else can ever again change or even look at the Birth City or Birth Date.\n\n So, if you ever want to look at the birth information of this new person in the future, you need to write it down NOW somewhere safe outside this app." 
         ];
 
         UIAlertController* myalert = [UIAlertController alertControllerWithTitle: @"Personal Privacy"
@@ -2002,6 +2006,8 @@ trn("-------------------------------------------"); tn();
 
 
 
+
+
 //    gbl_dblTapRecog_InNameCell = nil;  // force create a gesture recognizer for cell
 //    gbl_oneTapRecog_InNameCell = nil;  // force create a gesture recognizer for cell
 
@@ -3155,6 +3161,68 @@ NSLog(@"end of  oncityInputViewKeyboardButton!"); tn();
 
     MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // methods in appdele
 
+//<.>
+nbn(610); 
+NSLog(@"qq gbl_fromHomeCurrentSelectionType               =[%@]",gbl_fromHomeCurrentSelectionType);
+NSLog(@"qq gbl_fromHomeCurrentEntityName                  =[%@]",gbl_fromHomeCurrentEntityName);
+
+[self disp_gblsWithLabel: @"pressedSaveDone TOP  (cannot chg example data)" ];
+
+
+    // put "CANNOT EDIT  example   dialogue
+    //
+//    if (
+//         (   [gbl_fromHomeCurrentSelectionType isEqualToString: @"group" ]
+//          && [gbl_fromHomeCurrentEntityName          hasPrefix: @"~"     ]
+//         )
+//         ||
+//         (   [gbl_fromHomeCurrentSelectionType isEqualToString: @"person"]
+//          && [gbl_fromHomeCurrentEntityName          hasPrefix: @"~"     ]
+//         )
+//    ) { }
+
+    if ( [gbl_myname.text  hasPrefix: @"~"] )
+    {
+nbn(611); 
+    NSString *noEditMsg;
+
+        noEditMsg = [NSString stringWithFormat: @"\n" 
+        ];
+
+        UIAlertController* myalert = [UIAlertController alertControllerWithTitle: @"Cannot Change Example Data"
+                                                                       message: noEditMsg 
+                                                                preferredStyle: UIAlertControllerStyleAlert  ];
+         
+        UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                            style: UIAlertActionStyleDefault
+                                                          handler: ^(UIAlertAction * action) {
+            NSLog(@"Ok button pressed");
+        } ];
+         
+        [myalert addAction:  okButton];
+
+        [self.navigationController presentViewController: myalert  animated: YES  completion: nil ];
+
+nbn(614);
+//    dispatch_async(dispatch_get_main_queue(), ^{  
+////        [self.navigationController popViewControllerAnimated: YES]; // actually do the "Back" action
+////[self dismissViewControllerAnimated:YES completion:Nil];
+////[self dismissModalViewControllerAnimated:YES];  // deprecated ios 6.0
+//
+//    });
+
+//            [self dismissViewControllerAnimated: YES
+//                                     completion:NULL];
+
+
+nbn(615);
+        return;
+nbn(616);
+    }
+nbn(617);
+
+
+
     // if the pickerview is scrolling right now, return
     //
     BOOL aSubViewIsScrolling;
@@ -3604,6 +3672,8 @@ NSLog(@"          POP  VIEW   #6");
 //        ...
 //                }
 
+[self disp_gblsWithLabel: @"pressedSaveDone -  missing name BEFORE" ];
+
                 NSInteger missing_name, missing_city, missing_date;
                 NSString *namePrompt; NSString *cityPrompt; NSString *datePrompt;
                 missing_name = 0;   missing_city = 0;    missing_date = 0;
@@ -3616,8 +3686,14 @@ NSLog(@"          POP  VIEW   #6");
                     missing_name = 1;
                 }
 
-                if (   [gbl_userSpecifiedCity        isEqualToString: @"" ]
-                    ||  gbl_userSpecifiedCity        == nil                
+//                if (   [gbl_userSpecifiedCity        isEqualToString: @"" ]
+//                    ||  gbl_userSpecifiedCity        == nil                
+//                   )
+//                {   }
+                if (   [gbl_myCitySoFar        isEqualToString: @"" ]
+                    ||  gbl_myCitySoFar        == nil                
+
+
                    )
                 {
                     missing_city = 1;
@@ -4017,11 +4093,227 @@ NSLog(@"          POP  VIEW   #6");
     //            else if ([gbl_rollerBirth_hour caseInsensitiveCompare: @"12" ]  == NSOrderedSame) myhour = @"12";
     //
 
+[self disp_gblsWithLabel: @"doActual save -   BEFORE  build personRecord" ];
+
                 NSString *myNewPersonRecord;
                 NSString *mySaveCode;
                 if ([gbl_kindOfSave isEqualToString:  @"regular save" ] )            mySaveCode = @"";
                 if ([gbl_kindOfSave isEqualToString:  @"no look no change save" ] )  mySaveCode = @"hs";
+
+NSString *fromHomePSV_City;
+NSString *fromHomePSV_Prov;
+NSString *fromHomePSV_Coun;
+    if ( !       [gbl_fromHomeCurrentSelectionPSV isEqualToString: @"" ]
+              ||  gbl_fromHomeCurrentSelectionPSV == nil                 
+    ) {
+fromHomePSV_City =  [gbl_fromHomeCurrentSelectionPSV componentsSeparatedByString: @"|"][7]; // city get fld#1 (grpname) - arr is 0-based 
+fromHomePSV_Prov =  [gbl_fromHomeCurrentSelectionPSV componentsSeparatedByString: @"|"][8]; // prov get fld#2 (mbrname) - arr is 0-based 
+fromHomePSV_Coun =  [gbl_fromHomeCurrentSelectionPSV componentsSeparatedByString: @"|"][9]; // coun get fld#2 (mbrname) - arr is 0-based 
+    }
+
+
+
+  NSLog(@"fromHomePSV_City =[%@]",fromHomePSV_City );
+  NSLog(@"fromHomePSV_Prov =[%@]",fromHomePSV_Prov );
+  NSLog(@"fromHomePSV_Prov =[%@]",fromHomePSV_Coun );
+  NSLog(@" gbl_userSpecifiedCity=[%@]", gbl_userSpecifiedCity);
+  NSLog(@" gbl_userSpecifiedProv=[%@]", gbl_userSpecifiedProv);
+  NSLog(@" gbl_userSpecifiedCoun=[%@]", gbl_userSpecifiedCoun);
+  NSLog(@" gbl_currentMenuPlusReportCode=[%@]", gbl_currentMenuPlusReportCode);
+
+
+//    MAMB09AppDelegate *myappDelegate= (MAMB09AppDelegate *) [[UIApplication sharedApplication] delegate]; // to access global methods in appDelegate.m
+NSString *psvString;
+
+trn("-----");
+  NSLog(@"gbl_lastSelectedPerson =[%@]",gbl_lastSelectedPerson  );
+psvString = [myappDelegate getPSVforPersonName: (NSString *) gbl_lastSelectedPerson ]; 
+  NSLog(@"psvString 1 =[%@]",psvString  );
+trn("-----");
+
+  NSLog(@"gbl_myname.text =[%@]",  gbl_myname.text);
+psvString = [myappDelegate getPSVforPersonName: (NSString *) gbl_myname.text ]; 
+  NSLog(@"psvString 2 =[%@]",psvString  );
+trn("-----");
+
+  NSLog(@"gbl_userSpecifiedPersonName =[%@]",gbl_userSpecifiedPersonName  );
+psvString = [myappDelegate getPSVforPersonName: (NSString *) gbl_userSpecifiedPersonName ]; 
+  NSLog(@"psvString 3 =[%@]",psvString  );
+trn("-----");
+
+  NSLog(@"gbl_DisplayName =[%@]", gbl_DisplayName );
+psvString = [myappDelegate getPSVforPersonName: (NSString *) gbl_DisplayName ]; 
+  NSLog(@"psvString 4 =[%@]",psvString  );
+trn("-----");
+
+
+
                     
+NSString *cityToUse;
+NSString *provToUse;
+NSString *counToUse;
+
+//
+//// defaults
+//cityToUse = fromHomePSV_City; 
+//provToUse = fromHomePSV_Prov;
+//counToUse = fromHomePSV_Coun;
+//
+//if ( [gbl_currentMenuPlusReportCode  isEqualToString: @"HOMEaddchange"] )
+//{
+//nbn(621);
+//    cityToUse = gbl_userSpecifiedCity;  
+//    provToUse = gbl_userSpecifiedProv;  
+//    counToUse = gbl_userSpecifiedCoun;  
+//
+//    if (   [cityToUse isEqualToString: @"" ]
+//        ||  cityToUse == nil  
+//    ) {
+//        cityToUse = fromHomePSV_City; 
+//    }
+//    if (   [provToUse isEqualToString: @"" ]
+//        ||  provToUse == nil  
+//    ) {
+//        provToUse = fromHomePSV_Prov;
+//    }
+//    if (   [counToUse isEqualToString: @"" ]
+//        ||  counToUse == nil  
+//    ) {
+//        counToUse = fromHomePSV_Coun;
+//    }
+//
+//} else {
+//nbn(622);
+//
+//    if (   [gbl_userSpecifiedCity isEqualToString: @"" ]
+//        ||  gbl_userSpecifiedCity == nil  
+//    ) {
+//        cityToUse = fromHomePSV_City; 
+//    }
+//    if (   [gbl_userSpecifiedProv isEqualToString: @"" ]
+//        ||  gbl_userSpecifiedProv == nil  
+//    ) {
+//        provToUse = fromHomePSV_Prov;
+//    }
+//    if (   [gbl_userSpecifiedCity isEqualToString: @"" ]
+//        ||  gbl_userSpecifiedCity == nil  
+//    ) {
+//        counToUse = fromHomePSV_Coun;
+//    }
+//}
+//
+
+// e.g.
+//_(-----)__
+//2017-05-22 00:10:22.830224 Me and My BFFs[4253:2406882] gbl_lastSelectedPerson =[~Abigail]
+//2017-05-22 00:10:22.830366 Me and My BFFs[4253:2406882] psvString 1 =[~Abigail|8|21|1994|1|20|0|Los Angeles|California|United States||]
+//_(-----)__
+//2017-05-22 00:10:22.830463 Me and My BFFs[4253:2406882] gbl_myname.text =[tstpa]
+//2017-05-22 00:10:22.830724 Me and My BFFs[4253:2406882] psvString 2 =[(null)]
+//_(-----)__
+//2017-05-22 00:10:22.831083 Me and My BFFs[4253:2406882] gbl_userSpecifiedPersonName =[tstpa]
+//2017-05-22 00:10:22.831222 Me and My BFFs[4253:2406882] psvString 3 =[(null)]
+//_(-----)__
+//2017-05-22 00:10:22.831309 Me and My BFFs[4253:2406882] gbl_DisplayName =[tstpa]
+//2017-05-22 00:10:22.831513 Me and My BFFs[4253:2406882] psvString 4 =[(null)]
+//_(-----)__
+//
+//_(-----)__
+//2017-05-22 00:11:32.065894 Me and My BFFs[4253:2406882] gbl_lastSelectedPerson =[tstpa]
+//2017-05-22 00:11:32.066038 Me and My BFFs[4253:2406882] psvString 1 =[tstpa|1|01|1999|12|01|1|T Hofke|North Brabant|Netherlands||]
+//_(-----)__
+//2017-05-22 00:11:32.066131 Me and My BFFs[4253:2406882] gbl_myname.text =[tstpaaa]
+//2017-05-22 00:11:32.066402 Me and My BFFs[4253:2406882] psvString 2 =[(null)]
+//_(-----)__
+//2017-05-22 00:11:32.066497 Me and My BFFs[4253:2406882] gbl_userSpecifiedPersonName =[tstpa]
+//2017-05-22 00:11:32.066958 Me and My BFFs[4253:2406882] psvString 3 =[tstpa|1|01|1999|12|01|1|T Hofke|North Brabant|Netherlands||]
+//_(-----)__
+//2017-05-22 00:11:32.067036 Me and My BFFs[4253:2406882] gbl_DisplayName =[tstpaaa]
+//2017-05-22 00:11:32.067127 Me and My BFFs[4253:2406882] psvString 4 =[(null)]
+//_(-----)__
+//
+//_(-----)__
+//2017-05-22 00:13:21.764102 Me and My BFFs[4253:2406882] gbl_lastSelectedPerson =[tstpaaa]
+//2017-05-22 00:13:21.764369 Me and My BFFs[4253:2406882] psvString 1 =[tstpaaa|1|01|1999|12|01|1|T Hofke|North Brabant|Netherlands|hs|]
+//_(-----)__
+//2017-05-22 00:13:21.764607 Me and My BFFs[4253:2406882] gbl_myname.text =[tstpaaabb]
+//2017-05-22 00:13:21.764885 Me and My BFFs[4253:2406882] psvString 2 =[(null)]
+//_(-----)__
+//2017-05-22 00:13:21.765006 Me and My BFFs[4253:2406882] gbl_userSpecifiedPersonName =[tstpaaa]
+//2017-05-22 00:13:21.765150 Me and My BFFs[4253:2406882] psvString 3 =[tstpaaa|1|01|1999|12|01|1|T Hofke|North Brabant|Netherlands|hs|]
+//_(-----)__
+//2017-05-22 00:13:21.765308 Me and My BFFs[4253:2406882] gbl_DisplayName =[tstpaaabb]
+//2017-05-22 00:13:21.765567 Me and My BFFs[4253:2406882] psvString 4 =[(null)]
+//_(-----)__
+//
+//_(-----)__
+//2017-05-22 00:15:55.669888 Me and My BFFs[4253:2406882] gbl_lastSelectedPerson =[tstpaaabb]
+//2017-05-22 00:15:55.670027 Me and My BFFs[4253:2406882] psvString 1 =[tstpaaabb|1|01|1999|12|01|1|T Hofke|North Brabant|Netherlands|hs|]
+//_(-----)__
+//2017-05-22 00:15:55.670299 Me and My BFFs[4253:2406882] gbl_myname.text =[tstpb]
+//2017-05-22 00:15:55.670565 Me and My BFFs[4253:2406882] psvString 2 =[(null)]
+//_(-----)__
+//2017-05-22 00:15:55.670655 Me and My BFFs[4253:2406882] gbl_userSpecifiedPersonName =[tstpb]
+//2017-05-22 00:15:55.670848 Me and My BFFs[4253:2406882] psvString 3 =[(null)]
+//_(-----)__
+//2017-05-22 00:15:55.670938 Me and My BFFs[4253:2406882] gbl_DisplayName =[tstpb]
+//2017-05-22 00:15:55.671290 Me and My BFFs[4253:2406882] psvString 4 =[(null)]
+//_(-----)__
+//
+//_(-----)__
+//2017-05-22 00:16:44.199841 Me and My BFFs[4253:2406882] gbl_lastSelectedPerson =[tstpaaabb]
+//2017-05-22 00:16:44.199957 Me and My BFFs[4253:2406882] psvString 1 =[tstpaaabb|1|01|1999|12|01|1|T Hofke|North Brabant|Netherlands|hs|]
+//_(-----)__
+//2017-05-22 00:16:44.200186 Me and My BFFs[4253:2406882] gbl_myname.text =[tstpaaazz]
+//2017-05-22 00:16:44.200312 Me and My BFFs[4253:2406882] psvString 2 =[(null)]
+//_(-----)__
+//2017-05-22 00:16:44.200380 Me and My BFFs[4253:2406882] gbl_userSpecifiedPersonName =[tstpaaabb]
+//2017-05-22 00:16:44.200464 Me and My BFFs[4253:2406882] psvString 3 =[tstpaaabb|1|01|1999|12|01|1|T Hofke|North Brabant|Netherlands|hs|]
+//_(-----)__
+//2017-05-22 00:16:44.200620 Me and My BFFs[4253:2406882] gbl_DisplayName =[tstpaaazz]
+//2017-05-22 00:16:44.200750 Me and My BFFs[4253:2406882] psvString 4 =[(null)]
+//_(-----)__
+//
+//
+
+
+    // if gbl_userSpecifiedPersonName has a psv string of NOT NULL
+    //     then use the city,prov,coun in there
+    // else
+    //     use the city,prov,coun in gbl_userSpecifiedCity  gbl_userSpecifiedProv gbl_userSpecifiedCoun
+    //
+
+    // get the PSV of gbl_userSpecifiedPersonName 
+    NSString * PSV_of_gbl_userSpecifiedPersonName;
+    PSV_of_gbl_userSpecifiedPersonName = [myappDelegate getPSVforPersonName: (NSString *) gbl_userSpecifiedPersonName ]; 
+  NSLog(@"PSV_of_gbl_userSpecifiedPersonName  =[%@]",  PSV_of_gbl_userSpecifiedPersonName );
+
+
+nbn(721);
+    if ( ! (   [PSV_of_gbl_userSpecifiedPersonName isEqualToString: @"" ]
+            ||  PSV_of_gbl_userSpecifiedPersonName == nil                 )
+    ) {
+nbn(722);
+        // here the PSV string exists
+
+        cityToUse =  [PSV_of_gbl_userSpecifiedPersonName componentsSeparatedByString: @"|"][7]; // city get fld#8  - arr is 0-based 
+        provToUse =  [PSV_of_gbl_userSpecifiedPersonName componentsSeparatedByString: @"|"][8]; // prov get fld#9  - arr is 0-based 
+        counToUse =  [PSV_of_gbl_userSpecifiedPersonName componentsSeparatedByString: @"|"][9]; // coun get fld#10 - arr is 0-based 
+
+    } else {
+nbn(723);
+        cityToUse = gbl_userSpecifiedCity;  
+        provToUse = gbl_userSpecifiedProv;  
+        counToUse = gbl_userSpecifiedCoun;  
+    }
+nbn(724);
+
+
+  NSLog(@" cityToUse =[%@]", cityToUse );
+  NSLog(@" provToUse =[%@]", provToUse );
+  NSLog(@" counToUse =[%@]", counToUse );
+
+
                 myNewPersonRecord = [NSString stringWithFormat: @"%@|%@|%@|%@|%@|%@|%@|%@|%@|%@|%@|",
                     gbl_DisplayName,
     //                gbl_rollerBirth_mth,
@@ -4037,9 +4329,17 @@ NSLog(@"          POP  VIEW   #6");
 //                    gbl_enteredCity,
 //                    gbl_enteredProv,
 //                    gbl_enteredCoun,
-                    gbl_userSpecifiedCity,
-                    gbl_userSpecifiedProv,
-                    gbl_userSpecifiedCoun,
+//                    gbl_userSpecifiedCity,
+//                    gbl_userSpecifiedProv,
+//                    gbl_userSpecifiedCoun,
+//                    [gbl_fromHomeCurrentSelectionPSV componentsSeparatedByString: @"|"][7], // city get fld#1 (grpname) - arr is 0-based 
+//                    [gbl_fromHomeCurrentSelectionPSV componentsSeparatedByString: @"|"][8], // prov get fld#2 (mbrname) - arr is 0-based 
+//                    [gbl_fromHomeCurrentSelectionPSV componentsSeparatedByString: @"|"][9], // coun get fld#2 (mbrname) - arr is 0-based 
+                    cityToUse,
+                    provToUse,
+                    counToUse,
+
+
 
                     mySaveCode               // "" or "hs"
                 ];
@@ -8214,7 +8514,7 @@ tn();
   NSLog(@"##### beg of gbls #####################################!");
   NSLog(@"%@", myDispLabel);
 
-return;  // for less test output
+//return;  // for less test output
 
 //  NSLog(@"%@", @" ");
 //  NSLog(@"qq gbl_DisplayCity                                =[%@]",gbl_DisplayCity);
@@ -8294,489 +8594,14 @@ return;  // for less test output
 //  NSLog(@"qq gbl_userSpecifiedPersonName                    =[%@]",gbl_userSpecifiedPersonName);
 //  NSLog(@"qq gbl_userSpecifiedProv                          =[%@]",gbl_userSpecifiedProv);
 //
-//  NSLog(@" ");
-//  NSLog(@"%@", myDispLabel);
-//  NSLog(@"##### end of gbls #####################################!");
-//tn(); 
+//
+  NSLog(@" ");
+  NSLog(@"%@", myDispLabel);
+  NSLog(@"##### end of gbls #####################################!");
+tn(); 
 
 } // end of disp_gblsWithLabel
 
 
 @end
-
-
-//  DEPRECATED in 9.0
-//
-//- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-//{
-//  NSLog(@"in  alertView clickedButtonAtIndex !!");
-//  NSLog(@"buttonIndex=[%ld]",buttonIndex);
-//    switch(buttonIndex) {
-//        case 0: //"No" pressed
-//  NSLog(@"ALERT  CHOOSE  CASE 00000");
-//                //do something?
-//            break;
-//        case 1: //"Yes" pressed
-//  NSLog(@"ALERT  CHOOSE  CASE 11111");
-//                //here you pop the viewController
-////            [self.navigationController popViewControllerAnimated:YES];
-//
-//        // actually do the "Back" action
-//        //
-//        [self.navigationController popToRootViewControllerAnimated: YES]; // pop to root view controller
-//            break;
-//        default:
-//  NSLog(@"ALERT  CHOOSE  default");
-//          break;
-//    }
-//}
-//
-
-
-// qOLD
-//  NSLog(@"=====  SET INTERVAL1  ================== gbl_intervalBetweenLast2Keystrokes=%g",gbl_intervalBetweenLast2Keystrokes);
-//  NSLog(@"gbl_typedCharPrev=[%@]  gbl_typedCharCurr=[%@]",gbl_typedCharPrev, gbl_typedCharCurr);
-//  NSLog(@"gbl_timeOfPrevCityKeystroke        =%g",gbl_timeOfPrevCityKeystroke        );
-//  NSLog(@"gbl_timeOfCurrCityKeystroke        =%g",gbl_timeOfCurrCityKeystroke        );
-//  NSLog(@"myTimeNow                          =%g",myTimeNow             );
-//  NSLog(@"============================================================");
-//
-
-
-// qOLD
-//
-//- (IBAction)onCancelCityPicker:(id)sender
-//{
-//  NSLog(@"onCancelCityPicker");
-//
-//} // onCancelCityPicker
-//
-//- (IBAction)onCancelInputCity:(id)sender
-//{
-//tn();  NSLog(@"onCancelInputCity  CANCEL  CANCEL  CANCEL  CCANCEL  ANCEL  ");
-//  NSLog(@"gbl_searchStringTitle.title=%@",gbl_searchStringTitle.title);
-//  NSLog(@"gbl_mycitySearchString.inputView=%@",gbl_mycitySearchString.inputView);
-//  NSLog(@"gbl_mycityInputView             =%@",gbl_mycityInputView);
-//
-//
-////    if ([ gbl_searchStringTitle.title isEqualToString: @"Pick City" ] ) { // are in uiPICKERview input
-//    if ([ gbl_mycityInputView isEqualToString: @"picker" ] ) { // (not "keyboard")
-//
-//nbn(233);
-////        gbl_mycityInputView = @"picker";     // = "keyboard" or "picker", default is KB
-//
-//  gbltmpstr = gbl_mycityInputView;
-//        gbl_mycityInputView = @"keyboard";     // = "keyboard" or "picker", default is KB
-//  NSLog(@"--onc ----- VASSIGN gbl_mycityInputView ---------------- old=[%@]  new=[%@] ---", gbltmpstr, gbl_mycityInputView );
-//
-//  gbltmpint = gbl_justCancelledOutOfCityPicker ;
-//        gbl_justCancelledOutOfCityPicker = 1;   // used in should/did  begin/end  editing  to alter city inputview  kb/picker
-//  NSLog(@"--onc ----- USAGE gbl_justCancelledOutOfCityPicker ---------------- old=[%ld]  new=[%ld] ---", gbltmpint, gbl_justCancelledOutOfCityPicker );
-//
-////            self.pickerViewCity.hidden       = YES;
-////            gbl_mycitySearchString.inputView = nil ;  // get rid of picker input view   // necessary ?  works?=yes
-//
-//nbn(2331);
-//tn();trn("gbl_mycitySearchString resignFirstResponder        get rid of picker  1");
-//            [gbl_mycitySearchString resignFirstResponder];  // control goes to textFieldShouldEndEditing > textFieldDidEndEditing > back here
-//  NSLog(@"--onc ----- VASSIGN gbl_mycitySearchString RESIGN!FIRST_RESPONDER ---------------- " );
-//
-//nbn(23311);
-//tn();trn("gbl_mycitySearchString.inputView = nil             gbl_mycitySearchString resignFirstResponder ??? ");
-//
-//
-//  gbltmpstr = [gbl_mycitySearchString.inputView.description substringToIndex: 15];
-//            gbl_mycitySearchString.inputView = nil ;  // get rid of picker input view   // necessary ?  works?=yes
-//  NSLog(@"--onc ----- VASSIGN gbl_mycitySearchString.inputView --- old=[%@]  new=[%@] ---", gbltmpstr, [ gbl_mycitySearchString.inputView.description substringToIndex: 15]);
-//
-//
-//nbn(2332);
-//tn();trn("gbl_mycitySearchString becomeFirstResponder        put up keyboard 1  KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK");
-//            // put up keyboard   works?=
-//            //
-//            // All UIResponder objects have an inputView property.
-//            // The inputView of a UIResponder is the view that will be shown in place of the keyboard
-//            // WHEN THE RESPONDER BECOMES THE FIRST RESPONDER.
-//            //
-//            [gbl_mycitySearchString becomeFirstResponder];  // control textFieldShouldBeginEditing > textFieldDidBeginEditing > back here
-//  NSLog(@"--onc ----- VASSIGN gbl_mycitySearchString BECOME_FIRST_RESPONDER ---------------- " );
-//
-//  gbltmpstr = gbl_searchStringTitle.title;
-//            gbl_searchStringTitle.title =  @"Type Birth City Name";  //  update title of keyboard "toolbar"
-//  NSLog(@"--in pkr--- VASSIGN gbl_searchStringTitle.title  --- old=[%@]  new=[%@] ---", gbltmpstr, gbl_searchStringTitle.title );
-//
-//
-//
-//nbn(2333);
-//        NSInteger tmpIndex = [gbl_myCitySoFar length];                                         // end char out of  gbl_myCitySoFar 
-//        if (tmpIndex > 0) gbl_myCitySoFar = [gbl_myCitySoFar substringToIndex: tmpIndex - 1];  // end char out of  gbl_myCitySoFar
-//
-//nbn(901); NSLog(@"=gbl_myCitySoFar %@",gbl_myCitySoFar );
-//        
-//  NSLog(@"gbl_myCitySoFar=%@",gbl_myCitySoFar);
-//  NSLog(@"gbl_enteredCity =%@",gbl_enteredCity );
-//  NSLog(@"gbl_enteredProv =%@",gbl_enteredProv );
-//  NSLog(@"gbl_enteredCoun =%@",gbl_enteredCoun );
-//
-//  gbltmpstr = gbl_searchStringTitle.title;
-//        gbl_searchStringTitle.title = gbl_myCitySoFar;
-//  NSLog(@"-901 in pkr VASSIGN gbl_searchStringTitle.title  --- old=[%@]  new=[%@] ---", gbltmpstr, gbl_searchStringTitle.title );
-//
-//
-//        const char *sofarC_CONST;                                                    // convert NSString to c string 
-//        sofarC_CONST = [gbl_myCitySoFar cStringUsingEncoding:NSUTF8StringEncoding];  // convert NSString to c string
-//        char   sofarCstring[64];                                                     // convert NSString to c string 
-//        strcpy(sofarCstring, sofarC_CONST);                                          // convert NSString to c string 
-//
-//        int idx_into_placetab;
-//tn();trn("bin_find_first_city  IN ONCANCEL");
-//        idx_into_placetab = bin_find_first_city(  // **********  ==========   GET CITY,prov,coun
-////            arg_cityBeginsWith,
-//            sofarCstring,
-//            gbl_numCitiesToTriggerPicklist,  // is type  int
-//            &num_PSVs_found,                 // is type  int  (0-based index to last string)
-//            city_prov_coun_PSVs              // array of chars holding fixed length "strings"
-//        );
-//tn();tr("bin_find_first_city  IN ONCANCEL >>>");kin(idx_into_placetab );
-//        if (idx_into_placetab == -2) gbl_fewEnoughCitiesToMakePicklist = 1;
-//        else                         gbl_fewEnoughCitiesToMakePicklist = 0;
-//  NSLog(@"gbl_fewEnoughCitiesToMakePicklist =%ld",gbl_fewEnoughCitiesToMakePicklist );
-//        gbl_pickerToUse  = @"city picker"; // regardless
-//
-//        //    if (       idx_into_placetab == -1) {  // city not found beginning with string  arg_citySoFar  
-//        //    } else if (idx_into_placetab == -2) {  // -2  IF there are few enough cities to make a picklist
-//        if (idx_into_placetab > 0) {
-//
-//  NSLog(@" show latest city,prov,coun  beginning with city chars typed so far");
-//            // show latest city,prov,coun  beginning with city chars typed so far
-//            char myCityName [64];
-//            strcpy(myCityName, gbl_placetab[idx_into_placetab].my_city); 
-//            NSString *myLatestCity =  [NSString stringWithUTF8String: myCityName ];  // convert c string to NSString
-//            gbl_enteredCity = myLatestCity ;
-//
-//            char myProvName [64];
-//            strcpy(myProvName, array_prov[gbl_placetab[idx_into_placetab].idx_prov]); 
-//            NSString *myLatestProv =  [NSString stringWithUTF8String: myProvName];  // convert c string to NSString
-//            gbl_enteredProv = myLatestProv ;
-//
-//            char myCounName [64];
-//            strcpy(myCounName, array_coun[gbl_placetab[idx_into_placetab].idx_coun]); 
-//            NSString *myLatestCoun =  [NSString stringWithUTF8String: myCounName];  // convert c string to NSString
-//            gbl_enteredCoun = myLatestCoun ;
-//
-//            [ self updateCityProvCoun ]; // update city/prov/couon field  in cellForRowAtIndexpath
-//        }
-// 
-//        gbl_currentCityPicklistIsForTypedSoFar = @"";  // like "toron"  or "toro"   BECAUSE CANCELLED OUT OF CITY PICKLIST
-//nbn(2339);
-//
-//    } else {   // are in KEYBOARD input
-//nbn(234);
-//  gbltmpstr = gbl_mycityInputView;
-//        gbl_mycityInputView = @"keyboard";     // = "keyboard" or "picker", default is KB
-//  NSLog(@"--onc1----- VASSIGN gbl_mycityInputView ---------------- old=[%@]  new=[%@] ---", gbltmpstr, gbl_mycityInputView );
-//
-//        // erase typing done so far for city name search
-//        //
-//        gbl_myCitySoFar = @"";
-//nbn(902); NSLog(@"=gbl_myCitySoFar %@",gbl_myCitySoFar );
-//
-//        //  update title of keyboard "toolbar"
-//        //
-//  gbltmpstr = gbl_searchStringTitle.title;
-//        gbl_searchStringTitle.title = @"Type City Name";
-//  NSLog(@"--in kb---- VASSIGN gbl_searchStringTitle.title  --- old=[%@]  new=[%@] ---", gbltmpstr, gbl_searchStringTitle.title );
-//
-//
-//        // update city label field  update field in cellForRowAtIndexpath
-//        //
-//            //  myTextCity = [NSString stringWithFormat:@" %@\n %@\n %@", gbl_enteredCity, gbl_enteredProv, gbl_enteredCoun ];
-//            gbl_enteredCity = gbl_initPromptCity;
-//            gbl_enteredProv = gbl_initPromptProv;
-//            gbl_enteredCoun = gbl_initPromptCoun;
-//
-//        // clear internal typed in buffer for city search string
-//        //
-//        gbl_mycitySearchString.text = @"";
-//
-//        NSIndexPath *indexPathSearchCityString = [NSIndexPath indexPathForRow: 2 inSection: 0];
-//
-//        NSArray *indexPathsToUpdate = [NSArray arrayWithObjects: indexPathSearchCityString, nil];
-//        [self.tableView beginUpdates];
-//        [self.tableView reloadRowsAtIndexPaths: indexPathsToUpdate
-//                              withRowAnimation: UITableViewRowAnimationNone ];
-//        [self.tableView endUpdates];
-//
-//nbn(235);
-////
-//////        [gbl_mycitySearchString resignFirstResponder];  // control goes to textFieldShouldEndEditing > textFieldDidEndEditing > back here
-//////        [gbl_mycitySearchString becomeFirstResponder]; 
-////
-//////        [self.view endEditing:YES];
-////        [gbl_mycitySearchString  endEditing:YES];        //  hides the keyboard
-//
-//        //
-//        // All UIResponder objects have an inputView property.
-//        // The inputView of a UIResponder is the view that will be shown in place of the keyboard
-//        // WHEN THE RESPONDER BECOMES THE FIRST RESPONDER.
-//        //
-//        [gbl_mycitySearchString becomeFirstResponder];   // brings keyboard back
-//  NSLog(@"--onc2----- VASSIGN gbl_mycitySearchString BECOME_FIRST_RESPONDER ---------------- " );
-//nbn(236);
-////
-////        [gbl_mycitySearchString resignFirstResponder];  // control goes to textFieldShouldEndEditing > textFieldDidEndEditing > back here
-//// 
-////        gbl_mycitySearchString.inputView = nil ;   // necessary ?
-////
-////        [gbl_mycitySearchString becomeFirstResponder]; 
-////
-//    }
-//
-//    // show values in gbl_enteredCity  Prov  Coun
-//    [ self updateCityProvCoun ]; // update city/prov/couon field  in cellForRowAtIndexpath
-//
-////    NSIndexPath *indexPathLabelCityProvCoun = [NSIndexPath indexPathForRow: 3 inSection: 0];
-////
-////    NSArray *indexPathsToUpdate = [NSArray arrayWithObjects: indexPathLabelCityProvCoun, nil];
-////    [self.tableView beginUpdates];
-////    [self.tableView reloadRowsAtIndexPaths: indexPathsToUpdate
-////                          withRowAnimation: UITableViewRowAnimationNone ];
-////    [self.tableView endUpdates];
-////
-//
-//
-//
-////  gbltmpint = gbl_justCancelledOutOfCityPicker ;
-////        gbl_justCancelledOutOfCityPicker = 0;   // used in should/did  begin/end  editing  to alter city inputview  kb/picker
-////  NSLog(@"--onc (end)- USAGE gbl_justCancelledOutOfCityPicker ---------------- old=[%ld]  new=[%ld] ---", gbltmpint, gbl_justCancelledOutOfCityPicker );
-////
-//
-//    [self putUpCancelButtonOrNot  ];
-//
-//NSLog(@"END OF  onCancelInputCity  CANCEL  CANCEL  CANCEL  CCANCEL  ANCEL  ");
-//tn();
-//
-//} // onCancelInputCity
-//
-//
-
-
-//- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
-//    BOOL touchedViewIsTextfield = NO;
-// 
-//    // first check we have a cell
-//    NSIndexPath *indexPathAtHitPoint = [self indexPathForRowAtPoint:point];
-//    id cell = [tableview.cell cellForRowAtIndexPath:indexPathAtHitPoint];
-//    if (cell) {
-//        NSArray *subViews = [[cell contentView] subviews];
-//        // Cycle through subviews of the contentView
-//        for (UIView *view in subViews) {
-//            // Test if the subView is a UITextField
-//            if ([view isKindOfClass :[UITextField class]]) {
-//                // And here is the bit that aint working... where did I go wrong?
-//                touchedViewIsTextfield = [view pointInside:point withEvent:event];
-//                if (touchedViewIsTextfield) { NSLog(@";yes"); }
-//            }
-//        }
-//    }
-//    return [super hitTest:point withEvent:event];
-//}   
-//
-
-
-//        [myCityOfBirthInputField becomeFirstResponder];
-
-
-//UIToolbar * keyboardToolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 50)];
-//keyboardToolBar.barStyle = UIBarStyleBlackTranslucent;
-
-//        UIBarButtonItem *gbl_searchStringTitle = [[UIBarButtonItem alloc]initWithTitle: @"Type City Name"
-//                                                                  // style: UIBarButtonItemStylePlain
-//                                                                   style: UIBarButtonItemStyleBordered
-//                                                                  target: self
-//                                                                  action: nil ];
-//
-//
-// qOLD
-//
-////        UIBarButtonItem *myButtonCancelTypeCity = [[UIBarButtonItem alloc]initWithTitle: @"Cancel"
-//          gbl_cityPickerCancelButton = [[UIBarButtonItem alloc]initWithTitle: @"Cancel"
-//                                                                       style: UIBarButtonItemStyleBordered
-//                                                                      target: self
-//                                                                      action: @selector( onCancelInputCity: )
-//        ];
-//
-
-
-       // try multiple inputView toolbars
-       // 
-       //  For Keyboard inputView  "Clear"        tor     "Wheel >"  (hidden or not hidden depends on num cities <= 25)
-       //  For Picklist inputView  "< Keyboard"   tor   
-       // 
-       // 
-//  NSLog(@"gbl_mycityInputView =[%@]",gbl_mycityInputView );
-//       [self setCityInputAccessoryViewFor: gbl_mycityInputView ];  // arg is "keyboard" or "picker"
-
-
-
-//    if ( [ arg_toolbarToUse isEqualToString: @"keyboard" ] ) {
-//        gbl_mycitySearchString.inputAccessoryView = gbl_ToolbarForCityKeyboard;
-//        
-//        if ( [ arg_showPicklistButton == YES ] ) {
-//            [[self.view viewWithTag: gbl_tag_cityInputKeyboardRightButton ] setHidden:  YES ];
-//        } else {
-//            [[self.view viewWithTag: gbl_tag_cityInputKeyboardRightButton ] setHidden:  NO ];
-//        }
-//
-//        gbl_mycitySearchString.inputAccessoryView = gbl_ToolbarForCityKeyboard;
-//    }  // put up keyboard city inputView toolbar
-//
-
-
-
-
-
-    // this is the "currently" selected row now
-//    NSIndexPath *currentlyselectedIndexPath = [self.tableView indexPathForSelectedRow];   was unused
-    
-
-    // select the row in UITableView
-    // This puts in the light grey "highlight" indicating selection
-//tn();trn("hightlight ON");
-//    [self.tableView selectRowAtIndexPath:currentlyselectedIndexPath
-//                                animated:NO
-//                          scrollPosition:UITableViewScrollPositionNone];
-//    [self.tableView scrollToNearestSelectedRowAtScrollPosition: currentlyselectedIndexPath.row
-//                                                      animated: NO];
-    
-    // now you can use cell.textLabel.text
-
-
-
-
-//Since 1 second = 1000ms, [NSDate timeIntervalSinceDate:foo] * 1000 should be milliseconds. –  esqew Jul 22 '11 at 22:58
-
-
-// e.g.
-// #import "MyViewController.h"
-// 
-// @interface MyViewController ()
-// 
-// @property (strong, nonatomic) NSTimer *timer;
-// 
-// @end
-// 
-// @implementation MyViewController
-// 
-// double timerInterval = 1.0f;
-// 
-// - (NSTimer *) timer {
-//     if (!_timer) {
-//         _timer = [NSTimer timerWithTimeInterval:timerInterval target:self selector:@selector(onTick:) userInfo:nil repeats:YES];
-//     }
-//     return _timer;
-// }
-// 
-// - (void)viewDidLoad
-// {
-//     [super viewDidLoad];
-// 
-//     [[NSRunLoop mainRunLoop] addTimer: self.timer forMode: NSRunLoopCommonModes];
-// }
-// 
-// -(void)onTick:(NSTimer*)timer
-// {
-//     NSLog(@"Tick...");
-// }
-// 
-// @end
-//
-
-
-// qOLD
-//        // turn gbl_timerToCheckCityPicklistTrigger  ON and OFF when appropriate
-//        //
-//        if ([ gbl_firstResponder_current isEqualToString: @"city"]) {  // when entering field "city"
-//
-//            // turn ON  (self.timerToCheckCityPicklistTrigger is a method to set gbl_timerToCheckCityPicklistTrigger )
-//            [ [NSRunLoop mainRunLoop] addTimer: self.timerToCheckCityPicklistTrigger 
-//                                       forMode: NSRunLoopCommonModes
-//            ];  
-//  NSLog(@"TURN ON    timerToCheckCityPicklistTrigger");
-//        } else {
-//
-//            [ gbl_timerToCheckCityPicklistTrigger invalidate ];                       // turn OFF
-//             gbl_timerToCheckCityPicklistTrigger = nil;                             // turn OFF
-//  NSLog(@"TURN OFF   timerToCheckCityPicklistTrigger  + make nil");
-//        }
-//
-
-
-//        } else {
-//nb(4);
-//            gbl_firstResponder_previous = gbl_firstResponder_current;
-//            gbl_firstResponder_current  = gbl_fieldTap_goingto;
-//        }
-
-
-
-
-
-//    
-////  for test
-//    uint64_t        mystart;
-//    uint64_t        myend;
-////    uint64_t        elapsed;
-////    Nanoseconds     elapsedNano;
-//    uint64_t     elapsedNano;
-////    uint64_t     elapsedNano;
-//    uint64_t        myInterval;
-//    mystart = mach_absolute_time();
-//  NSLog(@"mystart=%lld",mystart);
-////    (void) getpid();
-////    (void) getpid();
-////    (void) getpid();
-////    (void) getpid();
-////    (void) getpid();
-//sleep(1);
-//    myend = mach_absolute_time();
-//  NSLog(@"myend=%lld",myend);
-////    elapsedNano = AbsoluteToNanoseconds( *(AbsoluteTime *) &elapsed );
-//
-////    myInterval =  * (uint64_t *) &elapsedNano;
-//    myInterval =  myend - mystart;
-//  NSLog(@"myInterval=%lld",myInterval);
-//
-////
-//  NSDate *mytoday = [NSDate date];
-//	NSTimeInterval oldTime = [mytoday timeIntervalSince1970] * 1000;
-//	NSString *timeStamp = [[NSString alloc] initWithFormat:@"%0.0f", oldTime];
-//	NSLog(@"%@", timeStamp);
-//
-//  sleep(2);
-////    (void) getpid();
-////    (void) getpid();
-////    (void) getpid();
-////    (void) getpid();
-////    (void) getpid();
-////
-//
-//  mytoday = [NSDate date];
-//	NSTimeInterval oldTime2 = [mytoday timeIntervalSince1970] * 1000;
-//	NSString *timeStamp2 = [[NSString alloc] initWithFormat:@"%0.0f", oldTime2];
-//	NSLog(@"%@", timeStamp);
-//	NSLog(@"%f", oldTime2 - oldTime);
-//
-////
-////
-//CFTimeInterval startTime = CACurrentMediaTime();  // returns double CFTimeInterval
-//sleep(2);
-//CFTimeInterval endTime = CACurrentMediaTime();
-//NSLog(@"Total Runtime: %g s", endTime - startTime);
-//
-////
-//
-//
-
-
 
