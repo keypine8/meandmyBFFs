@@ -40,7 +40,7 @@
 
 ## SCREEN SHOT - 5
 
-<img src="https://github.com/keypine8/meandmyBFFs/blob/master/Me%20and%20My%20BFFs/Images.xcassets/ScreenShot_1_of_5.imageset/ScreenShot_1_of_5.png?raw=true" width="400">
+<img src="https://github.com/keypine8/meandmyBFFs/blob/master/Me%20and%20My%20BFFs/Images.xcassets/ScreenShot_5_of_5.imageset/ScreenShot_5_of_5.png?raw=true" width="400">
 
 ###### The avove 5 screen Shot ".png"s  are in the Repo in the Images.xcassets folder with names like ScreenShot_1_of_5.imageset.
 
