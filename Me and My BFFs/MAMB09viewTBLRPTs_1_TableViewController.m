@@ -29,7 +29,7 @@
 #import "MAMB09viewTBLRPTs_1_TableViewController.h"
 #import "MAMB09_viewHTMLViewController.h"
 #import "mamblib.h"
-#import "MAMB09AppDelegate.h"   // to get globals   ttt
+#import "MAMB09AppDelegate.h"   // to get globals   hhh
 
 
 @interface MAMB09viewTBLRPTs_1_TableViewController ()
@@ -3267,6 +3267,9 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
             else  if (gbl_numPairsRanked  <  100000) numCharsForRankNumsOnLeft =    5;  // max ~ 30,000
 //kin((int)numCharsForRankNumsOnLeft );
 
+
+
+
         }  // end of Grab cell data,  but only if indexPath.row is still in array (3 extra footer cells)
 
 
@@ -3619,7 +3622,8 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
                 char tmp_c_first_person_buff[128];                                        // NSString object to C str
                 tmp_c_CONST = [myFirstPersonLine cStringUsingEncoding:NSUTF8StringEncoding]; // NSString object to C str
                 strcpy(tmp_c_first_person_buff, tmp_c_CONST);                             // NSString object to C str  because of const
-//tn();ksn(tmp_c_first_person_buff);
+
+tn();ksn(tmp_c_first_person_buff);
             //
             // end of  grab first line with a person
 
@@ -3632,8 +3636,13 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
                 mycharnum = mycharnum + 1;
                 if (tmp_c_first_person_buff[mm] == '1') break;  // find index of first '1'
             }
+
+kin(mycharnum);
+kin((int)numCharsForRankNumsOnLeft);
+
             gbl_numLeadingSpacesToRemove = mycharnum - numCharsForRankNumsOnLeft; // e.g. "00001" 1on=5 rank=2 remove=3  // for LONG
-//kin((int)gbl_numLeadingSpacesToRemove );
+
+kin((int)gbl_numLeadingSpacesToRemove );
 
 
 
@@ -4085,12 +4094,22 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
             // get the number of chars taken up by rank numbers on left (  gbl_numPairsRanked )
             //
 //kin((int)gbl_numPairsRanked);
-            if       (gbl_numPairsRanked  <      10) numCharsForRankNumsOnLeft =    1;
-            else  if (gbl_numPairsRanked  <     100) numCharsForRankNumsOnLeft =    2;
-            else  if (gbl_numPairsRanked  <    1000) numCharsForRankNumsOnLeft =    3;
-            else  if (gbl_numPairsRanked  <   10000) numCharsForRankNumsOnLeft =    4;
-            else  if (gbl_numPairsRanked  <  100000) numCharsForRankNumsOnLeft =    5;  // max ~ 30,000
+//            if       (gbl_numPairsRanked  <      10) numCharsForRankNumsOnLeft =    1;
+//            else  if (gbl_numPairsRanked  <     100) numCharsForRankNumsOnLeft =    2;
+//            else  if (gbl_numPairsRanked  <    1000) numCharsForRankNumsOnLeft =    3;
+//            else  if (gbl_numPairsRanked  <   10000) numCharsForRankNumsOnLeft =    4;
+//            else  if (gbl_numPairsRanked  <  100000) numCharsForRankNumsOnLeft =    5;  // max ~ 30,000
 //kin((int)numCharsForRankNumsOnLeft );
+
+NSLog(@"gbl_numMembersInCurrentGroup  nxn =%ld",gbl_numMembersInCurrentGroup  );
+            if       (gbl_numMembersInCurrentGroup  <      10) numCharsForRankNumsOnLeft =    1;
+            else  if (gbl_numMembersInCurrentGroup  <     100) numCharsForRankNumsOnLeft =    2;
+            else  if (gbl_numMembersInCurrentGroup  <    1000) numCharsForRankNumsOnLeft =    3;
+            else  if (gbl_numMembersInCurrentGroup  <   10000) numCharsForRankNumsOnLeft =    4;
+            else  if (gbl_numMembersInCurrentGroup  <  100000) numCharsForRankNumsOnLeft =    5;  // max ~ 30,000
+NSLog(@"numCharsForRankNumsOnLeft     nxn =%ld",numCharsForRankNumsOnLeft );
+
+
 
         }  // end of Grab cell data,  but only if indexPath.row is still in array (3 extra footer cells)
 
@@ -4451,19 +4470,26 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
             //
             NSString *myNewCellTextShort; 
             myNewCellTextShort = [myOriginalCellText substringWithRange:NSMakeRange(0, myOriginalCellTextLen - 1)]; // zero-based
-//NSLog(@"myNewCellTextShort A =[%@]",myNewCellTextShort     );
+NSLog(@"myNewCellTextShort A =[%@]",myNewCellTextShort     );
 
             // short line, on left end, 
             // remove leading spaces which do not constitute part of space for rank number 
             //
             int mylen1 = (int)myNewCellTextShort.length;
 
+kin(mylen1);
+
+            // set  gbl_numLeadingSpacesToRemove
+            // 
+            gbl_numLeadingSpacesToRemove = 1;
+NSLog(@"=gbl_numLeadingSpacesToRemove = [%ld]",(long)gbl_numLeadingSpacesToRemove);
+
             myNewCellText  = [myNewCellTextShort substringWithRange:
                 NSMakeRange(gbl_numLeadingSpacesToRemove, mylen1 - gbl_numLeadingSpacesToRemove)]; // zero-based
 
             lcl_myNewCellText = myNewCellText;
 //  NSLog(@"lcl_myNewCellText 1 =[%@]",lcl_myNewCellText );
-//NSLog(@"myNewCellText=[%@]",myNewCellText);
+  NSLog(@"myNewCellText=[%@]",myNewCellText);
 
 //trn(" end of  // shorter data line");
         }   // end shorter data line
@@ -4587,17 +4613,14 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
 
 //<.>
   NSLog(@"gbl_currentMenuPlusReportCode=[%@]",gbl_currentMenuPlusReportCode);
-nb(80);
         if ([gbl_currentMenuPlusReportCode       hasPrefix: @"homgbd"]  // Best Day
         ) {
-nb(81);
                 myDisclosureIndicatorText = @" "; 
 //            cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
         }
         else {
 //<.>
-nb(82);
                 myDisclosureIndicatorText = @">"; 
         }
 
@@ -4702,7 +4725,7 @@ nb(82);
             // end of  UILabel for the disclosure indicator, ">",  for tappable cells
 
             lcl_myNewCellText = myNewCellText;
-//  NSLog(@"lcl_myNewCellText 2 =[%@]",lcl_myNewCellText );
+ NSLog(@"lcl_myNewCellText 2 =[%@]",lcl_myNewCellText );
 
             dispatch_async(dispatch_get_main_queue(), ^{            // <===  short line and long line
                 cell.textLabel.text                      = myNewCellText;  // --------------------------------------------------
@@ -5149,7 +5172,7 @@ nb(82);
              // this is for   gbl_currentMenuPlusReportCode       hasPrefix: @"homgby"]  // Best Year
              // this is for   gbl_currentMenuPlusReportCode       hasPrefix: @"homgbd"]  // Best Day
     }    // for "Best" use red/green color
-nbn(6);
+//nbn(6);
 
 } // end of   willDisplayCell
 
