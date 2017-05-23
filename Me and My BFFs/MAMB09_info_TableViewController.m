@@ -29,7 +29,7 @@
 #import "MAMB09_info_TableViewController.h"
 #import "MAMB09_viewHTMLViewController.h"
 #import "mamblib.h"
-#import "MAMB09AppDelegate.h"   // to get globals   ppp  rrr
+#import "MAMB09AppDelegate.h"   // to get globals   ppp  rrr  sss
 
 @interface MAMB09_info_TableViewController ()
 
@@ -3969,21 +3969,44 @@ cell.textLabel.text          = @"The \"Closeness\" category is useful because it
                 //                                 // 4s  = 480.0 x 320  and 5 
                 //
                 //  NSLog(@"self.view.bounds.size.height  =[%f]",self.view.bounds.size.height  );
+
+
+//                if (   self.view.bounds.size.width >= 414.0        // 6+ and 6s+  and bigger
+//                ) {
+////                    switchPrompt  = @"            Show Example Data";
+//                    switchPrompt  = @"            Show Example Data\n           on the Home Screen";
+//                }
+//                else if (   self.view.bounds.size.width  < 414.0    // 6 and 6s
+//                         && self.view.bounds.size.width  > 320.0
+//                ) {
+////                    switchPrompt  = @"           Show Example Data";
+//                    switchPrompt  = @"           Show Example Data\n          on the Home Screen";
+//                }
+//                else if (   self.view.bounds.size.width <= 320.0   //  5s and 5 and 4s and smaller
+//                ) {
+////                    switchPrompt  = @"        Show Example Data";
+//                    switchPrompt  = @"        Show Example Data\n       on the Home Screen";
+//                }
+//                else if (   self.view.bounds.size.width <= 320.0   // ??
+//                ) {
+//                    ;  // gbl_numRowsToTriggerIndexBar    = 33;
+//                }
+//
                 if (   self.view.bounds.size.width >= 414.0        // 6+ and 6s+  and bigger
                 ) {
-//                    switchPrompt  = @"            Show Example Data";
-                    switchPrompt  = @"            Show Example Data\n           on the Home Screen";
+                    switchPrompt  = @"            Show Example Data";
+//                    switchPrompt  = @"            Show Example Data\n           on the Home Screen";
                 }
                 else if (   self.view.bounds.size.width  < 414.0    // 6 and 6s
                          && self.view.bounds.size.width  > 320.0
                 ) {
-//                    switchPrompt  = @"           Show Example Data";
-                    switchPrompt  = @"           Show Example Data\n          on the Home Screen";
+                    switchPrompt  = @"           Show Example Data";
+//                    switchPrompt  = @"           Show Example Data\n          on the Home Screen";
                 }
                 else if (   self.view.bounds.size.width <= 320.0   //  5s and 5 and 4s and smaller
                 ) {
-//                    switchPrompt  = @"        Show Example Data";
-                    switchPrompt  = @"        Show Example Data\n       on the Home Screen";
+                    switchPrompt  = @"        Show Example Data";
+//                    switchPrompt  = @"        Show Example Data\n       on the Home Screen";
                 }
                 else if (   self.view.bounds.size.width <= 320.0   // ??
                 ) {
