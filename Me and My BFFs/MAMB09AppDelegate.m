@@ -1020,6 +1020,7 @@
 
 
 
+
     gbl_arrayExaGrp =   // field 1=name-of-group  field 2=locked-or-not
     @[
       lcl_recOfAllPeopleIhaveAdded,     // gbl_nameOfGrpHavingAllPeopleIhaveAdded
@@ -1031,6 +1032,7 @@
 
     gbl_arrayExaPer = // field 11= locked or not  DO NOT HAVE TO BE PRE-SORTED  (sorted on reading back into arrays)
     @[
+
 
 
 
@@ -1107,6 +1109,8 @@
     // 
     gbl_arrayExaGrpRem =   //   DO NOT HAVE TO BE PRE-SORTED  (sorted on reading back into arrays)
     @[
+//      @"Long Names||||",
+//      @"Short Names||||",
       @"~My Family||||",
       @"~Swim Team||||",
     ];
@@ -3341,6 +3345,18 @@ tn();  NSLog(@"at end of   mambReadLastEntityFile  myLastEntityDecoded=\n%@",myL
             // 20160309 allow ~ members in a group
             //            if ([nameOfMember hasPrefix: @"~"]) continue;
 
+
+            // 20170523 allow ~ members in a group  BUT ONLY if gbl_ExampleData_show = "yes"
+            //
+            // stated another way,
+            // 20170523 DISALLOW ~ members in a group (example data)
+            // IF gbl_ExampleData_show = "no" and nameOfMember hasPrefix: @"~"]  disallow example persoon to be in group 
+            //
+            if (   [gbl_ExampleData_show isEqualToString: @"no"]
+                && [nameOfMember               hasPrefix: @"~"]   )  continue;
+
+
+
             gbl_numPeopleInCurrentGroup = gbl_numPeopleInCurrentGroup + 1;
 
             if (  [nameOfMember isEqualToString: argPersonToCompareEveryoneElseWith]) {
@@ -3384,6 +3400,7 @@ tn();  NSLog(@"at end of   mambReadLastEntityFile  myLastEntityDecoded=\n%@",myL
 {
     NSString *myPerPSV;
     myPerPSV = nil;
+
 
     NSString *prefixStr5 = [NSString stringWithFormat: @"%@|", argPersonName];  // notice '|'
     for (NSString *elt in gbl_arrayPer) {     // get PSV of arg name
