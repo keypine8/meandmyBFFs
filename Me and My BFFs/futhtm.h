@@ -93,7 +93,7 @@ struct aspect {
   {"vebju", "You can be over-optimistic in love, or you could place your sympathy where it is not deserved.  This is a mild condition."},
   {"vebne", "This is the classic time for confusion in love.  People fall madly in love with people who lie, steal, cheat, kick dogs and generally aren't worth it.  Try hard to see the loved one as they  really are."},
   {"vebpl", "You have power struggles in the love life.  Beware of jealousy."},
-  {"vebsa", "You are under the classic bad condition for matters of the heart.  Sorrow, delays and frustrations.  Never mind- you know when it ends."},
+  {"vebsa", "You are under the classic bad condition for matters of the heart.  Sorrow, delays and frustrations.  Never mind - you know when it ends."},
   {"vebur", "You have great ups and downs in the love department. There's a tendency to break bonds and conventions and to associate with unstable or irresponsible people. This same influence brings sudden and drastic breaks in love relationships."},
   {"vecju", "This is your time to shine.  Outstanding prospects in your love life are in store.  You have pleasant social affairs, meet lots of interesting people and have general good luck in the love department."},
   {"vecne", "This is a highly creative period for artists."},
