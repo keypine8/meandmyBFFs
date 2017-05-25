@@ -966,7 +966,7 @@
     // set up initial value for    the  GOLD CURRENT DATE  for the whole app   (stored in #allpeople grp record fld 5,6,7 1-based)
     //
 //    NSString *lcl_recOfAllPeopleIhaveAdded = [ NSString stringWithFormat: @"%@||||2016|06|15||||||||", // 14 flds for misc
-    NSString *lcl_recOfAllPeopleIhaveAdded = [ NSString stringWithFormat: @"%@||yes||2018|03|25||||||||", // FOR TEST
+    NSString *lcl_recOfAllPeopleIhaveAdded = [ NSString stringWithFormat: @"%@||yes||2017|05|29||||||||", 
         gbl_nameOfGrpHavingAllPeopleIhaveAdded
     ]; // 14 flds for misc
 
