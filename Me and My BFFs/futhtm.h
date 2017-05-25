@@ -78,7 +78,7 @@ struct aspect {
   {"subju", "Expansion and optimism can be overdone and you are in danger of foolish optimism or extravagance."},
   {"subne", "There's a tendency to self-deception and to escape responsibility at this time.  You are in danger of being deceived or of deceiving others.  The fuzzy and misty atmosphere makes it difficult to muster the discipline and self-control needed for success."},
   {"subpl", "You can get involved in power struggles.  Do not throw your spouse out of the house because they again squeezed the toothpaste in the middle instead of the end."},
-  {"subsa", "Frustration with delays and extra burdens affect you.  Little seems to go right.  Now is a great time for stress reduction.  Exercise. Meditation.  Never mind trying to fight overwhelming obstacles- go with the flow for awhile."},
+  {"subsa", "Frustration with delays and extra burdens affect you.  Little seems to go right.  Now is a great time for stress reduction.  Exercise. Meditation.  Never mind trying to fight overwhelming obstacles - go with the flow for awhile."},
   {"subur", "You are restless about current conditions and conventional ways of doing things.  There's a possibility that you can turn to unusual or even impractical projects. Beware of association with eccentric or unstable people at this time."},
   {"sucju", "You have expansive feelings and optimism.  This is a good time for travel or expanding your mind in some other way like special studies or religion."},
   {"sucne", "You have increased sensitivity and creative imagination at this time.  It's a good time for artists, musicians, show business folk and the like."},
