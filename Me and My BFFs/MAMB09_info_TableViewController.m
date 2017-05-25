@@ -4434,7 +4434,7 @@ cell.textLabel.text          = @"The \"Closeness\" category is useful because it
     if ([gbl_helpScreenDescription isEqualToString: @"best day"     ] ) { return  7; } 
     if ([gbl_helpScreenDescription isEqualToString: @"HOME"         ] ) { return 20; } 
 
-    if ([gbl_helpScreenDescription isEqualToString: @"HOMEaddchangeGROUP" ] ) { return  17; } 
+    if ([gbl_helpScreenDescription isEqualToString: @"HOMEaddchangeGROUP" ] ) { return  14; } 
     if ([gbl_helpScreenDescription isEqualToString: @"HOMEaddchangePERSON"] ) { return  20; } 
     return 1;
 }
