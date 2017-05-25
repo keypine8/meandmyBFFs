@@ -294,7 +294,7 @@ tn();
   NSLog(@"in pressedSAVEDONE!  in selShareEntity ");
 
 
-    MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global methods in appDelegate.m
+    MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
 
     // loop thru the seleced people or groups
     // and build a text file of the data
