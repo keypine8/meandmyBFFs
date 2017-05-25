@@ -29,7 +29,7 @@
 #import "MAMB09_info_TableViewController.h"
 #import "MAMB09_viewHTMLViewController.h"
 #import "mamblib.h"
-#import "MAMB09AppDelegate.h"   // to get globals   ppp  rrr  sss
+#import "MAMB09AppDelegate.h"   // to get globals   ppp  rrr  sss ttt
 
 @interface MAMB09_info_TableViewController ()
 
@@ -1877,7 +1877,9 @@ cell.textLabel.text          = @"The \"Closeness\" category is useful because it
                 initWithString:
 //@"The Compatibility Potential number from 1 to 99 gives an overall score for the relationship.\n\nIt's a very hard job to combine all the influences affecting a relationship to get an overall picture.\n\n  \u2022 the Compatibility Potential score\n  \u2022 the 3 relationship categories\n  \u2022 all the relationship influences\n  \u2022 the personality report has all the personality influences for each of the 2 people\n\nRelationships are complex."
 //@"The Compatibility Potential number from 1 to 99 gives an overall score for the relationship.\n\nIt's a very hard job to combine all the influences affecting a relationship to get an overall picture.\n\nRelationships are complex."
-@"It's a very hard job to combine all the influences affecting a relationship to get an overall picture.\n\nRelationships are complex."
+//@"It's a very hard job to combine all the influences affecting a relationship to get an overall picture.\n\nRelationships are complex."
+
+@"It's a very hard job to combine all the influences affecting a relationship to get an overall picture.\n\nLiking a person is different from having a good compatibility potential score with that person.  Liking a person depends on the personality traits of that person.  If they are outgoing, funny and interesting then everyone likes them.\n\nHaving a good compatibility potential score with a person means there are lots of inner connections between the two and a majority of the connections are positive and not challenging.\n\nRelationships are complex."
                     attributes: @{ NSParagraphStyleAttributeName: paragraphStyle }
             ];
 
@@ -3994,19 +3996,22 @@ cell.textLabel.text          = @"The \"Closeness\" category is useful because it
 //
                 if (   self.view.bounds.size.width >= 414.0        // 6+ and 6s+  and bigger
                 ) {
-                    switchPrompt  = @"            Show Example Data";
+//                    switchPrompt  = @"            Show Example Data";
 //                    switchPrompt  = @"            Show Example Data\n           on the Home Screen";
+                      switchPrompt  = @"            Show Example Data\n                   in reports";
                 }
                 else if (   self.view.bounds.size.width  < 414.0    // 6 and 6s
                          && self.view.bounds.size.width  > 320.0
                 ) {
-                    switchPrompt  = @"           Show Example Data";
+//                    switchPrompt  = @"           Show Example Data";
 //                    switchPrompt  = @"           Show Example Data\n          on the Home Screen";
+                      switchPrompt  = @"           Show Example Data\n                  in reports";
                 }
                 else if (   self.view.bounds.size.width <= 320.0   //  5s and 5 and 4s and smaller
                 ) {
-                    switchPrompt  = @"        Show Example Data";
+//                    switchPrompt  = @"        Show Example Data";
 //                    switchPrompt  = @"        Show Example Data\n       on the Home Screen";
+                      switchPrompt  = @"        Show Example Data\n               in reports";
                 }
                 else if (   self.view.bounds.size.width <= 320.0   // ??
                 ) {
@@ -4675,7 +4680,8 @@ cell.textLabel.text          = @"The \"Closeness\" category is useful because it
 //        if (indexPath.row == 21) return   270.0;  // text for complexity part 2
 //        if (indexPath.row == 21) return   145.0;  // text for complexity part 2
 //        if (indexPath.row == 21) return   120.0;  // text for complexity part 2
-        if (indexPath.row == 21) return    95.0;  // text for complexity part 2
+//        if (indexPath.row == 21) return    95.0;  // text for complexity part 2
+        if (indexPath.row == 21) return   260.0;  // text for complexity part 2
         if (indexPath.row == 22) return    20.0;  // text for disclaimer
     }
     // if (  [gbl_currentMenuPlusReportCode isEqualToString: @"hompwc"])     // what color is the day?
