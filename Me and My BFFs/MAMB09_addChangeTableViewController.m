@@ -26,7 +26,7 @@
 //
 //
 
-//#include <CoreServices/CoreServices.h>   // these 4 are for  start = mach_absolute_time();  jjj
+//#include <CoreServices/CoreServices.h>   // these 4 are for  start = mach_absolute_time();  jjj lll
 //#include <mach/mach.h>
 //#include <mach/mach_time.h>
 //#include <unistd.h>
@@ -1679,8 +1679,11 @@ NSLog(@"currentScreenWidthHeight.height =%f",currentScreenWidthHeight.height );
 //nbn(357);
 //    [self doStuff_2_OnEnteringForeground];  // position highlight
 
-//nbn(358);
-//    [gbl_myname becomeFirstResponder];
+nbn(358);
+    if (   [gbl_fromHomeCurrentSelectionType isEqualToString: @"group" ] )
+    {
+        [gbl_myname becomeFirstResponder];
+    }
 
 
     [self disp_gblsWithLabel: @"end of ViewDidLoad" ];
@@ -8553,7 +8556,7 @@ tn();
 //  NSLog(@"qq gbl_initPromptName                             =[%@]",gbl_initPromptName);
 //  NSLog(@"qq gbl_initPromptProv                             =[%@]",gbl_initPromptProv);
 //  NSLog(@"qq gbl_intBirthDayOfMonth                         =[%ld]",(long)gbl_intBirthDayOfMonth);
-//  NSLog(@"qq gbl_intBirthMonth                              =[%ld]",(long)gbl_intBirthMonth);
+//  NSLog(@"qq gbl_intBirthMonth                   ;          =[%ld]",(long)gbl_intBirthMonth);
 //  NSLog(@"qq gbl_intBirthYear                               =[%ld]",(long)gbl_intBirthYear);
 //  NSLog(@"qq gbl_justAddedGroupRecord                       =[%ld]",(long)gbl_justAddedGroupRecord);
 //  NSLog(@"qq gbl_justAddedPersonRecord                      =[%ld]",(long)gbl_justAddedPersonRecord);
@@ -8594,7 +8597,8 @@ tn();
 //  NSLog(@"qq gbl_userSpecifiedPersonName                    =[%@]",gbl_userSpecifiedPersonName);
 //  NSLog(@"qq gbl_userSpecifiedProv                          =[%@]",gbl_userSpecifiedProv);
 //
-//
+
+
   NSLog(@" ");
   NSLog(@"%@", myDispLabel);
   NSLog(@"##### end of gbls #####################################!");
