@@ -29,7 +29,7 @@
 #import "MAMB09_info_TableViewController.h"
 #import "MAMB09_viewHTMLViewController.h"
 #import "mamblib.h"
-#import "MAMB09AppDelegate.h"   // to get globals   ppp  rrr  sss ttt
+#import "MAMB09AppDelegate.h"   // to get globals   ppp  rrr  sss ttt uuu
 
 @interface MAMB09_info_TableViewController ()
 
@@ -3285,7 +3285,7 @@ cell.textLabel.text          = @"The \"Closeness\" category is useful because it
     } // end of gbl_helpScreenDescription   @"HOMEaddchangePERSON";
 
 
-    if ([gbl_helpScreenDescription isEqualToString: @"HOMEaddchangeGROUP"] )
+    if ([gbl_helpScreenDescription isEqualToString: @"HOMEaddchangeGROUP"] )  // "Edit Groups" title
     { 
         if (indexPath.row == 0) {
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
@@ -3908,7 +3908,11 @@ cell.textLabel.text          = @"The \"Closeness\" category is useful because it
 //                cell.textLabel.text          = @"You can tell example people and example groups by their names starting with a squiggle, \"~\".\n\nThe example data lets you explore all the different reports and see how the app works before you add any new people or groups yourself.\n\nExample people and groups cannot be changed.\n\nTo add a new person or group, go back to the brown home screen. The app icon is on the top left.  Tap \"+\" to add a new person or group.";
 //                cell.textLabel.text          = @"Example people and example groups have names starting with a squiggle, \"~\".\n\nThe example data lets you explore all the different reports and see how the app works before you add any new people or groups yourself.\n\nExample people and groups cannot be changed.\n\nTo add a new person or group, go back to the brown home screen. The app icon is on the top left.  Tap \"+\" to add a new person or group.";
 //                cell.textLabel.text          = @"Example people and example groups have names starting with a squiggle, \"~\".\n\nThe example data lets you explore all the different reports and see how the app works before you add any new people or groups yourself.\n\nExample people and groups cannot be changed.\n\nTo add a new person or group, tap yellow \"Edit\" button  >  tap \"+\".";
-                cell.textLabel.text          = @"Example people and example groups have names starting with a squiggle, \"~\".\n\nThe example data lets you explore all the different reports and see how the app works before you add any new people or new groups yourself.\n\nExample people and groups cannot be changed.\n\nTo add a new person, tap \"People\" > tap \"+\".\nTo add a new group , tap \"Groups\" > tap \"+\".";
+
+//                cell.textLabel.text          = @"Example people and example groups have names starting with a squiggle, \"~\".\n\nThe example data lets you explore all the different reports and see how the app works before you add any new people or new groups yourself.\n\nExample people and groups cannot be changed.\n\nTo add a new person, tap \"People\" > tap \"+\".\nTo add a new group , tap \"Groups\" > tap \"+\".";
+
+                cell.textLabel.text          = @"Example people and example groups have names starting with a squiggle, \"~\".\n\nThe example data lets you explore all the different reports and see how the app works before you add any new people or new groups yourself.\n\nExample people and groups cannot be changed.";
+
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -4266,7 +4270,9 @@ cell.textLabel.text          = @"The \"Closeness\" category is useful because it
 
 
 // 20170514  remove mention of sharing groups  import ing groups exportin groups
-@"\u2022 To have fun, get \"Me and my BFFs\" together and use this app.\n\u2022 To send ANY REPORT as an email attachment, tap the Share icon (box with arrow coming out) when viewing the report."
+//@"\u2022 To have fun, get \"Me and my BFFs\" together and use this app.\n\u2022 To send ANY REPORT as an email attachment, tap the Share icon (box with arrow coming out) when viewing the report."
+
+@"\u2022 To have fun, get \"Me and my BFFs\" together and use this app.\n\u2022 To send ANY REPORT as an email attachment, tap the Share icon (box with arrow coming out) when viewing the report.\n\u2022 To add a new person, tap \"People\" > tap \"+\".\n\u2022 To add a new group , tap \"Groups\" > tap \"+\"."
 
 
 
@@ -4434,6 +4440,7 @@ cell.textLabel.text          = @"The \"Closeness\" category is useful because it
     if ([gbl_helpScreenDescription isEqualToString: @"best day"     ] ) { return  7; } 
     if ([gbl_helpScreenDescription isEqualToString: @"HOME"         ] ) { return 20; } 
 
+//    if ([gbl_helpScreenDescription isEqualToString: @"HOMEaddchangeGROUP" ] ) { return  17; } 
     if ([gbl_helpScreenDescription isEqualToString: @"HOMEaddchangeGROUP" ] ) { return  14; } 
     if ([gbl_helpScreenDescription isEqualToString: @"HOMEaddchangePERSON"] ) { return  20; } 
     return 1;
@@ -4533,7 +4540,8 @@ cell.textLabel.text          = @"The \"Closeness\" category is useful because it
 //        if (indexPath.row ==   8) return   180;  // text  for Example Data
 //        if (indexPath.row ==   8) return   160;  // text  for Example Data
 //        if (indexPath.row ==   8) return   170;  // text  for Example Data
-        if (indexPath.row ==   8) return   180;  // text  for Example Data
+//        if (indexPath.row ==   8) return   180;  // text  for Example Data
+        if (indexPath.row ==   8) return   150;  // text  for Example Data
 
 //        if (indexPath.row ==   9) return    50.0;  // check box for "Show Example Data"
         if (indexPath.row ==   9) return    70.0;  // check box for "Show Example Data"
@@ -4549,13 +4557,15 @@ cell.textLabel.text          = @"The \"Closeness\" category is useful because it
 
         if (indexPath.row ==   15) return    30.0;  // title for do stuff
 //        if (indexPath.row ==   16) return   200.0;  // text  for do stuff
-        if (indexPath.row ==   16) return   120.0;  // text  for do stuff
+        if (indexPath.row ==   16) return   135.0;  // text  for do stuff
 
         if (indexPath.row ==   17) return    30.0;  // title for why not ?
         if (indexPath.row ==   18) return    90.0;  // text  for why not ?
 
         if (indexPath.row ==   19) return    30.0;  // text for disclaimer
     }
+
+
     if (   [gbl_helpScreenDescription isEqualToString: @"best day"] ) {
         if (indexPath.row ==   0) return     8.0;  // spacer
         if (indexPath.row ==   1) return    30.0;  // title for Score for the Year
