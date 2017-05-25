@@ -40,7 +40,7 @@
 #import "MAMB09_homeTableViewController.h"
 #import "MAMB09_selectReportsTableViewController.h"
 #import "rkdebug_externs.h"
-#import "MAMB09AppDelegate.h"   // to get globals
+#import "MAMB09AppDelegate.h"   // to get globals    bbb
 #import "mamblib.h"
 
 
@@ -998,11 +998,6 @@ nbn(15);
 
 
 
-
-
-
-
-//
 //
 //    //   for test   TO SIMULATE first downloading the app-  when there are no data files
 //    //   FOR test   remove all regular named files   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -1023,9 +1018,8 @@ nbn(15);
 //    NSLog(@" FOR test   END   remove all regular named files   xxxxxxxxxx ");
 //    // end of   FOR test   remove all regular named files   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 //
-
-
-
+//
+//
 
 
 
@@ -1496,32 +1490,34 @@ tn();trn(" HOME   AFTER read data files (2)  with regular names into arrays // a
 
     if ([gbl_lastSelectionType isEqualToString:@"group"]) 
     {
-        if ([gbl_ExampleData_show isEqualToString: @"yes"] )     
-        {
-nbn(200);
            gbl_numRowsToDisplayFor_grp = gbl_arrayGrp.count;
-        } else {
-nbn(201);
-           // Here we do not want to show example data.
-           // Because example data names start with "~", they sort last,
-           // so we can just reduce the number of rows to exclude example data from showing on the screen.
-           gbl_numRowsToDisplayFor_grp = gbl_arrayGrp.count - gbl_ExampleData_count_grp ;
-        }
+
+//        if ([gbl_ExampleData_show isEqualToString: @"yes"] )     
+//        {
+//           gbl_numRowsToDisplayFor_grp = gbl_arrayGrp.count;
+//        } else {
+//           // Here we do not want to show example data.
+//           // Because example data names start with "~", they sort last,
+//           // so we can just reduce the number of rows to exclude example data from showing on the screen.
+//           gbl_numRowsToDisplayFor_grp = gbl_arrayGrp.count - gbl_ExampleData_count_grp ;
+//        }
+
   NSLog(@"gbl_numRowsToDisplayFor_grp  return =[%ld]",(long)gbl_numRowsToDisplayFor_grp  );
         return gbl_numRowsToDisplayFor_grp;
     }
 
     if ([gbl_lastSelectionType isEqualToString:@"person"])
     {
-        if ([gbl_ExampleData_show isEqualToString: @"yes"] )     
-        {
            gbl_numRowsToDisplayFor_per = gbl_arrayPer.count;
-        } else {
-           // Here we do not want to show example data.
-           // Because example data names start with "~", they sort last,
-           // so we can just reduce the number of rows to exclude example data from showing on the screen.
-           gbl_numRowsToDisplayFor_per = gbl_arrayPer.count - gbl_ExampleData_count_per ;
-        }
+//        if ([gbl_ExampleData_show isEqualToString: @"yes"] )     
+//        {
+//           gbl_numRowsToDisplayFor_per = gbl_arrayPer.count;
+//        } else {
+//           // Here we do not want to show example data.
+//           // Because example data names start with "~", they sort last,
+//           // so we can just reduce the number of rows to exclude example data from showing on the screen.
+//           gbl_numRowsToDisplayFor_per = gbl_arrayPer.count - gbl_ExampleData_count_per ;
+//        }
   NSLog(@"gbl_numRowsToDisplayFor_per  return =[%ld]",(long)gbl_numRowsToDisplayFor_per  );
         return gbl_numRowsToDisplayFor_per;
     }
@@ -1568,6 +1564,8 @@ nbn(201);
         currentLine = [gbl_arrayGrp objectAtIndex: indexPath.row];
     } else {
         if ([gbl_lastSelectionType isEqualToString:@"person"]) {
+//  NSLog(@"indexPath.row=%ld",(long)indexPath.row);
+
             currentLine = [gbl_arrayPer objectAtIndex: indexPath.row];
             gbl_colorDIfor_home = gbl_colorSepara_per ;
         } else {
@@ -2373,7 +2371,6 @@ tn();
     if ([segue.identifier isEqualToString:@"segueHomeToAddChange"]) {
 
 
-
         CATransition *transition = [CATransition animation];
         transition.duration = 0.5;
         transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
@@ -2940,24 +2937,25 @@ nbn(51);
             // highlight lastEntity row in tableview
             //
 
-
-            // Check for gbl_lastSelectedPerson being example data person
-            // and example data being turned off.
-            // In that case, put top row on top of tableview
-            //
-            if ([gbl_ExampleData_show isEqualToString: @"no"]
-                && (
-                       [gbl_lastSelectedGroup hasPrefix: @"~" ] 
-                    || (gbl_numRowsToDisplayFor_per == 0)
-                   )
-               )
-            {
-nbn(55);
-               // set gbl_lastSelectedPerson  to whoever is in top row
-               // put top row on top of tableview
-               self.tableView.contentOffset = CGPointMake(0, 0 - self.tableView.contentInset.top);
-
-            } else {
+//
+//            // Check for gbl_lastSelectedPerson being example data person
+//            // and example data being turned off.
+//            // In that case, put top row on top of tableview
+//            //
+//            if ([gbl_ExampleData_show isEqualToString: @"no"]
+//                && (
+//                       [gbl_lastSelectedGroup hasPrefix: @"~" ] 
+//                    || (gbl_numRowsToDisplayFor_per == 0)
+//                   )
+//               )
+//            {
+//               // set gbl_lastSelectedPerson  to whoever is in top row
+//               // put top row on top of tableview
+//               self.tableView.contentOffset = CGPointMake(0, 0 - self.tableView.contentInset.top);
+//
+//            } else
+//
+              {
                 // normal case here
 
             
@@ -3018,24 +3016,27 @@ NSLog(@"in switchEntity, PERSON  reload table here!");
             // highlight lastEntity row in tableview
             //
         
+//
+//            // Check for gbl_lastSelectedPerson being example data person
+//            // and example data being turned off.
+//            // In that case, put top row on top of tableview
+//            //
+//            if ([gbl_ExampleData_show isEqualToString: @"no"]
+//                && (
+//                       [gbl_lastSelectedPerson hasPrefix: @"~" ] 
+//                    || (gbl_numRowsToDisplayFor_grp == 0)
+//                   )
+//               )
+//            {
+//nbn(55);
+//               // set gbl_lastSelectedPerson  to whoever is in top row
+//               // put top row on top of tableview
+//               self.tableView.contentOffset = CGPointMake(0, 0 - self.tableView.contentInset.top);
+//
+//            } else
+//
 
-            // Check for gbl_lastSelectedPerson being example data person
-            // and example data being turned off.
-            // In that case, put top row on top of tableview
-            //
-            if ([gbl_ExampleData_show isEqualToString: @"no"]
-                && (
-                       [gbl_lastSelectedPerson hasPrefix: @"~" ] 
-                    || (gbl_numRowsToDisplayFor_grp == 0)
-                   )
-               )
             {
-nbn(55);
-               // set gbl_lastSelectedPerson  to whoever is in top row
-               // put top row on top of tableview
-               self.tableView.contentOffset = CGPointMake(0, 0 - self.tableView.contentInset.top);
-
-            } else {
                 // normal case here
 
                 // find index of _mambCurrentSelection (like "~Dave") in gbl_arrayPer
@@ -3117,7 +3118,7 @@ nbn(55);
 {
 tn();
 NSLog(@"in viewDidAppear()  in HOME");
-  NSLog(@"gbl_ExampleData_show=[%@]",gbl_ExampleData_show);
+//  NSLog(@"gbl_ExampleData_show=[%@]",gbl_ExampleData_show);
   NSLog(@"gbl_homeUseMODE     =[%@]",gbl_homeUseMODE );
 
 //  NSLog(@"gbl_arrayMem HOME viewdidAppear TOP =[%@]",gbl_arrayMem );
@@ -3153,17 +3154,18 @@ NSLog(@"in viewDidAppear()  in HOME");
 //    BOOL cond2 = ![gbl_fromHomeLastEntityRemSaved isEqualToString: gbl_fromHomeCurrentEntityName];
 //
 
-    if (gbl_ExampleData_show_switchChanged == 1)
-    {
-  NSLog(@"reload tableview because gbl_ExampleData_show_switchChanged == 1");
 
-        gbl_ExampleData_show_switchChanged = 0;
-
-        [self.tableView reloadData];
-
-        gbl_scrollToCorrectRow = 1;
-        [self putHighlightOnCorrectRow ];
-    }
+//    if (gbl_ExampleData_show_switchChanged == 1)
+//    {
+//  NSLog(@"reload tableview because gbl_ExampleData_show_switchChanged == 1");
+//
+//        gbl_ExampleData_show_switchChanged = 0;
+//
+//        [self.tableView reloadData];
+//
+//        gbl_scrollToCorrectRow = 1;
+//        [self putHighlightOnCorrectRow ];
+//    }
    
     if (   gbl_justAddedPersonRecord == 1
         || gbl_justAddedGroupRecord  == 1
@@ -3510,7 +3512,7 @@ tn();
 {
 tn();
  NSLog(@"in viewWillAppear() in home   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-  NSLog(@"gbl_ExampleData_show=[%@]",gbl_ExampleData_show);
+//  NSLog(@"gbl_ExampleData_show=[%@]",gbl_ExampleData_show);
 
 
     gbl_haveAddedNavBarRightItems = 0;  // init
@@ -4149,28 +4151,33 @@ tn();
 
     if ([gbl_lastSelectionType isEqualToString:@"group"]) 
     {
-        if ([gbl_ExampleData_show isEqualToString: @"yes"])
-        {
            myCountOfRows = gbl_arrayGrp.count;
-        } else {
-           // Here we do not want to show example data.
-           // Because example data names start with "~", they sort last,
-           // so we can just reduce the number of rows to exclude example data from showing on the screen.
-           myCountOfRows = gbl_arrayGrp.count - gbl_ExampleData_count_grp ;
-        }
+
+//        if ([gbl_ExampleData_show isEqualToString: @"yes"])
+//        {
+//           myCountOfRows = gbl_arrayGrp.count;
+//        } else {
+//           // Here we do not want to show example data.
+//           // Because example data names start with "~", they sort last,
+//           // so we can just reduce the number of rows to exclude example data from showing on the screen.
+//           myCountOfRows = gbl_arrayGrp.count - gbl_ExampleData_count_grp ;
+//        }
     }
 
     if ([gbl_lastSelectionType isEqualToString:@"person"])
     {
-        if ([gbl_ExampleData_show isEqualToString: @"yes"])
-        {
            myCountOfRows = gbl_arrayPer.count;
-        } else {
-           // Here we do not want to show example data.
-           // Because example data names start with "~", they sort last,
-           // so we can just reduce the number of rows to exclude example data from showing on the screen.
-           myCountOfRows = gbl_arrayPer.count - gbl_ExampleData_count_per ;
-        }
+
+//        if ([gbl_ExampleData_show isEqualToString: @"yes"])
+//        {
+//           myCountOfRows = gbl_arrayPer.count;
+//        }
+//        else {
+//           // Here we do not want to show example data.
+//           // Because example data names start with "~", they sort last,
+//           // so we can just reduce the number of rows to exclude example data from showing on the screen.
+//           myCountOfRows = gbl_arrayPer.count - gbl_ExampleData_count_per ;
+//        }
     }
 
 nbn(160);
@@ -4367,28 +4374,32 @@ nbn(162);
 //    if ([gbl_lastSelectionType isEqualToString:@"person"])  myCountOfRows = gbl_arrayPer.count;
     if ([gbl_lastSelectionType isEqualToString:@"group"]) 
     {
-        if ([gbl_ExampleData_show isEqualToString: @"yes"] ) 
-        {
            myCountOfRows = gbl_arrayGrp.count;
-        } else {
-           // Here we do not want to show example data.
-           // Because example data names start with "~", they sort last,
-           // so we can just reduce the number of rows to exclude example data from showing on the screen.
-           myCountOfRows = gbl_arrayGrp.count - gbl_ExampleData_count_grp ;
-        }
+
+//        if ([gbl_ExampleData_show isEqualToString: @"yes"] ) 
+//        {
+//           myCountOfRows = gbl_arrayGrp.count;
+//        } else {
+//           // Here we do not want to show example data.
+//           // Because example data names start with "~", they sort last,
+//           // so we can just reduce the number of rows to exclude example data from showing on the screen.
+//           myCountOfRows = gbl_arrayGrp.count - gbl_ExampleData_count_grp ;
+//        }
     }
 
     if ([gbl_lastSelectionType isEqualToString:@"person"])
     {
-        if ([gbl_ExampleData_show isEqualToString: @"yes"] ) 
-        {
            myCountOfRows = gbl_arrayPer.count;
-        } else {
-           // Here we do not want to show example data.
-           // Because example data names start with "~", they sort last,
-           // so we can just reduce the number of rows to exclude example data from showing on the screen.
-           myCountOfRows = gbl_arrayPer.count - gbl_ExampleData_count_per ;
-        }
+//
+//        if ([gbl_ExampleData_show isEqualToString: @"yes"] ) 
+//        {
+//           myCountOfRows = gbl_arrayPer.count;
+//        } else {
+//           // Here we do not want to show example data.
+//           // Because example data names start with "~", they sort last,
+//           // so we can just reduce the number of rows to exclude example data from showing on the screen.
+//           myCountOfRows = gbl_arrayPer.count - gbl_ExampleData_count_per ;
+//        }
     }
 
 
@@ -5355,27 +5366,31 @@ nbn(357);
 
         if ([gbl_lastSelectionType isEqualToString:@"person"])
         {
-            if ([gbl_ExampleData_show isEqualToString: @"yes"] )
-            {
                gbl_numRowsToDisplayFor_per = gbl_arrayPer.count;
-            } else {
-               // Here we do not want to show example data.
-               // Because example data names start with "~", they sort last,
-               // so we can just reduce the number of rows to exclude example data from showing on the screen.
-               gbl_numRowsToDisplayFor_per = gbl_arrayPer.count - gbl_ExampleData_count_per ;
-            }
+
+//            if ([gbl_ExampleData_show isEqualToString: @"yes"] )
+//            {
+//               gbl_numRowsToDisplayFor_per = gbl_arrayPer.count;
+//            } else {
+//               // Here we do not want to show example data.
+//               // Because example data names start with "~", they sort last,
+//               // so we can just reduce the number of rows to exclude example data from showing on the screen.
+//               gbl_numRowsToDisplayFor_per = gbl_arrayPer.count - gbl_ExampleData_count_per ;
+//            }
         }
         if ([gbl_lastSelectionType isEqualToString:@"group"])
         {
-            if ([gbl_ExampleData_show isEqualToString: @"yes"] )
-            {
                gbl_numRowsToDisplayFor_grp = gbl_arrayGrp.count;
-            } else {
-               // Here we do not want to show example data.
-               // Because example data names start with "~", they sort last,
-               // so we can just reduce the number of rows to exclude example data from showing on the screen.
-               gbl_numRowsToDisplayFor_grp = gbl_arrayGrp.count - gbl_ExampleData_count_grp ;
-            }
+
+//            if ([gbl_ExampleData_show isEqualToString: @"yes"] )
+//            {
+//               gbl_numRowsToDisplayFor_grp = gbl_arrayGrp.count;
+//            } else {
+//               // Here we do not want to show example data.
+//               // Because example data names start with "~", they sort last,
+//               // so we can just reduce the number of rows to exclude example data from showing on the screen.
+//               gbl_numRowsToDisplayFor_grp = gbl_arrayGrp.count - gbl_ExampleData_count_grp ;
+//            }
         }
   NSLog(@"gbl_numRowsToDisplayFor_per=[%ld]",(long)gbl_numRowsToDisplayFor_per);
   NSLog(@"gbl_numRowsToDisplayFor_grp=[%ld]",(long)gbl_numRowsToDisplayFor_grp);
@@ -5400,18 +5415,20 @@ nbn(357);
 nbn(100);
             if (gbl_numRowsToDisplayFor_grp == 0) return;
 
-            // Check for gbl_lastSelectedPerson being example data person
-            // and example data being turned off.
-            // In that case, put highlight on top row
-            //
-            if ([gbl_ExampleData_show isEqualToString: @"no"]
-                && [gbl_lastSelectedGroup hasPrefix: @"~" ]    )
-            {
-               // set gbl_lastSelectedPerson  to whoever is in top row
-               // put top row on top of tableview
-               self.tableView.contentOffset = CGPointMake(0, 0 - self.tableView.contentInset.top);
-               return;
-            }
+//
+//            // Check for gbl_lastSelectedPerson being example data person
+//            // and example data being turned off.
+//            // In that case, put highlight on top row
+//            //
+//            if ([gbl_ExampleData_show isEqualToString: @"no"]
+//                && [gbl_lastSelectedGroup hasPrefix: @"~" ]    )
+//            {
+//               // set gbl_lastSelectedPerson  to whoever is in top row
+//               // put top row on top of tableview
+//               self.tableView.contentOffset = CGPointMake(0, 0 - self.tableView.contentInset.top);
+//               return;
+//            }
+//
 
 
 tn();trn(" GRAB gbl_fromHomeCurrentSelectionPSV for group");
@@ -5482,19 +5499,19 @@ nbn(230);
 
             if (gbl_numRowsToDisplayFor_per == 0) return;
 nbn(231);
-
-            // Check for gbl_lastSelectedPerson being example data person
-            // and example data being turned off.
-            // In that case, put highlight on top row
-            //
-            if ([gbl_ExampleData_show isEqualToString: @"no"]
-                && [gbl_lastSelectedPerson hasPrefix: @"~" ] )
-            {
-               // set gbl_lastSelectedPerson  to whoever is in top row
-               // put top row on top of tableview
-               self.tableView.contentOffset = CGPointMake(0, 0 - self.tableView.contentInset.top);
-               return;
-            }
+//
+//            // Check for gbl_lastSelectedPerson being example data person
+//            // and example data being turned off.
+//            // In that case, put highlight on top row
+//            //
+//            if ([gbl_ExampleData_show isEqualToString: @"no"]
+//                && [gbl_lastSelectedPerson hasPrefix: @"~" ] )
+//            {
+//               // set gbl_lastSelectedPerson  to whoever is in top row
+//               // put top row on top of tableview
+//               self.tableView.contentOffset = CGPointMake(0, 0 - self.tableView.contentInset.top);
+//               return;
+//            }
 
 //            NSLog(@"gbl_lastSelectedPerson=%@",gbl_lastSelectedPerson);
             
@@ -5516,6 +5533,7 @@ nbn(232);
 //                } // search thru gbl_arrayPer
 ////        NSLog(@"FOUND !=%ld", (long)idxGrpOrPer);
 //
+
 //
 
 tn();trn(" GRAB gbl_fromHomeCurrentSelectionPSV for person");
@@ -5546,29 +5564,54 @@ tn();trn(" GRAB gbl_fromHomeCurrentEntityName   for person");
 
 
 
-
                 dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
 
                     // get the indexpath of row num idxGrpOrPer in tableview
                     NSIndexPath *foundIndexPath = [NSIndexPath indexPathForRow:idxGrpOrPer inSection:0];
-    //        NSLog(@"foundIndexPath=%@",foundIndexPath);
-    //        NSLog(@"foundIndexPath.row=%ld",(long)foundIndexPath.row);
-
 
                     // select the row in UITableView
                     // This puts in the light grey "highlight" indicating selection
 
-                    if (gbl_scrollToCorrectRow == 1) {
+  NSLog(@"foundIndexPath=%@",foundIndexPath);
+  NSLog(@"foundIndexPath.row=%ld",(long)foundIndexPath.row);
+  NSLog(@"gbl_numRowsToDisplayFor_per=[%ld]",(long)gbl_numRowsToDisplayFor_per);
+//
+//                    // 1st if = problem where added new person
+//                    //          sorts on the last row and show example data = no
+//                    //           (last case problem)
+//                    if (foundIndexPath.row == gbl_numRowsToDisplayFor_per) {  // gbl_numRowsToDisplayFor_per is 1-based
+//nbn(414);
+//                        [self.tableView reloadData];
+//nbn(415);
+//
+//                        [self.tableView scrollToRowAtIndexPath: [NSIndexPath indexPathForRow: gbl_numRowsToDisplayFor_per - 1
+//                                                                                   inSection: 0                           ]
+////                                              atScrollPosition: UITableViewScrollPositionBottom
+//                                              atScrollPosition: UITableViewScrollPositionNone
+//                                                      animated: YES
+//                        ];
+//
+//nbn(416);
+//
+//                    } else if (gbl_scrollToCorrectRow == 1)
+//                    {
+//
+
+                    if (gbl_scrollToCorrectRow == 1) 
+                    {
+nbn(417);
                         [self.tableView selectRowAtIndexPath: foundIndexPath 
                                                     animated: YES
                                               scrollPosition: UITableViewScrollPositionMiddle ];
             //                                  scrollPosition: UITableViewScrollPositionNone];
 
                     } else {
+nbn(418);
                         [self.tableView selectRowAtIndexPath: foundIndexPath 
                                                     animated: YES
                                               scrollPosition: UITableViewScrollPositionNone ];
                     }
+nbn(419);
 
 
 //                    [self.tableView scrollToNearestSelectedRowAtScrollPosition: UITableViewScrollPositionMiddle
