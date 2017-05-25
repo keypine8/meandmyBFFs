@@ -576,9 +576,9 @@ tn();
 
   nbn(705);
 
-
-
-    if (   [gbl_fromHomeCurrentSelectionType isEqualToString: @"person" ] )
+    if (   [gbl_fromHomeCurrentSelectionType isEqualToString: @"person" ]
+        && [gbl_homeEditingState             isEqualToString: @"add"    ]
+    )
     {
 
         // BEFORE adding person,  alert for  PERSONAL PRIVACY
