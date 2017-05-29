@@ -1,3 +1,4 @@
+
 //
 //  MAMB09_homeTableViewController.m
 //  Me and My BFFs
@@ -40,7 +41,7 @@
 #import "MAMB09_homeTableViewController.h"
 #import "MAMB09_selectReportsTableViewController.h"
 #import "rkdebug_externs.h"
-#import "MAMB09AppDelegate.h"   // to get globals    bbb
+#import "MAMB09AppDelegate.h"   // to get globals    bbb ccc
 #import "mamblib.h"
 
 
@@ -1030,6 +1031,9 @@ nbn(15);
 
 
 
+
+
+
 //    MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
 
 
@@ -1921,18 +1925,53 @@ tn();
                forRowAtIndexPath: indexPath
     ];
 
-    // cleanup for delete function (group delete)
-    // 
+
+//    if (   [gbl_lastSelectionType isEqualToString: @"group" ]
+//        &&  gbl_numMembersInCurrentGroup == 0                 )
+//    {
+//nbn(90);
+//        return;
+//    }
+
+
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    NSString *NameToDelete = cell.textLabel.text;
+    if ( [NameToDelete hasPrefix: @"~" ] )
+    {
+        return;
+    }
+
+
+
     if ([gbl_lastSelectionType isEqualToString: @"group" ]) 
     {
 
-  NSLog(@"now delete the row on the screen   ");
+  NSLog(@"now delete the group row on the screen   ");
+
+nbn(239);
+  NSLog(@"indexPath.row=%ld",(long)indexPath.row);
+
+
+// e.g.  [NSArray arrayWithObjects: indexPathTappedIn , nil ];
+
+    NSArray*     myarr1 = [NSArray arrayWithObject: indexPath] ;
+  NSLog(@"myarr1=[%@]", myarr1);
+
+
+//    NSArray*     myarr2 = [NSArray arrayWithObject: indexPath, nil] ;
+//  NSLog(@"myarr2=[%@]", myarr2);
+
+
         // now delete the row on the screen
         // and put highlight on row number for  arrayIndexOfNew_gbl_lastSelectedPerson
         //
+nbn(240);
+//        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
         dispatch_async(dispatch_get_main_queue(), ^{  
 
-            [self.tableView deleteRowsAtIndexPaths: [NSArray arrayWithObject: indexPath]   // now delete the row on the screen
+
+//            [self.tableView deleteRowsAtIndexPaths: [NSArray arrayWithObject: indexPath]   // now delete the row on the screen
+            [self.tableView deleteRowsAtIndexPaths: @[indexPath]   // now delete the row on the screen
                                   withRowAnimation: UITableViewRowAnimationFade
             ];
 
@@ -1948,6 +1987,7 @@ tn();
             [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.0 ];    // after arg seconds
 
             });
+nbn(244);
 
     }  // group delete cleanup
 
@@ -1987,11 +2027,62 @@ tn();
 
 
 
-    if (   editingStyle == UITableViewCellEditingStyleDelete
-        && [gbl_lastSelectionType isEqualToString: @"person" ]
-    )
-    {
-  NSLog(@"in commitEditingStyle  for person");
+        if (   editingStyle == UITableViewCellEditingStyleDelete
+//            && [gbl_lastSelectionType isEqualToString: @"person" ]
+        )
+        {
+      NSLog(@"in commitEditingStyle  for person");
+
+
+            // put up dialogue   - no edit (delete) allowed on example people
+            //
+            if ( [personNameToDelete hasPrefix: @"~" ] )
+            {
+                NSString *noEditMsg;
+
+                noEditMsg = [NSString stringWithFormat: @"\n" 
+                ];
+
+                UIAlertController* myalert = [UIAlertController alertControllerWithTitle: @"Cannot Change Example Data"
+                                                                               message: noEditMsg 
+                                                                        preferredStyle: UIAlertControllerStyleAlert  ];
+                 
+                UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                                    style: UIAlertActionStyleDefault
+                                                                  handler: ^(UIAlertAction * action) {
+                    NSLog(@"Ok button pressed");
+                } ];
+                 
+                [myalert addAction:  okButton];
+nbn(185);
+                [self.navigationController presentViewController: myalert  animated: YES  completion: nil ];
+
+
+                // get rownum for indexpath
+                //
+                NSInteger currentRowNum;
+                currentRowNum = indexPath.row;
+
+                NSIndexPath* moveToIndexPath  =  [NSIndexPath indexPathForRow: currentRowNum - 1   inSection: 0];
+
+
+                [self.tableView reloadData]; // reload to    edit mode    reload reload reload reload reload reload ");
+
+                // This puts in the light grey "highlight" indicating selection
+                [self.tableView selectRowAtIndexPath: indexPath 
+                                            animated: YES
+                                      scrollPosition: UITableViewScrollPositionMiddle];
+                
+                [self.tableView scrollToNearestSelectedRowAtScrollPosition:  UITableViewScrollPositionMiddle
+                                                                  animated:  YES];
+
+nbn(189);
+                return;
+            }  // end of no edit (delete) allowed on example people
+
+
+nbn(177);
+
 
 //
 //    // Here the red delete button has slid over from the right edge
@@ -2200,6 +2291,18 @@ tn();
   NSLog(@"gbl_kindOfDelete=[%@]",gbl_kindOfDelete);
 
 
+
+//        MAMB09AppDelegate *myappDelegate0 = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
+//        [myappDelegate0 get_gbl_numMembersInCurrentGroup ];   // populates gbl_numMembersInCurrentGroup  using  gbl_lastSelectedGroup
+//        if (gbl_numMembersInCurrentGroup == 0)
+//        {
+//      NSLog(@"gbl_numMembersInCurrentGroup =[%ld]", (long)gbl_numMembersInCurrentGroup );
+//      NSLog(@"gbl_namesInCurrentGroup  =[%@]",gbl_namesInCurrentGroup  );
+//            return;
+//        }
+
+
+
         // all DB STUFF for the delete follows here
 
         MAMB09AppDelegate *myappDelegate= (MAMB09AppDelegate *) [[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
@@ -2245,6 +2348,15 @@ tn();
 
 
   NSLog(@"2. of 3  DELETE ALL MEMBERSHIPS of  the deleted group!");
+
+
+
+        [myappDelegate get_gbl_numMembersInCurrentGroup ];   // populates gbl_numMembersInCurrentGroup  using  gbl_lastSelectedGroup
+  NSLog(@"gbl_numMembersInCurrentGroup =[%ld]", (long)gbl_numMembersInCurrentGroup );
+  NSLog(@"gbl_namesInCurrentGroup  =[%@]",gbl_namesInCurrentGroup  );
+         if (gbl_numMembersInCurrentGroup == 0) return;
+
+
 
         // 2. of 3  DELETE ALL MEMBERSHIPS of the deleted group
         //
@@ -5464,14 +5576,16 @@ tn();trn(" GRAB gbl_fromHomeCurrentEntityName   for group");
         // get the indexpath of row num idxGrpOrPer in tableview
                 NSIndexPath *foundIndexPath = [NSIndexPath indexPathForRow: idxGrpOrPer  inSection: 0];
         //tn();trn("SCROLL 111111111111111111111111111111111111111111111111111111111");
-
+nbn(220);
                 if (gbl_scrollToCorrectRow == 1) {
+nbn(221);
                     // select the row in UITableView
                     // This puts in the light grey "highlight" indicating selection
                     [self.tableView selectRowAtIndexPath: foundIndexPath 
                                                 animated: YES
                                           scrollPosition: UITableViewScrollPositionMiddle];
                 } else {
+nbn(222);
                     // select the row in UITableView
                     // This puts in the light grey "highlight" indicating selection
                     [self.tableView selectRowAtIndexPath: foundIndexPath 
@@ -5485,11 +5599,13 @@ tn();trn(" GRAB gbl_fromHomeCurrentEntityName   for group");
                 // NSInteger gbl_scrollToCorrectRow;  // flag to set every time before calling [self putHighlightOnCorrectRow ] in HOME
                                    // (do not want to scroll when hitting yellow/Edit and brown/Done)
                 if (gbl_scrollToCorrectRow == 1) {
+nbn(223);
                     [self.tableView scrollToNearestSelectedRowAtScrollPosition: UITableViewScrollPositionMiddle
                                                                       animated: YES];
                 }
             });
 
+nbn(224);
         }   // if ([gbl_lastSelectionType isEqualToString:@"group"]) 
 
 
