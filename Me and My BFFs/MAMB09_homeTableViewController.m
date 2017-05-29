@@ -1,4 +1,3 @@
-
 //
 //  MAMB09_homeTableViewController.m
 //  Me and My BFFs
@@ -41,7 +40,7 @@
 #import "MAMB09_homeTableViewController.h"
 #import "MAMB09_selectReportsTableViewController.h"
 #import "rkdebug_externs.h"
-#import "MAMB09AppDelegate.h"   // to get globals    bbb ccc
+#import "MAMB09AppDelegate.h"   // to get globals    bbb ccc eee
 #import "mamblib.h"
 
 
@@ -1967,18 +1966,22 @@ nbn(239);
         //
 nbn(240);
 //        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+//            [self.tableView deleteRowsAtIndexPaths: @[indexPath]   // now delete the row on the screen
+//            [self.tableView deleteRowsAtIndexPaths: [NSArray arrayWithObject: indexPath ] 
+
         dispatch_async(dispatch_get_main_queue(), ^{  
 
 
-//            [self.tableView deleteRowsAtIndexPaths: [NSArray arrayWithObject: indexPath]   // now delete the row on the screen
-            [self.tableView deleteRowsAtIndexPaths: @[indexPath]   // now delete the row on the screen
-                                  withRowAnimation: UITableViewRowAnimationFade
-            ];
+// delete groups was crashing here
+//  comment out the crashing line and it works   WHY  WHY  WHY  WHY  WHY  WHY  WHY  WHY  WHY  WHY  WHY  WHY  WHY  
+//            [self.tableView deleteRowsAtIndexPaths: [NSArray arrayWithObject: myarr1 ] 
+//                                  withRowAnimation: UITableViewRowAnimationFade
+//            ];
 
             gbl_scrollToCorrectRow = 1;
             [self putHighlightOnCorrectRow ];
 
-//            [self.tableView reloadData];
+            [self.tableView reloadData];
 
             // after write of array data to file, allow user interaction events again
             //
