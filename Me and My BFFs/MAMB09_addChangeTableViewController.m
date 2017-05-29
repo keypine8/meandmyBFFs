@@ -26,7 +26,7 @@
 //
 //
 
-//#include <CoreServices/CoreServices.h>   // these 4 are for  start = mach_absolute_time();  jjj lll
+//#include <CoreServices/CoreServices.h>   // these 4 are for  start = mach_absolute_time();  jjj lll mmm
 //#include <mach/mach.h>
 //#include <mach/mach_time.h>
 //#include <unistd.h>
@@ -576,41 +576,46 @@ tn();
 
   nbn(705);
 
-    if (   [gbl_fromHomeCurrentSelectionType isEqualToString: @"person" ]
-        && [gbl_homeEditingState             isEqualToString: @"add"    ]
-    )
-    {
+  NSLog(@"gbl_homeUseMODE =[%@]", gbl_homeUseMODE );
+  NSLog(@"gbl_homeEditingState =[%@]", gbl_homeEditingState );
 
-        // BEFORE adding person,  alert for  PERSONAL PRIVACY
-        //
-  nbn(706);
-        NSString *saveMsg;
 
-//        saveMsg = [NSString stringWithFormat: @"\nAfter you save the birth data for a new person, NOBODY, neither you nor this device owner nor anybody else can ever again change or even look at the Birth City or Birth Date.\n\n So, if you ever want to look at the birth information of this new person in the future, you need to write it down somewhere safe outside this app." 
+//    if (   [gbl_fromHomeCurrentSelectionType isEqualToString: @"person" ]
+//        && [gbl_homeEditingState             isEqualToString: @"add"    ]
+//    )
+//    {
+//
+//        // BEFORE adding person,  alert for  PERSONAL PRIVACY
+//        //
+//  nbn(706);
+//        NSString *saveMsg;
+//
+////        saveMsg = [NSString stringWithFormat: @"\nAfter you save the birth data for a new person, NOBODY, neither you nor this device owner nor anybody else can ever again change or even look at the Birth City or Birth Date.\n\n So, if you ever want to look at the birth information of this new person in the future, you need to write it down somewhere safe outside this app." 
+////        ];
+//        saveMsg = [NSString stringWithFormat: @"\nAfter you save the birth data for a new person, NOBODY, neither you nor this device owner nor anybody else can ever again change or even look at the Birth City or Birth Date.\n\n So, if you ever want to look at the birth information of this new person in the future, you need to write it down NOW somewhere safe outside this app." 
 //        ];
-        saveMsg = [NSString stringWithFormat: @"\nAfter you save the birth data for a new person, NOBODY, neither you nor this device owner nor anybody else can ever again change or even look at the Birth City or Birth Date.\n\n So, if you ever want to look at the birth information of this new person in the future, you need to write it down NOW somewhere safe outside this app." 
-        ];
-
-        UIAlertController* myalert = [UIAlertController alertControllerWithTitle: @"Personal Privacy"
-                                                                       message: saveMsg 
-                                                                preferredStyle: UIAlertControllerStyleAlert  ];
-         
-        UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
-                                                            style: UIAlertActionStyleDefault
-                                                          handler: ^(UIAlertAction * action) {
-            NSLog(@"Ok button pressed");
-        } ];
-         
-        [myalert addAction:  okButton];
-
-        [self.navigationController presentViewController: myalert  animated: YES  completion: nil ];
-
-  nbn(707);
-//                return;
-
-//                  [self.navigationController popViewControllerAnimated: YES]; // actually do the "Back" action
-        // BEFORE adding person,  alert for  PERSONAL PRIVACY
-    }
+//
+//        UIAlertController* myalert = [UIAlertController alertControllerWithTitle: @"Personal Privacy"
+//                                                                       message: saveMsg 
+//                                                                preferredStyle: UIAlertControllerStyleAlert  ];
+//         
+//        UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+//                                                            style: UIAlertActionStyleDefault
+//                                                          handler: ^(UIAlertAction * action) {
+//            NSLog(@"Ok button pressed");
+//        } ];
+//         
+//        [myalert addAction:  okButton];
+//
+//        [self.navigationController presentViewController: myalert  animated: YES  completion: nil ];
+//
+//  nbn(707);
+////                return;
+//
+////                  [self.navigationController popViewControllerAnimated: YES]; // actually do the "Back" action
+//        // BEFORE adding person,  alert for  PERSONAL PRIVACY
+//    }
+//
 
 
 
@@ -2106,8 +2111,8 @@ trn("-------------------------------------------"); tn();
 
         // NO MORE choose kind of save  (personal privacy)
         //
-        fldKindOfSave  = @"hs";
-        gbl_kindOfSave = @"no look no change save";  // set default  // this var is used throughout
+//        fldKindOfSave  = @"hs";
+//        gbl_kindOfSave = @"no look no change save";  // set default  // this var is used throughout
 
 
 
@@ -3160,6 +3165,7 @@ NSLog(@"end of  oncityInputViewKeyboardButton!"); tn();
   NSLog(@"gbl_DisplayCoun       =[%@]",gbl_DisplayCoun ) ;
   NSLog(@"gbl_selectedBirthInfo =[%@]",gbl_selectedBirthInfo );
   NSLog(@"gbl_editingChangeNAMEHasOccurred=[%ld]",(long)gbl_editingChangeNAMEHasOccurred);
+  NSLog(@"gbl_editingChangeCITYHasOccurred=[%ld]",(long)gbl_editingChangeCITYHasOccurred);
 
 
     MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // methods in appdele
@@ -3559,6 +3565,7 @@ NSLog(@"          POP  VIEW   #6");
 
 
 
+//<.>
     if ([gbl_fromHomeCurrentSelectionType isEqualToString: @"person" ] )
     {  // person saveDone logic   =======================================================================================
 
@@ -3831,7 +3838,7 @@ NSLog(@"          POP  VIEW   #6");
                 // do not offer a  choice of kind of save (see below)
                 // 
 //                if (   [gbl_kindOfSave isEqualToString:  @"no look no change save" ] )
-//                {
+//                { }
                     [self doActualPersonSave ];
 
   NSLog(@"after  doActualPersonSave ( at END of   person saveDone logic  at end of  pressedSaveDone ) ! ");
@@ -4292,6 +4299,14 @@ NSString *counToUse;
 
 
 nbn(721);
+
+    if ( gbl_editingChangeCITYHasOccurred == 1) {
+nbn(7215);
+        cityToUse = gbl_userSpecifiedCity;  
+        provToUse = gbl_userSpecifiedProv;  
+        counToUse = gbl_userSpecifiedCoun;  
+    }
+    else
     if ( ! (   [PSV_of_gbl_userSpecifiedPersonName isEqualToString: @"" ]
             ||  PSV_of_gbl_userSpecifiedPersonName == nil                 )
     ) {
