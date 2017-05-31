@@ -29,7 +29,7 @@
 #import "MAMB09_info_TableViewController.h"
 #import "MAMB09_viewHTMLViewController.h"
 #import "mamblib.h"
-#import "MAMB09AppDelegate.h"   // to get globals   ppp  rrr  sss ttt uuu vvv
+#import "MAMB09AppDelegate.h"   // to get globals   ppp  rrr  sss ttt uuu vvv www
 
 @interface MAMB09_info_TableViewController ()
 
@@ -2906,7 +2906,7 @@ cell.textLabel.text          = @"The \"Closeness\" category is useful because it
 
 //@"When you tap \"Save\" you immediately get personal privacy for the new person\'s birth information.\n\nNOBODY, neither you nor the device owner nor anybody else can ever again change or even look at the Birth City or Birth Date.\n\nThat means, if you want to look at the birth information in the future, you need to save it somewhere safe outside this app.\n\nWhen you add birth information for a new person, you need their permission to do so."
 
-@"Dunbar's number is a suggested cognitive limit to the number of people with whom one can maintain stable social relationships.\n\nThese are relationships in which an someone knows who each person is and how each person relates to every other person.\n\nThis number was first proposed in the 1990s by British anthropologist Robin Dunbar, who found a correlation between primate brain size and average social group size."
+@"Dunbar's number is a suggested limit to the number of people with whom one can maintain stable social relationships.\n\nThese are relationships in which an individual knows who each person is and how each person relates to every other person.\n\nThis number was first proposed in the 1990s by British anthropologist Robin Dunbar, who found a correlation between primate brain size and average social group size."
 
 
                     attributes: @{ NSParagraphStyleAttributeName: paragraphStyle }
@@ -3232,7 +3232,7 @@ cell.textLabel.text          = @"The \"Closeness\" category is useful because it
 
             NSAttributedString *myAttributedStr = [[NSAttributedString alloc]
                 initWithString:
-@"\u2022 Tap the round red \"-\" button on the left.\n\u2022 A red \"Delete\" button slides over from the right edge of the screen.\n\u2022 You can Cancel out here if you want.\n\u2022 Tap the red \"Delete\" button to CONFIRM you want to delete this person.\n\u2022 You can see the person disappearing from the people list.\n\u2022 There is no undelete."
+@"\u2022 Tap the round red \"-\" button on the left.\n\u2022 A red \"Delete\" button slides over from the right edge of the screen.\n\u2022 Tap the red \"Delete\" button to CONFIRM you want to delete this person.\n\u2022 You can see the person disappearing from the people list.\n\u2022 There is no undelete."
 // There is no undo."
                     attributes: @{ NSParagraphStyleAttributeName: paragraphStyle }
             ];
@@ -3594,7 +3594,8 @@ cell.textLabel.text          = @"The \"Closeness\" category is useful because it
 
             NSAttributedString *myAttributedStr = [[NSAttributedString alloc]
                 initWithString:
-@"\u2022 Tap red \"-\" button on the left.\n\u2022 A red \"Delete\" button slides over from the right edge of the screen.\n\u2022 You can Cancel out here if you want.\n\u2022 Tap the red \"Delete\" button to CONFIRM you want to delete this group.\n\u2022 You can see the group disappearing from the group list.\n\u2022 There is no undelete."
+//@"\u2022 Tap red \"-\" button on the left.\n\u2022 A red \"Delete\" button slides over from the right edge of the screen.\n\u2022 You can Cancel out here if you want.\n\u2022 Tap the red \"Delete\" button to CONFIRM you want to delete this group.\n\u2022 You can see the group disappearing from the group list.\n\u2022 There is no undelete."
+@"\u2022 Tap red \"-\" button on the left.\n\u2022 A red \"Delete\" button slides over from the right edge of the screen.\n\u2022 Tap the red \"Delete\" button to CONFIRM you want to delete this group.\n\u2022 You can see the group disappearing from the group list.\n\u2022 There is no undelete."
 // There is no undo."
                     attributes: @{ NSParagraphStyleAttributeName: paragraphStyle }
             ];
@@ -4493,7 +4494,8 @@ cell.textLabel.text          = @"The \"Closeness\" category is useful because it
 
         if (indexPath.row ==  15) return    16.0;  // spacer
         if (indexPath.row ==  16) return    30.0;  // title for delete person
-        if (indexPath.row ==  17) return   135.0;  // text  for delete person
+//        if (indexPath.row ==  17) return   135.0;  // text  for delete person
+        if (indexPath.row ==  17) return   110.0;  // text  for delete person
 
         if (indexPath.row ==  18) return    12.0;  // spacer
         if (indexPath.row ==  19) return    30.0;  // text for disclaimer
@@ -4523,7 +4525,8 @@ cell.textLabel.text          = @"The \"Closeness\" category is useful because it
 
         if (indexPath.row ==  9) return    16.0;  // spacer
         if (indexPath.row ==  10) return    30.0;  // title for delete group
-        if (indexPath.row ==  11) return   135.0;  // text  for delete group
+//        if (indexPath.row ==  11) return   135.0;  // text  for delete group
+        if (indexPath.row ==  11) return   110.0;  // text  for delete group
 
         if (indexPath.row ==  12) return    16.0;  // spacer
         if (indexPath.row ==  13) return    30.0;  // text for disclaimer
