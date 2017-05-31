@@ -29,7 +29,7 @@
 #import "MAMB09_info_TableViewController.h"
 #import "MAMB09_viewHTMLViewController.h"
 #import "mamblib.h"
-#import "MAMB09AppDelegate.h"   // to get globals   ppp  rrr  sss ttt uuu
+#import "MAMB09AppDelegate.h"   // to get globals   ppp  rrr  sss ttt uuu vvv
 
 @interface MAMB09_info_TableViewController ()
 
@@ -1820,7 +1820,7 @@ nbn(100);
                 cell.textLabel.numberOfLines = 0;
 
 //                cell.textLabel.text          = @"The \"Closeness\" category is useful because it shows the natural ease of liking the other person in a comfortable way.\n\nThe 2 \"Point of view\" categories occasionally show that one of the two people sees the relationship as being very favorable but the other person sees it as very challenging.";
-cell.textLabel.text          = @"The \"Closeness\" category is useful because it shows the natural ease of liking the other person in a comfortable way.\n\nThe 2 \"Point of view\" categories occasionally show that one of the two people sees the relationship as being very favorable but the other person sees it as very challenging.\n\nA good sign of compatibility potential in a category is when favorable green plus signs (++) cover a full line or more.\n\nA good sign of compatibility potential in a category is when it has double the length of the favorable green ++ compared to the challenging red --.";
+cell.textLabel.text          = @"The \"Closeness\" category is useful because it shows the natural ease of liking the other person in a comfortable way.\n\nThe 2 \"Point of view\" categories occasionally show that one of the two people sees the relationship as being very favorable but the other person sees it as very challenging.\n\nA good sign of compatibility potential in a category is when favorable green plus signs (++) cover a full line or more.\n\nAnother good sign of compatibility potential in a category is when it has double the length of the favorable green ++ compared to the challenging red --.";
 
                 cell.imageView.image         = nil;
                 cell.backgroundView          = nil ;
@@ -1879,7 +1879,10 @@ cell.textLabel.text          = @"The \"Closeness\" category is useful because it
 //@"The Compatibility Potential number from 1 to 99 gives an overall score for the relationship.\n\nIt's a very hard job to combine all the influences affecting a relationship to get an overall picture.\n\nRelationships are complex."
 //@"It's a very hard job to combine all the influences affecting a relationship to get an overall picture.\n\nRelationships are complex."
 
-@"It's a very hard job to combine all the influences affecting a relationship to get an overall picture.\n\nLiking a person is different from having a good compatibility potential score with that person.  Liking a person depends on the personality traits of that person.  If they are outgoing, funny and interesting then everyone likes them.\n\nHaving a good compatibility potential score with a person means there are lots of inner connections between the two and a majority of the connections are positive and not challenging.\n\nRelationships are complex."
+//@"It's a very hard job to combine all the influences affecting a relationship to get an overall picture.\n\nLiking a person is different from having a good compatibility potential score with that person.  Liking a person depends on the personality traits of that person.  If they are outgoing, funny and interesting then everyone likes them.\n\nHaving a good compatibility potential score with a person means there are lots of inner connections between the two and a majority of the connections are positive and not challenging.\n\nRelationships are complex."
+
+@"It's a very hard job to combine all the influences affecting a relationship to get an overall picture.\n\nFor example, liking a person is different from having a good compatibility potential score with that person.\n\nLiking a person depends on the personality traits of that person.  If someone is outgoing, funny and interesting then you might well like that person.  But that does not necessarily mean that there is a good compatibility potential between you.\n\nHaving a good compatibility potential score with a person means there are lots of inner connections between the two and a majority of the connections are positive and not challenging.\n\nRelationships are complex."
+
                     attributes: @{ NSParagraphStyleAttributeName: paragraphStyle }
             ];
 
@@ -2851,14 +2854,17 @@ cell.textLabel.text          = @"The \"Closeness\" category is useful because it
         }
 
         if (indexPath.row == 4) {
-            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== title for Personal privacy
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== title for Personal privacy -  Dunbar
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
                 cell.textLabel.font          = myTitleFont;
                 cell.backgroundColor         = gbl_color_cHed;
                 cell.textLabel.numberOfLines = 0;
 //                cell.textLabel.text          = @"PERSONAL PRIVACY";
-                cell.textLabel.text          = @"Personal Privacy";
+//                cell.textLabel.text          = @"Personal Privacy";
+
+                cell.textLabel.text          = @"Dunbar\'s Number = 150";
+
                 cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
                 cell.backgroundView          = nil ;
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -2897,7 +2903,12 @@ cell.textLabel.text          = @"The \"Closeness\" category is useful because it
 //@"   When you tap \"Done\" you immediately get personal privacy for the new person\'s birth information at all times.\n\n   NOBODY, neither you nor the device owner nor anybody else can ever again change or even look at the Birth City or Birth Date.\n\n   That means, if you want to look at the birth information in the future, you need to save it somewhere safe outside this app.\n\n   FURTHERMORE, whenever birth information goes outside this running app, the birth information cannot be looked at:\n   \u2022 when you do a full backup\n   \u2022 when the app saves data for its own use"
 //@"   When you tap \"Done\" you immediately get personal privacy for the new person\'s birth information at all times.\n\n   NOBODY, neither you nor the device owner nor anybody else can ever again change or even look at the Birth City or Birth Date.\n\n   That means, if you want to look at the birth information in the future, you need to save it somewhere safe outside this app."
 //@"When you tap \"Done\" you immediately get personal privacy for the new person\'s birth information at all times.\n\nNOBODY, neither you nor the device owner nor anybody else can ever again change or even look at the Birth City or Birth Date.\n\nThat means, if you want to look at the birth information in the future, you need to save it somewhere safe outside this app.\n\nWhen you add birth information for a new person, you need their permission to do so."
-@"When you tap \"Save\" you immediately get personal privacy for the new person\'s birth information.\n\nNOBODY, neither you nor the device owner nor anybody else can ever again change or even look at the Birth City or Birth Date.\n\nThat means, if you want to look at the birth information in the future, you need to save it somewhere safe outside this app.\n\nWhen you add birth information for a new person, you need their permission to do so."
+
+//@"When you tap \"Save\" you immediately get personal privacy for the new person\'s birth information.\n\nNOBODY, neither you nor the device owner nor anybody else can ever again change or even look at the Birth City or Birth Date.\n\nThat means, if you want to look at the birth information in the future, you need to save it somewhere safe outside this app.\n\nWhen you add birth information for a new person, you need their permission to do so."
+
+@"Dunbar's number is a suggested cognitive limit to the number of people with whom one can maintain stable social relationships.\n\nThese are relationships in which an someone knows who each person is and how each person relates to every other person.\n\nThis number was first proposed in the 1990s by British anthropologist Robin Dunbar, who found a correlation between primate brain size and average social group size."
+
+
                     attributes: @{ NSParagraphStyleAttributeName: paragraphStyle }
             ];
 
@@ -4691,7 +4702,8 @@ cell.textLabel.text          = @"The \"Closeness\" category is useful because it
 //        if (indexPath.row == 21) return   145.0;  // text for complexity part 2
 //        if (indexPath.row == 21) return   120.0;  // text for complexity part 2
 //        if (indexPath.row == 21) return    95.0;  // text for complexity part 2
-        if (indexPath.row == 21) return   260.0;  // text for complexity part 2
+//        if (indexPath.row == 21) return   260.0;  // text for complexity part 2
+        if (indexPath.row == 21) return   320.0;  // text for complexity part 2
         if (indexPath.row == 22) return    20.0;  // text for disclaimer
     }
     // if (  [gbl_currentMenuPlusReportCode isEqualToString: @"hompwc"])     // what color is the day?
