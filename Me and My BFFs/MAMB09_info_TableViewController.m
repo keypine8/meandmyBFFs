@@ -4946,7 +4946,7 @@ tn();    NSLog(@"in pressedEmail_UsButton!  in INFO   ");
 
     
     //   NSArray *toRecipents = [NSArray arrayWithObject:@"ijfo@jldks.com"];
-    NSArray *toRecipients = [NSArray arrayWithObjects:@"myandmybffs@funnestastrology.com", nil];  //  user types it in
+    NSArray *toRecipients = [NSArray arrayWithObjects:@"meandmybffs@funnestastrology.com", nil];  //  user types it in
 //    NSArray *toRecipients = [NSArray arrayWithObjects:@"other51@sympatico.ca", nil];  //  user types it in
 
     
