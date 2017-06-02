@@ -1,3 +1,4 @@
+
 //
 //  MAMB09_info_TableViewController.m
 //  Me&myBFFs
@@ -29,7 +30,7 @@
 #import "MAMB09_info_TableViewController.h"
 #import "MAMB09_viewHTMLViewController.h"
 #import "mamblib.h"
-#import "MAMB09AppDelegate.h"   // to get globals   ppp  rrr  sss ttt uuu vvv www
+#import "MAMB09AppDelegate.h"   // to get globals   ppp  rrr  sss ttt uuu vvv www xxx
 
 @interface MAMB09_info_TableViewController ()
 
@@ -4277,7 +4278,7 @@ cell.textLabel.text          = @"The \"Closeness\" category is useful because it
 
             NSAttributedString *myAttributedStr = [[NSAttributedString alloc]
                 initWithString:
-//@"\u2022 To have fun, get \"Me and my BFFs\" together and use this app.\n\u2022 To send ANY REPORT as an email attachment, tap the Share icon (box with arrow coming out) when viewing the report\n\u2022 To email a Group to a BFF who has this app:  Home > Edit > Groups > tap the Share icon > tap on the groups you want to share\n\u2022 To import a Group someone has emailed you, open the email on the device where you have this app and tap and hold (long tap) on the email attachment.  A bunch of app icons come up.  Tap on the Me and my BFFs icon and the import begins."
+//@"\u2022 To have fun, get \"Me and my BFFs\" together and use this app.\n\u2022 To send ANY REPORT as an email attachment, tap the Share icon (box with arrow coming out) when viewinag the report\n\u2022 To email a Group to a BFF who has this app:  Home > Edit > Groups > tap the Share icon > tap on the groups you want to share\n\u2022 To import a Group someone has emailed you, open the email on the device where you have this app and tap and hold (long tap) on the email attachment.  A bunch of app icons come up.  Tap on the Me and my BFFs icon and the import begins."
 //@"\u2022 To have fun, get \"Me and my BFFs\" together and use this app.\n\u2022 To send ANY REPORT as an email attachment, tap the Share icon (box with arrow coming out) when viewing the report\n\u2022 To email a Group to a BFF who has this app:  Home > Edit > Groups > tap the Share icon > tap on the groups you want to share\n\u2022 To import a Group someone has emailed you, open the email on the device where you have this app and tap and hold (long tap) on the email attachment."
 
 
@@ -4341,7 +4342,8 @@ cell.textLabel.text          = @"The \"Closeness\" category is useful because it
                 initWithString:
 
 //@"\u2022 Study human factors on sports teams\n\u2022 Be a matchmaker by using the reports \"Best Match\" and \"Personality\"\n\u2022 Send questions and comments to QQQQQ@QQQQQ.com"
-@"\u2022 Study human factors on sports teams\n\u2022 Be a matchmaker by using the reports \"Best Match\" and \"Personality\"\n\u2022 Send questions and comments to meandmybffs@funnestastrology.com"
+//@"\u2022 Study human factors on sports teams\n\u2022 Be a matchmaker by using the reports \"Best Match\" and \"Personality\"\n\u2022 Send questions and comments to meandmybffs@funnestastrology.com"
+@"\u2022 Study human factors on sports teams\n\u2022 Be a matchmaker by using the reports \"Best Match\" and \"Personality\"\n\u2022 Send questions and comments by tapping on \"email_us\" on the top right of the screen.  This will start an email to meandmybffs@funnestastrology.com"
 
                     attributes: @{ NSParagraphStyleAttributeName: paragraphStyle }
             ];
@@ -4574,7 +4576,8 @@ cell.textLabel.text          = @"The \"Closeness\" category is useful because it
         if (indexPath.row ==   16) return   135.0;  // text  for do stuff
 
         if (indexPath.row ==   17) return    30.0;  // title for why not ?
-        if (indexPath.row ==   18) return    90.0;  // text  for why not ?
+//        if (indexPath.row ==   18) return    90.0;  // text  for why not ?
+        if (indexPath.row ==   18) return   120.0;  // text  for why not ?
 
         if (indexPath.row ==   19) return    30.0;  // text for disclaimer
     }
@@ -4795,6 +4798,15 @@ cell.textLabel.text          = @"The \"Closeness\" category is useful because it
 
 
 
+//
+//- (void) showExampleDataSwitchChanged: (id)sender {
+//
+//
+//
+//} // showExampleDataSwitchChanged
+
+
+
 
 -(void) viewWillAppear:(BOOL)animated 
 {
@@ -4818,24 +4830,55 @@ cell.textLabel.text          = @"The \"Closeness\" category is useful because it
 //self.navigationController.toolbarHidden = YES;  // ensure that the bottom of screen toolbar is NOT visible 
 //[self.navigationController.navigationBar setHidden:YES];  
 
-    // set up navigation bar  right button  with mamb icon
-    //
-        UIImage *myImage = [[UIImage imageNamed: @"rounded_MAMB09_029.png"]
-                         imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal ];
+    // set up navigation bar  right button
+//
+//    // with mamb icon
+//    //
+//        UIImage *myImage = [[UIImage imageNamed: @"rounded_MAMB09_029.png"]
+//                         imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal ];
+//
+//        UIBarButtonItem *myMAMBicon = [[UIBarButtonItem alloc]initWithImage: myImage
+//                                                                      style: UIBarButtonItemStylePlain 
+//                                                                     target: self 
+//                                                                     action: nil];
+//        [myMAMBicon setEnabled:NO];
+////        myMAMBicon.userInteractionEnabled = NO;
+//
+////        [[self navigationItem] setTitle: myNavBarTitle];  // moving this from the bottom of dispatch_async block to top solved the problem of nav bar title stuttering from left to right (about 1 sec)   why does it work?
+////        titleLabel.textAlignment = UITextAlignmentCenter
+////        self.navigationItem.titleLabel.textAlignment = UITextAlignmentCenter;
+////<.>
+//
 
-        UIBarButtonItem *myMAMBicon = [[UIBarButtonItem alloc]initWithImage: myImage
-                                                                      style: UIBarButtonItemStylePlain 
-                                                                     target: self 
-                                                                     action: nil];
-        [myMAMBicon setEnabled:NO];
-//        myMAMBicon.userInteractionEnabled = NO;
 
-//        [[self navigationItem] setTitle: myNavBarTitle];  // moving this from the bottom of dispatch_async block to top solved the problem of nav bar title stuttering from left to right (about 1 sec)   why does it work?
-//        titleLabel.textAlignment = UITextAlignmentCenter
-//        self.navigationItem.titleLabel.textAlignment = UITextAlignmentCenter;
-//<.>
+// add button example
+//        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+//        [button addTarget:self 
+//                   action:@selector(aMethod:)
+//         forControlEvents:UIControlEventTouchUpInside];
+//        [button setTitle:@"Show View" forState:UIControlStateNormal];
+//        button.frame = CGRectMake(80.0, 210.0, 160.0, 40.0);
+//        [view addSubview:button];
+// add button example
 
-        self.navigationItem.rightBarButtonItem = myMAMBicon;
+//        UIButton *emailUsButton = [UIButton buttonWithType: UIButtonTypeCustom ];
+//        [emailUsButton addTarget: self 
+//                          action: @selector(pressedEmailUsButton: )
+//                forControlEvents: UIControlEventTouchUpInside      
+//        ];
+//        [emailUsButton setTitle: @"email_us" forState: UIControlStateNormal ];
+
+
+//        self.navigationItem.rightBarButtonItem = emailUsButton;
+
+    self.navigationItem.rightBarButtonItem = [
+        [UIBarButtonItem alloc] initWithTitle: @"email_us"
+                                        style: UIBarButtonItemStylePlain
+                                       target: self
+                                       action: @selector(pressedEmail_UsButton: )
+    ];
+                                       
+
 
 //
 //        // try to fix title listing to right
@@ -4860,6 +4903,7 @@ cell.textLabel.text          = @"The \"Closeness\" category is useful because it
 } // end of   viewWillAppear
 
 
+
 - (BOOL)tableView:(UITableView *)tableView  shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return NO;
@@ -4878,7 +4922,247 @@ cell.textLabel.text          = @"The \"Closeness\" category is useful because it
 
 }
 
+
+
+// ==============   start of email stuff  ================================================================================
+// ==============   start of email stuff  ================================================================================
+
+
+-(void)pressedEmail_UsButton:(id)sender
+{
+    MFMailComposeViewController *myMailComposeViewController;
+
+tn();    NSLog(@"in pressedEmail_UsButton!  in INFO   ");
+    
+
+//    NSString *emailTitle = @"my question or comment";
+    NSString *emailTitle = @"Feedback";
+
+    NSString *myEmailMessage;
+    
+    myEmailMessage = @"Hi,\n\nI am in iPhone app \"Me and my BFFs\" and here is my comment or question:\n\n";
+
+    NSLog(@"myEmailMessage=%@",myEmailMessage);
+
+    
+    //   NSArray *toRecipents = [NSArray arrayWithObject:@"ijfo@jldks.com"];
+    NSArray *toRecipients = [NSArray arrayWithObjects:@"myandmybffs@funnestastrology.com", nil];  //  user types it in
+//    NSArray *toRecipients = [NSArray arrayWithObjects:@"other51@sympatico.ca", nil];  //  user types it in
+
+    
+    if ([MFMailComposeViewController canSendMail])
+    {
+        myMailComposeViewController = [[MFMailComposeViewController alloc] init];
+
+        NSLog(@"This device CAN send email");
+
+         myMailComposeViewController.mailComposeDelegate = self;
+        [myMailComposeViewController setSubject: emailTitle];
+        [myMailComposeViewController setMessageBody: myEmailMessage
+                                             isHTML: NO];
+        [myMailComposeViewController setToRecipients: toRecipients];
+        [myMailComposeViewController setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+//        [myMailComposeViewController addAttachmentData: HTMLfileData                // Add attachment
+//                                              mimeType: mimeType
+//                                              fileName: filenameForAttachment];
+        
+        // Present mail view controller on screen
+        //
+        //[self presentModalViewController:myMailComposeViewController animated:YES completion:NULL];
+
+
+        dispatch_async(dispatch_get_main_queue(), ^(void){
+                [self presentViewController: myMailComposeViewController animated:YES completion:NULL];
+        });
+    }
+    else
+    {
+        UIAlertController* alert = [UIAlertController alertControllerWithTitle: @"Cannot send email"
+                                                                       message: @"Maybe email on this device is not set up."
+                                                                preferredStyle: UIAlertControllerStyleAlert  ];
+         
+        UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                            style: UIAlertActionStyleDefault
+                                                          handler: ^(UIAlertAction * action) {
+            NSLog(@"Ok button pressed");
+        } ];
+         
+        [alert addAction:  okButton];
+
+        dispatch_async(dispatch_get_main_queue(), ^(void){
+            [self presentViewController: alert  animated: YES  completion: nil   ];
+        });
+    }
+} // pressedEmail_UsButton
+
+
+- (void) mailComposeController:(MFMailComposeViewController *)controller
+           didFinishWithResult:(MFMailComposeResult)result
+                         error:(NSError *)error
+{
+
+    // AVOID this ERROR:
+    // ios Attempting to load the view of a view controller while it is deallocating is not allowed and may result in undefined behavior
+    //
+    //   use    dispatch_async(dispatch_get_main_queue(), ^(void)
+    //        around presentViewController
+    //   BUT NOT  around   [self dismissViewControllerAnimated:YES completion:NULL];
+    //
+
+    if (error) {
+//        UIAlertView *myalert = [[UIAlertView alloc] initWithTitle: @"An error happened"
+//                                                          message: [error localizedDescription]
+//                                                         delegate: nil
+//                                                cancelButtonTitle: @"cancel"
+//                                                otherButtonTitles: nil, nil];
+//        [myalert show];
+        UIAlertController* alert = [UIAlertController alertControllerWithTitle: @"An error happened"
+                                                                       message: [error localizedDescription]
+                                                                preferredStyle: UIAlertControllerStyleAlert  ];
+         
+        UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                            style: UIAlertActionStyleDefault
+                                                          handler: ^(UIAlertAction * action) {
+NSLog(@"Ok button pressed");
+        } ];
+        [alert addAction:  okButton];
+        dispatch_async(dispatch_get_main_queue(), ^(void){
+            [self presentViewController: alert  animated: YES  completion: nil   ];
+        });
+
+        // [self dismissViewControllerAnimated:yes completion:<#^(void)completion#>];
+
+//        dispatch_async(dispatch_get_main_queue(), ^(void){
+            [self dismissViewControllerAnimated: YES
+                                     completion: NULL];
+//        });
+    }
+    switch (result)
+    {
+        case MFMailComposeResultCancelled: {
+NSLog(@"Mail cancelled");
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Mail send was cancelled"
+//                                                            message: @""
+//                                                           delegate: nil
+//                                                  cancelButtonTitle: @"OK"
+//                                                  otherButtonTitles: nil];
+//            [alert show];
+//
+            UIAlertController* alert = [UIAlertController alertControllerWithTitle: @"Mail Send was Cancelled"
+                                                                           message: @""
+                                                                    preferredStyle: UIAlertControllerStyleAlert  ];
+            UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                                style: UIAlertActionStyleDefault
+                                                              handler: ^(UIAlertAction * action) {
+NSLog(@"Ok button pressed");
+            } ];
+            [alert addAction:  okButton];
+            dispatch_async(dispatch_get_main_queue(), ^(void){
+                [self presentViewController: alert  animated: YES  completion: nil   ];
+            });
+
+            break;
+        }
+        case MFMailComposeResultSaved: {
+            NSLog(@"Mail saved");
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Mail was saved"
+//                                                            message: @""
+//                                                           delegate: nil
+//                                                  cancelButtonTitle: @"OK"
+//                                                  otherButtonTitles: nil];
+//            [alert show];
+//
+            UIAlertController* alert = [UIAlertController alertControllerWithTitle: @"Mail was Saved"
+                                                                           message: @""
+                                                                    preferredStyle: UIAlertControllerStyleAlert  ];
+            UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                                style: UIAlertActionStyleDefault
+                                                              handler: ^(UIAlertAction * action) {
+NSLog(@"Ok button pressed");
+            } ];
+            [alert addAction:  okButton];
+            dispatch_async(dispatch_get_main_queue(), ^(void){
+                [self presentViewController: alert  animated: YES  completion: nil   ];
+            });
+
+            break;
+        }
+        case MFMailComposeResultSent: {
+            NSLog(@"Mail sent");
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Mail was sent"
+//                                                            message: @""
+//                                                           delegate: nil
+//                                                  cancelButtonTitle: @"OK"
+//                                                  otherButtonTitles: nil];
+//            [alert show];
+            UIAlertController* alert = [UIAlertController alertControllerWithTitle: @"Mail was Sent"
+                                                                           message: @""
+                                                                    preferredStyle: UIAlertControllerStyleAlert  ];
+            UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                                style: UIAlertActionStyleDefault
+                                                              handler: ^(UIAlertAction * action) {
+NSLog(@"Ok button pressed");
+            } ];
+            [alert addAction:  okButton];
+            dispatch_async(dispatch_get_main_queue(), ^(void){
+                [self presentViewController: alert  animated: YES  completion: nil   ];
+            });
+
+
+            break;
+        }
+        case MFMailComposeResultFailed: {
+            NSLog(@"Mail send failure: %@", [error localizedDescription]);
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Failure of mail send"
+//                                                            message: [error localizedDescription]
+//                                                           delegate: nil
+//                                                  cancelButtonTitle: @"OK"
+//                                                  otherButtonTitles: nil];
+//            [alert show];
+            UIAlertController* alert = [UIAlertController alertControllerWithTitle: @"Failure of Mail Send"
+                                                                           message: [error localizedDescription]
+                                                                    preferredStyle: UIAlertControllerStyleAlert  ];
+             
+            UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                                style: UIAlertActionStyleDefault
+                                                              handler: ^(UIAlertAction * action) {
+NSLog(@"Ok button pressed");
+            } ];
+            [alert addAction:  okButton];
+            dispatch_async(dispatch_get_main_queue(), ^(void){
+                [self presentViewController: alert  animated: YES  completion: nil   ];
+            });
+
+            break;
+        }
+        default: { break; }
+    }
+    
+    // Close the Mail Interface
+//    [self becomeFirstResponder];  // from http://stackoverflow.com/questions/14263690/need-help-dismissing-email-composer-screen-in-ios
+
+    //[self dismissModalViewControllerAnimated:YES
+
+    // AVOID this ERROR:
+    // ios Attempting to load the view of a view controller while it is deallocating is not allowed and may result in undefined behavior
+    //
+    //   use    dispatch_async(dispatch_get_main_queue(), ^(void)
+    //        around presentViewController
+    //   BUT NOT  around   [self dismissViewControllerAnimated:YES completion:NULL];
+    //
+//    dispatch_async(dispatch_get_main_queue(), ^(void){
+            [self dismissViewControllerAnimated:YES
+                                     completion:NULL];
+//    });
+
+} //  didFinishWithResult:(MFMailComposeResult)result
+
+// ==============   END of email stuff  ====================
+
+
 @end
+
+
 
 
 /*
