@@ -30,7 +30,7 @@
 #import "MAMB09_info_TableViewController.h"
 #import "MAMB09_viewHTMLViewController.h"
 #import "mamblib.h"
-#import "MAMB09AppDelegate.h"   // to get globals   ppp  rrr  sss ttt uuu vvv www xxx
+#import "MAMB09AppDelegate.h"   // to get globals   ppp  rrr  sss ttt uuu vvv www xxx yyy
 
 @interface MAMB09_info_TableViewController ()
 
@@ -4830,54 +4830,38 @@ cell.textLabel.text          = @"The \"Closeness\" category is useful because it
 //self.navigationController.toolbarHidden = YES;  // ensure that the bottom of screen toolbar is NOT visible 
 //[self.navigationController.navigationBar setHidden:YES];  
 
+
     // set up navigation bar  right button
+    //
+    if (    [gbl_helpScreenDescription isEqualToString: @"HOME"]) {
+
+        // with "email_us" link
+        self.navigationItem.rightBarButtonItem = [
+            [UIBarButtonItem alloc] initWithTitle: @"email_us"
+                                            style: UIBarButtonItemStylePlain
+                                           target: self
+                                           action: @selector(pressedEmail_UsButton: )
+        ];
+
+    } else {      // with mamb icon
+       
+        UIImage *myImage = [[UIImage imageNamed: @"rounded_MAMB09_029.png"]
+                         imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal ];
+
+        UIBarButtonItem *myMAMBicon = [[UIBarButtonItem alloc]initWithImage: myImage
+                                                                      style: UIBarButtonItemStylePlain 
+                                                                     target: self 
+                                                                     action: nil];
+        [myMAMBicon setEnabled:NO];
+        self.navigationItem.rightBarButtonItem = myMAMBicon;
+    }
+
+//        myMAMBicon.userInteractionEnabled = NO;
+
+//        [[self navigationItem] setTitle: myNavBarTitle];  // moving this from the bottom of dispatch_async block to top solved the problem of nav bar title stuttering from left to right (about 1 sec)   why does it work?
+//        titleLabel.textAlignment = UITextAlignmentCenter
+//        self.navigationItem.titleLabel.textAlignment = UITextAlignmentCenter;
 //
-//    // with mamb icon
-//    //
-//        UIImage *myImage = [[UIImage imageNamed: @"rounded_MAMB09_029.png"]
-//                         imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal ];
-//
-//        UIBarButtonItem *myMAMBicon = [[UIBarButtonItem alloc]initWithImage: myImage
-//                                                                      style: UIBarButtonItemStylePlain 
-//                                                                     target: self 
-//                                                                     action: nil];
-//        [myMAMBicon setEnabled:NO];
-////        myMAMBicon.userInteractionEnabled = NO;
-//
-////        [[self navigationItem] setTitle: myNavBarTitle];  // moving this from the bottom of dispatch_async block to top solved the problem of nav bar title stuttering from left to right (about 1 sec)   why does it work?
-////        titleLabel.textAlignment = UITextAlignmentCenter
-////        self.navigationItem.titleLabel.textAlignment = UITextAlignmentCenter;
-////<.>
-//
-
-
-// add button example
-//        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-//        [button addTarget:self 
-//                   action:@selector(aMethod:)
-//         forControlEvents:UIControlEventTouchUpInside];
-//        [button setTitle:@"Show View" forState:UIControlStateNormal];
-//        button.frame = CGRectMake(80.0, 210.0, 160.0, 40.0);
-//        [view addSubview:button];
-// add button example
-
-//        UIButton *emailUsButton = [UIButton buttonWithType: UIButtonTypeCustom ];
-//        [emailUsButton addTarget: self 
-//                          action: @selector(pressedEmailUsButton: )
-//                forControlEvents: UIControlEventTouchUpInside      
-//        ];
-//        [emailUsButton setTitle: @"email_us" forState: UIControlStateNormal ];
-
-
-//        self.navigationItem.rightBarButtonItem = emailUsButton;
-
-    self.navigationItem.rightBarButtonItem = [
-        [UIBarButtonItem alloc] initWithTitle: @"email_us"
-                                        style: UIBarButtonItemStylePlain
-                                       target: self
-                                       action: @selector(pressedEmail_UsButton: )
-    ];
-                                       
 
 
 //
