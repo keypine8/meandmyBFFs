@@ -40,7 +40,7 @@
 #import "MAMB09_homeTableViewController.h"
 #import "MAMB09_selectReportsTableViewController.h"
 #import "rkdebug_externs.h"
-#import "MAMB09AppDelegate.h"   // to get globals    bbb ccc eee
+#import "MAMB09AppDelegate.h"   // to get globals    bbb ccc eee fff
 #import "mamblib.h"
 
 
@@ -191,11 +191,12 @@ return YES;
 //} // end of handleSwipeLeft
 
 
-- (void)handleSingleTap :(UITapGestureRecognizer *)tap
-{
-tn();
-  NSLog(@"in handleSingleTap  in HOME! ttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt");
-}
+//<.>   commented out 20170622 <.>
+//- (void)handleSingleTap :(UITapGestureRecognizer *)tap
+//{
+//tn();
+//  NSLog(@"in handleSingleTap  in HOME! ttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt");
+//}
 
 
 - (void)handleDoubleTapInCell:(UITapGestureRecognizer *)tap
@@ -522,6 +523,7 @@ nbn(376);
 
 
 
+
 //
 //    // add a method (processDoubleTap) to run on double tap
 //    //
@@ -550,12 +552,23 @@ nbn(376);
 //    [self.tableView addGestureRecognizer: singleTapInCell];
 //
 
-    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:    self action:@selector(handleSingleTap:)] ;
-    singleTap.numberOfTapsRequired = 1; 
-    [self.view addGestureRecognizer: singleTap];
+
+// commented out 20170622 <.>
+//    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:    self action:@selector(handleSingleTap:)] ;
+//    singleTap.numberOfTapsRequired = 1; 
+
+
+
+// commented out 20170622 <.>
+//    singleTap.cancelsTouchesInView = NO;  // so email addr tap responds
+//  NSLog(@"singleTap.cancelsTouchesInView =[%ld]",(long)singleTap.cancelsTouchesInView );
+//
+//    [self.view addGestureRecognizer: singleTap];
+
 
     UITapGestureRecognizer *doubleTapInCell = [[UITapGestureRecognizer alloc] initWithTarget: self
                                                                                       action: @selector( handleDoubleTapInCell: )
+
     ];
     doubleTapInCell.delegate                = self;
     doubleTapInCell.numberOfTapsRequired    = 2;
@@ -564,7 +577,11 @@ nbn(376);
 
     [self.tableView addGestureRecognizer: doubleTapInCell ];
 
-    [singleTap requireGestureRecognizerToFail: doubleTapInCell ];
+
+
+// commented out 20170622 <.>
+//    [singleTap requireGestureRecognizerToFail: doubleTapInCell ];
+
 
 
 //    UIWindow *mainWindow = [[[UIApplication sharedApplication] delegate] window];
@@ -4804,7 +4821,6 @@ nbn(335);
 
 
 
-//<.>
 //
 //            // remove left share icon and replace  with  app icon
 //            //
@@ -4812,7 +4828,6 @@ nbn(335);
 //            self.navigationItem.leftBarButtonItem  = gbl_icon_UIBarButtonItem ;
 //            self.navigationItem.leftBarButtonItems = [self.navigationItem.leftBarButtonItems  arrayByAddingObject: navAddButton];
 //
-//<.>
 //
 
 
