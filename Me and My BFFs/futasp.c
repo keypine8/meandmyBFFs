@@ -44,7 +44,7 @@ extern int   sall(char *s,char *set);
 
 
 /* externs follow */
-extern struct Runrec Rt[];  /* rt=running_table */
+extern struct Runrec Rt[];  /* rt=running_table     aaa   */
 extern int Aspect_type[];
 
 extern int get_house(int minutes, int mc);  /* defined in another .o */
@@ -284,11 +284,14 @@ void do_a_para(char *first, char *other1, char *other2)
   char *line[NUM_POSSIBLE_INSTANCES_PER_ASP];
   char s[4+1];
   int i,yr,mn,dy,nat,transiting,asp;
+  int yr_to,mn_to,dy_to;  // check for "from" date being the same as "to" date
   int n;
   char mywork[512];
   char mywork2[512];
+  int ctr_from_to;
   ;
   line[0] = first;  line[1] = other1;  line[2] = other2;
+  ctr_from_to = 0;
 
   strcpy(mywork,  "");
   strcpy(mywork2, "");
@@ -299,12 +302,28 @@ void do_a_para(char *first, char *other1, char *other2)
     mn = atoi(sfromto(s,line[i],5,6));
     dy = atoi(sfromto(s,line[i],7,8));
 
+    // check for "from" date being the same as "to" date
+    yr_to = atoi(sfromto(s,line[i],15,18));
+    mn_to = atoi(sfromto(s,line[i],19,20));
+    dy_to = atoi(sfromto(s,line[i],21,22));
+//trn("do_a_para()");  
+//ki(yr_to);ki(mn_to);kin(dy_to);
+//ki(yr);ki(mn);kin(dy);
+    if (   yr == yr_to
+        && mn == mn_to
+        && dy == dy_to )
+    {
+//trn("same from/to");  
+        continue; //  "from" date  IS  the same as "to" date (do not include)
+    }
+    ctr_from_to = ctr_from_to + 1;
 
     /* Collect these 4 f_docin_puts into 1 string and f_docin_put that 
     *  at the end.
     */
     n = sprintf(wk1,"%s%s %d, %d",
-      (i == 0)? "  From ":" and also from ",
+//      (i == 0)? "  From ":" and also from ",
+      (ctr_from_to == 1)? "  From ":" and also from ",
       N_long_mth[mn],dy,yr
     );
 
@@ -324,6 +343,12 @@ void do_a_para(char *first, char *other1, char *other2)
     */
     sprintf(mywork2, "%s%s", mywork, wk2);   
     strcpy(mywork, mywork2);
+  }
+
+  // if from /to string is empty, do not print this para
+  if (strlen(mywork) == 0) {
+//trn("only same from/to print nothing (return)");  
+      return;
   }
 
   n = sprintf(wk3,".  ");
