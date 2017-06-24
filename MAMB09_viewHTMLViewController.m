@@ -28,7 +28,7 @@
 
 #import "MAMB09_viewHTMLViewController.h"
 #import "mamblib.h"
-#import "MAMB09AppDelegate.h"   // to get globals
+#import "MAMB09AppDelegate.h"   // to get globals    nnn
 
 // #import "incocoa.h" xxxxx
 
@@ -1370,7 +1370,7 @@ NSLog(@"in viewDidAppear()");
   NSLog(@"my_screen_height                  =%f",my_screen_height );
   NSLog(@"my_status_bar_height              =%f",my_status_bar_height   );
   NSLog(@"my_nav_bar_height                 =%f",my_nav_bar_height    );
-  NSLog(@"my_toolbar_height                 =%f",my_toolbar_height );
+//  NSLog(@"my_toolbar_height                 =%f",my_toolbar_height );
 
     my_toolbar_height = 44.0;
 
