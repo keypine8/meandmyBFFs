@@ -40,7 +40,7 @@
 #import "MAMB09_homeTableViewController.h"
 #import "MAMB09_selectReportsTableViewController.h"
 #import "rkdebug_externs.h"
-#import "MAMB09AppDelegate.h"   // to get globals    bbb ccc eee fff
+#import "MAMB09AppDelegate.h"   // to get globals    bbb ccc eee fff ggg
 #import "mamblib.h"
 
 
@@ -2084,7 +2084,7 @@ nbn(185);
                 currentRowNum = indexPath.row;
 
                 NSIndexPath* moveToIndexPath  =  [NSIndexPath indexPathForRow: currentRowNum - 1   inSection: 0];
-
+                moveToIndexPath = moveToIndexPath; // remove warning (unused)
 
                 [self.tableView reloadData]; // reload to    edit mode    reload reload reload reload reload reload ");
 
