@@ -3,9 +3,6 @@
 //  Me and My BFFs
 //
 //
-//  MAMB09_viewHTMLViewController.m
-//  Me&myBFFs
-//
 // MIT License
 //
 // Copyright (c) 2017 softwaredev
