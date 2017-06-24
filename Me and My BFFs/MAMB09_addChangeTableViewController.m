@@ -26,7 +26,7 @@
 //
 //
 
-//#include <CoreServices/CoreServices.h>   // these 4 are for  start = mach_absolute_time();  jjj lll mmm
+//#include <CoreServices/CoreServices.h>   // these 4 are for  start = mach_absolute_time();  jjj lll mmm nnn
 //#include <mach/mach.h>
 //#include <mach/mach_time.h>
 //#include <unistd.h>
@@ -6533,6 +6533,11 @@ tn();trn("DATE field was drawn  hey   hey   hey   hey   hey   hey   hey   ");
             CGFloat myLabelWidth;
             CGFloat myLabelHeight;
             UIFont *myLabelFont;
+
+            myLabelFont   = [UIFont fontWithName:@"Menlo" size: 10.0];   // initialize to get rid of warning
+            myLabelWidth  = 240.0f;                                      // initialize to get rid of warning
+            myLabelHeight =  50.0f;                                      // initialize to get rid of warning
+
             if (   self.view.bounds.size.width >= 414.0        // 6+ and 6s+  and bigger
             ) {
                 myLabelFont   = [UIFont fontWithName:@"Menlo" size: 12.0];
