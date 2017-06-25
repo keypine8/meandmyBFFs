@@ -52,7 +52,7 @@ int mapNumStarsToBenchmarkNum(int category, int num_stars);
 
 int calc_percentile_rank(int in_score, int sc_hi, int sc_lo, int pr_hi, int pr_lo);
 
-/* called from perdoc.c, futdoc.c, grpdoc.c */
+/* called from perdoc.c, futdoc.c, grpdoc.c    aaa    */
 void get_event_details(  
   char   *csv_person_string,
   char   *event_name, 
@@ -1944,8 +1944,8 @@ int bin_find_first_city1 (char *city_begins_with) /* in gbl_placetab[] */
   char low_city_in_array[64];
   int low, high, mid, lowest_hit_so_far, lowest_exact_hit_so_far;
 
-/* tn();trn("in  bin_find_first_city_begins_with"); */
-/* kin(my_num_elements); ksn(city_begins_with); */
+tn();trn("in  bin_find_first_city_begins_with"); 
+ksn(city_begins_with); 
 
   /*my_num_elements = NKEYS_PLACE;*/    /* in full placetab array */
   my_num_elements = gbl_nkeys_place;     /* in full placetab array */
@@ -1959,6 +1959,10 @@ int bin_find_first_city1 (char *city_begins_with) /* in gbl_placetab[] */
   for(ii = 0; low_city_begins_with[ii]; ii++){  /* make city_begins_with  lower case */
     low_city_begins_with[ii] = tolower(city_begins_with[ii]);
   }
+
+    scharout(low_city_begins_with, '-');   /* remove - because it's ignored in unix sort    */
+
+
   len = (int)strlen(low_city_begins_with);
 
   while (low <= high) {
@@ -1980,9 +1984,18 @@ int bin_find_first_city1 (char *city_begins_with) /* in gbl_placetab[] */
     scharout(city_to_compare_against, '-');  /* remove - because it's ignored in unix sort    */
 //ksn(city_to_compare_against);
 //    iresult = strncmp(low_city_begins_with, city_to_compare_against, len - how_many_minus_signs ); /* ignores case */
+
+
+tn();trn("strncmp ---- beg ---------------------------");
+ksn(low_city_begins_with);
+ksn(city_to_compare_against);
+kin(len);
+
     iresult = strncmp(low_city_begins_with, city_to_compare_against, len                        ); /* ignores case */
 
-//ki(iresult);
+ki(iresult);
+trn("strncmp ----- end --------------------------");
+tn();
 //tr("qq1 loop");
     if (iresult < 0) {
 //trn("qq1 got high");
@@ -1999,6 +2012,9 @@ int bin_find_first_city1 (char *city_begins_with) /* in gbl_placetab[] */
 //trn("");
   }
 
+kin(lowest_hit_so_far);
+trn("END  bin_find_first_city_begins_with"); 
+tn();
   return (lowest_hit_so_far);  /* could be -1 (not found) */
  
 } /* end of bin_find_first_city1 */
@@ -2027,23 +2043,35 @@ int bin_find_first_city(      /* in gbl_placetab[] */
   int low, high, mid, lowest_hit_so_far, lowest_exact_hit_so_far;
 
 tn();trn("in  bin_find_first_city_begins_with    qq qq qq "); 
-//ksn(city_begins_with);
-//kin(numCitiesToGetPicklist);
+ksn(city_begins_with);
+kin(numCitiesToGetPicklist);
 
   /*my_num_elements = NKEYS_PLACE;*/    /* in full placetab array */
   my_num_elements = gbl_nkeys_place;     /* in full placetab array */
-//kin(my_num_elements);
+kin(my_num_elements);
 
   low = 0;
   high = my_num_elements - 1;
   lowest_hit_so_far = -1;
   lowest_exact_hit_so_far =  -1;
 
+ksn(city_begins_with);
   strcpy(low_city_begins_with, city_begins_with);
-  for(ii = 0; low_city_begins_with[ii]; ii++){  /* make city_begins_with  lower case */
-    low_city_begins_with[ii] = tolower(city_begins_with[ii]);
-  }
+ksn(low_city_begins_with);
+
+    scharout(low_city_begins_with, '-');   /* remove - because it's ignored in unix sort    */
+ksn(low_city_begins_with);
+
   len = (int)strlen(low_city_begins_with);
+
+  for(ii = 0; low_city_begins_with[ii]; ii++){  /* make city_begins_with  lower case */
+//    low_city_begins_with[ii] = tolower(city_begins_with[ii]);
+    low_city_begins_with[ii] = tolower(low_city_begins_with[ii]);
+  }
+ksn(low_city_begins_with);
+  len = (int)strlen(low_city_begins_with);
+kin(len);
+trn("while loop starts ----------------------------------------------------------");
 
   while (low <= high) {
     mid = (low+high) / 2;
@@ -2054,7 +2082,8 @@ tn();trn("in  bin_find_first_city_begins_with    qq qq qq ");
       low_city_in_array[ii] = tolower(low_city_in_array[ii]);
     }
 //ksn(low_city_begins_with);
-//ksn(low_city_in_array);
+tn();
+ksn(low_city_in_array);
 
 
 
@@ -2065,17 +2094,20 @@ tn();trn("in  bin_find_first_city_begins_with    qq qq qq ");
     how_many_minus_signs = 0;
     strcpy(city_to_compare_against, low_city_in_array);
     how_many_minus_signs = scharcnt(city_to_compare_against, '-');  // count how many minus signs - 
-//ks(city_to_compare_against);
+ks(city_to_compare_against);
 //kin(how_many_minus_signs);
+
     scharout(city_to_compare_against, '-');   /* remove - because it's ignored in unix sort    */
-//ksn(city_to_compare_against);
+
+tn();
+ksn(low_city_begins_with);
+ksn(city_to_compare_against);
+kin(len);
 //    iresult = strncmp(low_city_begins_with, city_to_compare_against, len - how_many_minus_signs ); /* ignores case */
     iresult = strncmp(low_city_begins_with, city_to_compare_against, len                        ); /* ignores case */
 
+kin(iresult);
 
-
-
-//ki(iresult);
 //tr("qq loop");
     if (iresult < 0) {
 //trn("got high");
@@ -2090,13 +2122,18 @@ tn();trn("in  bin_find_first_city_begins_with    qq qq qq ");
      high = mid - 1;
     }
 //trn("");
+  }  // search loop
+
+tn();
+kin(lowest_hit_so_far);
+  if (lowest_hit_so_far == -1 )
+  {
+trn(" END (lowest_hit_so_far)   of bin_find_first_city");tn();
+      return (lowest_hit_so_far);    // -1 = no city  starts with arg "city_begins_with"
   }
 
 
-//kin(lowest_hit_so_far);
-  if (lowest_hit_so_far == -1 ) return (lowest_hit_so_far);    // -1 = no city  starts with arg "city_begins_with"
-
-
+tn();trn("============  regardless of whether we use them, collect city|prov|coun PSVs. =====================");
 
   // regardless of whether we use them, collect city|prov|coun PSVs.
   //   if we find   > numCitiesToGetPicklist, return lowest_hit_so_far 
@@ -2116,6 +2153,7 @@ tn();trn("in  bin_find_first_city_begins_with    qq qq qq ");
   num_found_match_entire_city = 0;  // count entire city matches
   starting_index_into_cities  = lowest_hit_so_far;
 
+kin(starting_index_into_cities);
 //  my_num_elements  = NKEYS_PLACE;     // in full placetab array 
 
   strcpy(begins_with_buf, city_begins_with);
@@ -2123,14 +2161,23 @@ tn();trn("in  bin_find_first_city_begins_with    qq qq qq ");
     begins_with_buf[i] = tolower(begins_with_buf[i]);
   }
   len = (int)strlen(begins_with_buf);
+ksn(begins_with_buf);
 
-//tn();trn("start saving city|prov|coun");
+tn();trn("start saving city|prov|coun");
   int save_idx;
   save_idx = -1;  // zero-based
   int dbctr; dbctr = 0; 
   while (starting_index_into_cities + num_places_found <= my_num_elements)
   {
 
+ki(starting_index_into_cities); ki(num_places_found ); kin(gbl_nkeys_place);
+
+    // check for reached end of cities array
+    //
+    if (starting_index_into_cities + num_places_found >= gbl_nkeys_place) {
+trn(" END (reached end of cities array)   of bin_find_first_city");tn();
+       break;
+    }
     strcpy(city_buf, gbl_placetab[starting_index_into_cities + num_places_found].my_city); // <<<<===--- ------
     idx_of_prov =    gbl_placetab[starting_index_into_cities + num_places_found].idx_prov;
     idx_of_coun =    gbl_placetab[starting_index_into_cities + num_places_found].idx_coun;
@@ -2156,6 +2203,8 @@ tn();trn("in  bin_find_first_city_begins_with    qq qq qq ");
       num_found_match_entire_city = num_found_match_entire_city + 1;  // count entire city matches
     }
 
+ks(begins_with_buf);
+ksn(city_buf_tolower);
     iresult = strncmp(begins_with_buf, city_buf_tolower, len); /* ignores case */      // <<==-----  BEGINS WITH
     if (iresult == 0) {
       num_places_found = num_places_found + 1;
@@ -2171,11 +2220,14 @@ tn();trn("in  bin_find_first_city_begins_with    qq qq qq ");
 //        if (num_found_match_entire_city > 1) {
 
           *arg_numCitiesFound = num_found_match_entire_city;   // <<==-----  matches WHOLE CITY NAME
+trn(" END (-2) #1   of bin_find_first_city");tn();
           return (-2);    // -2  IF there are  entire city matches  to make a picklist
 
         } else {
 
           *arg_numCitiesFound = num_places_found;              // <<==-----  matches BEGINS WITH
+
+trn(" END (lowest_hit_so_far)   of bin_find_first_city");tn();
           return (lowest_hit_so_far);  // too many cities starting with  "city_begins_with"  to make a picklist
                                        // caller can display city that is  lowest_hit_so_far
         }
@@ -2191,16 +2243,18 @@ tn();trn("in  bin_find_first_city_begins_with    qq qq qq ");
 
 
       sprintf(my128PSV, "%s|%s|%s", city_buf, prov_buf, coun_buf);
-//ksn(my128PSV);
+ksn(my128PSV);
       strcpy(city_prov_coun_PSVs + (num_places_found - 1)  * 128, my128PSV);  // fixed rec =  128  chars
 
     } else {
       break;  // here we have saved city|prov|coun PSVs until hitting a city that does not start with "city_begins_with"
     }
-  }
+  } // while loop
 
+b(233);
   *arg_numCitiesFound = num_places_found;
 
+trn(" END (-2) #2   of bin_find_first_city");tn();
   return (-2);    // -2  IF there are few enough cities to make a picklist
  
 } // end of bin_find_first_city
