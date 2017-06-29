@@ -23,7 +23,7 @@
 // SOFTWARE.
 //
 
-/* For just_2 rpt, read from input docin_lines string array  nnn  sss
+/* For just_2 rpt, read from input docin_lines string array  nnn  sss  uuu 
 * format and write an html output file
 * For group rpts, input is 
 *    struct rank_report_line  *in_rank_lines[],
@@ -46,6 +46,7 @@ int get_how_many(char *in_doclin);
 int gbl_db_code;
 char gbl_are_in_just2[128];  // = "we are in make_html_file_just_2_people"  or not
 
+int  gbl_is_grpone_or_grpall;  //  ensure full color in all lines in case filename has "webview"
 char gbl_just2PersonA[64];
 char gbl_just2PersonB[64];
 char gbl_aspect_code[32];
@@ -374,6 +375,8 @@ trn("in  make_html_file_person_in_group()");
 
   strcpy(gbl_gfnameHTML, html_file_name);
 
+  gbl_is_grpone_or_grpall = 1;   // ensure full color in all lines in case filename has "webview"
+ 
   gbl_avg_score_this_member = avg_score_this_member; /* for report bottom */
   gbl_we_are_in_PRE_block = 0;  /* init to false */
   gbl_kingpin_is_in_group = arg_kingpin_is_in_group;      /* for fmt col hdr */
@@ -401,6 +404,8 @@ trn("in  make_html_file_person_in_group()");
                             /* buf to hold html for table */
   );
 //trn("finished ... make_html_file_whole_group()  in  make_html_file_person_in_group()");
+
+  gbl_is_grpone_or_grpall = 0;  // re-init
 
   if (retval != 0) {
     g_docin_free();      /* free all allocated array elements */
@@ -1929,6 +1934,7 @@ b(53);
     /* output ranking line
     */
 
+//tn();tr("==================");ks(trait_name);tn();
 /* tn();ks(trait_name);
 * int iiscore;
 * iiscore = in_trait_lines[i]->score ;tn();b(123);ki(iiscore);
@@ -2125,9 +2131,12 @@ int make_html_file_whole_group( /* produce actual html file */
                                 /* holds  html only  OR  compat score only */
 )
 {
+tn(); trn("in make_html_file_whole_group()   uuu");
+ksn(instructions);
+kin(num_persons_in_grp);
 
-trn("in make_html_file_whole_group()");
-//ksn(instructions);
+  gbl_is_grpone_or_grpall = 1;   // ensure full color in all lines in case filename has "webview"
+
 
 /*   char group_report_type[32], */
   char rowcolor[128];
@@ -2622,7 +2631,20 @@ trn("in make_html_file_whole_group()");
 
     /* put default ROWCOLOR
     */
-    if (strstr(gbl_g_in_html_filename, "webview") != NULL) {  // webview version
+ksn(gbl_g_in_html_filename); trn("hey hey");
+kin(gbl_is_grpone_or_grpall);
+    if (gbl_is_grpone_or_grpall == 1)  // ensure full color in all lines in case filename has "webview"
+    {
+      if (in_rank_lines[i]->score >= 90) strcpy(rowcolor, " class=\"cGr2\"");
+      if (in_rank_lines[i]->score <  90 &&
+          in_rank_lines[i]->score >= 75) strcpy(rowcolor, " class=\"cGre\"");
+      if (in_rank_lines[i]->score <  75 &&
+          in_rank_lines[i]->score >  25) strcpy(rowcolor, " class=\"cNeu\"");
+      if (in_rank_lines[i]->score <= 25 &&
+          in_rank_lines[i]->score >  10) strcpy(rowcolor, " class=\"cRed\"");
+      if (in_rank_lines[i]->score <= 10) strcpy(rowcolor, " class=\"cRe2\"");
+    }
+    else if (strstr(gbl_g_in_html_filename, "webview") != NULL) {  // webview version
       if (in_rank_lines[i]->score >= 90) strcpy(rowcolor, " class=\"cGr2tabonly\"");
       if (in_rank_lines[i]->score <  90 &&
           in_rank_lines[i]->score >= 75) strcpy(rowcolor, " class=\"cGretabonly\"");
@@ -2642,7 +2664,7 @@ trn("in make_html_file_whole_group()");
           in_rank_lines[i]->score >  10) strcpy(rowcolor, " class=\"cRed\"");
       if (in_rank_lines[i]->score <= 10) strcpy(rowcolor, " class=\"cRe2\"");
     }
-//ksn(rowcolor);
+ksn(rowcolor);
 
 
     /* Here we print the ranking table lines  UNLESS
@@ -2734,6 +2756,7 @@ trn("in make_html_file_whole_group()");
       writebuf2,
       in_rank_lines[i]->score
     );
+ksn(writebuf);
     g_fn_prtlin(writebuf);
 
     if (strcmp(instructions, "return only html for table in string") == 0) {
@@ -2897,6 +2920,8 @@ trn("in make_html_file_whole_group()");
   }
 
 //trn("at end of  make_html_file_whole_group()");
+
+  gbl_is_grpone_or_grpall = 0;  // re-init
 
   return(0);
 
