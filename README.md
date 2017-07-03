@@ -179,8 +179,8 @@ from jan - dec instead of 2 graphs jan - jun and jul - dec.  Too wide.
     > in github folder "meandmyBFFs/Me and My BFFs/"
     > in file "rkdebug.c"
     > around line 133,  there is this:
-      // int RKDEBUG=1;  /* set to 1 to turn off output in all these log functions */
-      int RKDEBUG=0;     /* set to 0 to turn on  output in all these log functions */
+      // int RKDEBUG=1;  /* set to 1 to turn  on output in all these log functions */
+      int RKDEBUG=0;     /* set to 0 to turn off output in all these log functions */
 
 
 <a name="contributing"/>
