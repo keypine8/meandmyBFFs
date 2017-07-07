@@ -40,7 +40,7 @@
 #import "MAMB09_homeTableViewController.h"
 #import "MAMB09_selectReportsTableViewController.h"
 #import "rkdebug_externs.h"
-#import "MAMB09AppDelegate.h"   // to get globals    bbb ccc eee fff ggg
+#import "MAMB09AppDelegate.h"   // to get globals    bbb ccc eee fff ggg hhh
 #import "mamblib.h"
 
 
@@ -1045,11 +1045,6 @@ nbn(15);
 
 
 
-
-
-
-
-
 //    MAMB09AppDelegate *myappDelegate=[[UIApplication sharedApplication] delegate]; // to access global method myappDelegate in appDelegate.m
 
 
@@ -1207,7 +1202,6 @@ tn();trn(" HOME   AFTER read data files (2)  with regular names into arrays // a
     //
     NSInteger myCorruptDataErrNum;
     do {
-
 
         myCorruptDataErrNum =  [myappDelegate mambCheckForCorruptData ];  //  < --------------------------------------
 
@@ -1423,7 +1417,7 @@ tn();trn(" HOME   AFTER read data files (2)  with regular names into arrays // a
 
 
 
-//trn("hey");    // ONE TIME TEST
+trn("hey");    // ONE TIME TEST
 //  NSLog(@"gbl_recOfAllPeopleIhaveAdded =[%@]",gbl_recOfAllPeopleIhaveAdded );
 //    [gbl_arrayGrp   addObject: gbl_recOfAllPeopleIhaveAdded ];  // for text <.>  add all people    TODO  
 //    [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription: (NSString *) @"group" ]; // sort array by name  // for text <.>  add all people    TODO  
@@ -3452,31 +3446,35 @@ tn();
   NSLog(@"in HOME  didSelectRowAtIndexPath ");
   NSLog(@"gbl_colorHomeBG=[%@]",gbl_colorHomeBG);
 
-
-    // in yellow edit mode, for groups mode    row=0, "#allpeople"  is not editable
-    //
-    if (    [gbl_homeUseMODE            isEqualToString: @"edit mode" ]
-         && [gbl_fromHomeCurrentEntity  isEqualToString: @"group"     ] 
-         && indexPath.row               == 0                            )
-    {
-        // put up dialogue   cannot edit group  #allpeople
-        //
-        UIAlertController* alert = [UIAlertController alertControllerWithTitle: @"Cannot Edit #allpeople"
-//                                                                       message: @"The app automatically maintains it."
-                                                                       message: @"The app automatically maintains that Group."
-                                                                preferredStyle: UIAlertControllerStyleAlert  ];
-         
-        UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
-                                                            style: UIAlertActionStyleDefault
-                                                          handler: ^(UIAlertAction * action) {
-            NSLog(@"Ok button pressed");
-        } ];
-         
-        [alert addAction:  okButton];
-
-        [self presentViewController: alert  animated: YES  completion: nil   ];
-        
-    }
+// 20170707  cannot change is in add/change .m
+//
+//    // in yellow edit mode, for groups mode    row=0, "#allpeople"  is not editable
+//    //
+//    if (    [gbl_homeUseMODE            isEqualToString: @"edit mode" ]
+//         && [gbl_fromHomeCurrentEntity  isEqualToString: @"group"     ] 
+//         && indexPath.row               == 0                            )
+//    {
+//nbn(14);
+//        // put up dialogue   cannot edit group  #allpeople
+//        //
+//        UIAlertController* alert = [UIAlertController alertControllerWithTitle: @"Cannot Edit #allpeople"
+////                                                                       message: @"The app automatically maintains it."
+//                                                                       message: @"The app automatically maintains that Group."
+//                                                                preferredStyle: UIAlertControllerStyleAlert  ];
+//         
+//        UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+//                                                            style: UIAlertActionStyleDefault
+//                                                          handler: ^(UIAlertAction * action) {
+//            NSLog(@"Ok button pressed");
+//        } ];
+//         
+//        [alert addAction:  okButton];
+//
+//        [self presentViewController: alert  animated: YES  completion: nil   ];
+//        
+//    }
+//nbn(15);
+//
 
 //    gbl_mynow = [[[NSDate alloc] init] timeIntervalSince1970];
 //
