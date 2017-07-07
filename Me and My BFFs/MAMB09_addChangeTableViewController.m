@@ -26,7 +26,7 @@
 //
 //
 
-//#include <CoreServices/CoreServices.h>   // these 4 are for  start = mach_absolute_time();  jjj lll mmm nnn
+//#include <CoreServices/CoreServices.h>   // these 4 are for  start = mach_absolute_time();  jjj lll mmm nnn ppp
 //#include <mach/mach.h>
 //#include <mach/mach_time.h>
 //#include <unistd.h>
@@ -2572,6 +2572,19 @@ trn("-------------------------------------------"); tn();
 - (IBAction) onNameInputViewClearButton: (id)sender {
   NSLog(@"in onNameInputViewClearButton!");
 
+nbn(351);
+//if(  gbl_editingChangeNAMEHasOccurred == nil) NSLog(@"gbl_editingChangeNAMEHasOccurred =[nil]");
+//else  NSLog(@"gbl_editingChangeNAMEHasOccurred =[%@]", gbl_editingChangeNAMEHasOccurred );
+NSLog(@"gbl_editingChangeNAMEHasOccurred idxGrpOrPer =%ld", (long)gbl_editingChangeNAMEHasOccurred );
+NSLog(@"gbl_userSpecifiedPersonName                  =[%@]",gbl_userSpecifiedPersonName  );
+NSUInteger mybytes;
+mybytes = [gbl_userSpecifiedPersonName  lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
+NSLog(@"mybytes gbl_userSpecifiedPersonName          =[%i]", mybytes);
+NSLog(@"gbl_userSpecifiedPersonName                  =[%@]",gbl_userSpecifiedPersonName  );
+  NSLog(@"gbl_myname.text                            =[%@]", gbl_myname.text );
+  NSLog(@"gbl_DisplayName                            =[%@]",  gbl_DisplayName);
+
+
     gbl_userSpecifiedPersonName = @"";  // final value in "new person" screen
 
     // in didEnd
@@ -2611,6 +2624,17 @@ trn("-------------------------------------------"); tn();
 //                                                                      alpha: 1.0         ] ;
 
     });
+
+nbn(352);
+//if(  gbl_editingChangeNAMEHasOccurred == nil) NSLog(@"gbl_editingChangeNAMEHasOccurred =[nil]");
+//else  NSLog(@"gbl_editingChangeNAMEHasOccurred =[%@]", gbl_editingChangeNAMEHasOccurred );
+NSLog(@"gbl_editingChangeNAMEHasOccurred idxGrpOrPer =%ld", (long)gbl_editingChangeNAMEHasOccurred );
+NSLog(@"gbl_userSpecifiedPersonName                  =[%@]",gbl_userSpecifiedPersonName  );
+mybytes = [gbl_userSpecifiedPersonName  lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
+NSLog(@"mybytes gbl_userSpecifiedPersonName          =[%i]", mybytes);
+NSLog(@"gbl_userSpecifiedPersonName                  =[%@]",gbl_userSpecifiedPersonName  );
+  NSLog(@"gbl_myname.text                            =[%@]", gbl_myname.text );
+  NSLog(@"gbl_DisplayName                            =[%@]",  gbl_DisplayName);
 
 
 } // end of onNameInputViewClearButton
@@ -3174,60 +3198,103 @@ NSLog(@"end of  oncityInputViewKeyboardButton!"); tn();
 nbn(610); 
 NSLog(@"qq gbl_fromHomeCurrentSelectionType               =[%@]",gbl_fromHomeCurrentSelectionType);
 NSLog(@"qq gbl_fromHomeCurrentEntityName                  =[%@]",gbl_fromHomeCurrentEntityName);
+NSLog(@"gbl_fromHomeCurrentEntityName =[%@]", gbl_fromHomeCurrentEntityName );
+NSLog(@"gbl_fromHomeCurrentSelectionPSV =[%@]",  gbl_fromHomeCurrentSelectionPSV);
+  NSLog(@"gbl_lastSelectedPerson             = [%@]",gbl_lastSelectedPerson);
+  NSLog(@"gbl_lastSelectedPersonBeforeChange = [%@]",gbl_lastSelectedPersonBeforeChange);
+  NSLog(@"gbl_lastSelectedGroup              = [%@]",gbl_lastSelectedGroup);
+  NSLog(@"gbl_lastSelectedGroupBeforeChange  = [%@]",gbl_lastSelectedGroupBeforeChange);
+
+
 
 [self disp_gblsWithLabel: @"pressedSaveDone TOP  (cannot chg example data)" ];
 
 
-    // put "CANNOT EDIT  example   dialogue
-    //
-//    if (
-//         (   [gbl_fromHomeCurrentSelectionType isEqualToString: @"group" ]
-//          && [gbl_fromHomeCurrentEntityName          hasPrefix: @"~"     ]
-//         )
-//         ||
-//         (   [gbl_fromHomeCurrentSelectionType isEqualToString: @"person"]
-//          && [gbl_fromHomeCurrentEntityName          hasPrefix: @"~"     ]
-//         )
-//    ) { }
-
-    if ( [gbl_myname.text  hasPrefix: @"~"] )
+    // do NOT CHECK for "cannot change" if  gbl_homeEditingState = "add"
+    if ( ! [gbl_homeEditingState isEqualToString: @"add" ] )  // do NOT CHECK for "cannot change" if  gbl_homeEditingState = "add"
     {
+
+        if (   [gbl_fromHomeCurrentSelectionType isEqualToString: @"group" ]
+              && [gbl_lastSelectedGroupBeforeChange    hasPrefix: @"#"     ]   )
+        {
+        NSString *noEditMsg1;
+
+            noEditMsg1 = [NSString stringWithFormat: @"\n" 
+            ];
+
+            UIAlertController* myalert = [UIAlertController alertControllerWithTitle: @"Cannot Change #allpeople Group"
+                                                                           message: noEditMsg1 
+                                                                    preferredStyle: UIAlertControllerStyleAlert  ];
+             
+            UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                                style: UIAlertActionStyleDefault
+                                                              handler: ^(UIAlertAction * action) {
+                NSLog(@"Ok button pressed");
+            } ];
+             
+            [myalert addAction:  okButton];
+
+            [self.navigationController presentViewController: myalert  animated: YES  completion: nil ];
+
+            return;
+        }
+
+        // put "CANNOT EDIT  example data  dialogue
+        //
+        if (
+             (   [gbl_fromHomeCurrentSelectionType isEqualToString: @"group" ]
+//          && [gbl_fromHomeCurrentEntityName          hasPrefix: @"~"     ]
+              && [gbl_lastSelectedGroupBeforeChange    hasPrefix: @"~"     ]
+             )
+             ||
+             (   [gbl_fromHomeCurrentSelectionType isEqualToString: @"person"]
+//          && [gbl_fromHomeCurrentEntityName          hasPrefix: @"~"     ]
+//<.>
+              && [gbl_lastSelectedPersonBeforeChange  hasPrefix: @"~"     ]
+             )
+        )
+
+//    if ( [gbl_myname.text  hasPrefix: @"~"] )
+
+        {
 nbn(611); 
-    NSString *noEditMsg;
+        NSString *noEditMsg;
 
-        noEditMsg = [NSString stringWithFormat: @"\n" 
-        ];
+            noEditMsg = [NSString stringWithFormat: @"\n" 
+            ];
 
-        UIAlertController* myalert = [UIAlertController alertControllerWithTitle: @"Cannot Change Example Data"
-                                                                       message: noEditMsg 
-                                                                preferredStyle: UIAlertControllerStyleAlert  ];
-         
-        UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
-                                                            style: UIAlertActionStyleDefault
-                                                          handler: ^(UIAlertAction * action) {
-            NSLog(@"Ok button pressed");
-        } ];
-         
-        [myalert addAction:  okButton];
+            UIAlertController* myalert = [UIAlertController alertControllerWithTitle: @"Cannot Change Example Data"
+                                                                           message: noEditMsg 
+                                                                    preferredStyle: UIAlertControllerStyleAlert  ];
+             
+            UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                                style: UIAlertActionStyleDefault
+                                                              handler: ^(UIAlertAction * action) {
+                NSLog(@"Ok button pressed");
+            } ];
+             
+            [myalert addAction:  okButton];
 
-        [self.navigationController presentViewController: myalert  animated: YES  completion: nil ];
+            [self.navigationController presentViewController: myalert  animated: YES  completion: nil ];
 
 nbn(614);
-//    dispatch_async(dispatch_get_main_queue(), ^{  
-////        [self.navigationController popViewControllerAnimated: YES]; // actually do the "Back" action
-////[self dismissViewControllerAnimated:YES completion:Nil];
-////[self dismissModalViewControllerAnimated:YES];  // deprecated ios 6.0
-//
-//    });
+    //    dispatch_async(dispatch_get_main_queue(), ^{  
+    ////        [self.navigationController popViewControllerAnimated: YES]; // actually do the "Back" action
+    ////[self dismissViewControllerAnimated:YES completion:Nil];
+    ////[self dismissModalViewControllerAnimated:YES];  // deprecated ios 6.0
+    //
+    //    });
 
-//            [self dismissViewControllerAnimated: YES
-//                                     completion:NULL];
+    //            [self dismissViewControllerAnimated: YES
+    //                                     completion:NULL];
 
 
 nbn(615);
-        return;
-    }
+            return;
+        }
 nbn(617);
+
+    } // do NOT CHECK for "cannot change" if  gbl_homeEditingState = "add"
 
 
 
@@ -3245,8 +3312,63 @@ nbn(617);
     if ([gbl_fromHomeCurrentSelectionType isEqualToString: @"group" ] )
     { // group saveDone logic  --------- about 300 lines  --------------------------------------------------------------
 
+
+nbn(341);
+trn("group  savedone");
+//if(  gbl_editingChangeNAMEHasOccurred == nil) NSLog(@"gbl_editingChangeNAMEHasOccurred =[nil]");
+//else  NSLog(@"gbl_editingChangeNAMEHasOccurred =[%@]", gbl_editingChangeNAMEHasOccurred );
+NSLog(@"gbl_editingChangeNAMEHasOccurred idxGrpOrPer =%ld", (long)gbl_editingChangeNAMEHasOccurred );
+NSLog(@"gbl_userSpecifiedPersonName                  =[%@]",gbl_userSpecifiedPersonName  );
+NSUInteger mybytes = [gbl_userSpecifiedPersonName  lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
+NSLog(@"mybytes gbl_userSpecifiedPersonName          =[%i]", mybytes);
+NSLog(@"gbl_userSpecifiedPersonName                  =[%@]",gbl_userSpecifiedPersonName  );
+  NSLog(@"gbl_myname.text                            =[%@]", gbl_myname.text );
+  NSLog(@"gbl_DisplayName                            =[%@]",  gbl_DisplayName);
+
+
+    if (   // if Name field is empty,  put up err msg  can not save   missing information
+//           [gbl_DisplayName  isEqualToString: @"" ]
+//        ||  gbl_DisplayName  == nil 
+           [gbl_myname.text   isEqualToString: @"" ]
+        ||  gbl_myname.text   == nil 
+       )
+    {
+nbn(342);
+
+        NSString *missingMsg =  @"Missing Information: Name";
+       
+        UIAlertController* myAlert = [UIAlertController alertControllerWithTitle: @"Can Not Save"
+                                                                         message: missingMsg
+                                                                  preferredStyle: UIAlertControllerStyleAlert  ];
+         
+        UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                            style: UIAlertActionStyleDefault
+                                                          handler: ^(UIAlertAction * action) {
+                NSLog(@"Ok button pressed");
+            }
+        ];
+         
+        [myAlert addAction:  okButton];
+
+        // cannot save because of missing information > stay in this screen
+        //
+        [self presentViewController: myAlert  animated: YES  completion: nil   ]; // cannot save because of missing information
+
+        return;  // cannot save because of missing information > stay in this screen
+
+    }
+nbn(343);
+
+
+
+//  NSLog(@"gbl_editingChangeNAMEHasOccurred =[%ld]",(long)gbl_editingChangeNAMEHasOccurred );
+
         if (   gbl_editingChangeNAMEHasOccurred == 0 )
         {
+
+
+            return;   // <.> if in change of group name and name has not changed, do not do SAVE or DONE, do nothing
+
             [myappDelegate mamb_beginIgnoringInteractionEvents ];  // XXXXX  BEGIN  ignor #02   grp   do back- no editing changes XXXXXXXXX
   tn();NSLog(@"igx in pressedSaveDone group  editing HAS happened  after beginIgnor  ignoring=[%d]", [[UIApplication sharedApplication] isIgnoringInteractionEvents]);
 
@@ -3570,13 +3692,65 @@ NSLog(@"          POP  VIEW   #6");
     {  // person saveDone logic   =======================================================================================
 
     
+
+nbn(441);
+trn("person savedone");
+//if(  gbl_editingChangeNAMEHasOccurred == nil) NSLog(@"gbl_editingChangeNAMEHasOccurred =[nil]");
+//else  NSLog(@"gbl_editingChangeNAMEHasOccurred =[%@]", gbl_editingChangeNAMEHasOccurred );
+NSLog(@"gbl_editingChangeNAMEHasOccurred idxGrpOrPer =%ld", (long)gbl_editingChangeNAMEHasOccurred );
+NSLog(@"gbl_userSpecifiedPersonName                  =[%@]",gbl_userSpecifiedPersonName  );
+NSUInteger mybytes = [gbl_userSpecifiedPersonName  lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
+NSLog(@"mybytes gbl_userSpecifiedPersonName          =[%i]", mybytes);
+NSLog(@"gbl_userSpecifiedPersonName                  =[%@]",gbl_userSpecifiedPersonName  );
+  NSLog(@"gbl_myname.text                            =[%@]", gbl_myname.text );
+  NSLog(@"gbl_DisplayName                            =[%@]",  gbl_DisplayName);
+
+
+    if (   // if Name field is empty,  put up err msg  can not save   missing information
+//           [gbl_DisplayName  isEqualToString: @"" ]
+//        ||  gbl_DisplayName  == nil 
+           [gbl_myname.text   isEqualToString: @"" ]
+        ||  gbl_myname.text   == nil 
+       )
+    {
+nbn(442);
+
+        NSString *missingMsg =  @"Missing Information: Name";
+       
+        UIAlertController* myAlert = [UIAlertController alertControllerWithTitle: @"Can Not Save"
+                                                                         message: missingMsg
+                                                                  preferredStyle: UIAlertControllerStyleAlert  ];
+         
+        UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+                                                            style: UIAlertActionStyleDefault
+                                                          handler: ^(UIAlertAction * action) {
+                NSLog(@"Ok button pressed");
+            }
+        ];
+         
+        [myAlert addAction:  okButton];
+
+        // cannot save because of missing information > stay in this screen
+        //
+        [self presentViewController: myAlert  animated: YES  completion: nil   ]; // cannot save because of missing information
+
+        return;  // cannot save because of missing information > stay in this screen
+
+    }
+nbn(443);
+
+
         if (   gbl_editingChangeNAMEHasOccurred == 0
             && gbl_editingChangeCITYHasOccurred == 0
             && gbl_editingChangeDATEHasOccurred == 0
         ) {
             // here editing changes have NOT happened
-  NSLog(@" // 222b actually do the BACK action  when Done hit and there are no editing changes");
 
+            return;  //  no response on hit Save   if all are blank
+
+
+  NSLog(@" // 222b actually do the BACK action  when Done hit and there are no editing changes");
+            
 
             [myappDelegate mamb_beginIgnoringInteractionEvents ];  // XXXXX  BEGIN  ignor #05   per  do back- no edit changes  XXXXXXXXXXXXXXXX
   tn();NSLog(@"igx in pressedSaveDone person  in no editing changes BEGIN ignoring=[%d]", [[UIApplication sharedApplication] isIgnoringInteractionEvents]);
@@ -3597,7 +3771,10 @@ NSLog(@"          POP  VIEW   #6");
 //                [self.navigationController popToRootViewControllerAnimated: YES]; // pop to root view controller (actually do the "Back" action)
                 [self.navigationController popViewControllerAnimated: YES]; // actually do the "Back" action
             });
-        }
+
+        } // here editing changes have NOT happened
+
+
 
         if (   gbl_editingChangeNAMEHasOccurred == 1
             || gbl_editingChangeCITYHasOccurred == 1
@@ -3688,12 +3865,36 @@ NSLog(@"          POP  VIEW   #6");
                 missing_name = 0;   missing_city = 0;    missing_date = 0;
                   namePrompt = @"";   cityPrompt = @"";    datePrompt = @"";
 
-                if (   [gbl_userSpecifiedPersonName  isEqualToString: @"" ]
-                    ||  gbl_userSpecifiedPersonName  == nil  
+nbn(558);
+//if(  gbl_editingChangeNAMEHasOccurred == nil) NSLog(@"gbl_editingChangeNAMEHasOccurred =[nil]");
+//else  NSLog(@"gbl_editingChangeNAMEHasOccurred =[%@]", gbl_editingChangeNAMEHasOccurred );
+NSLog(@"gbl_editingChangeNAMEHasOccurred idxGrpOrPer =%ld", (long)gbl_editingChangeNAMEHasOccurred );
+NSLog(@"gbl_userSpecifiedPersonName                  =[%@]",gbl_userSpecifiedPersonName  );
+NSUInteger mybytes = [gbl_userSpecifiedPersonName  lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
+NSLog(@"mybytes gbl_userSpecifiedPersonName          =[%i]", mybytes);
+NSLog(@"gbl_userSpecifiedPersonName                  =[%@]",gbl_userSpecifiedPersonName  );
+  NSLog(@"gbl_myname.text                            =[%@]", gbl_myname.text );
+  NSLog(@"gbl_DisplayName                            =[%@]",  gbl_DisplayName);
+
+
+//                if ( 
+//                       [gbl_userSpecifiedPersonName  isEqualToString: @"" ]
+//                    ||  gbl_userSpecifiedPersonName  == nil  
+//                    || [gbl_DisplayName  isEqualToString: @"" ]
+//                    ||  mybytes  == 0  
+//                    ||  gbl_editingChangeNAMEHasOccurred == nil  
+//                    ||  gbl_editingChangeNAMEHasOccurred == 0  
+//                   )
+//
+                if ( 
+                       [gbl_DisplayName  isEqualToString: @"" ]
+                    ||  gbl_DisplayName  == nil 
                    )
                 {
+nbn(559);
                     missing_name = 1;
                 }
+nbn(560);
 
 //                if (   [gbl_userSpecifiedCity        isEqualToString: @"" ]
 //                    ||  gbl_userSpecifiedCity        == nil                
@@ -5168,6 +5369,10 @@ NSLog(@"=gbl_myCitySoFar %@",gbl_myCitySoFar );
 
                 if (gbl_CITY_NOT_FOUND == YES) {
 
+tn();
+NSLog(@"gbl_myCitySoFar=[%@]",gbl_myCitySoFar );
+kin(gbl_CITY_NOT_FOUND );
+
                     myNotFoundMsg = [NSString stringWithFormat:@"starting with \"%@\"", gbl_myCitySoFar ];
 
 //                    UIAlertView *alert = [[UIAlertView alloc]
@@ -5434,6 +5639,7 @@ NSLog(@"after remove last char (bad char) gbl_myCitySoFar=[%@]",gbl_myCitySoFar 
 
         if (gbl_CITY_NOT_FOUND == YES) {
 
+  NSLog(@"\n  CITY NOT FOUND DIALOGUE  Start");
 
 
             myNotFoundMsg = [NSString stringWithFormat:@"starting with \"%@\"", gbl_myCitySoFar ];
@@ -5476,6 +5682,7 @@ NSLog(@"after remove last char (bad char) gbl_myCitySoFar=[%@]",gbl_myCitySoFar 
 
 NSLog(@"after remove last char (not found) gbl_myCitySoFar=[%@]",gbl_myCitySoFar );
 
+  NSLog(@"\n   CITY NOT FOUND DIALOGUE  end\n");
             return NO;
         }
 
@@ -7027,6 +7234,7 @@ trn("bin_find_first_city  IN showCityProvCountryForTypedInCity ");
     );
 kin(idx_into_placetab);
 kin(num_PSVs_found);
+tn();
 
     if (       idx_into_placetab == -1) {  // city not found beginning with string  arg_citySoFar  
 
