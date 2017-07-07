@@ -1,4 +1,3 @@
-
 //
 //  MAMB09_info_TableViewController.m
 //  Me&myBFFs
@@ -30,7 +29,7 @@
 #import "MAMB09_info_TableViewController.h"
 #import "MAMB09_viewHTMLViewController.h"
 #import "mamblib.h"
-#import "MAMB09AppDelegate.h"   // to get globals   ppp  rrr  sss ttt uuu vvv www xxx yyy
+#import "MAMB09AppDelegate.h"   // to get globals   ppp  rrr  sss ttt uuu vvv www xxx yyy zzz
 
 @interface MAMB09_info_TableViewController ()
 
@@ -1071,7 +1070,55 @@ nbn(88);
             });
             return cell;
         }
+
         if (indexPath.row == 13) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myFontForText;
+                cell.backgroundColor         = gbl_color_cBgr;
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.text          = nil;
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+            });
+            return cell;
+        }
+        if (indexPath.row == 14) {
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== title for only 1 year
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myTitleFont;
+                cell.backgroundColor         = gbl_color_cHed;
+                cell.textLabel.numberOfLines = 0;
+//                cell.textLabel.text          = @"The 1 to 99 Score for the Whole Year";
+                cell.textLabel.text          = @"See Only 1 Year into the Future";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+            });
+            return cell;
+        }
+        if (indexPath.row == 15) {
+
+            dispatch_async(dispatch_get_main_queue(), ^{                                // <=== text  for only 1 year
+                cell.textLabel.textColor     = [UIColor blackColor];
+                cell.userInteractionEnabled  = NO;
+                cell.textLabel.font          = myFontForText;
+                cell.backgroundColor         = gbl_color_cBgr;
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.text          =
+@"In order to avoid too much concern about the far future, the app only lets you see as far as the current calendar year plus all of the next calendar year.\n\nSo, on Jan 1, you can see all of that new year plus all of the next calendar year.";
+                cell.imageView.image         = nil;  // MUST be here to avoid old images being put in  on cell  re-draw
+                cell.backgroundView          = nil ;
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+            });
+            return cell;
+        }
+
+
+        if (indexPath.row == 16) {
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
@@ -1086,7 +1133,7 @@ nbn(88);
             });
             return cell;
         }
-        if (indexPath.row == 14) {                            // <=== overcome destiny image
+        if (indexPath.row == 17) {                            // <=== overcome destiny image
             dispatch_async(dispatch_get_main_queue(), ^{                                // <===  
                 cell.textLabel.textColor     = [UIColor blackColor]; // black textcolor HAS TO BE FIRST, then cell.userInteractionEnabled = NO;
                 cell.userInteractionEnabled  = NO;                   // black textcolor HAS TO BE FIRST, then cell.userInteractionEnabled = NO;
@@ -1108,7 +1155,7 @@ nbn(88);
             });
             return cell;
         }
-        if (indexPath.row == 15) {
+        if (indexPath.row == 18) {
             dispatch_async(dispatch_get_main_queue(), ^{                                // <=== space 
                 cell.textLabel.textColor     = [UIColor blackColor];
                 cell.userInteractionEnabled  = NO;
@@ -1123,7 +1170,7 @@ nbn(88);
             });
             return cell;
         }
-        if (indexPath.row == 16) {                           // <=== disclaimer 
+        if (indexPath.row == 19) {                           // <=== disclaimer 
             dispatch_async(dispatch_get_main_queue(), ^{  
 //                cell.textLabel.textColor     = [UIColor blackColor];
                 cell.textLabel.textColor     = [UIColor redColor]; 
@@ -3414,7 +3461,8 @@ cell.textLabel.text          = @"The \"Closeness\" category is useful because it
 
             NSAttributedString *myAttributedStr = [[NSAttributedString alloc]
                 initWithString:
-@"\u2022 Tap the group you want to add members to.\n\u2022 Tap the green \"+\".\n\u2022 Tap all the people you want to add.\n\u2022 You can Cancel out here if you want.\n\u2022 Tap \"Done\".\n\u2022 You can see the new people appearing in the group."
+//@"\u2022 Tap the group you want to add members to.\n\u2022 Tap the green \"+\".\n\u2022 Tap all the people you want to add.\n\u2022 You can Cancel out here if you want.\n\u2022 Tap \"Done\".\n\u2022 You can see the new people appearing in the group."
+@"\u2022 Tap the group you want to add members to.  \n\u2022 Tap \"Members\" at the bottom of the screen.  \n\u2022 Tap the green \"+\".\n\u2022 Tap all the people you want to add.\n\u2022 You can Cancel out here if you want.\n\u2022 Tap \"Done\".\n\u2022 You can see the new people appearing in the group."
                     attributes: @{ NSParagraphStyleAttributeName: paragraphStyle }
             ];
 
@@ -3482,7 +3530,10 @@ cell.textLabel.text          = @"The \"Closeness\" category is useful because it
 
             NSAttributedString *myAttributedStr = [[NSAttributedString alloc]
                 initWithString:
-@"\u2022 Tap the group you want to delete members from.\n\u2022 Tap the red \"-\".\n\u2022 Tap all the people you want to delete.\n\u2022 Tap \"Done\".\n\u2022 You can see the selected people disappearing from the group.\n\u2022 There is no undelete."
+//@"\u2022 Tap the group you want to delete members from.\n\u2022 Tap the red \"-\".\n\u2022 Tap all the people you want to delete.\n\u2022 Tap \"Done\".\n\u2022 You can see the selected people disappearing from the group.\n\u2022 There is no undelete."
+@"\u2022 Tap the group you want to delete members from.  \n\u2022 Tap \"Members\" at the bottom of the screen.\n\u2022 Tap the red \"-\".\n\u2022 Tap all the people you want to delete.\n\u2022 Tap \"Done\".\n\u2022 You can see the selected people disappearing from the group.\n\u2022 There is no undelete."
+
+
                     attributes: @{ NSParagraphStyleAttributeName: paragraphStyle }
             ];
 
@@ -4449,7 +4500,8 @@ cell.textLabel.text          = @"The \"Closeness\" category is useful because it
     if ([gbl_helpScreenDescription isEqualToString: @"best match"   ] ) { return 15; }  
     if ([gbl_helpScreenDescription isEqualToString: @"what color"   ] ) { return  7; }
     if ([gbl_helpScreenDescription isEqualToString: @"just 2"       ] ) { return 23; }  // compatibility just 2 people
-    if ([gbl_helpScreenDescription isEqualToString: @"calendar year"] ) { return 17; } 
+//    if ([gbl_helpScreenDescription isEqualToString: @"calendar year"] ) { return 17; } 
+    if ([gbl_helpScreenDescription isEqualToString: @"calendar year"] ) { return 20; } 
     if ([gbl_helpScreenDescription isEqualToString: @"best year"    ] ) { return  7; } 
     if ([gbl_helpScreenDescription isEqualToString: @"best day"     ] ) { return  7; } 
     if ([gbl_helpScreenDescription isEqualToString: @"HOME"         ] ) { return 20; } 
@@ -4496,8 +4548,7 @@ cell.textLabel.text          = @"The \"Closeness\" category is useful because it
 
         if (indexPath.row ==  15) return    16.0;  // spacer
         if (indexPath.row ==  16) return    30.0;  // title for delete person
-//        if (indexPath.row ==  17) return   135.0;  // text  for delete person
-        if (indexPath.row ==  17) return   110.0;  // text  for delete person
+        if (indexPath.row ==  17) return   135.0;  // text  for delete person
 
         if (indexPath.row ==  18) return    12.0;  // spacer
         if (indexPath.row ==  19) return    30.0;  // text for disclaimer
@@ -4655,12 +4706,16 @@ cell.textLabel.text          = @"The \"Closeness\" category is useful because it
         if (indexPath.row ==  11) return    30.0;  // title for Score for the Year
         if (indexPath.row ==  12) return   175.0;  // text  for Score for the Year
         if (indexPath.row ==  13) return     8.0;  // spacer
+        if (indexPath.row ==  14) return    30.0;  // title for only 1 year
+        if (indexPath.row ==  15) return   110.0;  // text  for only 1 year
+        if (indexPath.row ==  16) return     8.0;  // spacer
 
-        if (indexPath.row ==  14) return    75.0;  // image for overcome destiny
+
+        if (indexPath.row ==  17) return    75.0;  // image for overcome destiny
 //        if (indexPath.row ==  12) return    75.0;  // image for overcome destiny
 
-        if (indexPath.row ==  15) return     8.0;  // spacer
-        if (indexPath.row ==  16) return    20.0;  // text for disclaimer
+        if (indexPath.row ==  18) return     8.0;  // spacer
+        if (indexPath.row ==  19) return    20.0;  // text for disclaimer
         return 40;
     }
     if (   [gbl_helpScreenDescription isEqualToString: @"just 2"]  ) {
