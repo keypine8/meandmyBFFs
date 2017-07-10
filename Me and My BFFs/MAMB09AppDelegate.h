@@ -28,7 +28,7 @@
 #import <UIKit/UIKit.h>
 #import "MAMB09_UITextField_noCopyPaste.h"
 
-NSString *gbl_dayOfWeek_3;  // "Mon" etc.  for sel date    aaa
+NSString *gbl_dayOfWeek_3;  // "Mon" etc.  for sel date    aaa  bbb 
 
 //NSInteger gbl_haveEnteredGestureRecognizerShouldBegin;
 
@@ -48,7 +48,8 @@ UIBarButtonItem *gbl_goToReportButton;  // for sel year and sel date
 UIBarButtonItem *gbl_icon_UIBarButtonItem ;       // HOME NavBar button
 
 
-
+NSString *gbl_fileName_hombyr_HTML;    // for fix to email of homgby  report  (filename for email subject)
+NSString *gbl_pathTo_grpall_HTMLdata;  // for fix to email of homgby  report  (filename for email subject)
 
 //  CURRENT DATE VARS
 //
