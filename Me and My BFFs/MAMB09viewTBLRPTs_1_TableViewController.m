@@ -29,7 +29,7 @@
 #import "MAMB09viewTBLRPTs_1_TableViewController.h"
 #import "MAMB09_viewHTMLViewController.h"
 #import "mamblib.h"
-#import "MAMB09AppDelegate.h"   // to get globals   hhh
+#import "MAMB09AppDelegate.h"   // to get globals   hhh iii
 
 
 @interface MAMB09viewTBLRPTs_1_TableViewController ()
@@ -396,7 +396,12 @@ tn();
 
         Ohtml_file_name_browser = [NSString stringWithUTF8String: html_file_name_browser ];
 //  NSLog(@"Ohtml_file_name_browser =[%@]",Ohtml_file_name_browser );
+
         OpathToHTML_browser     = [NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_browser];
+  NSLog(@"OpathToHTML_browser      =[%@]", OpathToHTML_browser      );
+        gbl_pathTo_grpall_HTMLdata = OpathToHTML_browser;
+  NSLog(@"gbl_pathTo_grpall_HTMLdata  =[%@]",  gbl_pathTo_grpall_HTMLdata );
+
         pathToHTML_browser      = (char *) [OpathToHTML_browser cStringUsingEncoding:NSUTF8StringEncoding];
         
 //        Ohtml_file_name_webview = [NSString stringWithUTF8String:html_file_name_webview ];
@@ -407,13 +412,15 @@ tn();
 //
         
         gbl_pathToFileToBeEmailed = OpathToHTML_browser;
-        
+NSLog(@"gbl_pathToFileToBeEmailed_qx_01=%@",gbl_pathToFileToBeEmailed);
+
+ 
         // remove all "*.html" files from TMP directory before creating new one
         //
         tmpDirFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:NSTemporaryDirectory() error:NULL];
         NSLog(@"tmpDirFiles.count=%lu",(unsigned long)tmpDirFiles.count);
         for (NSString *fil in tmpDirFiles) {
-            NSLog(@"REMOVED THIS fil=%@",fil);
+            NSLog(@"REMOVED THIS fil=[%@]  in VIewDidLoad    AT TOP",fil);
             if ([fil hasSuffix: @"html"]) {
                 [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), fil] error:NULL];
             }
@@ -555,7 +562,7 @@ tn();
 
 
 if (gbl_progress1 != nil) 
-//  NSLog(@"gbl_progress1.hidden =[%d]",gbl_progress1.hidden );
+  NSLog(@"gbl_progress1.hidden =[%d]",gbl_progress1.hidden );
                 // IF  we came here to do "homgby"
                 // and if (gbl_numMembersInCurrentGroup > gbl_numMembersToTriggerSpinner )
                 // that means the spinner is still animating here.
@@ -3782,7 +3789,7 @@ kin((int)gbl_numLeadingSpacesToRemove );
 //NSLog(@"myNewCellTextShort A =[%@]",myNewCellTextShort     );
 
             // short line, on left end, 
-            // remove leading spaces which do not constitute part of space for rank number (
+            // remove leading spaces which do not constitute part of space for rank number 
             //
             int mylen1 = (int)myNewCellTextShort.length;
 
@@ -4101,13 +4108,13 @@ kin((int)gbl_numLeadingSpacesToRemove );
 //            else  if (gbl_numPairsRanked  <  100000) numCharsForRankNumsOnLeft =    5;  // max ~ 30,000
 //kin((int)numCharsForRankNumsOnLeft );
 
-NSLog(@"gbl_numMembersInCurrentGroup  nxn =%ld",gbl_numMembersInCurrentGroup  );
+//NSLog(@"gbl_numMembersInCurrentGroup  nxn =%ld",gbl_numMembersInCurrentGroup  );
             if       (gbl_numMembersInCurrentGroup  <      10) numCharsForRankNumsOnLeft =    1;
             else  if (gbl_numMembersInCurrentGroup  <     100) numCharsForRankNumsOnLeft =    2;
             else  if (gbl_numMembersInCurrentGroup  <    1000) numCharsForRankNumsOnLeft =    3;
             else  if (gbl_numMembersInCurrentGroup  <   10000) numCharsForRankNumsOnLeft =    4;
             else  if (gbl_numMembersInCurrentGroup  <  100000) numCharsForRankNumsOnLeft =    5;  // max ~ 30,000
-NSLog(@"numCharsForRankNumsOnLeft     nxn =%ld",numCharsForRankNumsOnLeft );
+//NSLog(@"numCharsForRankNumsOnLeft     nxn =%ld",numCharsForRankNumsOnLeft );
 
 
 
@@ -4470,26 +4477,27 @@ NSLog(@"numCharsForRankNumsOnLeft     nxn =%ld",numCharsForRankNumsOnLeft );
             //
             NSString *myNewCellTextShort; 
             myNewCellTextShort = [myOriginalCellText substringWithRange:NSMakeRange(0, myOriginalCellTextLen - 1)]; // zero-based
-NSLog(@"myNewCellTextShort A =[%@]",myNewCellTextShort     );
+b(55);
+//NSLog(@"myNewCellTextShort A =[%@]",myNewCellTextShort     );
 
             // short line, on left end, 
             // remove leading spaces which do not constitute part of space for rank number 
             //
             int mylen1 = (int)myNewCellTextShort.length;
 
-kin(mylen1);
+//kin(mylen1);
 
             // set  gbl_numLeadingSpacesToRemove
             // 
             gbl_numLeadingSpacesToRemove = 1;
-NSLog(@"=gbl_numLeadingSpacesToRemove = [%ld]",(long)gbl_numLeadingSpacesToRemove);
+//NSLog(@"=gbl_numLeadingSpacesToRemove = [%ld]",(long)gbl_numLeadingSpacesToRemove);
 
             myNewCellText  = [myNewCellTextShort substringWithRange:
                 NSMakeRange(gbl_numLeadingSpacesToRemove, mylen1 - gbl_numLeadingSpacesToRemove)]; // zero-based
 
             lcl_myNewCellText = myNewCellText;
 //  NSLog(@"lcl_myNewCellText 1 =[%@]",lcl_myNewCellText );
-  NSLog(@"myNewCellText=[%@]",myNewCellText);
+//  NSLog(@"myNewCellText=[%@]",myNewCellText);
 
 //trn(" end of  // shorter data line");
         }   // end shorter data line
@@ -6044,7 +6052,7 @@ NSLog(@"gbl_TBLRPTS1_saveSelectedIndexPath.row=%ld",(long)gbl_TBLRPTS1_saveSelec
 //          ||  [gbl_currentMenuPlusReportCode isEqualToString: @"gbm1bm"]  // My Best Match in Group ...  see tblrps_2 view
 //          ||  [gbl_currentMenuPlusReportCode isEqualToString: @"gbm2bm"]  // My Best Match in Group ...  see tblrps_2 view
 //          ||  [gbl_currentMenuPlusReportCode isEqualToString: @"pbm2bm"]  // My Best Match in Group ...  see tblrps_2 view
-//        if (   [gbl_currentMenuPlusReportCode isEqualToString: @"hompbm" ]  // My Best Match in Group ...
+//        if    [gbl_currentMenuPlusReportCode isEqualToString: @"hompbm" ]  // My Best Match in Group ...
 //            || [gbl_currentMenuPlusReportCode isEqualToString: @"homgbm" ]  //    Best Match in Group ...
 //            || [gbl_currentMenuPlusReportCode       hasPrefix: @"pbm"    ]
 //            || [gbl_currentMenuPlusReportCode       hasPrefix: @"gbm"    ]
@@ -6166,13 +6174,16 @@ b(233);
 
 //                self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: mySpacerForTitle];
 //                self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: shareButton];
-                if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgby"]) {
-b(234);
-                  // DO NOT add the share button  (cannot get mail  to work for it - HTML file length = 0)
-                } else {
+
+//                  // DO NOT add the share button  (cannot get mail  to work for it - HTML file length = 0)
+//                if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgby"]) {
+//b(234);
+//                } else {
+//                }
+
+
                   // add the share button
                   self.navigationItem.rightBarButtonItems = [self.navigationItem.rightBarButtonItems arrayByAddingObject: shareButton];
-                }
 
 
 
@@ -6322,6 +6333,7 @@ b(234);
 //        gbl_URLtoHTML_forWebview            
 
             gbl_pathToFileToBeEmailed = OpathToHTML_browser;
+NSLog(@"gbl_pathToFileToBeEmailed_qx_02=%@",gbl_pathToFileToBeEmailed);
             
             // remove all "*.html" files from TMP directory before creating new one
             //
@@ -6529,6 +6541,7 @@ b(234);
         //ksn(pathToHTML_browser);
         
         gbl_pathToFileToBeEmailed = OpathToHTML_browser;
+NSLog(@"gbl_pathToFileToBeEmailed_qx_03=%@",gbl_pathToFileToBeEmailed);
 
 
         // remove all "*.html" files from TMP directory before creating new one
@@ -6924,6 +6937,7 @@ tn();trn("in REPORT  all BEST MATCH ... reports !");
 //
         
         gbl_pathToFileToBeEmailed = OpathToHTML_browser;
+NSLog(@"gbl_pathToFileToBeEmailed_qx_04=%@",gbl_pathToFileToBeEmailed);
         
         // remove all "*.html" files from TMP directory before creating new one
         //
@@ -7425,7 +7439,32 @@ trn(" // END of   all BEST MATCH ... reports  ====");
 
             if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgby"]) {
                 strcpy(trait_name_for_C_call, "best year");
-                sprintf(html_file_name_browser, "%sgrpbyr_%s.html", PREFIX_HTML_FILENAME, group_name_for_filename);
+
+
+
+
+//    const char *arg_cityBeginsWith_CONST;                                                  // NSString object arg_citySoFar  to C str
+//    char        arg_cityBeginsWith[128];                                                   // NSString object to C str
+//    arg_cityBeginsWith_CONST = [arg_citySoFar  cStringUsingEncoding:NSUTF8StringEncoding]; // NSString object to C str
+//    strcpy(arg_cityBeginsWith, arg_cityBeginsWith_CONST);                                  // NSString object to C str  // because of const
+//ksn(arg_cityBeginsWith);
+
+nbn(780);
+    const char *lastSelYearCONST;                                                  // NSString object arg_citySoFar  to C str
+    char        lastSelYear[128];                                                   // NSString object to C str
+    lastSelYearCONST = [gbl_lastSelectedYear cStringUsingEncoding:NSUTF8StringEncoding]; // NSString object to C str
+    strcpy(lastSelYear, lastSelYearCONST);                                  // NSString object to C str  // because of const
+ksn(lastSelYear);
+
+                sprintf(html_file_name_browser, "%sgrpbyr_%s_%s.html", PREFIX_HTML_FILENAME,
+                    group_name_for_filename,
+                    lastSelYear
+                );
+                NSString *tmpSTRING1 = [NSString stringWithUTF8String: html_file_name_browser ];
+                gbl_fileName_hombyr_HTML = tmpSTRING1 ;
+  NSLog(@"gbl_fileName_hombyr_HTML  =[%@]", gbl_fileName_hombyr_HTML  );
+//<.>
+
             }
 
             if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgbd"]) {
@@ -7458,6 +7497,7 @@ trn(" // END of   all BEST MATCH ... reports  ====");
 //            URLtoHTML_forWebview = [NSURL fileURLWithPath: [NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_webview]];
     
             gbl_pathToFileToBeEmailed = OpathToHTML_browser;
+NSLog(@"gbl_pathToFileToBeEmailed_qx_05=%@",gbl_pathToFileToBeEmailed);
 
 
 //        tn();trn("2 HTMLs !!!!!!!!!!!!!!!!!!!!");
@@ -7482,12 +7522,99 @@ NSLog(@"gbl_pathToFileToBeEmailed=%@",gbl_pathToFileToBeEmailed);
         tmpDirFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:NSTemporaryDirectory() error:NULL];
         NSLog(@"tmpDirFiles.count=%lu",(unsigned long)tmpDirFiles.count);
         for (NSString *fil in tmpDirFiles) {
-            NSLog(@"REMOVED THIS fil=%@",fil);
-            if ([fil hasSuffix: @"html"]) {
-                [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), fil] error:NULL];
-            }
-        }
 
+
+
+NSLog(@"gbl_currentMenuPlusReportCode  =[%@]", gbl_currentMenuPlusReportCode  );
+
+
+
+nbn(260);
+    NSString *pathTo_fil;
+            pathTo_fil = [NSTemporaryDirectory() stringByAppendingPathComponent: fil];
+NSLog(@"pathTo_fil  =[%@]", pathTo_fil  );
+
+
+    NSData *HTMLfileData5= [NSData dataWithContentsOfFile: pathTo_fil ];
+    NSData *HTMLfileData6= [NSData dataWithContentsOfFile: gbl_pathToFileToBeEmailed ];
+
+NSLog(@"fil                       =[%@]", fil);
+NSLog(@"fil.length                =%lu",(unsigned long)HTMLfileData5.length);
+NSLog(@"gbl_pathToFileToBeEmailed =[%@]", gbl_pathToFileToBeEmailed );
+NSLog(@"pathtobe emailed.length   =%lu",(unsigned long)HTMLfileData6.length);
+
+            // no delete if  homgby
+            //
+  NSLog(@"gbl_currentMenuPlusReportCode =[%@]", gbl_currentMenuPlusReportCode );
+
+            if (  !  [gbl_currentMenuPlusReportCode isEqualToString: @"homgby"] )    // group Best year rpt
+            {
+nbn(261);
+                if ([fil hasSuffix: @"html"]) {
+                    [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), fil] error:NULL];
+nbn(262);
+
+
+NSLog(@"REMOVED THIS fil=[%@]  in ViewWillAppear    in  ALL  MOST and BEST  group reports   ",fil);
+                }
+nbn(263);
+            }  // remove 
+nbn(264);
+
+
+//            // fix share for homgby    // group Best year rpt
+//            //
+//            // here we have this
+//            //  (path to be emailed does  not have right data -  "fil" does)
+////gbl_currentMenuPlusReportCode  =[homgby]
+////pathTo_fil  =[/private/var/mobile/Containers/Data/Application/ED7CFB5D-4FC3-4F39-BFC2-C6F8481E05CB/tmp/m_grpall_~My_Family.html]
+////fil                       =[m_grpall_~My_Family.html]
+////fil.length                =9669
+////gbl_pathToFileToBeEmailed =[/private/var/mobile/Containers/Data/Application/ED7CFB5D-4FC3-4F39-BFC2-C6F8481E05CB/tmp/m_grpbyr_~My_Family.html]
+////pathtobe emailed.length   =0
+////
+//            // so, do this
+//            // 
+//nbn(271);
+//            if (     [gbl_currentMenuPlusReportCode isEqualToString: @"homgby"] )    // group Best year rpt
+//            {
+//nbn(272);
+//                [[NSFileManager defaultManager] removeItemAtPath: pathTo_fil
+//                                                           error: NULL];
+//
+////                [[NSFileManager defaultManager] moveItemAtURL: pathTo_fil
+////                                                           error: NULL];
+////                 [filemgr moveItemAtURL: oldPath toURL: newPath error: nil];
+//
+//nbn(273);
+//                if ([ [NSFileManager defaultManager] copyItemAtPath: pathTo_fil
+//                                                           toPath: gbl_pathToFileToBeEmailed
+//                                                            error: NULL                     
+//                    ]  == YES)
+//                {
+//                        NSLog (@"Copy gby successful");
+//                } else {
+//                        NSLog (@"Copy gby failed");
+//                }
+//
+//nbn(274);
+//            }
+//nbn(275);
+//
+//
+nbn(265);
+//            if (    [gbl_currentMenuPlusReportCode isEqualToString: @"homgby"] )    // group Best year rpt
+//            {
+//nbn(266);
+////gbl_pathToFileToBeEmailed = pathTo_fil;
+//gbl_pathToFileToBeEmailed = pathTo_fil;
+//NSLog(@"gbl_pathToFileToBeEmailed_qx_06=%@",gbl_pathToFileToBeEmailed);
+//            }  // are in homgby
+
+        } // for (NSString *fil in tmpDirFiles) 
+
+nbn(267);
+NSLog(@"gbl_pathToFileToBeEmailed2=[%@]", gbl_pathToFileToBeEmailed );
 
         // get a NSString CSV for each member of the group into NSArray gbl_grp_CSVs
         // but possibly excluding  one person who is kingpin of grpone report "MY Best Match in Group ..." 
@@ -7692,7 +7819,6 @@ kin(lcl_group_report_output_idx);
 //tn();
 //
 
-// from here <.>
         [self grab3CellDataItems ];
 
 
@@ -7838,21 +7964,191 @@ tn();    NSLog(@"in shareButtonAction!  in MAMB09viewTBLRPTs_1_TableViewControll
     NSString *baseFilename = [fileparts objectAtIndex: (fileparts.count -2)] ;  // count -1 is last in array
     NSString *extension    = [fileparts lastObject];
     NSString *filenameForAttachment = [NSString stringWithFormat: @"%@.%@", baseFilename, extension];
+
+//<.>
+//        = [NSString stringWithFormat: @"\n\" (%@) in Group %@\"\n",
+//           gbl_lastSelectedYear,
+//           gbl_lastSelectedGroup
+//        ];
+//<.>
     
     // Get the resource path and read the file using NSData
     // NSString *filePath = [[NSBundle mainBundle] pathForResource:filename ofType:extension];
-    NSData *HTMLfileData = [NSData dataWithContentsOfFile: gbl_pathToFileToBeEmailed ];
 
-NSLog(@"HTMLfileData.length=%lu",(unsigned long)HTMLfileData.length);
+
+    NSData *HTMLfileData;
+
+    if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgby" ] )    // Best year group report
+    {
+        HTMLfileData = [NSData dataWithContentsOfFile: gbl_pathTo_grpall_HTMLdata ];  // for homgby
+    } else {
+        HTMLfileData = [NSData dataWithContentsOfFile: gbl_pathToFileToBeEmailed ];
+    }
+
+
+//    if ( ! [gbl_currentMenuPlusReportCode isEqualToString: @"homgby" ] )    // Best year group report
+//    {
+//        HTMLfileData = [NSData dataWithContentsOfFile: gbl_pathToFileToBeEmailed ];
+//    }
+
+NSLog(@"HTMLfileData.length0=%lu",(unsigned long)HTMLfileData.length);
+
+
+    // fix best year bug 
+    //
+nbn(270);
+NSLog(@"gbl_currentMenuPlusReportCode  =[%@]", gbl_currentMenuPlusReportCode  );
+
+    NSString *pathTo_fil;
+
+    if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgby" ] )    // Best year group report
+    {
+    NSArray* tmpDirFiles2;
+
+        tmpDirFiles2 = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:NSTemporaryDirectory() error:NULL];
+        NSLog(@"tmpDirFiles2.count=%lu",(unsigned long)tmpDirFiles2.count);
+
+        for (NSString *fil in tmpDirFiles2) {
+
+            pathTo_fil = [NSTemporaryDirectory() stringByAppendingPathComponent: fil];
+NSLog(@"pathTo_fil  =[%@]", pathTo_fil  );
+
+
+    NSData *HTMLfileData5= [NSData dataWithContentsOfFile: pathTo_fil ];
+    NSData *HTMLfileData6= [NSData dataWithContentsOfFile: gbl_pathToFileToBeEmailed ];
+
+NSLog(@"fil                       =[%@]", fil);
+NSLog(@"fil.length                =%lu",(unsigned long)HTMLfileData5.length);
+NSLog(@"gbl_pathToFileToBeEmailed =[%@]", gbl_pathToFileToBeEmailed );
+NSLog(@"pathtobe emailed.length   =%lu",(unsigned long)HTMLfileData6.length);
+      }
+
+
+
+
+            // fix share for homgby    // group Best year rpt
+            //
+            // here we have this
+            //  (path to be emailed does  not have right data -  "fil" does)
+//gbl_currentMenuPlusReportCode  =[homgby]
+//pathTo_fil  =[/private/var/mobile/Containers/Data/Application/ED7CFB5D-4FC3-4F39-BFC2-C6F8481E05CB/tmp/m_grpall_~My_Family.html]
+//fil                       =[m_grpall_~My_Family.html]
+//fil.length                =9669
+//gbl_pathToFileToBeEmailed =[/private/var/mobile/Containers/Data/Application/ED7CFB5D-4FC3-4F39-BFC2-C6F8481E05CB/tmp/m_grpbyr_~My_Family.html]
+//pathtobe emailed.length   =0
+//
+            // so, do this
+            // 
+nbn(271);
+nbn(272);
+//            [[NSFileManager defaultManager] removeItemAtPath: gbl_pathToFileToBeEmailed
+//                                                     error: NULL];
+
+//                if ([filemgr copyItemAtPath: @"/tmp/myfile.txt" toPath: @"/Users/demo/newfile.txt" error: NULL]  == YES)
+//            if ([ [NSFileManager defaultManager] copyItemAtPath: @"m_grpall_~My_Family.html"
+nbn(273);
+
+
+NSLog(@"gbl_pathToFileToBeEmailed  BEFORE =[%@]", gbl_pathToFileToBeEmailed );
+          // gbl_fileName_hombyr_HTML  is previously saved
+          //
+          gbl_pathToFileToBeEmailed = [NSTemporaryDirectory() stringByAppendingPathComponent: gbl_fileName_hombyr_HTML];
+
+
+NSLog(@"gbl_pathToFileToBeEmailed  AFTER =[%@]", gbl_pathToFileToBeEmailed );
+
+
+
+    BOOL fileisthere;
+    fileisthere = [gbl_sharedFM fileExistsAtPath: pathTo_fil];
+tr("pathtofile=              =");kin(fileisthere);
+    fileisthere = [gbl_sharedFM fileExistsAtPath: gbl_pathToFileToBeEmailed ];
+tr("gbl_pathToFileToBeEmailed=");kin(fileisthere);
+
+
+    //tn();tr("BEG of mambWriteNSArrayWithDescription         ");
+
+
+//    NSError *err01;
+//              [[NSFileManager defaultManager] copyItemAtPath: pathTo_fil
+//                                                      toPath: gbl_pathToFileToBeEmailed
+//                                                       error: &err01 ];
+//              if (err01) { NSLog(@"error on filecopy pathtofil [%@] to [%@]\n= [%@]", pathTo_fil, gbl_pathToFileToBeEmailed, err01 ); }
+//              else { NSLog (@"Copy gby successful"); }
+
+nbn(2731);
+    __block    NSError *err02;
+        dispatch_async(dispatch_get_main_queue(), ^(void){
+    NSError *err01;
+              [[NSFileManager defaultManager] moveItemAtPath: pathTo_fil
+                                                      toPath: gbl_pathToFileToBeEmailed
+                                                       error: &err01 ];
+err02 = err01;
+        });
+nbn(2732);
+
+
+              if (err02) { NSLog(@"error on file move pathtofil [%@] to [%@]\n= [%@]", pathTo_fil, gbl_pathToFileToBeEmailed, err02 ); }
+              else {
+              NSLog (@"Move gby successful");
+
+              }
+nbn(2732);
+
+
+//        dispatch_async(dispatch_get_main_queue(), ^(void){
+//                [self presentViewController: myMailComposeViewController animated:YES completion:NULL];
+//            }
+//        );
+
+
+nbn(2733);
+
+
+
+
+
+
+
+
+
+//            if ([ [NSFileManager defaultManager] copyItemAtPath: pathTo_fil
+//                                                         toPath: gbl_pathToFileToBeEmailed
+//                                                          error: NULL                     
+//                ]  == YES)
+//            {
+//                    NSLog (@"Copy gby successful");
+//            } else {
+//                    NSLog (@"Copy gby failed");
+//            }
+
+//nbn(274);
+//        HTMLfileData = [NSData dataWithContentsOfFile: gbl_pathToFileToBeEmailed ];
+//nbn(275);
+//NSLog(@"HTMLfileData.length1=%lu",(unsigned long)HTMLfileData.length);
+//nbn(276);
+
+
+    } // (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgby" ] )    // Best year group report
+
+NSLog(@"HTMLfileData.length2=%lu",(unsigned long)HTMLfileData.length);
+
+
+//    if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgby" ] ) // Best year group report
+//    {
+//        myEmailMessage 
+//<.>
+//    }
 
 
     NSString *emailTitle = [NSString stringWithFormat: @"%@  from Me and my BFFs", filenameForAttachment];
+
 
     NSString *myEmailMessage;
     
     myEmailMessage = @"tester";
     NSLog(@"emailTitle=%@",emailTitle);
-    NSLog(@"myEmailMessage=%@",myEmailMessage);
+//    NSLog(@"myEmailMessage=%@",myEmailMessage);
     NSLog(@"extension=%@",extension);
 
 
@@ -7861,9 +8157,13 @@ NSLog(@"HTMLfileData.length=%lu",(unsigned long)HTMLfileData.length);
       //        || [gbl_currentMenuPlusReportCode hasPrefix: @"homgm"]   // personality report  homgma,homgme,homgmr,homgmp,homgmd
     ) {
         myEmailMessage = [NSString stringWithFormat: @"\n\"Personality of %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.", gbl_person_name ];
+        NSLog(@"myEmailMessage=%@",myEmailMessage);
     }
-    if ([gbl_currentMenuPlusReportCode hasSuffix: @"co"]) {  //   @"Compatibility Potential"  hompco, pbmco, gbmco
+
+
+    else if ([gbl_currentMenuPlusReportCode hasSuffix: @"co"]) {  //   @"Compatibility Potential"  hompco, pbmco, gbmco
         myEmailMessage = [NSString stringWithFormat: @"\"Compatibility Potential of %@ and %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.", gbl_person_name, gbl_person_name2 ];
+        NSLog(@"myEmailMessage=%@",myEmailMessage);
     }
 
 //  NSLog(@"myEmailMessage =[%@]",myEmailMessage );
@@ -7874,7 +8174,7 @@ NSLog(@"HTMLfileData.length=%lu",(unsigned long)HTMLfileData.length);
 //    if ([gbl_currentMenuPlusReportCode isEqualToString: @"hompbm"])      // My Best Match in Group
 
     // grpone  all *MY* BEST MATCH ... reports  PLUS all table reports AFTER THAT in navigation <-------------
-    if (   [gbl_currentMenuPlusReportCode isEqualToString: @"hompbm" ] // My Best Match in Group ... grpone
+    else if (   [gbl_currentMenuPlusReportCode isEqualToString: @"hompbm" ] // My Best Match in Group ... grpone
         || [gbl_currentMenuPlusReportCode       hasPrefix: @"pbm"    ] // My Best Match in Group ... grpone  IS pbm2bm
     ) {
         NSLog(@"gbl_person_name=%@",gbl_person_name);
@@ -7885,38 +8185,54 @@ NSLog(@"HTMLfileData.length=%lu",(unsigned long)HTMLfileData.length);
            gbl_lastSelectedGroup
         ];
         NSLog(@"myEmailMessage=%@",myEmailMessage);
-    }
 
+    }  // for all but hompgm
 
-tn();trn("before homgby mail ");
-    if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgby" ] // Best year group report
+    else if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgby" ] // Best year group report
     ) {
 tn();trn("inside homgby mail ");
         NSLog(@"gbl_person_name=%@",gbl_person_name);
         NSLog(@"myEmailMessage=%@",myEmailMessage);
 
-        myEmailMessage = [NSString stringWithFormat: @"\n\"Best Year in Group %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.",
+        myEmailMessage = [NSString stringWithFormat: @"\n\"Best Year (%@) in Group %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.",
+           gbl_lastSelectedYear,
            gbl_lastSelectedGroup
         ];
         NSLog(@"myEmailMessage=%@",myEmailMessage);
     }
 
-
-//    if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgbm"]) {    // Best Match in Group
-
-    // grpall all BEST MATCH ... reports  PLUS all table reports AFTER THAT in navigation <-------------
-    if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgbm" ] //    Best Match in Group ... grpall
-        || [gbl_currentMenuPlusReportCode       hasPrefix: @"gbm"    ] //    Best Match in Group ... grpall  are gbm1bm + gbm2bm 
+    else if (   [gbl_currentMenuPlusReportCode isEqualToString: @"homgbd" ] // Best year group report
     ) {
         NSLog(@"gbl_person_name=%@",gbl_person_name);
         NSLog(@"myEmailMessage=%@",myEmailMessage);
 
-        myEmailMessage = [NSString stringWithFormat: @"\n\"Best Match in Group %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.",
+        myEmailMessage = [NSString stringWithFormat: @"\n\"Best Day (%@) in Group %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.",
+           gbl_lastSelectedDay,
            gbl_lastSelectedGroup
         ];
         NSLog(@"myEmailMessage=%@",myEmailMessage);
     }
 
+    else {   // msg for all the rest
+
+        // make grpRpt_shortname
+        NSString *grpRpt_shortname;
+             if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgbm"]) grpRpt_shortname = @"Best Match";
+        else if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgma"]) grpRpt_shortname = @"Most Assertive";
+        else if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgme"]) grpRpt_shortname = @"Most Emotional";
+        else if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgmr"]) grpRpt_shortname = @"Most Restless";
+        else if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgmp"]) grpRpt_shortname = @"Most Passionate";
+        else if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgmd"]) grpRpt_shortname = @"Most Down-to-earth";
+
+        myEmailMessage = [NSString stringWithFormat: @"\n\"%@ in Group %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.",
+           grpRpt_shortname,
+           gbl_lastSelectedGroup
+        ];
+        NSLog(@"myEmailMessage=%@",myEmailMessage);
+    } // msg for all the rest
+
+
+    NSLog(@"FINAL  myEmailMessage=%@",myEmailMessage);
     
     //   NSArray *toRecipents = [NSArray arrayWithObject:@"ijfo@jldks.com"];
     NSArray *toRecipients = [NSArray arrayWithObjects:@"", nil];  //  user types it in
@@ -7945,36 +8261,51 @@ tn();trn("inside homgby mail ");
 
         NSLog(@"This device CAN send email");
 
+
+//    NSData *HTMLfileData5= [NSData dataWithContentsOfFile: pathTo_fil ];
+//    NSData *HTMLfileData6= [NSData dataWithContentsOfFile: gbl_pathToFileToBeEmailed ];
+//
+//NSLog(@"fil                       =[%@]", fil);
+//NSLog(@"fil.length                =%lu",(unsigned long)HTMLfileData5.length);
+//NSLog(@"gbl_pathToFileToBeEmailed =[%@]", gbl_pathToFileToBeEmailed );
+//NSLog(@"pathtobe emailed.length   =%lu",(unsigned long)HTMLfileData6.length);
+
+
+NSLog(@"HTMLfilData.length3               =%lu",(unsigned long)HTMLfileData.length);
+
+
+dispatch_async(dispatch_get_main_queue(), ^(void) {
          myMailComposeViewController.mailComposeDelegate = self;
+//nbn(611);
         [myMailComposeViewController setSubject: emailTitle];
+//nbn(612);
         [myMailComposeViewController setMessageBody: myEmailMessage
                                              isHTML: NO];
-//  NSLog(@"toRecipients2=[%@]",toRecipients);
+//nbn(613);
+//NSLog(@"toRecipients2=[%@]",toRecipients); // xxxxx uncommented, this caused a crash / hang
         [myMailComposeViewController setToRecipients: toRecipients];
-//  NSLog(@"toRecipients3=[%@]",toRecipients);
-//nbn(304);    
+//nbn(614);
+//NSLog(@"toRecipients3=[%@]",toRecipients);
         [myMailComposeViewController setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
-//nbn(305);    
+//nbn(615);
         [myMailComposeViewController addAttachmentData: HTMLfileData                // Add attachment
                                               mimeType: mimeType
                                               fileName: filenameForAttachment];
-//nbn(306);    
+//nbn(616);
         
         // Present mail view controller on screen
         //
         //[self presentModalViewController:myMailComposeViewController animated:YES completion:NULL];
 
-
-//  NSLog(@"=[306! ]");
-        dispatch_async(dispatch_get_main_queue(), ^(void){
+//nbn(617);
+//        dispatch_async(dispatch_get_main_queue(), ^(void){
                 [self presentViewController: myMailComposeViewController animated:YES completion:NULL];
             }
         );
-//  NSLog(@"=[307! ]");
-//nbn(307);    
     }
     else
     {
+nbn(621);
 //nbn(308);    
 //        NSLog(@"This device cannot send email");
 //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Cannot send email"
@@ -8004,6 +8335,7 @@ tn();trn("inside homgby mail ");
         });
 //nbn(312);    
     }
+nbn(630);
 } // shareButtonAction
 
 
