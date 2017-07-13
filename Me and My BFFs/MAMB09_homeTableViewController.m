@@ -40,7 +40,7 @@
 #import "MAMB09_homeTableViewController.h"
 #import "MAMB09_selectReportsTableViewController.h"
 #import "rkdebug_externs.h"
-#import "MAMB09AppDelegate.h"   // to get globals    bbb ccc eee fff ggg hhh
+#import "MAMB09AppDelegate.h"   // to get globals    bbb ccc eee fff ggg hhh jjj
 #import "mamblib.h"
 
 
@@ -1036,7 +1036,7 @@ nbn(15);
 //    // end of   FOR test   remove all regular named files   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 //
 //
-//
+
 
 
 
@@ -1200,6 +1200,8 @@ tn();trn(" HOME   AFTER read data files (2)  with regular names into arrays // a
 
     // check for data corruption  (should not happen)
     //
+    // new   2017713   data corruption test  silently deletes corrupt per  and  grp (but logs)
+    //
     NSInteger myCorruptDataErrNum;
     do {
 
@@ -1208,208 +1210,210 @@ tn();trn(" HOME   AFTER read data files (2)  with regular names into arrays // a
   NSLog(@"myCorruptDataErrNum =[%ld]",(long)myCorruptDataErrNum );
 
 
-
-        if (myCorruptDataErrNum > 0) {
-
-            // got data errors here
-
-  NSLog(@"myCorruptDataErrNum =[%ld]",(long)myCorruptDataErrNum );
-
-            MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
-            [myappDelegate mamb_beginIgnoringInteractionEvents ];
-
-
-            // delete all non-example data from people, groups and members
-            //
-            // now delete from each gbl_arrayXxx  the non-example data
-            // by  going backwards from the highest index to delete to the lowest
-            //
-//ksn("yyyyyy");
-//NSLog(@"mem=[%@]", NSStringFromClass([gbl_arrayMem class]));   // showed nsarrayM   // this happened on an original ipad retinas
-//NSLog(@"per=[%@]", NSStringFromClass([gbl_arrayPer class]));   // showed nsarrayM
-//NSLog(@"grp=[%@]", NSStringFromClass([gbl_arrayGrp class]));   // showed nsarrayI  <--immutable
-            
-            for (NSInteger i = gbl_arrayMem.count - 1;  i >= 0;  i--) {
-                if ([gbl_arrayMem[i] hasPrefix: @"~"]) continue; 
-                [gbl_arrayMem removeObjectAtIndex: i ];
-            }
-            for (NSInteger i = gbl_arrayPer.count - 1;  i >= 0;  i--) {
-                if ([gbl_arrayPer[i] hasPrefix: @"~"]) continue; 
-                [gbl_arrayPer removeObjectAtIndex: i ];
-            }
-//NSLog(NSStringFromClass([gbl_arrayMem class]));
-//NSLog(NSStringFromClass([gbl_arrayPer class]));
-//NSLog(NSStringFromClass([gbl_arrayGrp class]));
-            for (NSInteger i = gbl_arrayGrp.count - 1;  i >= 0;  i--) {
-                if ([gbl_arrayGrp[i] hasPrefix: @"~"]) continue; 
-                [gbl_arrayGrp removeObjectAtIndex: i ];
-            }
-
-
-            // write app-startup initial data arrays to files
-            //
-            [myappDelegate mambWriteNSArrayWithDescription:              (NSString *) @"group" ]; // write new array data to file
-            [myappDelegate mambReadArrayFileWithDescription:             (NSString *) @"group" ]; // read new data from file to array
-            [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription: (NSString *) @"group" ]; // sort array by name
-
-
-            [myappDelegate mambWriteNSArrayWithDescription:              (NSString *) @"person"]; // write new array data to file
-            [myappDelegate mambReadArrayFileWithDescription:             (NSString *) @"person"]; // read new data from file to array
-            [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription: (NSString *) @"person"]; // sort array by name
-
-            [myappDelegate mambWriteNSArrayWithDescription:              (NSString *) @"member"]; // write new array data to file
-            [myappDelegate mambReadArrayFileWithDescription:             (NSString *) @"member"]; // read new data from file to array
-            [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription: (NSString *) @"member"]; // sort array by name
-
-
-            [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.5 ];   
-
-
 //
-//            // http://stackoverflow.com/questions/25962559/uialertcontroller-text-alignment
+//        if (myCorruptDataErrNum > 0) {
+//
+//            // got data errors here
+//
+//  NSLog(@"myCorruptDataErrNum =[%ld]",(long)myCorruptDataErrNum );
+//
+//            MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate];
+//            [myappDelegate mamb_beginIgnoringInteractionEvents ];
+//
+//
+//            // delete all non-example data from people, groups and members
 //            //
-//            // I have successfully used the following, for both aligning and styling the text of UIAlertControllers:
-//            // 
-//            // let paragraphStyle = NSMutableParagraphStyle()
-//            // paragraphStyle.alignment = NSTextAlignment.Left
-//            // 
-//            // let messageText = NSMutableAttributedString(
-//            //     string: "The message you want to display",
-//            //     attributes: [
-//            //         NSParagraphStyleAttributeName: paragraphStyle,
-//            //         NSFontAttributeName : UIFont.preferredFontForTextStyle(UIFontTextStyleBody),
-//            //         NSForegroundColorAttributeName : UIColor.blackColor()
-//            //     ]
-//            // )
-//            // 
-//            // myAlert.setValue(messageText, forKey: "attributedMessage")
-//            // You can do a similar thing with the title, if you use "attributedTitle", instead of "attributedMessage"
-//            // 
-//            // Eduardo 3,901
-//            //   	 	
-//            // Seems like this is private API use, did this make it into the App Store? – powerj1984 Jul 6 '15 at 14:10
-//            // @powerj1984 yes, it did. – Eduardo Jul 6 '15 at 15:02
+//            // now delete from each gbl_arrayXxx  the non-example data
+//            // by  going backwards from the highest index to delete to the lowest
 //            //
-// 
+////ksn("yyyyyy");
+////NSLog(@"mem=[%@]", NSStringFromClass([gbl_arrayMem class]));   // showed nsarrayM   // this happened on an original ipad retinas
+////NSLog(@"per=[%@]", NSStringFromClass([gbl_arrayPer class]));   // showed nsarrayM
+////NSLog(@"grp=[%@]", NSStringFromClass([gbl_arrayGrp class]));   // showed nsarrayI  <--immutable
+//            
+//            for (NSInteger i = gbl_arrayMem.count - 1;  i >= 0;  i--) {
+//                if ([gbl_arrayMem[i] hasPrefix: @"~"]) continue; 
+//                [gbl_arrayMem removeObjectAtIndex: i ];
+//            }
+//            for (NSInteger i = gbl_arrayPer.count - 1;  i >= 0;  i--) {
+//                if ([gbl_arrayPer[i] hasPrefix: @"~"]) continue; 
+//                [gbl_arrayPer removeObjectAtIndex: i ];
+//            }
+////NSLog(NSStringFromClass([gbl_arrayMem class]));
+////NSLog(NSStringFromClass([gbl_arrayPer class]));
+////NSLog(NSStringFromClass([gbl_arrayGrp class]));
+//            for (NSInteger i = gbl_arrayGrp.count - 1;  i >= 0;  i--) {
+//                if ([gbl_arrayGrp[i] hasPrefix: @"~"]) continue; 
+//                [gbl_arrayGrp removeObjectAtIndex: i ];
+//            }
 //
 //
-//  Use this code instead       [self.navigationController presentViewController: myAlert  animated: YES  completion: nil ];
-
-
-
-            // want left-justified alert text for long msg
-            //
-//   //#define FONT_SIZE 20
-//   //#define FONT_HELVETICA @"Helvetica-Light"
-//   //#define BLACK_SHADOW [UIColor colorWithRed:40.0f/255.0f green:40.0f/255.0f blue:40.0f/255.0f alpha:0.4f]
-//   //NSString*myNSString = @"This is my string.\nIt goes to a second line.";                
-//   
-//   NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-//                  paragraphStyle.alignment = NSTextAlignmentCenter;
-//   //             paragraphStyle.lineSpacing = FONT_SIZE/2;
-//   //             paragraphStyle.lineSpacing = -5;
-//   
-//   //                     UIFont * labelFont = [UIFont fontWithName:Menlo size: 16.0];
-//   //                   UIColor * labelColor = [UIColor colorWithWhite:1 alpha:1];
-//   //                       NSShadow *shadow = [[NSShadow alloc] init];
-//   //                 [shadow setShadowColor : BLACK_SHADOW];
-//   //                [shadow setShadowOffset : CGSizeMake (1.0, 1.0)];
-//   //            [shadow setShadowBlurRadius : 1 ];
-//   
-//   //NSAttributedString *labelText = [[NSAttributedString alloc] initWithString :  myNSString
-//   //       *myAttrString = [[NSAttributedString alloc] initWithString : mylin   // myNSString
-//          myAttrString = [[NSMutableAttributedString alloc] initWithString : mylin   // myNSString
-//              attributes : @{
-//                  NSParagraphStyleAttributeName : paragraphStyle,
-//   //                         NSFontAttributeName : compFont_16 
-//                            NSFontAttributeName : compFont_14 
-//   //               NSBaselineOffsetAttributeName : @-1.0
-//              }
-//          ];
-//   //                 NSKernAttributeName : @2.0,
-//   //                 NSFontAttributeName : labelFont
-//   //      NSForegroundColorAttributeName : labelColor,
-//   //              NSShadowAttributeName : shadow
+//            // write app-startup initial data arrays to files
+//            //
+//            [myappDelegate mambWriteNSArrayWithDescription:              (NSString *) @"group" ]; // write new array data to file
+//            [myappDelegate mambReadArrayFileWithDescription:             (NSString *) @"group" ]; // read new data from file to array
+//            [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription: (NSString *) @"group" ]; // sort array by name
 //
-
-
-            // want left-justified alert text for long msg
-            //
-            NSString *mymsg;
-            mymsg = @"When corrupt data is found, the App has to delete all of your added people, groups and group members.\n\n   RECOVERY of DATA \n\nMethod 1:  Assuming you did backups, go to your latest email having the subject \"Me and My BFFs BACKUP\".  Follow the instructions in the email to restore the data.\n\nMethod 2:  Delete the App \"Me and My BFFs\" and install it again from the App store.  Doing this might restore the data for people, groups and members from apple backups.";
-
-            NSMutableParagraphStyle *myParagraphStyle = [[NSMutableParagraphStyle alloc] init];
-            myParagraphStyle.alignment                = NSTextAlignmentLeft;
-
-            NSMutableAttributedString *myAttrMessage;
-            myAttrMessage = [[NSMutableAttributedString alloc] initWithString : mymsg   // myNSString
-                attributes : @{
-                    NSParagraphStyleAttributeName : myParagraphStyle,
-//                   NSBackgroundColorAttributeName : gbl_color_cRed,
-                              NSFontAttributeName : [UIFont boldSystemFontOfSize: 12.0]
-                }
-            ];
-//            // myAlert.setValue(messageText, forKey: "attributedMessage")
-
-
-
-            UIAlertController* myAlert = [UIAlertController alertControllerWithTitle: @"Found Corrupt Data"
-                                                                           message: mymsg
-                                                                    preferredStyle: UIAlertControllerStyleAlert  ];
-             
-            [myAlert setValue: myAttrMessage  forKey: @"attributedMessage" ];
-
-            UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
-                                                                style: UIAlertActionStyleDefault
-                                                              handler: ^(UIAlertAction * action) {
-                NSLog(@"Ok button pressed    for corrupt data");
-            } ];
-             
-            [myAlert addAction:  okButton];
-
-            // was using this:
-            //[self presentViewController: myAlert  animated: YES  completion: nil   ];
-            //
-            // but was getting this:   Warning :-Presenting view controllers on detached view controllers is discouraged
-            //
-            // finally, this got rid of the warning:
-            //
-            [self.navigationController presentViewController: myAlert  animated: YES  completion: nil ];
-
-            // tried all these:
-            //
-            // To avoid getting the warning in a push navigation, you can directly use :
-            // 
-            // [self.view.window.rootViewController presentViewController:viewController animated:YES completion:nil];
-            // And then in your modal view controller, when everything is finished, you can just call :
-            // 
-            // [self dismissViewControllerAnimated:YES completion:nil];
-            //
-            //[self.view.window.rootViewController presentViewController:viewController animated:YES completion:nil];
-            //[self.view.window.rootViewController presentViewController: myAlert  animated: YES  completion: nil ];
-            //
-            // run on rootviewcontroller
-            //            id rootVC = [[[[[UIApplication sharedApplication] keyWindow] subviews] objectAtIndex:0] nextResponder];
-            //            [rootViewController presentViewController: myAlert  animated: YES  completion: nil ];
-            //You can access it using the below code if the rootViewController is a UIViewController
-            //
-            //ViewController *rootController=(ViewController *)((AppDelegate *)[[UIApplication sharedApplication] delegate]).window.rootViewController;
-            //But if it's a UINavigationController you can use the code below.
-            //
-            //UINavigationController *nav=(UINavigationController *)((AppDelegate *)[[UIApplication sharedApplication] delegate]).window.rootViewController;
-            //ViewController *rootController=(ViewController *)[nav.viewControllers objectAtIndex:0];
-            //
-            //        UINavigationController *nav=(UINavigationController *)((AppDelegate *)[[UIApplication sharedApplication] delegate]).window.rootViewController;
-            //nbn(2); 
-            //        ViewController *rootController=(ViewController *)[nav.viewControllers objectAtIndex:0];
-            //nbn(3); 
-            //       [rootController presentViewController: myAlert  animated: YES  completion: nil ];
-            //
-            //    [sourceViewController.navigationController.view.layer addAnimation: transition 
-            //    self.navigationController.toolbarHidden = YES;  // ensure that the bottom of screen toolbar is NOT visible 
-
-
-        } // got corrupt data
+//
+//            [myappDelegate mambWriteNSArrayWithDescription:              (NSString *) @"person"]; // write new array data to file
+//            [myappDelegate mambReadArrayFileWithDescription:             (NSString *) @"person"]; // read new data from file to array
+//            [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription: (NSString *) @"person"]; // sort array by name
+//
+//            [myappDelegate mambWriteNSArrayWithDescription:              (NSString *) @"member"]; // write new array data to file
+//            [myappDelegate mambReadArrayFileWithDescription:             (NSString *) @"member"]; // read new data from file to array
+//            [myappDelegate mambSortOnFieldOneForPSVarrayWithDescription: (NSString *) @"member"]; // sort array by name
+//
+//
+//            [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.5 ];   
+//
+//
+////
+////            // http://stackoverflow.com/questions/25962559/uialertcontroller-text-alignment
+////            //
+////            // I have successfully used the following, for both aligning and styling the text of UIAlertControllers:
+////            // 
+////            // let paragraphStyle = NSMutableParagraphStyle()
+////            // paragraphStyle.alignment = NSTextAlignment.Left
+////            // 
+////            // let messageText = NSMutableAttributedString(
+////            //     string: "The message you want to display",
+////            //     attributes: [
+////            //         NSParagraphStyleAttributeName: paragraphStyle,
+////            //         NSFontAttributeName : UIFont.preferredFontForTextStyle(UIFontTextStyleBody),
+////            //         NSForegroundColorAttributeName : UIColor.blackColor()
+////            //     ]
+////            // )
+////            // 
+////            // myAlert.setValue(messageText, forKey: "attributedMessage")
+////            // You can do a similar thing with the title, if you use "attributedTitle", instead of "attributedMessage"
+////            // 
+////            // Eduardo 3,901
+////            //   	 	
+////            // Seems like this is private API use, did this make it into the App Store? – powerj1984 Jul 6 '15 at 14:10
+////            // @powerj1984 yes, it did. – Eduardo Jul 6 '15 at 15:02
+////            //
+//// 
+////
+////
+////  Use this code instead       [self.navigationController presentViewController: myAlert  animated: YES  completion: nil ];
+//
+//
+//
+//            // want left-justified alert text for long msg
+//            //
+////   //#define FONT_SIZE 20
+////   //#define FONT_HELVETICA @"Helvetica-Light"
+////   //#define BLACK_SHADOW [UIColor colorWithRed:40.0f/255.0f green:40.0f/255.0f blue:40.0f/255.0f alpha:0.4f]
+////   //NSString*myNSString = @"This is my string.\nIt goes to a second line.";                
+////   
+////   NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+////                  paragraphStyle.alignment = NSTextAlignmentCenter;
+////   //             paragraphStyle.lineSpacing = FONT_SIZE/2;
+////   //             paragraphStyle.lineSpacing = -5;
+////   
+////   //                     UIFont * labelFont = [UIFont fontWithName:Menlo size: 16.0];
+////   //                   UIColor * labelColor = [UIColor colorWithWhite:1 alpha:1];
+////   //                       NSShadow *shadow = [[NSShadow alloc] init];
+////   //                 [shadow setShadowColor : BLACK_SHADOW];
+////   //                [shadow setShadowOffset : CGSizeMake (1.0, 1.0)];
+////   //            [shadow setShadowBlurRadius : 1 ];
+////   
+////   //NSAttributedString *labelText = [[NSAttributedString alloc] initWithString :  myNSString
+////   //       *myAttrString = [[NSAttributedString alloc] initWithString : mylin   // myNSString
+////          myAttrString = [[NSMutableAttributedString alloc] initWithString : mylin   // myNSString
+////              attributes : @{
+////                  NSParagraphStyleAttributeName : paragraphStyle,
+////   //                         NSFontAttributeName : compFont_16 
+////                            NSFontAttributeName : compFont_14 
+////   //               NSBaselineOffsetAttributeName : @-1.0
+////              }
+////          ];
+////   //                 NSKernAttributeName : @2.0,
+////   //                 NSFontAttributeName : labelFont
+////   //      NSForegroundColorAttributeName : labelColor,
+////   //              NSShadowAttributeName : shadow
+////
+//
+//
+//            // want left-justified alert text for long msg
+//            //
+//            NSString *mymsg;
+////            mymsg = @"When corrupt data is found, the App has to delete all of your added people, groups and group members.\n\n   RECOVERY of DATA \n\nMethod 1:  Assuming you did backups, go to your latest email having the subject \"Me and My BFFs BACKUP\".  Follow the instructions in the email to restore the data.\n\nMethod 2:  Delete the App \"Me and My BFFs\" and install it again from the App store.  Doing this might restore the data for people, groups and members from apple backups.";
+//            mymsg = @"When corrupt data is found, the App has to delete all of your added people, groups and group members.\n\n   RECOVERY of DATA \n\nDelete the App \"Me and My BFFs\" and install it again from the App store.  Doing this might restore the data for people, groups and members from apple backups.";
+//
+//            NSMutableParagraphStyle *myParagraphStyle = [[NSMutableParagraphStyle alloc] init];
+//            myParagraphStyle.alignment                = NSTextAlignmentLeft;
+//
+//            NSMutableAttributedString *myAttrMessage;
+//            myAttrMessage = [[NSMutableAttributedString alloc] initWithString : mymsg   // myNSString
+//                attributes : @{
+//                    NSParagraphStyleAttributeName : myParagraphStyle,
+////                   NSBackgroundColorAttributeName : gbl_color_cRed,
+//                              NSFontAttributeName : [UIFont boldSystemFontOfSize: 12.0]
+//                }
+//            ];
+////            // myAlert.setValue(messageText, forKey: "attributedMessage")
+//
+//
+//
+//            UIAlertController* myAlert = [UIAlertController alertControllerWithTitle: @"Found Corrupt Data"
+//                                                                           message: mymsg
+//                                                                    preferredStyle: UIAlertControllerStyleAlert  ];
+//             
+//            [myAlert setValue: myAttrMessage  forKey: @"attributedMessage" ];
+//
+//            UIAlertAction*  okButton = [UIAlertAction actionWithTitle: @"OK"
+//                                                                style: UIAlertActionStyleDefault
+//                                                              handler: ^(UIAlertAction * action) {
+//                NSLog(@"Ok button pressed    for corrupt data");
+//            } ];
+//             
+//            [myAlert addAction:  okButton];
+//
+//            // was using this:
+//            //[self presentViewController: myAlert  animated: YES  completion: nil   ];
+//            //
+//            // but was getting this:   Warning :-Presenting view controllers on detached view controllers is discouraged
+//            //
+//            // finally, this got rid of the warning:
+//            //
+//            [self.navigationController presentViewController: myAlert  animated: YES  completion: nil ];
+//
+//            // tried all these:
+//            //
+//            // To avoid getting the warning in a push navigation, you can directly use :
+//            // 
+//            // [self.view.window.rootViewController presentViewController:viewController animated:YES completion:nil];
+//            // And then in your modal view controller, when everything is finished, you can just call :
+//            // 
+//            // [self dismissViewControllerAnimated:YES completion:nil];
+//            //
+//            //[self.view.window.rootViewController presentViewController:viewController animated:YES completion:nil];
+//            //[self.view.window.rootViewController presentViewController: myAlert  animated: YES  completion: nil ];
+//            //
+//            // run on rootviewcontroller
+//            //            id rootVC = [[[[[UIApplication sharedApplication] keyWindow] subviews] objectAtIndex:0] nextResponder];
+//            //            [rootViewController presentViewController: myAlert  animated: YES  completion: nil ];
+//            //You can access it using the below code if the rootViewController is a UIViewController
+//            //
+//            //ViewController *rootController=(ViewController *)((AppDelegate *)[[UIApplication sharedApplication] delegate]).window.rootViewController;
+//            //But if it's a UINavigationController you can use the code below.
+//            //
+//            //UINavigationController *nav=(UINavigationController *)((AppDelegate *)[[UIApplication sharedApplication] delegate]).window.rootViewController;
+//            //ViewController *rootController=(ViewController *)[nav.viewControllers objectAtIndex:0];
+//            //
+//            //        UINavigationController *nav=(UINavigationController *)((AppDelegate *)[[UIApplication sharedApplication] delegate]).window.rootViewController;
+//            //nbn(2); 
+//            //        ViewController *rootController=(ViewController *)[nav.viewControllers objectAtIndex:0];
+//            //nbn(3); 
+//            //       [rootController presentViewController: myAlert  animated: YES  completion: nil ];
+//            //
+//            //    [sourceViewController.navigationController.view.layer addAnimation: transition 
+//            //    self.navigationController.toolbarHidden = YES;  // ensure that the bottom of screen toolbar is NOT visible 
+//
+//
+//        } // got corrupt data
+//
 
 
     } while (FALSE);  // check for data corruption  (should not happen)
