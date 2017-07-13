@@ -26,7 +26,7 @@
 //
 //
 
-//#include <CoreServices/CoreServices.h>   // these 4 are for  start = mach_absolute_time();  jjj lll mmm nnn ppp
+//#include <CoreServices/CoreServices.h>   // these 4 are for  start = mach_absolute_time();  jjj lll mmm nnn ppp qqq
 //#include <mach/mach.h>
 //#include <mach/mach_time.h>
 //#include <unistd.h>
@@ -3368,32 +3368,33 @@ nbn(343);
 
 
             return;   // <.> if in change of group name and name has not changed, do not do SAVE or DONE, do nothing
-
-            [myappDelegate mamb_beginIgnoringInteractionEvents ];  // XXXXX  BEGIN  ignor #02   grp   do back- no editing changes XXXXXXXXX
-  tn();NSLog(@"igx in pressedSaveDone group  editing HAS happened  after beginIgnor  ignoring=[%d]", [[UIApplication sharedApplication] isIgnoringInteractionEvents]);
-
-            // here editing changes have NOT happened
-            //
-  NSLog(@" // 111-0 actually do the BACK action  when Done hit and there are no editing changes");
-
-  NSLog(@"          POP  VIEW   #2");
-  NSLog(@"SET gbl_myCitySoFar #06=[%@]",@"" );
-            dispatch_async(dispatch_get_main_queue(), ^{  
-                // pop to root view controller (actually do the "Back" action)
-                // 
-                gbl_myname.text                  = gbl_initPromptName;
-                gbl_myCitySoFar                  = @"";
-  NSLog(@"citych #31  %-24s =[%@] $$$  pressedSaveDone  $$$$$$$$$$$$$$$$$$$$", "gbl_myCitySoFar" , gbl_myCitySoFar);
-                gbl_editingChangeNAMEHasOccurred = 0;
-                gbl_editingChangeCITYHasOccurred = 0;
-                gbl_editingChangeDATEHasOccurred = 0;
-                gbl_lastInputFieldTapped         = @"";  // 3 values are: "name", "city", "date"
-
-//                [self.navigationController popToRootViewControllerAnimated: YES]; // pop to root view controller (actually do the "Back" action)
-                [self.navigationController popViewControllerAnimated: YES]; // actually do the "Back" action
-            });
-
-            return;
+//
+//            [myappDelegate mamb_beginIgnoringInteractionEvents ];  // XXXXX  BEGIN  ignor #02   grp   do back- no editing changes XXXXXXXXX
+//  tn();NSLog(@"igx in pressedSaveDone group  editing HAS happened  after beginIgnor  ignoring=[%d]", [[UIApplication sharedApplication] isIgnoringInteractionEvents]);
+//
+//            // here editing changes have NOT happened
+//            //
+//  NSLog(@" // 111-0 actually do the BACK action  when Done hit and there are no editing changes");
+//
+//  NSLog(@"          POP  VIEW   #2");
+//  NSLog(@"SET gbl_myCitySoFar #06=[%@]",@"" );
+//            dispatch_async(dispatch_get_main_queue(), ^{  
+//                // pop to root view controller (actually do the "Back" action)
+//                // 
+//                gbl_myname.text                  = gbl_initPromptName;
+//                gbl_myCitySoFar                  = @"";
+//  NSLog(@"citych #31  %-24s =[%@] $$$  pressedSaveDone  $$$$$$$$$$$$$$$$$$$$", "gbl_myCitySoFar" , gbl_myCitySoFar);
+//                gbl_editingChangeNAMEHasOccurred = 0;
+//                gbl_editingChangeCITYHasOccurred = 0;
+//                gbl_editingChangeDATEHasOccurred = 0;
+//                gbl_lastInputFieldTapped         = @"";  // 3 values are: "name", "city", "date"
+//
+////                [self.navigationController popToRootViewControllerAnimated: YES]; // pop to root view controller (actually do the "Back" action)
+//                [self.navigationController popViewControllerAnimated: YES]; // actually do the "Back" action
+//            });
+//
+//            return;
+//
         } // editing changes have NOT happened  --  return
 
 
@@ -3748,29 +3749,30 @@ nbn(443);
 
             return;  //  no response on hit Save   if all are blank
 
-
-  NSLog(@" // 222b actually do the BACK action  when Done hit and there are no editing changes");
-            
-
-            [myappDelegate mamb_beginIgnoringInteractionEvents ];  // XXXXX  BEGIN  ignor #05   per  do back- no edit changes  XXXXXXXXXXXXXXXX
-  tn();NSLog(@"igx in pressedSaveDone person  in no editing changes BEGIN ignoring=[%d]", [[UIApplication sharedApplication] isIgnoringInteractionEvents]);
-
-  NSLog(@"          POP  VIEW   #4");
-  NSLog(@"SET gbl_myCitySoFar #07=[%@]",@"" );
-            dispatch_async(dispatch_get_main_queue(), ^{  
-                // pop to root view controller (actually do the "Back" action)
-                // 
-                gbl_myname.text                  = gbl_initPromptName;
-                gbl_myCitySoFar                  = @"";
-  NSLog(@"citych #28  %-24s =[%@] $$$  pressedSaveDone  $$$$$$$$$$$$$$$$$$$$", "gbl_myCitySoFar" , gbl_myCitySoFar);
-                gbl_editingChangeNAMEHasOccurred = 0;
-                gbl_editingChangeCITYHasOccurred = 0;
-                gbl_editingChangeDATEHasOccurred = 0;
-                gbl_lastInputFieldTapped         = @"";  // 3 values are: "name", "city", "date"
-
-//                [self.navigationController popToRootViewControllerAnimated: YES]; // pop to root view controller (actually do the "Back" action)
-                [self.navigationController popViewControllerAnimated: YES]; // actually do the "Back" action
-            });
+//
+//  NSLog(@" // 222b actually do the BACK action  when Done hit and there are no editing changes");
+//            
+//
+//            [myappDelegate mamb_beginIgnoringInteractionEvents ];  // XXXXX  BEGIN  ignor #05   per  do back- no edit changes  XXXXXXXXXXXXXXXX
+//  tn();NSLog(@"igx in pressedSaveDone person  in no editing changes BEGIN ignoring=[%d]", [[UIApplication sharedApplication] isIgnoringInteractionEvents]);
+//
+//  NSLog(@"          POP  VIEW   #4");
+//  NSLog(@"SET gbl_myCitySoFar #07=[%@]",@"" );
+//            dispatch_async(dispatch_get_main_queue(), ^{  
+//                // pop to root view controller (actually do the "Back" action)
+//                // 
+//                gbl_myname.text                  = gbl_initPromptName;
+//                gbl_myCitySoFar                  = @"";
+//  NSLog(@"citych #28  %-24s =[%@] $$$  pressedSaveDone  $$$$$$$$$$$$$$$$$$$$", "gbl_myCitySoFar" , gbl_myCitySoFar);
+//                gbl_editingChangeNAMEHasOccurred = 0;
+//                gbl_editingChangeCITYHasOccurred = 0;
+//                gbl_editingChangeDATEHasOccurred = 0;
+//                gbl_lastInputFieldTapped         = @"";  // 3 values are: "name", "city", "date"
+//
+////                [self.navigationController popToRootViewControllerAnimated: YES]; // pop to root view controller (actually do the "Back" action)
+//                [self.navigationController popViewControllerAnimated: YES]; // actually do the "Back" action
+//            });
+//
 
         } // here editing changes have NOT happened
 
