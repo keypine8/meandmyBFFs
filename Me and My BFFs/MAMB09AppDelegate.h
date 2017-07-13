@@ -28,7 +28,7 @@
 #import <UIKit/UIKit.h>
 #import "MAMB09_UITextField_noCopyPaste.h"
 
-NSString *gbl_dayOfWeek_3;  // "Mon" etc.  for sel date    aaa  bbb 
+NSString *gbl_dayOfWeek_3;  // "Mon" etc.  for sel date    aaa  bbb  eee
 
 //NSInteger gbl_haveEnteredGestureRecognizerShouldBegin;
 
@@ -480,7 +480,12 @@ NSMutableArray *gbl_groupsToPickFrom;
 NSMutableArray *gbl_selectedPeople_toShare;
 NSMutableArray *gbl_selectedGroups_toShare;
 
+
 NSMutableArray *gbl_selectedMembers_toAdd;
+
+NSMutableArray *gbl_corruptPer_toDel;
+NSMutableArray *gbl_corruptGrp_toDel;
+
 NSMutableArray *gbl_selectedMembers_toDel;
 NSInteger  gbl_justWroteMemberFile;  // 1=y,0=n
 NSInteger  gbl_justWrotePersonFile;  // 1=y,0=n
