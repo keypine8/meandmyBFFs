@@ -1054,7 +1054,7 @@
       @"~Lucas|4|20|1992|6|30|1|Santa Fe|New Mexico|United States||",
       @"~Mother|3|12|1965|10|45|0|Washington|District of Columbia|United States||",
       @"~Noah|12|19|1994|11|4|0|Sacramento|California|United States||",
-      @"~Olivia|4|13|1994|12|53|1|Hong Kong|Hong Kong|United States||",
+      @"~Olivia|4|13|1994|12|53|1|Hong Kong||Hong Kong||",
       @"~Sister|2|29|1988|12|30|1|Vancouver|British Columbia|United States||",
       @"~Sophia|9|20|1991|4|0|0|Los Angeles|California|United States||",
 
