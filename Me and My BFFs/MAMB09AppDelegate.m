@@ -31,7 +31,7 @@
 #import "MAMB09_UITextField_noCopyPaste.h"
 
 
-// ================================================================================= fff ================================
+// ================================================================================= fff = hhh  = iii ===================
 //          turning off logging for production    TURN OFF   DISABLE LOGGING
 // ======================================================================================================================
 //
@@ -966,7 +966,7 @@
     // set up initial value for    the  GOLD CURRENT DATE  for the whole app   (stored in #allpeople grp record fld 5,6,7 1-based)
     //
 //    NSString *lcl_recOfAllPeopleIhaveAdded = [ NSString stringWithFormat: @"%@||||2016|06|15||||||||", // 14 flds for misc
-    NSString *lcl_recOfAllPeopleIhaveAdded = [ NSString stringWithFormat: @"%@||yes||2017|05|29||||||||", 
+    NSString *lcl_recOfAllPeopleIhaveAdded = [ NSString stringWithFormat: @"%@||yes||2017|05|29||||||||", // FOR TEST
         gbl_nameOfGrpHavingAllPeopleIhaveAdded
     ]; // 14 flds for misc
 
@@ -1002,10 +1002,6 @@
     //     - in memory array gbl_arrayGrp, update #allpeople record containing new data 
     //     - write updated array gbl_arrayGrp to file
 
-//
-
-
-    
     // fld #3 (one-based) populates gbl_ExampleData_show;       // "yes"  OR  "no"
 
     //   gbl  gbl_ExampleData_show  is updated
@@ -1018,20 +1014,22 @@
     //     - as a side effect, in method gcy, when y,m,d is written to file when one of them changes 
 
 
-
-
-
     gbl_arrayExaGrp =   // field 1=name-of-group  field 2=locked-or-not
     @[
       lcl_recOfAllPeopleIhaveAdded,     // gbl_nameOfGrpHavingAllPeopleIhaveAdded
       @"~My Family||",
       @"~Swim Team||",
+//      @"||",
+//      @"~Swim Team too long too long||",
     ];
 
 
 
     gbl_arrayExaPer = // field 11= locked or not  DO NOT HAVE TO BE PRE-SORTED  (sorted on reading back into arrays)
     @[
+
+
+
 
 
 
@@ -1695,6 +1693,9 @@
 
     gbl_color_cAplDarkerBlue = [UIColor colorWithRed:000.0/255.0 green:096.0/255.0 blue:224.0/255.0 alpha:1.0];
 
+//    // official apl  color of chevron, plus sign etc    is  3,122,255
+//    gbl_color_bffsEmailAddress = [UIColor colorWithRed:003.0/255.0 green:122.0/255.0 blue:224.0/255.0 alpha:1.0];
+//
 
 //    gbl_color_cPerGreen1 = [UIColor colorWithRed:000.0/255.0 green:128.0/255.0 blue:255.0/255.0 alpha:1.0]; // 0080ff  (blue text, chevron)
 //    gbl_color_cPerGreen1 = [UIColor colorWithRed:144.0/255.0 green:200.0/255.0 blue:255.0/255.0 alpha:1.0]; //        (mid blue) 
@@ -2334,6 +2335,9 @@ tn();
 //    NSInteger gbl_MAX_persons;               // 250 max in app and max in group
 //    NSInteger gbl_MAX_personsInGroup;        // max 250 members in a Group
 //
+// 
+// new   2017713   data corruption test  silently deletes corrupt per  and  grp  (but logs)
+// 
 - (NSInteger) mambCheckForCorruptData
 {
 tn();
@@ -2350,6 +2354,12 @@ tn();
     int daysinmonth[12]     ={31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     int daysinmonth_leap[12]={31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
+
+    [gbl_corruptPer_toDel  removeAllObjects];
+     gbl_corruptPer_toDel = [[NSMutableArray alloc] init];
+    [gbl_corruptGrp_toDel  removeAllObjects];
+     gbl_corruptGrp_toDel = [[NSMutableArray alloc] init];
+        
 //ksn(C_allowedCharactersInCity);
 //trn("hey");
 //tn();
@@ -2391,14 +2401,24 @@ tn();
         //
         flds  = [psvGrp componentsSeparatedByCharactersInSet: mySeparators];
 
-        if (flds.count == 0)                                   return 100;   // s/b 3   or lots for "All People~"
+        if (flds.count == 0)                        // s/b 3   or lots for "All People~"
+        {
+            NSLog(@"gbl_corruptGrp_toDel  errnum=100 psvGrp=[%@] idx=%ld", psvGrp, [gbl_arrayGrp indexOfObject: psvGrp] );
+            [gbl_corruptGrp_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayGrp indexOfObject: psvGrp] ] ];        
+            continue;  
+        }
 
         fname    = flds[0];
        
         if ([fname isEqualToString: gbl_nameOfGrpHavingAllPeopleIhaveAdded]) // gbl_nameOfGrpHavingAllPeopleIhaveAdded; 
         {
             // do not do fld count check for all people
-            if (flds.count  < 10 )                                 return 101;   // s/b  gt 14,15 
+            if (flds.count  < 10 )                        // s/b  gt 14,15 
+            {
+                NSLog(@"gbl_corruptGrp_toDel  errnum=101 psvGrp=[%@] idx=%ld", psvGrp, [gbl_arrayGrp indexOfObject: psvGrp] );
+                [gbl_corruptGrp_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayGrp indexOfObject: psvGrp] ] ];        
+                continue;  
+            }
 
             //  the  GOLD CURRENT DATE  for the whole app  
             // (stored in #allpeople grp record fld 5,6,7 1-based) 
@@ -2408,41 +2428,121 @@ tn();
             NSString *curdy = flds[6];  // 7 1-based
 
             // check for invalid  current year fld in #allpeople
-            if (curyr.length != 4)                                 return 102;
+            if (curyr.length != 4)             
+            {
+                NSLog(@"gbl_corruptGrp_toDel  errnum=102 psvGrp=[%@] idx=%ld", psvGrp, [gbl_arrayGrp indexOfObject: psvGrp] );
+                [gbl_corruptGrp_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayGrp indexOfObject: psvGrp] ] ];        
+                continue;  
+            }
             constant_char = [curyr  cStringUsingEncoding: NSUTF8StringEncoding]; // NSString object to C str
             strcpy(cyr, constant_char);                                        // NSString object to C str  // because of const
-            if (sall(cyr, "0123456789") == 0)                      return 103;
-            if (atoi(cyr) < gbl_earliestYear)                      return 104;
+            if (sall(cyr, "0123456789") == 0)   
+            {
+                NSLog(@"gbl_corruptGrp_toDel  errnum=103 psvGrp=[%@] idx=%ld", psvGrp, [gbl_arrayGrp indexOfObject: psvGrp] );
+                [gbl_corruptGrp_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayGrp indexOfObject: psvGrp] ] ];        
+                continue;  
+            }
+            if (atoi(cyr) < gbl_earliestYear)          
+            {
+                NSLog(@"gbl_corruptGrp_toDel  errnum=104 psvGrp=[%@] idx=%ld", psvGrp, [gbl_arrayGrp indexOfObject: psvGrp] );
+                [gbl_corruptGrp_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayGrp indexOfObject: psvGrp] ] ];        
+                continue;  
+            }
 
             // check for invalid  current month fld in #allpeople
-            if (curmn.length < 1)                                  return 104;
-            if (curmn.length > 2)                                  return 105;
+            if (curmn.length < 1)                      
+            {
+                NSLog(@"gbl_corruptGrp_toDel  errnum=104b psvGrp=[%@] idx=%ld", psvGrp, [gbl_arrayGrp indexOfObject: psvGrp] );
+                [gbl_corruptGrp_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayGrp indexOfObject: psvGrp] ] ];        
+                continue;  
+            }
+            if (curmn.length > 2)                      
+            {
+                NSLog(@"gbl_corruptGrp_toDel  errnum=105 psvGrp=[%@] idx=%ld", psvGrp, [gbl_arrayGrp indexOfObject: psvGrp] );
+                [gbl_corruptGrp_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayGrp indexOfObject: psvGrp] ] ];        
+                continue;  
+            }
             constant_char = [curmn  cStringUsingEncoding: NSUTF8StringEncoding]; // NSString object to C str
             strcpy(cmth, constant_char);                                        // NSString object to C str  // because of const
-            if (sall(cmth, "0123456789") == 0)                     return 106;
-            if (atoi(cmth) <  1)                                   return 107;
-            if (atoi(cmth) > 12)                                   return 108;
+            if (sall(cmth, "0123456789") == 0)    
+            {
+                NSLog(@"gbl_corruptGrp_toDel  errnum=106 psvGrp=[%@] idx=%ld", psvGrp, [gbl_arrayGrp indexOfObject: psvGrp] );
+                [gbl_corruptGrp_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayGrp indexOfObject: psvGrp] ] ];        
+                continue;  
+            }
+            if (atoi(cmth) <  1)                       
+            {
+                NSLog(@"gbl_corruptGrp_toDel  errnum=107 psvGrp=[%@] idx=%ld", psvGrp, [gbl_arrayGrp indexOfObject: psvGrp] );
+                [gbl_corruptGrp_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayGrp indexOfObject: psvGrp] ] ];        
+                continue;  
+            }
+            if (atoi(cmth) > 12)                       
+            {
+                NSLog(@"gbl_corruptGrp_toDel  errnum=108 psvGrp=[%@] idx=%ld", psvGrp, [gbl_arrayGrp indexOfObject: psvGrp] );
+                [gbl_corruptGrp_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayGrp indexOfObject: psvGrp] ] ];        
+                continue;  
+            }
 
             // check for invalid current day fld in #allpeople
-            if (curdy.length < 1)                                  return 109;
-            if (curdy.length > 2)                                  return 110;
+            if (curdy.length < 1)                      
+            {
+                NSLog(@"gbl_corruptGrp_toDel  errnum=109 psvGrp=[%@] idx=%ld", psvGrp, [gbl_arrayGrp indexOfObject: psvGrp] );
+                [gbl_corruptGrp_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayGrp indexOfObject: psvGrp] ] ];        
+                continue;  
+            }
+            if (curdy.length > 2)                      
+            {
+                NSLog(@"gbl_corruptGrp_toDel  errnum=110 psvGrp=[%@] idx=%ld", psvGrp, [gbl_arrayGrp indexOfObject: psvGrp] );
+                [gbl_corruptGrp_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayGrp indexOfObject: psvGrp] ] ];        
+                continue;  
+            }
             constant_char = [curdy  cStringUsingEncoding: NSUTF8StringEncoding]; // NSString object to C str
             strcpy(cday, constant_char);                                        // NSString object to C str  // because of const
-            if (sall(cday, "0123456789") == 0)                     return 111;
-            if (atoi(cday) <  1)                                   return 112;
+            if (sall(cday, "0123456789") == 0)         
+            {
+                NSLog(@"gbl_corruptGrp_toDel  errnum=111 psvGrp=[%@] idx=%ld", psvGrp, [gbl_arrayGrp indexOfObject: psvGrp] );
+                [gbl_corruptGrp_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayGrp indexOfObject: psvGrp] ] ];        
+                continue;  
+            }
+            if (atoi(cday) <  1)                       
+            {
+                NSLog(@"gbl_corruptGrp_toDel  errnum=112 psvGrp=[%@] idx=%ld", psvGrp, [gbl_arrayGrp indexOfObject: psvGrp] );
+                [gbl_corruptGrp_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayGrp indexOfObject: psvGrp] ] ];        
+                continue;  
+            }
 
         } else {
             // do fld count check for other groups
-            if (flds.count !=  3)                                   return   1;   // s/b 3   
+            if (flds.count !=  3)                        // s/b 3   
+            {
+                NSLog(@"gbl_corruptGrp_toDel  errnum=1  psvGrp=[%@] idx=%ld", psvGrp, [gbl_arrayGrp indexOfObject: psvGrp] );
+                [gbl_corruptGrp_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayGrp indexOfObject: psvGrp] ] ];        
+                continue;  
+            }
         }
 
 
-        if (fname.length < 1)                                  return   2;
-        if (fname.length > gbl_MAX_lengthOfName)               return   3;
+        if (fname.length < 1)                         
+            {
+                NSLog(@"gbl_corruptGrp_toDel  errnum= 2 psvGrp=[%@] idx=%ld", psvGrp, [gbl_arrayGrp indexOfObject: psvGrp] );
+                [gbl_corruptGrp_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayGrp indexOfObject: psvGrp] ] ];        
+                continue;  
+            }
+        if (fname.length > gbl_MAX_lengthOfName)      
+            {
+                NSLog(@"gbl_corruptGrp_toDel  errnum= 3 psvGrp=[%@] idx=%ld", psvGrp, [gbl_arrayGrp indexOfObject: psvGrp] );
+                [gbl_corruptGrp_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayGrp indexOfObject: psvGrp] ] ];        
+                continue;  
+            }
 
         // check for invalid characters in name
         //
-        if ([fname canBeConvertedToEncoding:         NSUTF8StringEncoding] == NO) return 4;
+        if ([fname canBeConvertedToEncoding:         NSUTF8StringEncoding] == NO)
+            {
+                NSLog(@"gbl_corruptGrp_toDel  errnum= 4 psvGrp=[%@] idx=%ld", psvGrp, [gbl_arrayGrp indexOfObject: psvGrp] );
+                [gbl_corruptGrp_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayGrp indexOfObject: psvGrp] ] ];        
+                continue;  
+            }
         constant_char = [fname cStringUsingEncoding: NSUTF8StringEncoding]; // NSString object to C str
         strcpy(cname, constant_char);                                        // NSString object to C str  // because of const
 
@@ -2455,13 +2555,28 @@ tn();
 
         } else {
             if (cname[0] == '~') {      
-                if (sall(cname + 1, C_allowedCharactersInName) == 0) return   4;
+                if (sall(cname + 1, C_allowedCharactersInName) == 0)
+                {
+                    NSLog(@"gbl_corruptGrp_toDel  errnum= 4 psvGrp=[%@] idx=%ld", psvGrp, [gbl_arrayGrp indexOfObject: psvGrp] );
+                    [gbl_corruptGrp_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayGrp indexOfObject: psvGrp] ] ];        
+                    continue;  
+                }
             } else {
-                if (sall(cname,     C_allowedCharactersInName) == 0) return   5;
+                if (sall(cname,     C_allowedCharactersInName) == 0)
+                {
+                    NSLog(@"gbl_corruptGrp_toDel  errnum= 5 psvGrp=[%@] idx=%ld", psvGrp, [gbl_arrayGrp indexOfObject: psvGrp] );
+                    [gbl_corruptGrp_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayGrp indexOfObject: psvGrp] ] ];        
+                    continue;  
+                }
             }
         }
     }
-    if (numRecords <   2 )                                     return   6;  // 2 is MAGIC for the 2 example groups
+
+    if (numRecords <   2 )                      // 2 is MAGIC for the 2 example groups
+    {
+        NSLog(@"gbl_corruptGrp_toDel  errnum= 6 numRecords < 2    nothing to do here, they are gone" );
+        // nothing to do here, they are gone
+    }
 
 
     // It should not be possible to start with num groups > max groups
@@ -2474,11 +2589,30 @@ tn();
   NSLog(@"END   CHECK  group NAME");
 
 
+  NSLog(@"gbl_corruptGrp_toDel =[%@]", gbl_corruptGrp_toDel );
+  NSLog(@"todel.count =[%ld]",(long) gbl_corruptGrp_toDel.count );
+
+        // 
+        // Delete corrupt  gbl_array_Grp  by  going backwards from the highest index value to the lowest
+        //
+    for (int i = (int)gbl_corruptGrp_toDel.count - 1;  i >= 0 ;  i--) 
+    {
+       // delete this array element
+  NSLog(@"DELETED corrupt Grp gbl_arrayGrp index=[%ld]",(long) [gbl_corruptGrp_toDel[i] intValue] );
+       [gbl_arrayGrp removeObjectAtIndex: [gbl_corruptGrp_toDel[i] intValue] ]; 
+    } // for each gbl_arrayPer
+
+
+
+
+
 
   NSLog(@"BEG   CHECK  person");
     //      BEG   CHECK  person)";
     for (NSString *psvPer in gbl_arrayPer) {     // get PSV of arg name
-//  NSLog(@"psvPer =[%@]",psvPer );
+        NSInteger myIndex;
+
+  NSLog(@"psvPer =[%@]",psvPer );
         numRecords = numRecords + 1;
 
         // check for exactly 12 fields
@@ -2488,7 +2622,14 @@ tn();
         
 //  NSLog(@"flds=[%@]",flds);
 //  NSLog(@"flds.count=[%ld]",(long)flds.count);
-        if (flds.count != 12)                                 return  11;  
+
+//        if (flds.count != 12)                                 return  11;  
+        if (flds.count != 12)  
+        {
+            NSLog(@"gbl_corruptPer_toDel  errnum=11 psvPer=[%@] idx=%ld", psvPer, [gbl_arrayPer indexOfObject: psvPer] );
+            [gbl_corruptPer_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayPer indexOfObject: psvPer] ] ];        
+            continue;  
+        }
         
         fname    = flds[0];
         fmth     = flds[1];
@@ -2504,34 +2645,105 @@ tn();
 //  NSLog(@"fyr=[%@]",fyr);
 
         // check for invalid  name fld
-        if (fname.length < 1)                                  return  12;
-        if (fname.length > gbl_MAX_lengthOfName)               return  13;
+        if (fname.length < 1)                          
+        {
+            NSLog(@"gbl_corruptPer_toDel  errnum=12 psvPer=[%@] idx=%ld", psvPer, [gbl_arrayPer indexOfObject: psvPer] );
+            [gbl_corruptPer_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayPer indexOfObject: psvPer] ] ];        
+            continue;  
+        }
+
+//        {
+//            NSLog(@"(fname.length < 1)   errnum=12");
+//            NSLog(@"added to gbl_corruptPer_toDel myIndex =[%ld]",(long)myIndex);
+//            NSLog(@"added to gbl_corruptPer_toDel name  ! =[%@]",flds[0] );
+//            [gbl_corruptPer_toDel  addObject: [NSNumber numberWithInt: [gbl_arrayPer indexOfObject: psvPer] ] ];        
+//            continue;  
+//        }
+        
+        if (fname.length > gbl_MAX_lengthOfName)       
+        {
+            NSLog(@"gbl_corruptPer_toDel  errnum=13 psvPer=[%@] idx=%ld", psvPer, [gbl_arrayPer indexOfObject: psvPer] );
+            [gbl_corruptPer_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayPer indexOfObject: psvPer] ] ];        
+            continue;  
+        }
+
+
         constant_char = [fname  cStringUsingEncoding: NSUTF8StringEncoding]; // NSString object to C str
         strcpy(cname, constant_char);                                        // NSString object to C str  // because of const
         //
         if (cname[0] == '~') {        // ~ only legal as first char of name
-            if (sall(cname + 1, C_allowedCharactersInName) == 0) return  14;
+            if (sall(cname + 1, C_allowedCharactersInName) == 0)
+            {
+                NSLog(@"gbl_corruptPer_toDel  errnum=14 psvPer=[%@] idx=%ld", psvPer, [gbl_arrayPer indexOfObject: psvPer] );
+                [gbl_corruptPer_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayPer indexOfObject: psvPer] ] ];        
+                continue;  
+            }
         } else {
-            if (sall(cname,     C_allowedCharactersInName) == 0) return  15;
+            if (sall(cname,     C_allowedCharactersInName) == 0)
+            {
+                NSLog(@"gbl_corruptPer_toDel  errnum=15 psvPer=[%@] idx=%ld", psvPer, [gbl_arrayPer indexOfObject: psvPer] );
+                [gbl_corruptPer_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayPer indexOfObject: psvPer] ] ];        
+                continue;  
+            }
         }
 
 
         // check for invalid  month fld
-        if (fmth.length < 1)                                   return  16;
-        if (fmth.length > 2)                                   return  17;
+        if (fmth.length < 1)                      
+        {
+            NSLog(@"gbl_corruptPer_toDel  errnum=16 psvPer=[%@] idx=%ld", psvPer, [gbl_arrayPer indexOfObject: psvPer] );
+            [gbl_corruptPer_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayPer indexOfObject: psvPer] ] ];        
+            continue;  
+        }
+        if (fmth.length > 2)                      
+        {
+            NSLog(@"gbl_corruptPer_toDel  errnum=17 psvPer=[%@] idx=%ld", psvPer, [gbl_arrayPer indexOfObject: psvPer] );
+            [gbl_corruptPer_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayPer indexOfObject: psvPer] ] ];        
+            continue;  
+        }
         constant_char = [fmth  cStringUsingEncoding: NSUTF8StringEncoding]; // NSString object to C str
         strcpy(cmth, constant_char);                                        // NSString object to C str  // because of const
-        if (sall(cmth, "0123456789") == 0)                     return  18;
-        if (atoi(cmth) <  1)                                   return  19;
-        if (atoi(cmth) > 12)                                   return  20;
+        if (sall(cmth, "0123456789") == 0)        
+        {
+            NSLog(@"gbl_corruptPer_toDel  errnum=18 psvPer=[%@] idx=%ld", psvPer, [gbl_arrayPer indexOfObject: psvPer] );
+            [gbl_corruptPer_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayPer indexOfObject: psvPer] ] ];        
+            continue;  
+        }
+        if (atoi(cmth) <  1)                      
+        {
+            NSLog(@"gbl_corruptPer_toDel  errnum=19 psvPer=[%@] idx=%ld", psvPer, [gbl_arrayPer indexOfObject: psvPer] );
+            [gbl_corruptPer_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayPer indexOfObject: psvPer] ] ];        
+            continue;  
+        }
+        if (atoi(cmth) > 12)                      
+        {
+            NSLog(@"gbl_corruptPer_toDel  errnum=20 psvPer=[%@] idx=%ld", psvPer, [gbl_arrayPer indexOfObject: psvPer] );
+            [gbl_corruptPer_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayPer indexOfObject: psvPer] ] ];        
+            continue;  
+        }
 
         // check for invalid  year fld
-        if (fyr.length != 4)                                   return  21;
+        if (fyr.length != 4)                      
+        {
+            NSLog(@"gbl_corruptPer_toDel  errnum=21 psvPer=[%@] idx=%ld", psvPer, [gbl_arrayPer indexOfObject: psvPer] );
+            [gbl_corruptPer_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayPer indexOfObject: psvPer] ] ];        
+            continue;  
+        }
         constant_char = [fyr  cStringUsingEncoding: NSUTF8StringEncoding]; // NSString object to C str
         strcpy(cyr, constant_char);                                        // NSString object to C str  // because of const
 //ksn(cyr);
-        if (sall(cyr, "0123456789") == 0)                      return  22;
-        if (atoi(cyr) < gbl_earliestYear)                      return  23;
+        if (sall(cyr, "0123456789") == 0)         
+        {
+            NSLog(@"gbl_corruptPer_toDel  errnum=22 psvPer=[%@] idx=%ld", psvPer, [gbl_arrayPer indexOfObject: psvPer] );
+            [gbl_corruptPer_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayPer indexOfObject: psvPer] ] ];        
+            continue;  
+        }
+        if (atoi(cyr) < gbl_earliestYear)         
+        {
+            NSLog(@"gbl_corruptPer_toDel  errnum=23 psvPer=[%@] idx=%ld", psvPer, [gbl_arrayPer indexOfObject: psvPer] );
+            [gbl_corruptPer_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayPer indexOfObject: psvPer] ] ];        
+            continue;  
+        }
 
 
         // gbl_currentYearInt  is not set yet from gcy   nothing to check it against
@@ -2541,63 +2753,180 @@ tn();
 
 
         // check for invalid  day fld
-        if (fday.length < 1)                                   return  25;
-        if (fday.length > 2)                                   return  26;
+        if (fday.length < 1)                      
+        {
+            NSLog(@"gbl_corruptPer_toDel  errnum=25 psvPer=[%@] idx=%ld", psvPer, [gbl_arrayPer indexOfObject: psvPer] );
+            [gbl_corruptPer_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayPer indexOfObject: psvPer] ] ];        
+            continue;  
+        }
+        if (fday.length > 2)                      
+        {
+            NSLog(@"gbl_corruptPer_toDel  errnum=26 psvPer=[%@] idx=%ld", psvPer, [gbl_arrayPer indexOfObject: psvPer] );
+            [gbl_corruptPer_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayPer indexOfObject: psvPer] ] ];        
+            continue;  
+        }
         constant_char = [fday  cStringUsingEncoding: NSUTF8StringEncoding]; // NSString object to C str
         strcpy(cday, constant_char);                                        // NSString object to C str  // because of const
-        if (sall(cday, "0123456789") == 0)                     return  27;
-        if (atoi(cday) <  1)                                   return  28;
+        if (sall(cday, "0123456789") == 0)        
+        {
+            NSLog(@"gbl_corruptPer_toDel  errnum=27 psvPer=[%@] idx=%ld", psvPer, [gbl_arrayPer indexOfObject: psvPer] );
+            [gbl_corruptPer_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayPer indexOfObject: psvPer] ] ];        
+            continue;  
+        }
+        if (atoi(cday) <  1)                      
+        {
+            NSLog(@"gbl_corruptPer_toDel  errnum=28 psvPer=[%@] idx=%ld", psvPer, [gbl_arrayPer indexOfObject: psvPer] );
+            [gbl_corruptPer_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayPer indexOfObject: psvPer] ] ];        
+            continue;  
+        }
 
         //
         if (    atoi(cyr) % 400 == 0                            //  invalid day of month
             || (atoi(cyr) % 100 != 0  &&  atoi(cyr) % 4 == 0))  // if leap year
         {
-
-            if (atoi(cday) > daysinmonth_leap[ atoi(cmth) - 1] )   return  29;   // -1 because array is 0-based
+            if (atoi(cday) > daysinmonth_leap[ atoi(cmth) - 1] )    // -1 because array is 0-based
+            {
+                NSLog(@"gbl_corruptPer_toDel  errnum=29 psvPer=[%@] idx=%ld", psvPer, [gbl_arrayPer indexOfObject: psvPer] );
+                [gbl_corruptPer_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayPer indexOfObject: psvPer] ] ];        
+                continue;  
+            }
         } else {
-            if (atoi(cday) > daysinmonth     [ atoi(cmth) - 1])   return  30;
+            if (atoi(cday) > daysinmonth     [ atoi(cmth) - 1])  
+            {
+                NSLog(@"gbl_corruptPer_toDel  errnum=30 psvPer=[%@] idx=%ld", psvPer, [gbl_arrayPer indexOfObject: psvPer] );
+                [gbl_corruptPer_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayPer indexOfObject: psvPer] ] ];        
+                continue;  
+            }
         }
 
 
         // check for invalid  hr fld
-        if (fhr.length < 1)                                    return  31;
-        if (fhr.length > 2)                                    return  32;
+        if (fhr.length < 1)                       
+        {
+            NSLog(@"gbl_corruptPer_toDel  errnum=31 psvPer=[%@] idx=%ld", psvPer, [gbl_arrayPer indexOfObject: psvPer] );
+            [gbl_corruptPer_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayPer indexOfObject: psvPer] ] ];        
+            continue;  
+        }
+        if (fhr.length > 2)                        
+        {
+            NSLog(@"gbl_corruptPer_toDel  errnum=32 psvPer=[%@] idx=%ld", psvPer, [gbl_arrayPer indexOfObject: psvPer] );
+            [gbl_corruptPer_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayPer indexOfObject: psvPer] ] ];        
+            continue;  
+        }
         constant_char = [fhr  cStringUsingEncoding: NSUTF8StringEncoding]; // NSString object to C str
         strcpy(chr, constant_char);                                        // NSString object to C str  // because of const
 //ksn(chr);
-        if (sall(chr, "0123456789") == 0)                      return  33;
+        if (sall(chr, "0123456789") == 0) 
+        {
+            NSLog(@"gbl_corruptPer_toDel  errnum=33 psvPer=[%@] idx=%ld", psvPer, [gbl_arrayPer indexOfObject: psvPer] );
+            [gbl_corruptPer_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayPer indexOfObject: psvPer] ] ];        
+            continue;  
+        }
 
-        if (atoi(chr) <  1)                                    return  34; // valid vals= 01 to 12
+        if (atoi(chr) <  1)                       // valid vals= 01 to 12
+        {
+            NSLog(@"gbl_corruptPer_toDel  errnum=34 psvPer=[%@] idx=%ld", psvPer, [gbl_arrayPer indexOfObject: psvPer] );
+            [gbl_corruptPer_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayPer indexOfObject: psvPer] ] ];        
+            continue;  
+        }
+
 //        if (atoi(chr) <  1)         {
 //  NSLog(@"psvPer=[%@]",psvPer);
 //            return  31; // valid vals= 01 to 12
 //        }
 
-        if (atoi(chr) > 12)                                    return  35; // valid vals= 01 to 12
+        if (atoi(chr) > 12)                        // valid vals= 01 to 12
+        {
+            NSLog(@"gbl_corruptPer_toDel  errnum=35 psvPer=[%@] idx=%ld", psvPer, [gbl_arrayPer indexOfObject: psvPer] );
+            [gbl_corruptPer_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayPer indexOfObject: psvPer] ] ];        
+            continue;  
+        }
 //        if (atoi(chr) <  0)                                    return  31; // valid vals= 00 to 11
 //        if (atoi(chr) > 11)                                    return  32;
 
 
         // check for invalid  min fld
-        if (fmin.length < 1)                                   return  36;
-        if (fmin.length > 2)                                   return  37;
+        if (fmin.length < 1)                      
+        {
+            NSLog(@"gbl_corruptPer_toDel  errnum=36 psvPer=[%@] idx=%ld", psvPer, [gbl_arrayPer indexOfObject: psvPer] );
+            [gbl_corruptPer_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayPer indexOfObject: psvPer] ] ];        
+            continue;  
+        }
+        if (fmin.length > 2)                      
+        {
+            NSLog(@"gbl_corruptPer_toDel  errnum=37 psvPer=[%@] idx=%ld", psvPer, [gbl_arrayPer indexOfObject: psvPer] );
+            [gbl_corruptPer_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayPer indexOfObject: psvPer] ] ];        
+            continue;  
+        }
         constant_char = [fmin  cStringUsingEncoding: NSUTF8StringEncoding]; // NSString object to C str
         strcpy(cmin, constant_char);                                        // NSString object to C str  // because of const
-        if (sall(cmin, "0123456789") == 0)                     return  38;
-        if (atoi(cmin) <  0)                                   return  39;
-        if (atoi(cmin) > 59)                                   return  40;
+        if (sall(cmin, "0123456789") == 0)        
+        {
+            NSLog(@"gbl_corruptPer_toDel  errnum=38 psvPer=[%@] idx=%ld", psvPer, [gbl_arrayPer indexOfObject: psvPer] );
+            [gbl_corruptPer_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayPer indexOfObject: psvPer] ] ];        
+            continue;  
+        }
+        if (atoi(cmin) <  0)  
+        {
+            NSLog(@"gbl_corruptPer_toDel  errnum=39 psvPer=[%@] idx=%ld", psvPer, [gbl_arrayPer indexOfObject: psvPer] );
+            [gbl_corruptPer_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayPer indexOfObject: psvPer] ] ];        
+            continue;  
+        }
+        if (atoi(cmin) > 59)                      
+        {
+            NSLog(@"gbl_corruptPer_toDel  errnum=40 psvPer=[%@] idx=%ld", psvPer, [gbl_arrayPer indexOfObject: psvPer] );
+            [gbl_corruptPer_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayPer indexOfObject: psvPer] ] ];        
+            continue;  
+        }
 
 
         // check for invalid  am/pm (0/1) fld
-        if (fampm.length != 1)                                 return  41;
+        if (fampm.length != 1)                    
+        {
+            NSLog(@"gbl_corruptPer_toDel  errnum=41 psvPer=[%@] idx=%ld", psvPer, [gbl_arrayPer indexOfObject: psvPer] );
+            [gbl_corruptPer_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayPer indexOfObject: psvPer] ] ];        
+            continue;  
+        }
         constant_char = [fampm  cStringUsingEncoding: NSUTF8StringEncoding]; // NSString object to C str
         strcpy(campm, constant_char);                                        // NSString object to C str  // because of const
-        if (sall(campm, "0123456789") == 0)                    return  42;
-        if (atoi(campm) <  0)                                  return  43;
-        if (atoi(campm) >  1)                                  return  44;
+        if (sall(campm, "0123456789") == 0)       
+        {
+            NSLog(@"gbl_corruptPer_toDel  errnum=42 psvPer=[%@] idx=%ld", psvPer, [gbl_arrayPer indexOfObject: psvPer] );
+            [gbl_corruptPer_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayPer indexOfObject: psvPer] ] ];        
+            continue;  
+        }
+        if (atoi(campm) <  0)                     
+        {
+            NSLog(@"gbl_corruptPer_toDel  errnum=43 psvPer=[%@] idx=%ld", psvPer, [gbl_arrayPer indexOfObject: psvPer] );
+            [gbl_corruptPer_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayPer indexOfObject: psvPer] ] ];        
+            continue;  
+        }
+        if (atoi(campm) >  1)                     
+        {
+            NSLog(@"gbl_corruptPer_toDel  errnum=44 psvPer=[%@] idx=%ld", psvPer, [gbl_arrayPer indexOfObject: psvPer] );
+            [gbl_corruptPer_toDel  addObject: [NSNumber numberWithInt: (int) [gbl_arrayPer indexOfObject: psvPer] ] ];        
+            continue;  
+        }
 
     }
   NSLog(@"END   CHECK  person");
+
+
+
+  NSLog(@"gbl_corruptPer_toDel =[%@]", gbl_corruptPer_toDel );
+  NSLog(@"todel.count =[%ld]",(long) gbl_corruptPer_toDel.count );
+
+        // 
+        // Delete corrupt  gbl_array_Per  by  going backwards from the highest index value to the lowest
+        //
+    for (int i = (int)gbl_corruptPer_toDel.count - 1;  i >= 0 ;  i--) 
+    {
+       // delete this array element
+  NSLog(@"DELETED corrupt Per gbl_arrayPer index=[%ld]",(long) [gbl_corruptPer_toDel[i] intValue] );
+       [gbl_arrayPer removeObjectAtIndex: [gbl_corruptPer_toDel[i] intValue] ]; 
+    } // for each gbl_arrayPer
+
+
 
 
 
