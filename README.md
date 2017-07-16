@@ -197,4 +197,4 @@ from jan - dec instead of 2 graphs jan - jun and jul - dec.  Too wide.
 
 ## History
   This project was a hobby effort done at home on evenings and weekends.
-  It spanned a many years from K&R C code project to iPhone app.
+  It spanned many years from K&R C code project to iPhone app.
