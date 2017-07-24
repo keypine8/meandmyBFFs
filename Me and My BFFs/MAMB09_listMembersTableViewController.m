@@ -28,7 +28,7 @@
 
 #import "MAMB09_listMembersTableViewController.h"
 #import "mamblib.h"
-#import "MAMB09AppDelegate.h"   // to get globals   bbb
+#import "MAMB09AppDelegate.h"   // to get globals   bbb ccc
 
 @interface MAMB09_listMembersTableViewController ()
 
@@ -60,10 +60,14 @@ CGFloat myCurrentStatusbarHeight;
 tn();
     NSLog(@"in LIST MEMBEFRS   viewDidLoad!");
 
+//    self.automaticallyAdjustsScrollViewInsets = YES;
+
+
 //    gbl_justLeftMemberAddorDelScreen  = 0;
 
 //    [self.tableView setBackgroundColor: gbl_colorReportsBG];
     [self.tableView setBackgroundColor: gbl_colorEditingBG ];
+
 
 
 //    self.tableView.allowsSelection = NO;   // see shouldHighlightRowAtIndexPath just below
@@ -360,6 +364,11 @@ trn("populate mbrs");
             gbl_listMemberToolbar_y = gbl_toolbarMemberAddDel.frame.origin.y ;
   NSLog(@"gbl_listMemberToolbar_y =[%f]",gbl_listMemberToolbar_y );
   
+
+    UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, CGRectGetHeight(gbl_toolbarMemberAddDel.frame), 0);
+    self.tableView.contentInset = adjustForTabbarInsets;
+    self.tableView.scrollIndicatorInsets = adjustForTabbarInsets;
+
   } // end of set Member  Toolbar at bottom of screen
 
 } // end of   viewWillAppear
@@ -471,7 +480,42 @@ NSLog(@"in viewDidAppear()  in list  members");
     MAMB09AppDelegate *myappDelegate = (MAMB09AppDelegate *)[[UIApplication sharedApplication] delegate]; // for gbl methods in appDelegate.m
     [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.0 ];    // after arg seconds
 
+
+// what if > 1 selected ?   cannot scroll to a row
+//
+//  NSLog(@"gbl_IdxPathSaved_SelPerson =[%@]",gbl_IdxPathSaved_SelPerson  );
+//  NSLog(@"gbl_userSpecifiedPersonName =[%@]", gbl_userSpecifiedPersonName );
+//
+//
+//            // search through tableview source data (gbl_arrayNewMembersToPickFrom) 
+//            // to get
+//            // the rownum of gbl_userSpecifiedPersonName 
+//            //
+//            int myRowNum;
+//            myRowNum = -1 ;
+//            for (id myNewMemberRec in gbl_arrayMembersToDisplay ) {
+//                myRowNum = myRowNum + 1;
+//                
+//                if ([myNewMemberRec isEqualToString: gbl_userSpecifiedPersonName ]) break;
+//
+//            }
+//  NSLog(@"myRowNum =[%i]", myRowNum );
+//
+//            // if myRowNum is found,  scroll to it
+//            //
+//            if (myRowNum != -1) {
+//                NSIndexPath *previouslySelectedPersonIdxPath = [NSIndexPath  indexPathForRow: myRowNum  inSection: 0 ]; 
+//
+//                [self.tableView scrollToRowAtIndexPath: previouslySelectedPersonIdxPath
+////                                      atScrollPosition: UITableViewScrollPositionMiddle
+//                                      atScrollPosition: UICollectionViewScrollPositionTop
+//                                              animated: NO
+//                ];
+//            }
+//
+
 } // viewDidAppear
+
 
 
 - (IBAction)pressedGreenPlusAdd
