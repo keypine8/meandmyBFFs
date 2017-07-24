@@ -28,7 +28,7 @@
 
 #import "MAMB09_selNewMembersTableViewController.h"
 #import "mamblib.h"
-#import "MAMB09AppDelegate.h"   // to get globals
+#import "MAMB09AppDelegate.h"   // to get globals    bbb
 
 @interface MAMB09_selNewMembersTableViewController ()
 
@@ -322,7 +322,35 @@ NSLog(@"in viewDidAppear()");
     [myappDelegate mamb_endIgnoringInteractionEvents_after: 0.0 ];    // after arg seconds
                                                     
 //  NSLog(@"gbl_arrayMem in viewdidappear =[%@]",gbl_arrayMem );
-NSLog(@"in viewDidAppear()");
+
+  NSLog(@"gbl_IdxPathSaved_SelPerson =[%@]",gbl_IdxPathSaved_SelPerson  );
+  NSLog(@"gbl_userSpecifiedPersonName =[%@]", gbl_userSpecifiedPersonName );
+
+
+            // search through tableview source data (gbl_arrayNewMembersToPickFrom) 
+            // to get
+            // the rownum of gbl_userSpecifiedPersonName 
+            //
+            int myRowNum;
+            myRowNum = -1 ;
+            for (id myNewMemberRec in gbl_arrayNewMembersToPickFrom ) {
+                myRowNum = myRowNum + 1;
+                
+                if ([myNewMemberRec isEqualToString: gbl_userSpecifiedPersonName ]) break;
+
+            }
+  NSLog(@"myRowNum =[%i]", myRowNum );
+
+            // if myRowNum is found,  scroll to it
+            //
+            if (myRowNum != -1) {
+                NSIndexPath *previouslySelectedPersonIdxPath = [NSIndexPath  indexPathForRow: myRowNum  inSection: 0 ]; 
+
+                [self.tableView scrollToRowAtIndexPath: previouslySelectedPersonIdxPath
+                                      atScrollPosition: UITableViewScrollPositionMiddle
+                                              animated: NO
+                ];
+            }
 } // end of viewDidAppear
 
 
