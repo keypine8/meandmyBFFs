@@ -1684,11 +1684,14 @@ NSLog(@"currentScreenWidthHeight.height =%f",currentScreenWidthHeight.height );
 //nbn(357);
 //    [self doStuff_2_OnEnteringForeground];  // position highlight
 
+
 nbn(358);
-    if (   [gbl_fromHomeCurrentSelectionType isEqualToString: @"group" ] )
-    {
+// put up name keyboard for person ALSO  - not just group
+//    if (   [gbl_fromHomeCurrentSelectionType isEqualToString: @"group" ] )
+//    {
         [gbl_myname becomeFirstResponder];
-    }
+//    }
+
 
 
     [self disp_gblsWithLabel: @"end of ViewDidLoad" ];
