@@ -5421,8 +5421,10 @@ nbn(3);
                 // here info is missing
                 NSString *missingMsg;
                 
-                if (member_cnt == 0) missingMsg = [ NSString stringWithFormat:
-                    @"A group report needs\nat least 2 members.\n\nGroup \"%@\" has %ld members.",
+                if (member_cnt < 2) missingMsg = [ NSString stringWithFormat:
+//                    @"A group report needs\nat least 2 members.\n\nGroup \"%@\" has %ld members.",
+                    @"A group report needs\nat least 2 members.\n\nNumber of members in\nGroup \"%@\" is %ld.",
+                                 
                     gbl_lastSelectedGroup, (long)member_cnt
                 ];
     //            UIAlertController* myAlert = [UIAlertController alertControllerWithTitle: @"Need more Group Members"
