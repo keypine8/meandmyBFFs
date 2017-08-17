@@ -29,7 +29,7 @@
 #import "MAMB09_info_TableViewController.h"
 #import "MAMB09_viewHTMLViewController.h"
 #import "mamblib.h"
-#import "MAMB09AppDelegate.h"   // to get globals   ppp  rrr  sss ttt uuu vvv www xxx yyy zzz
+#import "MAMB09AppDelegate.h"   // to get globals   ppp  rrr  sss ttt uuu vvv www xxx yyy zzz aaa
 
 @interface MAMB09_info_TableViewController ()
 
@@ -336,7 +336,8 @@ tn();
 nbn(1);
         gbl_helpScreenDescription = @"HOME";
 
-        myNavBarLabel.text                      = @"Me and my BFFS ";
+//        myNavBarLabel.text                      = @"Me and my BFFS ";
+        myNavBarLabel.text                      = gbl_appName;
         myNavBarLabel.adjustsFontSizeToFitWidth = YES;
         [myNavBarLabel sizeToFit];
 
@@ -4173,7 +4174,8 @@ cell.textLabel.text          = @"The \"Closeness\" category is useful because it
             paragraphStyle.headIndent               = mySizeTwoCharsIndent;
 
             NSAttributedString *myAttributedStr = [ [NSAttributedString alloc] initWithString:
-@"The special group #allpeople is a group that holds all the people you have added to Me and My BFFs.\n\nGroup #allpeople lets you quickly get a Best Match or other group report for every person you have added.\n\nPeople that you add or delete in the app are automatically added to or deleted from the group #allpeople."
+//@"The special group #allpeople is a group that holds all the people you have added to Me and My BFFs.\n\nGroup #allpeople lets you quickly get a Best Match or other group report for every person you have added.\n\nPeople that you add or delete in the app are automatically added to or deleted from the group #allpeople."
+@"The special group #allpeople is a group that holds all the people you have added to this app.\n\nGroup #allpeople lets you quickly get a Best Match or other group report for every person you have added.\n\nPeople that you add or delete in the app are automatically added to or deleted from the group #allpeople."
                 attributes: @{ NSParagraphStyleAttributeName: paragraphStyle }
             ];
 
@@ -4336,7 +4338,8 @@ cell.textLabel.text          = @"The \"Closeness\" category is useful because it
 // 20170514  remove mention of sharing groups  import ing groups exportin groups
 //@"\u2022 To have fun, get \"Me and my BFFs\" together and use this app.\n\u2022 To send ANY REPORT as an email attachment, tap the Share icon (box with arrow coming out) when viewing the report."
 
-@"\u2022 To have fun, get \"Me and my BFFs\" together and use this app.\n\u2022 To send ANY REPORT as an email attachment, tap the Share icon (box with arrow coming out) when viewing the report.\n\u2022 To add a new person, tap \"People\" > tap \"+\".\n\u2022 To add a new group , tap \"Groups\" > tap \"+\"."
+//@"\u2022 To have fun, get \"Me and my BFFs\" together and use this app.\n\u2022 To send ANY REPORT as an email attachment, tap the Share icon (box with arrow coming out) when viewing the report.\n\u2022 To add a new person, tap \"People\" > tap \"+\".\n\u2022 To add a new group , tap \"Groups\" > tap \"+\"."
+@"\u2022 To have fun, get 3 or 4 of your BFFs together and use this app.\n\u2022 To send ANY REPORT as an email attachment, tap the Share icon (box with arrow coming out) when viewing the report.\n\u2022 To add a new person, tap \"People\" > tap \"+\".\n\u2022 To add a new group , tap \"Groups\" > tap \"+\"."
 
 
 
@@ -4979,14 +4982,19 @@ tn();    NSLog(@"in pressedEmail_UsButton!  in INFO   ");
 
     NSString *myEmailMessage;
     
-    myEmailMessage = @"Hi,\n\nI am in iPhone app \"Me and my BFFs\" and here is my comment or question:\n\n";
+//    myEmailMessage = @"Hi,\n\nI am in iPhone app \"Me and my BFFs\" and here is my comment or question:\n\n";
+    myEmailMessage = [NSString stringWithFormat:
+        @"Hi,\n\nI am in iPhone app \"%@\" and here is my comment or question:\n\n", 
+        gbl_appName
+    ];
 
     NSLog(@"myEmailMessage=%@",myEmailMessage);
 
     
     //   NSArray *toRecipents = [NSArray arrayWithObject:@"ijfo@jldks.com"];
-    NSArray *toRecipients = [NSArray arrayWithObjects:@"meandmybffs@funnestastrology.com", nil];  //  user types it in
-//    NSArray *toRecipients = [NSArray arrayWithObjects:@"other51@sympatico.ca", nil];  //  user types it in
+//    NSArray *toRecipients = [NSArray arrayWithObjects:@"meandmybffs@funnestastrology.com", nil];  //  user types it in
+    NSArray *toRecipients = [NSArray arrayWithObjects: gbl_emailAddressForFeedback, nil ];  //  user types it in
+
 
     
     if ([MFMailComposeViewController canSendMail])
