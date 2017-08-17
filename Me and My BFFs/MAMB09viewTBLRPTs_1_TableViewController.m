@@ -29,7 +29,7 @@
 #import "MAMB09viewTBLRPTs_1_TableViewController.h"
 #import "MAMB09_viewHTMLViewController.h"
 #import "mamblib.h"
-#import "MAMB09AppDelegate.h"   // to get globals   hhh iii
+#import "MAMB09AppDelegate.h"   // to get globals   hhh iii jjj
 
 
 @interface MAMB09viewTBLRPTs_1_TableViewController ()
@@ -2777,7 +2777,9 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
             myDisplayString = [myPlusesBase substringWithRange: NSMakeRange( 40 - numflds, 40) ];
 //  NSLog(@"starnew myDisplayString =[%@]",myDisplayString );
 
-            myDisplayString = [NSString stringWithFormat: @"%@%@%@", @"     ", myDisplayString, @"     "];   // prepend + append 5 spaces
+//            myDisplayString = [NSString stringWithFormat: @"%@%@%@", @"     ", myDisplayString, @"     "];   // prepend + append 5 spaces
+            myDisplayString = [NSString stringWithFormat: @"%@%@%@", @"     ", myDisplayString, @"++++++"];   // prepend + append 5 spaces
+
 //nbn(1);  // hung when gbl_bgColor_brownHdr set to other gbl_color in appdel .m
 //NSRange myrang;
 //myrang = NSMakeRange(  0, 40 + 5 + 5 );
@@ -2796,8 +2798,11 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
 
            [myDisplayStringAttributed addAttribute: NSBackgroundColorAttributeName
                                              value: [UIColor whiteColor]
+//                                             range: NSMakeRange(  0, 40 + 5 + 5)
                                              range: NSMakeRange(  0, 40 + 5 + 5)
             ];
+  NSLog(@"myDisplayStringAttributed -1=[%@]", myDisplayStringAttributed  );
+
 //  NSLog(@"myDisplayStringAttributed =[%@]",myDisplayStringAttributed );
 //nbn(2);
 //myrang = NSMakeRange(  0, 5);
@@ -2816,6 +2821,7 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
                                              value: gbl_bgColor_brownHdr
                                              range: NSMakeRange(  0,  5)
             ];
+  NSLog(@"myDisplayStringAttributed -2=[%@]", myDisplayStringAttributed  );
 //                                             range: NSMakeRange(  myloc,  mylen)
 //                                             range: (NSRange) myrang
 //                                             range: NSMakeRange(  0,  5)
@@ -2823,39 +2829,71 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
                                              value: gbl_color_cGre
                                              range: NSMakeRange(  0 + 5, numflds)
             ];
+  NSLog(@"myDisplayStringAttributed -3=[%@]", myDisplayStringAttributed  );
            [myDisplayStringAttributed addAttribute: NSBackgroundColorAttributeName
                                              value: gbl_bgColor_brownHdr
                                              range: NSMakeRange( 40 + 5,  5)
             ];
+  NSLog(@"myDisplayStringAttributed -4=[%@]", myDisplayStringAttributed  );
             // [string addAttribute:NSForegroundColorAttributeName value:[UIColor greenColor] range:NSMakeRange(5,6)];
-        }
+
+           [myDisplayStringAttributed addAttribute: NSForegroundColorAttributeName
+                                             value: gbl_bgColor_brownHdr
+                                             range: NSMakeRange( 40 + 5,  5)
+            ];
+  NSLog(@"myDisplayStringAttributed -5=[%@]", myDisplayStringAttributed  );
+
+        } // end of pluses
+
+
 
         flds    = [mylin componentsSeparatedByString: @"-"];
         numflds = [flds count] -1;
         if (numflds > 0) {  // got minuses here
             myDisplayString = [myMinusesBase substringWithRange: NSMakeRange( 40 - numflds, 40) ];
 
-            myDisplayString = [NSString stringWithFormat: @"%@%@%@", @"     ", myDisplayString, @"     "];   // prepend + append 5 spaces
+//            myDisplayString = [NSString stringWithFormat: @"%@%@%@", @"     ", myDisplayString, @"     "];   // prepend + append 5 spaces
+            myDisplayString = [NSString stringWithFormat: @"%@%@%@", @"     ", myDisplayString, @"-----"];   // prepend + append 5 spaces
 
             myDisplayStringAttributed = [[NSMutableAttributedString alloc] initWithString: myDisplayString ];
+
+  NSLog(@"myDisplayStringAttributed 1=[%@]", myDisplayStringAttributed  );
+
            [myDisplayStringAttributed addAttribute: NSBackgroundColorAttributeName
                                              value: [UIColor whiteColor]
                                              range: NSMakeRange(  0, 40 + 5 + 5)
             ];
+  NSLog(@"myDisplayStringAttributed 2=[%@]", myDisplayStringAttributed  );
            [myDisplayStringAttributed addAttribute: NSBackgroundColorAttributeName
 //                                             value: gbl_colorHomeBG_grp
                                              value: gbl_bgColor_brownHdr
                                              range: NSMakeRange(  0,  5)
             ];
+  NSLog(@"myDisplayStringAttributed 3=[%@]", myDisplayStringAttributed  );
            [myDisplayStringAttributed addAttribute: NSBackgroundColorAttributeName
                                              value: gbl_color_cRed
                                              range: NSMakeRange(  0 + 5, numflds)
             ];
+  NSLog(@"myDisplayStringAttributed 4=[%@]", myDisplayStringAttributed  );
+
+
+//<.>
+//<.>
            [myDisplayStringAttributed addAttribute: NSBackgroundColorAttributeName
-//                                             value: gbl_colorHomeBG_grp
                                              value: gbl_bgColor_brownHdr
                                              range: NSMakeRange( 40 + 5,  5)
             ];
+  NSLog(@"myDisplayStringAttributed 5=[%@]", myDisplayStringAttributed  );
+
+           [myDisplayStringAttributed addAttribute: NSForegroundColorAttributeName
+                                             value: gbl_bgColor_brownHdr
+                                             range: NSMakeRange( 40 + 5,  5)
+            ];
+  NSLog(@"myDisplayStringAttributed 6=[%@]", myDisplayStringAttributed  );
+//<.>
+
+//<.>
+
         }
 
 
@@ -3419,10 +3457,14 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
         {  // 2 of 3 FOOTER CELLS
 //trn("// 2 of 3 FOOTER CELLS");
 
+            NSString *producedByText   = [NSString stringWithFormat: @"        Produced by iPhone App %@   ",
+                gbl_appName
+            ];
+
             //        myNewCellText                = @"     Produced by iPhone App Me and my BFFs   ";
             NSAttributedString *myNewCellAttributedText1 = [
-                [NSAttributedString alloc] initWithString: @"        Produced by iPhone App Me and my BFFs   "
-//                                               attributes: @{            NSFontAttributeName : [UIFont systemFontOfSize:11.0f] }
+//                [NSAttributedString alloc] initWithString: @"        Produced by iPhone App Me and my BFFs   "
+                [NSAttributedString alloc] initWithString: producedByText  
                                                attributes: @{            NSFontAttributeName : myFont_12 }
             ];
 
@@ -4222,6 +4264,11 @@ kin((int)gbl_numLeadingSpacesToRemove );
 //    gbl_color_cHed  = [UIColor colorWithRed:252.0/255.0 green:252.0/255.0 blue:224.0/255.0 alpha:1.0]; // fcfce0
                 };
             
+
+            NSString *producedByText   = [NSString stringWithFormat: @"        Produced by iPhone App %@   ",
+                gbl_appName
+            ];
+
             if ([gbl_currentMenuPlusReportCode hasPrefix: @"homgm"]  )  // only MOST trait reports
             {
 //                myNewCellAttributedText1 = [
@@ -4235,14 +4282,16 @@ kin((int)gbl_numLeadingSpacesToRemove );
 
 
                 myNewCellAttributedText1 = [
-                    [NSMutableAttributedString alloc] initWithString:  @"Produced by iPhone App Me and my BFFs"
-                                                           attributes: myNeededAttribs    
+//                    [NSMutableAttributedString alloc] initWithString:  @"Produced by iPhone App Me and my BFFs"
+                    [NSMutableAttributedString alloc] initWithString:  producedByText 
+                                                          attributes: myNeededAttribs    
                 ];
 
             } else {
                 myNewCellAttributedText1 = [
-                    [NSMutableAttributedString alloc] initWithString: @"Produced by iPhone App Me and my BFFs"
-                                                           attributes: myNeededAttribs    
+//                    [NSMutableAttributedString alloc] initWithString: @"Produced by iPhone App Me and my BFFs"
+                    [NSMutableAttributedString alloc] initWithString:  producedByText 
+                                                          attributes: myNeededAttribs    
                 ];
 
             }
@@ -7625,6 +7674,8 @@ NSLog(@"gbl_pathToFileToBeEmailed2=[%@]", gbl_pathToFileToBeEmailed );
         ];  
 
 
+  NSLog(@"gbl_grp_CSVs =[%@]", gbl_grp_CSVs );
+
         //
         // convert  NSArray gbl_grp_CSVs  (one NSString CSV for each member of the group)
         // into     a C array of strings for the C report function call mamb_report_person_in_group() -  my_mamb_csv_arr
@@ -7642,10 +7693,8 @@ NSLog(@"gbl_pathToFileToBeEmailed2=[%@]", gbl_pathToFileToBeEmailed );
         lcl_group_report_input_birthinfo_idx =  -1;  // zero-based  init
 
         for(int i = 0; i < num_input_csvs; i++) {  
-
           NSString *s      = gbl_grp_CSVs[i];     //get a NSString
           const char *cstr = s.UTF8String;        //get cstring
-
           // index of next spot in buffer
           lcl_group_report_input_birthinfo_idx = lcl_group_report_input_birthinfo_idx + 1; 
 
@@ -7700,12 +7749,22 @@ NSLog(@"gbl_pathToFileToBeEmailed2=[%@]", gbl_pathToFileToBeEmailed );
 
 
 tn();trn("calling  mamb_report_trait_rank() ...");
-ksn(pathToHTML_browser);
-ksn(tmp_grp_name);
-ksn(my_mamb_csv_arr[0]);
-ksn(my_mamb_csv_arr[1]);
-kin(num_input_csvs);
-tn();
+  NSLog(@"OpathToHTML_browser =[%@]", OpathToHTML_browser );
+//bn(1);
+//ksn(pathToHTML_browser);
+//bn(2);
+//ksn(tmp_grp_name);
+//bn(3);
+//ksn(my_mamb_csv_arr[0]);
+//bn(4);
+//ksn(my_mamb_csv_arr[1]);
+//bn(5);
+//kin(num_input_csvs);
+//bn(6);
+//tn();
+//
+
+bn(7);
             retval = mamb_report_trait_rank(  /* in grpdoc.o */
               pathToHTML_browser,     /* html_file_name */
               tmp_grp_name,           /* group_name */
@@ -8141,7 +8200,8 @@ NSLog(@"HTMLfileData.length2=%lu",(unsigned long)HTMLfileData.length);
 //    }
 
 
-    NSString *emailTitle = [NSString stringWithFormat: @"%@  from Me and my BFFs", filenameForAttachment];
+//    NSString *emailTitle = [NSString stringWithFormat: @"%@  from Me and my BFFs", filenameForAttachment];
+    NSString *emailTitle = [NSString stringWithFormat: @"%@  from %@", filenameForAttachment, gbl_appName];
 
 
     NSString *myEmailMessage;
@@ -8156,13 +8216,15 @@ NSLog(@"HTMLfileData.length2=%lu",(unsigned long)HTMLfileData.length);
     if (   [gbl_currentMenuPlusReportCode hasSuffix: @"pe"] // per rpt gmappe,gmeppe,gmrppe,gmpppe,gmdppe homppe pbm1pe,pbm2pe gbm1pe,gbm2pe
       //        || [gbl_currentMenuPlusReportCode hasPrefix: @"homgm"]   // personality report  homgma,homgme,homgmr,homgmp,homgmd
     ) {
-        myEmailMessage = [NSString stringWithFormat: @"\n\"Personality of %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.", gbl_person_name ];
+//        myEmailMessage = [NSString stringWithFormat: @"\n\"Personality of %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.", gbl_person_name ];
+        myEmailMessage = [NSString stringWithFormat: @"\n\"Personality of %@\"\nis the attached report, which was done with iPhone App  %@.", gbl_person_name, gbl_appName ];
+          
         NSLog(@"myEmailMessage=%@",myEmailMessage);
     }
 
 
     else if ([gbl_currentMenuPlusReportCode hasSuffix: @"co"]) {  //   @"Compatibility Potential"  hompco, pbmco, gbmco
-        myEmailMessage = [NSString stringWithFormat: @"\"Compatibility Potential of %@ and %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.", gbl_person_name, gbl_person_name2 ];
+        myEmailMessage = [NSString stringWithFormat: @"\"Compatibility Potential of %@ and %@\"\nis the attached report, which was done with iPhone App  %@.", gbl_person_name, gbl_person_name2, gbl_appName];
         NSLog(@"myEmailMessage=%@",myEmailMessage);
     }
 
@@ -8180,9 +8242,10 @@ NSLog(@"HTMLfileData.length2=%lu",(unsigned long)HTMLfileData.length);
         NSLog(@"gbl_person_name=%@",gbl_person_name);
         NSLog(@"myEmailMessage=%@",myEmailMessage);
 
-        myEmailMessage = [NSString stringWithFormat: @"\n\"Best Match for %@  in Group %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.",
+        myEmailMessage = [NSString stringWithFormat: @"\n\"Best Match for %@  in Group %@\"\nis the attached report, which was done with iPhone App  %@.",
            gbl_lastSelectedPerson,
            gbl_lastSelectedGroup
+          ,gbl_appName
         ];
         NSLog(@"myEmailMessage=%@",myEmailMessage);
 
@@ -8194,9 +8257,10 @@ tn();trn("inside homgby mail ");
         NSLog(@"gbl_person_name=%@",gbl_person_name);
         NSLog(@"myEmailMessage=%@",myEmailMessage);
 
-        myEmailMessage = [NSString stringWithFormat: @"\n\"Best Year (%@) in Group %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.",
+        myEmailMessage = [NSString stringWithFormat: @"\n\"Best Year (%@) in Group %@\"\nis the attached report, which was done with iPhone App  %@.",
            gbl_lastSelectedYear,
            gbl_lastSelectedGroup
+          ,gbl_appName
         ];
         NSLog(@"myEmailMessage=%@",myEmailMessage);
     }
@@ -8206,9 +8270,10 @@ tn();trn("inside homgby mail ");
         NSLog(@"gbl_person_name=%@",gbl_person_name);
         NSLog(@"myEmailMessage=%@",myEmailMessage);
 
-        myEmailMessage = [NSString stringWithFormat: @"\n\"Best Day (%@) in Group %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.",
+        myEmailMessage = [NSString stringWithFormat: @"\n\"Best Day (%@) in Group %@\"\nis the attached report, which was done with iPhone App  %@.",
            gbl_lastSelectedDay,
            gbl_lastSelectedGroup
+          ,gbl_appName
         ];
         NSLog(@"myEmailMessage=%@",myEmailMessage);
     }
@@ -8224,9 +8289,10 @@ tn();trn("inside homgby mail ");
         else if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgmp"]) grpRpt_shortname = @"Most Passionate";
         else if ([gbl_currentMenuPlusReportCode isEqualToString: @"homgmd"]) grpRpt_shortname = @"Most Down-to-earth";
 
-        myEmailMessage = [NSString stringWithFormat: @"\n\"%@ in Group %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.",
+        myEmailMessage = [NSString stringWithFormat: @"\n\"%@ in Group %@\"\nis the attached report, which was done with iPhone App  %@.",
            grpRpt_shortname,
            gbl_lastSelectedGroup
+          ,gbl_appName
         ];
         NSLog(@"myEmailMessage=%@",myEmailMessage);
     } // msg for all the rest
