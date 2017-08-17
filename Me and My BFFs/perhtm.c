@@ -24,7 +24,7 @@
 //
 
 /* read from input docin_lines string array
-* format and write an html output file
+* format and write an html output file               bbb
 */
 
 
@@ -54,7 +54,7 @@ char gbl_instructions[128];
 /* #define APP_NAME "Me & My BFFs" */
 /* #define APP_NAME "\"Me & my BFFs\"" */
 /* #define APP_NAME "\"My BFFs and I\"" */
-#define APP_NAME "Me and my BFFs"
+//#define APP_NAME "Me and my BFFs"
 
 /* file extension for group sharing will be ".mamb" */
 
@@ -1520,7 +1520,17 @@ int make_per_htm_file_browser(
 //  p_fn_prtlin("");
 //  p_fn_prtlin("<div style=\"font-size: 0.9em; font-weight: bold; color:#FF0000;\">&nbspThis report is for entertainment purposes only.&nbsp</span></div>");
 
-  p_fn_prtlin("<div> <span style=\"font-size: 1.0em\"><br>produced by iPhone app Me and my BFFs</span><br><br><span style=\"font-size: 0.9em; font-weight: bold; color:#FF0000;\">This report is for entertainment purposes only.</span></div><div><br></div>");
+//  p_fn_prtlin("<div> <span style=\"font-size: 1.0em\"><br>produced by iPhone app Me and my BFFs</span><br><br><span style=\"font-size: 0.9em; font-weight: bold; color:#FF0000;\">This report is for entertainment purposes only.</span></div><div><br></div>");
+
+  char workProducedBy[256];
+  sprintf(workProducedBy,
+    "<div> <span style=\"font-size: 1.0em\"><br>produced by iPhone app %s</span><br><br><span style=\"font-size: 0.9em; font-weight: bold; color:#FF0000;\">This report is for entertainment purposes only.</span></div><div><br></div>" ,
+    APP_NAME
+  ); 
+
+  p_fn_prtlin( workProducedBy );
+
+
 
 
   p_fn_prtlin("\n</body>\n");
