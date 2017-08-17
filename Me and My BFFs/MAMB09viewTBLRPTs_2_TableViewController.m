@@ -29,7 +29,7 @@
 #import "MAMB09viewTBLRPTs_2_TableViewController.h"
 #import "MAMB09_viewHTMLViewController.h"
 #import "mamblib.h"
-#import "MAMB09AppDelegate.h"   // to get globals
+#import "MAMB09AppDelegate.h"   // to get globals  bbb
 
 
 
@@ -432,6 +432,7 @@ tn();
 
 //            gbl_pathToFileToBeEmailed = OpathToHTML_browser;
             gbl_pathToFileToBeEmailed_B= OpathToHTML_browser;
+  NSLog(@"gbl_pathToFileToBeEmailed_B 01 =%@",gbl_pathToFileToBeEmailed_B );
             
             // remove all "*.html" files from TMP directory before creating new one
             //
@@ -630,7 +631,11 @@ for (id eltTst in gbl_perDataLines) { NSLog(@"    gbl_per=%@", eltTst); }
         //URLtoHTML_forWebview = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent: Ohtml_file_name_browser]];  // for test
         //ksn(pathToHTML_browser);
         
-        gbl_pathToFileToBeEmailed = OpathToHTML_browser;
+//        gbl_pathToFileToBeEmailed   = OpathToHTML_browser;
+        gbl_pathToFileToBeEmailed_B = OpathToHTML_browser;
+
+  NSLog(@"gbl_pathToFileToBeEmailed   101 =%@",gbl_pathToFileToBeEmailed );
+  NSLog(@"gbl_pathToFileToBeEmailed_B 201 =%@",gbl_pathToFileToBeEmailed_B );
 
 
         // remove all "*.html" files from TMP directory before creating new one
@@ -897,6 +902,7 @@ for (id eltTst in gbl_compDataLines) { NSLog(@"    gbl_comp=%@", eltTst); }
 //
         
         gbl_pathToFileToBeEmailed_B = OpathToHTML_browser;
+  NSLog(@"gbl_pathToFileToBeEmailed_B 02 =%@",gbl_pathToFileToBeEmailed_B );
         
         // remove all "*.html" files from TMP directory before creating new one
         //
@@ -1178,6 +1184,7 @@ for (id eltTst in gbl_compDataLines) { NSLog(@"    gbl_comp=%@", eltTst); }
 
 
 //  NSLog(@"gbl_pathToFileToBeEmailed_B =%@",gbl_pathToFileToBeEmailed_B );
+  NSLog(@"gbl_pathToFileToBeEmailed_B 03 =%@",gbl_pathToFileToBeEmailed_B );
 
 
 
@@ -3536,7 +3543,8 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
             myDisplayString = [myPlusesBase substringWithRange: NSMakeRange( 40 - numflds, 40) ];
 //  NSLog(@"starnew myDisplayString =[%@]",myDisplayString );
 
-            myDisplayString = [NSString stringWithFormat: @"%@%@%@", @"     ", myDisplayString, @"     "];   // prepend + append 5 spaces
+//            myDisplayString = [NSString stringWithFormat: @"%@%@%@", @"     ", myDisplayString, @"     "];   // prepend + append 5 spaces
+            myDisplayString = [NSString stringWithFormat: @"%@%@%@", @"     ", myDisplayString, @"++++++"];   // prepend + append 5 spaces
 
             myDisplayStringAttributed = [[NSMutableAttributedString alloc] initWithString: myDisplayString ];
            [myDisplayStringAttributed addAttribute: NSBackgroundColorAttributeName
@@ -3552,12 +3560,28 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
                                              value: gbl_color_cGre
                                              range: NSMakeRange(  0 + 5, numflds)
             ];
+//           [myDisplayStringAttributed addAttribute: NSBackgroundColorAttributeName
+////                                             value: gbl_colorHomeBG_grp
+//                                             value: gbl_bgColor_brownHdr
+//                                             range: NSMakeRange( 40 + 5,  5)
+//            ];
+            // [string addAttribute:NSForegroundColorAttributeName value:[UIColor greenColor] range:NSMakeRange(5,6)];
+
+//<.>
+  NSLog(@"myDisplayStringAttributed -3=[%@]", myDisplayStringAttributed  );
            [myDisplayStringAttributed addAttribute: NSBackgroundColorAttributeName
-//                                             value: gbl_colorHomeBG_grp
                                              value: gbl_bgColor_brownHdr
                                              range: NSMakeRange( 40 + 5,  5)
             ];
+  NSLog(@"myDisplayStringAttributed -4=[%@]", myDisplayStringAttributed  );
             // [string addAttribute:NSForegroundColorAttributeName value:[UIColor greenColor] range:NSMakeRange(5,6)];
+
+           [myDisplayStringAttributed addAttribute: NSForegroundColorAttributeName
+                                             value: gbl_bgColor_brownHdr
+                                             range: NSMakeRange( 40 + 5,  5)
+            ];
+  NSLog(@"myDisplayStringAttributed -5=[%@]", myDisplayStringAttributed  );
+//<.>
         }
 
         flds    = [mylin componentsSeparatedByString: @"-"];
@@ -3565,7 +3589,8 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
         if (numflds > 0) {  // got minuses here
             myDisplayString = [myMinusesBase substringWithRange: NSMakeRange( 40 - numflds, 40) ];
 
-            myDisplayString = [NSString stringWithFormat: @"%@%@%@", @"     ", myDisplayString, @"     "];   // prepend + append 5 spaces
+//            myDisplayString = [NSString stringWithFormat: @"%@%@%@", @"     ", myDisplayString, @"     "];   // prepend + append 5 spaces
+            myDisplayString = [NSString stringWithFormat: @"%@%@%@", @"     ", myDisplayString, @"-----"];   // prepend + append 5 spaces
 
             myDisplayStringAttributed = [[NSMutableAttributedString alloc] initWithString: myDisplayString ];
            [myDisplayStringAttributed addAttribute: NSBackgroundColorAttributeName
@@ -3581,11 +3606,27 @@ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init]
                                              value: gbl_color_cRed
                                              range: NSMakeRange(  0 + 5, numflds)
             ];
+//           [myDisplayStringAttributed addAttribute: NSBackgroundColorAttributeName
+////                                             value: gbl_colorHomeBG_grp
+//                                             value: gbl_bgColor_brownHdr
+//                                             range: NSMakeRange( 40 + 5,  5)
+//            ];
+//
+
+//<.>
            [myDisplayStringAttributed addAttribute: NSBackgroundColorAttributeName
-//                                             value: gbl_colorHomeBG_grp
                                              value: gbl_bgColor_brownHdr
                                              range: NSMakeRange( 40 + 5,  5)
             ];
+  NSLog(@"myDisplayStringAttributed 5=[%@]", myDisplayStringAttributed  );
+
+           [myDisplayStringAttributed addAttribute: NSForegroundColorAttributeName
+                                             value: gbl_bgColor_brownHdr
+                                             range: NSMakeRange( 40 + 5,  5)
+            ];
+  NSLog(@"myDisplayStringAttributed 6=[%@]", myDisplayStringAttributed  );
+//<.>
+
         }
 
 
@@ -4023,9 +4064,15 @@ bn(802);
     else if (indexPath.row ==  group_report_output_idx_B + 2)
     {  // 2 of 3 FOOTER CELLS
 
+
+        NSString *producedByText   = [NSString stringWithFormat: @"        Produced by iPhone App %@   ",
+            gbl_appName
+        ];
+
         //        myNewCellText                = @"     Produced by iPhone App Me and my BFFs   ";
         NSAttributedString *myNewCellAttributedText1 = [
-            [NSAttributedString alloc] initWithString: @"        Produced by iPhone App Me and my BFFs   "
+//            [NSAttributedString alloc] initWithString: @"        Produced by iPhone App Me and my BFFs   "
+            [NSAttributedString alloc] initWithString: producedByText  
                                            attributes: @{            NSFontAttributeName : [UIFont systemFontOfSize:11.0f] }
         ];
 
@@ -5232,7 +5279,8 @@ tn();    NSLog(@"in shareButtonAction!  in MAMB09viewTBLRPTs_2_TableViewControll
     // Determine the file name and extension
     // NSArray *filepart = [gbl_pathToFileToBeEmailed_B componentsSeparatedByString:@"."];
     // 
-  NSLog(@"gbl_pathToFileToBeEmailed_B =%@",gbl_pathToFileToBeEmailed_B );
+  NSLog(@"gbl_pathToFileToBeEmailed_B 04 =%@",gbl_pathToFileToBeEmailed_B );
+
     NSArray *fileparts = [gbl_pathToFileToBeEmailed_B componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"./"]];
     
     NSString *baseFilename = [fileparts objectAtIndex: (fileparts.count -2)] ;  // count -1 is last in array
@@ -5246,24 +5294,27 @@ tn();    NSLog(@"in shareButtonAction!  in MAMB09viewTBLRPTs_2_TableViewControll
 //NSLog(@"HTMLfileData.length=%lu",(unsigned long)HTMLfileData.length);
 
 
-    NSString *emailTitle = [NSString stringWithFormat: @"%@  from Me and my BFFs", filenameForAttachment];
+//    NSString *emailTitle = [NSString stringWithFormat: @"%@  from Me and my BFFs", filenameForAttachment];
+    NSString *emailTitle = [NSString stringWithFormat: @"%@  from %@", filenameForAttachment, gbl_appName];
+
 
     NSString *myEmailMessage;
     
 
     if ([gbl_currentMenuPlusReportCode hasSuffix: @"pe"]) {    // personality from level 2
-        myEmailMessage = [NSString stringWithFormat: @"\n\"Personality for %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.",
-            gbl_person_name
-        ];
+//        myEmailMessage = [NSString stringWithFormat: @"\n\"Personality for %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.", gbl_person_name ];
+        myEmailMessage = [NSString stringWithFormat: @"\n\"Personality of %@\"\nis the attached report, which was done with iPhone App  %@.", gbl_person_name, gbl_appName ];
     }
 
     else if ([gbl_currentMenuPrefixFromMatchRpt isEqualToString: @"pbm"]) {    // My Best Match in Group
         NSLog(@"gbl_person_name=%@",gbl_person_name);
         NSLog(@"myEmailMessage=%@",myEmailMessage);
 
-        myEmailMessage = [NSString stringWithFormat: @"\n\"Best Match for %@  in Group %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.",
-           gbl_lastSelectedPerson,
-           gbl_lastSelectedGroup
+//        myEmailMessage = [NSString stringWithFormat: @"\n\"Best Match for %@  in Group %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.",
+        myEmailMessage = [NSString stringWithFormat: @"\n\"Best Match for %@  in Group %@\"\nis the attached report, which was done with iPhone App  %@.",
+            gbl_lastSelectedPerson,
+            gbl_lastSelectedGroup,
+            gbl_appName
         ];
         NSLog(@"myEmailMessage=%@",myEmailMessage);
     }
@@ -5272,8 +5323,11 @@ tn();    NSLog(@"in shareButtonAction!  in MAMB09viewTBLRPTs_2_TableViewControll
         NSLog(@"gbl_person_name=%@",gbl_person_name);
         NSLog(@"myEmailMessage=%@",myEmailMessage);
 
-        myEmailMessage = [NSString stringWithFormat: @"\n\"Best Match in Group %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.",
-           gbl_lastSelectedGroup
+//        myEmailMessage = [NSString stringWithFormat: @"\n\"Best Match in Group %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.",
+        myEmailMessage = [NSString stringWithFormat:
+            @"\n\"Best Match in Group %@\"\nis the attached report, which was done with iPhone App  %@.",
+            gbl_lastSelectedGroup,
+            gbl_appName
         ];
         NSLog(@"myEmailMessage=%@",myEmailMessage);
 
@@ -5307,27 +5361,43 @@ tn();    NSLog(@"in shareButtonAction!  in MAMB09viewTBLRPTs_2_TableViewControll
     {
         myMailComposeViewController = [[MFMailComposeViewController alloc] init];
 
-        NSLog(@"This device CAN send email");
+        NSLog(@"This device CAN send email (rpt2)");
 
+NSLog(@"HTMLfileData.length3    rpt2       =%lu",(unsigned long)HTMLfileData.length);
+
+
+dispatch_async(dispatch_get_main_queue(), ^(void){
+nbn(451);
          myMailComposeViewController.mailComposeDelegate = self;
+nbn(452);
         [myMailComposeViewController setSubject: emailTitle];
+nbn(453);
         [myMailComposeViewController setMessageBody: myEmailMessage
                                              isHTML: NO];
+nbn(454);
         [myMailComposeViewController setToRecipients: toRecipients];
+nbn(455);
         [myMailComposeViewController setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+nbn(456);
         [myMailComposeViewController addAttachmentData: HTMLfileData                // Add attachment
                                               mimeType: mimeType
                                               fileName: filenameForAttachment];
         
+nbn(457);
         // Present mail view controller on screen
         //
         //[self presentModalViewController:myMailComposeViewController animated:YES completion:NULL];
 
 
-        dispatch_async(dispatch_get_main_queue(), ^(void){
+//        dispatch_async(dispatch_get_main_queue(), ^(void){
                 [self presentViewController: myMailComposeViewController animated:YES completion:NULL];
-            }
-        );
+nbn(458);
+//            }
+//        );
+
+}); // end of dispatch_async
+
+nbn(459);
     }
     else
     {
