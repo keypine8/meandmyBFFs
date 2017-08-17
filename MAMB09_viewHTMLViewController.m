@@ -28,7 +28,7 @@
 
 #import "MAMB09_viewHTMLViewController.h"
 #import "mamblib.h"
-#import "MAMB09AppDelegate.h"   // to get globals    nnn
+#import "MAMB09AppDelegate.h"   // to get globals    nnn  ooo
 
 // #import "incocoa.h" xxxxx
 
@@ -1460,7 +1460,8 @@ tn();    NSLog(@"in shareButtonAction!  in viewHTML   ");
 //NSLog(@"HTMLfileData.length=%lu",(unsigned long)HTMLfileData.length);
 
 
-    NSString *emailTitle = [NSString stringWithFormat: @"%@  from Me and my BFFs", filenameForAttachment];
+//    NSString *emailTitle = [NSString stringWithFormat: @"%@  from Me and my BFFs", filenameForAttachment];
+    NSString *emailTitle = [NSString stringWithFormat: @"%@  from %@", filenameForAttachment, gbl_appName];
 
     NSString *myEmailMessage;
     
@@ -1472,20 +1473,37 @@ tn();    NSLog(@"in shareButtonAction!  in viewHTML   ");
 
 
     // NOTE:  changed all "homgmX" to gmXppe
+//    if ([gbl_currentMenuPlusReportCode isEqualToString: @"gmappe"]) {  // Most ... group report
+//        myEmailMessage = [NSString stringWithFormat: @"\n\"Most Assertive Person in Group %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.", gbl_lastSelectedGroup ];
+//    }
+//    if ([gbl_currentMenuPlusReportCode isEqualToString: @"gmeppe"]) {  // Most ... group report
+//        myEmailMessage = [NSString stringWithFormat: @"\n\"Most Emotional Person in Group %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.", gbl_lastSelectedGroup ];
+//    }
+//    if ([gbl_currentMenuPlusReportCode isEqualToString: @"gmrppe"]) {  // Most ... group report
+//        myEmailMessage = [NSString stringWithFormat: @"\n\"Most Restless Person in Group %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.", gbl_lastSelectedGroup ];
+//    }
+//    if ([gbl_currentMenuPlusReportCode isEqualToString: @"gmpppe"]) {  // Most ... group report
+//        myEmailMessage = [NSString stringWithFormat: @"\n\"Most Passionate Person in Group %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.", gbl_lastSelectedGroup ];
+//    }
+//    if ([gbl_currentMenuPlusReportCode isEqualToString: @"gmdppe"]) {  // Most ... group report
+//        myEmailMessage = [NSString stringWithFormat: @"\n\"Most Down-to-earth Person in Group %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.", gbl_lastSelectedGroup ];
+
+
+
     if ([gbl_currentMenuPlusReportCode isEqualToString: @"gmappe"]) {  // Most ... group report
-        myEmailMessage = [NSString stringWithFormat: @"\n\"Most Assertive Person in Group %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.", gbl_lastSelectedGroup ];
+        myEmailMessage = [NSString stringWithFormat: @"\n\"Most Assertive Person in Group %@\"\nis the attached report, which was done with iPhone App  %@.", gbl_lastSelectedGroup, gbl_appName ];
     }
     if ([gbl_currentMenuPlusReportCode isEqualToString: @"gmeppe"]) {  // Most ... group report
-        myEmailMessage = [NSString stringWithFormat: @"\n\"Most Emotional Person in Group %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.", gbl_lastSelectedGroup ];
+        myEmailMessage = [NSString stringWithFormat: @"\n\"Most Emotional Person in Group %@\"\nis the attached report, which was done with iPhone App  %@.", gbl_lastSelectedGroup, gbl_appName ];
     }
     if ([gbl_currentMenuPlusReportCode isEqualToString: @"gmrppe"]) {  // Most ... group report
-        myEmailMessage = [NSString stringWithFormat: @"\n\"Most Restless Person in Group %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.", gbl_lastSelectedGroup ];
+        myEmailMessage = [NSString stringWithFormat: @"\n\"Most Restless Person in Group %@\"\nis the attached report, which was done with iPhone App  %@.", gbl_lastSelectedGroup, gbl_appName ];
     }
     if ([gbl_currentMenuPlusReportCode isEqualToString: @"gmpppe"]) {  // Most ... group report
-        myEmailMessage = [NSString stringWithFormat: @"\n\"Most Passionate Person in Group %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.", gbl_lastSelectedGroup ];
+        myEmailMessage = [NSString stringWithFormat: @"\n\"Most Passionate Person in Group %@\"\nis the attached report, which was done with iPhone App  %@.", gbl_lastSelectedGroup, gbl_appName ];
     }
     if ([gbl_currentMenuPlusReportCode isEqualToString: @"gmdppe"]) {  // Most ... group report
-        myEmailMessage = [NSString stringWithFormat: @"\n\"Most Down-to-earth Person in Group %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.", gbl_lastSelectedGroup ];
+        myEmailMessage = [NSString stringWithFormat: @"\n\"Most Down-to-earth Person in Group %@\"\nis the attached report, which was done with iPhone App  %@.", gbl_lastSelectedGroup, gbl_appName ];
     }
 
 //
@@ -1501,13 +1519,15 @@ tn();    NSLog(@"in shareButtonAction!  in viewHTML   ");
 //    }
 //
     if ([gbl_currentMenuPlusReportCode hasSuffix: @"cy"]) {  // @"Calendar Year"              hompcy and gbypcy
-        myEmailMessage = [NSString stringWithFormat: @"\"Calendar Year %@ for %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.", gbl_lastSelectedYear, gbl_person_name
+//        myEmailMessage = [NSString stringWithFormat: @"\"Calendar Year %@ for %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.", gbl_lastSelectedYear, gbl_person_name
+        myEmailMessage = [NSString stringWithFormat: @"\"Calendar Year %@ for %@\"\nis the attached report, which was done with iPhone App  %@.", gbl_lastSelectedYear, gbl_person_name, gbl_appName
         ];
     }
     if ([gbl_currentMenuPlusReportCode hasSuffix: @"wc"]) {    // @"what color is the  day?"  hompwc and gbdpwc
-        myEmailMessage = [NSString stringWithFormat: @"\"What Color is the Day? (%@) for %@\"\nis the attached report, which was done with iPhone App  Me and my BFFs.",
+        myEmailMessage = [NSString stringWithFormat: @"\"What Color is the Day? (%@) for %@\"\nis the attached report, which was done with iPhone App  %@.",
             gbl_lastSelectedDayFormattedForEmail,
-            gbl_person_name
+            gbl_person_name,
+            gbl_appName
         ];
     }
 
@@ -2969,4 +2989,3 @@ NSLog(@"Ok button pressed");
 
 
 // -(void)webViewDidStartLoad:(UIWebView *)webView
-
