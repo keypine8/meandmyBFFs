@@ -31,7 +31,7 @@
 #import "MAMB09_UITextField_noCopyPaste.h"
 
 
-// ================================================================================= fff = hhh  =  kkk  =================
+// ================================================================================= fff hhh iii =========================
 //          turning off logging for production    TURN OFF   DISABLE LOGGING
 // ======================================================================================================================
 //
@@ -100,7 +100,14 @@
     NSLog(@"in didFinishLaunchingWithOptions()  in appdelegate");
     
 
-    public_filename_extension = @"mamb";   // registered for import/export of groups and people
+
+//    gbl_appName                 = @"Me nnn nn BFFs";
+    gbl_appName                 = @"Me and my BFFs";
+    gbl_emailAddressForFeedback = @"meandmybffs@funnestastrology.com"; 
+
+
+
+    public_filename_extension = @"mamb";   // registered for import/export of groups and people (Me And My Bffs)
 
 
     // test cannot have bkt c lang debug functions in  MAMB09AppDelegate.m  in method  didFinishLaunchingWithOptions 
@@ -898,9 +905,15 @@
     //   gtphtm.c    MAX_PERSONS_IN_GROUP
     //   incocoa.c   MAX_PERSONS_IN_GROUP
     //
+
+// mmmmmmmmmmmmmmmmmmmmmmmm  check test  mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
 //    gbl_MAX_persons         = 250;   // max in app 
 //    gbl_MAX_personsInGroup  = 250;   // max in a Group
     gbl_MAX_persons         = 200;   // max in app 
+
+
+
+    gbl_MAX_persons         = 250;   // max in app     FOR TEST    FOR TEST    FOR TEST   FOR TEST  
 
 
 
@@ -912,7 +925,14 @@
 //<.>
 
 
+
     gbl_MAX_personsInGroup  = 200;   // max in a Group
+
+    gbl_MAX_personsInGroup  = 250;   // max in Group     FOR TEST    FOR TEST    FOR TEST   FOR TEST  
+
+// mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+
+
 
     gbl_MAX_lengthOfName    =  15;   // 15 (applies to Person and Group both)
     gbl_MAX_lengthOfCity    =  30;   
@@ -1016,7 +1036,6 @@
 
 
 
-
     gbl_arrayExaGrp =   // field 1=name-of-group  field 2=locked-or-not
     @[
       lcl_recOfAllPeopleIhaveAdded,     // gbl_nameOfGrpHavingAllPeopleIhaveAdded
@@ -1030,12 +1049,6 @@
 
     gbl_arrayExaPer = // field 11= locked or not  DO NOT HAVE TO BE PRE-SORTED  (sorted on reading back into arrays)
     @[
-
-
-
-
-
-
 
 
 //  new cities for example people
