@@ -28,7 +28,13 @@
 #import <UIKit/UIKit.h>
 #import "MAMB09_UITextField_noCopyPaste.h"
 
-NSString *gbl_dayOfWeek_3;  // "Mon" etc.  for sel date    aaa  bbb  eee
+
+NSString *gbl_appName;   // default "Me and my BFFs" (see appdel .m)
+NSString *gbl_emailAddressForFeedback;   // default @"meandmybffs@funnestastrology.com" (see appdel .m)
+
+
+
+NSString *gbl_dayOfWeek_3;  // "Mon" etc.  for sel date    aaa  bbb  eee  fff
 
 //NSInteger gbl_haveEnteredGestureRecognizerShouldBegin;
 
