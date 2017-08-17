@@ -23,7 +23,14 @@
 // SOFTWARE.
 //
 
-/* ptr to end of str s (last char- not \0) */
+
+
+//#define APP_NAME "\"Me ooo oo BFFs\""
+#define APP_NAME "\"Me and my BFFs\""
+
+
+
+/* ptr to end of str s (last char- not \0)  bbb */
 #define PENDSTR(s) (&(s)[strlen((s))-1])
 /* do as v (any lvalue) (can be ptr) goes from lo to hi inclusive */
 #define RKDO(v,lo,hi) for((v)=(lo);(v)<=(hi);(v)++)
