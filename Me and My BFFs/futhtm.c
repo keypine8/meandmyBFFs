@@ -1,7 +1,7 @@
 /* futhtm.c */
 
 /* read from in_docin_lines[] up to idx in_docin_last_idx
-* and format and write an html output file   lll
+* and format and write an html output file    lll  mmm
 */
 
 // MIT License
@@ -39,7 +39,7 @@ int hasEqualBrackets(char *inlin);
 
 int logprtallprtlin = 0;
 
-/* 1=yes,0=no */
+/* 1=yes,0=no          bbb  */
 #define GBL_HTML_HAS_NEWLINES 1
 /* #define GBL_HTML_HAS_NEWLINES 0 */
 
@@ -86,7 +86,7 @@ char have_we_hit_beg_graph[5] = "NO"; /* signal to output grh and asp */
 /* #define APP_NAME "Astrology for Me" */
 /* #define APP_NAME "Astrology by Measurement" */
 /* #define APP_NAME "Me & My BFFs" */
-#define APP_NAME "\"Me and my BFFs\""
+//#define APP_NAME "\"Me and my BFFs\""
 /* #define APP_NAME "\"My BFFs and I\"" */
 /* file extension for group sharing will be ".mamb" */
 
@@ -3331,8 +3331,16 @@ tn();trn("COLOUR #1"); kin(PERCENTILE_RANK_SCORE );ksn(person_name);
   //f_fn_prtlin("<div> <span style=\"font-size: 1.0em\"><br>produced by iPhone app \"Me and my BFFs\"</span><br><br><span style=\"font-size: 0.9em; font-weight: bold; color:#FF0000;\">This report is for entertainment purposes only.</span></div><div><br></div>");
   //f_fn_prtlin("<div> <span style=\"font-size: 0.8em\"><br>produced by iPhone app \"Me and my BFFs\"</span><br><span style=\"font-size: 0.8em; font-weight: bold; color:#FF0000;\">This report is for entertainment purposes only.</span></div><div><br></div>");
   //f_fn_prtlin("<div> <span style=\"font-size: 0.5em\"><br>produced by iPhone app \"Me and my BFFs\"</span><br><span style=\"font-size: 0.5em; font-weight: bold; color:#FF0000;\">This report is for entertainment purposes only.</span></div><div><br></div>");
-  f_fn_prtlin("<div> <span style=\"font-size: 0.5em\"><br><br>produced by iPhone app \"Me and my BFFs\"</span><br><span style=\"font-size: 0.5em; font-weight: bold; color:#FF0000;\">This report is for entertainment purposes only.</span></div>");
 
+
+  char workProducedBy[256];
+  sprintf(workProducedBy,
+    "<div> <span style=\"font-size: 0.5em\"><br><br>produced by iPhone app \"%s\"</span><br><span style=\"font-size: 0.5em; font-weight: bold; color:#FF0000;\">This report is for entertainment purposes only.</span></div>",
+    APP_NAME
+  ); 
+
+//  f_fn_prtlin("<div> <span style=\"font-size: 0.5em\"><br><br>produced by iPhone app \"Me and my BFFs\"</span><br><span style=\"font-size: 0.5em; font-weight: bold; color:#FF0000;\">This report is for entertainment purposes only.</span></div>");
+  f_fn_prtlin( workProducedBy );
 
   f_fn_prtlin("</table>");
 
@@ -4599,7 +4607,17 @@ tn();trn("COLOUR #2"); kin(gbl_YearStressScore );
 //  f_fnBIG_prtlin(writebuf);
 //  f_fnBIG_prtlin("<h4><span style=\"background-color:#FFBAC7;\">&nbspThis report is for entertainment purposes only.&nbsp</span></h4>");
 
-  f_fn_prtlin("<div> <span style=\"font-size: 1.0em\"><br>produced by iPhone app \"Me and my BFFs\"</span><br><br><span style=\"font-size: 0.9em; font-weight: bold; color:#FF0000;\">This report is for entertainment purposes only.</span></div><div><br></div>");
+
+  char workProducedBy[256];
+  sprintf(workProducedBy,
+    "<div> <span style=\"font-size: 0.5em\"><br><br>produced by iPhone app \"%s\"</span><br><span style=\"font-size: 0.5em; font-weight: bold; color:#FF0000;\">This report is for entertainment purposes only.</span></div>" ,
+    APP_NAME
+  ); 
+
+//  f_fn_prtlin("<div> <span style=\"font-size: 1.0em\"><br>produced by iPhone app \"Me and my BFFs\"</span><br><br><span style=\"font-size: 0.9em; font-weight: bold; color:#FF0000;\">This report is for entertainment purposes only.</span></div><div><br></div>");
+
+  f_fn_prtlin( workProducedBy );
+
 
 
   f_fnBIG_prtlin("");
