@@ -23,7 +23,7 @@
 // SOFTWARE.
 //
 
-/* For just_2 rpt, read from input docin_lines string array  nnn  sss  uuu 
+/* For just_2 rpt, read from input docin_lines string array  nnn  sss  uuu vvv
 * format and write an html output file
 * For group rpts, input is 
 *    struct rank_report_line  *in_rank_lines[],
@@ -80,7 +80,7 @@ extern void fclose_fpdb_for_debug(void);
 
 /* #define APP_NAME "Astrology by Measurement" */
 /* #define APP_NAME "Me & My BFFs" */
-#define APP_NAME "Me and my BFFs"
+//#define APP_NAME "Me and my BFFs"
 /* #define APP_NAME "\"My BFFs and I\"" */
 /* file extension for group sharing will be ".mamb" */
 
@@ -1410,7 +1410,19 @@ trn("browser good relationship #2");
 //    g_fn_prtlin(writebuf);
 //    g_fn_prtlin("<h4><span style=\"background-color:#FFBAC7;\">&nbspThis report is for entertainment purposes only.&nbsp</span></h4>");
 
-    g_fn_prtlin("<div> <span style=\"font-size: 1.0em\"><br>produced by iPhone app Me and my BFFs</span><br><br><span style=\"font-size: 0.9em; font-weight: bold; color:#FF0000;\">This report is for entertainment purposes only.</span></div><div><br></div>");
+
+//    g_fn_prtlin("<div> <span style=\"font-size: 1.0em\"><br>produced by iPhone app Me and my BFFs</span><br><br><span style=\"font-size: 0.9em; font-weight: bold; color:#FF0000;\">This report is for entertainment purposes only.</span></div><div><br></div>");
+
+
+  char workProducedBy[256];
+  sprintf(workProducedBy,
+    "<div> <span style=\"font-size: 1.0em\"><br>produced by iPhone app %s</span><br><br><span style=\"font-size: 0.9em; font-weight: bold; color:#FF0000;\">This report is for entertainment purposes only.</span></div><div><br></div>" , 
+    APP_NAME
+  ); 
+
+  g_fn_prtlin( workProducedBy );
+
+
 
 trn("browser good relationship #3");
     g_fn_prtlin("\n</body>\n");
@@ -2888,7 +2900,18 @@ ksn(writebuf);
 //    g_fn_prtlin(writebuf);
 //  g_fn_prtlin("<h4><span style=\"background-color:#FFBAC7;\">&nbspThis report is for entertainment purposes only.&nbsp</span></h4>");
 
-  g_fn_prtlin("<div> <span style=\"font-size: 1.0em\"><br>produced by iPhone app Me and my BFFs</span><br><br><span style=\"font-size: 0.9em; font-weight: bold; color:#FF0000;\">This report is for entertainment purposes only.</span></div><div><br></div>");
+
+//  g_fn_prtlin("<div> <span style=\"font-size: 1.0em\"><br>produced by iPhone app Me and my BFFs</span><br><br><span style=\"font-size: 0.9em; font-weight: bold; color:#FF0000;\">This report is for entertainment purposes only.</span></div><div><br></div>");
+
+  char workProducedBy[256];
+  sprintf(workProducedBy,
+    "<div> <span style=\"font-size: 1.0em\"><br>produced by iPhone app %s</span><br><br><span style=\"font-size: 0.9em; font-weight: bold; color:#FF0000;\">This report is for entertainment purposes only.</span></div><div><br></div>" ,
+    APP_NAME
+  ); 
+
+  g_fn_prtlin( workProducedBy );
+
+
 
 
   g_fn_prtlin( "</body>");
