@@ -5319,6 +5319,7 @@ NSLog(@"arg_typedCharAsNSString=[%@]",arg_typedCharAsNSString);
                [gbl_myname.text isEqualToString: @""  ]     // here first character typed is SPACE
             ||  gbl_myname.text == nil                      // here first character typed is SPACE
            )
+        && (   [gbl_myCitySoFar isEqualToString: @""  ] )
     )
     {
         return NO;
