@@ -231,7 +231,7 @@ struct aspect {
   {"p05207", "You have tendency to enter partnerships rather too quickly, and to try to dominate them once you're in ."},
   {"p05208", "You are extremely persistent- especially about money and are likely to get into disputes about money ."},
   {"p05209", "You have strong convictions about philosophy or politics.  You could enjoy outdoor sports like horseback riding, skiing or sailing ."},
-  {"p05210", "Your want to make a name for yourself and you have the controlled drive to do it.  This indicator is often found in surgeons and other competent and successful people ."},
+  {"p05210", "You want to make a name for yourself and you have the controlled drive to do it.  This indicator is often found in surgeons and other competent and successful people ."},
   {"p05211", "You could be around people with mechanical or electrical ability.  You have strong ideas for social reform ."},
   {"p05212", "Your actions can tend to be secretive.  In institutions you can be a \"disturber\" who bucks authority ."},
   {"p05b06", "Over-enthusiasm can lead to extravagance or gambling.  Beware of biting off more than you can chew."},
